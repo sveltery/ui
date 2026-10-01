@@ -1,6 +1,8 @@
 packages:
   - packages/*
   - apps/*
+engineStrict: true
+autoInstallPeers: false
 allowBuilds:
   esbuild: true
 minimumReleaseAgeExclude:

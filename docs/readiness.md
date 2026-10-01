@@ -23,6 +23,8 @@ Base PR #15's merge was verified against the remote main ref and local Git objec
 
 The preserved DOM assertions pass after refreshing the file dependency's integrity (`pnpm update @sveltery/base --recursive --lockfile-only`) and the frozen install. A lockfile-only generic install initially retained the previous archive resolution; bootstrap/verify now explicitly compare the lockfile integrity to the independently verified archive before acceptance.
 
+Automatic review found inconsistent peer settings in the old `.npmrc` and lockfile. The pinned pnpm 12 toolchain uses [workspace configuration](https://pnpm.io/settings) for these non-authentication settings: `engineStrict: true` and `autoInstallPeers: false` now live in `pnpm-workspace.yaml`, and the regenerated lockfile records `autoInstallPeers: false`. The obsolete `.npmrc` is removed; dependency versions and package resolutions are unchanged. Effective configuration, full bootstrap with a frozen install, and full verification are checked again for this correction.
+
 ## Historical continuation validation before the native focus audit
 
 `bash scripts/verify.sh` passes on Node 24.19.0 / pnpm 12.6.0: archive and lock integrity, ESLint, library packaging, both Svelte/type checks (zero errors or warnings), all 10 actual DOM tests, docs SSR/client production build, isolated UI tarball SSR consumption and public type assertions, license/CSS/declaration presence and documentation checks. Source `svelte-package` required the library's explicit tsconfig to emit declarations; the consumer now requires and compiles those declarations outside the workspace.
