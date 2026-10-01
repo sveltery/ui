@@ -21,10 +21,10 @@ test('documented fresh Dialog: SSR, hydration, labels, keyboard, focus return an
     await expect(popup).toHaveAccessibleDescription('A small Dialog using the Nova theme. Close it to return to the page.');
     const close = popup.getByRole('button', { name: 'Close', exact: true });
     const done = popup.getByRole('button', { name: 'Done', exact: true });
-    await expect(close).toBeFocused();
-    await page.keyboard.press('Tab'); await expect(done).toBeFocused();
+    await expect(done).toBeFocused();
     await page.keyboard.press('Tab'); await expect(close).toBeFocused();
-    await page.keyboard.press('Shift+Tab'); await expect(done).toBeFocused();
+    await page.keyboard.press('Tab'); await expect(done).toBeFocused();
+    await page.keyboard.press('Shift+Tab'); await expect(close).toBeFocused();
     await expect.poll(() => popup.evaluate(node => getComputedStyle(node).position)).toBe('fixed');
     const style = await popup.evaluate(node => {
       const css = getComputedStyle(node);
