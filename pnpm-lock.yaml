@@ -648,7 +648,7 @@ packages:
       vite: ^8.0.0-beta.7 || ^8.0.0
 
   '@sveltery/base@file:.vendor/sveltery-base-0.0.0.tgz':
-    resolution: {integrity: sha512-Y/8VVjWBGwQZONtuXRD4+czvFz3zDJZ2Z1voO2eQyVdZSpR3WQ/kQMeM7cfrIyYuX9nojKhOLeSSt2nh/TX13w==, tarball: file:.vendor/sveltery-base-0.0.0.tgz}
+    resolution: {integrity: sha512-AvMxW9cv58Amt0tW7gSF1b2DKrH1w+t1ldknKGqmYBNn3hX43+7zzChU//L8Q+5rX++9hFpRUEjIN9jGUqJLaA==, tarball: file:.vendor/sveltery-base-0.0.0.tgz}
     version: 0.0.0
     peerDependencies:
       svelte: ^5.57.1

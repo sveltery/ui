@@ -24,7 +24,7 @@
   },
   "svelte": "./dist/index.js",
   "scripts": {
-    "build": "svelte-package -i ../../apps/docs/registry/bases/base/ui -o dist && node ../../scripts/package-assets.mjs",
+    "build": "svelte-package -i ../../apps/docs/registry/bases/base/ui -o dist --tsconfig ./tsconfig.json && node ../../scripts/package-assets.mjs",
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "peerDependencies": {

@@ -1,4 +1,4 @@
-Describe the problem and resulting change. Keep the placeholder status accurate.
+Describe the problem and resulting change. Keep the experimental status and Base readiness gate accurate.
 
 - [ ] `node .github/check-docs.mjs` passes.
 - [ ] Hosted `Documentation` check passes on the final reviewed head.

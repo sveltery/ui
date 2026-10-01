@@ -9,6 +9,7 @@ mkdir -p .vendor
 if [[ ! -d "$base_source/.git" ]]; then
   git clone --quiet "$base_repository" "$base_source"
 fi
+git -C "$base_source" fetch --quiet origin "$base_commit"
 git -C "$base_source" checkout --quiet --detach "$base_commit"
 test "$(git -C "$base_source" rev-parse HEAD)" = "$base_commit"
 test -z "$(git -C "$base_source" status --porcelain)"

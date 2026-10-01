@@ -66,3 +66,19 @@ test('canceled deferral does not affect a later accepted close (Base fix gate)',
   await page.getByTestId('cancel-next').evaluate((node: HTMLButtonElement) => node.click()); await page.keyboard.press('Escape'); await expect(popup).toBeVisible();
   await page.keyboard.press('Escape'); await expect(popup).toHaveCount(0);
 });
+test('disabled styled replacement Close anchor blocks navigation and dismissal (Base fix gate)', async ({ page }) => {
+  await page.goto('/disabled-close'); await page.getByRole('button', { name: 'Open link example' }).click();
+  const popup = page.getByRole('dialog', { name: 'Link example' });
+  const close = popup.getByRole('button', { name: 'Link close' });
+  await expect(close).toHaveAttribute('aria-disabled', 'true');
+  await close.evaluate((node: HTMLElement) => node.click());
+  await expect(popup).toBeVisible(); expect(new URL(page.url()).hash).toBe('');
+  await close.evaluate((node: HTMLElement) => node.focus()); await page.keyboard.press('Enter');
+  await expect(popup).toBeVisible(); expect(new URL(page.url()).hash).toBe('');
+  await page.keyboard.press('Escape'); await expect(popup).toHaveCount(0);
+});
+test('enabled styled replacement Close anchor keeps native navigation and dismissal', async ({ page }) => {
+  await page.goto('/disabled-close?enabled'); await page.getByRole('button', { name: 'Open link example' }).click();
+  const popup = page.getByRole('dialog'); await popup.getByRole('button', { name: 'Link close' }).click();
+  await expect(popup).toHaveCount(0); expect(new URL(page.url()).hash).toBe('#activated');
+});

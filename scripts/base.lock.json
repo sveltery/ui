@@ -1,7 +1,7 @@
 {
   "repository": "https://github.com/sveltery/base.git",
-  "commit": "318020c3476523e11802d9f4b1ada96369f1641a",
+  "commit": "08d2790571eb54440b9e61d13917bc433aa92de8",
   "package": "@sveltery/base",
   "version": "0.0.0",
-  "sha256": "28c31e70166bcbe07e8956715fbf1f84a9f7011b80f0842aa3456bbe0903a600"
+  "sha256": "67fa113eaba95095ab54faee335d33bdec01104811d17164fda581b1faf28779"
 }
