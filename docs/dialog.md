@@ -19,7 +19,7 @@ Import `Dialog`, `DialogTrigger`, `DialogPortal`, `DialogClose`, `DialogOverlay`
 
 Replacement snippets must retain the supplied child snippet to preserve Content/Footer built-in closes. Use Base `mergeProps` when adding replacement-native handlers so cancellation/composition survives. Portal produces no server DOM and mounts its content after hydration. Base remains a partial eight-part implementation: Viewport, detached handles/payloads, shared full render/ref conformance, broad nested/cross-component behavior and many upstream variants remain outside this slice.
 
-Consume `@sveltery/ui/nova.css` inside a Tailwind 4.3 stylesheet with `tw-animate-css` 1.4.0 and scan the installed UI package for utility classes. Define the standard shadcn theme tokens, including popover, foreground, muted, border, input, ring and radius. The [fixture theme](../apps/docs/src/lib/theme.css) is a concrete integration example. Styles are the scoped Nova Dialog and native close subset; screenshots compare the exercised example only.
+The [SvelteKit installation guide](installation.md) covers local archives, source copying, Tailwind 4.3 source scanning, `tw-animate-css` 1.4.0 and Nova theme tokens. The [fixture theme](../apps/docs/src/lib/theme.css) is the workspace integration. Styles are the scoped Nova Dialog and native close subset; screenshots compare the exercised example only.
 
 The React reference uses `@base-ui/react` 1.6.0, matching shadcn's package manifest at the pinned commit, with React 19.3.0 fixture tooling. Sveltery Base's own behavior reference is separately pinned to Base UI 1.8.0. This difference is explicit and neither visual agreement nor the local probes certify complete behavior parity across those versions.
 
