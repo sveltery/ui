@@ -5,6 +5,8 @@ test('fresh Textarea tarball/source copy: SSR, binding, labels, native forms and
   const errors: string[] = []; page.on('pageerror', error => errors.push(error.message)); page.on('console', msg => { if (msg.type() === 'error') errors.push(msg.text()); });
   for (const width of [1280, 390]) {
     await page.setViewportSize({ width, height: 900 }); await page.goto('/textarea'); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true');
+    await expect(page.getByTestId('initially-undefined')).toHaveValue('Unset draft');
+    await expect(page.getByTestId('unset-state')).toHaveText('{"value":"Unset draft","ref":"TEXTAREA"}');
     await expect(page.getByTestId('state')).toContainText('"ref":"message"');
     await page.locator('label').click(); await expect(page.locator('#message')).toBeFocused(); await expect(page.locator('#message')).toHaveAccessibleDescription('Write a message');
     await page.locator('#message').fill('Typed'); await expect(page.getByTestId('state')).toContainText('"value":"Typed","inputs":1,"changes":0');

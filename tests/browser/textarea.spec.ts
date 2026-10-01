@@ -19,6 +19,7 @@ for (const width of [1280, 390]) test(`native Textarea Nova styles match pinned 
     expect((await measurements(page))[id].shadow).not.toBe('none');
   }
   await page.getByTestId('basic').fill('One\nTwo\nThree\nFour\nFive\nSix'); await reference.getByTestId('basic').fill('One\nTwo\nThree\nFour\nFive\nSix');
+  await page.waitForTimeout(200); await reference.waitForTimeout(200);
   expect(await measurements(page)).toEqual(await measurements(reference));
   await testInfo.attach(`svelte-textarea-${width}`, { body: await page.screenshot({ fullPage: true }), contentType: 'image/png' });
   await testInfo.attach(`pinned-react-textarea-${width}`, { body: await reference.screenshot({ fullPage: true }), contentType: 'image/png' }); await reference.close();
@@ -37,6 +38,8 @@ test('paired native typing, labels, readOnly, disabled, validation, form associa
     await current.locator('#draft').fill('Unsaved'); await current.getByRole('button', { name: 'Submit', exact: true }).click();
     await expect(current.getByTestId('submitted')).toHaveText(JSON.stringify([['message', 'Typed\nSecond'], ['draft', 'Unsaved'], ['external', 'Outside']]));
     await current.getByRole('button', { name: 'Reset', exact: true }).click(); await expect(current.locator('#draft')).toHaveValue('Draft');
+    // Accepted framework substitution: Svelte bindings reset to defaultValue/empty; React controlled state stays current.
+    await expect(current.locator('#message')).toHaveValue(route === '/textarea' ? '' : 'Typed\nSecond');
     await current.getByRole('button', { name: 'Update value', exact: true }).click(); await expect(current.locator('#message')).toHaveValue('Updated');
     await current.locator('#message').fill(''); await current.getByRole('button', { name: 'Submit', exact: true }).click();
     expect(await current.locator('#message').evaluate(node => (node as HTMLTextAreaElement).validity.valueMissing)).toBe(true);
@@ -57,6 +60,7 @@ test('SSR textarea value and IDs survive hydration including typing before hydra
   try {
     await page.goto('/textarea', { waitUntil: 'commit' }); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'false');
     await expect(page.locator('#message')).toHaveValue('Initial'); await expect(page.locator('#draft')).toHaveValue('Draft');
+    await expect(page.getByTestId('initially-undefined')).toHaveValue('Unset draft');
     const ids = await page.locator('textarea[id]').evaluateAll(nodes => nodes.map(node => node.id));
     await page.locator('#message').fill('Before hydration');
     release(); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true');

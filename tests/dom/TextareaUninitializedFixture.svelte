@@ -9,4 +9,4 @@
   export function snapshot() { return { value, nativeValue, ref, nativeRef, undefinedRef }; }
 </script>
 {#if onlyRef}<Textarea id="uninitialized-ref" bind:ref={undefinedRef} />{:else}<Textarea id="uninitialized" bind:value bind:ref {defaultValue} />{/if}
-<textarea id="native-uninitialized" bind:value={nativeValue} bind:this={nativeRef} {defaultValue}></textarea>
+{#if defaultValue === undefined}<textarea id="native-uninitialized" bind:value={nativeValue} bind:this={nativeRef}></textarea>{:else}<textarea id="native-uninitialized" bind:value={nativeValue} bind:this={nativeRef} {defaultValue}></textarea>{/if}

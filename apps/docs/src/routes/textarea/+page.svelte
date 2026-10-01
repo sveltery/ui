@@ -5,6 +5,8 @@
   import { createAttachmentKey } from 'svelte/attachments';
   let hydrated = $state(false);
   let value = $state('Initial');
+  let unset = $state<string | undefined>();
+  let unsetRef = $state<HTMLTextAreaElement>();
   let ref = $state<HTMLTextAreaElement | null>(null);
   let inputs = $state(0);
   let changes = $state(0);
@@ -31,6 +33,8 @@
   <button onclick={() => { value = 'Updated'; }}>Update value</button>
   <button onclick={() => { visible = false; }}>Remove</button>
   <button onclick={() => { lifecycle = JSON.stringify({ attached, detached, ref: ref?.id ?? null }); }}>Inspect lifecycle</button>
+  <Textarea data-testid="initially-undefined" aria-label="Initially undefined" bind:value={unset} bind:ref={unsetRef} defaultValue="Unset draft" />
+  <output data-testid="unset-state">{JSON.stringify({ value: unset, ref: unsetRef?.tagName })}</output>
   <output data-testid="state">{JSON.stringify({ value, inputs, changes, ref: ref?.id ?? null })}</output>
   <output data-testid="submitted">{submitted}</output><output data-testid="lifecycle">{lifecycle}</output>
 </main>
