@@ -82,3 +82,20 @@ test('enabled styled replacement Close anchor keeps native navigation and dismis
   const popup = page.getByRole('dialog'); await popup.getByRole('button', { name: 'Link close' }).click();
   await expect(popup).toHaveCount(0); expect(new URL(page.url()).hash).toBe('#activated');
 });
+for (const kind of ['summary', 'empty', 'plaintext-only']) test(`native interactive content stays in modal Tab order (${kind}; Base fix gate)`, async ({ page }) => {
+  await page.goto(`/native-content?kind=${kind}`); await expect(page.locator('[data-hydrated=true]')).toBeVisible();
+  const trigger = page.getByRole('button', { name: 'Open native content' });
+  await trigger.focus(); await page.keyboard.press('Enter');
+  const popup = page.getByRole('dialog', { name: 'Native content' }); await expect(popup).toBeVisible();
+  const close = popup.getByRole('button', { name: 'Close', exact: true });
+  const target = popup.getByTestId('native-target');
+  if (kind === 'summary') await expect(popup.locator('details')).toHaveAttribute('open', '');
+  else await expect(target).toHaveAttribute('contenteditable', kind === 'empty' ? '' : 'plaintext-only');
+  await expect(close).toBeFocused();
+  await page.keyboard.press('Tab'); await expect(target).toBeFocused();
+  await page.keyboard.press('Tab'); await expect(close).toBeFocused();
+  await page.keyboard.press('Shift+Tab'); await expect(target).toBeFocused();
+  await page.keyboard.press('Shift+Tab'); await expect(close).toBeFocused();
+  await page.keyboard.press('Escape'); await expect(popup).toHaveCount(0); await expect(trigger).toBeFocused();
+  await expect(page.getByRole('button', { name: 'After native content' })).toBeVisible();
+});

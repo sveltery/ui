@@ -4,6 +4,7 @@ Recovery checkpoint: `9614e55530eebb63ab735ebacb51848ff2e02f45`, based on UI mai
 
 ## Blocking gates
 
+- The fresh native focus audit blocks readiness again: the current Base pin omits summaries and some valid contenteditable values from focus discovery, which can wrap Tab at a preceding Close. Preserve the three native interactive-content browser regressions, obtain the parent's corrected and verified Base pin, and rerun full validation and both reviews on the resulting head. No UI focus shim, explicit tabindex on native targets, weakened assertion or skipped test is allowed.
 - Verify the updated Base pin `08d2790571eb54440b9e61d13917bc433aa92de8`, whose merge parents are baseline `318020c3476523e11802d9f4b1ada96369f1641a` and reviewed [PR #13](https://github.com/sveltery/base/pull/13) head `2446dec3089bfe1ed65f2afaab95aad7e4dd70cd`. Preserve the canceled deferral and disabled Close anchor assertions that exposed the baseline defects; no UI workaround, skip or weakened assertion is allowed.
 - Pass lint, public type checks, actual Svelte DOM tests, SSR/client build and isolated tarball consumption.
 - Pass hosted real Chromium keyboard, hydration, animation exit/reopen and computed Nova style tests on the final head, sandbox enabled and retries zero.
