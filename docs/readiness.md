@@ -1,6 +1,6 @@
 # Dialog readiness
 
-Recovery checkpoint: `9614e55530eebb63ab735ebacb51848ff2e02f45`, based on UI main `2c1290d650936a4ad482ae37072eb30dd7513082`. Existing refs and the disconnected task are preserved. Continuation uses a separate branch and worktree.
+Recovery checkpoint: `9614e55530eebb63ab735ebacb51848ff2e02f45`, based on UI main `2c1290d650936a4ad482ae37072eb30dd7513082`.
 
 ## Blocking gates
 
@@ -9,7 +9,7 @@ Recovery checkpoint: `9614e55530eebb63ab735ebacb51848ff2e02f45`, based on UI mai
 - Pass lint, public type checks, actual Svelte DOM tests, SSR/client build and isolated tarball consumption.
 - Pass hosted real Chromium keyboard, hydration, animation exit/reopen and computed Nova style tests on the final head, sandbox enabled and retries zero.
 - Obtain an independent GPT-6.1-Sol high review of the final head, address all findings, and confirm automatic Codex review is Completed on that same head with all comments addressed.
-- Parent decides readiness and merge only after the gates pass. No publication, deployment, credential changes, or protection bypass is authorized.
+- Maintainers decide readiness and merge only after the gates pass. No publication, deployment, credential changes, or protection bypass is authorized.
 
 ## Recovery observations
 
@@ -42,3 +42,7 @@ The [hosted baseline run](https://github.com/sveltery/ui/actions/runs/3688612271
 UI baseline `a1a60b8598c03dc50f76cf03be91a7ac9511ec55` adds the installation guide. The Button slice advances Base to merged PR #17 at `4dd04e495fc9f5bb6a0bb872fe103563d49535b1`, with archive SHA-256 `0f15a815e69e8553b2c67f8b5315ee7334c8b001cc0fcf1efde09c5e5c4289d6`; Dialog and overlay source trees are unchanged from the previously verified pin. Bootstrap rebuilds and compares both checksum and lock integrity. Preserve all existing Dialog regressions and fresh installation consumer gates.
 
 The [Button scope and provenance](button.md) add six variants, eight sizes, Svelte render/class/ref composition, native forms and disabled/focus behavior. Style assertions were committed first. Final-head local/hosted evidence and both reviews are recorded in the draft PR; this ledger does not substitute earlier results for final-head evidence. No merge, deployment, publication, credentials, permissions or security change is authorized.
+
+## Bounded native Textarea
+
+The [native Textarea](textarea.md) slice is based on verified UI main `cfb9b42f3f1d2ff672d6609bf947faa088d68bd1` and preserves Base `4dd04e495fc9f5bb6a0bb872fe103563d49535b1`, its archive and the frozen lockfile. The pinned shadcn wrapper and Nova rule require no missing Base primitive. Scope includes the five native example states, source-derived paired comparisons, refs/attachments/binding/forms, package exports, fresh consumers, mobile/desktop light styles and retained Button/Dialog regressions. It does not assert a copied upstream Textarea test inventory. Full local and secured hosted CI, independent exact-head GPT-6.1 Sol high review and completed configured automatic review remain gates recorded in [draft PR #7](https://github.com/sveltery/ui/pull/7). Readiness and merge require maintainer review; package publication and deployment remain outside this slice.

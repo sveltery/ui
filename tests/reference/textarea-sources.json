@@ -1,0 +1,21 @@
+{
+  "commit": "d75a96ab781f3d659be1ad287347d5887ce9f2fc",
+  "files": [
+    {
+      "upstream": "apps/v4/registry/bases/base/ui/textarea.tsx",
+      "local": "tests/reference/textarea.tsx",
+      "sha256": "8f527c89dec40a9b372376dc93d2ebb149bfd82f209856d110ead1aabec19c6a"
+    },
+    {
+      "upstream": "apps/v4/registry/bases/base/examples/textarea-example.tsx",
+      "local": "tests/reference/textarea-example.tsx",
+      "sha256": "3199a0816889450768a891d9c3c97ca7618d7d03eca0867cf359bb2d3c9b30d9"
+    },
+    {
+      "upstream": "apps/v4/registry/styles/style-nova.css",
+      "local": "tests/reference/textarea-nova.css",
+      "sha256": "3e80e7593081425aa2f55f840b8ce94eace9cb273c6c71de55b1c66b23fece63",
+      "range": "1336-1339 (Textarea section only)"
+    }
+  ]
+}

@@ -18,11 +18,13 @@ cat > "$consumer_directory/Consumer.svelte" <<'SVELTE'
   import { Dialog, DialogTrigger, DialogTitle, DialogDescription, DialogHeader, DialogFooter, DialogClose, DialogContent } from '@sveltery/ui';
   import * as Parts from '@sveltery/ui/dialog';
   import { Button, buttonVariants } from '@sveltery/ui/button';
+  import { Textarea } from '@sveltery/ui/textarea';
   import type { Snippet } from 'svelte';
 </script>
 {#snippet replacement(props: Record<string | symbol, unknown>, _state: { disabled: boolean }, children: Snippet | undefined)}
   <span {...props}>{#if children}{@render children()}{:else}SSR fallback label{/if}</span>
 {/snippet}
+<Textarea name="notes" defaultValue="SSR & draft" rows={6} class="px-6" aria-invalid="true" />
 <Button nativeButton={false} render={replacement} />
 <Button name="save" value="yes" variant="secondary" size="lg" class="px-6">Save</Button>
 <Button disabled focusableWhenDisabled type="submit">Unavailable</Button>
@@ -38,11 +40,14 @@ import Consumer from './Consumer.svelte';
 import * as Root from '@sveltery/ui';
 import * as Parts from '@sveltery/ui/dialog';
 import * as Buttons from '@sveltery/ui/button';
+import * as Textareas from '@sveltery/ui/textarea';
 const names = ['Dialog', 'DialogClose', 'DialogContent', 'DialogDescription', 'DialogFooter', 'DialogHeader', 'DialogOverlay', 'DialogPortal', 'DialogTitle', 'DialogTrigger'];
-assert.deepEqual(Object.keys(Root).sort(), [...names, 'Button', 'buttonVariants', 'variants', 'sizes'].sort());
+assert.deepEqual(Object.keys(Root).sort(), [...names, 'Button', 'buttonVariants', 'variants', 'sizes', 'Textarea'].sort());
 assert.deepEqual(Object.keys(Buttons).sort(), ['Button', 'buttonVariants', 'sizes', 'variants']);
 assert.deepEqual(Object.keys(Parts).sort(), names);
-for (const path of ['index.d.ts', 'dialog/index.d.ts', 'button/index.d.ts', 'button/Button.svelte.d.ts', 'button/types.d.ts', ...names.map(name => `dialog/${name}.svelte.d.ts`)]) {
+assert.deepEqual(Object.keys(Textareas), ['Textarea']);
+assert.equal(Root.Textarea, Textareas.Textarea);
+for (const path of ['index.d.ts', 'dialog/index.d.ts', 'button/index.d.ts', 'button/Button.svelte.d.ts', 'button/types.d.ts', 'textarea/index.d.ts', 'textarea/Textarea.svelte.d.ts', ...names.map(name => `dialog/${name}.svelte.d.ts`)]) {
   assert(readFileSync(new URL(`./node_modules/@sveltery/ui/dist/${path}`, import.meta.url), 'utf8').length > 0);
 }
 const first = render(Consumer).body;
@@ -61,11 +66,14 @@ for (const html of [first, second]) {
   assert(html.includes('aria-disabled="true"'));
   assert(html.includes('name="save"'));
   assert(html.includes('SSR fallback label'));
+  assert.match(html, /<textarea[^>]*data-slot="textarea"[^>]*name="notes"[^>]*>SSR &amp; draft<\/textarea>/);
+  assert(html.includes('cn-textarea'));
   assert(html.includes('role="button"'));
   assert.match(html, /<button[^>]*name="save"[^>]*class="[^"]*px-6/);
 }
 assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-dialog-content'));
-console.log('Isolated UI tarball: Dialog and Button root/subpath exports, SSR, IDs, absent portals, CSS, declarations and notices PASS');
+assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-textarea'));
+console.log('Isolated UI tarball: Dialog, Button and Textarea root/subpath exports, SSR, IDs, absent portals, CSS, declarations and notices PASS');
 JS
 node --import "$sveltery_repo_root/scripts/svelte-ssr-loader.mjs" "$consumer_directory/check.mjs"
 cat > "$consumer_directory/types.ts" <<'TS'
@@ -88,6 +96,11 @@ const invalidButton: ComponentProps<typeof Button> = { variant: 'danger' };
 const badStyle: ComponentProps<typeof DialogContent> = { style: { color: 'red' } };
 // @ts-expect-error no new Button variant API
 const badVariant: ComponentProps<typeof DialogTrigger> = { variant: 'ghost' };
+import { Textarea } from '@sveltery/ui/textarea';
+const textarea: ComponentProps<typeof Textarea> = { ref: null, value: 'Message', defaultValue: 'Draft', class: ['px-6'], rows: 6, required: true, readonly: true, maxlength: 40, style: 'resize: none', oninput: event => { const node: HTMLTextAreaElement = event.currentTarget; void node; } };
+// @ts-expect-error no Textarea variant API
+const badTextarea: ComponentProps<typeof Textarea> = { variant: 'outline' };
+void [textarea, badTextarea];
 void [root, trigger, popup, footer, portal, overlay, badStyle, badVariant, button, state, invalidButton];
 TS
 node "$sveltery_repo_root/node_modules/typescript/bin/tsc" --noEmit --strict --skipLibCheck --moduleResolution Bundler --module ESNext --target ES2022 --lib ES2022,DOM,DOM.Iterable "$consumer_directory/types.ts"

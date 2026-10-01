@@ -23,3 +23,5 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+The native Textarea wrapper, five-state example and scoped Nova Textarea styles derive from shadcn-ui/ui `d75a96ab781f3d659be1ad287347d5887ce9f2fc`, under the MIT notice above. Byte-exact source fixtures and hashes are recorded in `tests/reference/textarea-sources.json`; comparison tests are source-derived/local, not upstream Textarea test ports.
