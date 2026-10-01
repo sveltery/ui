@@ -12,12 +12,12 @@ function target() { const node = document.createElement('section'); document.bod
 for (const attrs of [{}, { class: 'min-h-32 w-64 rounded-none px-6', 'data-slot': 'custom', rows: 6, 'aria-invalid': 'true' as const, required: true, name: 'message', placeholder: 'Message', readOnly: true, maxLength: 30, form: 'external', style: 'resize: none;' }, { disabled: true, 'aria-describedby': 'description', dir: 'rtl' as const }]) it(`native attributes/classes match actual pinned wrapper: ${JSON.stringify(attrs)}`, async () => {
   const node = target(); mounted.push(mount(Textarea, { target: node, props: attrs })); await tick();
   const reference = document.createElement('section');
-  const { class: className, ...props } = attrs;
-  reference.innerHTML = renderToStaticMarkup(createElement(Reference, { ...props, className }));
+  const { class: className, style, ...props } = attrs;
+  reference.innerHTML = renderToStaticMarkup(createElement(Reference, { ...props, className, style: style ? { resize: 'none' } : undefined }));
   const actual = node.querySelector('textarea')!; const expected = reference.querySelector('textarea')!;
   expect(actual.tagName).toBe(expected.tagName);
   expect(actual.getAttributeNames().sort()).toEqual(expected.getAttributeNames().sort());
-  for (const name of expected.getAttributeNames()) expect(actual.getAttribute(name), name).toBe(expected.getAttribute(name));
+  for (const name of expected.getAttributeNames()) expect(name === 'style' ? actual.style.cssText : actual.getAttribute(name), name).toBe(name === 'style' ? expected.style.cssText : expected.getAttribute(name));
 });
 it('bind:value, native input/change, ref, attachment cleanup and form/reset preserve native host', async () => {
   const component = mount(Fixture, { target: target() }); mounted.push(component); await tick();

@@ -21,7 +21,7 @@ try {
   run('pnpm', ['--filter', '@sveltery/ui', 'build'], repo);
   run('pnpm', ['--filter', '@sveltery/ui', 'pack', '--pack-destination', artifacts], repo);
   cpSync(join(repo, '.vendor/sveltery-base-0.0.0.tgz'), join(artifacts, 'sveltery-base-0.0.0.tgz'));
-  for (const path of ['apps/docs/registry/bases/base/ui/dialog', 'apps/docs/registry/bases/base/ui/button', 'apps/docs/registry/styles/style-nova.css', 'packages/ui/LICENSE', 'packages/ui/THIRD_PARTY_NOTICES.md']) {
+  for (const path of ['apps/docs/registry/bases/base/ui/dialog', 'apps/docs/registry/bases/base/ui/button', 'apps/docs/registry/bases/base/ui/textarea', 'apps/docs/registry/styles/style-nova.css', 'packages/ui/LICENSE', 'packages/ui/THIRD_PARTY_NOTICES.md']) {
     const destination = join(temporary, 'sveltery-ui', path);
     mkdirSync(dirname(destination), { recursive: true });
     cpSync(join(repo, path), destination, { recursive: true });
@@ -38,6 +38,9 @@ try {
     const buttonRoute = join(consumer, 'src/routes/button/+page.svelte');
     mkdirSync(dirname(buttonRoute), { recursive: true });
     writeFileSync(buttonRoute, readFileSync(join(repo, 'scripts/button-consumer.svelte'), 'utf8'));
+    const textareaRoute = join(consumer, 'src/routes/textarea/+page.svelte');
+    mkdirSync(dirname(textareaRoute), { recursive: true });
+    writeFileSync(textareaRoute, readFileSync(join(repo, 'scripts/textarea-consumer.svelte'), 'utf8'));
     const consumerManifestPath = join(consumer, 'package.json');
     const consumerManifest = JSON.parse(readFileSync(consumerManifestPath, 'utf8'));
     consumerManifest.dependencies['class-variance-authority'] = '0.7.1';
@@ -45,6 +48,8 @@ try {
     if (mode === 'copy') {
       cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/button'), join(consumer, 'src/lib/components/ui/button'), { recursive: true });
       writeFileSync(buttonRoute, readFileSync(buttonRoute, 'utf8').replace('@sveltery/ui/button', '$lib/components/ui/button'));
+      cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/textarea'), join(consumer, 'src/lib/components/ui/textarea'), { recursive: true });
+      writeFileSync(textareaRoute, readFileSync(textareaRoute, 'utf8').replace('@sveltery/ui/textarea', '$lib/components/ui/textarea'));
       run('bash', ['-euo', 'pipefail', '-c', copyCommands], consumer);
       const manifestPath = join(consumer, 'package.json');
       const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));

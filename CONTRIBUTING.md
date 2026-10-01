@@ -1,6 +1,6 @@
 # Contributing
 
-Sveltery UI contains a bounded experimental styled Dialog and Button. Keep readiness blocked until the relevant [Sveltery Base](https://github.com/sveltery/base) foundations and browser behavior are proven. Keep this repository's current status explicit; documentation checks do not establish component functionality.
+Sveltery UI contains a bounded experimental styled Dialog, Button and native Textarea. Keep readiness blocked until the relevant [Sveltery Base](https://github.com/sveltery/base) foundations and browser behavior are proven. Keep this repository's current status explicit; documentation checks do not establish component functionality.
 
 For documentation changes, use Node >=24.15.0 <25 and run:
 

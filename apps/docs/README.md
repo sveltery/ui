@@ -1,6 +1,6 @@
 # Local documentation and examples
 
-This private SvelteKit app previews the bounded, unpublished Sveltery UI Dialog and Button. Start with the [SvelteKit installation/copy guide](../../docs/installation.md) for an independent consumer, the [Dialog API](../../docs/dialog.md) for adaptations, and [readiness gates](../../docs/readiness.md) for limits and review requirements.
+This private SvelteKit app previews the bounded, unpublished Sveltery UI Dialog, Button and native Textarea. Start with the [SvelteKit installation/copy guide](../../docs/installation.md) for an independent consumer, the [Dialog API](../../docs/dialog.md) for adaptations, and [readiness gates](../../docs/readiness.md) for limits and review requirements.
 
 ## Run locally
 
@@ -23,7 +23,7 @@ The structure follows the original [shadcn registry](https://github.com/shadcn-u
 | --- | --- |
 | [registry/bases/base/ui/dialog](registry/bases/base/ui/dialog) | Ten Svelte Dialog wrappers and their class helper |
 | [registry/bases/base/ui/button](registry/bases/base/ui/button) | Styled Base Button and pinned variant/size API |
-| [registry/styles/style-nova.css](registry/styles/style-nova.css) | Scoped Nova Dialog and Button styles |
+| [registry/styles/style-nova.css](registry/styles/style-nova.css) | Scoped Nova Dialog, Button and native Textarea styles |
 | [examples/base](examples/base) | Svelte browser fixtures |
 | [src/lib/theme.css](src/lib/theme.css) | Tailwind source registration and light theme tokens for this workspace |
 | [../../packages/ui](../../packages/ui) | Packages the registry source without a second component copy |
@@ -44,3 +44,5 @@ bash scripts/check-installation.sh --browser
 ```
 
 The installation check extracts the exact scaffold from the guide, installs two fresh consumers outside the workspace, and checks/builds both archive and source-copy modes. `--browser` also runs the documented keyboard, labeling, focus-return, hydration and Nova-style checks in secured Chromium against those consumers. Hosted CI runs these alongside the existing regression suite. Browser installation or secured launch failures are blockers, not passing evidence; use a supported environment without changing sandbox policy. Review and CI must cover the final PR head before the parent coordinates merge. Nothing here publishes packages or hosts the app.
+
+`/textarea` previews five native Textarea states and form/binding probes; `/textarea-reference` executes the pinned React wrapper in the paired native scaffold. See [Textarea scope/provenance](../../docs/textarea.md).

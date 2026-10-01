@@ -25,3 +25,15 @@ const huge: ButtonProps = { size: 'xl' };
 // @ts-expect-error classes are Svelte class props
 const reactClass: ButtonProps = { className: 'px-6' };
 void [styled, nullable, reactSlot, huge, reactClass];
+
+import { Textarea } from '../apps/docs/registry/bases/base/ui/textarea/index.js';
+const textarea: ComponentProps<typeof Textarea> = { ref: null, value: 'Message', defaultValue: 'Draft', class: ['px-6'], style: 'resize: none', required: true, readonly: true, rows: 6, minlength: 2, maxlength: 40, form: 'message', oninput: event => { const node: HTMLTextAreaElement = event.currentTarget; void node; }, onchange: event => { const node: HTMLTextAreaElement = event.currentTarget; void node; } };
+// @ts-expect-error native Textarea has no variant API
+const textareaVariant: ComponentProps<typeof Textarea> = { variant: 'outline' };
+// @ts-expect-error native Textarea does not replace its host
+const textareaRender: ComponentProps<typeof Textarea> = { render: () => {} };
+// @ts-expect-error Svelte native CSS is a string
+const textareaStyle: ComponentProps<typeof Textarea> = { style: { resize: 'none' } };
+// @ts-expect-error Svelte uses class
+const textareaClass: ComponentProps<typeof Textarea> = { className: 'px-6' };
+void [textarea, textareaVariant, textareaRender, textareaStyle, textareaClass];
