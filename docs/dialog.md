@@ -2,7 +2,7 @@
 
 Import `Dialog`, `DialogTrigger`, `DialogPortal`, `DialogClose`, `DialogOverlay`, `DialogContent`, `DialogHeader`, `DialogFooter`, `DialogTitle`, and `DialogDescription` from `@sveltery/ui` or `@sveltery/ui/dialog`. Components forward native props, symbol attachments, and supported Base props. Primitive wrappers relay `render` snippets, children and `bind:ref` to Base. Root relays `bind:actions` and exposes `close()` / `unmount()` through `bind:this`.
 
-`DialogContent` owns its Portal, Overlay and Popup; its `showCloseButton` defaults to true. `DialogFooter` defaults to false. Built-in closes style Base's existing native Close button with the upstream ghost/icon-sm or outline/default classes. No new Button component or variant API is exported. The X glyph is a native SVG adaptation of upstream's configurable icon placeholder.
+`DialogContent` owns its Portal, Overlay and Popup; its `showCloseButton` defaults to true. `DialogFooter` defaults to false. Built-in closes style Base's existing native Close button with the upstream ghost/icon-sm or outline/default classes. The package also exports a standalone `Button` and `buttonVariants` with bounded variants/sizes; see [Button API](button.md). The built-in Dialog closes still wrap Base Close directly. The X glyph is a native SVG adaptation of upstream's configurable icon placeholder.
 
 | React source API | Bounded Svelte adaptation |
 | --- | --- |
@@ -24,3 +24,5 @@ The [SvelteKit installation guide](installation.md) covers local archives, sourc
 The React reference uses `@base-ui/react` 1.6.0, matching shadcn's package manifest at the pinned commit, with React 19.3.0 fixture tooling. Sveltery Base's own behavior reference is separately pinned to Base UI 1.8.0. This difference is explicit and neither visual agreement nor the local probes certify complete behavior parity across those versions.
 
 Base's corrected native focus discovery retains two pinned upstream limits: its helper normalizes even explicit negative tabindex values for details, media and editable candidates; Chromium can reach an implicit summary through native Tab, but reverse wrapping cannot programmatically focus its details element and leaves Base's owned before guard focused. The native UI regressions exercise an explicit summary and empty/plaintext-only editable values; they do not establish broad embedded/media, implicit-summary reverse-focus or live VoiceOver conformance. See [Base PR #15](https://github.com/sveltery/base/pull/15) for the paired evidence and limits.
+
+See the [upstream differences register](upstream-differences.md) for inherited canceled-close deferral and nonmodal ShadowRoot exit corrections, with Base 1.8.0 evidence kept separate from UI’s React 1.6.0 fixture.
