@@ -10,6 +10,6 @@ bash scripts/verify.sh
 bash -c 'source scripts/toolchain.sh; pnpm exec playwright install chromium; pnpm test:browser'
 ```
 
-Node 24.x and pnpm 12.6.0 are pinned. Bootstrap rebuilds the private Base package from the exact Git SHA in [base.lock.json](scripts/base.lock.json), checks the tarball SHA-256, then installs the frozen workspace lockfile. No npm Base release is assumed. The package and local docs are private experiments; no publication or deployment is configured.
+Node >=24.15.0 <25 and pnpm 12.6.0 are required. Bootstrap rebuilds the private Base package from the exact Git SHA in [base.lock.json](scripts/base.lock.json), checks the tarball SHA-256, then installs the frozen workspace lockfile. No npm Base release is assumed. The package and local docs are private experiments; no publication or deployment is configured.
 
 Source organization follows upstream: `apps/docs/registry/bases/base/ui/dialog` owns the ten wrappers, `apps/docs/registry/styles/style-nova.css` owns the scoped styles, and `apps/docs/examples/base` owns the examples. `packages/ui` packages that registry source rather than maintaining a second component copy. `/dialog` is the Svelte example and `/reference` uses the actual pinned React primitives with the byte-exact upstream Dialog and Button wrappers.

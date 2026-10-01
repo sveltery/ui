@@ -2,10 +2,7 @@
 # Shared by bootstrap, verification, and the standalone tarball check.
 set -euo pipefail
 sveltery_repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-if [[ "$(node -p 'process.versions.node.split(".")[0]')" != 24 ]]; then
-  echo 'Sveltery requires Node 24.x for this reproducible toolchain.' >&2
-  exit 1
-fi
+node "$sveltery_repo_root/scripts/check-node.mjs"
 SVELTERY_PNPM_VERSION="$(node -p "require(process.argv[1]).packageManager.replace(/^pnpm@/, '')" "$sveltery_repo_root/package.json")"
 export SVELTERY_PNPM_VERSION
 # Keep tool caches writable in restricted workspaces; respect explicitly supplied paths.

@@ -2,6 +2,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 source scripts/toolchain.sh
+node --test scripts/tests/*.test.mjs
 node scripts/check-base.mjs --lockfile
 pnpm lint
 pnpm --filter @sveltery/ui build
