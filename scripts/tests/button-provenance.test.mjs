@@ -9,5 +9,5 @@ test('immutable shadcn Button wrapper and scoped Nova source retain provenance',
   const source = readFileSync('tests/reference/button-nova.css', 'utf8');
   const styles = readFileSync('apps/docs/registry/styles/style-nova.css', 'utf8');
   // Preserve every pinned selector/declaration, including sizes used by Dialog closes.
-  for (const rule of source.matchAll(/  \.cn-button[^}]+}/gu)) assert(styles.includes(rule[0]), `Missing upstream Nova rule ${rule[0]}`);
+  for (const rule of source.matchAll(/ {2}\.cn-button[^}]+\}/gu)) assert(styles.includes(rule[0]), `Missing upstream Nova rule ${rule[0]}`);
 });

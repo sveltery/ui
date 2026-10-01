@@ -136,6 +136,10 @@ Nova is Tailwind input CSS, not a precompiled standalone stylesheet. It imports 
 @import "@sveltery/ui/nova.css";
 @source "../node_modules/@sveltery/ui/dist";
 @theme inline {
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-popover: var(--popover);
@@ -150,6 +154,10 @@ Nova is Tailwind input CSS, not a precompiled standalone stylesheet. It imports 
   --radius-lg: var(--radius);
 }
 :root {
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);

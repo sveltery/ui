@@ -1,0 +1,11 @@
+<script lang="ts">
+  // shadcn Button anatomy/Nova appearance; behavior belongs to the pinned Base Button.
+  import { Button as Primitive } from '@sveltery/base/button';
+  import type { ButtonProps } from './types.js';
+  import { buttonVariants } from './variants.js';
+  import { classes } from '../dialog/classes.js';
+  let { children, class: classProp, variant = 'default', size = 'default', ref = $bindable(null), ...props }: ButtonProps = $props();
+</script>
+<Primitive data-slot="button" {...props} class={classes(buttonVariants({ variant, size }), classProp)} bind:ref>
+  {@render children?.()}
+</Primitive>

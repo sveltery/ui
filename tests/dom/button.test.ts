@@ -1,4 +1,4 @@
-// UI integration companions adapted from Sveltery Base 4dd04e49, MIT (c) 2026 Sveltery contributors.
+// UI integration companions adapted from Sveltery Base 4dd04e49, MIT (c) 2026 Sveltery contributors; derived Base UI assertions: tests/reference/BASE_BUTTON_LICENSE.
 // Base port IDs identify provenance; these tests earn no new upstream parity credit.
 import { afterEach, expect, it } from 'vitest';
 import { mount, tick, unmount } from 'svelte';
