@@ -67,3 +67,12 @@ it('supplement: enabled mousedown retains browser default and invokes the consum
   const button = await setup('custom'); const event = new MouseEvent('mousedown', { bubbles: true, cancelable: true });
   expect(button.dispatchEvent(event)).toBe(true); expect(event.defaultPrevented).toBe(false); await tick(); expect(calls().mouse).toBe(1);
 });
+
+it('render fallback labels preserve Base omitted/present children semantics', async () => {
+  const { default: ChildrenFixture } = await import('./ButtonChildrenFixture.svelte');
+  const target = document.createElement('section'); document.body.append(target);
+  mounted.push(mount(ChildrenFixture, { target })); await tick();
+  expect(target.querySelector('[data-testid=base-empty]')!.textContent).toBe('Fallback label');
+  expect(target.querySelector('[data-testid=styled-empty]')!.textContent).toBe('Fallback label');
+  expect(target.querySelector('[data-testid=styled-present]')!.textContent).toBe('Explicit label');
+});
