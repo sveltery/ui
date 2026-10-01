@@ -83,9 +83,9 @@ jobs:
       - name: Build actual Dialog library
         run: pnpm --filter @sveltery/ui build
       - name: Install official Chromium and OS dependencies
-        run: pnpm exec playwright install --with-deps chromium
+        run: bash -c 'source scripts/toolchain.sh; pnpm exec playwright install --with-deps chromium'
       - name: Styled Svelte and pinned React reference acceptance
-        run: pnpm test:browser
+        run: bash -c 'source scripts/toolchain.sh; pnpm test:browser'
       - name: Documented fresh consumers in secured Chromium
         run: bash scripts/check-installation.sh --browser
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
