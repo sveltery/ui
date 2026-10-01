@@ -1,0 +1,62 @@
+import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { dirname, join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const repo = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const browser = process.argv.includes('--browser');
+assert(process.argv.slice(2).every(arg => arg === '--browser'), 'Only --browser is supported');
+const guide = readFileSync(join(repo, 'docs/installation.md'), 'utf8');
+const files = [...guide.matchAll(/<!-- consumer-file: ([\w./+-]+) -->\n```[^\n]*\n([\s\S]*?)\n```/gu)];
+assert.equal(files.length, 9, 'Expected the nine documented scaffold files');
+const copyCommands = guide.match(/<!-- consumer-copy -->\n```sh\n([\s\S]*?)\n```/u)?.[1];
+assert(copyCommands, 'Expected the documented source-copy commands');
+const temporary = mkdtempSync(join(tmpdir(), 'sveltery-installation-'));
+const run = (command, args, cwd) => execFileSync(command, args, { cwd, stdio: 'inherit' });
+try {
+  const artifacts = join(temporary, 'artifacts');
+  mkdirSync(artifacts);
+  run('pnpm', ['--filter', '@sveltery/ui', 'build'], repo);
+  run('pnpm', ['--filter', '@sveltery/ui', 'pack', '--pack-destination', artifacts], repo);
+  cpSync(join(repo, '.vendor/sveltery-base-0.0.0.tgz'), join(artifacts, 'sveltery-base-0.0.0.tgz'));
+  for (const path of ['apps/docs/registry/bases/base/ui/dialog', 'apps/docs/registry/styles/style-nova.css', 'packages/ui/LICENSE', 'packages/ui/THIRD_PARTY_NOTICES.md']) {
+    const destination = join(temporary, 'sveltery-ui', path);
+    mkdirSync(dirname(destination), { recursive: true });
+    cpSync(join(repo, path), destination, { recursive: true });
+  }
+  for (const mode of ['package', 'copy']) {
+    const consumer = join(temporary, mode);
+    mkdirSync(consumer);
+    cpSync(artifacts, join(consumer, 'vendor'), { recursive: true });
+    for (const [, path, content] of files) {
+      const destination = join(consumer, path);
+      mkdirSync(dirname(destination), { recursive: true });
+      writeFileSync(destination, `${content}\n`);
+    }
+    if (mode === 'copy') {
+      run('bash', ['-euo', 'pipefail', '-c', copyCommands], consumer);
+      const manifestPath = join(consumer, 'package.json');
+      const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
+      delete manifest.dependencies['@sveltery/ui'];
+      writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+      const cssPath = join(consumer, 'src/app.css');
+      writeFileSync(cssPath, readFileSync(cssPath, 'utf8').replace('@sveltery/ui/nova.css', './lib/styles/nova.css').replace('../node_modules/@sveltery/ui/dist', './lib/components/ui/dialog'));
+      const pagePath = join(consumer, 'src/routes/+page.svelte');
+      writeFileSync(pagePath, readFileSync(pagePath, 'utf8').replace('@sveltery/ui/dialog', '$lib/components/ui/dialog'));
+    }
+    run('pnpm', ['install'], consumer);
+    run('pnpm', ['install', '--frozen-lockfile'], consumer);
+    run('pnpm', ['check'], consumer);
+    run('pnpm', ['build'], consumer);
+    if (browser) {
+      execFileSync('pnpm', ['exec', 'playwright', 'test', '--config', 'scripts/installation-playwright.config.ts'], {
+        cwd: repo, stdio: 'inherit', env: { ...process.env, SVELTERY_INSTALLATION_CONSUMER: consumer },
+      });
+    }
+    console.log(`Fresh documented ${mode} consumer: install, frozen lock, types, SSR/client build${browser ? ' and secured browser' : ''} PASS`);
+  }
+} finally {
+  rmSync(temporary, { recursive: true, force: true });
+}
