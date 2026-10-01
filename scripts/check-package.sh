@@ -14,11 +14,16 @@ done
 cmp packages/ui/LICENSE "$consumer_directory/node_modules/@sveltery/ui/LICENSE"
 cmp packages/ui/THIRD_PARTY_NOTICES.md "$consumer_directory/node_modules/@sveltery/ui/THIRD_PARTY_NOTICES.md"
 cat > "$consumer_directory/Consumer.svelte" <<'SVELTE'
-<script>
+<script lang="ts">
   import { Dialog, DialogTrigger, DialogTitle, DialogDescription, DialogHeader, DialogFooter, DialogClose, DialogContent } from '@sveltery/ui';
   import * as Parts from '@sveltery/ui/dialog';
   import { Button, buttonVariants } from '@sveltery/ui/button';
+  import type { Snippet } from 'svelte';
 </script>
+{#snippet replacement(props: Record<string | symbol, unknown>, _state: { disabled: boolean }, children: Snippet | undefined)}
+  <span {...props}>{#if children}{@render children()}{:else}SSR fallback label{/if}</span>
+{/snippet}
+<Button nativeButton={false} render={replacement} />
 <Button name="save" value="yes" variant="secondary" size="lg" class="px-6">Save</Button>
 <Button disabled focusableWhenDisabled type="submit">Unavailable</Button>
 <button class={buttonVariants({ variant: 'outline', size: 'sm' })}>Composed style</button>
@@ -55,6 +60,8 @@ for (const html of [first, second]) {
   assert(html.includes('cn-button-size-lg'));
   assert(html.includes('aria-disabled="true"'));
   assert(html.includes('name="save"'));
+  assert(html.includes('SSR fallback label'));
+  assert(html.includes('role="button"'));
   assert.match(html, /<button[^>]*name="save"[^>]*class="[^"]*px-6/);
 }
 assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-dialog-content'));

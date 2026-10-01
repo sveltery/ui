@@ -6,6 +6,4 @@
   import { classes } from '../dialog/classes.js';
   let { children, class: classProp, variant = 'default', size = 'default', ref = $bindable(null), ...props }: ButtonProps = $props();
 </script>
-<Primitive data-slot="button" {...props} class={classes(buttonVariants({ variant, size }), classProp)} bind:ref>
-  {@render children?.()}
-</Primitive>
+<Primitive data-slot="button" {...props} {children} class={classes(buttonVariants({ variant, size }), classProp)} bind:ref />
