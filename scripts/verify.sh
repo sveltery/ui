@@ -8,6 +8,7 @@ pnpm lint
 pnpm --filter @sveltery/ui build
 pnpm check
 pnpm test
+node --import ./scripts/svelte-ssr-loader.mjs scripts/check-textarea-ssr.mjs
 pnpm --filter @sveltery/docs build
 bash scripts/check-package.sh
 node .github/check-docs.mjs
