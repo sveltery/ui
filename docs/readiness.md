@@ -4,8 +4,8 @@ Recovery checkpoint: `9614e55530eebb63ab735ebacb51848ff2e02f45`, based on UI mai
 
 ## Blocking gates
 
-- The fresh native focus audit blocks readiness again: the current Base pin omits summaries and some valid contenteditable values from focus discovery, which can wrap Tab at a preceding Close. Preserve the three native interactive-content browser regressions, obtain the parent's corrected and verified Base pin, and rerun full validation and both reviews on the resulting head. No UI focus shim, explicit tabindex on native targets, weakened assertion or skipped test is allowed.
-- Verify the updated Base pin `08d2790571eb54440b9e61d13917bc433aa92de8`, whose merge parents are baseline `318020c3476523e11802d9f4b1ada96369f1641a` and reviewed [PR #13](https://github.com/sveltery/base/pull/13) head `2446dec3089bfe1ed65f2afaab95aad7e4dd70cd`. Preserve the canceled deferral and disabled Close anchor assertions that exposed the baseline defects; no UI workaround, skip or weakened assertion is allowed.
+- Preserve the three native interactive-content browser regressions and pass them with the corrected verified Base pin below. The previous pin omitted summaries and valid contenteditable values, wrapping Tab at a preceding Close. No UI focus shim, explicit tabindex on native targets, weakened assertion or skipped test is allowed.
+- Verify Base pin `de6b35688d23c818dd240e9b73eee6bce53e0490`, whose merge parents are main `ed9a00305c9c000625127c5122bec0499a2ed8d8` and reviewed [PR #15](https://github.com/sveltery/base/pull/15) head `755fd2859f90f4e42714c5d97ea5d1d323f6e4a0`. It also retains [PR #13](https://github.com/sveltery/base/pull/13). Preserve the canceled deferral and disabled Close anchor assertions that exposed the earlier defects; no UI workaround, skip or weakened assertion is allowed.
 - Pass lint, public type checks, actual Svelte DOM tests, SSR/client build and isolated tarball consumption.
 - Pass hosted real Chromium keyboard, hydration, animation exit/reopen and computed Nova style tests on the final head, sandbox enabled and retries zero.
 - Obtain an independent GPT-6.1-Sol high review of the final head, address all findings, and confirm automatic Codex review is Completed on that same head with all comments addressed.
@@ -19,14 +19,18 @@ Local `/usr/lib/chromium/chrome-sandbox` is mode 4755 and owned by nobody, so a 
 
 Execution results and review evidence will be recorded with exact commit SHAs. Prior checks or an earlier review do not establish readiness of a changed head.
 
-Base merge was verified against the remote ref and local Git object parents before updating the source pin. The current archive SHA-256 is `67fa113eaba95095ab54faee335d33bdec01104811d17164fda581b1faf28779`; the original baseline checksum above records recovery provenance.
+Base PR #15's merge was verified against the remote main ref and local Git object parents before updating the source pin. Its complete source tree matches reviewed head `755fd2859f90f4e42714c5d97ea5d1d323f6e4a0`; [post-merge CI](https://github.com/sveltery/base/actions/runs/36893546708) passed Standards, Verification and all 189 secured browser cases. The archive SHA-256 is `04ef536d7c688dee1d6ad49a869b75f50f8ff6ea7454a2241bd4a7ba9fd09f7f`; the original baseline checksum above records recovery provenance.
 
 The preserved DOM assertions pass after refreshing the file dependency's integrity (`pnpm update @sveltery/base --recursive --lockfile-only`) and the frozen install. A lockfile-only generic install initially retained the previous archive resolution; bootstrap/verify now explicitly compare the lockfile integrity to the independently verified archive before acceptance.
 
-## Local continuation validation
+## Historical continuation validation before the native focus audit
 
 `bash scripts/verify.sh` passes on Node 24.19.0 / pnpm 12.6.0: archive and lock integrity, ESLint, library packaging, both Svelte/type checks (zero errors or warnings), all 10 actual DOM tests, docs SSR/client production build, isolated UI tarball SSR consumption and public type assertions, license/CSS/declaration presence and documentation checks. Source `svelte-package` required the library's explicit tsconfig to emit declarations; the consumer now requires and compiles those declarations outside the workspace.
 
 `pnpm exec playwright test --list` discovers 12 browser tests. Official Chromium installation returns HTTP 403 from cdn.playwright.dev. A single secured local launch with `/usr/bin/chromium` aborts with SIGABRT at `setuid_sandbox_host.cc:166` before interactions, confirming the helper ownership blocker above. These are blocked executions, not passing browser evidence. Hosted CI and independent/automatic reviews are still pending at this checkpoint.
 
 The first hosted browser run at `4f6a50d` executed secured Chromium and exposed fixture issues: tests interacting before hydration, a reactive attachment-counter feedback loop, a generic-role expectation for text in a polite live region, and an initially open fixture without an assigned Trigger owner. Follow-up waits for actual hydration, counts attachments through `untrack`, expects the native text accessibility snapshot, and explicitly supplies the initial Trigger ID/owner through supported Base props. The original Base regression assertions remain unchanged. Final hosted execution and independent review must cover this follow-up head.
+
+## Native focus regression evidence
+
+The [hosted baseline run](https://github.com/sveltery/ui/actions/runs/36886122710) at UI `509052213a42ae9549c67f8d63805c385466fe83` with Base `08d2790571eb54440b9e61d13917bc433aa92de8` passed the original 12 browser cases and failed all three new native interactive-content cases at the first trusted Tab from Close. Targets are an explicit summary in open details, `contenteditable=""`, and `contenteditable="plaintext-only"`. No target tabindex, focus shim or changed original assertion was added. Final acceptance must rerun these preserved assertions with the corrected verified Base pin; the bounded [focus limits](dialog.md) remain documented.
