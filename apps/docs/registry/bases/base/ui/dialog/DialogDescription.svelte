@@ -1,0 +1,9 @@
+<script lang="ts">
+  import type { ComponentProps } from 'svelte';
+  import * as Primitive from '@sveltery/base/dialog';
+  import { classes } from './classes.js';
+  let { children, ref = $bindable(null), class: classProp, ...props }: ComponentProps<typeof Primitive.Description> = $props();
+</script>
+<Primitive.Description data-slot="dialog-description" {...props} class={classes('cn-dialog-description', classProp)} bind:ref>
+  {@render children?.()}
+</Primitive.Description>

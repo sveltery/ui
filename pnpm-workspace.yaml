@@ -1,0 +1,11 @@
+packages:
+  - packages/*
+  - apps/*
+engineStrict: true
+autoInstallPeers: false
+allowBuilds:
+  esbuild: true
+minimumReleaseAgeExclude:
+  - vitest@5.0.3
+  - "@vitest/mocker@5.0.3"
+  - "@vitest/spy@5.0.3"
