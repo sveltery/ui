@@ -17,7 +17,7 @@
 <main data-hydrated={hydrated} class="p-8">
   <form onsubmit={event => { event.preventDefault(); submitted = JSON.stringify([...new FormData(event.currentTarget)]); }}>
     <label for="message">Message</label>
-    <Textarea id="message" name="message" bind:value bind:ref {...attached} aria-describedby="description" required rows={6} />
+    <Textarea id="message" name="message" bind:value bind:ref {...attached} aria-describedby="description" required rows={6} oninput={() => inputs++} onchange={() => changes++} />
     <p id="description">Write a message</p>
     <Textarea id="draft" name="draft" aria-label="Draft" defaultValue="Draft" />
     <Textarea id="disabled" name="ignored" aria-label="Disabled" value="Ignored" disabled />
