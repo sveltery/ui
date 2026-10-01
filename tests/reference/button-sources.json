@@ -1,0 +1,16 @@
+{
+  "commit": "d75a96ab781f3d659be1ad287347d5887ce9f2fc",
+  "files": [
+    {
+      "upstream": "apps/v4/registry/bases/base/ui/button.tsx",
+      "local": "tests/reference/button.tsx",
+      "sha256": "74f982d7ad7a764e3c95a519fc063a671e66ad758ea31dc89d747838e20c2487"
+    },
+    {
+      "upstream": "apps/v4/registry/styles/style-nova.css",
+      "range": "149-207 (Button selectors only)",
+      "local": "tests/reference/button-nova.css",
+      "sha256": "f38b1cfbf5d7a143dcf6c3cb7de26eb1aa3bcc61fb4be3be194111adf708fd8b"
+    }
+  ]
+}

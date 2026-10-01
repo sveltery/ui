@@ -36,3 +36,9 @@ The first hosted browser run at `4f6a50d` executed secured Chromium and exposed 
 ## Native focus regression evidence
 
 The [hosted baseline run](https://github.com/sveltery/ui/actions/runs/36886122710) at UI `509052213a42ae9549c67f8d63805c385466fe83` with Base `08d2790571eb54440b9e61d13917bc433aa92de8` passed the original 12 browser cases and failed all three new native interactive-content cases at the first trusted Tab from Close. Targets are an explicit summary in open details, `contenteditable=""`, and `contenteditable="plaintext-only"`. No target tabindex, focus shim or changed original assertion was added. Final acceptance must rerun these preserved assertions with the corrected verified Base pin; the bounded [focus limits](dialog.md) remain documented.
+
+## Bounded Button continuation
+
+UI baseline `a1a60b8598c03dc50f76cf03be91a7ac9511ec55` adds the installation guide. The Button slice advances Base to merged PR #17 at `4dd04e495fc9f5bb6a0bb872fe103563d49535b1`, with archive SHA-256 `0f15a815e69e8553b2c67f8b5315ee7334c8b001cc0fcf1efde09c5e5c4289d6`; Dialog and overlay source trees are unchanged from the previously verified pin. Bootstrap rebuilds and compares both checksum and lock integrity. Preserve all existing Dialog regressions and fresh installation consumer gates.
+
+The [Button scope and provenance](button.md) add six variants, eight sizes, Svelte render/class/ref composition, native forms and disabled/focus behavior. Style assertions were committed first. Final-head local/hosted evidence and both reviews are recorded in the draft PR; this ledger does not substitute earlier results for final-head evidence. No merge, deployment, publication, credentials, permissions or security change is authorized.

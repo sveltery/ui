@@ -275,6 +275,9 @@ importers:
 
   packages/ui:
     dependencies:
+      class-variance-authority:
+        specifier: 0.7.1
+        version: 0.7.1
       clsx:
         specifier: 2.1.1
         version: 2.1.1
@@ -648,7 +651,7 @@ packages:
       vite: ^8.0.0-beta.7 || ^8.0.0
 
   '@sveltery/base@file:.vendor/sveltery-base-0.0.0.tgz':
-    resolution: {integrity: sha512-IgiQ1W88Rx4QKrCLpSMEA4I+faeCpGde7Ffp/brnJShTnovTBPTHpReb0xkJKjyIZrp0NObXngk4t5QN4/yJ6A==, tarball: file:.vendor/sveltery-base-0.0.0.tgz}
+    resolution: {integrity: sha512-9UNJ3bTF0e+57LEmHia5aonA+RJrqJia3CoTHjUBMN+avNeVg34OJ7gtpRZNZlIGQp+EJJZHDooVWgGbGLf87A==, tarball: file:.vendor/sveltery-base-0.0.0.tgz}
     version: 0.0.0
     peerDependencies:
       svelte: ^5.57.1

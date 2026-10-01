@@ -14,3 +14,14 @@ const keyboardAsPointer: ComponentProps<typeof DialogTrigger> = { onpointerdown(
 // @ts-expect-error No new detached handle API is invented.
 const detached: ComponentProps<typeof Dialog> = { handle: {} };
 void [root, trigger, content, footer, overlay, styleObject, closeOption, keyboardAsPointer, detached];
+
+import { Button, type ButtonProps } from '../apps/docs/registry/bases/base/ui/button/index.js';
+const styled: ComponentProps<typeof Button> = { variant: 'link', size: 'icon-lg', focusableWhenDisabled: true, class: state => state.disabled ? 'px-6' : 'px-4', style: state => `--disabled:${Number(state.disabled)}`, onclick: event => event.preventBaseUIHandler() };
+const nullable: ButtonProps = { variant: null, size: null, ref: null };
+// @ts-expect-error no asChild React API
+const reactSlot: ButtonProps = { asChild: true };
+// @ts-expect-error sizes stay bounded to the pinned Nova API
+const huge: ButtonProps = { size: 'xl' };
+// @ts-expect-error classes are Svelte class props
+const reactClass: ButtonProps = { className: 'px-6' };
+void [styled, nullable, reactSlot, huge, reactClass];

@@ -1,6 +1,6 @@
 # Local documentation and examples
 
-This private SvelteKit app previews the bounded, unpublished Sveltery UI Dialog. Start with the [SvelteKit installation/copy guide](../../docs/installation.md) for an independent consumer, the [Dialog API](../../docs/dialog.md) for adaptations, and [readiness gates](../../docs/readiness.md) for limits and review requirements.
+This private SvelteKit app previews the bounded, unpublished Sveltery UI Dialog and Button. Start with the [SvelteKit installation/copy guide](../../docs/installation.md) for an independent consumer, the [Dialog API](../../docs/dialog.md) for adaptations, and [readiness gates](../../docs/readiness.md) for limits and review requirements.
 
 ## Run locally
 
@@ -13,7 +13,7 @@ pnpm --filter @sveltery/ui build
 pnpm --filter @sveltery/docs dev --port 5173
 ```
 
-Open `http://127.0.0.1:5173`. `/dialog` is the Svelte interaction fixture; `/reference` is the pinned React comparison. `/disabled-close` and `/native-content` exercise specific Base regressions. These are development fixtures, not a complete documentation site or parity claim.
+Open `http://127.0.0.1:5173`. `/dialog` is the Svelte interaction fixture; `/reference` is the pinned React comparison. `/button` is the minimal Button example and API/style fixture; `/button-reference` is the pinned React Button matrix. `/disabled-close` and `/native-content` exercise specific Base regressions. These are development fixtures, not a complete documentation site or parity claim.
 
 ## Source organization and credit
 
@@ -22,7 +22,8 @@ The structure follows the original [shadcn registry](https://github.com/shadcn-u
 | Path | Purpose |
 | --- | --- |
 | [registry/bases/base/ui/dialog](registry/bases/base/ui/dialog) | Ten Svelte Dialog wrappers and their class helper |
-| [registry/styles/style-nova.css](registry/styles/style-nova.css) | Scoped Nova Dialog/native-close styles |
+| [registry/bases/base/ui/button](registry/bases/base/ui/button) | Styled Base Button and pinned variant/size API |
+| [registry/styles/style-nova.css](registry/styles/style-nova.css) | Scoped Nova Dialog and Button styles |
 | [examples/base](examples/base) | Svelte browser fixtures |
 | [src/lib/theme.css](src/lib/theme.css) | Tailwind source registration and light theme tokens for this workspace |
 | [../../packages/ui](../../packages/ui) | Packages the registry source without a second component copy |

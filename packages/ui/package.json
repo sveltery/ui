@@ -20,7 +20,12 @@
       "svelte": "./dist/dialog/index.js",
       "default": "./dist/dialog/index.js"
     },
-    "./nova.css": "./dist/nova.css"
+    "./nova.css": "./dist/nova.css",
+    "./button": {
+      "types": "./dist/button/index.d.ts",
+      "svelte": "./dist/button/index.js",
+      "default": "./dist/button/index.js"
+    }
   },
   "svelte": "./dist/index.js",
   "scripts": {
@@ -35,7 +40,8 @@
   },
   "dependencies": {
     "clsx": "2.1.1",
-    "tailwind-merge": "3.6.0"
+    "tailwind-merge": "3.6.0",
+    "class-variance-authority": "0.7.1"
   },
   "devDependencies": {
     "@sveltery/base": "file:../../.vendor/sveltery-base-0.0.0.tgz",

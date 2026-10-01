@@ -1,10 +1,6 @@
-# Third-party notices
-
-Dialog and Button anatomy, Nova styles, executable style assertions and the React reference wrappers are derived from shadcn-ui/ui commit d75a96ab781f3d659be1ad287347d5887ce9f2fc. Source: https://github.com/shadcn-ui/ui/tree/d75a96ab781f3d659be1ad287347d5887ce9f2fc/apps/v4/registry
-
 MIT License
 
-Copyright (c) 2023 shadcn
+Copyright (c) 2019 Material-UI SAS
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
