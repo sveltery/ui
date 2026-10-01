@@ -34,3 +34,16 @@ it('bind:value, native input/change, ref, attachment cleanup and form/reset pres
   expect(draft.value).toBe('Draft');
   component.remove(); await tick(); expect(component.snapshot().ref).toBeNull(); expect(component.snapshot().detached).toBe(1);
 });
+
+for (const defaultValue of [undefined, 'Draft']) it(`undefined bind:value initializes like a native textarea (${defaultValue ?? 'no default'})`, async () => {
+  const { default: Uninitialized } = await import('./TextareaUninitializedFixture.svelte');
+  const component = mount(Uninitialized, { target: target(), props: { defaultValue } }); mounted.push(component); await tick();
+  const state = component.snapshot();
+  expect(state.ref!.value).toBe(state.nativeRef!.value); expect(state.value).toBe(state.nativeValue); expect(state.value).toBe(defaultValue);
+});
+
+it('undefined bind:ref initializes like native bind:this', async () => {
+  const { default: Uninitialized } = await import('./TextareaUninitializedFixture.svelte');
+  const component = mount(Uninitialized, { target: target(), props: { onlyRef: true } }); mounted.push(component); await tick();
+  expect(component.snapshot().undefinedRef).toBe(document.getElementById('uninitialized-ref'));
+});
