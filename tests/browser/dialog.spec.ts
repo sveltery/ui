@@ -6,7 +6,7 @@ for (const route of ['/dialog', '/reference']) test(`${route}: keyboard, labels,
   await expect(popup).toHaveAttribute('data-slot', 'dialog-content');
   await expect(popup).toHaveAccessibleDescription('Make changes to your profile here. Choose Save when you’re done.');
   await expect(page.getByRole('button', { name: 'Before', exact: true })).toHaveCount(0);
-  await expect(page.getByTestId('announcement')).toMatchAriaSnapshot('- generic: Profile editor ready');
+  await expect(page.getByTestId('announcement')).toMatchAriaSnapshot('- text: Profile editor ready');
   await expect(page.getByRole('textbox', { name: 'Name' })).toBeFocused();
   await page.keyboard.press('Shift+Tab'); await expect(popup.getByRole('button', { name: 'Close', exact: true })).toBeFocused();
   await page.keyboard.press('Tab'); await expect(page.getByRole('textbox', { name: 'Name' })).toBeFocused();
@@ -31,7 +31,7 @@ test('native owner props, actions, render children, attachment symbols and refs 
   expect(await page.evaluate(() => document.documentElement.style.overflow)).toBe('');
 });
 for (const scenario of ['ordinary', 'footer', 'no-close']) test(`registry close options (${scenario})`, async ({ page }) => {
-  await page.goto(`/dialog?scenario=${scenario}`); await page.getByTestId('trigger').click();
+  await page.goto(`/dialog?scenario=${scenario}`); await expect(page.locator('[data-hydrated=true]')).toBeVisible(); await page.getByTestId('trigger').click();
   const popup = page.getByRole('dialog'); await expect(popup).toBeVisible();
   await expect(popup.getByRole('button', { name: 'Close', exact: true })).toHaveCount(scenario === 'no-close' ? 0 : 1);
   if (scenario === 'footer') await expect(popup.locator('[data-slot=dialog-footer] button').last()).toHaveClass(/cn-button-variant-outline/);
@@ -48,7 +48,7 @@ test('SSR/hydration preserves trigger IDs and mounts initially open content with
   await page.keyboard.press('Escape'); await expect(popup).toHaveCount(0); expect(errors).toEqual([]);
 });
 test('Nova animation holds exit presence, removes it after completion and cancels stale close on reopen', async ({ page }) => {
-  await page.goto('/dialog'); await page.getByTestId('trigger').click(); const popup = page.getByRole('dialog'); await expect(popup).toBeVisible();
+  await page.goto('/dialog'); await expect(page.locator('[data-hydrated=true]')).toBeVisible(); await page.getByTestId('trigger').click(); const popup = page.getByRole('dialog'); await expect(popup).toBeVisible();
   await expect.poll(() => popup.evaluate(node => getComputedStyle(node).animationDuration)).toBe('0.1s');
   const exiting = await page.getByTestId('owner-close').evaluate((node: HTMLButtonElement) => {
     node.click(); return new Promise(resolve => requestAnimationFrame(() => { const popup = document.querySelector('[data-slot=dialog-content]')!; resolve({ connected: popup.isConnected, closed: popup.hasAttribute('data-closed'), animations: popup.getAnimations().length, overlay: !!document.querySelector('[data-slot=dialog-overlay][data-closed]') }); }));
@@ -62,12 +62,12 @@ test('Nova animation holds exit presence, removes it after completion and cancel
   await page.keyboard.press('Escape'); await expect(popup).toHaveCount(0);
 });
 test('canceled deferral does not affect a later accepted close (Base fix gate)', async ({ page }) => {
-  await page.goto('/dialog'); await page.getByTestId('trigger').click(); const popup = page.getByRole('dialog'); await expect(popup).toBeVisible();
+  await page.goto('/dialog'); await expect(page.locator('[data-hydrated=true]')).toBeVisible(); await page.getByTestId('trigger').click(); const popup = page.getByRole('dialog'); await expect(popup).toBeVisible();
   await page.getByTestId('cancel-next').evaluate((node: HTMLButtonElement) => node.click()); await page.keyboard.press('Escape'); await expect(popup).toBeVisible();
   await page.keyboard.press('Escape'); await expect(popup).toHaveCount(0);
 });
 test('disabled styled replacement Close anchor blocks navigation and dismissal (Base fix gate)', async ({ page }) => {
-  await page.goto('/disabled-close'); await page.getByRole('button', { name: 'Open link example' }).click();
+  await page.goto('/disabled-close'); await expect(page.locator('[data-hydrated=true]')).toBeVisible(); await page.getByRole('button', { name: 'Open link example' }).click();
   const popup = page.getByRole('dialog', { name: 'Link example' });
   const close = popup.getByRole('button', { name: 'Link close' });
   await expect(close).toHaveAttribute('aria-disabled', 'true');
@@ -78,7 +78,7 @@ test('disabled styled replacement Close anchor blocks navigation and dismissal (
   await page.keyboard.press('Escape'); await expect(popup).toHaveCount(0);
 });
 test('enabled styled replacement Close anchor keeps native navigation and dismissal', async ({ page }) => {
-  await page.goto('/disabled-close?enabled'); await page.getByRole('button', { name: 'Open link example' }).click();
+  await page.goto('/disabled-close?enabled'); await expect(page.locator('[data-hydrated=true]')).toBeVisible(); await page.getByRole('button', { name: 'Open link example' }).click();
   const popup = page.getByRole('dialog'); await popup.getByRole('button', { name: 'Link close' }).click();
   await expect(popup).toHaveCount(0); expect(new URL(page.url()).hash).toBe('#activated');
 });

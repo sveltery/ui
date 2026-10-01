@@ -64,3 +64,15 @@ for (const scenario of ['ordinary', 'footer', 'no-close']) it(`content and foote
   expect(!!popup.querySelector('.cn-dialog-close')).toBe(scenario === 'ordinary');
   if (scenario === 'footer') expect(popup.querySelector('[data-slot=dialog-footer]')!.textContent).toContain('Close');
 });
+it('custom example attachment counters settle and clean up once per Popup lifetime', async () => {
+  const host = document.createElement('div'); document.body.append(host); mounted.push(mount(Example, { target: host, props: { scenario: 'custom' } })); await settle();
+  const state = () => JSON.parse(host.querySelector('[data-testid=state]')!.textContent ?? '{}');
+  click(host.querySelector<HTMLElement>('[data-testid=trigger]')!); await settle();
+  expect(state()).toMatchObject({ open: true, attachments: 1, cleanups: 0, popup: 'content' });
+  click(host.querySelector<HTMLElement>('[data-testid=action-close]')!); await settle();
+  expect(state()).toMatchObject({ open: false, attachments: 1, cleanups: 1, popup: false });
+  click(host.querySelector<HTMLElement>('[data-testid=trigger]')!); await settle();
+  expect(state()).toMatchObject({ open: true, attachments: 2, cleanups: 1, popup: 'content' });
+  click(host.querySelector<HTMLElement>('[data-testid=remove]')!); await settle();
+  expect(state()).toMatchObject({ attachments: 2, cleanups: 2, popup: false });
+});

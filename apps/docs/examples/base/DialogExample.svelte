@@ -4,6 +4,8 @@
   import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, DialogClose } from '@sveltery/ui/dialog';
   import type { Actions, PopupState } from '@sveltery/base/dialog';
   let { scenario = 'ordinary' }: { scenario?: string } = $props();
+  const generatedId = $props.id();
+  const initialTriggerId = `example-trigger-${generatedId}`;
   let open = $state(untrack(() => scenario === 'initial'));
   let modal = $state<boolean | 'trap-focus'>(true);
   let actions = $state<Actions | null>(null);
@@ -18,7 +20,7 @@
   let attachments = $state(0);
   let cleanups = $state(0);
   const key = createAttachmentKey();
-  const attachmentProps = { [key]: (_node: HTMLElement) => { attachments++; return () => { cleanups++; }; } };
+  const attachmentProps = { [key]: (_node: HTMLElement) => { untrack(() => attachments++); return () => { untrack(() => cleanups++); }; } };
   const buttonClass = 'cn-button cn-button-variant-outline cn-button-size-default inline-flex items-center justify-center';
   onMount(() => { hydrated = true; });
 </script>
@@ -29,8 +31,8 @@
   <p class="mb-6 text-muted-foreground">Update your profile, then return to the page.</p>
   <button type="button" class={buttonClass} data-testid="before">Before</button>
   {#if show}
-    <Dialog {open} {modal} bind:actions onOpenChange={(next, details) => { log.push({ open: next, reason: details.reason }); if (cancelNext) { details.preventUnmountOnClose(); details.cancel(); cancelNext = false; } else open = next; }} onOpenChangeComplete={next => completions.push(next)}>
-      <DialogTrigger render={scenario === 'custom' ? triggerRender : undefined} class={buttonClass} bind:ref={trigger} data-testid="trigger" name="dialog-trigger" onclick={() => {}}>
+    <Dialog {open} {modal} defaultTriggerId={scenario === 'initial' ? initialTriggerId : undefined} bind:actions onOpenChange={(next, details) => { log.push({ open: next, reason: details.reason }); if (cancelNext) { details.preventUnmountOnClose(); details.cancel(); cancelNext = false; } else open = next; }} onOpenChangeComplete={next => completions.push(next)}>
+      <DialogTrigger id={scenario === 'initial' ? initialTriggerId : undefined} render={scenario === 'custom' ? triggerRender : undefined} class={buttonClass} bind:ref={trigger} data-testid="trigger" name="dialog-trigger" onclick={() => {}}>
         Edit profile
       </DialogTrigger>
       <DialogContent render={scenario === 'custom' ? contentRender : undefined} showCloseButton={scenario !== 'footer' && scenario !== 'no-close'} bind:ref={popup} {...(scenario === 'custom' ? attachmentProps : {})} data-testid="content" style={state => state.open ? '--example-open:1' : '--example-open:0'}>

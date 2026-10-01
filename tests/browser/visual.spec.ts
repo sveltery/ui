@@ -6,8 +6,8 @@ async function measurements(page: Page) {
   });
 }
 test('fixed-environment Nova geometry and computed styles match the pinned official wrapper', async ({ page, context }, testInfo) => {
-  await page.goto('/dialog'); await page.getByTestId('trigger').click(); await expect(page.getByRole('dialog')).toBeVisible(); await page.waitForTimeout(180);
-  const reference = await context.newPage(); await reference.goto('/reference'); await reference.getByTestId('trigger').click(); await expect(reference.getByRole('dialog')).toBeVisible(); await reference.waitForTimeout(180);
+  await page.goto('/dialog'); await expect(page.locator('[data-hydrated=true]')).toBeVisible(); await page.getByTestId('trigger').click(); await expect(page.getByRole('dialog')).toBeVisible(); await page.waitForTimeout(180);
+  const reference = await context.newPage(); await reference.goto('/reference'); await expect(reference.locator('[data-hydrated=true]')).toBeVisible(); await reference.getByTestId('trigger').click(); await expect(reference.getByRole('dialog')).toBeVisible(); await reference.waitForTimeout(180);
   expect(await measurements(page)).toEqual(await measurements(reference));
   await page.getByRole('textbox', { name: 'Name' }).blur(); await reference.getByRole('textbox', { name: 'Name' }).blur();
   await testInfo.attach('svelte-nova', { body: await page.screenshot(), contentType: 'image/png' });
