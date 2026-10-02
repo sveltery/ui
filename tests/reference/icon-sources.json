@@ -1,0 +1,168 @@
+{
+  "commit": "d75a96ab781f3d659be1ad287347d5887ce9f2fc",
+  "files": [
+    {
+      "upstream": "apps/v4/registry/icons/__hugeicons__.ts",
+      "local": "tests/reference/icons/upstream/__hugeicons__.ts",
+      "sha256": "609f702c46376b9ea01d2dd0996198473cd56fa6e333e2cb181f0949a074741e"
+    },
+    {
+      "upstream": "apps/v4/registry/icons/__lucide__.ts",
+      "local": "tests/reference/icons/upstream/__lucide__.ts",
+      "sha256": "69458ef49b7de83a44bbb5501fdfea168ba2d0f21ad33ac0857c2419a4a4d291"
+    },
+    {
+      "upstream": "apps/v4/registry/icons/__phosphor__.ts",
+      "local": "tests/reference/icons/upstream/__phosphor__.ts",
+      "sha256": "338cdc4e3fd40ebaaa8855fd6921d341a70fbc4ff3f147a28f5b3c552add9bdb"
+    },
+    {
+      "upstream": "apps/v4/registry/icons/__remixicon__.ts",
+      "local": "tests/reference/icons/upstream/__remixicon__.ts",
+      "sha256": "6d5d5db309f7fa8931f60b7b1e0ecfd87401514afd91234bc366d7cb2c524cfe"
+    },
+    {
+      "upstream": "apps/v4/registry/icons/__tabler__.ts",
+      "local": "tests/reference/icons/upstream/__tabler__.ts",
+      "sha256": "fd8c854f86bb118364c52434e1d09233d9c86ab8ab79e3036cfe39323497d515"
+    },
+    {
+      "upstream": "apps/v4/registry/config.ts",
+      "local": "tests/reference/icons/upstream/config.ts",
+      "sha256": "4b93e49cdb39c146a548396511da2c493fcd322acb63140b2f3fe34e27fd0c43"
+    },
+    {
+      "upstream": "apps/v4/registry/icons/create-icon-loader.tsx",
+      "local": "tests/reference/icons/upstream/create-icon-loader.tsx",
+      "sha256": "189b2bad09c384d32532732683048ae12b12904eba50b51b90ea768e99e81aa8"
+    },
+    {
+      "upstream": "apps/v4/registry/icons/icon-hugeicons.tsx",
+      "local": "tests/reference/icons/upstream/icon-hugeicons.tsx",
+      "sha256": "bf7687fdadc23a6ddf47a52b0da53983696f4ebded806f1137eb5eba9c1a4879"
+    },
+    {
+      "upstream": "apps/v4/registry/icons/icon-lucide.tsx",
+      "local": "tests/reference/icons/upstream/icon-lucide.tsx",
+      "sha256": "4d0bbad63a96c94d86d0e4884b72972f8a641b4d625dc21ab703fdaff5a7b23f"
+    },
+    {
+      "upstream": "apps/v4/registry/icons/icon-phosphor.tsx",
+      "local": "tests/reference/icons/upstream/icon-phosphor.tsx",
+      "sha256": "aa57eee885ecc9851d903d47ed5db2e5c0db1c5fb57f9109b78877b50faf0465"
+    },
+    {
+      "upstream": "apps/v4/app/(app)/(create)/components/icon-placeholder.tsx",
+      "local": "tests/reference/icons/upstream/icon-placeholder.tsx",
+      "sha256": "85ce07b817cdb006db9c9f580ade10fafa6e9e87c5a61c57a289c412ccae66b2"
+    },
+    {
+      "upstream": "apps/v4/registry/icons/icon-remixicon.tsx",
+      "local": "tests/reference/icons/upstream/icon-remixicon.tsx",
+      "sha256": "3549f0f6757e360a6e28cc9cf307ba8af051d53a9c71c17de653c4a619711513"
+    },
+    {
+      "upstream": "apps/v4/registry/icons/icon-tabler.tsx",
+      "local": "tests/reference/icons/upstream/icon-tabler.tsx",
+      "sha256": "ed94e40d0a9d07c2bf622d48b0980b11d7a8787a24cacf9efd1095e61ccabbd4"
+    },
+    {
+      "upstream": "packages/registry/src/icons/libraries.ts",
+      "local": "tests/reference/icons/upstream/libraries.ts",
+      "sha256": "f1360a0e406c9fa9dde25c7bcacfc44fadbc6f76ac4148568ba8b41df8258a63"
+    },
+    {
+      "upstream": "apps/v4/package.json",
+      "local": "tests/reference/icons/upstream/package.json",
+      "sha256": "fabd6e072864ec11960114fffa64faa8947f47443512a327bb7240fc52a0454d"
+    },
+    {
+      "upstream": "apps/v4/app/(app)/(create)/lib/search-params.ts",
+      "local": "tests/reference/icons/upstream/search-params.ts",
+      "sha256": "833b42a4d78feb27ae7b6a6e9349e85b890d990732faaa73e4f5be2f652c9959"
+    }
+  ],
+  "upstreamLock": {
+    "path": "pnpm-lock.yaml",
+    "sha256": "d7abcd74af11fb63f8fe62841352764ca623690c4666c68acb544f3a7b10b62e"
+  },
+  "packages": [
+    {
+      "name": "lucide-react",
+      "version": "0.474.0",
+      "upstreamLockEntry": "      lucide-react:\n        specifier: 0.474.0\n        version: 0.474.0(react@19.2.3)",
+      "integrity": "sha512-CmghgHkh0OJNmxGKWc0qfPJCYHASPMVSyGY8fj3xgk4v84ItqDg64JNKFZn5hC6E0vHi6gxnbCgwhyVB09wQtA==",
+      "license": "ISC"
+    },
+    {
+      "name": "@tabler/icons-react",
+      "version": "3.34.1",
+      "upstreamLockEntry": "      '@tabler/icons-react':\n        specifier: ^3.31.0\n        version: 3.34.1(react@19.2.3)",
+      "integrity": "sha512-Ld6g0NqOO05kyyHsfU8h787PdHBm7cFmOycQSIrGp45XcXYDuOK2Bs0VC4T2FWSKZ6bx5g04imfzazf/nqtk1A==",
+      "license": "MIT"
+    },
+    {
+      "name": "@hugeicons/core-free-icons",
+      "version": "1.2.1",
+      "upstreamLockEntry": "      '@hugeicons/core-free-icons':\n        specifier: ^1.2.1\n        version: 1.2.1",
+      "integrity": "sha512-ho0QdGMkgL+kt+QsZocCsKvJou1rfyVQWARrxIhNLi+9tCKayUUtD9jlHgioaRphmskSl84TxrDm9Ae0G4Uu1g==",
+      "license": "MIT (package declaration; bundled notice missing)"
+    },
+    {
+      "name": "@hugeicons/react",
+      "version": "1.1.1",
+      "upstreamLockEntry": "      '@hugeicons/react':\n        specifier: ^1.1.1\n        version: 1.1.1(react@19.2.3)",
+      "integrity": "sha512-BAbFVtx0XZ/yF2poPLFn0N9Ji6ebV/MpI5+WRqooFp3smQDwpL+72m+BBs4KAM5djgWUpg12weyc5SJtTsOwsw==",
+      "license": "SEE LICENSE IN LICENSE.md (reference dependency only)"
+    },
+    {
+      "name": "@phosphor-icons/react",
+      "version": "2.1.10",
+      "upstreamLockEntry": "      '@phosphor-icons/react':\n        specifier: ^2.1.10\n        version: 2.1.10(react-dom@19.2.3(react@19.2.3))(react@19.2.3)",
+      "integrity": "sha512-vt8Tvq8GLjheAZZYa+YG/pW7HDbov8El/MANW8pOAz4eGxrwhnbfrQZq0Cp4q8zBEu8NIhHdnr+r8thnfRSNYA==",
+      "license": "MIT"
+    },
+    {
+      "name": "@remixicon/react",
+      "version": "4.7.0",
+      "upstreamLockEntry": "      '@remixicon/react':\n        specifier: ^4.7.0\n        version: 4.7.0(react@19.2.3)",
+      "integrity": "sha512-ODBQjdbOjnFguCqctYkpDjERXOInNaBnRPDKfZOBvbzExBAwr2BaH/6AHFTg/UAFzBDkwtylfMT8iKPAkLwPLQ==",
+      "license": "Apache-2.0"
+    }
+  ],
+  "auxiliaryLicenses": [
+    {
+      "local": "tests/reference/icons/licenses/hugeicons-core-LICENSE.md",
+      "sha256": "1658d8213209df7b9b86dfc05d724ede48d00dbc27abc15976ec7adec9601cde"
+    },
+    {
+      "local": "tests/reference/icons/licenses/hugeicons-core-license-evidence.txt",
+      "sha256": "dd0ddf9ab9520a4f378d51d863dd7ccdad7ddd225dc8cef0c934ac07bb0d5f4b"
+    },
+    {
+      "local": "tests/reference/icons/licenses/hugeicons-react-1.1.1-LICENSE.md",
+      "sha256": "bef922afafbaa40ea4f1d01a5a197068d8c3b32f63b0f57d99928cc0fe06689b"
+    },
+    {
+      "local": "tests/reference/icons/licenses/lucide-LICENSE",
+      "sha256": "1e7290b35280a048667bbf0ebabac1c7fd52a75300e8b2946ac165715997f2bc"
+    },
+    {
+      "local": "tests/reference/icons/licenses/phosphor-LICENSE",
+      "sha256": "6918b72504641180600cbbd4a86b0dfa9dfccf788775694325b71b9a029f6eb4"
+    },
+    {
+      "local": "tests/reference/icons/licenses/remix-LICENSE",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "local": "tests/reference/icons/licenses/tabler-LICENSE",
+      "sha256": "d5a3f948ae5cb95bfc4d2f767ef2bf6a778815b0ddb2d1c48037744cf636518e"
+    }
+  ],
+  "licenseSources": {
+    "hugeiconsCore": "https://github.com/hugeicons/hugeicons/blob/9c48f3723dfb243909fa83501aa7c6423ab972c0/LICENSE.md",
+    "hugeiconsCoreEvidence": "https://github.com/hugeicons/hugeicons/blob/9c48f3723dfb243909fa83501aa7c6423ab972c0/README.md",
+    "remix": "https://github.com/Remix-Design/RemixIcon/blob/4ef50878f17accbed89ef2691bdc357562ed0a17/License"
+  }
+}
