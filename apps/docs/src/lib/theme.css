@@ -3,6 +3,8 @@
 @source "../../../../packages/ui/dist";
 @source "../../../../tests/reference";
 @theme inline {
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
@@ -21,6 +23,8 @@
   --radius-lg: var(--radius);
 }
 :root {
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
