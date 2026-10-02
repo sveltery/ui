@@ -16,7 +16,7 @@ Source organization follows upstream: `apps/docs/registry/bases/base/ui/dialog` 
 
 Try the [SvelteKit installation and source-copy guide](docs/installation.md) for verified local archives, Nova prerequisites and a minimal accessible Dialog. See the [local docs app README](apps/docs/README.md) for fixture routes, source organization and validation commands.
 
-The [upstream differences register](docs/upstream-differences.md) discloses inherited Base corrections, styled/API adaptations and the React 1.6.0 versus Base 1.8.0 evidence boundary.
+The [upstream differences register](docs/upstream-differences.md) discloses inherited Base corrections, styled/API adaptations and the React 1.6.0 versus Base 1.8.0 evidence boundary. The [upstream test inventory](docs/upstream-tests.md) distinguishes actual shadcn suites, separately pinned Base UI conformance and local source-derived probes.
 
 The proposed [three-engine acceptance gates](docs/browser-engines.md) run the retained main and fresh-consumer suites in Chromium, Firefox and WebKit. Configured inventory does not establish successful execution or complete the deferred component/gallery scopes.
 
