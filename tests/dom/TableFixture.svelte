@@ -13,14 +13,24 @@
   let caption = $state<HTMLTableCaptionElement | null | undefined>(untrack(() => initializeNull ? null : undefined));
   let visible = $state(true);
   let changed = $state(false);
+  let attachmentVersion = $state(0);
   let attached = 0;
   let detached = 0;
   const calls: string[] = [];
   const nodes: HTMLElement[] = [];
-  const attachment = { [createAttachmentKey()]: (node: HTMLElement) => { attached++; nodes.push(node); return () => { detached++; }; } };
+  const attachmentEvents: string[] = [];
+  const attachmentKey = createAttachmentKey();
+  const attachment = $derived.by(() => {
+    const version = attachmentVersion;
+    return { [attachmentKey]: (node: HTMLElement) => {
+      attached++; nodes.push(node); attachmentEvents.push(`attach:${version}:${node.id}`);
+      return () => { detached++; attachmentEvents.push(`detach:${version}:${node.id}`); };
+    } };
+  });
   const common = $derived({ class: changed ? 'px-6 font-bold' : 'px-2', title: changed ? 'Updated' : 'Initial', 'data-slot': changed ? 'consumer-updated' : 'consumer-initial', onclick: (event: MouseEvent & { currentTarget: EventTarget & HTMLElement }) => calls.push(`click:${event.currentTarget.tagName}`), onkeydown: (event: KeyboardEvent & { currentTarget: EventTarget & HTMLElement }) => calls.push(`key:${event.currentTarget.tagName}:${event.key}`) });
-  export function snapshot() { return { refs: { table, header, body, footer, row, head, cell, caption }, attached, detached, nodes, calls }; }
+  export function snapshot() { return { refs: { table, header, body, footer, row, head, cell, caption }, attached, detached, nodes, calls, attachmentEvents }; }
   export function update() { changed = true; }
+  export function replaceAttachment() { attachmentVersion++; }
   export function hide() { visible = false; }
   export function show() { visible = true; }
 </script>

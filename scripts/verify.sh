@@ -11,6 +11,7 @@ pnpm test
 node --import ./scripts/svelte-ssr-loader.mjs scripts/check-textarea-ssr.mjs
 node --import ./scripts/svelte-ssr-loader.mjs scripts/check-skeleton-ssr.mjs
 node --import ./scripts/svelte-ssr-loader.mjs scripts/check-kbd-ssr.mjs
+node --import ./scripts/svelte-ssr-loader.mjs scripts/check-table-ssr.mjs
 pnpm --filter @sveltery/docs build
 bash scripts/check-remote-fields.sh
 bash scripts/check-package.sh

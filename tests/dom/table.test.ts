@@ -112,6 +112,37 @@ for (const initializeNull of [false, true]) it(`all eight refs/attachments bind,
   expect(instance.snapshot().detached).toBe(16);
 });
 
+it('replacing a symbol-keyed attachment cleans and reattaches all eight native hosts without replacing hosts or refs', async () => {
+  const host = target();
+  const instance = mount(Fixture, { target: host }); mounted.push(instance); await tick();
+  const original = instance.snapshot().refs;
+  const names = Object.keys(original);
+  const expectedEvents = (kind: string, version: number) => names.map(name => `${kind}:${version}:native-${name}`).sort();
+  const events = (kind: string, version: number) => instance.snapshot().attachmentEvents.filter(event => event.startsWith(`${kind}:${version}:`)).sort();
+  expect(events('attach', 0)).toEqual(expectedEvents('attach', 0));
+  instance.replaceAttachment(); await tick();
+  expect(instance.snapshot().refs).toEqual(original);
+  for (const [name, node] of Object.entries(original)) expect(host.querySelector(`#native-${name}`)).toBe(node);
+  expect(instance.snapshot().attached).toBe(16); expect(instance.snapshot().detached).toBe(8);
+  expect(events('detach', 0)).toEqual(expectedEvents('detach', 0));
+  expect(events('attach', 1)).toEqual(expectedEvents('attach', 1));
+  expect(events('detach', 1)).toEqual([]);
+  expect(new Set(instance.snapshot().nodes)).toEqual(new Set(Object.values(original)));
+  instance.update(); await tick();
+  expect(instance.snapshot().refs).toEqual(original);
+  expect(instance.snapshot().attached).toBe(16); expect(instance.snapshot().detached).toBe(8);
+  instance.hide(); await tick();
+  expect(Object.values(instance.snapshot().refs)).toEqual(Array(8).fill(null));
+  expect(instance.snapshot().detached).toBe(16);
+  expect(events('detach', 0)).toEqual(expectedEvents('detach', 0));
+  expect(events('detach', 1)).toEqual(expectedEvents('detach', 1));
+  for (const name of names) expect(instance.snapshot().attachmentEvents.filter(event => event.endsWith(`:native-${name}`))).toEqual([
+    `attach:0:native-${name}`, `detach:0:native-${name}`, `attach:1:native-${name}`, `detach:1:native-${name}`,
+  ]);
+  mounted.pop(); await unmount(instance); await tick();
+  expect(instance.snapshot().detached).toBe(16);
+});
+
 it('native Svelte class arrays/objects merge through the same pinned cn helper', async () => {
   const host = target();
   mounted.push(mount(UI.Table, { target: host, props: { class: ['px-2', { 'px-6': true, hidden: false }] } })); await tick();

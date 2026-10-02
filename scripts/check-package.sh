@@ -21,6 +21,7 @@ cat > "$consumer_directory/Consumer.svelte" <<'SVELTE'
   import { Textarea } from '@sveltery/ui/textarea';
   import { Skeleton } from '@sveltery/ui/skeleton';
   import { Kbd, KbdGroup } from '@sveltery/ui/kbd';
+  import { Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption } from '@sveltery/ui/table';
   import type { Snippet } from 'svelte';
 </script>
 {#snippet replacement(props: Record<string | symbol, unknown>, _state: { disabled: boolean }, children: Snippet | undefined)}
@@ -28,6 +29,7 @@ cat > "$consumer_directory/Consumer.svelte" <<'SVELTE'
 {/snippet}
 <KbdGroup data-probe="kbd-group"><Kbd data-probe="kbd">Ctrl &amp; K</Kbd></KbdGroup>
 <Skeleton data-probe="skeleton" class="h-4 w-32" />
+<Table data-probe="native-table"><TableCaption>Consumer ledger</TableCaption><TableHeader><TableRow><TableHead scope="col">Invoice</TableHead><TableHead scope="col">Amount</TableHead></TableRow></TableHeader><TableBody><TableRow><TableCell rowspan={2}>INV001</TableCell><TableCell>$250.00</TableCell></TableRow><TableRow><TableCell>$150.00</TableCell></TableRow></TableBody><TableFooter><TableRow><TableCell colspan={2}>Total $400.00</TableCell></TableRow></TableFooter></Table>
 <Textarea name="notes" defaultValue="SSR & draft" rows={6} class="px-6" aria-invalid="true" />
 <Button nativeButton={false} render={replacement} />
 <Button name="save" value="yes" variant="secondary" size="lg" class="px-6">Save</Button>
@@ -48,8 +50,12 @@ import * as Buttons from '@sveltery/ui/button';
 import * as Textareas from '@sveltery/ui/textarea';
 import * as Skeletons from '@sveltery/ui/skeleton';
 import * as Keys from '@sveltery/ui/kbd';
+import * as Tables from '@sveltery/ui/table';
+const tableNames = ['Table', 'TableHeader', 'TableBody', 'TableFooter', 'TableRow', 'TableHead', 'TableCell', 'TableCaption'];
+assert.deepEqual(Object.keys(Tables).sort(), tableNames.slice().sort());
+for (const name of tableNames) assert.equal(Root[name], Tables[name]);
 const names = ['Dialog', 'DialogClose', 'DialogContent', 'DialogDescription', 'DialogFooter', 'DialogHeader', 'DialogOverlay', 'DialogPortal', 'DialogTitle', 'DialogTrigger'];
-assert.deepEqual(Object.keys(Root).sort(), [...names, 'Button', 'buttonVariants', 'variants', 'sizes', 'Textarea', 'Skeleton', 'Kbd', 'KbdGroup'].sort());
+assert.deepEqual(Object.keys(Root).sort(), [...names, ...tableNames, 'Button', 'buttonVariants', 'variants', 'sizes', 'Textarea', 'Skeleton', 'Kbd', 'KbdGroup'].sort());
 assert.deepEqual(Object.keys(Buttons).sort(), ['Button', 'buttonVariants', 'sizes', 'variants']);
 assert.deepEqual(Object.keys(Parts).sort(), names);
 assert.deepEqual(Object.keys(Textareas), ['Textarea']);
@@ -58,7 +64,7 @@ assert.deepEqual(Object.keys(Skeletons), ['Skeleton']);
 assert.equal(Root.Skeleton, Skeletons.Skeleton);
 assert.deepEqual(Object.keys(Keys).sort(), ['Kbd', 'KbdGroup']);
 assert.equal(Root.Kbd, Keys.Kbd); assert.equal(Root.KbdGroup, Keys.KbdGroup);
-for (const path of ['index.d.ts', 'dialog/index.d.ts', 'button/index.d.ts', 'button/Button.svelte.d.ts', 'button/types.d.ts', 'textarea/index.d.ts', 'textarea/Textarea.svelte.d.ts', 'skeleton/index.d.ts', 'skeleton/Skeleton.svelte.d.ts', 'kbd/index.d.ts', 'kbd/Kbd.svelte.d.ts', 'kbd/KbdGroup.svelte.d.ts', 'kbd/types.d.ts', ...names.map(name => `dialog/${name}.svelte.d.ts`)]) {
+for (const path of ['table/index.d.ts', ...tableNames.map(name => `table/${name}.svelte.d.ts`), 'index.d.ts', 'dialog/index.d.ts', 'button/index.d.ts', 'button/Button.svelte.d.ts', 'button/types.d.ts', 'textarea/index.d.ts', 'textarea/Textarea.svelte.d.ts', 'skeleton/index.d.ts', 'skeleton/Skeleton.svelte.d.ts', 'kbd/index.d.ts', 'kbd/Kbd.svelte.d.ts', 'kbd/KbdGroup.svelte.d.ts', 'kbd/types.d.ts', ...names.map(name => `dialog/${name}.svelte.d.ts`)]) {
   assert(readFileSync(new URL(`./node_modules/@sveltery/ui/dist/${path}`, import.meta.url), 'utf8').length > 0);
 }
 const first = render(Consumer).body;
@@ -79,6 +85,14 @@ for (const html of [first, second]) {
   assert(html.includes('SSR fallback label'));
   assert.match(html, /<textarea[^>]*data-slot="textarea"[^>]*name="notes"[^>]*>SSR &amp; draft<\/textarea>/);
   assert(html.includes('cn-textarea'));
+  const nativeTable = new JSDOM(html).window.document.querySelector('[data-probe=native-table]');
+  assert.equal(nativeTable.tagName, 'TABLE');
+  assert.equal(nativeTable.parentElement.getAttribute('data-slot'), 'table-container');
+  assert.equal(nativeTable.querySelector('caption').textContent, 'Consumer ledger');
+  assert.equal(nativeTable.querySelector('th').scope, 'col');
+  assert.equal(nativeTable.querySelector('td').rowSpan, 2);
+  assert.equal(nativeTable.querySelector('tfoot td').colSpan, 2);
+  assert.equal(nativeTable.querySelector('tfoot td').textContent, 'Total $400.00');
   const nativeSkeleton = new JSDOM(html).window.document.querySelector('[data-probe=skeleton]');
   assert.equal(nativeSkeleton.tagName, 'DIV'); assert.equal(nativeSkeleton.getAttribute('data-slot'), 'skeleton'); assert.equal(nativeSkeleton.textContent, '');
   assert(html.includes('cn-skeleton'));
@@ -92,7 +106,8 @@ assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file:/
 assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-textarea'));
 assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-skeleton'));
 assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-kbd-group'));
-console.log('Isolated UI tarball: Dialog, Button, Textarea, Skeleton and Kbd root/subpath exports, SSR, IDs, absent portals, CSS, declarations and notices PASS');
+assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-table-container'));
+console.log('Isolated Table plus existing UI tarball: Dialog, Button, Textarea, Skeleton and Kbd root/subpath exports, SSR, IDs, absent portals, CSS, declarations and notices PASS');
 JS
 node --import "$sveltery_repo_root/scripts/svelte-ssr-loader.mjs" "$consumer_directory/check.mjs"
 cat > "$consumer_directory/types.ts" <<'TS'
@@ -135,5 +150,6 @@ void [skeleton, badSkeleton];
 void [textarea, badTextarea];
 void [root, trigger, popup, footer, portal, overlay, badStyle, badVariant, button, state, invalidButton];
 TS
-node "$sveltery_repo_root/node_modules/typescript/bin/tsc" --noEmit --strict --skipLibCheck --moduleResolution Bundler --module ESNext --target ES2022 --lib ES2022,DOM,DOM.Iterable "$consumer_directory/types.ts"
+sed 's#../apps/docs/registry/bases/base/ui/table/index.js#@sveltery/ui/table#' tests/types-table.ts > "$consumer_directory/table-types.ts"
+node "$sveltery_repo_root/node_modules/typescript/bin/tsc" --noEmit --strict --skipLibCheck --moduleResolution Bundler --module ESNext --target ES2022 --lib ES2022,DOM,DOM.Iterable "$consumer_directory/types.ts" "$consumer_directory/table-types.ts"
 echo 'Isolated packaged public type assertions: PASS'
