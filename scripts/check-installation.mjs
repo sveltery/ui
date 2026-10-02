@@ -99,7 +99,7 @@ try {
       cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/textarea'), join(consumer, 'src/lib/components/ui/textarea'), { recursive: true });
       writeFileSync(textareaRoute, readFileSync(textareaRoute, 'utf8').replace('@sveltery/ui/textarea', '$lib/components/ui/textarea'));
       cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/skeleton'), join(consumer, 'src/lib/components/ui/skeleton'), { recursive: true });
-      writeFileSync(skeletonRoute, readFileSync(skeletonRoute, 'utf8').replace('@sveltery/ui/skeleton', '$lib/components/ui/skeleton'));
+      writeFileSync(skeletonRoute, readFileSync(skeletonRoute, 'utf8').replaceAll('@sveltery/ui/skeleton', '$lib/components/ui/skeleton').replaceAll('@sveltery/ui/card', '$lib/components/ui/card'));
       cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/kbd'), join(consumer, 'src/lib/components/ui/kbd'), { recursive: true });
       cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/table'), join(consumer, 'src/lib/components/ui/table'), { recursive: true });
       cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/card'), join(consumer, 'src/lib/components/ui/card'), { recursive: true });
