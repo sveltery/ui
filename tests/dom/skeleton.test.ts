@@ -16,7 +16,7 @@ function target() { const node = document.createElement('section'); document.bod
 it('immutable Skeleton sources, unchanged selected example bodies and scoped Nova retain provenance', () => {
   const pin = JSON.parse(readFileSync('tests/reference/skeleton-sources.json', 'utf8'));
   expect(pin.commit).toBe('d75a96ab781f3d659be1ad287347d5887ce9f2fc');
-  for (const file of pin.files) expect(createHash('sha256').update(readFileSync(file.local)).digest('hex')).toBe(file.sha256);
+  for (const file of [...pin.files, pin.license]) expect(createHash('sha256').update(readFileSync(file.local)).digest('hex')).toBe(file.sha256);
   const full = readFileSync('tests/reference/skeleton-example.tsx', 'utf8');
   const selected = readFileSync('tests/reference/skeleton-selected-examples.tsx', 'utf8');
   for (const name of ['Avatar', 'Text', 'Form', 'Table']) {
@@ -30,7 +30,7 @@ for (const attrs of [{}, { class: 'h-8 w-32 rounded-none animate-none', 'data-sl
   const reference = document.createElement('section'); const { class: className, style, ...props } = attrs;
   reference.innerHTML = renderToStaticMarkup(createElement(Reference, { ...props, className, style: style ? { width: '77px' } : undefined }));
   const actual = node.querySelector('div')!; const expected = reference.querySelector('div')!;
-  expect(actual.tagName).toBe(expected.tagName); expect(actual.getAttributeNames().sort()).toEqual(expected.getAttributeNames().sort());
+  expect(actual.tagName).toBe(expected.tagName); expect(actual.textContent).toBe(expected.textContent); expect(actual.getAttributeNames().sort()).toEqual(expected.getAttributeNames().sort());
   for (const name of expected.getAttributeNames()) expect(name === 'style' ? actual.style.cssText : actual.getAttribute(name), name).toBe(name === 'style' ? expected.style.cssText : expected.getAttribute(name));
 });
 it('Svelte class arrays/objects keep pinned cn conflicts', async () => {
@@ -41,7 +41,9 @@ it('undefined ref, symbol attachment, children, native events and reactive decla
   const component = mount(Fixture, { target: target() }); mounted.push(component); await tick();
   const host = document.getElementById('bound-skeleton')!;
   expect(component.snapshot().ref).toBe(host); expect(component.snapshot().attached).toBe(1);
-  expect(host.title).toBe('Initial placeholder'); expect(host.textContent).toBe('Initial');
+  expect(host.title).toBe('Initial placeholder');
+  const reference = document.createElement('section'); reference.innerHTML = renderToStaticMarkup(createElement(Reference, { children: 'Initial' }));
+  expect(host.textContent).toBe(reference.querySelector('div')!.textContent);
   host.click(); expect(component.snapshot().calls).toEqual(['attach:bound-skeleton', 'click']);
   component.update(); await tick();
   expect(component.snapshot().ref).toBe(host); expect(host.title).toBe('Updated placeholder'); expect(host.textContent).toBe('Updated');

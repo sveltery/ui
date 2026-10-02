@@ -18,5 +18,10 @@
       "range": "1222-1225 (Skeleton section only)",
       "fullSourceSha256": "5d5751579c015b61e77cf0822862a43ac79f3e6fed236a17624be8e6d1ebea1d"
     }
-  ]
+  ],
+  "license": {
+    "upstream": "LICENSE.md",
+    "local": "tests/reference/LICENSE",
+    "sha256": "1564074e13439397221ffd522e2e504d56561994a23d371aa5e3ad43e4f5423f"
+  }
 }
