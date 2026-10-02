@@ -1,0 +1,50 @@
+{
+  "sourceCommit": "d75a96ab781f3d659be1ad287347d5887ce9f2fc",
+  "generator": {
+    "local": "scripts/generate-icons.mjs",
+    "sha256": "189e7085245a874aeae26bc645a32ec8e3a5c1a9dc9ce3587c3814cd98023b5a"
+  },
+  "outputs": [
+    {
+      "library": "lucide",
+      "local": "apps/docs/examples/icons/data/lucide.json",
+      "sha256": "17faf52698b2e2cd4d922d48f320ad2a0b391a2eff70720aac09e5cf84709bfb",
+      "declared": 186,
+      "extracted": 186,
+      "missing": []
+    },
+    {
+      "library": "tabler",
+      "local": "apps/docs/examples/icons/data/tabler.json",
+      "sha256": "a8d2b3ae87c31a92f1e75c8df7fc52a8289e8ef2efdc5e6d4bdc7d0d6af13f3f",
+      "declared": 181,
+      "extracted": 181,
+      "missing": []
+    },
+    {
+      "library": "hugeicons",
+      "local": "apps/docs/examples/icons/data/hugeicons.json",
+      "sha256": "13f2c89e3ccee568d58ab72091bd380a239cfca9642115eaa07bc854358c977a",
+      "declared": 191,
+      "extracted": 191,
+      "missing": []
+    },
+    {
+      "library": "phosphor",
+      "local": "apps/docs/examples/icons/data/phosphor.json",
+      "sha256": "1e5a4d003558b251f3307972b0ff73b70e64a5b50303068e42f5bbba97db96bf",
+      "declared": 157,
+      "extracted": 157,
+      "missing": []
+    },
+    {
+      "library": "remixicon",
+      "local": "apps/docs/examples/icons/data/remixicon.json",
+      "sha256": "4542e66342d8c552c5b630a0edcd5c70e46f81783d41701581a166f8202b69f0",
+      "declared": 156,
+      "extracted": 156,
+      "missing": []
+    }
+  ],
+  "fallbackSha256": "865cc12fd626c39c30da9e4dfe640b51254848f644fa2f08496ec57709784642"
+}
