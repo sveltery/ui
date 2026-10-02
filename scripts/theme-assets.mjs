@@ -80,13 +80,17 @@ export function themeCSS() {
 export function generatedAssets() {
   const assets = new Map([['apps/docs/registry/styles/themes.css', themeCSS()]]);
   const sections = {};
+  // Omitted target-style declarations must also erase the historical fallback's classes.
+  // This file contains only implemented component sections, never the full upstream library.
+  const fallbackBody = readFileSync('apps/docs/registry/styles/style-nova.css', 'utf8');
+  const fallbackClasses = [...fallbackBody.matchAll(/\.cn-[a-z0-9-]+/gu)].map(match => match[0]);
 
   for (const name of styles) {
     const chosen = selectStyleSections(name);
     assert.equal(chosen.length, components.length, `Every current component section exists in ${name}`);
     sections[name] = chosen.map(({ css: _css, ...entry }) => entry);
     const body = chosen.map(entry => entry.css).join('');
-    const selectors = [...new Set([...body.matchAll(/\.cn-[a-z0-9-]+/gu)].map(match => match[0]))].join(', ');
+    const selectors = [...new Set([...fallbackClasses, ...[...body.matchAll(/\.cn-[a-z0-9-]+/gu)].map(match => match[0])])].join(', ');
     const reset = scope => `.${scope} :where(${selectors}) { all: revert-layer; }\n`;
     assets.set(`apps/docs/registry/styles/scoped/${name}.css`, `${notice}@import "tw-animate-css";\n@custom-variant style-${name} (&:where(.style-${name} *));\n@layer base {\n  .style-${name} * { @apply border-border outline-ring/50; }\n}\n@layer components {\n${reset(`style-${name}`)}.style-${name} {\n${geometry}${body}}\n}\n`);
 
