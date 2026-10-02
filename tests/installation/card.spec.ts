@@ -2,7 +2,8 @@ import { expect, test } from '@playwright/test';
 const ids = ['consumer-card', 'consumer-card-header', 'consumer-card-title', 'consumer-card-description', 'consumer-card-action', 'consumer-card-content', 'consumer-card-footer'];
 test('fresh seven-part Card archive/source copy preserves SSR hosts, hydration identity and lifecycle', async ({ page, request }) => {
   const html = await (await request.get('/card')).text();
-  expect(html).toContain('data-hydrated="false"'); expect(html).toContain('Initial &amp; &lt;Card&gt;');
+  expect(html).toContain('data-hydrated="false"'); expect(html).toContain('Initial &amp; &lt;Card>');
+  expect(await page.evaluate(source => new DOMParser().parseFromString(source, 'text/html').querySelector('#consumer-card-title')?.textContent, html)).toBe('Initial & <Card> title');
   for (const id of ids) expect(html).toContain(`id="${id}"`);
   expect(html).not.toContain('data-attached="true"');
   const errors: string[] = []; page.on('pageerror', error => errors.push(error.message)); page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
