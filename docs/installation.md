@@ -270,6 +270,8 @@ Run `pnpm install` to update the consumer lockfile, then repeat the frozen insta
 
 ## Native Table
 
+The proposed [three-engine gate](browser-engines.md) runs both fresh consumer modes and documented/experimental phases in Chromium, Firefox and WebKit. `bash scripts/check-installation.sh --browser` selects all configured engines; set `SVELTERY_BROWSER_PROJECT` to `chromium`, `firefox` or `webkit` for an individual engine. Pin selection, types, build and source-copy checks remain unchanged; engine discovery alone is not execution evidence.
+
 The same reviewed archive exports the eight [native Table components](table.md) at `@sveltery/ui/table` and the root. Their fixed container provides horizontal scrolling; attributes, native events and `bind:ref` belong to the inner table. Keep Nova and Tailwind scanning configured as above. Basic, Footer, Simple and the dependency-free With Badges body are implemented; its six badge-shaped elements are literal native spans. DropdownMenu, Select and Input compositions remain deferred. Native Example/ExampleWrapper scaffold is still a bounded substitution.
 
 For an app-owned Table copy, retain the `table` directory alongside the shared helper and notices from the same selected checkout:
