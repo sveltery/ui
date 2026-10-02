@@ -1,0 +1,1149 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "https://github.com/shadcn-ui/ui",
+    "commit": "d75a96ab781f3d659be1ad287347d5887ce9f2fc",
+    "tree": "b5fe6239eadcaa7167662cc28e55b4f7911a1e1e",
+    "tracked_paths": 5828,
+    "tracked_path_listing_sha256": "3340105749378844e9432bf4b4fddc7f8ed77b288ad8766cd2b768d5b8c9455d"
+  },
+  "discovery": {
+    "filename_pattern": "\\.(test|spec)\\.[^/]+$",
+    "test_related_files": 139,
+    "test_sources": 133,
+    "snapshot_artifacts": 6,
+    "additional_search": "Inspected complete tree for test/e2e/__tests__/Cypress/Playwright directories and configuration, root Vitest workspace/config and source imports; inspected build-test-app.mts reference to separate official gallery templates."
+  },
+  "scope_counts": {
+    "apps/v4": {
+      "test-source": 17
+    },
+    "packages/helpers": {
+      "test-source": 12
+    },
+    "packages/react": {
+      "test-source": 7
+    },
+    "packages/registry": {
+      "test-source": 56,
+      "snapshot": 5
+    },
+    "packages/shadcn": {
+      "test-source": 34,
+      "snapshot": 1
+    },
+    "packages/tests": {
+      "test-source": 7
+    }
+  },
+  "current_wrapper_runtime_suite_absence": [
+    "Dialog",
+    "Button",
+    "Textarea",
+    "Skeleton",
+    "Kbd",
+    "Table",
+    "Card",
+    "Label",
+    "AspectRatio",
+    "Alert",
+    "Empty",
+    "Input",
+    "InputGroup",
+    "Field",
+    "Badge",
+    "Separator",
+    "Progress",
+    "Spinner"
+  ],
+  "registry_test_sources": [
+    "apps/v4/registry/calendar.test.ts",
+    "apps/v4/registry/config.test.ts"
+  ],
+  "react_runtime_products": [
+    "MessageScroller",
+    "Questionnaire"
+  ],
+  "files": [
+    {
+      "path": "apps/v4/app/(app)/(create)/init/route.test.ts",
+      "git_blob": "0e04458726c7082a2399e8718bcb65b02ca62654",
+      "sha256": "bf2c6ebac5ec39c00f7b4085fb139d8e187de09d591c4906139dfe39438790cd",
+      "bytes": 2219,
+      "kind": "test-source"
+    },
+    {
+      "path": "apps/v4/app/(app)/(create)/lib/parse-config.test.ts",
+      "git_blob": "5be62f7f9cd4f36d110c2c5caa2f6ceb2cde7e04",
+      "sha256": "83b4c44600207298cac0b34a7deedf3701dcd13354818e43b11e60fb879f1ba7",
+      "bytes": 2462,
+      "kind": "test-source"
+    },
+    {
+      "path": "apps/v4/app/(app)/(create)/lib/parse-preset-input.test.ts",
+      "git_blob": "a2a1abd683bf476642ff8d0abd98978ce22f2192",
+      "sha256": "08fb50675e30352c633b7e55f1529351a32a826a09addb9544b0899f6aa0b7a2",
+      "bytes": 446,
+      "kind": "test-source"
+    },
+    {
+      "path": "apps/v4/app/(app)/(create)/lib/preset-query.test.ts",
+      "git_blob": "93c4ce3b6f67664eb5d63f2ab1f800e794914b62",
+      "sha256": "8aa560ab05610bf3f974f7dce5f263e1973782a6e94d5e877d01ca608ad191c8",
+      "bytes": 909,
+      "kind": "test-source"
+    },
+    {
+      "path": "apps/v4/app/(app)/(create)/lib/search-params.test.ts",
+      "git_blob": "1f81029f54a2cbb31aeb831c7c2444492b5ade32",
+      "sha256": "15b5c43219958f471f5cc5837049158fa90aafbe5c9a9a51e33a1ba30112ef2d",
+      "bytes": 1340,
+      "kind": "test-source"
+    },
+    {
+      "path": "apps/v4/app/(app)/(create)/lib/v0.test.ts",
+      "git_blob": "8dc118106deb40567b83488b2dd88ec5ed3d0e2e",
+      "sha256": "110a680aa61d8d0dff27132e1f47f3aab42fe1cdd11f692ab746a489454c1f81",
+      "bytes": 3640,
+      "kind": "test-source"
+    },
+    {
+      "path": "apps/v4/app/r/registries.json/route.test.ts",
+      "git_blob": "7ece7acc3bb8fbf8e1bbe3a2e113459ebf7da8db",
+      "sha256": "88a32eff11e5f2abc29248ad45c4874d756c22cda42997c8df8615e0332ad75a",
+      "bytes": 7035,
+      "kind": "test-source"
+    },
+    {
+      "path": "apps/v4/lib/registry-health/blob.test.ts",
+      "git_blob": "41e2bf8a68c4d83b1449353507e30cc7a15082bd",
+      "sha256": "4627cc8bb9506f74ebb3176a393822e2383d369f8ef787c05cf2e7dca1b8c423",
+      "bytes": 5439,
+      "kind": "test-source"
+    },
+    {
+      "path": "apps/v4/lib/registry-health/directory.test.ts",
+      "git_blob": "38c425dc3a25be75b5603fea2865b27a4046363d",
+      "sha256": "40ec4fb5972b12f50bd3d20fdc035b370f42a931f0f8cfdb1527f9e2e87d74ce",
+      "bytes": 11259,
+      "kind": "test-source"
+    },
+    {
+      "path": "apps/v4/lib/registry-health/dry-run.test.ts",
+      "git_blob": "0a432b27f687396337bbe56cf41b75c025c7b4b2",
+      "sha256": "e7c30597a635ae6a7a7b44072bef619a065a342407255d6b2c4de87d06b00fa4",
+      "bytes": 3538,
+      "kind": "test-source"
+    },
+    {
+      "path": "apps/v4/lib/registry-health/monitor.test.ts",
+      "git_blob": "aec1935a90ec67a2eccb6e1610d0c042f8b4c1d8",
+      "sha256": "b4431e234a1b25e22f793ad1c9b115b66b8566bcfbe195611ae5feffafe5c6fe",
+      "bytes": 31687,
+      "kind": "test-source"
+    },
+    {
+      "path": "apps/v4/lib/registry-health/network.test.ts",
+      "git_blob": "2d67d6e4d58812f98915a60901a95986b8260b0f",
+      "sha256": "07a473861ccfce030f5222695acab60a44013340078bbbf85a953a9f2a6c0bcb",
+      "bytes": 6260,
+      "kind": "test-source"
+    },
+    {
+      "path": "apps/v4/lib/registry-health/rank.test.ts",
+      "git_blob": "dc903338408fb2de3b3488caf44d6696bd72922b",
+      "sha256": "63d7896bbe1b1639b6cde393fe9177019cb94589c7c8e9a5558bb0415f2fada3",
+      "bytes": 1717,
+      "kind": "test-source"
+    },
+    {
+      "path": "apps/v4/lib/registry-health/schema.test.ts",
+      "git_blob": "b083371b3ee801c436654acc19c56c6bfa98bc7b",
+      "sha256": "8555468245a649c21ead589b179d61588b9a96157339e38703399dec28515927",
+      "bytes": 2241,
+      "kind": "test-source"
+    },
+    {
+      "path": "apps/v4/lib/registry-health/score.test.ts",
+      "git_blob": "8959244e06b8090850e2b209339ac50be32f1e5f",
+      "sha256": "eba9846ccfa432a2e4f9605e9102405fde725d632f2d30a6b7e62544f6844f2b",
+      "bytes": 11868,
+      "kind": "test-source"
+    },
+    {
+      "path": "apps/v4/registry/calendar.test.ts",
+      "git_blob": "ee925c4fb323ce2f91786db01958db4daef160cf",
+      "sha256": "74c88172efd778d9d9db47936221528df4123be9e5b4f72743d2beaea4a96811",
+      "bytes": 2113,
+      "kind": "test-source"
+    },
+    {
+      "path": "apps/v4/registry/config.test.ts",
+      "git_blob": "875fc9e63818268d53c22f9517437ee1c0184a3d",
+      "sha256": "eb3f4f997de7eb47c6e653493bb2cc51e6b1a531a857414f1644ab50709e6065",
+      "bytes": 8396,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/helpers/src/ai-sdk/chat.test.ts",
+      "git_blob": "b2bcdb80780fa8ffab71097456aea64b30c33749",
+      "sha256": "d911b874971d810a36da01bc6be5fe34876545c93cdf9089956414d40233b857",
+      "bytes": 9922,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/helpers/src/ai-sdk/format.test.ts",
+      "git_blob": "cd32689d62a0668f0a4adb9cd37544ba28469a12",
+      "sha256": "8c5dce1ab8b0030d5b54b44f7bebc35e7870ea13616d73c862b7a6c3b933bebb",
+      "bytes": 26682,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/helpers/src/ai-sdk/parts.test.ts",
+      "git_blob": "a440351bd01bf0398a748b95b499bb44efc33af7",
+      "sha256": "8b3af3431c34d649e8ec42ed07a651b3daa50eec4736e20e45883d5fe879f82a",
+      "bytes": 6988,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/helpers/src/core/chat.test.ts",
+      "git_blob": "0f41b65e204274c36b596afbe239efbc5c89dd9d",
+      "sha256": "1ac824ca5a45827cdbe7c8ea19bd0748c7ce3ab25b08153ce72ce59bc25af62f",
+      "bytes": 17809,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/helpers/src/core/ids.test.ts",
+      "git_blob": "50efe86afe2dbba9702500cb92a23be5ece24582",
+      "sha256": "fde7df06bab9c0d027e5f1bbe7c4ed5c1eee8756d7abdabc5477a3d0f9a0e6c6",
+      "bytes": 1203,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/helpers/src/core/lower.test.ts",
+      "git_blob": "645d3f1c74d0ee7107d1099276f424f47a9dd042",
+      "sha256": "0358c9abfb1358521b4682cec6e509f68444260c107e1209ebc1a05b4e344c6d",
+      "bytes": 4833,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/helpers/src/core/payloads.test.ts",
+      "git_blob": "cf8989a289103ca4c49587525b573b18b23b92a8",
+      "sha256": "83eebd04d418982010b334d445b043b8f42dd9d2b870e60d09c4803a13d0dc7b",
+      "bytes": 2226,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/helpers/src/core/stream.test.ts",
+      "git_blob": "5859671064f9f99940b91e06c5166d469061236f",
+      "sha256": "301e976926c4dcff1d60a6b0d7ceee5864e59aeff4c48bef9152bf59aff761f3",
+      "bytes": 4557,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/helpers/src/core/writer.test.ts",
+      "git_blob": "3362ecf5a6d7717d1f686ec4300a98a494e269af",
+      "sha256": "8046526e8d750fc9011bead46d3739c727e5f5e3e1ec860ee1b7ce3037f9db5f",
+      "bytes": 5651,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/helpers/src/tanstack-ai/chat.test.ts",
+      "git_blob": "c80af562b33aa4c40692c9c101fa35cd16890de2",
+      "sha256": "cb8ad557cffbd402ac95209ae22a914da740a50ede1444626594b261f5f881a7",
+      "bytes": 3169,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/helpers/src/tanstack-ai/format.test.ts",
+      "git_blob": "ee5c70c4fff52618eaf2404b5e889b5630eefbfa",
+      "sha256": "36603832d726e68a8c54985b8ebf4c7d7867f2f0940b5913b8a6467295bbd24c",
+      "bytes": 6968,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/helpers/src/tanstack-ai/parts.test.ts",
+      "git_blob": "8e20afa64c9f6509b187a5c57b525b8c5d189084",
+      "sha256": "e09500301f6aebe83bbe47cdd448991c8ebd0afd05c00b742b181fdb1a387cf2",
+      "bytes": 1047,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/react/src/message-scroller/geometry.test.ts",
+      "git_blob": "c0698b2f3b1fb8dffaf53e54665a81ff39b2b28d",
+      "sha256": "d96490790e1b55a7b4b0520cf61364f9ec61c2bb4b8742466ff39361f0afdbe3",
+      "bytes": 12662,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/react/src/message-scroller/message-scroller.browser.test.tsx",
+      "git_blob": "184efa6f2ad628f60452d75ff0102a7e3e330aea",
+      "sha256": "4aacfb0ea7635c0e02b9ffaf0b3802f34ca7dbd00410ab7179c689e701a3f078",
+      "bytes": 20478,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/react/src/message-scroller/message-scroller.perf.browser.test.tsx",
+      "git_blob": "7b220f6dfc7609116777e541fb09f25c179c6f41",
+      "sha256": "11800f94c55f3ece102cd74b33bf5b9e60ba251980c76d9c8cfe45d32eed1a36",
+      "bytes": 27663,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/react/src/message-scroller/message-scroller.test.tsx",
+      "git_blob": "6c07f477f5a1f0d8c1f8ec8e388a0f2a2b5eb6e6",
+      "sha256": "4ae31265b04900b14c538a24ad1bbdec4bd435d5448a6eadd861ffeb0e355e31",
+      "bytes": 59006,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/react/src/questionnaire/questionnaire-ssr.test.tsx",
+      "git_blob": "85091eaa98d3caf8e5f92d454d83a664a8a56de7",
+      "sha256": "f5f889669b83675b419772a85839b8b5f33a12b3227035371df0f0bde0f5dc7d",
+      "bytes": 22078,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/react/src/questionnaire/questionnaire.browser.test.tsx",
+      "git_blob": "3c873dd0fcb5e8503153ce168506025b2fd27324",
+      "sha256": "fa588257838a5af6cabe9fb45da8bbfd961838feb789d5518a91a0b6e2c491d8",
+      "bytes": 42461,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/react/src/questionnaire/questionnaire.test.tsx",
+      "git_blob": "89577c84dd9b86e77d2642fd95f33e89b55e6bed",
+      "sha256": "24466183bd3b84ba867152977261a3a9354d82bd70c44e820823527541ae4a5d",
+      "bytes": 69613,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/preset/preset.test.ts",
+      "git_blob": "338ffbcf6ad81d0c33145f1f8bb8e88aa0c556f0",
+      "sha256": "9137e08caba6605cc1055ed454af58601124d895bd983ebec4b94ef96c03043f",
+      "bytes": 8869,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/registry/add.integration.test.ts",
+      "git_blob": "cfd843251917953af78750e1dea1ae300db9d2cf",
+      "sha256": "548b4ad41df73bbacfcccd859910b6e1072911290efa451bc16715c84a262130",
+      "bytes": 5396,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/registry/add.test.ts",
+      "git_blob": "15f2742b316b595e17137ab3fec7f6cad280ae18",
+      "sha256": "ada789dfd40331659ac5a8c8970b79be7cd6cc2d8ce0e306611df493b6c79cb1",
+      "bytes": 12516,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/registry/address.test.ts",
+      "git_blob": "07eb7644ec7fdcee26a5aac36db103bf2b86c34c",
+      "sha256": "521d40fd3ecd63caf2cedc62132b56ef7efc8b0dfcbcd312569d4ac29c72d8ff",
+      "bytes": 5022,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/registry/api.test.ts",
+      "git_blob": "677c8d12e19850898bf97345bf9779360475eb1a",
+      "sha256": "9968f1829261d057b2487b52edb3fa36d277c96949ea36050741d418b9843daf",
+      "bytes": 71830,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/registry/builder.test.ts",
+      "git_blob": "d6b606c47fa84cdbd8005f54c496a4822c25b626",
+      "sha256": "10711f6ed8f02e2844774c1eb6cafada2c660ff7a91736e1a465e36f163f0bbb",
+      "bytes": 13878,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/registry/config.test.ts",
+      "git_blob": "175cda7af5f596909defe6ea6796e13c43601579",
+      "sha256": "4d0fbb4c5eb59ebc8cd478034699d748a75e5ad3ba708b3a53adbdd147dd2db9",
+      "bytes": 6135,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/registry/context.test.ts",
+      "git_blob": "9e014267a1d23437e309da463fcd09655556d546",
+      "sha256": "eed1ca674211500f8e93fbfb0ea94c1fed1661df6f362e68911a101fb91ff2fb",
+      "bytes": 1874,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/registry/env.test.ts",
+      "git_blob": "8712b89ad7c234545d41f6f3a408248da3b573ac",
+      "sha256": "e8daf9464bcf8d373b40a9cefe70709ba0b530f5eebbe528472f5d3747251cc4",
+      "bytes": 1527,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/registry/fetcher.test.ts",
+      "git_blob": "a627898849e9a96342462cc6d52d77f00bfc6933",
+      "sha256": "f015d3652635f8bb2520dfcc7ff05ebdbfc0514599023d1390ea0be4f825d9ff",
+      "bytes": 12100,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/registry/github-cli.integration.test.ts",
+      "git_blob": "82a4811e0898295389e46c1d618993f6b9446c32",
+      "sha256": "aa31afe4232bbd59eae02cd5f9ac0377c2c60ed23313e71e19ca773a1345d18f",
+      "bytes": 2819,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/registry/github-cli.test.ts",
+      "git_blob": "b16e6ad4fd937192135115f884a504d507af6d70",
+      "sha256": "ae8ad13fb2fc086f3d20b022a1fee1d3508d3ecb863c9db5a998dec3a952952e",
+      "bytes": 16344,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/registry/github-ref.test.ts",
+      "git_blob": "b3f9df57cf1e001619b960b5b7a6787267743d69",
+      "sha256": "22868bfb5d7158cdd587bc297aa1c7d6db14907333ebdb0125ebaef68b24d343",
+      "bytes": 5347,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/registry/github.test.ts",
+      "git_blob": "12991f3e72b4d3a350a9909ce1291b85c980baba",
+      "sha256": "c1048f6b4ed302d59c97dc44aeebacde90f02e46d3f67e2b8a080d5dee7cba85",
+      "bytes": 38874,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/registry/loader.test.ts",
+      "git_blob": "88662178fef4b6e9997d1edad30e458424152719",
+      "sha256": "37025decd36c330f074b5429a378ddc5fa16f8741cb67c2b4047184dbf145106",
+      "bytes": 16907,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/registry/namespaces.test.ts",
+      "git_blob": "18d539b689de661dd3e8edff71ec83d4b60db82e",
+      "sha256": "30c1a334c365cff12bd561b25169f081e3183dbb6cd29e9fadf59e8bc4767e22",
+      "bytes": 13252,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/registry/parser.test.ts",
+      "git_blob": "c40e80a4768ff8305f39f71de2843f215212ea44",
+      "sha256": "19baba44ce5dcd586beaf46de05c10b217cbb93617ebc8a8408d4bbc35268166",
+      "bytes": 9844,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/registry/proxy.integration.test.ts",
+      "git_blob": "180848da3d065ff4417c3ea37eff57713ac27cfb",
+      "sha256": "d9eb2cec3e488787e53cd9469388e33dc56a9847bb4ac79d8042b269e4b23f6c",
+      "bytes": 10056,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/registry/proxy.test.ts",
+      "git_blob": "ea7f05f2025e92a6e05e0912027c479e86c703c4",
+      "sha256": "799f19083cab558c69b74b4b7ef95bc1558623c3ed7817245eb7f9342d3983b2",
+      "bytes": 9458,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/registry/resolver.test.ts",
+      "git_blob": "d8cb773a0894040165affc47f1d435b2bf92c6cc",
+      "sha256": "58f9897a07a3fdc71bb5877772df25cc5bcd299794a8b697110b4f3436cb18fd",
+      "bytes": 70480,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/registry/schema.test.ts",
+      "git_blob": "8115dc9676c8200d609cebe3ac142582c64e8615",
+      "sha256": "e75ea7bcf3ef1d8b3a7b125861c2ca90517aa6bbcc3aa2a61f0fb947a929fb52",
+      "bytes": 3431,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/registry/search.test.ts",
+      "git_blob": "bae7ea00ea4494f0a24aeb3a8babfaebe30bd9d3",
+      "sha256": "d53724d54fd5027a780c9a585a2c0bc514c2a72ceee6f90386ba8edc02045c30",
+      "bytes": 39095,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/registry/source.test.ts",
+      "git_blob": "6e34dcfbecad56213be98d64390bee82a31512d7",
+      "sha256": "1250464e0a14a7693a14a26ba25a1aca84da410180098e810cb74238527a80a8",
+      "bytes": 15388,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/registry/utils.test.ts",
+      "git_blob": "071273b09df27c7c2525fb7624f2fd76ccccb8fb",
+      "sha256": "6bb8c2e5f32a17ed076b2b56931ea03a684b3912d4dc20a85fa386976410d32b",
+      "bytes": 21742,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/registry/validate.test.ts",
+      "git_blob": "0f549e67469ad8ea6a83ecb26c1c7eab380d432b",
+      "sha256": "6c2453a160f9cd8a453fb5d0f73cf3a698ce024ebef260030b0b6b1105cb070e",
+      "bytes": 16429,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/registry/validator.test.ts",
+      "git_blob": "58905149b2432ecf6975a0872a8d50d9397c56a5",
+      "sha256": "57aecbdecd68c9d0026486be842e7d42204a92663be99bad5bf545207099db32",
+      "bytes": 2842,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/test-helpers/index.test.ts",
+      "git_blob": "1d6288aab910f418fcb0949a2f30a211a26c70be",
+      "sha256": "b2e7b4a003b82061c9d1854961fe9a417e2c94ea7d04e131e6ef9134e3a71beb",
+      "bytes": 1341,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/add-components.test.ts",
+      "git_blob": "2d1d7c8206bec10d33b32981fd8e19df4ff19179",
+      "sha256": "526b6fd9b104e822092dd22545cbc84de59894e899aab22786b8f4b81c98086b",
+      "bytes": 8641,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/add-components.workspace.test.ts",
+      "git_blob": "4596f4c161793da83f1c6bd329ae5846c01d986a",
+      "sha256": "1f9ef35f2245fcf90c40ffd4b21a632c6008825ede06999b08628a816c89a162",
+      "bytes": 27565,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/compare.test.ts",
+      "git_blob": "ac5d6227a2add4fed44b2e98ca978038e0d56e3b",
+      "sha256": "fc67b64ecd5ab2529c5708255469b24780f3983ae4eaa6cf633af372af06f9c4",
+      "bytes": 8037,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/env-helpers.test.ts",
+      "git_blob": "59025d2697695e9757a6e85a8cd2ae1b8ee2cb3b",
+      "sha256": "fa57c24ccca5d986eafdeb42033cfd1c87a706e27ede8eb4929682dce21fa304",
+      "bytes": 10501,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/env-loader.test.ts",
+      "git_blob": "3f7ad8fc5ce13dbe84ba0fc41bc959d7220fc662",
+      "sha256": "5b6195f155f22e68d2e74292c3b8f690d9b78f5560e3259cbe5238f3ecc7637a",
+      "bytes": 1750,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/get-config.test.ts",
+      "git_blob": "6329fa9cc1b669e8985afcd702b932181a52e5b0",
+      "sha256": "6f0fd15968ab21275573505deb4a51ff7a1d6cdeb327b08116ec730f5aa055b5",
+      "bytes": 20802,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/get-monorepo-info.test.ts",
+      "git_blob": "98d2598d303197a48e7c4c59f2a14ec292a3b878",
+      "sha256": "67287422a8230856b117eeb0f6215d87e966c095a9b29e79f84852d3b529b887",
+      "bytes": 10616,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/get-package-manager.test.ts",
+      "git_blob": "18db815897676844a3819f8cd54e03b2fff875a4",
+      "sha256": "e4b1e19090f9cb57dcee0fd69e832e35c60dd94ca553b1f0d1845fde8409e3ba",
+      "bytes": 1567,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/get-project-info.test.ts",
+      "git_blob": "58e9ed43873e706423005af327c674fdc52e6d8a",
+      "sha256": "7f2cd91ee15a8760ad6dd42f62c47301d9b2a25e3ff8adbb4d7f24d456e400ff",
+      "bytes": 16497,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/is-safe-target.test.ts",
+      "git_blob": "c76d921cca529e0ec40ed563dacc5c63260fd148",
+      "sha256": "bb9c4bf93ca4032d7078bb1b509a75ac84736febf98184191951d326a5feeef2",
+      "bytes": 4317,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/resolve-import.test.ts",
+      "git_blob": "66df15d0a36d3071efbc2abb03f75e9005b865ca",
+      "sha256": "4628ed2d54ebedca2cd7df6c33f1fd955c48fe59feb0a1eedafb13e6e3783312",
+      "bytes": 7142,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/transformers/__snapshots__/transform-css-vars.test.ts.snap",
+      "git_blob": "4169352a130df7a8a55a2eb0d73cc8a87e825218",
+      "sha256": "25a18dac08f66a25c81eb36c6b162d9b33e37354ca0b8ca34e4ce7bf102702c1",
+      "bytes": 1115,
+      "kind": "snapshot"
+    },
+    {
+      "path": "packages/registry/src/utils/transformers/__snapshots__/transform-import.test.ts.snap",
+      "git_blob": "93bdda49a3e566d96b56ccba71ebd7a42b8f753b",
+      "sha256": "a2946fcebee10454a6cc8625a64f6d74566a0edcc2464d620ad3f4b448b8bc4d",
+      "bytes": 4034,
+      "kind": "snapshot"
+    },
+    {
+      "path": "packages/registry/src/utils/transformers/__snapshots__/transform-rsc.test.ts.snap",
+      "git_blob": "9f378a737df13a731854e5187c14852225f466e2",
+      "sha256": "609817561afa4ec35d518691e766cc89acf3c2bc2798d0d35c0289ad6638ecbc",
+      "bytes": 857,
+      "kind": "snapshot"
+    },
+    {
+      "path": "packages/registry/src/utils/transformers/__snapshots__/transform-tw-prefix.test.ts.snap",
+      "git_blob": "2812b93876728040e98ff5b21516d889fb8245e0",
+      "sha256": "c01dc248ad03bebbcfbe2eb8ca38d3ccdfbdd782a5afcb092b7ca6fb54fb551a",
+      "bytes": 3000,
+      "kind": "snapshot"
+    },
+    {
+      "path": "packages/registry/src/utils/transformers/transform-aschild.test.ts",
+      "git_blob": "61fcb25e06febd14b92ecb54cfe8c5de656e39b4",
+      "sha256": "bff269386b315f9eb0ed114a97f25a958328d848d221c6ecc8eae84b1529b603",
+      "bytes": 14367,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/transformers/transform-cleanup.test.ts",
+      "git_blob": "893e8cb53b6c3dd5d379d486ce6db482f28c8e5d",
+      "sha256": "966d356aaa265bffb1597e90f58f65bd1461d5bc167373132266e5e2dfbfe71b",
+      "bytes": 5269,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/transformers/transform-css-vars.test.ts",
+      "git_blob": "91a495a7abcd91d070e230f406430266bac1e646",
+      "sha256": "5ac288bccb9129ff0cbb8e03407cb3b32044f7b600557c6d1ffed3234ac23b02",
+      "bytes": 5496,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/transformers/transform-font.test.ts",
+      "git_blob": "ed79252f6a3e75be95cc6158b5acc97b22ddaca8",
+      "sha256": "2cfb640f1ef01b023d9fb5042ed95889a55c91ca33c3a03b0ceadd07db6ec2fd",
+      "bytes": 4593,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/transformers/transform-icons.test.ts",
+      "git_blob": "17746800ba4c315aee21bc0bba7dc0bf27a729a5",
+      "sha256": "86d64df2f8f5bef3a01e374d5e00745d1abf2de66763eddb5b89ed4c7bca36c4",
+      "bytes": 18713,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/transformers/transform-import.test.ts",
+      "git_blob": "2f072f69cc7d4616d44ae9dccc1debaa9c175c5d",
+      "sha256": "ce73764e644bdba1efaffa225f2b478d14e38c76c2234967423bde33062cec6c",
+      "bytes": 18462,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/transformers/transform-menu.test.ts",
+      "git_blob": "8a20e218c62a4a43da7e2d18445266db61198aa3",
+      "sha256": "e9f5f0b75ad911df144142309de47b4765007c95a2cab50d0f9e918f077d498f",
+      "bytes": 15114,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/transformers/transform-next.test.ts",
+      "git_blob": "ea64a52bf28157adfb887a7da135d35cf726bdeb",
+      "sha256": "c11f45792b73a31bba56b3211f6a10f277e70f1c93d3a6fdc48e0ac9e65d0a27",
+      "bytes": 11600,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/transformers/transform-rsc.test.ts",
+      "git_blob": "294cdf6989d911cd99270625ff678aa089f4b76e",
+      "sha256": "ac3d2202bfa0f3ae762c076ec0eeac5608cb9d74f4f9efc2be65c06baf3b8ec7",
+      "bytes": 1969,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/transformers/transform-rtl.test.ts",
+      "git_blob": "3788722ba1ad1cdf073015a1878026e62bf3f3b2",
+      "sha256": "ae412bb1126071da66c7385d8bd5cb26d65632b1783f437827b399f0f8973b04",
+      "bytes": 22492,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/transformers/transform-tw-prefix.test.ts",
+      "git_blob": "b09bfaf3705caca67883b624af2a5294b1506215",
+      "sha256": "e51841c7bc5f91a3117c7a5448cab95b0d16bbe3ade94e37229f8075bfc7924b",
+      "bytes": 8522,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/updaters/__snapshots__/update-tailwind-config.test.ts.snap",
+      "git_blob": "ec6f16468265f8c5ce9d745f31e525c38306f791",
+      "sha256": "39506231952217b525700b280d2a12fd2fdea01acd2efbf925afe7edd8f1f3ad",
+      "bytes": 13818,
+      "kind": "snapshot"
+    },
+    {
+      "path": "packages/registry/src/utils/updaters/update-css-vars.test.ts",
+      "git_blob": "e10bcd38ac25d2cd9469ca2032fcbdfc52eb4148",
+      "sha256": "9431d99e5bbbd39165864dc445ff52091becb7459bd666ec3759c8c2171335d4",
+      "bytes": 30733,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/updaters/update-css.test.ts",
+      "git_blob": "2fcaf9c8639e07ad1141dba0af24e9fcdc402f55",
+      "sha256": "ed8954aac00444b3c1edd0a6978219a033ade3a27a7f756fc59dd63da6d28575",
+      "bytes": 25704,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/updaters/update-dependencies.test.ts",
+      "git_blob": "a3b71a979d53382137b00e2e68538666a006fe39",
+      "sha256": "91fdd3cc1c57234af648cf098984833061b8e27847fdde880cf3fe129240fd76",
+      "bytes": 8884,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/updaters/update-env-vars.test.ts",
+      "git_blob": "ff761a16c31c8059e661fd5f8ec36eab52665cb2",
+      "sha256": "817834f5b1e493c8f54d3c99662ec566beba1a10bf3fed2225091dcf56382281",
+      "bytes": 4834,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/updaters/update-files.test.ts",
+      "git_blob": "4aa558ee06e35f0876427e4b273b93f90e97777c",
+      "sha256": "1cc93b398138c45a43301ca262fed29e0c9ad19ae160c89a86236788377e7ac0",
+      "bytes": 68530,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/updaters/update-fonts.test.ts",
+      "git_blob": "a1e9dd2bfbf8a3a61d1d28a162c03d2efc8b0263",
+      "sha256": "aba048eb6bd2b903e69facbf775e141878c26dffca8120f0a0ab5a92d2c6b3b3",
+      "bytes": 39712,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/registry/src/utils/updaters/update-tailwind-config.test.ts",
+      "git_blob": "ae09da206e6ddaf674938796bc169da139f6642a",
+      "sha256": "ae7c27e5c03bdaee64a1a5e6b585f6e95fde16d33b5ebc82d9e9c51f50b029f1",
+      "bytes": 33948,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/commands/add.test.ts",
+      "git_blob": "196c758c65bcc52e7035ba6fdc6e35883f59eb3c",
+      "sha256": "18c33016dc3fd06575fd0425a5e99e0cb930973609bca0beb08bf4f62af4dfd2",
+      "bytes": 21576,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/commands/apply.test.ts",
+      "git_blob": "247ce476458df1407a32fb29ddacd8dc4790564c",
+      "sha256": "95b53eff821d72916d847a0f109ab4d943212c18ccf1c4525d7bfc02631c18ce",
+      "bytes": 6127,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/commands/build.test.ts",
+      "git_blob": "21621e90c81e76f6c6417d7e9d002fecba6adde1",
+      "sha256": "20cf1ab522f8344647b7aba98593daa225117787f5a33910ffeb82b67bd0e0c2",
+      "bytes": 3748,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/commands/docs.test.ts",
+      "git_blob": "ac50c118ad843b4a0567292b30bdca78d6e382a5",
+      "sha256": "7d12fce6712a90dbdade0b877ec9f0a43f1eefd764f4161a4758e2f9994ac6d9",
+      "bytes": 1468,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/commands/eject.test.ts",
+      "git_blob": "6b8c81732fd1bdaf00389453233b59769c194815",
+      "sha256": "271575472d5e869294aa66341788617c12819ead0728c2bfa379ca24de9a9a70",
+      "bytes": 6504,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/commands/init.test.ts",
+      "git_blob": "e987d382dfdd44f4ef26822ec54e036ef7551a6c",
+      "sha256": "2d9429f37e021ef52f5076d374e150606431a78826047bd3f77e0155d9f48a90",
+      "bytes": 8005,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/commands/preset.test.ts",
+      "git_blob": "d628a2f0073cc807d4a82b13f894e0274831f39a",
+      "sha256": "32aa465f03a5e6d6819f799f18e2c725ce24d570bbeb124b68b658c565c59e9e",
+      "bytes": 14713,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/commands/registry/add.test.ts",
+      "git_blob": "a0c06f961debd0481064a1a45bcb9d63db04301a",
+      "sha256": "938276513af0f78e7b40cdb0404d41c4328ed93f5e8b9fa1b625e14e7eae7a1c",
+      "bytes": 6435,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/commands/registry/validate.test.ts",
+      "git_blob": "71b2890a1e2fe4bba3677ca856da1fff66d65784",
+      "sha256": "7f5f54e6e19c3480d72b10b1ade612c157875a00948d5f70bd8e3a588d0aacae",
+      "bytes": 5995,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/commands/search.test.ts",
+      "git_blob": "432a3fa1ca24e2408cc76fcf37623ffc7fe4409b",
+      "sha256": "bdca09f25890d9ec5e5ffa1d241b83eedbbded3385b6661d9a01dd942e02086f",
+      "bytes": 9283,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/mcp/utils.test.ts",
+      "git_blob": "0f80fbb35da66b926050009202547a10ea0b7910",
+      "sha256": "29edce325b9a42eaae7753575ecc5ee9232f050e18d48609f6dd4b6ac595b0ed",
+      "bytes": 9952,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/migrations/migrate-base-color.test.ts",
+      "git_blob": "a2763a31b889fc9f0f0626b68e0d2316cac11e73",
+      "sha256": "c8b000693663ef3b7ccdddd126b583b15e0aa07866e3bbb3aae4d3841d50118f",
+      "bytes": 4540,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/migrations/migrate-cn.test.ts",
+      "git_blob": "561c4f63830625dde0b351cebdf486c59cfdc2f7",
+      "sha256": "8fde431ebf44697d86f0014816bec87e850d6634da17868f9d82badb0ad7d41a",
+      "bytes": 28459,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/migrations/migrate-icons.test.ts",
+      "git_blob": "9bd1cd998f40700cbbeeb388d344ad988ee7c339",
+      "sha256": "98760a1e8de11dcbe626933bd35ee98a980146e029ff24e5c6b51ad85db9ed90",
+      "bytes": 14345,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/migrations/migrate-radix.test.ts",
+      "git_blob": "080414bd233bd5e7a23c7afc0038bffc8beed6a7",
+      "sha256": "30eafb6b82c58255a5ead2f8b182ebed9a1c0c2c809f7a02f1fdd73358334a87",
+      "bytes": 38775,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/migrations/migrate-rtl.test.ts",
+      "git_blob": "8cfb6381afafb20a59342038db3392d8c80304f5",
+      "sha256": "2d485f667b4c3d532ee7944ce66e8a7c5f6a6c4ab08f541ece9d3b42c51d664a",
+      "bytes": 3662,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/preflights/preflight-init.test.ts",
+      "git_blob": "5931a11d09a846de59d93d83e758c0c0fa814640",
+      "sha256": "e870313526268af6af65fe180abf08d4709ab8ad2c09fd1caa0bf291126f4c53",
+      "bytes": 3732,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/preflights/preflight-migrate.test.ts",
+      "git_blob": "898f50d779e1675326815329f3098767158c3967",
+      "sha256": "8a76b98120b68d324bdbfeaddda8bb27851ea94a3eafbcf3bb30ab65f03975a7",
+      "bytes": 1265,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/preset/presets.test.ts",
+      "git_blob": "9c4c9c3ee9583d5b6b88caa37b3d473ea34309e1",
+      "sha256": "d3fbc8b4d9958f719a988c55bfe4a384eee51d610f408d9f3991b1d09dd93f19",
+      "bytes": 6032,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/preset/resolve.test.ts",
+      "git_blob": "17a9575c6a3f4f3f686ee0e4baef4809d5a9ed61",
+      "sha256": "27dd6b3f276774d930c0d0b7f781cb364385a455d8eb7d7593f662d909f34fcc",
+      "bytes": 9126,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/styles/create-style-map.test.ts",
+      "git_blob": "2627b04dadab5c4e53ba18d44322a34cc7f7380a",
+      "sha256": "8d8850eb0fb8a2ade949c71e961201d16b20102b904f4b7c5287d426b892076b",
+      "bytes": 3225,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/styles/transform-style-map.test.ts",
+      "git_blob": "a97233819a93ee2de3ec72bf68dd3f8c9ed53afa",
+      "sha256": "d53193e2cd98b36eadf8a1ad5259a7b6ec9613ace571023c2edfccbe11521557",
+      "bytes": 29766,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/templates/create-template.test.ts",
+      "git_blob": "a6a6452096429fc8939d5a11daf87aa90e4342a6",
+      "sha256": "6f59f78066c7a6b1fdce467b7471779471d82b4d28111e633a9509d78ab2b604",
+      "bytes": 8522,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/test-helpers/index.test.ts",
+      "git_blob": "1d6288aab910f418fcb0949a2f30a211a26c70be",
+      "sha256": "b2e7b4a003b82061c9d1854961fe9a417e2c94ea7d04e131e6ef9134e3a71beb",
+      "bytes": 1341,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/utils/alias.test.ts",
+      "git_blob": "72133716c12121601d8cea27f2b29d60f6d2b8a6",
+      "sha256": "4896916af1d3f204ad7f472ea58957772e88fb2891ccfcc73d1ee0fcc2c594bb",
+      "bytes": 2213,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/utils/create-project.test.ts",
+      "git_blob": "3ffb6588e549612dd636c9687fa9c7013a7a593b",
+      "sha256": "15bd0378966daee0e9fb64b060a8f378f3acdd9826347dff50f385a0783cd8bb",
+      "bytes": 4888,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/utils/dry-run.test.ts",
+      "git_blob": "719ce9ad5fd6c63490d60cabdf382bd9a038373e",
+      "sha256": "fad31335f8e2694f5be68f628aeaa093813d8b66f006437e97d53fc1ef9cad96",
+      "bytes": 51352,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/utils/file-helper.test.ts",
+      "git_blob": "4fbe74d8582a7d54ffb879b3b4ac4a0a8d9ed3d4",
+      "sha256": "71468476ce5c6431881626d9109887e799a27aaa27464864c80894f5efd06d82",
+      "bytes": 2237,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/utils/handle-error.test.ts",
+      "git_blob": "d8148b1992418ac763184ff8564f5cfadd6ed2d2",
+      "sha256": "ee07dd499df9410b9bb3eeb5ff796138842b4b62c2e853dda2776061b90c26de",
+      "bytes": 2792,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/utils/registries.test.ts",
+      "git_blob": "1c66cf29a73561d7c0118946954865092a93ffff",
+      "sha256": "f126c5c88048760344528a0b827cc090ef124c6cae92bb1c58a0e3c26c00e35c",
+      "bytes": 7877,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/utils/scaffold.test.ts",
+      "git_blob": "67099c09a377b288d693a065483bf4c808d153a3",
+      "sha256": "9cf0915f2b4ab41da086779ad87cbbd80949698ec1ae906da4d6b89ff42912b3",
+      "bytes": 21270,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/utils/transformers/transform-legacy-icons.test.ts",
+      "git_blob": "0307de3bc79a850a31c0468850b5228e03eb37d7",
+      "sha256": "d0d56f546608fe6bc8533d76d9d2382f5bce8bea37a6b9b69df5b99863e06199",
+      "bytes": 3125,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/utils/transformers/transform-render.test.ts",
+      "git_blob": "717ee986b05902dcefdce3f59481b72b50b2b228",
+      "sha256": "f6fee0a26468a22222f972aacbcd201f8e0de43c05e3ccc041922ee8186e122e",
+      "bytes": 9788,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/shadcn/src/utils/updaters/__snapshots__/update-tailwind-content.test.ts.snap",
+      "git_blob": "6f82d6b72dd14f1b5788af4861e5488c9b2e7ce6",
+      "sha256": "03384f702385633a41203eda172e0fb0d40571b78c6824d60c80b78cb07f1254",
+      "bytes": 1424,
+      "kind": "snapshot"
+    },
+    {
+      "path": "packages/shadcn/src/utils/updaters/update-tailwind-content.test.ts",
+      "git_blob": "697fc57e02ad2d65baa43b3f48298f15a50e65e4",
+      "sha256": "09ab09214174476d6efc16a97f63c33371dbe74d64c3d8d8404c6abfc43afa20",
+      "bytes": 2407,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/tests/src/tests/add.test.ts",
+      "git_blob": "e4b5060cf01f3af8e14624b0cb099039a53d70e2",
+      "sha256": "b7b47366ff2b2fdc75cf8aec53fc662fc18a6e6c83212233a25c0f891b2a9ecf",
+      "bytes": 29491,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/tests/src/tests/apply.test.ts",
+      "git_blob": "92fc8934e02910872acfe6c2422077c020623024",
+      "sha256": "94e76e4aa02717eee3e21205fa936af9ea2c6c0d94a907d3e4422175e8452325",
+      "bytes": 20487,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/tests/src/tests/init.test.ts",
+      "git_blob": "0508f496c8db16abc93505081d095fb8cc05fc83",
+      "sha256": "2472958d9a0a368912509937062f71a3aa570ef4a08f6faed003f81d1ba867f2",
+      "bytes": 25880,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/tests/src/tests/registries.test.ts",
+      "git_blob": "926614fd06c2d935f3d1cad4c10da8c07d87c7f7",
+      "sha256": "04e95c6cf6b51d278c27eade6d41914ccec3cd15b270b693a1ab50a51707ee5b",
+      "bytes": 40774,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/tests/src/tests/search.test.ts",
+      "git_blob": "02ad10cb4ea9e72447b524140c4e416e385710a3",
+      "sha256": "df78076a1e2372e2d42aebe3e52233da7f2adb630d58c3f3346bdfb38127dd24",
+      "bytes": 33368,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/tests/src/tests/typeset.test.ts",
+      "git_blob": "bd6c516b64f5cbf85f7999cbf53c40283a343b2c",
+      "sha256": "e2bda7ccc27c9d1f5b0c5909f03dc6cee90b715c805780a54112d0f83871c905",
+      "bytes": 3331,
+      "kind": "test-source"
+    },
+    {
+      "path": "packages/tests/src/tests/view.test.ts",
+      "git_blob": "b51149a106dae834815858f6626136ed6acb681c",
+      "sha256": "b91ce57e918d5f2d4ff98a0b36dea56e2e0d49efc78d96fe87c23ffc42a309b1",
+      "bytes": 25074,
+      "kind": "test-source"
+    }
+  ],
+  "official_gallery_templates": {
+    "repository": "https://github.com/shadcn-ui/ui-test-apps",
+    "commit": "8868c03b4c1f394f310bb4728d754454c327502c",
+    "tree": "a233f4aa282e1b2876f46dc8dd4ad4349af36095",
+    "reference_from_source_pin": "apps/v4/scripts/build-test-app.mts",
+    "pin_relationship": "Separate read-only audit pin; not fixed or certified by the shadcn source commit.",
+    "tracked_paths": 58,
+    "tracked_path_listing_sha256": "e3d309a15297b13c00877428e2049a1eb4f49a9598b0e1cdd09b1bd80cfb16ff",
+    "test_source_files": 0,
+    "source_assertion_declarations": 0,
+    "assertion_search_pattern": "\\b(?:describe|it|test|expect|assert)\\s*\\(",
+    "package_manifests": [
+      {
+        "path": "package.json",
+        "sha256": "2cf95d6ba21fa0a6240c1ca654c21fd7b8ef2eeb0a52ebcae5f9ba5dc177eea3",
+        "bytes": 238,
+        "scripts": {
+          "dev": "turbo run dev",
+          "build": "turbo run build",
+          "lint": "turbo run lint"
+        }
+      },
+      {
+        "path": "next-base/package.json",
+        "sha256": "2123a1923b7abb5d64498bb14f478c98c90cb4a77fb567bb1429bed353b8b707",
+        "bytes": 1049,
+        "scripts": {
+          "dev": "next dev --port 3200",
+          "build": "next build",
+          "start": "next start",
+          "lint": "eslint"
+        }
+      },
+      {
+        "path": "next-radix/package.json",
+        "sha256": "84a2fc0b8fec2e57f5908c2f5dd40d615bbc86f96e03545eb6e02591e9b91916",
+        "bytes": 1076,
+        "scripts": {
+          "dev": "next dev --port 3100",
+          "build": "next build",
+          "start": "next start",
+          "lint": "eslint"
+        }
+      }
+    ],
+    "paths": [
+      ".gitignore",
+      "LICENSE.md",
+      "README.md",
+      "next-base/.gitignore",
+      "next-base/README.md",
+      "next-base/app/dark-mode-toggle.tsx",
+      "next-base/app/favicon.ico",
+      "next-base/app/globals.css",
+      "next-base/app/layout.tsx",
+      "next-base/app/page.tsx",
+      "next-base/app/theme-provider.tsx",
+      "next-base/components.json",
+      "next-base/components/component-pagination.tsx",
+      "next-base/components/example.tsx",
+      "next-base/eslint.config.mjs",
+      "next-base/lib/blocks.ts",
+      "next-base/lib/components.ts",
+      "next-base/lib/utils.ts",
+      "next-base/next.config.ts",
+      "next-base/package-lock.json",
+      "next-base/package.json",
+      "next-base/postcss.config.mjs",
+      "next-base/public/file.svg",
+      "next-base/public/globe.svg",
+      "next-base/public/next.svg",
+      "next-base/public/vercel.svg",
+      "next-base/public/window.svg",
+      "next-base/tsconfig.json",
+      "next-radix/.gitignore",
+      "next-radix/README.md",
+      "next-radix/app/dark-mode-toggle.tsx",
+      "next-radix/app/favicon.ico",
+      "next-radix/app/globals.css",
+      "next-radix/app/layout.tsx",
+      "next-radix/app/page.tsx",
+      "next-radix/app/theme-provider.tsx",
+      "next-radix/components.json",
+      "next-radix/components/.gitkeep",
+      "next-radix/components/component-pagination.tsx",
+      "next-radix/components/example.tsx",
+      "next-radix/eslint.config.mjs",
+      "next-radix/lib/blocks.ts",
+      "next-radix/lib/components.ts",
+      "next-radix/lib/utils.ts",
+      "next-radix/next.config.ts",
+      "next-radix/package-lock.json",
+      "next-radix/package.json",
+      "next-radix/postcss.config.mjs",
+      "next-radix/public/file.svg",
+      "next-radix/public/globe.svg",
+      "next-radix/public/next.svg",
+      "next-radix/public/vercel.svg",
+      "next-radix/public/window.svg",
+      "next-radix/tsconfig.json",
+      "package.json",
+      "pnpm-lock.yaml",
+      "pnpm-workspace.yaml",
+      "turbo.json"
+    ]
+  },
+  "credit_boundary": "This inventory is provenance data, not executable copied tests. shadcn wrapper/source-derived probes, copied shadcn test assertions, separately pinned Base UI conformance suites and local framework supplements must retain separate credit and expectation provenance."
+}
