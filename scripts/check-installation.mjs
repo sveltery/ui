@@ -38,8 +38,12 @@ try {
     }
     // Remote fields are a separate experimental test fixture, not part of the
     // documented consumer scaffold or the production docs application.
-    writeFileSync(join(consumer, 'svelte.config.js'), `import adapter from '@sveltejs/adapter-auto';
-export default { compilerOptions: { experimental: { async: true } }, kit: { adapter: adapter(), experimental: { remoteFunctions: true } } };
+    rmSync(join(consumer, 'svelte.config.js'));
+    writeFileSync(join(consumer, 'vite.config.ts'), `import adapter from '@sveltejs/adapter-auto';
+import { sveltekit } from '@sveltejs/kit/vite';
+import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from 'vite';
+export default defineConfig({ plugins: [tailwindcss(), sveltekit({ adapter: adapter(), compilerOptions: { experimental: { async: true } }, experimental: { remoteFunctions: true } })] });
 `);
     const remoteRoute = join(consumer, 'src/routes/remote-fields');
     mkdirSync(remoteRoute, { recursive: true });
