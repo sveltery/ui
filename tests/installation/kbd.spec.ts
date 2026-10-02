@@ -6,7 +6,9 @@ test('fresh Kbd archive/source copy preserves Nova and native inert key examples
     await page.setViewportSize({ width, height: 900 }); await page.goto('/kbd');
     await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true');
     const key = page.locator('[data-gallery] [data-slot=kbd]').first();
-    expect(await key.evaluate(node => ({ tag: node.tagName, height: node.getBoundingClientRect().height, display: getComputedStyle(node).display, pointer: getComputedStyle(node).pointerEvents, select: getComputedStyle(node).userSelect, size: getComputedStyle(node).fontSize, font: getComputedStyle(node).fontWeight }))).toEqual({ tag: 'KBD', height: 20, display: 'inline-flex', pointer: 'none', select: 'none', size: '12px', font: '500' });
+    // Basic's native flex-row item is blockified in both pinned React and Svelte.
+    await expect(key).toHaveClass(/\binline-flex\b/);
+    expect(await key.evaluate(node => ({ tag: node.tagName, height: node.getBoundingClientRect().height, display: getComputedStyle(node).display, pointer: getComputedStyle(node).pointerEvents, select: getComputedStyle(node).userSelect, size: getComputedStyle(node).fontSize, font: getComputedStyle(node).fontWeight }))).toEqual({ tag: 'KBD', height: 20, display: 'flex', pointer: 'none', select: 'none', size: '12px', font: '500' });
     expect(await page.locator('[data-gallery] [data-slot=kbd-group]').evaluateAll(nodes => nodes.every(node => node.tagName === 'KBD'))).toBe(true);
     await page.getByRole('button', { name: 'Before keys' }).focus(); await page.keyboard.press('Tab');
     await expect(page.getByRole('button', { name: 'After keys' })).toBeFocused();

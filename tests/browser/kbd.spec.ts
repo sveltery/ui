@@ -12,7 +12,7 @@ for (const width of [1280, 390]) test(`Kbd Nova and five supported pinned exampl
   await page.setViewportSize({ width, height: 1000 }); await page.goto('/kbd'); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true');
   const reference = await context.newPage(); await reference.setViewportSize({ width, height: 1000 }); await reference.goto('/kbd-reference'); await expect(reference.locator('[data-gallery]')).toBeVisible();
   expect(await measurements(page)).toEqual(await measurements(reference));
-  const keys = await measurements(page); expect(keys[0].height).toBe(20); expect(keys[0].minWidth).toBe('20px'); expect(keys[0].fontSize).toBe('12px'); expect(keys[0].fontWeight).toBe('500'); expect(keys[0].pointerEvents).toBe('none'); expect(keys[0].userSelect).toBe('none');
+  const keys = await measurements(page); expect(keys[0].display).toBe('flex'); expect(keys[0].height).toBe(20); expect(keys[0].minWidth).toBe('20px'); expect(keys[0].fontSize).toBe('12px'); expect(keys[0].fontWeight).toBe('500'); expect(keys[0].pointerEvents).toBe('none'); expect(keys[0].userSelect).toBe('none');
   expect(keys.find(key => key.slot === 'kbd-group')?.gap).toBe('4px'); expect(keys.every(key => key.tag === 'KBD' && key.tabIndex === -1 && key.role === null)).toBe(true);
   expect(keys.at(-1)?.height).toBe(32); expect(keys.at(-1)?.padding).toBe('0px 12px');
   for (const current of [page, reference]) {
