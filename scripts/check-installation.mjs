@@ -36,24 +36,6 @@ try {
       mkdirSync(dirname(destination), { recursive: true });
       writeFileSync(destination, `${content}\n`);
     }
-    // Remote fields are a separate experimental test fixture, not part of the
-    // documented consumer scaffold or the production docs application.
-    rmSync(join(consumer, 'svelte.config.js'));
-    writeFileSync(join(consumer, 'vite.config.ts'), `import adapter from '@sveltejs/adapter-auto';
-import { sveltekit } from '@sveltejs/kit/vite';
-import tailwindcss from '@tailwindcss/vite';
-import { defineConfig } from 'vite';
-export default defineConfig({ plugins: [tailwindcss(), sveltekit({ adapter: adapter(), compilerOptions: { experimental: { async: true } }, experimental: { remoteFunctions: true } })] });
-`);
-    const remoteRoute = join(consumer, 'src/routes/remote-fields');
-    mkdirSync(remoteRoute, { recursive: true });
-    for (const file of remoteFixtureFiles) {
-      let content = readFileSync(join(repo, 'apps/docs/remote-fields-fixture/src/routes', file), 'utf8');
-      if (mode === 'copy') {
-        content = content.replaceAll('@sveltery/ui/textarea', '$lib/components/ui/textarea').replaceAll('@sveltery/ui/button', '$lib/components/ui/button');
-      }
-      writeFileSync(join(remoteRoute, file), content);
-    }
     const buttonRoute = join(consumer, 'src/routes/button/+page.svelte');
     mkdirSync(dirname(buttonRoute), { recursive: true });
     writeFileSync(buttonRoute, readFileSync(join(repo, 'scripts/button-consumer.svelte'), 'utf8'));
@@ -81,14 +63,34 @@ export default defineConfig({ plugins: [tailwindcss(), sveltekit({ adapter: adap
     }
     run('pnpm', ['install'], consumer);
     run('pnpm', ['install', '--frozen-lockfile'], consumer);
-    run('pnpm', ['check'], consumer);
-    run('pnpm', ['build'], consumer);
-    if (browser) {
-      execFileSync('pnpm', ['exec', 'playwright', 'test', '--config', 'scripts/installation-playwright.config.ts'], {
-        cwd: repo, stdio: 'inherit', env: { ...process.env, SVELTERY_INSTALLATION_CONSUMER: consumer },
-      });
+    const check = (remote) => {
+      run('pnpm', ['check'], consumer);
+      run('pnpm', ['build'], consumer);
+      if (browser) {
+        execFileSync('pnpm', ['exec', 'playwright', 'test', '--config', 'scripts/installation-playwright.config.ts'], {
+          cwd: repo, stdio: 'inherit', env: { ...process.env, SVELTERY_INSTALLATION_CONSUMER: consumer, SVELTERY_INSTALLATION_REMOTE: remote ? '1' : '0' },
+        });
+      }
+      console.log(`Fresh ${mode} ${remote ? 'experimental remote-field fixture' : 'documented consumer'}: types, SSR/client build${browser ? ' and secured browser' : ''} PASS`);
+    };
+    check(false);
+    // Remote fields are a separate experimental test fixture, not part of the
+    // documented consumer scaffold or the production docs application.
+    const svelteConfig = join(consumer, 'svelte.config.js');
+    const documentedConfig = readFileSync(svelteConfig, 'utf8').replace('export default', "/** @type {import('@sveltejs/kit').Config} */\nconst documentedConfig =");
+    writeFileSync(svelteConfig, `${documentedConfig}
+export default { ...documentedConfig, compilerOptions: { ...documentedConfig.compilerOptions, experimental: { ...documentedConfig.compilerOptions?.experimental, async: true } }, kit: { ...documentedConfig.kit, experimental: { ...documentedConfig.kit?.experimental, remoteFunctions: true } } };
+`);
+    const remoteRoute = join(consumer, 'src/routes/remote-fields');
+    mkdirSync(remoteRoute, { recursive: true });
+    for (const file of remoteFixtureFiles) {
+      let content = readFileSync(join(repo, 'apps/docs/remote-fields-fixture/src/routes', file), 'utf8');
+      if (mode === 'copy') {
+        content = content.replaceAll('@sveltery/ui/textarea', '$lib/components/ui/textarea').replaceAll('@sveltery/ui/button', '$lib/components/ui/button');
+      }
+      writeFileSync(join(remoteRoute, file), content);
     }
-    console.log(`Fresh documented ${mode} consumer with isolated remote-field fixture: install, frozen lock, types, SSR/client build${browser ? ' and secured browser' : ''} PASS`);
+    check(true);
   }
 } finally {
   rmSync(temporary, { recursive: true, force: true });

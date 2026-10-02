@@ -50,6 +50,18 @@ for (const mode of ['default', 'retain', 'reset'] as const) test(`${mode} enhanc
   await page.locator('#ui-submit').click(); await parsed(page, { nativeText: native, text: ui, emptyText: '', uiAction: 'ui' });
 });
 
+test('explicit enhancement resets safely when a native reset control shadows the method', async ({ page }) => {
+  const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
+  page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+  await hydrated(page); await page.locator('#mode-reset').click();
+  expect(await page.locator('#probe').evaluate(form => (form as HTMLFormElement).reset instanceof HTMLButtonElement)).toBe(true);
+  await edit(page, 'Shadow native', 'Shadow UI'); await page.locator('#ui-submit').click();
+  await parsed(page, { nativeText: 'Shadow native', text: 'Shadow UI', emptyText: '', uiAction: 'ui' });
+  await expect(page.locator('#native-text')).toHaveValue('Draft'); await expect(page.locator('#ui-text')).toHaveValue('Draft');
+  await expect.poll(() => json(page, 'values')).toEqual({ nativeText: 'Draft', text: 'Draft', emptyText: '' });
+  expect(errors).toEqual([]);
+});
+
 test('custom enhancement switches from retain to reset and fresh navigation restores the default callback', async ({ page }) => {
   await hydrated(page); await page.locator('#mode-retain').click(); await edit(page); await page.locator('#ui-submit').click();
   await parsed(page, { nativeText: 'Edited native', text: 'Edited UI', emptyText: '', uiAction: 'ui' });
@@ -108,10 +120,19 @@ test('UI SSR ID, identity and edited text survive hydration before scripts are r
   try {
     await page.goto('/', { waitUntil: 'commit' }); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'false');
     await expect(page.locator('#ui-text')).toHaveText('Draft'); await expect(page.locator('#ui-text')).toHaveValue('Draft');
-    const node = await page.locator('#ui-text').elementHandle(); expect(node).not.toBeNull(); await page.locator('#ui-text').fill('Before hydration');
+    const node = await page.locator('#ui-text').elementHandle(); expect(node).not.toBeNull();
+    const nativeNode = await page.locator('#native-text').elementHandle(); expect(nativeNode).not.toBeNull();
+    await page.locator('#native-text').fill('Native before hydration'); await page.locator('#ui-text').fill('Before hydration');
     release(); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true'); await expect(page.locator('#ui-text')).toHaveValue('Before hydration');
     expect(await node!.evaluate(element => element === document.getElementById('ui-text'))).toBe(true);
-    await expect.poll(async () => (await json(page, 'values')).text).toBe('Before hydration'); expect(errors).toEqual([]);
+    expect(await nativeNode!.evaluate(element => element === document.getElementById('native-text'))).toBe(true);
+    // The pinned spread-only native baseline overwrites its pre-hydration edit.
+    await expect(page.locator('#native-text')).toHaveValue('Draft');
+    expect(await json(page, 'values')).toEqual({});
+    await page.locator('#mode-retain').click(); await page.locator('#ui-submit').click();
+    await parsed(page, { nativeText: 'Draft', text: 'Before hydration', emptyText: '', uiAction: 'ui' });
+    expect(await json(page, 'form-data')).toEqual([['nativeText', 'Draft'], ['text', 'Before hydration'], ['emptyText', ''], ['uiAction', 'ui']]);
+    await expect(page.locator('#ui-text')).toHaveValue('Before hydration'); expect(errors).toEqual([]);
   } finally { release(); }
 });
 

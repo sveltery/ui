@@ -23,7 +23,7 @@ Trigger, Close, Title, Description and Overlay forward the original child snippe
 
 The [SvelteKit installation guide](installation.md) covers local archives, source copying, Tailwind 4.3 source scanning, `tw-animate-css` 1.4.0 and Nova theme tokens. The [fixture theme](../apps/docs/src/lib/theme.css) is the workspace integration. Styles are the scoped Nova Dialog and native close subset; screenshots compare the exercised example only.
 
-The shared-helper and example simplifications remain proposed in [PR #11](https://github.com/sveltery/ui/pull/11); see the [exact-head validation and decision record](upstream-differences.md#organization-and-framework-validation).
+The shared-helper and example simplifications landed as main `0e2c1556013ddcd8012c17cfd114c6ae7cc7872c` in [PR #11](https://github.com/sveltery/ui/pull/11); see the [exact-head validation and decision record](upstream-differences.md#organization-and-framework-validation).
 
 Registry wrappers share the unchanged [class-merging helper](../apps/docs/registry/bases/base/ui/shared/classes.js) with Button and Textarea. Source copies must retain the sibling `shared` directory and scan the whole copied UI directory, including the native close class tokens. The package build already includes and scans that registry tree; no new runtime dependency or class-normalization behavior is introduced.
 

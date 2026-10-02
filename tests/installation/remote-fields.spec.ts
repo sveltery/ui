@@ -91,6 +91,7 @@ test('fresh remote fields: individual/collection set, native reset and explicit 
   await expect(page.locator('#empty-text')).toHaveValue('');
   await expect.poll(() => output(page, 'values')).toMatchObject({ nativeText: 'Draft', text: 'Draft', emptyText: '' });
   await page.locator('#mode-reset').click();
+  expect(await page.locator('#probe').evaluate(form => (form as HTMLFormElement).reset instanceof HTMLButtonElement)).toBe(true);
   await typeValues(page, 'Explicit native', 'Explicit UI');
   await assertSubmission(page, submitters[0], 'Explicit native', 'Explicit UI');
   await expect(page.locator('#native-text')).toHaveValue('Draft');

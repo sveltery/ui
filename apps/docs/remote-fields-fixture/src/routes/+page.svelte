@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { onMount, untrack } from 'svelte';
+  import { onMount, tick, untrack } from 'svelte';
   import { Button as BaseButton } from '@sveltery/base/button';
   import { Button } from '@sveltery/ui/button';
   import { Textarea } from '@sveltery/ui/textarea';
   import { probe } from './form.remote';
   const current = probe.for('core');
   let mode = $state('default');
-  const attrs = $derived(mode === 'retain' ? current.enhance(async ({ submit }) => { await submit(); }) : mode === 'reset' ? current.enhance(async ({ submit, element }) => { if (await submit()) element.reset(); }) : current);
+  const attrs = $derived(mode === 'retain' ? current.enhance(async ({ submit }) => { await submit(); }) : mode === 'reset' ? current.enhance(async ({ submit, element }) => { if (await submit()) { await tick(); HTMLFormElement.prototype.reset.call(element); } }) : current);
   let hydrated = $state(false);
   let show = $state(true);
   let textarea = $state<HTMLTextAreaElement | null>(null);
