@@ -16,6 +16,7 @@
     "../../tests/types.ts",
     "../../tests/types-table.ts",
     "../../tests/card-types.ts",
-    "../../tests/label-types.ts"
+    "../../tests/label-types.ts",
+    "../../tests/aspect-ratio-types.ts"
   ]
 }

@@ -58,3 +58,5 @@ The installation check extracts the exact scaffold from the guide, installs two 
 The proposed `/card` and `/card-reference` routes compare seven actual dependency-available Card examples at the immutable shadcn pin, plus labeled supplemental probes. Seven native part lifecycle probes cover hydration/ref/attachment cleanup. Missing ToggleGroup, Field/Input, Avatar and icon compositions stay deferred; see [Card scope](../../docs/card.md).
 
 `/label` and `/label-reference` compare the bounded With Textarea example; `/label-probe` and `/label-probe-reference` exercise native association/focus, exact selectors, reactive props and paired SSR/hydration. See [Label scope](../../docs/label.md); full Field/Example and Checkbox/Input/Disabled compositions remain deferred.
+
+`/aspect-ratio` and `/aspect-ratio-reference` compare four bounded ratio examples; `/aspect-ratio-probe` and its reference test responsive geometry, caller overrides and native lifecycle behavior. See [AspectRatio scope](../../docs/aspect-ratio.md); native img and sections substitute Next Image and Example scaffolds without claiming their parity.

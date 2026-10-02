@@ -31,7 +31,7 @@ const cases = [
 ];
 for (const { name, css, ...props } of cases) it(`paired pinned host/classes/style precedence: ${name}`, async () => {
   const host = target(); const { className, ...rest } = props;
-  const local = { ...rest, class: className, ...('style' in props ? { style: css } : {}) }; 
+  const local = { ...rest, class: className, ...('style' in props ? { style: css } : {}) };
   mounted.push(mount(AspectRatio, { target: host, props: local })); await tick();
   compare(host.firstElementChild as HTMLDivElement, reference(props as Parameters<typeof Reference>[0]));
   expect(host.children).toHaveLength(1); expect(host.firstElementChild!.hasAttribute('ratio')).toBe(false);

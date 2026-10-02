@@ -29,3 +29,5 @@ The native `/table` and pinned `/table-reference` fixtures cover the [eight Tabl
 A proposed [native Card slice](docs/card.md) adds seven div parts, default/small sizes and seven actual dependency-available examples. It retains Table's actual landed main merge; five composition examples and full parity remain deferred. The parent coordinates integration after exact-head checks and independent/configured review.
 
 The proposed [native Label slice](docs/label.md) adds one native export and the bounded With Textarea example with documented native Field/Example substitutions; Checkbox/Input/Disabled compositions remain deferred.
+
+The proposed native `/aspect-ratio` and paired `/aspect-ratio-reference` fixtures cover [AspectRatio](docs/aspect-ratio.md): the required ratio, exact source classes and caller-style replacement, with four bounded example bodies. Next Image and Example/ExampleWrapper framework scaffolds remain unimplemented.
