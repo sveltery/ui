@@ -1,0 +1,17 @@
+/* Derived from shadcn-ui/ui d75a96ab781f3d659be1ad287347d5887ce9f2fc; MIT: packages/ui/THIRD_PARTY_NOTICES.md. */
+@import "./scoped/vega.css";
+@import "./scoped/nova.css";
+@import "./scoped/maia.css";
+@import "./scoped/lyra.css";
+@import "./scoped/mira.css";
+@import "./scoped/luma.css";
+@import "./scoped/sera.css";
+@import "./scoped/rhea.css";
+@custom-variant style-vega (&:where(.style-vega *));
+@custom-variant style-nova (&:where(.style-nova *));
+@custom-variant style-maia (&:where(.style-maia *));
+@custom-variant style-lyra (&:where(.style-lyra *));
+@custom-variant style-mira (&:where(.style-mira *));
+@custom-variant style-luma (&:where(.style-luma *));
+@custom-variant style-sera (&:where(.style-sera *));
+@custom-variant style-rhea (&:where(.style-rhea *));
