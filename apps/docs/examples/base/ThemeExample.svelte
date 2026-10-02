@@ -32,9 +32,9 @@
 </script>
 <main class="p-8" data-hydrated={hydrated}>
   <div class="mb-6 flex flex-wrap gap-4">
-    <label>Style <select bind:value={style}>{#each styles as item (item)}<option value={item}>{item}</option>{/each}</select></label>
-    <label>Base color <select bind:value={base}>{#each bases as item (item)}<option value={item}>{item}</option>{/each}</select></label>
-    <label>Accent <select bind:value={accent}><option value="base">Base</option>{#each accents as item (item)}<option value={item}>{item}</option>{/each}</select></label>
+    <div><label for="theme-style">Style</label> <select id="theme-style" bind:value={style}>{#each styles as item (item)}<option value={item}>{item}</option>{/each}</select></div>
+    <div><label for="theme-base">Base color</label> <select id="theme-base" bind:value={base}>{#each bases as item (item)}<option value={item}>{item}</option>{/each}</select></div>
+    <div><label for="theme-accent">Accent</label> <select id="theme-accent" bind:value={accent}><option value="base">Base</option>{#each accents as item (item)}<option value={item}>{item}</option>{/each}</select></div>
     <button type="button" aria-pressed={dark} onclick={() => { dark = !dark; }}>Dark mode</button>
   </div>
   <div data-theme-gallery class="grid gap-6">

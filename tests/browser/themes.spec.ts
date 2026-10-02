@@ -7,7 +7,7 @@ async function measurements(page: Page) {
     const css = getComputedStyle(node); const box = node.getBoundingClientRect();
     return { slot: node.getAttribute('data-slot'), tag: node.tagName, width: box.width, height: box.height,
       background: css.backgroundColor, color: css.color, border: css.borderColor, borderWidth: css.borderWidth, borderStyle: css.borderStyle,
-      radius: css.borderRadius, padding: css.padding, margin: css.margin, gap: css.gap, fontSize: css.fontSize, fontWeight: css.fontWeight,
+      radius: css.borderRadius, padding: css.padding, margin: css.margin, gap: css.gap, fontSize: css.fontSize, fontWeight: css.fontWeight, fontFamily: css.fontFamily,
       lineHeight: css.lineHeight, display: css.display, direction: css.flexDirection, align: css.alignItems, shadow: css.boxShadow, opacity: node.getAttribute('data-slot') === 'skeleton' ? null : css.opacity, animation: css.animationName, duration: css.animationDuration,
       gridColumns: css.gridTemplateColumns, gridRows: css.gridTemplateRows, placeholder: node.tagName === 'TEXTAREA' ? getComputedStyle(node, '::placeholder').color : null,
     };
@@ -30,6 +30,7 @@ async function referenceTheme(page: Page, style: string, base: string, accent: s
   }, { style, tokens: sourceTokens(base, accent, dark), dark });
 }
 for (const width of [1280, 390]) test(`all eight canonical component styles match pinned React source in light and dark at ${width}px`, async ({ page, context }) => {
+  test.setTimeout(180_000); // Sixteen independent style/mode pairs, portals and six hover states per pair.
   await page.setViewportSize({ width, height: 1800 });
   await page.goto('/themes'); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true');
   const reference = await context.newPage(); await reference.setViewportSize({ width, height: 1800 });
@@ -65,6 +66,7 @@ for (const width of [1280, 390]) test(`all eight canonical component styles matc
 });
 
 test('functional base and accent switching preserves every genuine light/dark token and ignores media preference', async ({ page }) => {
+  test.setTimeout(120_000); // All 252 complete-base/overlay/mode combinations use the real controls.
   await page.emulateMedia({ colorScheme: 'dark' });
   await page.goto('/themes'); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true');
   for (const dark of [false, true]) {

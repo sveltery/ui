@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 import { THEMES, styles } from '../../scripts/theme-assets.mjs';
 // Executes separately in each genuinely isolated archive and source-copy SvelteKit consumer.
 test('fresh consumer ships all scoped styles and genuine base/accent light-dark palettes', async ({ page }) => {
+  test.setTimeout(120_000); // Both widths, eight styles, two modes and actual portaled Dialogs.
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.goto('/themes'); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true');
