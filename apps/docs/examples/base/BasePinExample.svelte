@@ -39,6 +39,16 @@
   const tags = $derived(Object.fromEntries(Object.entries({ button, trigger, portal, overlay, content, title, description, close }).map(([part, node]) => [part, node === undefined ? 'undefined' : node?.tagName ?? null])));
   onMount(() => { hydrated = true; });
 </script>
+{#snippet ownerControls()}
+  <button data-testid="base-pin-null" type="button" onclick={() => setContainer('null')}>Explicit null</button>
+  <button data-testid="base-pin-null-ref" type="button" onclick={() => setContainer('null-ref')}>Empty ref</button>
+  <button data-testid="base-pin-element" type="button" onclick={() => setContainer('element')}>Native target</button>
+  <button data-testid="base-pin-element-current" type="button" onclick={() => setContainer('element-current')}>Native target with current</button>
+  <button data-testid="base-pin-ref-owner-document" type="button" onclick={() => setContainer('ref-owner-document')}>Ref with ownerDocument</button>
+  <button data-testid="base-pin-undefined" type="button" onclick={() => setContainer('undefined')}>Default target</button>
+  <button data-testid="base-pin-action-close" type="button" onclick={() => actions?.close()}>Imperative close</button>
+  <button data-testid="base-pin-remove" type="button" onclick={remove}>Remove ref probe</button>
+{/snippet}
 <main data-hydrated={hydrated}>
   <h1>Base pin public ref and Portal regression</h1>
   <div id="base-pin-first" bind:this={first}></div>
@@ -53,18 +63,12 @@
         <DialogContent showCloseButton={false} bind:ref={content} {@attach attachment('content')}>
           <DialogTitle bind:ref={title} {@attach attachment('title')}>Public refs</DialogTitle>
           <DialogDescription bind:ref={description} {@attach attachment('description')}>All hosts and attachments use the public UI API.</DialogDescription>
+          {@render ownerControls()}
           <DialogClose data-testid="base-pin-close" bind:ref={close} {@attach attachment('close')}>Close ref probe</DialogClose>
         </DialogContent>
       </DialogPortal>
     </Dialog>
   {/if}
-  <button data-testid="base-pin-null" type="button" onclick={() => setContainer('null')}>Explicit null</button>
-  <button data-testid="base-pin-null-ref" type="button" onclick={() => setContainer('null-ref')}>Empty ref</button>
-  <button data-testid="base-pin-element" type="button" onclick={() => setContainer('element')}>Native target</button>
-  <button data-testid="base-pin-element-current" type="button" onclick={() => setContainer('element-current')}>Native target with current</button>
-  <button data-testid="base-pin-ref-owner-document" type="button" onclick={() => setContainer('ref-owner-document')}>Ref with ownerDocument</button>
-  <button data-testid="base-pin-undefined" type="button" onclick={() => setContainer('undefined')}>Default target</button>
-  <button data-testid="base-pin-action-close" type="button" onclick={() => actions?.close()}>Imperative close</button>
-  <button data-testid="base-pin-remove" type="button" onclick={remove}>Remove ref probe</button>
+  {@render ownerControls()}
   <pre data-testid="base-pin-state">{JSON.stringify({ open, tags, attachments, cleanups, bindingLog, actions: !!actions, portalParent: portal?.parentElement ? portal.parentElement.id || portal.parentElement.tagName.toLowerCase() : null })}</pre>
 </main>

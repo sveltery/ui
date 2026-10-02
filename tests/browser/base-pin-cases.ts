@@ -11,6 +11,9 @@ export function basePinCases() {
     const response = await request.get('/base-pin'); expect(response.ok()).toBe(true);
     const html = await response.text(); expect(html).toContain('Open ref probe'); expect(html).not.toContain('data-base-ui-portal');
     const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
+    page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+    // Finish Vite dependency discovery, then test a fresh SSR document with scripts gated.
+    await page.goto('/base-pin'); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true');
     let release!: () => void; const gate = new Promise<void>(resolve => { release = resolve; });
     await page.route('**/*', async route => { if (route.request().resourceType() === 'script') await gate; await route.continue(); });
     try {
@@ -25,11 +28,11 @@ export function basePinCases() {
       await expect.poll(async () => (await state(page)).tags).toEqual(expectedTags);
       expect((await state(page)).attachments).toEqual(Object.fromEntries(Object.keys(expectedTags).map(part => [part, 1])));
       expect(await page.locator('[data-probed]').evaluateAll(nodes => nodes.map(node => node.getAttribute('data-probed')).sort())).toEqual(Object.keys(expectedTags).sort());
-      await page.getByTestId('base-pin-action-close').click(); await expect(page.getByRole('dialog')).toHaveCount(0);
+      await page.getByRole('dialog').getByTestId('base-pin-action-close').click(); await expect(page.getByRole('dialog')).toHaveCount(0);
       await page.getByTestId('base-pin-trigger').click(); await expect(page.getByRole('dialog')).toBeVisible();
       await page.getByTestId('base-pin-close').click(); await expect(page.getByRole('dialog')).toHaveCount(0);
       await page.getByTestId('base-pin-trigger').click(); await expect(page.getByRole('dialog')).toBeVisible();
-      await page.getByTestId('base-pin-remove').click();
+      await page.getByRole('dialog').getByTestId('base-pin-remove').click();
       await expect.poll(async () => (await state(page)).tags).toEqual(Object.fromEntries(Object.keys(expectedTags).map(part => [part, null])));
       expect((await state(page)).cleanups).toEqual((await state(page)).attachments);
       expect((await state(page)).bindingLog).toEqual(['BUTTON', null]); await expect(page.locator('[data-base-ui-portal]')).toHaveCount(0);
@@ -41,15 +44,15 @@ export function basePinCases() {
     await expect.poll(async () => (await state(page)).portalParent).toBe('body');
     expect(await page.getByTestId('base-pin-nested').evaluate(node => node.parentElement?.getAttribute('data-testid'))).toBe('base-pin-portal');
     const node = await outer.elementHandle(); expect(node).not.toBeNull();
-    await page.getByTestId('base-pin-element-current').click(); await expect.poll(async () => (await state(page)).portalParent).toBe('base-pin-first');
+    await page.getByRole('dialog').getByTestId('base-pin-element-current').click(); await expect.poll(async () => (await state(page)).portalParent).toBe('base-pin-first');
     expect(await node!.evaluate(element => element === document.querySelector('[data-testid=base-pin-portal]'))).toBe(true);
-    await page.getByTestId('base-pin-ref-owner-document').click(); await expect.poll(async () => (await state(page)).portalParent).toBe('base-pin-second');
-    await page.getByTestId('base-pin-undefined').click(); await expect.poll(async () => (await state(page)).portalParent).toBe('body');
-    await page.getByTestId('base-pin-null').click(); await expect(page.locator('[data-base-ui-portal]')).toHaveCount(0);
+    await page.getByRole('dialog').getByTestId('base-pin-ref-owner-document').click(); await expect.poll(async () => (await state(page)).portalParent).toBe('base-pin-second');
+    await page.getByRole('dialog').getByTestId('base-pin-undefined').click(); await expect.poll(async () => (await state(page)).portalParent).toBe('body');
+    await page.getByRole('dialog').getByTestId('base-pin-null').click(); await expect(page.locator('[data-base-ui-portal]')).toHaveCount(0);
     expect(await node!.evaluate(element => element.isConnected)).toBe(false);
     await page.getByTestId('base-pin-null-ref').click(); await expect.poll(async () => (await state(page)).portalParent).toBe('body');
     expect(await node!.evaluate(element => element === document.querySelector('[data-testid=base-pin-portal]'))).toBe(false);
-    await page.getByTestId('base-pin-remove').click(); await expect(page.locator('[data-base-ui-portal]')).toHaveCount(0);
+    await page.getByRole('dialog').getByTestId('base-pin-remove').click(); await expect(page.locator('[data-base-ui-portal]')).toHaveCount(0);
     expect((await state(page)).cleanups).toEqual((await state(page)).attachments);
   });
 }
