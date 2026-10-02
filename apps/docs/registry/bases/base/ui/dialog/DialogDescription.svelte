@@ -4,6 +4,4 @@
   import { classes } from './classes.js';
   let { children, ref = $bindable(null), class: classProp, ...props }: ComponentProps<typeof Primitive.Description> = $props();
 </script>
-<Primitive.Description data-slot="dialog-description" {...props} class={classes('cn-dialog-description', classProp)} bind:ref>
-  {@render children?.()}
-</Primitive.Description>
+<Primitive.Description data-slot="dialog-description" {children} {...props} class={classes('cn-dialog-description', classProp)} bind:ref />
