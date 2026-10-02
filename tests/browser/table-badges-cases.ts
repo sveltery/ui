@@ -47,6 +47,7 @@ export async function assertTableBadges(page: Page, dark = false) {
   expect(await table.locator('tbody td:nth-child(3)').evaluateAll(cells => cells.map(cell => getComputedStyle(cell).textAlign))).toEqual(['right', 'right', 'right']);
 }
 export async function setTableBadgeTheme(page: Page, dark: boolean) {
-  // The documented Tailwind scaffold uses its default prefers-color-scheme dark variant.
+  // Retain the media witness and activate the pinned globals.css class-based dark variant.
   await page.emulateMedia({ colorScheme: dark ? 'dark' : 'light' });
+  await page.evaluate(enabled => { document.documentElement.classList.toggle('dark', enabled); }, dark);
 }
