@@ -1,6 +1,7 @@
 // Selected function bodies copied unchanged from the pinned example; imports/layout are harness substitutions.
 import type { ReactNode } from 'react';
 import { Skeleton } from './skeleton';
+import { Card, CardHeader, CardContent } from './card';
 function Example({ title, children }: { title: string; children: ReactNode }) { return <section><h2>{title}</h2>{children}</section>; }
 
 export function SkeletonAvatar() {
@@ -13,6 +14,22 @@ export function SkeletonAvatar() {
           <Skeleton className="h-4 w-[100px]" />
         </div>
       </div>
+    </Example>
+  )
+}
+
+export function SkeletonCard() {
+  return (
+    <Example title="Card">
+      <Card className="w-full">
+        <CardHeader>
+          <Skeleton className="h-4 w-2/3" />
+          <Skeleton className="h-4 w-1/2" />
+        </CardHeader>
+        <CardContent>
+          <Skeleton className="aspect-square w-full" />
+        </CardContent>
+      </Card>
     </Example>
   )
 }
