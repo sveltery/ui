@@ -47,5 +47,6 @@ export async function assertTableBadges(page: Page, dark = false) {
   expect(await table.locator('tbody td:nth-child(3)').evaluateAll(cells => cells.map(cell => getComputedStyle(cell).textAlign))).toEqual(['right', 'right', 'right']);
 }
 export async function setTableBadgeTheme(page: Page, dark: boolean) {
-  await page.evaluate(value => { document.documentElement.classList.toggle('dark', value); }, dark);
+  // The documented Tailwind scaffold uses its default prefers-color-scheme dark variant.
+  await page.emulateMedia({ colorScheme: dark ? 'dark' : 'light' });
 }
