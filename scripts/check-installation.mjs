@@ -22,7 +22,7 @@ try {
   run('pnpm', ['--filter', '@sveltery/ui', 'build'], repo);
   run('pnpm', ['--filter', '@sveltery/ui', 'pack', '--pack-destination', artifacts], repo);
   cpSync(join(repo, '.vendor/sveltery-base-0.0.0.tgz'), join(artifacts, 'sveltery-base-0.0.0.tgz'));
-  for (const path of ['apps/docs/registry/bases/base/ui/dialog', 'apps/docs/registry/bases/base/ui/button', 'apps/docs/registry/bases/base/ui/textarea', 'apps/docs/registry/bases/base/ui/shared', 'apps/docs/registry/styles/style-nova.css', 'packages/ui/LICENSE', 'packages/ui/THIRD_PARTY_NOTICES.md']) {
+  for (const path of ['apps/docs/registry/bases/base/ui/dialog', 'apps/docs/registry/bases/base/ui/button', 'apps/docs/registry/bases/base/ui/textarea', 'apps/docs/registry/bases/base/ui/skeleton', 'apps/docs/registry/bases/base/ui/kbd', 'apps/docs/registry/bases/base/ui/shared', 'apps/docs/registry/styles/style-nova.css', 'packages/ui/LICENSE', 'packages/ui/THIRD_PARTY_NOTICES.md']) {
     const destination = join(temporary, 'sveltery-ui', path);
     mkdirSync(dirname(destination), { recursive: true });
     cpSync(join(repo, path), destination, { recursive: true });
@@ -49,6 +49,19 @@ try {
     const textareaRoute = join(consumer, 'src/routes/textarea/+page.svelte');
     mkdirSync(dirname(textareaRoute), { recursive: true });
     writeFileSync(textareaRoute, readFileSync(join(repo, 'scripts/textarea-consumer.svelte'), 'utf8'));
+    const skeletonRoute = join(consumer, 'src/routes/skeleton/+page.svelte');
+    mkdirSync(dirname(skeletonRoute), { recursive: true });
+    writeFileSync(skeletonRoute, readFileSync(join(repo, 'scripts/skeleton-consumer.svelte'), 'utf8'));
+    const kbdRoute = join(consumer, 'src/routes/kbd/+page.svelte');
+    mkdirSync(dirname(kbdRoute), { recursive: true });
+    let kbdFixture = readFileSync(join(repo, 'apps/docs/src/routes/kbd/+page.svelte'), 'utf8').replace('../../../examples/base/KbdExample.svelte', './KbdExample.svelte');
+    let kbdExample = readFileSync(join(repo, 'apps/docs/examples/base/KbdExample.svelte'), 'utf8');
+    if (mode === 'copy') {
+      kbdFixture = kbdFixture.replaceAll('@sveltery/ui/kbd', '$lib/components/ui/kbd');
+      kbdExample = kbdExample.replaceAll('@sveltery/ui/kbd', '$lib/components/ui/kbd');
+    }
+    writeFileSync(kbdRoute, kbdFixture);
+    writeFileSync(join(dirname(kbdRoute), 'KbdExample.svelte'), kbdExample);
     const consumerManifestPath = join(consumer, 'package.json');
     const consumerManifest = JSON.parse(readFileSync(consumerManifestPath, 'utf8'));
     consumerManifest.dependencies['class-variance-authority'] = '0.7.1';
@@ -58,6 +71,9 @@ try {
       writeFileSync(buttonRoute, readFileSync(buttonRoute, 'utf8').replace('@sveltery/ui/button', '$lib/components/ui/button'));
       cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/textarea'), join(consumer, 'src/lib/components/ui/textarea'), { recursive: true });
       writeFileSync(textareaRoute, readFileSync(textareaRoute, 'utf8').replace('@sveltery/ui/textarea', '$lib/components/ui/textarea'));
+      cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/skeleton'), join(consumer, 'src/lib/components/ui/skeleton'), { recursive: true });
+      writeFileSync(skeletonRoute, readFileSync(skeletonRoute, 'utf8').replace('@sveltery/ui/skeleton', '$lib/components/ui/skeleton'));
+      cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/kbd'), join(consumer, 'src/lib/components/ui/kbd'), { recursive: true });
       run('bash', ['-euo', 'pipefail', '-c', copyCommands], consumer);
       const manifestPath = join(consumer, 'package.json');
       const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));

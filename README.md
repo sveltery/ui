@@ -1,8 +1,8 @@
 # Sveltery UI
 
-Experimental, unreleased styled Svelte 5 Dialog and Button built on [Sveltery Base](https://github.com/sveltery/base), plus a native Textarea requiring no Base primitive. The Dialog exports and bounded Button variants/sizes adapt the Base Dialog anatomy and Nova appearance from [shadcn-ui/ui at d75a96ab](https://github.com/shadcn-ui/ui/tree/d75a96ab781f3d659be1ad287347d5887ce9f2fc/apps/v4/registry). Independent, unofficial project; not affiliated with MUI, Base UI, or shadcn. Original Sveltery code is [MIT](LICENSE); derived code retains [upstream notices](packages/ui/THIRD_PARTY_NOTICES.md).
+Experimental, unreleased styled Svelte 5 Dialog and Button built on [Sveltery Base](https://github.com/sveltery/base), plus native Textarea, Skeleton and Kbd/KbdGroup requiring no Base primitive. The Dialog exports and bounded Button variants/sizes adapt the Base Dialog anatomy and Nova appearance from [shadcn-ui/ui at d75a96ab](https://github.com/shadcn-ui/ui/tree/d75a96ab781f3d659be1ad287347d5887ce9f2fc/apps/v4/registry). Independent, unofficial project; not affiliated with MUI, Base UI, or shadcn. Original Sveltery code is [MIT](LICENSE); derived code retains [upstream notices](packages/ui/THIRD_PARTY_NOTICES.md).
 
-The original implementation was preserved at recovery checkpoint `9614e55530eebb63ab735ebacb51848ff2e02f45`. This remains a bounded experimental slice, with no full wrapper or upstream behavior parity claim. Read [Textarea scope](docs/textarea.md), [Dialog adaptations](docs/dialog.md), [Button adaptations](docs/button.md) and [readiness gates](docs/readiness.md) before using it. The historical Base pin incorporates merged PR #13, the native focus fixes from PR #15 and standalone Button PR #17. This proposed checkout additionally consumes Base core audit repairs in PR #23 and reviewed Portal integration in PR #22, with consistent UI DOM-ref initialization; final UI browser CI and exact-head review remain required before readiness or merge.
+The original implementation was preserved at recovery checkpoint `9614e55530eebb63ab735ebacb51848ff2e02f45`. This remains a bounded experimental slice, with no full wrapper or upstream behavior parity claim. Read [Textarea scope](docs/textarea.md), [Dialog adaptations](docs/dialog.md), [Button adaptations](docs/button.md) and [readiness gates](docs/readiness.md) before using it. The historical Base pin incorporates merged PR #13, the native focus fixes from PR #15 and standalone Button PR #17. The landed PR #13 checkout additionally consumes Base core audit repairs in PR #23 and reviewed Portal integration in PR #22, with consistent UI DOM-ref initialization; final UI browser CI and exact-head review remain required before readiness or merge.
 
 ```sh
 bash scripts/bootstrap.sh
@@ -19,3 +19,7 @@ Try the [SvelteKit installation and source-copy guide](docs/installation.md) for
 The [upstream differences register](docs/upstream-differences.md) discloses inherited Base corrections, styled/API adaptations and the React 1.6.0 versus Base 1.8.0 evidence boundary.
 
 The native `/textarea` and pinned `/textarea-reference` fixtures cover the bounded [Textarea slice](docs/textarea.md), owned by `registry/bases/base/ui/textarea` and exported through the current local archive.
+
+The native `/skeleton` and pinned `/skeleton-reference` fixtures cover [Skeleton scope and omissions](docs/skeleton.md); Card composition is deferred.
+
+The native `/kbd` and pinned `/kbd-reference` fixtures cover [Kbd/KbdGroup scope and omissions](docs/kbd.md). The pinned group host remains `kbd`; display keys introduce no shortcut behavior.

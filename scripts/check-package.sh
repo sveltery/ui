@@ -8,7 +8,7 @@ pnpm --filter @sveltery/ui pack --pack-destination "$consumer_directory"
 mkdir -p "$consumer_directory/node_modules/@sveltery/ui" "$consumer_directory/node_modules/@sveltery/base"
 tar -xzf "$consumer_directory/sveltery-ui-0.0.0.tgz" --strip-components=1 -C "$consumer_directory/node_modules/@sveltery/ui"
 tar -xzf .vendor/sveltery-base-0.0.0.tgz --strip-components=1 -C "$consumer_directory/node_modules/@sveltery/base"
-for dependency in svelte clsx tailwind-merge class-variance-authority; do
+for dependency in svelte clsx tailwind-merge class-variance-authority jsdom; do
   ln -s "$sveltery_repo_root/node_modules/$dependency" "$consumer_directory/node_modules/$dependency"
 done
 cmp packages/ui/LICENSE "$consumer_directory/node_modules/@sveltery/ui/LICENSE"
@@ -19,11 +19,15 @@ cat > "$consumer_directory/Consumer.svelte" <<'SVELTE'
   import * as Parts from '@sveltery/ui/dialog';
   import { Button, buttonVariants } from '@sveltery/ui/button';
   import { Textarea } from '@sveltery/ui/textarea';
+  import { Skeleton } from '@sveltery/ui/skeleton';
+  import { Kbd, KbdGroup } from '@sveltery/ui/kbd';
   import type { Snippet } from 'svelte';
 </script>
 {#snippet replacement(props: Record<string | symbol, unknown>, _state: { disabled: boolean }, children: Snippet | undefined)}
   <span {...props}>{#if children}{@render children()}{:else}SSR fallback label{/if}</span>
 {/snippet}
+<KbdGroup data-probe="kbd-group"><Kbd data-probe="kbd">Ctrl &amp; K</Kbd></KbdGroup>
+<Skeleton data-probe="skeleton" class="h-4 w-32" />
 <Textarea name="notes" defaultValue="SSR & draft" rows={6} class="px-6" aria-invalid="true" />
 <Button nativeButton={false} render={replacement} />
 <Button name="save" value="yes" variant="secondary" size="lg" class="px-6">Save</Button>
@@ -36,18 +40,25 @@ cat > "$consumer_directory/check.mjs" <<'JS'
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { render } from 'svelte/server';
+import { JSDOM } from 'jsdom';
 import Consumer from './Consumer.svelte';
 import * as Root from '@sveltery/ui';
 import * as Parts from '@sveltery/ui/dialog';
 import * as Buttons from '@sveltery/ui/button';
 import * as Textareas from '@sveltery/ui/textarea';
+import * as Skeletons from '@sveltery/ui/skeleton';
+import * as Keys from '@sveltery/ui/kbd';
 const names = ['Dialog', 'DialogClose', 'DialogContent', 'DialogDescription', 'DialogFooter', 'DialogHeader', 'DialogOverlay', 'DialogPortal', 'DialogTitle', 'DialogTrigger'];
-assert.deepEqual(Object.keys(Root).sort(), [...names, 'Button', 'buttonVariants', 'variants', 'sizes', 'Textarea'].sort());
+assert.deepEqual(Object.keys(Root).sort(), [...names, 'Button', 'buttonVariants', 'variants', 'sizes', 'Textarea', 'Skeleton', 'Kbd', 'KbdGroup'].sort());
 assert.deepEqual(Object.keys(Buttons).sort(), ['Button', 'buttonVariants', 'sizes', 'variants']);
 assert.deepEqual(Object.keys(Parts).sort(), names);
 assert.deepEqual(Object.keys(Textareas), ['Textarea']);
 assert.equal(Root.Textarea, Textareas.Textarea);
-for (const path of ['index.d.ts', 'dialog/index.d.ts', 'button/index.d.ts', 'button/Button.svelte.d.ts', 'button/types.d.ts', 'textarea/index.d.ts', 'textarea/Textarea.svelte.d.ts', ...names.map(name => `dialog/${name}.svelte.d.ts`)]) {
+assert.deepEqual(Object.keys(Skeletons), ['Skeleton']);
+assert.equal(Root.Skeleton, Skeletons.Skeleton);
+assert.deepEqual(Object.keys(Keys).sort(), ['Kbd', 'KbdGroup']);
+assert.equal(Root.Kbd, Keys.Kbd); assert.equal(Root.KbdGroup, Keys.KbdGroup);
+for (const path of ['index.d.ts', 'dialog/index.d.ts', 'button/index.d.ts', 'button/Button.svelte.d.ts', 'button/types.d.ts', 'textarea/index.d.ts', 'textarea/Textarea.svelte.d.ts', 'skeleton/index.d.ts', 'skeleton/Skeleton.svelte.d.ts', 'kbd/index.d.ts', 'kbd/Kbd.svelte.d.ts', 'kbd/KbdGroup.svelte.d.ts', 'kbd/types.d.ts', ...names.map(name => `dialog/${name}.svelte.d.ts`)]) {
   assert(readFileSync(new URL(`./node_modules/@sveltery/ui/dist/${path}`, import.meta.url), 'utf8').length > 0);
 }
 const first = render(Consumer).body;
@@ -68,12 +79,20 @@ for (const html of [first, second]) {
   assert(html.includes('SSR fallback label'));
   assert.match(html, /<textarea[^>]*data-slot="textarea"[^>]*name="notes"[^>]*>SSR &amp; draft<\/textarea>/);
   assert(html.includes('cn-textarea'));
+  const nativeSkeleton = new JSDOM(html).window.document.querySelector('[data-probe=skeleton]');
+  assert.equal(nativeSkeleton.tagName, 'DIV'); assert.equal(nativeSkeleton.getAttribute('data-slot'), 'skeleton'); assert.equal(nativeSkeleton.textContent, '');
+  assert(html.includes('cn-skeleton'));
+  const nativeGroup = new JSDOM(html).window.document.querySelector('[data-probe=kbd-group]');
+  assert.equal(nativeGroup.tagName, 'KBD'); assert.equal(nativeGroup.getAttribute('data-slot'), 'kbd-group');
+  assert.equal(nativeGroup.firstElementChild.tagName, 'KBD'); assert.equal(nativeGroup.firstElementChild.getAttribute('data-slot'), 'kbd'); assert.equal(nativeGroup.textContent, 'Ctrl & K');
   assert(html.includes('role="button"'));
   assert.match(html, /<button[^>]*name="save"[^>]*class="[^"]*px-6/);
 }
 assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-dialog-content'));
 assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-textarea'));
-console.log('Isolated UI tarball: Dialog, Button and Textarea root/subpath exports, SSR, IDs, absent portals, CSS, declarations and notices PASS');
+assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-skeleton'));
+assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-kbd-group'));
+console.log('Isolated UI tarball: Dialog, Button, Textarea, Skeleton and Kbd root/subpath exports, SSR, IDs, absent portals, CSS, declarations and notices PASS');
 JS
 node --import "$sveltery_repo_root/scripts/svelte-ssr-loader.mjs" "$consumer_directory/check.mjs"
 cat > "$consumer_directory/types.ts" <<'TS'
@@ -100,6 +119,19 @@ import { Textarea } from '@sveltery/ui/textarea';
 const textarea: ComponentProps<typeof Textarea> = { ref: null, value: 'Message', defaultValue: 'Draft', class: ['px-6'], rows: 6, required: true, readonly: true, maxlength: 40, style: 'resize: none', oninput: event => { const node: HTMLTextAreaElement = event.currentTarget; void node; } };
 // @ts-expect-error no Textarea variant API
 const badTextarea: ComponentProps<typeof Textarea> = { variant: 'outline' };
+import { Skeleton } from '@sveltery/ui/skeleton';
+const skeleton: ComponentProps<typeof Skeleton> = { ref: undefined, class: ['h-4'], style: 'width: 100px', onclick: event => { const node: HTMLDivElement = event.currentTarget; void node; } };
+// @ts-expect-error native Skeleton has no render API
+const badSkeleton: ComponentProps<typeof Skeleton> = { render: () => {} };
+import { Kbd, KbdGroup, type KbdProps, type KbdGroupProps } from '@sveltery/ui/kbd';
+const kbd: KbdProps = { ref: undefined, class: ['px-3'], style: 'color: red', onclick: event => { const node: HTMLElement = event.currentTarget; void node; } };
+const group: KbdGroupProps = { ref: undefined, title: 'Keys' };
+const kbdComponent: ComponentProps<typeof Kbd> = kbd;
+const groupComponent: ComponentProps<typeof KbdGroup> = group;
+// @ts-expect-error native Kbd has no render API
+const badKbd: KbdProps = { render: () => {} };
+void [kbdComponent, groupComponent, badKbd];
+void [skeleton, badSkeleton];
 void [textarea, badTextarea];
 void [root, trigger, popup, footer, portal, overlay, badStyle, badVariant, button, state, invalidButton];
 TS

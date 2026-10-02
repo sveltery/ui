@@ -1,0 +1,27 @@
+{
+  "commit": "d75a96ab781f3d659be1ad287347d5887ce9f2fc",
+  "files": [
+    {
+      "upstream": "apps/v4/registry/bases/base/ui/skeleton.tsx",
+      "local": "tests/reference/skeleton.tsx",
+      "sha256": "8fcbad84e494a75484a0975221fb40f54c4a7d68f79cfc305cb158d1feb1badf"
+    },
+    {
+      "upstream": "apps/v4/registry/bases/base/examples/skeleton-example.tsx",
+      "local": "tests/reference/skeleton-example.tsx",
+      "sha256": "848b6c79fecadd25362f816a5223efb767cb890d337eb7f9650570798673e800"
+    },
+    {
+      "upstream": "apps/v4/registry/styles/style-nova.css",
+      "local": "tests/reference/skeleton-nova.css",
+      "sha256": "0ae265b772f2477393cd2a015d2d3b3d14b3561827b941b2fa01d642885bf106",
+      "range": "1222-1225 (Skeleton section only)",
+      "fullSourceSha256": "5d5751579c015b61e77cf0822862a43ac79f3e6fed236a17624be8e6d1ebea1d"
+    }
+  ],
+  "license": {
+    "upstream": "LICENSE.md",
+    "local": "tests/reference/LICENSE",
+    "sha256": "1564074e13439397221ffd522e2e504d56561994a23d371aa5e3ad43e4f5423f"
+  }
+}

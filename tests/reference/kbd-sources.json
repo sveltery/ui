@@ -1,0 +1,21 @@
+{
+  "commit": "d75a96ab781f3d659be1ad287347d5887ce9f2fc",
+  "files": [
+    {
+      "upstream": "apps/v4/registry/bases/base/ui/kbd.tsx",
+      "local": "tests/reference/kbd.tsx",
+      "sha256": "f04fe8ce9c10023fa4d9907030ec5e26a4c714e5377e6b3864cb03548bd0a56f"
+    },
+    {
+      "upstream": "apps/v4/registry/bases/base/examples/kbd-example.tsx",
+      "local": "tests/reference/kbd-example.tsx",
+      "sha256": "3fbd8b8b3ad0f286205ff0a2796b9404922bb477e947820c1337135f2e588bba"
+    },
+    {
+      "upstream": "apps/v4/registry/styles/style-nova.css",
+      "local": "tests/reference/kbd-nova.css",
+      "sha256": "1e2f1be42e7524a628894ffa9515d65ebe6a85b401e84c1f7fa46981cf6ddba7",
+      "range": "779-786 (Kbd section only)"
+    }
+  ]
+}
