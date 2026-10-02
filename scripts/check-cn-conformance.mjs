@@ -18,6 +18,15 @@ function packageRoot(name) {
 }
 
 const source = JSON.parse(readFileSync(new URL('../tests/reference/cn-sources.json', import.meta.url), 'utf8'));
+const originalManifest = JSON.parse(readFileSync(new URL('../tests/reference/cn-upstream/packages/conformance/package.json', import.meta.url), 'utf8'));
+const programs = originalManifest.scripts.test.split(' && ').map(command => {
+  const name = /^node tests\/([\w-]+\.mjs)$/u.exec(command)?.[1];
+  assert(name, `Unsupported original conformance command: ${command}`);
+  const file = source.files.find(file => file.upstream === `packages/conformance/tests/${name}`);
+  assert(file && file.role === 'genuine dependency conformance program', `Missing original conformance program: ${name}`);
+  return file;
+});
+assert.equal(programs.length, 5);
 const dependencies = { cn: source.version, clsx: source.oracle.clsx, 'tailwind-merge': source.oracle['tailwind-merge'] };
 const roots = Object.fromEntries(Object.entries(dependencies).map(([name, version]) => {
   const root = packageRoot(name);
@@ -31,7 +40,7 @@ try {
   mkdirSync(join(root, 'node_modules'));
   symlinkSync(roots.cn, join(root, 'packages/cn'), 'dir');
   for (const [name, directory] of Object.entries(roots)) symlinkSync(directory, join(root, 'node_modules', name), 'dir');
-  for (const file of source.files.filter(file => file.role === 'genuine dependency conformance program')) {
+  for (const file of programs) {
     const destination = join(tests, file.upstream.split('/').at(-1));
     cpSync(new URL(`../${file.local}`, import.meta.url), destination);
     execFileSync(process.execPath, [destination], {
