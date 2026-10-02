@@ -15,6 +15,7 @@ node --import ./scripts/svelte-ssr-loader.mjs scripts/check-table-ssr.mjs
 node --import ./scripts/svelte-ssr-loader.mjs scripts/check-card-ssr.mjs
 node --import ./scripts/svelte-ssr-loader.mjs scripts/check-label-ssr.mjs
 node --import ./scripts/svelte-ssr-loader.mjs scripts/check-aspect-ratio-ssr.mjs
+node --import ./scripts/svelte-ssr-loader.mjs scripts/check-empty-ssr.mjs
 pnpm --filter @sveltery/docs build
 bash scripts/check-remote-fields.sh
 bash scripts/check-package.sh
