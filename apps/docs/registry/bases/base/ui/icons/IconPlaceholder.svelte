@@ -1,12 +1,10 @@
 <script lang="ts">
-  import type { Snippet } from 'svelte';
-  import type { SVGAttributes } from 'svelte/elements';
-  import { getIconLibraryContext, type IconLibraryName } from './config.js';
+  import type { IconPlaceholderProps } from './types.js';
+  import { getIconLibraryContext } from './config.js';
   import { loadIcon, loadedIcon } from './data.js';
   import IconSvg from './IconSvg.svelte';
-  import fallback from '../../src/lib/icons/fallback.js';
-  type Props = Record<IconLibraryName, string> & Omit<SVGAttributes<SVGSVGElement>, 'children'> & { children?: Snippet; ref?: SVGSVGElement | null; strokeWidth?: string | number | null };
-  let { children, ref = $bindable(), ...props }: Props = $props();
+  import fallback from './generated/fallback.js';
+  let { children, ref = $bindable(), ...props }: IconPlaceholderProps = $props();
   const getLibrary = getIconLibraryContext();
   const library = $derived(getLibrary());
   const name = $derived(props[library]);

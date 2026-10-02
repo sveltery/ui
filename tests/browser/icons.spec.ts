@@ -23,7 +23,7 @@ for (const path of ['/icons', '/icons-reference']) {
     // Delay genuine library data/export modules, not mocked glyphs or renderer expectations.
     let release: (() => void) | undefined;
     const pending = new Promise<void>(resolve => { release = resolve; });
-    const pattern = path === '/icons' ? '**/src/lib/icons/lucide.js*' : '**/reference/icons/__lucide__.ts*';
+    const pattern = path === '/icons' ? '**/icons/generated/lucide.js*' : '**/reference/icons/__lucide__.ts*';
     await page.route(pattern, async route => { await pending; await route.continue(); });
     await page.goto(path); await expect(page.getByTestId('selected-icon')).toHaveClass(/lucide-square/);
     await expect(page.getByTestId('selected-icon')).toHaveAttribute('stroke-width', '7');
