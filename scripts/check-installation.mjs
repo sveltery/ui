@@ -11,6 +11,7 @@ assert(process.argv.slice(2).every(arg => arg === '--browser'), 'Only --browser 
 const guide = readFileSync(join(repo, 'docs/installation.md'), 'utf8');
 const files = [...guide.matchAll(/<!-- consumer-file: ([\w./+-]+) -->\n```[^\n]*\n([\s\S]*?)\n```/gu)];
 assert.equal(files.length, 9, 'Expected the nine documented scaffold files');
+const remoteFixtureFiles = ['schema.ts', 'form.remote.ts', '+page.svelte', 'type-contract.ts'];
 const copyCommands = guide.match(/<!-- consumer-copy -->\n```sh\n([\s\S]*?)\n```/u)?.[1];
 assert(copyCommands, 'Expected the documented source-copy commands');
 const temporary = mkdtempSync(join(tmpdir(), 'sveltery-installation-'));
@@ -34,6 +35,20 @@ try {
       const destination = join(consumer, path);
       mkdirSync(dirname(destination), { recursive: true });
       writeFileSync(destination, `${content}\n`);
+    }
+    // Remote fields are a separate experimental test fixture, not part of the
+    // documented consumer scaffold or the production docs application.
+    writeFileSync(join(consumer, 'svelte.config.js'), `import adapter from '@sveltejs/adapter-auto';
+export default { compilerOptions: { experimental: { async: true } }, kit: { adapter: adapter(), experimental: { remoteFunctions: true } } };
+`);
+    const remoteRoute = join(consumer, 'src/routes/remote-fields');
+    mkdirSync(remoteRoute, { recursive: true });
+    for (const file of remoteFixtureFiles) {
+      let content = readFileSync(join(repo, 'apps/docs/remote-fields-fixture/src/routes', file), 'utf8');
+      if (mode === 'copy') {
+        content = content.replaceAll('@sveltery/ui/textarea', '$lib/components/ui/textarea').replaceAll('@sveltery/ui/button', '$lib/components/ui/button');
+      }
+      writeFileSync(join(remoteRoute, file), content);
     }
     const buttonRoute = join(consumer, 'src/routes/button/+page.svelte');
     mkdirSync(dirname(buttonRoute), { recursive: true });
@@ -69,7 +84,7 @@ try {
         cwd: repo, stdio: 'inherit', env: { ...process.env, SVELTERY_INSTALLATION_CONSUMER: consumer },
       });
     }
-    console.log(`Fresh documented ${mode} consumer: install, frozen lock, types, SSR/client build${browser ? ' and secured browser' : ''} PASS`);
+    console.log(`Fresh documented ${mode} consumer with isolated remote-field fixture: install, frozen lock, types, SSR/client build${browser ? ' and secured browser' : ''} PASS`);
   }
 } finally {
   rmSync(temporary, { recursive: true, force: true });
