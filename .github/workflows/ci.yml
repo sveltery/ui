@@ -62,7 +62,7 @@ jobs:
         run: bash scripts/check-installation.sh
   dialog-browser:
     name: ${{ matrix.engine == 'chromium' && 'Dialog browser' || matrix.engine == 'firefox' && 'Firefox browser' || 'WebKit browser' }}
-    # Officially supported Playwright image; its default policy permits Chromium sandbox startup.
+    # Native Ubuntu runner supported by Playwright; retain Chromium sandbox startup.
     runs-on: ubuntu-22.04
     timeout-minutes: 45
     strategy:
