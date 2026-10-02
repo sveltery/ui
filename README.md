@@ -35,3 +35,5 @@ The proposed native `/aspect-ratio` and paired `/aspect-ratio-reference` fixture
 The [native Empty slice](docs/empty.md) adds six div parts and supplemental `/empty-probe` and paired reference routes. All actual gallery functions remain deferred for missing configurable icons and/or InputGroup; source-derived native probes do not claim gallery parity.
 
 The landed [native Alert slice](docs/alert.md) adds Alert, AlertTitle, AlertDescription and AlertAction, with `/alert` and paired `/alert-reference` fixtures for the bounded Basic example. Configurable icon/Badge compositions and full scaffold/theme parity remain deferred; `/alert-probe` and its paired reference provide supplemental native selector and interaction evidence.
+
+The proposed [native styled Separator](docs/separator.md) delegates the actual Base primitive, preserves the shared pinned orientation-selector mismatch, and adds all four genuine dependency-available gallery functions. `/separator` and its reference display them; primitive genuine test ports and styled source-derived evidence are counted separately.

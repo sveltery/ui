@@ -10,6 +10,7 @@ import Fixture from './BaseSeparatorConformanceFixture.svelte';
 import { testPropForwarding } from '../reference/base-separator-1.6/ported/propForwarding';
 import { testRenderProp } from '../reference/base-separator-1.6/ported/renderProp';
 import { testRefForwarding } from '../reference/base-separator-1.6/ported/refForwarding';
+import { screen } from '../reference/base-separator-1.6/ported/infrastructure';
 import { testClassName } from '../reference/base-separator-1.6/ported/className';
 import type { ConformantComponentProps } from '../reference/base-separator-1.6/describeConformance';
 const roots: Root[] = [];
@@ -20,7 +21,7 @@ expect.extend({
     const pass = !!received?.hasAttribute(name) && (expected === undefined || received.getAttribute(name) === String(expected));
     return { pass, message: () => `Expected ${received?.outerHTML} to have ${name}${expected === undefined ? '' : `="${expected}"`}` };
   },
-  toBeVisible(received: Element | null) { const css = received ? getComputedStyle(received) : null; const pass = !!received?.isConnected && css?.display !== 'none' && css?.visibility !== 'hidden' && css?.opacity !== '0'; return { pass, message: () => `Expected ${received?.outerHTML} to be visible` }; },
+  toBeVisible(received: Element | null) { function visible(node: Element | null): boolean { if (!node) return true; const css = getComputedStyle(node); return !node.hasAttribute('hidden') && css.display !== 'none' && css.visibility !== 'hidden' && css.visibility !== 'collapse' && css.opacity !== '0' && visible(node.parentElement); } const pass = !!received?.isConnected && visible(received); return { pass, message: () => `Expected ${received?.outerHTML} to be visible` }; },
 });
 afterEach(async () => {
   await act(async () => { for (const root of roots.splice(0)) root.unmount(); });
@@ -44,7 +45,7 @@ for (const framework of ['actual React1.6', 'Base Svelte d889'] as const) descri
     }
     return { container };
   };
-  const options = () => ({ render, refInstanceof: window.HTMLSeparatorElement });
+  const options = () => ({ render, refInstanceof: window.HTMLDivElement });
   const element = createElement(Separator) as ReactElement<ConformantComponentProps>;
   testPropForwarding(element, options);
   testRefForwarding(element, options);
@@ -52,13 +53,13 @@ for (const framework of ['actual React1.6', 'Base Svelte d889'] as const) descri
   testClassName(element, options);
   it('renders a div with the `separator` role', async () => {
     await render(createElement(Separator));
-    expect(document.querySelector('[role=separator]')).toBeVisible();
+    expect(screen.getByRole('separator')).toBeVisible();
   });
   describe('prop: orientation', () => {
     ['horizontal', 'vertical'].forEach((orientation) => {
       it(orientation, async () => {
-        await render(createElement(Separator, { orientation: orientation as 'horizontal' | 'vertical' }));
-        expect(document.querySelector('[role=separator]')).toHaveAttribute('aria-orientation', orientation);
+        await render(createElement(Separator, { orientation: orientation as Separator.Props['orientation'] }));
+        expect(screen.getByRole('separator')).toHaveAttribute('aria-orientation', orientation);
       });
     });
   });

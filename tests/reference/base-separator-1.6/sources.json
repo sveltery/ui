@@ -77,5 +77,42 @@
       "gitBlob": "13f2a7cdd632238efb46ebf7f9587d3eb0ca7e6b",
       "bytes": 2273
     }
-  ]
+  ],
+  "licenseFile": {
+    "local": "tests/reference/base-separator-1.6/UPSTREAM_LICENSE",
+    "bytes": 1072,
+    "sha256": "07fc1b39d69d14bc7d40482a628f47226258eb01265db68ae684944b916beb2a",
+    "gitBlob": "510c55e0f0e2777fe1c55257b71d4c402bd73dca"
+  },
+  "ordinarySource": "packages/react/src/separator/Separator.test.tsx",
+  "ordinaryAssertionLines": [
+    16,
+    24
+  ],
+  "helperSourceDeclarations": {
+    "propForwarding.tsx": [
+      23,
+      38,
+      61,
+      82,
+      97,
+      114
+    ],
+    "refForwarding.tsx": [
+      32
+    ],
+    "renderProp.tsx": [
+      41,
+      61,
+      78,
+      93,
+      115,
+      146,
+      163
+    ],
+    "className.tsx": [
+      20
+    ]
+  },
+  "status": "unverified source ports; execution and final exact-head acceptance recorded separately in PR"
 }

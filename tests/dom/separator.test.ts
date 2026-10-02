@@ -20,8 +20,7 @@ it('caller prop precedence and cn class merge match actual source', async () => 
  const target = document.createElement('section'); document.body.append(target);
  const attrs = { orientation: 'vertical' as const, class: ['bg-red-500', { 'w-6': true }], 'data-slot': 'caller-slot', 'data-vertical': '', 'aria-orientation': 'horizontal' as const, role: 'presentation', style: 'color: red' };
  mounted.push(mount(Separator, { target, props: attrs })); await tick();
- const expected = document.createElement('section'); expected.innerHTML = renderToStaticMarkup(createElement(Reference, { ...attrs, className: ['bg-red-500', { 'w-6': true }] as unknown as string, style: { color: 'red' } }));
- expected.firstElementChild!.removeAttribute('class'); // React does not receive the native Svelte class spelling.
+ const expected = document.createElement('section');
  const { class: _class, ...referenceAttrs } = attrs; void _class;
  expected.innerHTML = renderToStaticMarkup(createElement(Reference, { ...referenceAttrs, className: 'bg-red-500 w-6', style: { color: 'red' } }));
  const actual = target.firstElementChild! as HTMLElement; const reference = expected.firstElementChild! as HTMLElement;

@@ -20,6 +20,7 @@ node --import ./scripts/svelte-ssr-loader.mjs scripts/check-aspect-ratio-ssr.mjs
 node --import ./scripts/svelte-ssr-loader.mjs scripts/check-empty-ssr.mjs
 node --import ./scripts/svelte-ssr-loader.mjs scripts/check-example-ssr.mjs
 node --import ./scripts/svelte-ssr-loader.mjs scripts/check-icons-ssr.mjs
+node --import ./scripts/svelte-ssr-loader.mjs scripts/check-separator-ssr.mjs
 pnpm --filter @sveltery/docs build
 bash scripts/check-remote-fields.sh
 bash scripts/check-package.sh

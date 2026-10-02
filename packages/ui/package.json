@@ -75,6 +75,11 @@
       "types": "./dist/example/index.d.ts",
       "svelte": "./dist/example/index.js",
       "default": "./dist/example/index.js"
+    },
+    "./separator": {
+      "types": "./dist/separator/index.d.ts",
+      "svelte": "./dist/separator/index.js",
+      "default": "./dist/separator/index.js"
     }
   },
   "svelte": "./dist/index.js",
