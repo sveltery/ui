@@ -179,4 +179,13 @@
     @apply bg-muted/50 rounded-b-xl border-t p-(--card-spacing);
   }
 
+
+  /* MARK: Label */
+  .cn-label {
+    @apply gap-2 text-sm leading-none font-medium group-data-[disabled=true]:opacity-50 peer-disabled:opacity-50;
+  }
+
+  .cn-label-aria {
+    @apply peer-data-disabled:opacity-50;
+  }
 }

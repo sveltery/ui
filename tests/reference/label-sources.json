@@ -1,0 +1,21 @@
+{
+  "commit": "d75a96ab781f3d659be1ad287347d5887ce9f2fc",
+  "files": [
+    {
+      "upstream": "apps/v4/registry/bases/base/ui/label.tsx",
+      "local": "tests/reference/label.tsx",
+      "sha256": "d11f6ddea1304473d829329f36238c164dbee9fe04c038fd169d70d352b75704"
+    },
+    {
+      "upstream": "apps/v4/registry/bases/base/examples/label-example.tsx",
+      "local": "tests/reference/label-example.tsx",
+      "sha256": "c20d97df902332467e5f76f76b7b752a6e0504d744f874101146851d1867e649"
+    },
+    {
+      "upstream": "apps/v4/registry/styles/style-nova.css",
+      "local": "tests/reference/label-nova.css",
+      "sha256": "456d134a926da6dd0204773d7f663ad6b90c928ff842a48bade045fa2aa30430",
+      "range": "788-795 (Label section only)"
+    }
+  ]
+}
