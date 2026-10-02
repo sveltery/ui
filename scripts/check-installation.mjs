@@ -36,6 +36,13 @@ try {
       mkdirSync(dirname(destination), { recursive: true });
       writeFileSync(destination, `${content}\n`);
     }
+    const basePinRoute = join(consumer, 'src/routes/base-pin/+page.svelte');
+    mkdirSync(dirname(basePinRoute), { recursive: true });
+    let basePinFixture = readFileSync(join(repo, 'apps/docs/examples/base/BasePinExample.svelte'), 'utf8');
+    if (mode === 'copy') {
+      basePinFixture = basePinFixture.replaceAll('@sveltery/ui/button', '$lib/components/ui/button').replaceAll('@sveltery/ui/dialog', '$lib/components/ui/dialog').replaceAll('@sveltery/ui/textarea', '$lib/components/ui/textarea');
+    }
+    writeFileSync(basePinRoute, basePinFixture);
     const buttonRoute = join(consumer, 'src/routes/button/+page.svelte');
     mkdirSync(dirname(buttonRoute), { recursive: true });
     writeFileSync(buttonRoute, readFileSync(join(repo, 'scripts/button-consumer.svelte'), 'utf8'));

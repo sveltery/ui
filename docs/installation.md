@@ -24,12 +24,12 @@ pnpm --filter @sveltery/ui pack --pack-destination ../dialog-app/vendor
 cp .vendor/sveltery-base-0.0.0.tgz ../dialog-app/vendor/
 cd ../dialog-app
 printf '%s  %s\n' \
-  0f15a815e69e8553b2c67f8b5315ee7334c8b001cc0fcf1efde09c5e5c4289d6 \
+  fae93c0aa896b09f58dfcb5e1580ac6293b489994cd4556c90f1e77abaa197e7 \
   vendor/sveltery-base-0.0.0.tgz | sha256sum --check
 sha256sum vendor/*.tgz > vendor/SHA256SUMS
 ```
 
-Bootstrap rebuilds Base commit `4dd04e495fc9f5bb6a0bb872fe103563d49535b1` and verifies its archive against [base.lock.json](../scripts/base.lock.json). Keep the recorded `SVELTERY_UI_SHA`, both archives, and `vendor/SHA256SUMS` with your consumer. These Base pin/checksum instructions match this reviewed source generation; when selecting another UI commit, check its `scripts/base.lock.json` and matching installation guide rather than mixing archives across snapshots. The generated UI checksum records your local artifact; it is not a published release checksum. On macOS, use `shasum -a 256` / `shasum -a 256 -c` in place of `sha256sum` / `sha256sum --check`.
+This proposed pin-update checkout rebuilds Base commit `400ab42408f276824be7fe17250ed44bd01fd260` and verifies its archive against [base.lock.json](../scripts/base.lock.json). Keep the recorded `SVELTERY_UI_SHA`, both archives, and `vendor/SHA256SUMS` with your consumer. These Base pin/checksum instructions match this proposed source generation; final-head review and secured UI browser acceptance are still required. The historical Button-era Base pin was `4dd04e495fc9f5bb6a0bb872fe103563d49535b1` with archive SHA-256 `0f15a815e69e8553b2c67f8b5315ee7334c8b001cc0fcf1efde09c5e5c4289d6`; when selecting another UI commit, check its `scripts/base.lock.json` and matching installation guide rather than mixing archives across snapshots. The generated UI checksum records your local artifact; it is not a published release checksum. On macOS, use `shasum -a 256` / `shasum -a 256 -c` in place of `sha256sum` / `sha256sum --check`.
 
 ### 2. Create the consumer
 
