@@ -9,4 +9,5 @@ export * from './card/index.js';
 export { Label } from './label/index.js';
 export { AspectRatio } from './aspect-ratio/index.js';
 export type { AspectRatioProps } from './aspect-ratio/index.js';
+export * from './alert/index.js';
 export * from './empty/index.js';
