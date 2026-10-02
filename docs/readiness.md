@@ -103,6 +103,6 @@ The [native AspectRatio](aspect-ratio.md) leaf uses the pinned required ratio, e
 
 The user conditionally permits skipping configured automatic review only when its quota is exhausted (2026-10-02: “And all other pr can skip review if quota is used up”). Record actual service quota exhaustion before applying that exception; independent final-head source review and hosted checks remain mandatory. A prior automatic review certifies only its recorded head.
 
-## Proposed native Empty gate
+## Native Empty gate
 
 The [six native Empty wrappers](empty.md) add no Base primitive or dependency upgrade. All actual gallery compositions require missing icons and/or InputGroup and remain deferred. Require immutable source/hash checks, paired DOM and SSR, desktop/mobile Nova selector and geometry witnesses, six-host SSR/hydration identity, media default/icon/null/spread precedence, native interactions, refs/attachments and cleanup, packaged exports/declarations/types and both fresh archive/source-copy consumer gates. Preserve existing control and direct remote-field regressions. Independent GPT-6.1 Sol high review and configured automatic review cover the final head; only actually reported exhausted quota permits the automatic-review exception. Post-merge CI and Documentation must be verified against the merge SHA. Production readiness, full gallery/theme parity and live assistive technology remain blocked.

@@ -32,4 +32,4 @@ The landed [native Label slice](docs/label.md) adds one native export and the bo
 
 The proposed native `/aspect-ratio` and paired `/aspect-ratio-reference` fixtures cover [AspectRatio](docs/aspect-ratio.md): the required ratio, exact source classes and caller-style replacement, with four bounded example bodies. Next Image and Example/ExampleWrapper framework scaffolds remain unimplemented.
 
-The proposed [native Empty slice](docs/empty.md) adds six div parts and supplemental `/empty-probe` and paired reference routes. All actual gallery functions remain deferred for missing configurable icons and/or InputGroup; source-derived native probes do not claim gallery parity.
+The [native Empty slice](docs/empty.md) adds six div parts and supplemental `/empty-probe` and paired reference routes. All actual gallery functions remain deferred for missing configurable icons and/or InputGroup; source-derived native probes do not claim gallery parity.
