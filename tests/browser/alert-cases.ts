@@ -62,12 +62,16 @@ export function alertLifecycleCases(route = '/alert-probe') {
     await page.waitForLoadState('networkidle');
     console.log('ALERT_WARMUP_COMPLETE', JSON.stringify({ errors })); phase = 'identity';
     let release!: () => void; const gate = new Promise<void>(resolve => { release = resolve; });
-    await page.route('**/*', async requestRoute => { if (requestRoute.request().resourceType() === 'script') await gate; await requestRoute.continue(); });
+    const gatedScripts: string[] = [];
+    await page.route('**/*', async requestRoute => { if (requestRoute.request().resourceType() === 'script') { gatedScripts.push(requestRoute.request().url()); await gate; } await requestRoute.continue(); });
     try {
       await page.goto(route, { waitUntil: 'commit' }); await expect(page.locator('[data-alert-probe]')).toHaveAttribute('data-hydrated', 'false');
       const selector = '#probe-alert, #probe-title, #probe-description, #probe-action';
       const hosts = await page.locator(selector).elementHandles(); expect(hosts).toHaveLength(4);
       expect((await alertState(page)).refs).toEqual(['undefined', null, 'undefined', null]);
+      await expect.poll(() => gatedScripts.length).toBeGreaterThan(0);
+      if (process.env.SVELTERY_DOCS_PREVIEW === '1') expect(gatedScripts.some(url => /\/_app\/immutable\/.*\.js$/.test(new URL(url).pathname))).toBe(true);
+      console.log('ALERT_GATED_SCRIPTS', JSON.stringify(gatedScripts));
       release(); await expect(page.locator('[data-alert-probe]')).toHaveAttribute('data-hydrated', 'true');
       await expect.poll(async () => (await alertState(page)).attachments).toBe(4);
       expect((await alertState(page)).refs).toEqual(['probe-alert', 'probe-title', 'probe-description', 'probe-action']);

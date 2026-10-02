@@ -12,6 +12,7 @@ test('paired pinned React and Svelte retain actual exit animations and presence 
       await expect(popup).toHaveAttribute('data-closed', '');
       await expect(page.locator('[data-slot=dialog-overlay]')).toHaveAttribute('data-closed', '');
       const animations = await popup.evaluate(node => { const style = getComputedStyle(node); return { connected: node.isConnected, name: style.animationName, duration: style.animationDuration, states: node.getAnimations().map(animation => animation.playState) }; });
+      console.log('DIALOG_ANIMATION_KINDS', JSON.stringify({ route, animations: await popup.evaluate(node => node.getAnimations().map(animation => ({ kind: animation.constructor.name, cssAnimation: animation instanceof CSSAnimation, cssTransition: animation instanceof CSSTransition, name: animation instanceof CSSAnimation ? animation.animationName : null, property: animation instanceof CSSTransition ? animation.transitionProperty : null, state: animation.playState, timing: animation.effect?.getComputedTiming() }))) }));
       expect(animations).toMatchObject({ connected: true, name: 'exit', duration: '0.1s' });
       expect(animations.states.length).toBeGreaterThan(0); expect(animations.states.every(state => state === 'paused')).toBe(true);
       await popup.evaluate(async () => { await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))); });

@@ -89,10 +89,17 @@ jobs:
       - name: Build actual Dialog library
         run: pnpm --filter @sveltery/ui build
       - name: Install selected official browser and OS dependencies
+        id: browser-install
         run: bash -c 'source scripts/toolchain.sh; pnpm exec playwright install --with-deps "$SVELTERY_BROWSER_PROJECT"'
+      - name: Production-preview proof against actual built app and pinned references
+        env:
+          SVELTERY_DOCS_PREVIEW: '1'
+        run: bash -c 'source scripts/toolchain.sh; pnpm test:browser --project "$SVELTERY_BROWSER_PROJECT"'
       - name: Styled Svelte and pinned React reference acceptance
+        if: ${{ !cancelled() && steps.browser-install.outcome == 'success' }}
         run: bash -c 'source scripts/toolchain.sh; pnpm test:browser --project "$SVELTERY_BROWSER_PROJECT"'
       - name: Documented fresh consumers in selected browser
+        if: ${{ !cancelled() && steps.browser-install.outcome == 'success' }}
         run: bash scripts/check-installation.sh --browser
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: failure()

@@ -1,5 +1,7 @@
 import { defineConfig } from '@playwright/test';
 import { browserProjects } from './scripts/browser-projects';
+const preview = process.env.SVELTERY_DOCS_PREVIEW;
+if (preview !== undefined && preview !== '1') throw new Error('SVELTERY_DOCS_PREVIEW must be 1 when supplied');
 export default defineConfig({
   testDir: './tests/browser', workers: 1, fullyParallel: false, retries: 0, reporter: [['list']],
   projects: browserProjects,
@@ -9,8 +11,11 @@ export default defineConfig({
   },
   webServer: [
     {
-      command: 'node ../../node_modules/vite/bin/vite.js --host 127.0.0.1 --port 5173',
+      command: preview === '1'
+        ? 'node ../../node_modules/vite/bin/vite.js build && node ../../node_modules/vite/bin/vite.js preview --host 127.0.0.1 --port 5173 --strictPort'
+        : 'node ../../node_modules/vite/bin/vite.js --host 127.0.0.1 --port 5173',
       cwd: './apps/docs', url: 'http://127.0.0.1:5173', reuseExistingServer: false,
+      timeout: 120000,
       stdout: 'pipe',
       gracefulShutdown: { signal: 'SIGTERM', timeout: 5000 },
     },
