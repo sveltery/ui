@@ -8,9 +8,10 @@ export default defineConfig({
     deviceScaleFactor: 1, locale: 'en-US', colorScheme: 'light', reducedMotion: 'no-preference',
   },
   webServer: [
-    // Kit writes the nested fixture tsconfig at startup; finish before the parent Docs watcher starts.
+    // The nested fixture imports sources using the parent Kit config. Generate it before either watcher starts.
+    // Kit also rewrites the nested config at startup; finish that server before the parent Docs watcher starts.
     {
-      command: 'node ../../../node_modules/vite/bin/vite.js --host 127.0.0.1 --port 5174 --strictPort',
+      command: 'pnpm --dir .. exec svelte-kit sync && node ../../../node_modules/vite/bin/vite.js --host 127.0.0.1 --port 5174 --strictPort',
       cwd: './apps/docs/remote-fields-fixture', url: 'http://127.0.0.1:5174', reuseExistingServer: false,
       gracefulShutdown: { signal: 'SIGTERM', timeout: 5000 },
     },
