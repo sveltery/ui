@@ -26,4 +26,4 @@ The native `/kbd` and pinned `/kbd-reference` fixtures cover [Kbd/KbdGroup scope
 
 The native `/table` and pinned `/table-reference` fixtures cover the [eight Table exports and Basic/Footer/Simple examples](docs/table.md). Badge, DropdownMenu, Select and Input compositions remain deferred; `/table-probe` and its paired reference exercise native semantics, refs and overflow.
 
-A proposed [native Card slice](docs/card.md) adds seven div parts, default/small sizes and seven actual dependency-available examples. It is stacked on Table's committed integration checkpoint; five composition examples and full parity remain deferred. The parent coordinates integration after exact-head checks and independent/configured review.
+A proposed [native Card slice](docs/card.md) adds seven div parts, default/small sizes and seven actual dependency-available examples. It retains Table's actual landed main merge; five composition examples and full parity remain deferred. The parent coordinates integration after exact-head checks and independent/configured review.
