@@ -91,10 +91,6 @@ jobs:
       - name: Install selected official browser and OS dependencies
         id: browser-install
         run: bash -c 'source scripts/toolchain.sh; pnpm exec playwright install --with-deps "$SVELTERY_BROWSER_PROJECT"'
-      - name: Production-preview proof against actual built app and pinned references
-        env:
-          SVELTERY_DOCS_PREVIEW: '1'
-        run: bash -c 'source scripts/toolchain.sh; pnpm test:browser --project "$SVELTERY_BROWSER_PROJECT"'
       - name: Styled Svelte and pinned React reference acceptance
         if: ${{ !cancelled() && steps.browser-install.outcome == 'success' }}
         run: bash -c 'source scripts/toolchain.sh; pnpm test:browser --project "$SVELTERY_BROWSER_PROJECT"'

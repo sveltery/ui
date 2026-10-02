@@ -11,10 +11,10 @@ test('paired pinned React and Svelte retain actual exit animations and presence 
       await popup.getByRole('button', { name: 'Close', exact: true }).evaluate((close: HTMLButtonElement) => close.click());
       await expect(popup).toHaveAttribute('data-closed', '');
       await expect(page.locator('[data-slot=dialog-overlay]')).toHaveAttribute('data-closed', '');
-      const animations = await popup.evaluate(node => { const style = getComputedStyle(node); return { connected: node.isConnected, name: style.animationName, duration: style.animationDuration, states: node.getAnimations().map(animation => animation.playState) }; });
-      console.log('DIALOG_ANIMATION_KINDS', JSON.stringify({ route, animations: await popup.evaluate(node => node.getAnimations().map(animation => ({ kind: animation.constructor.name, cssAnimation: animation instanceof CSSAnimation, cssTransition: animation instanceof CSSTransition, name: animation instanceof CSSAnimation ? animation.animationName : null, property: animation instanceof CSSTransition ? animation.transitionProperty : null, state: animation.playState, timing: animation.effect?.getComputedTiming() }))) }));
+      // animation-play-state controls CSS animations; Firefox also exposes independently running transitions.
+      const animations = await popup.evaluate(node => { const style = getComputedStyle(node); const actual = node.getAnimations(); return { connected: node.isConnected, name: style.animationName, duration: style.animationDuration, count: actual.length, states: actual.filter(animation => animation instanceof CSSAnimation && animation.animationName === 'exit').map(animation => animation.playState) }; });
       expect(animations).toMatchObject({ connected: true, name: 'exit', duration: '0.1s' });
-      expect(animations.states.length).toBeGreaterThan(0); expect(animations.states.every(state => state === 'paused')).toBe(true);
+      expect(animations.count).toBeGreaterThan(0); expect(animations.states.length).toBeGreaterThan(0); expect(animations.states.every(state => state === 'paused')).toBe(true);
       await popup.evaluate(async () => { await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))); });
       await expect(popup).toHaveCount(1); await expect(page.locator('[data-slot=dialog-overlay]')).toHaveCount(1);
     } finally { await control.evaluate(node => node.remove()); }

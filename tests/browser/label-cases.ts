@@ -1,6 +1,32 @@
 import { expect, test, type Page } from '@playwright/test';
 // Source-derived native acceptance probes; Svelte refs/attachments are framework-specific.
 export async function labelState(page: Page) { return JSON.parse(await page.getByTestId('probe-state').innerText()); }
+// Source-derived native HTML witness, with the same flex label/child and two-input anatomy.
+// Firefox retains the first input.labels cache after for changes, including for native HTML.
+export async function nativeLabelAssociation(page: Page) {
+  await page.locator('#probe-label').evaluate(label => {
+    const section = document.createElement('section'); section.dataset.nativeLabelWitness = '';
+    section.innerHTML = '<label id="native-label" for="native-first" style="display:flex">Account name<span>optional</span></label><input id="native-first" type="text"><input id="native-second" type="text">';
+    label.parentElement!.parentElement!.append(section);
+  });
+  const witness = page.locator('[data-native-label-witness]');
+  try {
+    // Prime the original native association exactly as the actual probe's initial name assertion does.
+    await expect(witness.locator('#native-first')).toHaveAccessibleName('Account name optional');
+    await witness.locator('label').evaluate((label: HTMLLabelElement) => { label.htmlFor = 'native-second'; label.firstChild!.textContent = 'Updated name'; });
+    const result = await witness.evaluate(section => {
+      const label = section.querySelector('label')!;
+      return { control: label.control?.id, first: Array.from(section.querySelector<HTMLInputElement>('#native-first')!.labels ?? [], item => item.id), second: Array.from(section.querySelector<HTMLInputElement>('#native-second')!.labels ?? [], item => item.id) };
+    });
+    expect(result.control).toBe('native-second'); expect(result.second).toEqual(['native-label']);
+    const firstName = result.first.length ? 'Updated name optional' : '';
+    expect(result.first).toEqual(firstName ? ['native-label'] : []);
+    await expect(witness.locator('#native-first')).toHaveAccessibleName(firstName);
+    await expect(witness.locator('#native-second')).toHaveAccessibleName('Updated name optional');
+    await witness.locator('label').click(); await expect(witness.locator('#native-second')).toBeFocused();
+    return { firstName, firstLabels: result.first.map(() => 'probe-label') };
+  } finally { await witness.evaluate(section => section.remove()); }
+}
 export async function labelNativeAssertions(page: Page) {
   await expect(page.locator('#probe-label')).toHaveAttribute('for', 'probe-first');
   await expect(page.locator('#probe-first')).toHaveAccessibleName(/Account name/);
@@ -28,7 +54,11 @@ export async function labelNativeAssertions(page: Page) {
   await expect(page.locator('#probe-label')).toHaveAttribute('data-custom', 'updated');
   await expect(page.locator('#probe-label')).toHaveAttribute('aria-disabled', 'true');
   await expect(page.locator('#probe-second')).toHaveAccessibleName(/Updated name/);
-  await expect(page.locator('#probe-first')).toHaveAccessibleName('');
+  const nativeAssociation = await nativeLabelAssociation(page);
+  expect(await page.locator('#probe-label').evaluate((label: HTMLLabelElement) => label.control?.id)).toBe('probe-second');
+  expect(await page.locator('#probe-second').evaluate((input: HTMLInputElement) => Array.from(input.labels ?? [], label => label.id))).toEqual(['probe-label']);
+  expect(await page.locator('#probe-first').evaluate((input: HTMLInputElement) => Array.from(input.labels ?? [], label => label.id))).toEqual(nativeAssociation.firstLabels);
+  await expect(page.locator('#probe-first')).toHaveAccessibleName(nativeAssociation.firstName);
   expect(await page.locator('#probe-label').evaluate(node => {
     const css = getComputedStyle(node);
     return { gap: css.gap, fontSize: css.fontSize, color: css.color, pointerEvents: css.pointerEvents, opacity: css.opacity };

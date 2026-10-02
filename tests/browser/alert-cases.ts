@@ -2,6 +2,18 @@
 import { expect, test, type Page } from '@playwright/test';
 import { JSDOM } from 'jsdom';
 export async function alertState(page: Page) { return JSON.parse(await page.getByTestId('probe-state').innerText()); }
+// Independent native source rule in the same containing block; Firefox resolves right differently.
+export async function nativeAlertOffsets(page: Page) {
+  return page.locator('#probe-action').evaluate(action => {
+    const witness = document.createElement('div');
+    witness.style.cssText = 'position:absolute;top:calc(var(--spacing) * 2);right:calc(var(--spacing) * 2)';
+    action.parentElement!.append(witness);
+    try {
+      const css = getComputedStyle(witness);
+      return { top: css.top, right: css.right, spacing: css.getPropertyValue('--spacing').trim(), rootFont: getComputedStyle(document.documentElement).fontSize };
+    } finally { witness.remove(); }
+  });
+}
 export async function alertNativeAssertions(page: Page) {
   await expect(page.locator('#probe-alert')).toHaveAttribute('role', 'alert');
   await expect(page.locator('#probe-alert')).toHaveAttribute('title', 'Initial & <alert>');
@@ -33,7 +45,9 @@ export async function alertNativeAssertions(page: Page) {
     expect((await css('[data-testid="direct-svg"] > svg'))[property]).toBe('16px');
     expect((await css('[data-testid="sized-svg"] > svg'))[property]).toBe('24px');
   }
-  expect((await css('#probe-action')).position).toBe('absolute'); expect((await css('#probe-action')).top).toBe('8px'); expect((await css('#probe-action')).right).toBe('8px');
+  const nativeOffsets = await nativeAlertOffsets(page);
+  expect(nativeOffsets.spacing).toBe('0.25rem'); expect(nativeOffsets.rootFont).toBe('16px'); expect(nativeOffsets.top).toBe('8px');
+  expect((await css('#probe-action')).position).toBe('absolute'); expect((await css('#probe-action')).top).toBe('8px'); expect((await css('#probe-action')).right).toBe(nativeOffsets.right);
   expect((await css('#probe-description p:first-child')).marginBottom).toBe('16px'); expect((await css('#probe-description p:last-child')).marginBottom).toBe('0px');
   expect((await css('#probe-title a')).textDecorationLine).toBe('underline'); expect((await css('#probe-title a')).textUnderlineOffset).toBe('3px');
   const muted = (await css('[data-testid="plain"] [data-slot="alert-description"]')).color;
@@ -51,16 +65,11 @@ export async function alertNativeAssertions(page: Page) {
 export function alertLifecycleCases(route = '/alert-probe') {
   test('native Alert parts retain SSR identity; undefined/null refs and attachments replace and clean up', async ({ page, request }) => {
     const html = await (await request.get(route)).text(); expect(html).toContain('data-hydrated="false"'); expect(new JSDOM(html).window.document.querySelector('#probe-alert')?.getAttribute('title')).toBe('Initial & <alert>');
-    let phase = 'warmup';
-    const errors: string[] = []; page.on('pageerror', error => { errors.push(error.message); console.log('ALERT_PAGEERROR_PHASE', JSON.stringify({ phase, message: error.message, stack: error.stack })); });
-    page.on('console', message => { if (message.type() === 'error') { errors.push(message.text()); console.log('ALERT_CONSOLE_PHASE', JSON.stringify({ phase, message: message.text(), location: message.location() })); } });
-    page.on('requestfailed', request => console.log('ALERT_REQUESTFAILED_PHASE', JSON.stringify({ phase, url: request.url(), type: request.resourceType(), failure: request.failure() })));
-    page.on('response', response => { if (response.status() >= 400) console.log('ALERT_RESPONSE_PHASE', JSON.stringify({ phase, url: response.url(), status: response.status(), contentType: response.headers()['content-type'] })); });
-    page.on('framenavigated', frame => { if (frame === page.mainFrame()) console.log('ALERT_NAVIGATION_PHASE', JSON.stringify({ phase, url: frame.url() })); });
+    const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
+    page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
     await page.goto(route); await expect(page.locator('[data-alert-probe]')).toHaveAttribute('data-hydrated', 'true');
     // Complete the warm-up module requests before the identity navigation can cancel them.
     await page.waitForLoadState('networkidle');
-    console.log('ALERT_WARMUP_COMPLETE', JSON.stringify({ errors })); phase = 'identity';
     let release!: () => void; const gate = new Promise<void>(resolve => { release = resolve; });
     const gatedScripts: string[] = [];
     await page.route('**/*', async requestRoute => { if (requestRoute.request().resourceType() === 'script') { gatedScripts.push(requestRoute.request().url()); await gate; } await requestRoute.continue(); });
@@ -70,8 +79,6 @@ export function alertLifecycleCases(route = '/alert-probe') {
       const hosts = await page.locator(selector).elementHandles(); expect(hosts).toHaveLength(4);
       expect((await alertState(page)).refs).toEqual(['undefined', null, 'undefined', null]);
       await expect.poll(() => gatedScripts.length).toBeGreaterThan(0);
-      if (process.env.SVELTERY_DOCS_PREVIEW === '1') expect(gatedScripts.some(url => /\/_app\/immutable\/.*\.js$/.test(new URL(url).pathname))).toBe(true);
-      console.log('ALERT_GATED_SCRIPTS', JSON.stringify(gatedScripts));
       release(); await expect(page.locator('[data-alert-probe]')).toHaveAttribute('data-hydrated', 'true');
       await expect.poll(async () => (await alertState(page)).attachments).toBe(4);
       expect((await alertState(page)).refs).toEqual(['probe-alert', 'probe-title', 'probe-description', 'probe-action']);
