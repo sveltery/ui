@@ -60,3 +60,5 @@ The landed `/card` and `/card-reference` routes compare seven actual dependency-
 `/label` and `/label-reference` compare the bounded With Textarea example; `/label-probe` and `/label-probe-reference` exercise native association/focus, exact selectors, reactive props and paired SSR/hydration. See [Label scope](../../docs/label.md); full Field/Example and Checkbox/Input/Disabled compositions remain deferred.
 
 `/aspect-ratio` and `/aspect-ratio-reference` compare four bounded ratio examples; `/aspect-ratio-probe` and its reference test responsive geometry, caller overrides and native lifecycle behavior. See [AspectRatio scope](../../docs/aspect-ratio.md); native img and sections substitute Next Image and Example scaffolds without claiming their parity.
+
+`/empty-probe` and `/empty-probe-reference` exercise the [six native Empty parts](../../docs/empty.md), with supplemental variant/selector and SSR/hydration/lifecycle probes. All six pinned gallery functions remain deferred for missing icons and/or InputGroup.

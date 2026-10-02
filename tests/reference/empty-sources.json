@@ -1,0 +1,21 @@
+{
+  "commit": "d75a96ab781f3d659be1ad287347d5887ce9f2fc",
+  "files": [
+    {
+      "upstream": "apps/v4/registry/bases/base/ui/empty.tsx",
+      "local": "tests/reference/empty.tsx",
+      "sha256": "05c419160ac0226973f6f00d7d8865dc46645a75ea0697138992cdbc736efec4"
+    },
+    {
+      "upstream": "apps/v4/registry/bases/base/examples/empty-example.tsx",
+      "local": "tests/reference/empty-example.tsx",
+      "sha256": "c40ecdb43cbc685ab147ff603953b508c57d2abd47b8cca44e886fbc5530dc36"
+    },
+    {
+      "upstream": "apps/v4/registry/styles/style-nova.css",
+      "local": "tests/reference/empty-nova.css",
+      "sha256": "16b8a307e43e0d73685d871a1acfe51090f8ff466917a98af4ff1745d105ab4e",
+      "range": "585-616 (Empty section only)"
+    }
+  ]
+}
