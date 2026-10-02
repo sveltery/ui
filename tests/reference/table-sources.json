@@ -1,0 +1,21 @@
+{
+  "commit": "d75a96ab781f3d659be1ad287347d5887ce9f2fc",
+  "files": [
+    {
+      "upstream": "apps/v4/registry/bases/base/ui/table.tsx",
+      "local": "tests/reference/table.tsx",
+      "sha256": "77d15e11fcf1fb2f5e1b814aa64868e7644bb59c5e1498ecb93bcbdca1c7a070"
+    },
+    {
+      "upstream": "apps/v4/registry/bases/base/examples/table-example.tsx",
+      "local": "tests/reference/table-example.tsx",
+      "sha256": "dcfd2fa9f630c6fc5440f1f0af57e8c8b9062a31879e1fc0be29ee8621ccf0c2"
+    },
+    {
+      "upstream": "apps/v4/registry/styles/style-nova.css",
+      "local": "tests/reference/table-nova.css",
+      "sha256": "ff5bbc884dd5f300b400f191a6cbcdaf707ef5294ce9c4c932cf204f4145928e",
+      "range": "1266-1313 (Table section only)"
+    }
+  ]
+}

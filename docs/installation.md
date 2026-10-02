@@ -264,6 +264,18 @@ Make these three edits:
 
 Run `pnpm install` to update the consumer lockfile, then repeat the frozen install, checks, build and browser instructions. The copied wrappers still depend on Base; copying them does not vendor its behavior implementation. Keep the source SHA and notices with your copy, including when redistributing it. Review local modifications and upstream updates explicitly. See [Dialog API adaptations](dialog.md) for controlled state, render snippets, native events and the remaining focus/compatibility limits.
 
+## Native Table
+
+The same reviewed archive exports the eight [native Table components](table.md) at `@sveltery/ui/table` and the root. Their fixed container provides horizontal scrolling; attributes, native events and `bind:ref` belong to the inner table. Keep Nova and Tailwind scanning configured as above. Only Basic, Footer and Simple examples are implemented; Badge, DropdownMenu, Select and Input compositions remain deferred.
+
+For an app-owned Table copy, retain the `table` directory alongside the shared helper and notices from the same selected checkout:
+
+```sh
+cp -R ../sveltery-ui/apps/docs/registry/bases/base/ui/table src/lib/components/ui/
+```
+
+Import the same names from `$lib/components/ui/table`, preserve `shared/classes.js`, `clsx` and `tailwind-merge`, and repeat the types, SSR/client build and browser gates. Table itself requires no Base primitive; this guide's Dialog scaffold still consumes the verified Base archive. Fresh consumer verification exercises Table's examples, native semantic tree, refs/attachments, reactive attributes, styles and scrolling in both archive and source-copy modes, before enabling the separate experimental remote-field fixture.
+
 ### Native Skeleton
 
 Import `Skeleton` from `@sveltery/ui/skeleton` (also exported at the root) using the same reviewed archive. For source copies, copy `registry/bases/base/ui/skeleton` beside `shared/classes.js`, retain the MIT notices and scan both directories with Tailwind. The shared Nova CSS includes `.cn-skeleton`; consumer theme tokens must include the scaffold's existing `--color-muted` mapping and radius tokens. The [feature contract](skeleton.md) documents native div props, snippets, bindable refs and attachments, plus deferred Card composition. The fresh consumer gate adds a native Skeleton route to both archive and source-copy modes before experimental remote-field configuration.

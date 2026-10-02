@@ -13,6 +13,7 @@
   },
   "include": [
     "../../apps/docs/registry/bases/base/ui/**/*",
-    "../../tests/types.ts"
+    "../../tests/types.ts",
+    "../../tests/types-table.ts"
   ]
 }
