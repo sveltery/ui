@@ -1,0 +1,22 @@
+{
+  "commit": "d75a96ab781f3d659be1ad287347d5887ce9f2fc",
+  "files": [
+    {
+      "upstream": "apps/v4/registry/bases/base/components/example.tsx",
+      "local": "tests/reference/example-scaffold.tsx",
+      "sha256": "4e8265534863b7291158a5341f305a3cac582cf762054bd2387adf20959e06bf"
+    },
+    {
+      "upstream": "apps/v4/app/globals.css",
+      "local": "tests/reference/example-variants.css",
+      "sha256": "b4a94e0ca5f7a35d1411f44082031b816a2f22ee1e46826a403cf869aee16a42",
+      "range": "three required custom-variant declarations only",
+      "fullSourceSha256": "cbae6d633c38be59fc036d1e5cf60203ae7619ea6af9b4cdd8d632a211ccffa9"
+    }
+  ],
+  "license": {
+    "upstream": "LICENSE.md",
+    "local": "tests/reference/LICENSE",
+    "sha256": "1564074e13439397221ffd522e2e504d56561994a23d371aa5e3ad43e4f5423f"
+  }
+}

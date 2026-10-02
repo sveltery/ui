@@ -19,6 +19,7 @@ node --import ./scripts/svelte-ssr-loader.mjs scripts/check-label-ssr.mjs
 node --import ./scripts/svelte-ssr-loader.mjs scripts/check-alert-ssr.mjs
 node --import ./scripts/svelte-ssr-loader.mjs scripts/check-aspect-ratio-ssr.mjs
 node --import ./scripts/svelte-ssr-loader.mjs scripts/check-empty-ssr.mjs
+node --import ./scripts/svelte-ssr-loader.mjs scripts/check-example-ssr.mjs
 node --import ./scripts/svelte-ssr-loader.mjs scripts/check-icons-ssr.mjs
 pnpm --filter @sveltery/docs build
 bash scripts/check-remote-fields.sh
