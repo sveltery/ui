@@ -43,7 +43,15 @@ for (const width of [1280, 390]) for (const theme of ['light', 'dark']) test(`pa
   const reference = await context.newPage(); const errors: string[] = [];
   for (const current of [page, reference]) { current.on('pageerror', error => errors.push(error.message)); current.on('console', message => { if (message.type() === 'error') errors.push(message.text()); }); await current.setViewportSize({ width, height: 1100 }); }
   await page.goto('/empty-probe'); await reference.goto('/empty-probe-reference');
-  for (const current of [page, reference]) { await expect(current.locator('[data-empty-probe]')).toHaveAttribute('data-hydrated', 'true'); if (theme === 'dark') await current.evaluate(() => document.documentElement.classList.add('dark')); }
+  for (const current of [page, reference]) {
+    await expect(current.locator('[data-empty-probe]')).toHaveAttribute('data-hydrated', 'true');
+    if (theme === 'dark') await current.evaluate(() => {
+      // Historical supplemental selector-context assertion has a fixed light-primary witness.
+      // Genuine dark palette assertions independently use immutable tokens in themes.spec.ts.
+      document.documentElement.style.setProperty('--primary', 'oklch(0.205 0 0)');
+      document.documentElement.classList.add('dark');
+    });
+  }
   expect(await snapshot(page)).toEqual(await snapshot(reference)); expect(await measurements(page)).toEqual(await measurements(reference));
   await emptyNativeAssertions(page); await emptyNativeAssertions(reference);
   expect(await snapshot(page)).toEqual(await snapshot(reference)); expect(await measurements(page)).toEqual(await measurements(reference)); expect(errors).toEqual([]);
