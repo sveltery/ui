@@ -41,16 +41,16 @@ export function basePinCases() {
   });
   test('public Portal retargeting distinguishes empty refs, explicit null and native node precedence', async ({ page }) => {
     await open(page); const outer = page.getByTestId('base-pin-portal');
-    await expect.poll(async () => (await state(page)).portalParent).toBe('body');
+    await expect.poll(() => outer.evaluate(node => node.parentElement?.id || node.parentElement?.tagName.toLowerCase())).toBe('body');
     expect(await page.getByTestId('base-pin-nested').evaluate(node => node.parentElement?.getAttribute('data-testid'))).toBe('base-pin-portal');
     const node = await outer.elementHandle(); expect(node).not.toBeNull();
-    await page.getByRole('dialog').getByTestId('base-pin-element-current').click(); await expect.poll(async () => (await state(page)).portalParent).toBe('base-pin-first');
+    await page.getByRole('dialog').getByTestId('base-pin-element-current').click(); await expect.poll(() => outer.evaluate(node => node.parentElement?.id || node.parentElement?.tagName.toLowerCase())).toBe('base-pin-first');
     expect(await node!.evaluate(element => element === document.querySelector('[data-testid=base-pin-portal]'))).toBe(true);
-    await page.getByRole('dialog').getByTestId('base-pin-ref-owner-document').click(); await expect.poll(async () => (await state(page)).portalParent).toBe('base-pin-second');
-    await page.getByRole('dialog').getByTestId('base-pin-undefined').click(); await expect.poll(async () => (await state(page)).portalParent).toBe('body');
+    await page.getByRole('dialog').getByTestId('base-pin-ref-owner-document').click(); await expect.poll(() => outer.evaluate(node => node.parentElement?.id || node.parentElement?.tagName.toLowerCase())).toBe('base-pin-second');
+    await page.getByRole('dialog').getByTestId('base-pin-undefined').click(); await expect.poll(() => outer.evaluate(node => node.parentElement?.id || node.parentElement?.tagName.toLowerCase())).toBe('body');
     await page.getByRole('dialog').getByTestId('base-pin-null').click(); await expect(page.locator('[data-base-ui-portal]')).toHaveCount(0);
     expect(await node!.evaluate(element => element.isConnected)).toBe(false);
-    await page.getByTestId('base-pin-null-ref').click(); await expect.poll(async () => (await state(page)).portalParent).toBe('body');
+    await page.getByTestId('base-pin-null-ref').click(); await expect.poll(() => outer.evaluate(node => node.parentElement?.id || node.parentElement?.tagName.toLowerCase())).toBe('body');
     expect(await node!.evaluate(element => element === document.querySelector('[data-testid=base-pin-portal]'))).toBe(false);
     await page.getByRole('dialog').getByTestId('base-pin-remove').click(); await expect(page.locator('[data-base-ui-portal]')).toHaveCount(0);
     expect((await state(page)).cleanups).toEqual((await state(page)).attachments);

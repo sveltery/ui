@@ -70,5 +70,5 @@
     </Dialog>
   {/if}
   {@render ownerControls()}
-  <pre data-testid="base-pin-state">{JSON.stringify({ open, tags, attachments, cleanups, bindingLog, actions: !!actions, portalParent: portal?.parentElement ? portal.parentElement.id || portal.parentElement.tagName.toLowerCase() : null })}</pre>
+  <pre data-testid="base-pin-state">{JSON.stringify({ open, tags, attachments, cleanups, bindingLog, actions: !!actions })}</pre>
 </main>
