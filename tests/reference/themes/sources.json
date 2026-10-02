@@ -71,6 +71,11 @@
       "upstream": "apps/v4/registry/styles/style-rhea.css",
       "local": "tests/reference/themes/upstream/style-rhea.css",
       "sha256": "bcb242a7845316f93b0562345dd5c32a46a2988b506a8e8d7df1c836a1637b49"
+    },
+    {
+      "upstream": "apps/v4/registry/config.test.ts",
+      "local": "tests/reference/themes/upstream/config.test.ts.source",
+      "sha256": "eb3f4f997de7eb47c6e653493bb2cc51e6b1a531a857414f1644ab50709e6065"
     }
   ]
 }
