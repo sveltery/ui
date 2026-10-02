@@ -6,11 +6,11 @@ const promises = new Map<IconLibraryName, Promise<Library>>();
 const iconPromises = new Map<string, Promise<IconData | null>>();
 const icons = new Map<string, IconData | null>();
 const importers = {
-  lucide: () => import('./data/lucide.json', { with: { type: 'json' } }),
-  tabler: () => import('./data/tabler.json', { with: { type: 'json' } }),
-  hugeicons: () => import('./data/hugeicons.json', { with: { type: 'json' } }),
-  phosphor: () => import('./data/phosphor.json', { with: { type: 'json' } }),
-  remixicon: () => import('./data/remixicon.json', { with: { type: 'json' } }),
+  lucide: () => import('../../src/lib/icons/lucide.js'),
+  tabler: () => import('../../src/lib/icons/tabler.js'),
+  hugeicons: () => import('../../src/lib/icons/hugeicons.js'),
+  phosphor: () => import('../../src/lib/icons/phosphor.js'),
+  remixicon: () => import('../../src/lib/icons/remixicon.js'),
 };
 export function loadedIcon(library: IconLibraryName, name: string): IconData | null | undefined {
   return icons.get(`${library}/${name}`);

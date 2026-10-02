@@ -4,7 +4,7 @@
   import { getIconLibraryContext, type IconLibraryName } from './config.js';
   import { loadIcon, loadedIcon } from './data.js';
   import IconSvg from './IconSvg.svelte';
-  import fallback from './data/fallback.json' with { type: 'json' };
+  import fallback from '../../src/lib/icons/fallback.js';
   type Props = Record<IconLibraryName, string> & Omit<SVGAttributes<SVGSVGElement>, 'children'> & { children?: Snippet; ref?: SVGSVGElement | null; strokeWidth?: string | number | null };
   let { children, ref = $bindable(), ...props }: Props = $props();
   const getLibrary = getIconLibraryContext();

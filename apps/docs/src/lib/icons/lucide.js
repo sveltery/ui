@@ -1,5 +1,23 @@
-{
-  "IconActivity": {
+/*!
+ISC License
+
+Copyright (c) for portions of Lucide are held by Cole Bemis 2013-2022 as part of Feather (MIT). All other copyright (c) for Lucide are held by Lucide Contributors 2022.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+*/
+// Generated native geometry; immutable provenance: tests/reference/icon-sources.json.
+export default {
+  "ActivityIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -10,19 +28,19 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-activity "
+      "class": "lucide lucide-activity"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M3 12h4l3 8l4 -16l3 8h4"
+          "d": "M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"
         },
         "nodes": []
       }
     ]
   },
-  "IconAlertCircle": {
+  "AlertCircleIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -33,33 +51,41 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-alert-circle "
+      "class": "lucide lucide-circle-alert"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "line",
         "attributes": {
-          "d": "M12 8v4"
+          "x1": "12",
+          "x2": "12",
+          "y1": "8",
+          "y2": "12"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "line",
         "attributes": {
-          "d": "M12 16h.01"
+          "x1": "12",
+          "x2": "12.01",
+          "y1": "16",
+          "y2": "16"
         },
         "nodes": []
       }
     ]
   },
-  "IconAlertOctagon": {
+  "AlertTriangleIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -70,46 +96,16 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-alert-octagon "
+      "class": "lucide lucide-triangle-alert"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M12.802 2.165l5.575 2.389c.48 .206 .863 .589 1.07 1.07l2.388 5.574c.22 .512 .22 1.092 0 1.604l-2.389 5.575c-.206 .48 -.589 .863 -1.07 1.07l-5.574 2.388c-.512 .22 -1.092 .22 -1.604 0l-5.575 -2.389a2.036 2.036 0 0 1 -1.07 -1.07l-2.388 -5.574a2.036 2.036 0 0 1 0 -1.604l2.389 -5.575c.206 -.48 .589 -.863 1.07 -1.07l5.574 -2.388a2.036 2.036 0 0 1 1.604 0z"
+          "d": "m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"
         },
         "nodes": []
       },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12 8v4"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12 16h.01"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconAlertTriangle": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-alert-triangle "
-    },
-    "nodes": [
       {
         "tag": "path",
         "attributes": {
@@ -120,20 +116,13 @@
       {
         "tag": "path",
         "attributes": {
-          "d": "M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12 16h.01"
+          "d": "M12 17h.01"
         },
         "nodes": []
       }
     ]
   },
-  "IconAppWindow": {
+  "AppWindowIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -144,33 +133,44 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-app-window "
+      "class": "lucide lucide-app-window"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "rect",
         "attributes": {
-          "d": "M3 5m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"
+          "x": "2",
+          "y": "4",
+          "width": "20",
+          "height": "16",
+          "rx": "2"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M6 8h.01"
+          "d": "M10 4v4"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M9 8h.01"
+          "d": "M2 8h20"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M6 4v4"
         },
         "nodes": []
       }
     ]
   },
-  "IconArchive": {
+  "ArchiveIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -181,33 +181,37 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-archive "
+      "class": "lucide lucide-archive"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "rect",
         "attributes": {
-          "d": "M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"
+          "width": "20",
+          "height": "5",
+          "x": "2",
+          "y": "3",
+          "rx": "1"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10"
+          "d": "M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M10 12l4 0"
+          "d": "M10 12h4"
         },
         "nodes": []
       }
     ]
   },
-  "IconArchiveOff": {
+  "ArchiveXIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -218,40 +222,44 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-archive-off "
+      "class": "lucide lucide-archive-x"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "rect",
         "attributes": {
-          "d": "M8 4h11a2 2 0 1 1 0 4h-7m-4 0h-3a2 2 0 0 1 -.826 -3.822"
+          "width": "20",
+          "height": "5",
+          "x": "2",
+          "y": "3",
+          "rx": "1"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 1.824 -1.18m.176 -3.82v-7"
+          "d": "M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M10 12h2"
+          "d": "m9.5 17 5-5"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M3 3l18 18"
+          "d": "m9.5 12 5 5"
         },
         "nodes": []
       }
     ]
   },
-  "IconArrowDown": {
+  "ArrowDownIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -262,33 +270,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-arrow-down "
+      "class": "lucide lucide-arrow-down"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 5l0 14"
+          "d": "M12 5v14"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M18 13l-6 6"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M6 13l6 6"
+          "d": "m19 12-7 7-7-7"
         },
         "nodes": []
       }
     ]
   },
-  "IconArrowForward": {
+  "ArrowLeftCircleIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -299,19 +300,35 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-arrow-forward "
+      "class": "lucide lucide-circle-arrow-left"
     },
     "nodes": [
       {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
         "tag": "path",
         "attributes": {
-          "d": "M15 11l4 4l-4 4m4 -4h-11a4 4 0 0 1 0 -8h1"
+          "d": "M16 12H8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m12 8-4 4 4 4"
         },
         "nodes": []
       }
     ]
   },
-  "IconArrowLeft": {
+  "ArrowLeftIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -322,33 +339,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-arrow-left "
+      "class": "lucide lucide-arrow-left"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M5 12l14 0"
+          "d": "m12 19-7-7 7-7"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M5 12l6 6"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M5 12l6 -6"
+          "d": "M19 12H5"
         },
         "nodes": []
       }
     ]
   },
-  "IconArrowRight": {
+  "ArrowLeftRightIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -359,33 +369,40 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-arrow-right "
+      "class": "lucide lucide-arrow-left-right"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M5 12l14 0"
+          "d": "M8 3 4 7l4 4"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M13 18l6 -6"
+          "d": "M4 7h16"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M13 6l6 6"
+          "d": "m16 21 4-4-4-4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M20 17H4"
         },
         "nodes": []
       }
     ]
   },
-  "IconArrowUp": {
+  "ArrowRightIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -396,33 +413,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-arrow-up "
+      "class": "lucide lucide-arrow-right"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 5l0 14"
+          "d": "M5 12h14"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M18 11l-6 -6"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M6 11l6 -6"
+          "d": "m12 5 7 7-7 7"
         },
         "nodes": []
       }
     ]
   },
-  "IconArrowUpRight": {
+  "ArrowUpIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -433,26 +443,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-arrow-up-right "
+      "class": "lucide lucide-arrow-up"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M17 7l-10 10"
+          "d": "m5 12 7-7 7 7"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M8 7l9 0l0 9"
+          "d": "M12 19V5"
         },
         "nodes": []
       }
     ]
   },
-  "IconArrowsLeftRight": {
+  "ArrowUpRightIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -463,40 +473,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-arrows-left-right "
+      "class": "lucide lucide-arrow-up-right"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M21 17l-18 0"
+          "d": "M7 7h10v10"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M6 10l-3 -3l3 -3"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M3 7l18 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M18 20l3 -3l-3 -3"
+          "d": "M7 17 17 7"
         },
         "nodes": []
       }
     ]
   },
-  "IconBell": {
+  "AudioLinesIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -507,26 +503,54 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-bell "
+      "class": "lucide lucide-audio-lines"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6"
+          "d": "M2 10v3"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M9 17v1a3 3 0 0 0 6 0v-1"
+          "d": "M6 6v11"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10 3v18"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14 8v7"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M18 5v13"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M22 10v3"
         },
         "nodes": []
       }
     ]
   },
-  "IconBluetooth": {
+  "BadgeCheck": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -537,19 +561,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-bluetooth "
+      "class": "lucide lucide-badge-check"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M7 8l10 8l-5 4l0 -16l5 4l-10 8"
+          "d": "M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m9 12 2 2 4-4"
         },
         "nodes": []
       }
     ]
   },
-  "IconBold": {
+  "BadgeCheckIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -560,26 +591,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-bold "
+      "class": "lucide lucide-badge-check"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M7 5h6a3.5 3.5 0 0 1 0 7h-6z"
+          "d": "M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M13 12h1a3.5 3.5 0 0 1 0 7h-7v-7"
+          "d": "m9 12 2 2 4-4"
         },
         "nodes": []
       }
     ]
   },
-  "IconBolt": {
+  "BellIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -590,19 +621,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-bolt "
+      "class": "lucide lucide-bell"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11"
+          "d": "M10.268 21a2 2 0 0 0 3.464 0"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"
         },
         "nodes": []
       }
     ]
   },
-  "IconBook": {
+  "BlocksIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -613,47 +651,30 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-book "
+      "class": "lucide lucide-blocks"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "rect",
         "attributes": {
-          "d": "M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0"
+          "width": "7",
+          "height": "7",
+          "x": "14",
+          "y": "3",
+          "rx": "1"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M3 6l0 13"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12 6l0 13"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M21 6l0 13"
+          "d": "M10 21V8a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H3"
         },
         "nodes": []
       }
     ]
   },
-  "IconBookmark": {
+  "BluetoothIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -664,19 +685,19 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-bookmark "
+      "class": "lucide lucide-bluetooth"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M18 7v14l-6 -4l-6 4v-14a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4z"
+          "d": "m7 7 10 10-5 5V2l5 5L7 17"
         },
         "nodes": []
       }
     ]
   },
-  "IconBox": {
+  "BoldIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -687,40 +708,19 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-box "
+      "class": "lucide lucide-bold"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12 12l8 -4.5"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12 12l0 9"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12 12l-8 -4.5"
+          "d": "M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8"
         },
         "nodes": []
       }
     ]
   },
-  "IconBrain": {
+  "BookOpen": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -731,54 +731,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-brain "
+      "class": "lucide lucide-book-open"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M15.5 13a3.5 3.5 0 0 0 -3.5 3.5v1a3.5 3.5 0 0 0 7 0v-1.8"
+          "d": "M12 7v14"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M8.5 13a3.5 3.5 0 0 1 3.5 3.5v1a3.5 3.5 0 0 1 -7 0v-1.8"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M17.5 16a3.5 3.5 0 0 0 0 -7h-.5"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M19 9.3v-2.8a3.5 3.5 0 0 0 -7 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M6.5 16a3.5 3.5 0 0 1 0 -7h.5"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M5 9.3v-2.8a3.5 3.5 0 0 1 7 0v10"
+          "d": "M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"
         },
         "nodes": []
       }
     ]
   },
-  "IconBrandJavascript": {
+  "BookOpenIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -789,33 +761,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-brand-javascript "
+      "class": "lucide lucide-book-open"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M20 4l-2 14.5l-6 2l-6 -2l-2 -14.5z"
+          "d": "M12 7v14"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M7.5 8h3v8l-2 -1"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M16.5 8h-2.5a.5 .5 0 0 0 -.5 .5v3a.5 .5 0 0 0 .5 .5h1.423a.5 .5 0 0 1 .495 .57l-.418 2.93l-2 .5"
+          "d": "M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"
         },
         "nodes": []
       }
     ]
   },
-  "IconBuildingBank": {
+  "BookmarkIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -826,68 +791,19 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-building-bank "
+      "class": "lucide lucide-bookmark"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M3 21l18 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M3 10l18 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M5 6l7 -3l7 3"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M4 10l0 11"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M20 10l0 11"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M8 14l0 3"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12 14l0 3"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M16 14l0 3"
+          "d": "m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"
         },
         "nodes": []
       }
     ]
   },
-  "IconCalculator": {
+  "BotIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -898,68 +814,58 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-calculator "
+      "class": "lucide lucide-bot"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M4 3m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"
+          "d": "M12 8V4H8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "16",
+          "height": "12",
+          "x": "4",
+          "y": "8",
+          "rx": "2"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M8 7m0 1a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1v1a1 1 0 0 1 -1 1h-6a1 1 0 0 1 -1 -1z"
+          "d": "M2 14h2"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M8 14l0 .01"
+          "d": "M20 14h2"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 14l0 .01"
+          "d": "M15 13v2"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M16 14l0 .01"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M8 17l0 .01"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12 17l0 .01"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M16 17l0 .01"
+          "d": "M9 13v2"
         },
         "nodes": []
       }
     ]
   },
-  "IconCalendar": {
+  "BrainIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -970,54 +876,75 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-calendar "
+      "class": "lucide lucide-brain"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"
+          "d": "M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M16 3v4"
+          "d": "M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M8 3v4"
+          "d": "M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M4 11h16"
+          "d": "M17.599 6.5a3 3 0 0 0 .399-1.375"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M11 15h1"
+          "d": "M6.003 5.125A3 3 0 0 0 6.401 6.5"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 15v3"
+          "d": "M3.477 10.896a4 4 0 0 1 .585-.396"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M19.938 10.5a4 4 0 0 1 .585.396"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M6 18a4 4 0 0 1-1.967-.516"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M19.967 17.484A4 4 0 0 1 18 18"
         },
         "nodes": []
       }
     ]
   },
-  "IconCamera": {
+  "Building2Icon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -1028,107 +955,61 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-camera "
+      "class": "lucide lucide-building2"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2"
+          "d": "M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M9 13a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconCar": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-car "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"
+          "d": "M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"
+          "d": "M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M5 17h-2v-6l2 -5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6 -6h15m-6 0v-5"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconChartBar": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-chart-bar "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"
+          "d": "M10 6h4"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"
+          "d": "M10 10h4"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"
+          "d": "M10 14h4"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M4 20h14"
+          "d": "M10 18h4"
         },
         "nodes": []
       }
     ]
   },
-  "IconChartLine": {
+  "CalculatorIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -1139,201 +1020,92 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-chart-line "
+      "class": "lucide lucide-calculator"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "rect",
         "attributes": {
-          "d": "M4 19l16 0"
+          "width": "16",
+          "height": "20",
+          "x": "4",
+          "y": "2",
+          "rx": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "8",
+          "x2": "16",
+          "y1": "6",
+          "y2": "6"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "16",
+          "x2": "16",
+          "y1": "14",
+          "y2": "18"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M4 15l4 -6l4 2l4 -5l4 4"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconChartPie": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-chart-pie "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M10 3.2a9 9 0 1 0 10.8 10.8a1 1 0 0 0 -1 -1h-6.8a2 2 0 0 1 -2 -2v-7a.9 .9 0 0 0 -1 -.8"
+          "d": "M16 10h.01"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M15 3.5a9 9 0 0 1 5.5 5.5h-4.5a1 1 0 0 1 -1 -1v-4.5"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconCheck": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-check "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M5 12l5 5l10 -10"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconChevronDown": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-chevron-down "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M6 9l6 6l6 -6"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconChevronLeft": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-chevron-left "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M15 6l-6 6l6 6"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconChevronRight": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-chevron-right "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M9 6l6 6l-6 6"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconChevronUp": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-chevron-up "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M6 15l6 -6l6 6"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconChevronsLeft": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-chevrons-left "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M11 7l-5 5l5 5"
+          "d": "M12 10h.01"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M17 7l-5 5l5 5"
+          "d": "M8 10h.01"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 14h.01"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 14h.01"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 18h.01"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 18h.01"
         },
         "nodes": []
       }
     ]
   },
-  "IconChevronsRight": {
+  "CalendarIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -1344,26 +1116,44 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-chevrons-right "
+      "class": "lucide lucide-calendar"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M7 7l5 5l-5 5"
+          "d": "M8 2v4"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M13 7l5 5l-5 5"
+          "d": "M16 2v4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "18",
+          "height": "18",
+          "x": "3",
+          "y": "4",
+          "rx": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 10h18"
         },
         "nodes": []
       }
     ]
   },
-  "IconCircleArrowLeft": {
+  "CameraIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -1374,20 +1164,659 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-circle-arrow-left "
+      "class": "lucide lucide-camera"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 21a9 9 0 1 0 0 -18a9 9 0 0 0 0 18"
+          "d": "M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "13",
+          "r": "3"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CaptionsIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-captions"
+    },
+    "nodes": [
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "18",
+          "height": "14",
+          "x": "3",
+          "y": "5",
+          "rx": "2",
+          "ry": "2"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M8 12l4 4"
+          "d": "M7 15h4M15 15h2M7 11h2M13 11h4"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CarIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-car"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "7",
+          "cy": "17",
+          "r": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M9 17h6"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "17",
+          "cy": "17",
+          "r": "2"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ChartBarIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-chart-bar"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 3v16a2 2 0 0 0 2 2h16"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M7 16h8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M7 11h12"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M7 6h3"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ChartLineIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-chart-line"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 3v16a2 2 0 0 0 2 2h16"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m19 9-5 5-4-4-3 3"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ChartPieIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-chart-pie"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M21 12c.552 0 1.005-.449.95-.998a10 10 0 0 0-8.953-8.951c-.55-.055-.998.398-.998.95v8a1 1 0 0 0 1 1z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M21.21 15.89A10 10 0 1 1 8 2.83"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CheckCircle2Icon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-circle-check"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m9 12 2 2 4-4"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CheckIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-check"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M20 6 9 17l-5-5"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ChevronDownIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-chevron-down"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m6 9 6 6 6-6"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ChevronLeftIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-chevron-left"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m15 18-6-6 6-6"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ChevronRightIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-chevron-right"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m9 18 6-6-6-6"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ChevronUpIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-chevron-up"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m18 15-6-6-6 6"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ChevronsLeftIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-chevrons-left"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m11 17-5-5 5-5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m18 17-5-5 5-5"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ChevronsRightIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-chevrons-right"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m6 17 5-5-5-5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m13 17 5-5-5-5"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ChevronsUpDownIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-chevrons-up-down"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m7 15 5 5 5-5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m7 9 5-5 5 5"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CircleAlertIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-circle-alert"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "12",
+          "x2": "12",
+          "y1": "8",
+          "y2": "12"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "12",
+          "x2": "12.01",
+          "y1": "16",
+          "y2": "16"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CircleCheckIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-circle-check"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m9 12 2 2 4-4"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CircleDashedIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-circle-dashed"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10.1 2.182a10 10 0 0 1 3.8 0"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M13.9 21.818a10 10 0 0 1-3.8 0"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M17.609 3.721a10 10 0 0 1 2.69 2.7"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M2.182 13.9a10 10 0 0 1 0-3.8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M20.279 17.609a10 10 0 0 1-2.7 2.69"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M21.818 10.1a10 10 0 0 1 0 3.8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3.721 6.391a10 10 0 0 1 2.7-2.69"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M6.391 20.279a10 10 0 0 1-2.69-2.7"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CircleHelpIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-circle-help"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 17h.01"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CirclePlusIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-circle-plus"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
         },
         "nodes": []
       },
@@ -1401,13 +1830,13 @@
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 8l-4 4"
+          "d": "M12 8v8"
         },
         "nodes": []
       }
     ]
   },
-  "IconCircleCheck": {
+  "CircleUserIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -1418,46 +1847,37 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-circle-check "
+      "class": "lucide lucide-circle-user"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "10",
+          "r": "3"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M9 12l2 2l4 -4"
+          "d": "M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"
         },
         "nodes": []
       }
     ]
   },
-  "IconCircleCheckFilled": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "currentColor",
-      "stroke": "none",
-      "class": "tabler-icon tabler-icon-circle-check-filled "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M17 3.34a10 10 0 1 1 -14.995 8.984l-.005 -.324l.005 -.324a10 10 0 0 1 14.995 -8.336zm-1.293 5.953a1 1 0 0 0 -1.32 -.083l-.094 .083l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.403 1.403l.083 .094l2 2l.094 .083a1 1 0 0 0 1.226 0l.094 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconCircleDashed": {
+  "CircleUserRoundIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -1468,68 +1888,37 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-circle-dashed "
+      "class": "lucide lucide-circle-user-round"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M8.56 3.69a9 9 0 0 0 -2.92 1.95"
+          "d": "M18 20a6 6 0 0 0-12 0"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M3.69 8.56a9 9 0 0 0 -.69 3.44"
+          "cx": "12",
+          "cy": "10",
+          "r": "4"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M3.69 15.44a9 9 0 0 0 1.95 2.92"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M8.56 20.31a9 9 0 0 0 3.44 .69"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M15.44 20.31a9 9 0 0 0 2.92 -1.95"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M20.31 15.44a9 9 0 0 0 .69 -3.44"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M20.31 8.56a9 9 0 0 0 -1.95 -2.92"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M15.44 3.69a9 9 0 0 0 -3.44 -.69"
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
         },
         "nodes": []
       }
     ]
   },
-  "IconCirclePlus": {
+  "ClipboardPasteIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -1540,53 +1929,33 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-circle-plus "
+      "class": "lucide lucide-clipboard-paste"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"
+          "d": "M15 2H9a1 1 0 0 0-1 1v2c0 .6.4 1 1 1h6c.6 0 1-.4 1-1V3c0-.6-.4-1-1-1Z"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M9 12h6"
+          "d": "M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M16 4h2a2 2 0 0 1 2 2v2M11 14h10"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 9v6"
+          "d": "m17 10 4 4-4 4"
         },
         "nodes": []
       }
     ]
   },
-  "IconCirclePlusFilled": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "currentColor",
-      "stroke": "none",
-      "class": "tabler-icon tabler-icon-circle-plus-filled "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M4.929 4.929a10 10 0 1 1 14.141 14.141a10 10 0 0 1 -14.14 -14.14zm8.071 4.071a1 1 0 1 0 -2 0v2h-2a1 1 0 1 0 0 2h2v2a1 1 0 1 0 2 0v-2h2a1 1 0 1 0 0 -2h-2v-2z"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconClipboard": {
+  "Clock2Icon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -1597,26 +1966,28 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-clipboard "
+      "class": "lucide lucide-clock2"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2"
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "polyline",
         "attributes": {
-          "d": "M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"
+          "points": "12 6 12 12 16 10"
         },
         "nodes": []
       }
     ]
   },
-  "IconClock": {
+  "ClockIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -1627,26 +1998,28 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-clock "
+      "class": "lucide lucide-clock"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "polyline",
         "attributes": {
-          "d": "M12 7v5l3 3"
+          "points": "12 6 12 12 16 14"
         },
         "nodes": []
       }
     ]
   },
-  "IconClockHour2": {
+  "CloudIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -1657,33 +2030,19 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-clock-hour-2 "
+      "class": "lucide lucide-cloud"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12 12l3 -2"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12 7v5"
+          "d": "M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"
         },
         "nodes": []
       }
     ]
   },
-  "IconCloud": {
+  "CodeIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -1694,19 +2053,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-cloud "
+      "class": "lucide lucide-code"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "polyline",
         "attributes": {
-          "d": "M6.657 18c-2.572 0 -4.657 -2.007 -4.657 -4.483c0 -2.475 2.085 -4.482 4.657 -4.482c.393 -1.762 1.794 -3.2 3.675 -3.773c1.88 -.572 3.956 -.193 5.444 1c1.488 1.19 2.162 3.007 1.77 4.769h.99c1.913 0 3.464 1.56 3.464 3.486c0 1.927 -1.551 3.487 -3.465 3.487h-11.878"
+          "points": "16 18 22 12 16 6"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "polyline",
+        "attributes": {
+          "points": "8 6 2 12 8 18"
         },
         "nodes": []
       }
     ]
   },
-  "IconCloudUpload": {
+  "CoffeeIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -1717,33 +2083,40 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-cloud-upload "
+      "class": "lucide lucide-coffee"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M7 18a4.6 4.4 0 0 1 0 -9a5 4.5 0 0 1 11 2h1a3.5 3.5 0 0 1 0 7h-1"
+          "d": "M10 2v2"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M9 15l3 -3l3 3"
+          "d": "M14 2v2"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 12l0 9"
+          "d": "M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M6 2v2"
         },
         "nodes": []
       }
     ]
   },
-  "IconCode": {
+  "Columns3Icon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -1754,33 +2127,37 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-code "
+      "class": "lucide lucide-columns3"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "rect",
         "attributes": {
-          "d": "M7 8l-4 4l4 4"
+          "width": "18",
+          "height": "18",
+          "x": "3",
+          "y": "3",
+          "rx": "2"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M17 8l4 4l-4 4"
+          "d": "M9 3v18"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M14 4l-4 16"
+          "d": "M15 3v18"
         },
         "nodes": []
       }
     ]
   },
-  "IconCoffee": {
+  "CommandIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -1791,47 +2168,19 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-coffee "
+      "class": "lucide lucide-command"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M3 14c.83 .642 2.077 1.017 3.5 1c1.423 .017 2.67 -.358 3.5 -1c.83 -.642 2.077 -1.017 3.5 -1c1.423 -.017 2.67 .358 3.5 1"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M8 3a2.4 2.4 0 0 0 -1 2a2.4 2.4 0 0 0 1 2"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12 3a2.4 2.4 0 0 0 -1 2a2.4 2.4 0 0 0 1 2"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M3 10h14v5a6 6 0 0 1 -6 6h-2a6 6 0 0 1 -6 -6v-5z"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M16.746 16.726a3 3 0 1 0 .252 -5.555"
+          "d": "M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3"
         },
         "nodes": []
       }
     ]
   },
-  "IconCommand": {
+  "ContainerIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -1842,19 +2191,47 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-command "
+      "class": "lucide lucide-container"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M7 9a2 2 0 1 1 2 -2v10a2 2 0 1 1 -2 -2h10a2 2 0 1 1 -2 2v-10a2 2 0 1 1 2 2h-10"
+          "d": "M22 7.7c0-.6-.4-1.2-.8-1.5l-6.3-3.9a1.72 1.72 0 0 0-1.7 0l-10.3 6c-.5.2-.9.8-.9 1.4v6.6c0 .5.4 1.2.8 1.5l6.3 3.9a1.72 1.72 0 0 0 1.7 0l10.3-6c.5-.3.9-1 .9-1.5Z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10 21.9V14L2.1 9.1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m10 14 11.9-6.9"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14 19.8v-8.1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M18 17.5V9.4"
         },
         "nodes": []
       }
     ]
   },
-  "IconCopy": {
+  "CopyIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -1865,26 +2242,31 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-copy "
+      "class": "lucide lucide-copy"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "rect",
         "attributes": {
-          "d": "M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z"
+          "width": "14",
+          "height": "14",
+          "x": "8",
+          "y": "8",
+          "rx": "2",
+          "ry": "2"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1"
+          "d": "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"
         },
         "nodes": []
       }
     ]
   },
-  "IconCornerUpLeft": {
+  "CornerUpLeftIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -1895,19 +2277,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-corner-up-left "
+      "class": "lucide lucide-corner-up-left"
     },
     "nodes": [
       {
+        "tag": "polyline",
+        "attributes": {
+          "points": "9 14 4 9 9 4"
+        },
+        "nodes": []
+      },
+      {
         "tag": "path",
         "attributes": {
-          "d": "M18 18v-6a3 3 0 0 0 -3 -3h-10l4 -4m0 8l-4 -4"
+          "d": "M20 20v-7a4 4 0 0 0-4-4H4"
         },
         "nodes": []
       }
     ]
   },
-  "IconCornerUpRight": {
+  "CornerUpRightIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -1918,19 +2307,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-corner-up-right "
+      "class": "lucide lucide-corner-up-right"
     },
     "nodes": [
       {
+        "tag": "polyline",
+        "attributes": {
+          "points": "15 14 20 9 15 4"
+        },
+        "nodes": []
+      },
+      {
         "tag": "path",
         "attributes": {
-          "d": "M6 18v-6a3 3 0 0 1 3 -3h10l-4 -4m0 8l4 -4"
+          "d": "M4 20v-7a4 4 0 0 1 4-4h12"
         },
         "nodes": []
       }
     ]
   },
-  "IconCreditCard": {
+  "CreditCardIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -1941,40 +2337,33 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-credit-card "
+      "class": "lucide lucide-credit-card"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "rect",
         "attributes": {
-          "d": "M3 5m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z"
+          "width": "20",
+          "height": "14",
+          "x": "2",
+          "y": "5",
+          "rx": "2"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "line",
         "attributes": {
-          "d": "M3 10l18 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M7 15l.01 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M11 15l2 0"
+          "x1": "2",
+          "x2": "22",
+          "y1": "10",
+          "y2": "10"
         },
         "nodes": []
       }
     ]
   },
-  "IconCube": {
+  "DatabaseIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -1985,40 +2374,36 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-cube "
+      "class": "lucide lucide-database"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "ellipse",
         "attributes": {
-          "d": "M21 16.008v-8.018a1.98 1.98 0 0 0 -1 -1.717l-7 -4.008a2.016 2.016 0 0 0 -2 0l-7 4.008c-.619 .355 -1 1.01 -1 1.718v8.018c0 .709 .381 1.363 1 1.717l7 4.008a2.016 2.016 0 0 0 2 0l7 -4.008c.619 -.355 1 -1.01 1 -1.718z"
+          "cx": "12",
+          "cy": "5",
+          "rx": "9",
+          "ry": "3"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 22v-10"
+          "d": "M3 5V19A9 3 0 0 0 21 19V5"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 12l8.73 -5.04"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M3.27 6.96l8.73 5.04"
+          "d": "M3 12A9 3 0 0 0 21 12"
         },
         "nodes": []
       }
     ]
   },
-  "IconCut": {
+  "DownloadIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -2029,40 +2414,36 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-cut "
+      "class": "lucide lucide-download"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M7 17m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"
+          "d": "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "polyline",
         "attributes": {
-          "d": "M17 17m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"
+          "points": "7 10 12 15 17 10"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "line",
         "attributes": {
-          "d": "M9.15 14.85l8.85 -10.85"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M6 4l8.85 10.85"
+          "x1": "12",
+          "x2": "12",
+          "y1": "15",
+          "y2": "3"
         },
         "nodes": []
       }
     ]
   },
-  "IconDashboard": {
+  "EllipsisVerticalIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -2073,33 +2454,39 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-dashboard "
+      "class": "lucide lucide-ellipsis-vertical"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M12 13m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"
+          "cx": "12",
+          "cy": "12",
+          "r": "1"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M13.45 11.55l2.05 -2.05"
+          "cx": "12",
+          "cy": "5",
+          "r": "1"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M6.4 20a9 9 0 1 1 11.2 0z"
+          "cx": "12",
+          "cy": "19",
+          "r": "1"
         },
         "nodes": []
       }
     ]
   },
-  "IconDatabase": {
+  "ExternalLinkIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -2110,33 +2497,33 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-database "
+      "class": "lucide lucide-external-link"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 6m-8 0a8 3 0 1 0 16 0a8 3 0 1 0 -16 0"
+          "d": "M15 3h6v6"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M4 6v6a8 3 0 0 0 16 0v-6"
+          "d": "M10 14 21 3"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M4 12v6a8 3 0 0 0 16 0v-6"
+          "d": "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
         },
         "nodes": []
       }
     ]
   },
-  "IconDeviceDesktop": {
+  "EyeIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -2147,40 +2534,28 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-device-desktop "
+      "class": "lucide lucide-eye"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M3 5a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1v-10z"
+          "d": "M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M7 20h10"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M9 16v4"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M15 16v4"
+          "cx": "12",
+          "cy": "12",
+          "r": "3"
         },
         "nodes": []
       }
     ]
   },
-  "IconDeviceFloppy": {
+  "EyeOffIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -2191,33 +2566,40 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-device-floppy "
+      "class": "lucide lucide-eye-off"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"
+          "d": "M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"
+          "d": "M14.084 14.158a3 3 0 0 1-4.242-4.242"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M14 4l0 4l-6 0l0 -4"
+          "d": "M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m2 2 20 20"
         },
         "nodes": []
       }
     ]
   },
-  "IconDeviceTv": {
+  "FileArchiveIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -2228,26 +2610,56 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-device-tv "
+      "class": "lucide lucide-file-archive"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"
+          "d": "M10 12v-1"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M16 3l-4 4l-4 -4"
+          "d": "M10 18v-2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10 7V6"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14 2v4a2 2 0 0 0 2 2h4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M15.5 22H18a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v16a2 2 0 0 0 .274 1.01"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "10",
+          "cy": "20",
+          "r": "2"
         },
         "nodes": []
       }
     ]
   },
-  "IconDots": {
+  "FileBarChartIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -2258,33 +2670,47 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-dots "
+      "class": "lucide lucide-file-chart-column-increasing"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"
+          "d": "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"
+          "d": "M14 2v4a2 2 0 0 0 2 2h4"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"
+          "d": "M8 18v-2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 18v-4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 18v-6"
         },
         "nodes": []
       }
     ]
   },
-  "IconDotsVertical": {
+  "FileChartColumnIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -2295,33 +2721,47 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-dots-vertical "
+      "class": "lucide lucide-file-chart-column"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"
+          "d": "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"
+          "d": "M14 2v4a2 2 0 0 0 2 2h4"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"
+          "d": "M8 18v-1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 18v-6"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 18v-3"
         },
         "nodes": []
       }
     ]
   },
-  "IconDownload": {
+  "FileCodeIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -2332,33 +2772,40 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-download "
+      "class": "lucide lucide-file-code"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"
+          "d": "M10 12.5 8 15l2 2.5"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M7 11l5 5l5 -5"
+          "d": "m14 12.5 2 2.5-2 2.5"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 4l0 12"
+          "d": "M14 2v4a2 2 0 0 0 2 2h4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"
         },
         "nodes": []
       }
     ]
   },
-  "IconExclamationCircle": {
+  "FileIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -2369,13 +2816,140 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-exclamation-circle "
+      "class": "lucide lucide-file"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"
+          "d": "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14 2v4a2 2 0 0 0 2 2h4"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "FileSearchIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-file-search"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14 2v4a2 2 0 0 0 2 2h4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M4.268 21a2 2 0 0 0 1.727 1H18a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m9 18-1.5-1.5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "5",
+          "cy": "14",
+          "r": "3"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "FileTextIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-file-text"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14 2v4a2 2 0 0 0 2 2h4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10 9H8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 13H8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 17H8"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "FileWarningIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-file-warning"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
         },
         "nodes": []
       },
@@ -2389,13 +2963,13 @@
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 16v.01"
+          "d": "M12 17h.01"
         },
         "nodes": []
       }
     ]
   },
-  "IconExternalLink": {
+  "FlipHorizontalIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -2406,33 +2980,54 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-external-link "
+      "class": "lucide lucide-flip-horizontal"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"
+          "d": "M8 3H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h3"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M11 13l9 -9"
+          "d": "M16 3h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-3"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M15 4h5v5"
+          "d": "M12 20v2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 14v2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 8v2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 2v2"
         },
         "nodes": []
       }
     ]
   },
-  "IconEye": {
+  "FlipVerticalIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -2443,26 +3038,54 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-eye "
+      "class": "lucide lucide-flip-vertical"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"
+          "d": "M21 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v3"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"
+          "d": "M21 16v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M4 12H2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10 12H8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 12h-2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M22 12h-2"
         },
         "nodes": []
       }
     ]
   },
-  "IconEyeClosed": {
+  "FolderIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -2473,47 +3096,19 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-eye-closed "
+      "class": "lucide lucide-folder"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M21 9c-2.4 2.667 -5.4 4 -9 4c-3.6 0 -6.6 -1.333 -9 -4"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M3 15l2.5 -3.8"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M21 14.976l-2.492 -3.776"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M9 17l.5 -4"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M15 17l-.5 -4"
+          "d": "M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"
         },
         "nodes": []
       }
     ]
   },
-  "IconFile": {
+  "FolderOpenIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -2524,26 +3119,19 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-file "
+      "class": "lucide lucide-folder-open"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M14 3v4a1 1 0 0 0 1 1h4"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"
+          "d": "m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"
         },
         "nodes": []
       }
     ]
   },
-  "IconFileAi": {
+  "FolderPlusIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -2554,166 +3142,13 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-file-ai "
+      "class": "lucide lucide-folder-plus"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M14 3v4a1 1 0 0 0 1 1h4"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M10 21h-3a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v4"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M14 21v-4a2 2 0 1 1 4 0v4"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M14 19h4"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M21 15v6"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconFileAlert": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-file-alert "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M14 3v4a1 1 0 0 0 1 1h4"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12 17l.01 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12 11l0 3"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconFileCode": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-file-code "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M14 3v4a1 1 0 0 0 1 1h4"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M10 13l-1 2l1 2"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M14 13l1 2l-1 2"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconFileDescription": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-file-description "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M14 3v4a1 1 0 0 0 1 1h4"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M9 17h6"
+          "d": "M12 10v6"
         },
         "nodes": []
       },
@@ -2723,10 +3158,17 @@
           "d": "M9 13h6"
         },
         "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"
+        },
+        "nodes": []
       }
     ]
   },
-  "IconFileSearch": {
+  "FolderSearchIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -2737,40 +3179,35 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-file-search "
+      "class": "lucide lucide-folder-search"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M14 3v4a1 1 0 0 0 1 1h4"
+          "d": "M10.7 20H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H20a2 2 0 0 1 2 2v4.1"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 21h-5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v4.5"
+          "d": "m21 21-1.9-1.9"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M16.5 17.5m-2.5 0a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0 -5 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M18.5 19.5l2.5 2.5"
+          "cx": "17",
+          "cy": "17",
+          "r": "3"
         },
         "nodes": []
       }
     ]
   },
-  "IconFileText": {
+  "FrameIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -2781,47 +3218,52 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-file-text "
+      "class": "lucide lucide-frame"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "line",
         "attributes": {
-          "d": "M14 3v4a1 1 0 0 0 1 1h4"
+          "x1": "22",
+          "x2": "2",
+          "y1": "6",
+          "y2": "6"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "line",
         "attributes": {
-          "d": "M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"
+          "x1": "22",
+          "x2": "2",
+          "y1": "18",
+          "y2": "18"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "line",
         "attributes": {
-          "d": "M9 9l1 0"
+          "x1": "6",
+          "x2": "6",
+          "y1": "2",
+          "y2": "22"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "line",
         "attributes": {
-          "d": "M9 13l6 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M9 17l6 0"
+          "x1": "18",
+          "x2": "18",
+          "y1": "2",
+          "y2": "22"
         },
         "nodes": []
       }
     ]
   },
-  "IconFileWord": {
+  "GalleryVerticalEndIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -2832,33 +3274,37 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-file-word "
+      "class": "lucide lucide-gallery-vertical-end"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M14 3v4a1 1 0 0 0 1 1h4"
+          "d": "M7 2h10"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2"
+          "d": "M5 6h14"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "rect",
         "attributes": {
-          "d": "M9 12l1.333 5l1.667 -4l1.667 4l1.333 -5"
+          "width": "18",
+          "height": "12",
+          "x": "3",
+          "y": "10",
+          "rx": "2"
         },
         "nodes": []
       }
     ]
   },
-  "IconFileZip": {
+  "GaugeIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -2869,68 +3315,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-file-zip "
+      "class": "lucide lucide-gauge"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M6 20.735a2 2 0 0 1 -1 -1.735v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2h-1"
+          "d": "m12 14 4-4"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M11 17a2 2 0 0 1 2 2v2a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1v-2a2 2 0 0 1 2 -2z"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M11 5l-1 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M13 7l-1 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M11 9l-1 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M13 11l-1 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M11 13l-1 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M13 15l-1 0"
+          "d": "M3.34 19a10 10 0 1 1 17.32 0"
         },
         "nodes": []
       }
     ]
   },
-  "IconFlipHorizontal": {
+  "GitBranchIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -2941,33 +3345,47 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-flip-horizontal "
+      "class": "lucide lucide-git-branch"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "line",
         "attributes": {
-          "d": "M3 12l18 0"
+          "x1": "6",
+          "x2": "6",
+          "y1": "3",
+          "y2": "15"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "18",
+          "cy": "6",
+          "r": "3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "6",
+          "cy": "18",
+          "r": "3"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M7 16l10 0l-10 5l0 -5"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M7 8l10 0l-10 -5l0 5"
+          "d": "M18 9a9 9 0 0 1-9 9"
         },
         "nodes": []
       }
     ]
   },
-  "IconFlipVertical": {
+  "GlobeIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -2978,33 +3396,35 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-flip-vertical "
+      "class": "lucide lucide-globe"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M12 3l0 18"
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M16 7l0 10l5 0l-5 -10"
+          "d": "M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M8 7l0 10l-5 0l5 -10"
+          "d": "M2 12h20"
         },
         "nodes": []
       }
     ]
   },
-  "IconFolder": {
+  "GripVerticalIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -3015,19 +3435,66 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-folder "
+      "class": "lucide lucide-grip-vertical"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2"
+          "cx": "9",
+          "cy": "12",
+          "r": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "9",
+          "cy": "5",
+          "r": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "9",
+          "cy": "19",
+          "r": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "15",
+          "cy": "12",
+          "r": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "15",
+          "cy": "5",
+          "r": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "15",
+          "cy": "19",
+          "r": "1"
         },
         "nodes": []
       }
     ]
   },
-  "IconFolderOpen": {
+  "HeartIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -3038,19 +3505,19 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-folder-open "
+      "class": "lucide lucide-heart"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M5 19l2.757 -7.351a1 1 0 0 1 .936 -.649h12.307a1 1 0 0 1 .986 1.164l-.996 5.211a2 2 0 0 1 -1.964 1.625h-14.026a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2h4l3 3h7a2 2 0 0 1 2 2v2"
+          "d": "M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"
         },
         "nodes": []
       }
     ]
   },
-  "IconFolderPlus": {
+  "HelpCircleIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -3061,33 +3528,35 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-folder-plus "
+      "class": "lucide lucide-circle-help"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M12 19h-7a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2h4l3 3h7a2 2 0 0 1 2 2v3.5"
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M16 19h6"
+          "d": "M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M19 16v6"
+          "d": "M12 17h.01"
         },
         "nodes": []
       }
     ]
   },
-  "IconFolderSearch": {
+  "HomeIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -3098,33 +3567,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-folder-search "
+      "class": "lucide lucide-house"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M11 19h-6a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2h4l3 3h7a2 2 0 0 1 2 2v2.5"
+          "d": "M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M20.2 20.2l1.8 1.8"
+          "d": "M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
         },
         "nodes": []
       }
     ]
   },
-  "IconFrame": {
+  "ImageIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -3135,40 +3597,40 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-frame "
+      "class": "lucide lucide-image"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "rect",
         "attributes": {
-          "d": "M4 7l16 0"
+          "width": "18",
+          "height": "18",
+          "x": "3",
+          "y": "3",
+          "rx": "2",
+          "ry": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "9",
+          "cy": "9",
+          "r": "2"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M4 17l16 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M7 4l0 16"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M17 4l0 16"
+          "d": "m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"
         },
         "nodes": []
       }
     ]
   },
-  "IconGauge": {
+  "InboxIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -3179,40 +3641,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-gauge "
+      "class": "lucide lucide-inbox"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "polyline",
         "attributes": {
-          "d": "M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"
+          "points": "22 12 16 12 14 15 10 15 8 12 2 12"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M13.41 10.59l2.59 -2.59"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M7 12a5 5 0 0 1 5 -5"
+          "d": "M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"
         },
         "nodes": []
       }
     ]
   },
-  "IconGitBranch": {
+  "InfoIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -3223,54 +3671,35 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-git-branch "
+      "class": "lucide lucide-info"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M7 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M7 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"
+          "d": "M12 16v-4"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M17 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M7 8l0 8"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M9 18h6a2 2 0 0 0 2 -2v-5"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M14 14l3 -3l3 3"
+          "d": "M12 8h.01"
         },
         "nodes": []
       }
     ]
   },
-  "IconGlobe": {
+  "ItalicIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -3281,40 +3710,42 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-globe "
+      "class": "lucide lucide-italic"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "line",
         "attributes": {
-          "d": "M7 9a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"
+          "x1": "19",
+          "x2": "10",
+          "y1": "4",
+          "y2": "4"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "line",
         "attributes": {
-          "d": "M5.75 15a8.015 8.015 0 1 0 9.25 -13"
+          "x1": "14",
+          "x2": "5",
+          "y1": "20",
+          "y2": "20"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "line",
         "attributes": {
-          "d": "M11 17v4"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M7 21h8"
+          "x1": "15",
+          "x2": "9",
+          "y1": "4",
+          "y2": "20"
         },
         "nodes": []
       }
     ]
   },
-  "IconGripVertical": {
+  "KeyboardIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -3325,54 +3756,79 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-grip-vertical "
+      "class": "lucide lucide-keyboard"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M9 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"
+          "d": "M10 8h.01"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M9 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"
+          "d": "M12 12h.01"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M9 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"
+          "d": "M14 8h.01"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M15 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"
+          "d": "M16 12h.01"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M15 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"
+          "d": "M18 8h.01"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M15 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"
+          "d": "M6 8h.01"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M7 16h10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 12h.01"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "20",
+          "height": "16",
+          "x": "2",
+          "y": "4",
+          "rx": "2"
         },
         "nodes": []
       }
     ]
   },
-  "IconHeadphones": {
+  "LanguagesIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -3383,33 +3839,54 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-headphones "
+      "class": "lucide lucide-languages"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M4 13m0 2a2 2 0 0 1 2 -2h1a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-1a2 2 0 0 1 -2 -2z"
+          "d": "m5 8 6 6"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M15 13m0 2a2 2 0 0 1 2 -2h1a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-1a2 2 0 0 1 -2 -2z"
+          "d": "m4 14 6-6 2-3"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M4 15v-3a8 8 0 0 1 16 0v3"
+          "d": "M2 5h12"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M7 2h1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m22 22-5-10-5 10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14 18h6"
         },
         "nodes": []
       }
     ]
   },
-  "IconHeart": {
+  "LayoutDashboardIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -3420,19 +3897,56 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-heart "
+      "class": "lucide lucide-layout-dashboard"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "rect",
         "attributes": {
-          "d": "M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"
+          "width": "7",
+          "height": "9",
+          "x": "3",
+          "y": "3",
+          "rx": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "7",
+          "height": "5",
+          "x": "14",
+          "y": "3",
+          "rx": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "7",
+          "height": "9",
+          "x": "14",
+          "y": "12",
+          "rx": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "7",
+          "height": "5",
+          "x": "3",
+          "y": "16",
+          "rx": "1"
         },
         "nodes": []
       }
     ]
   },
-  "IconHelp": {
+  "LayoutGridIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -3443,33 +3957,56 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-help "
+      "class": "lucide lucide-layout-grid"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "rect",
         "attributes": {
-          "d": "M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"
+          "width": "7",
+          "height": "7",
+          "x": "3",
+          "y": "3",
+          "rx": "1"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "rect",
         "attributes": {
-          "d": "M12 17l0 .01"
+          "width": "7",
+          "height": "7",
+          "x": "14",
+          "y": "3",
+          "rx": "1"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "rect",
         "attributes": {
-          "d": "M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4"
+          "width": "7",
+          "height": "7",
+          "x": "14",
+          "y": "14",
+          "rx": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "7",
+          "height": "7",
+          "x": "3",
+          "y": "14",
+          "rx": "1"
         },
         "nodes": []
       }
     ]
   },
-  "IconHelpCircle": {
+  "LayoutIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -3480,33 +4017,37 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-help-circle "
+      "class": "lucide lucide-panels-top-left"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "rect",
         "attributes": {
-          "d": "M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"
+          "width": "18",
+          "height": "18",
+          "x": "3",
+          "y": "3",
+          "rx": "2"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 16v.01"
+          "d": "M3 9h18"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 13a2 2 0 0 0 .914 -3.782a1.98 1.98 0 0 0 -2.414 .483"
+          "d": "M9 21V9"
         },
         "nodes": []
       }
     ]
   },
-  "IconHome": {
+  "LifeBuoy": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -3517,33 +4058,58 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-home "
+      "class": "lucide lucide-life-buoy"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M5 12l-2 0l9 -9l9 9l-2 0"
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"
+          "d": "m4.93 4.93 4.24 4.24"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"
+          "d": "m14.83 9.17 4.24-4.24"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m14.83 14.83 4.24 4.24"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m9.17 14.83-4.24 4.24"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "4"
         },
         "nodes": []
       }
     ]
   },
-  "IconInbox": {
+  "LifeBuoyIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -3554,26 +4120,58 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-inbox "
+      "class": "lucide lucide-life-buoy"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M4 13h3l3 3h4l3 -3h3"
+          "d": "m4.93 4.93 4.24 4.24"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m14.83 9.17 4.24-4.24"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m14.83 14.83 4.24 4.24"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m9.17 14.83-4.24 4.24"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "4"
         },
         "nodes": []
       }
     ]
   },
-  "IconInfoCircle": {
+  "LinkIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -3584,33 +4182,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-info-circle "
+      "class": "lucide lucide-link"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"
+          "d": "M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 9h.01"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M11 12h1v4h1"
+          "d": "M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
         },
         "nodes": []
       }
     ]
   },
-  "IconInnerShadowTop": {
+  "ListIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -3621,26 +4212,54 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-inner-shadow-top "
+      "class": "lucide lucide-list"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M5.636 5.636a9 9 0 1 0 12.728 12.728a9 9 0 0 0 -12.728 -12.728z"
+          "d": "M3 12h.01"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M16.243 7.757a6 6 0 0 0 -8.486 0"
+          "d": "M3 18h.01"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 6h.01"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 12h13"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 18h13"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 6h13"
         },
         "nodes": []
       }
     ]
   },
-  "IconItalic": {
+  "Loader2Icon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -3651,33 +4270,19 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-italic "
+      "class": "lucide lucide-loader-circle"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M11 5l6 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M7 19l6 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M14 5l-4 14"
+          "d": "M21 12a9 9 0 1 1-6.219-8.56"
         },
         "nodes": []
       }
     ]
   },
-  "IconKeyboard": {
+  "LoaderIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -3688,68 +4293,68 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-keyboard "
+      "class": "lucide lucide-loader"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M2 6m0 2a2 2 0 0 1 2 -2h16a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-16a2 2 0 0 1 -2 -2z"
+          "d": "M12 2v4"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M6 10l0 .01"
+          "d": "m16.2 7.8 2.9-2.9"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M10 10l0 .01"
+          "d": "M18 12h4"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M14 10l0 .01"
+          "d": "m16.2 16.2 2.9 2.9"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M18 10l0 .01"
+          "d": "M12 18v4"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M6 14l0 .01"
+          "d": "m4.9 19.1 2.9-2.9"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M18 14l0 .01"
+          "d": "M2 12h4"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M10 14l4 .01"
+          "d": "m4.9 4.9 2.9 2.9"
         },
         "nodes": []
       }
     ]
   },
-  "IconLanguage": {
+  "LockIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -3760,54 +4365,31 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-language "
+      "class": "lucide lucide-lock"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "rect",
         "attributes": {
-          "d": "M9 6.371c0 4.418 -2.239 6.629 -5 6.629"
+          "width": "18",
+          "height": "11",
+          "x": "3",
+          "y": "11",
+          "rx": "2",
+          "ry": "2"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M4 6.371h7"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M5 9c0 2.144 2.252 3.908 6 4"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12 20l4 -9l4 9"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M19.1 18h-6.2"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M6.694 3l.793 .582"
+          "d": "M7 11V7a5 5 0 0 1 10 0v4"
         },
         "nodes": []
       }
     ]
   },
-  "IconLayout": {
+  "LockKeyholeIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -3818,33 +4400,39 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-layout "
+      "class": "lucide lucide-lock-keyhole"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M4 4m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"
+          "cx": "12",
+          "cy": "16",
+          "r": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "x": "3",
+          "y": "10",
+          "width": "18",
+          "height": "12",
+          "rx": "2"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M4 13m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M14 4m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"
+          "d": "M7 10V7a5 5 0 0 1 10 0v3"
         },
         "nodes": []
       }
     ]
   },
-  "IconLayoutColumns": {
+  "LogOutIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -3855,26 +4443,36 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-layout-columns "
+      "class": "lucide lucide-log-out"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"
+          "d": "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "polyline",
         "attributes": {
-          "d": "M12 4l0 16"
+          "points": "16 17 21 12 16 7"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "21",
+          "x2": "9",
+          "y1": "12",
+          "y2": "12"
         },
         "nodes": []
       }
     ]
   },
-  "IconLayoutDashboard": {
+  "MailIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -3885,40 +4483,30 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-layout-dashboard "
+      "class": "lucide lucide-mail"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "rect",
         "attributes": {
-          "d": "M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"
+          "width": "20",
+          "height": "16",
+          "x": "2",
+          "y": "4",
+          "rx": "2"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"
+          "d": "m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"
         },
         "nodes": []
       }
     ]
   },
-  "IconLayoutGrid": {
+  "MapIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -3929,40 +4517,33 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-layout-grid "
+      "class": "lucide lucide-map"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"
+          "d": "M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M14 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"
+          "d": "M15 5.764v15"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"
+          "d": "M9 3.236v15"
         },
         "nodes": []
       }
     ]
   },
-  "IconLayoutRows": {
+  "MaximizeIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -3973,26 +4554,40 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-layout-rows "
+      "class": "lucide lucide-maximize"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"
+          "d": "M8 3H5a2 2 0 0 0-2 2v3"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M4 12l16 0"
+          "d": "M21 8V5a2 2 0 0 0-2-2h-3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 16v3a2 2 0 0 0 2 2h3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 21h3a2 2 0 0 0 2-2v-3"
         },
         "nodes": []
       }
     ]
   },
-  "IconLayoutSidebar": {
+  "MenuIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -4003,26 +4598,42 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-layout-sidebar "
+      "class": "lucide lucide-menu"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "line",
         "attributes": {
-          "d": "M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"
+          "x1": "4",
+          "x2": "20",
+          "y1": "12",
+          "y2": "12"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "line",
         "attributes": {
-          "d": "M9 4l0 16"
+          "x1": "4",
+          "x2": "20",
+          "y1": "6",
+          "y2": "6"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "4",
+          "x2": "20",
+          "y1": "18",
+          "y2": "18"
         },
         "nodes": []
       }
     ]
   },
-  "IconLifebuoy": {
+  "MessageCircleIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -4033,54 +4644,19 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-lifebuoy "
+      "class": "lucide lucide-message-circle"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M15 15l3.35 3.35"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M9 15l-3.35 3.35"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M5.65 5.65l3.35 3.35"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M18.35 5.65l-3.35 3.35"
+          "d": "M7.9 20A9 9 0 1 0 4 16.1L2 22Z"
         },
         "nodes": []
       }
     ]
   },
-  "IconLink": {
+  "MessageCircleQuestionIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -4091,33 +4667,33 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-link "
+      "class": "lucide lucide-message-circle-question"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M9 15l6 -6"
+          "d": "M7.9 20A9 9 0 1 0 4 16.1L2 22Z"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464"
+          "d": "M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463"
+          "d": "M12 17h.01"
         },
         "nodes": []
       }
     ]
   },
-  "IconList": {
+  "MessageSquareIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -4128,54 +4704,19 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-list "
+      "class": "lucide lucide-message-square"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M9 6l11 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M9 12l11 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M9 18l11 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M5 6l0 .01"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M5 12l0 .01"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M5 18l0 .01"
+          "d": "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
         },
         "nodes": []
       }
     ]
   },
-  "IconListDetails": {
+  "MicIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -4186,54 +4727,36 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-list-details "
+      "class": "lucide lucide-mic"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M13 5h8"
+          "d": "M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M13 9h5"
+          "d": "M19 10v2a7 7 0 0 1-14 0v-2"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "line",
         "attributes": {
-          "d": "M13 15h8"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M13 19h5"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"
+          "x1": "12",
+          "x2": "12",
+          "y1": "19",
+          "y2": "22"
         },
         "nodes": []
       }
     ]
   },
-  "IconLoader": {
+  "MinimizeIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -4244,68 +4767,40 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-loader "
+      "class": "lucide lucide-minimize"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 6l0 -3"
+          "d": "M8 3v3a2 2 0 0 1-2 2H3"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M16.25 7.75l2.15 -2.15"
+          "d": "M21 8h-3a2 2 0 0 1-2-2V3"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M18 12l3 0"
+          "d": "M3 16h3a2 2 0 0 1 2 2v3"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M16.25 16.25l2.15 2.15"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12 18l0 3"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M7.75 16.25l-2.15 2.15"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M6 12l-3 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M7.75 7.75l-2.15 -2.15"
+          "d": "M16 21v-3a2 2 0 0 1 2-2h3"
         },
         "nodes": []
       }
     ]
   },
-  "IconLock": {
+  "MinusIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -4316,33 +4811,19 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-lock "
+      "class": "lucide lucide-minus"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6z"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M8 11v-4a4 4 0 1 1 8 0v4"
+          "d": "M5 12h14"
         },
         "nodes": []
       }
     ]
   },
-  "IconLogout": {
+  "MonitorIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -4353,33 +4834,43 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-logout "
+      "class": "lucide lucide-monitor"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "rect",
         "attributes": {
-          "d": "M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"
+          "width": "20",
+          "height": "14",
+          "x": "2",
+          "y": "3",
+          "rx": "2"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "line",
         "attributes": {
-          "d": "M9 12h12l-3 -3"
+          "x1": "8",
+          "x2": "16",
+          "y1": "21",
+          "y2": "21"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "line",
         "attributes": {
-          "d": "M18 15l3 -3"
+          "x1": "12",
+          "x2": "12",
+          "y1": "17",
+          "y2": "21"
         },
         "nodes": []
       }
     ]
   },
-  "IconMail": {
+  "MoonIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -4390,26 +4881,19 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-mail "
+      "class": "lucide lucide-moon"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M3 7l9 6l9 -6"
+          "d": "M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"
         },
         "nodes": []
       }
     ]
   },
-  "IconMap": {
+  "MoreHorizontalIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -4420,33 +4904,39 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-map "
+      "class": "lucide lucide-ellipsis"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M3 7l6 -3l6 3l6 -3v13l-6 3l-6 -3l-6 3v-13"
+          "cx": "12",
+          "cy": "12",
+          "r": "1"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M9 4v13"
+          "cx": "19",
+          "cy": "12",
+          "r": "1"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M15 7v13"
+          "cx": "5",
+          "cy": "12",
+          "r": "1"
         },
         "nodes": []
       }
     ]
   },
-  "IconMaximize": {
+  "MoreVerticalIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -4457,40 +4947,39 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-maximize "
+      "class": "lucide lucide-ellipsis-vertical"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M4 8v-2a2 2 0 0 1 2 -2h2"
+          "cx": "12",
+          "cy": "12",
+          "r": "1"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M4 16v2a2 2 0 0 0 2 2h2"
+          "cx": "12",
+          "cy": "5",
+          "r": "1"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M16 4h2a2 2 0 0 1 2 2v2"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M16 20h2a2 2 0 0 0 2 -2v-2"
+          "cx": "12",
+          "cy": "19",
+          "r": "1"
         },
         "nodes": []
       }
     ]
   },
-  "IconMenu": {
+  "OctagonXIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -4501,26 +4990,33 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-menu "
+      "class": "lucide lucide-octagon-x"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M4 8l16 0"
+          "d": "m15 9-6 6"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M4 16l16 0"
+          "d": "M2.586 16.726A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2h6.624a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m9 9 6 6"
         },
         "nodes": []
       }
     ]
   },
-  "IconMessage": {
+  "PaintbrushIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -4531,33 +5027,33 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-message "
+      "class": "lucide lucide-paintbrush"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M8 9h8"
+          "d": "m14.622 17.897-10.68-2.913"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M8 13h6"
+          "d": "M18.376 2.622a1 1 0 1 1 3.002 3.002L17.36 9.643a.5.5 0 0 0 0 .707l.944.944a2.41 2.41 0 0 1 0 3.408l-.944.944a.5.5 0 0 1-.707 0L8.354 7.348a.5.5 0 0 1 0-.707l.944-.944a2.41 2.41 0 0 1 3.408 0l.944.944a.5.5 0 0 0 .707 0z"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12z"
+          "d": "M9 8c-1.804 2.71-3.97 3.46-6.583 3.948a.507.507 0 0 0-.302.819l7.32 8.883a1 1 0 0 0 1.185.204C12.735 20.405 16 16.792 16 15"
         },
         "nodes": []
       }
     ]
   },
-  "IconMessageQuestion": {
+  "PaletteIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -4568,47 +5064,59 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-message-question "
+      "class": "lucide lucide-palette"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M8 9h8"
+          "cx": "13.5",
+          "cy": "6.5",
+          "r": ".5",
+          "fill": "currentColor"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "17.5",
+          "cy": "10.5",
+          "r": ".5",
+          "fill": "currentColor"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "8.5",
+          "cy": "7.5",
+          "r": ".5",
+          "fill": "currentColor"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "6.5",
+          "cy": "12.5",
+          "r": ".5",
+          "fill": "currentColor"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M8 13h6"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M14 18h-1l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v4.5"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M19 22v.01"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M19 19a2.003 2.003 0 0 0 .914 -3.782a1.98 1.98 0 0 0 -2.414 .483"
+          "d": "M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"
         },
         "nodes": []
       }
     ]
   },
-  "IconMicrophone": {
+  "PanelLeftIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -4619,40 +5127,30 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-microphone "
+      "class": "lucide lucide-panel-left"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "rect",
         "attributes": {
-          "d": "M9 2m0 3a3 3 0 0 1 3 -3h0a3 3 0 0 1 3 3v5a3 3 0 0 1 -3 3h0a3 3 0 0 1 -3 -3z"
+          "width": "18",
+          "height": "18",
+          "x": "3",
+          "y": "3",
+          "rx": "2"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M5 10a7 7 0 0 0 14 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M8 21l8 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12 17l0 4"
+          "d": "M9 3v18"
         },
         "nodes": []
       }
     ]
   },
-  "IconMinimize": {
+  "PaperclipIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -4663,40 +5161,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-minimize "
+      "class": "lucide lucide-paperclip"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M15 19v-2a2 2 0 0 1 2 -2h2"
+          "d": "M13.234 20.252 21 12.3"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M15 5v2a2 2 0 0 0 2 2h2"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M5 15h2a2 2 0 0 1 2 2v2"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M5 9h2a2 2 0 0 0 2 -2v-2"
+          "d": "m16 6-8.414 8.586a2 2 0 0 0 0 2.828 2 2 0 0 0 2.828 0l8.414-8.586a4 4 0 0 0 0-5.656 4 4 0 0 0-5.656 0l-8.415 8.585a6 6 0 1 0 8.486 8.486"
         },
         "nodes": []
       }
     ]
   },
-  "IconMinus": {
+  "PencilIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -4707,19 +5191,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-minus "
+      "class": "lucide lucide-pencil"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M5 12l14 0"
+          "d": "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m15 5 4 4"
         },
         "nodes": []
       }
     ]
   },
-  "IconMoodSmile": {
+  "PieChartIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -4730,40 +5221,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-mood-smile "
+      "class": "lucide lucide-chart-pie"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"
+          "d": "M21 12c.552 0 1.005-.449.95-.998a10 10 0 0 0-8.953-8.951c-.55-.055-.998.398-.998.95v8a1 1 0 0 0 1 1z"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M9 10l.01 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M15 10l.01 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M9.5 15a3.5 3.5 0 0 0 5 0"
+          "d": "M21.21 15.89A10 10 0 1 1 8 2.83"
         },
         "nodes": []
       }
     ]
   },
-  "IconMoon": {
+  "PlusCircleIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -4774,19 +5251,35 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-moon "
+      "class": "lucide lucide-circle-plus"
     },
     "nodes": [
       {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
         "tag": "path",
         "attributes": {
-          "d": "M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"
+          "d": "M8 12h8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 8v8"
         },
         "nodes": []
       }
     ]
   },
-  "IconNotification": {
+  "PlusIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -4797,26 +5290,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-notification "
+      "class": "lucide lucide-plus"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M10 6h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3"
+          "d": "M5 12h14"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M17 7m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"
+          "d": "M12 5v14"
         },
         "nodes": []
       }
     ]
   },
-  "IconPalette": {
+  "PresentationIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -4827,40 +5320,33 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-palette "
+      "class": "lucide lucide-presentation"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 21a9 9 0 0 1 0 -18c4.97 0 9 3.582 9 8c0 1.06 -.474 2.078 -1.318 2.828c-.844 .75 -1.989 1.172 -3.182 1.172h-2.5a2 2 0 0 0 -1 3.75a1.3 1.3 0 0 1 -1 2.25"
+          "d": "M2 3h20"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M8.5 10.5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"
+          "d": "M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M12.5 7.5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M16.5 10.5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"
+          "d": "m7 21 5-5 5 5"
         },
         "nodes": []
       }
     ]
   },
-  "IconPaperclip": {
+  "RadioIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -4871,19 +5357,49 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-paperclip "
+      "class": "lucide lucide-radio"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5"
+          "d": "M4.9 19.1C1 15.2 1 8.8 4.9 4.9"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M19.1 4.9C23 8.8 23 15.1 19.1 19"
         },
         "nodes": []
       }
     ]
   },
-  "IconPencil": {
+  "RefreshCcwIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -4894,26 +5410,40 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-pencil "
+      "class": "lucide lucide-refresh-ccw"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"
+          "d": "M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M13.5 6.5l4 4"
+          "d": "M3 3v5h5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 16h5v5"
         },
         "nodes": []
       }
     ]
   },
-  "IconPhoto": {
+  "RefreshCwIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -4924,60 +5454,40 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-photo "
+      "class": "lucide lucide-refresh-cw"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M15 8h.01"
+          "d": "M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M3 6a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v12a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3v-12z"
+          "d": "M21 3v5h-5"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M3 16l5 -5c.928 -.893 2.072 -.893 3 0l5 5"
+          "d": "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M14 14l1 -1c.928 -.893 2.072 -.893 3 0l3 3"
+          "d": "M8 16H3v5"
         },
         "nodes": []
       }
     ]
   },
-  "IconPlayerRecordFilled": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "currentColor",
-      "stroke": "none",
-      "class": "tabler-icon tabler-icon-player-record-filled "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M8 5.072a8 8 0 1 1 -3.995 7.213l-.005 -.285l.005 -.285a8 8 0 0 1 3.995 -6.643z"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconPlayerStop": {
+  "RepeatIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -4988,19 +5498,40 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-player-stop "
+      "class": "lucide lucide-repeat"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M5 5m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z"
+          "d": "m17 2 4 4-4 4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 11v-1a4 4 0 0 1 4-4h14"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m7 22-4-4 4-4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M21 13v1a4 4 0 0 1-4 4H3"
         },
         "nodes": []
       }
     ]
   },
-  "IconPlus": {
+  "RotateCwIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -5011,26 +5542,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-plus "
+      "class": "lucide lucide-rotate-cw"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 5l0 14"
+          "d": "M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M5 12l14 0"
+          "d": "M21 3v5h-5"
         },
         "nodes": []
       }
     ]
   },
-  "IconPresentation": {
+  "SaveIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -5041,47 +5572,33 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-presentation "
+      "class": "lucide lucide-save"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M3 4l18 0"
+          "d": "M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M4 4v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-10"
+          "d": "M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 16l0 4"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M9 20l6 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M8 12l3 -3l2 2l3 -3"
+          "d": "M7 3v4a1 1 0 0 0 1 1h7"
         },
         "nodes": []
       }
     ]
   },
-  "IconRefresh": {
+  "ScissorsIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -5092,26 +5609,51 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-refresh "
+      "class": "lucide lucide-scissors"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"
+          "cx": "6",
+          "cy": "6",
+          "r": "3"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"
+          "d": "M8.12 8.12 12 12"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M20 4 8.12 15.88"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "6",
+          "cy": "18",
+          "r": "3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14.8 14.8 20 20"
         },
         "nodes": []
       }
     ]
   },
-  "IconRepeat": {
+  "SearchIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -5122,26 +5664,28 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-repeat "
+      "class": "lucide lucide-search"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M4 12v-3a3 3 0 0 1 3 -3h13m-3 -3l3 3l-3 3"
+          "cx": "11",
+          "cy": "11",
+          "r": "8"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M20 12v3a3 3 0 0 1 -3 3h-13m3 3l-3 -3l3 -3"
+          "d": "m21 21-4.3-4.3"
         },
         "nodes": []
       }
     ]
   },
-  "IconReport": {
+  "Send": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -5152,61 +5696,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-report "
+      "class": "lucide lucide-send"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M8 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h5.697"
+          "d": "M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M18 14v4h4"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M18 11v-4a2 2 0 0 0 -2 -2h-2"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M8 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M18 18m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M8 11h4"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M8 15h3"
+          "d": "m21.854 2.147-10.94 10.939"
         },
         "nodes": []
       }
     ]
   },
-  "IconReportAnalytics": {
+  "SendIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -5217,47 +5726,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-report-analytics "
+      "class": "lucide lucide-send"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2"
+          "d": "M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M9 17v-5"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12 17v-1"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M15 17v-3"
+          "d": "m21.854 2.147-10.94 10.939"
         },
         "nodes": []
       }
     ]
   },
-  "IconRobot": {
+  "ServerIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -5268,13 +5756,525 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-robot "
+      "class": "lucide lucide-server"
+    },
+    "nodes": [
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "20",
+          "height": "8",
+          "x": "2",
+          "y": "2",
+          "rx": "2",
+          "ry": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "20",
+          "height": "8",
+          "x": "2",
+          "y": "14",
+          "rx": "2",
+          "ry": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "6",
+          "x2": "6.01",
+          "y1": "6",
+          "y2": "6"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "6",
+          "x2": "6.01",
+          "y1": "18",
+          "y2": "18"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "Settings2Icon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-settings2"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M6 4m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"
+          "d": "M20 7h-9"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14 17H5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "17",
+          "cy": "17",
+          "r": "3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "7",
+          "cy": "7",
+          "r": "3"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "SettingsIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-settings"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "3"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ShareIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-share"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "polyline",
+        "attributes": {
+          "points": "16 6 12 2 8 6"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "12",
+          "x2": "12",
+          "y1": "2",
+          "y2": "15"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ShieldIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-shield"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ShoppingBagIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-shopping-bag"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 6h18"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 10a4 4 0 0 1-8 0"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ShoppingCartIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-shopping-cart"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "8",
+          "cy": "21",
+          "r": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "19",
+          "cy": "21",
+          "r": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "SmileIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-smile"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 14s1.5 2 4 2 4-2 4-2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "9",
+          "x2": "9.01",
+          "y1": "9",
+          "y2": "9"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "15",
+          "x2": "15.01",
+          "y1": "9",
+          "y2": "9"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "SparklesIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-sparkles"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M20 3v4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M22 5h-4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M4 17v2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M5 18H3"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "SquareIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-square"
+    },
+    "nodes": [
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "18",
+          "height": "18",
+          "x": "3",
+          "y": "3",
+          "rx": "2"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "StarIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-star"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "StarOffIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-star-off"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8.34 8.34 2 9.27l5 4.87L5.82 21 12 17.77 18.18 21l-.59-3.43"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M18.42 12.76 22 9.27l-6.91-1L12 2l-1.44 2.91"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "2",
+          "x2": "22",
+          "y1": "2",
+          "y2": "22"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "StopCircleIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-circle-stop"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "x": "9",
+          "y": "9",
+          "width": "6",
+          "height": "6",
+          "rx": "1"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "SunIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-sun"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "4"
         },
         "nodes": []
       },
@@ -5288,55 +6288,55 @@
       {
         "tag": "path",
         "attributes": {
-          "d": "M9 12v9"
+          "d": "M12 20v2"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M15 12v9"
+          "d": "m4.93 4.93 1.41 1.41"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M5 16l4 -2"
+          "d": "m17.66 17.66 1.41 1.41"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M15 14l4 2"
+          "d": "M2 12h2"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M9 18h6"
+          "d": "M20 12h2"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M10 8v.01"
+          "d": "m6.34 17.66-1.41 1.41"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M14 8v.01"
+          "d": "m19.07 4.93-1.41 1.41"
         },
         "nodes": []
       }
     ]
   },
-  "IconRosetteDiscountCheck": {
+  "TableIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -5347,26 +6347,44 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-rosette-discount-check "
+      "class": "lucide lucide-table"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M5 7.2a2.2 2.2 0 0 1 2.2 -2.2h1a2.2 2.2 0 0 0 1.55 -.64l.7 -.7a2.2 2.2 0 0 1 3.12 0l.7 .7c.412 .41 .97 .64 1.55 .64h1a2.2 2.2 0 0 1 2.2 2.2v1c0 .58 .23 1.138 .64 1.55l.7 .7a2.2 2.2 0 0 1 0 3.12l-.7 .7a2.2 2.2 0 0 0 -.64 1.55v1a2.2 2.2 0 0 1 -2.2 2.2h-1a2.2 2.2 0 0 0 -1.55 .64l-.7 .7a2.2 2.2 0 0 1 -3.12 0l-.7 -.7a2.2 2.2 0 0 0 -1.55 -.64h-1a2.2 2.2 0 0 1 -2.2 -2.2v-1a2.2 2.2 0 0 0 -.64 -1.55l-.7 -.7a2.2 2.2 0 0 1 0 -3.12l.7 -.7a2.2 2.2 0 0 0 .64 -1.55v-1"
+          "d": "M12 3v18"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "18",
+          "height": "18",
+          "x": "3",
+          "y": "3",
+          "rx": "2"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M9 12l2 2l4 -4"
+          "d": "M3 9h18"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 15h18"
         },
         "nodes": []
       }
     ]
   },
-  "IconRotateClockwise2": {
+  "TargetIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -5377,54 +6395,39 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-rotate-clockwise-2 "
+      "class": "lucide lucide-target"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M9 4.55a8 8 0 0 1 6 14.9m0 -4.45v5h5"
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M5.63 7.16l0 .01"
+          "cx": "12",
+          "cy": "12",
+          "r": "6"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M4.06 11l0 .01"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M4.63 15.1l0 .01"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M7.16 18.37l0 .01"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M11 19.94l0 .01"
+          "cx": "12",
+          "cy": "12",
+          "r": "2"
         },
         "nodes": []
       }
     ]
   },
-  "IconSearch": {
+  "TerminalIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -5435,26 +6438,29 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-search "
+      "class": "lucide lucide-terminal"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "polyline",
         "attributes": {
-          "d": "M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"
+          "points": "4 17 10 11 4 5"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "line",
         "attributes": {
-          "d": "M21 21l-6 -6"
+          "x1": "12",
+          "x2": "20",
+          "y1": "19",
+          "y2": "19"
         },
         "nodes": []
       }
     ]
   },
-  "IconSelector": {
+  "TerminalSquareIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -5465,26 +6471,38 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-selector "
+      "class": "lucide lucide-square-terminal"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M8 9l4 -4l4 4"
+          "d": "m7 11 2-2-2-2"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M16 15l-4 4l-4 -4"
+          "d": "M11 13h4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "18",
+          "height": "18",
+          "x": "3",
+          "y": "3",
+          "rx": "2",
+          "ry": "2"
         },
         "nodes": []
       }
     ]
   },
-  "IconSend": {
+  "ThermometerIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -5495,26 +6513,19 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-send "
+      "class": "lucide lucide-thermometer"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M10 14l11 -11"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5"
+          "d": "M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"
         },
         "nodes": []
       }
     ]
   },
-  "IconServer": {
+  "ThumbsDownIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -5525,40 +6536,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-server "
+      "class": "lucide lucide-thumbs-down"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M3 4m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z"
+          "d": "M17 14V2"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M3 12m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M7 8l0 .01"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M7 16l0 .01"
+          "d": "M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z"
         },
         "nodes": []
       }
     ]
   },
-  "IconServerSpark": {
+  "ThumbsUpIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -5569,47 +6566,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-server-spark "
+      "class": "lucide lucide-thumbs-up"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M19 22.5a4.75 4.75 0 0 1 3.5 -3.5a4.75 4.75 0 0 1 -3.5 -3.5a4.75 4.75 0 0 1 -3.5 3.5a4.75 4.75 0 0 1 3.5 3.5"
+          "d": "M7 10v12"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M3 7a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12 20h-6a3 3 0 0 1 -3 -3v-2a3 3 0 0 1 3 -3h10.5"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M7 8v.01"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M7 16v.01"
+          "d": "M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"
         },
         "nodes": []
       }
     ]
   },
-  "IconSettings": {
+  "TimerIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -5620,26 +6596,41 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-settings "
+      "class": "lucide lucide-timer"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "line",
         "attributes": {
-          "d": "M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z"
+          "x1": "10",
+          "x2": "14",
+          "y1": "2",
+          "y2": "2"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "line",
         "attributes": {
-          "d": "M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"
+          "x1": "12",
+          "x2": "15",
+          "y1": "14",
+          "y2": "11"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "14",
+          "r": "8"
         },
         "nodes": []
       }
     ]
   },
-  "IconShare": {
+  "Trash2Icon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -5650,47 +6641,53 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-share "
+      "class": "lucide lucide-trash2"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"
+          "d": "M3 6h18"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"
+          "d": "M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"
+          "d": "M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "line",
         "attributes": {
-          "d": "M8.7 10.7l6.6 -3.4"
+          "x1": "10",
+          "x2": "10",
+          "y1": "11",
+          "y2": "17"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "line",
         "attributes": {
-          "d": "M8.7 13.3l6.6 3.4"
+          "x1": "14",
+          "x2": "14",
+          "y1": "11",
+          "y2": "17"
         },
         "nodes": []
       }
     ]
   },
-  "IconShare2": {
+  "TrashIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -5701,33 +6698,33 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-share-2 "
+      "class": "lucide lucide-trash"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M8 9h-1a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-8a2 2 0 0 0 -2 -2h-1"
+          "d": "M3 6h18"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 14v-11"
+          "d": "M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M9 6l3 -3l3 3"
+          "d": "M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"
         },
         "nodes": []
       }
     ]
   },
-  "IconShare3": {
+  "TrendingDownIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -5738,19 +6735,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-share-3 "
+      "class": "lucide lucide-trending-down"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "polyline",
         "attributes": {
-          "d": "M13 4v4c-6.575 1.028 -9.02 6.788 -10 12c-.037 .206 5.384 -5.962 10 -6v4l8 -7l-8 -7z"
+          "points": "22 17 13.5 8.5 8.5 13.5 2 7"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "polyline",
+        "attributes": {
+          "points": "16 17 22 17 22 11"
         },
         "nodes": []
       }
     ]
   },
-  "IconShield": {
+  "TrendingUpIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -5761,19 +6765,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-shield "
+      "class": "lucide lucide-trending-up"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "polyline",
         "attributes": {
-          "d": "M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3"
+          "points": "22 7 13.5 15.5 8.5 10.5 2 17"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "polyline",
+        "attributes": {
+          "points": "16 7 22 7 22 13"
         },
         "nodes": []
       }
     ]
   },
-  "IconShoppingBag": {
+  "TriangleAlertIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -5784,26 +6795,33 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-shopping-bag "
+      "class": "lucide lucide-triangle-alert"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.852a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304z"
+          "d": "m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M9 11v-5a3 3 0 0 1 6 0v5"
+          "d": "M12 9v4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 17h.01"
         },
         "nodes": []
       }
     ]
   },
-  "IconShoppingCart": {
+  "TvIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -5814,40 +6832,31 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-shopping-cart "
+      "class": "lucide lucide-tv"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "rect",
         "attributes": {
-          "d": "M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"
+          "width": "20",
+          "height": "15",
+          "x": "2",
+          "y": "7",
+          "rx": "2",
+          "ry": "2"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "polyline",
         "attributes": {
-          "d": "M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M17 17h-11v-14h-2"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M6 5l14 1l-1 7h-13"
+          "points": "17 2 12 7 7 2"
         },
         "nodes": []
       }
     ]
   },
-  "IconSparkles": {
+  "UnderlineIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -5858,19 +6867,29 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-sparkles "
+      "class": "lucide lucide-underline"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm0 -12a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm-7 12a6 6 0 0 1 6 -6a6 6 0 0 1 -6 -6a6 6 0 0 1 -6 6a6 6 0 0 1 6 6z"
+          "d": "M6 4v6a6 6 0 0 0 12 0V4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "4",
+          "x2": "20",
+          "y1": "20",
+          "y2": "20"
         },
         "nodes": []
       }
     ]
   },
-  "IconStar": {
+  "UploadCloudIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -5881,19 +6900,33 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-star "
+      "class": "lucide lucide-cloud-upload"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"
+          "d": "M12 13v8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m8 17 4-4 4 4"
         },
         "nodes": []
       }
     ]
   },
-  "IconStarOff": {
+  "UserIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -5904,26 +6937,28 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-star-off "
+      "class": "lucide lucide-user"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M3 3l18 18"
+          "d": "M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M10.012 6.016l1.981 -4.014l3.086 6.253l6.9 1l-4.421 4.304m.012 4.01l.588 3.426l-6.158 -3.245l-6.172 3.245l1.179 -6.873l-5 -4.867l6.327 -.917"
+          "cx": "12",
+          "cy": "7",
+          "r": "4"
         },
         "nodes": []
       }
     ]
   },
-  "IconSun": {
+  "UserRoundXIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -5934,26 +6969,42 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-sun "
+      "class": "lucide lucide-user-round-x"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"
+          "d": "M2 21a8 8 0 0 1 11.873-7"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "10",
+          "cy": "8",
+          "r": "5"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7"
+          "d": "m17 17 5 5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m22 17-5 5"
         },
         "nodes": []
       }
     ]
   },
-  "IconTable": {
+  "UsersIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -5964,547 +7015,29 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-table "
+      "class": "lucide lucide-users"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14z"
+          "d": "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "9",
+          "cy": "7",
+          "r": "4"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M3 10h18"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M10 3v18"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconTarget": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-target "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12 12m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconTerminal": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-terminal "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M5 7l5 5l-5 5"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12 19l7 0"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconTerminal2": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-terminal-2 "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M8 9l3 3l-3 3"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M13 15l3 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconTextCaption": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-text-caption "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M4 15h16"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M4 20h12"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconThermometer": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-thermometer "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M19 5a2.828 2.828 0 0 1 0 4l-8 8h-4v-4l8 -8a2.828 2.828 0 0 1 4 0z"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M16 7l-1.5 -1.5"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M13 10l-1.5 -1.5"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M10 13l-1.5 -1.5"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M7 17l-3 3"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconThumbDown": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-thumb-down "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M7 13v-8a1 1 0 0 0 -1 -1h-2a1 1 0 0 0 -1 1v7a1 1 0 0 0 1 1h3a4 4 0 0 1 4 4v1a2 2 0 0 0 4 0v-5h3a2 2 0 0 0 2 -2l-1 -5a2 3 0 0 0 -2 -2h-7a3 3 0 0 0 -3 3"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconThumbUp": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-thumb-up "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M7 11v8a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1v-7a1 1 0 0 1 1 -1h3a4 4 0 0 0 4 -4v-1a2 2 0 0 1 4 0v5h3a2 2 0 0 1 2 2l-1 5a2 3 0 0 1 -2 2h-7a3 3 0 0 1 -3 -3"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconTrash": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-trash "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M4 7l16 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M10 11l0 6"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M14 11l0 6"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconTrendingDown": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-trending-down "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M3 7l6 6l4 -4l8 8"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M21 10l0 7l-7 0"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconTrendingUp": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-trending-up "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M3 17l6 -6l4 4l8 -8"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M14 7l7 0l0 7"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconUnderline": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-underline "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M7 5v5a5 5 0 0 0 10 0v-5"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M5 19h14"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconUser": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-user "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconUserCircle": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-user-circle "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconUserX": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-user-x "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M6 21v-2a4 4 0 0 1 4 -4h3.5"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M22 22l-5 -5"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M17 22l5 -5"
-        },
-        "nodes": []
-      }
-    ]
-  },
-  "IconUsers": {
-    "attributes": {
-      "xmlns": "http://www.w3.org/2000/svg",
-      "width": "24",
-      "height": "24",
-      "viewBox": "0 0 24 24",
-      "fill": "none",
-      "stroke": "currentColor",
-      "stroke-width": "2",
-      "stroke-linecap": "round",
-      "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-users "
-    },
-    "nodes": [
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"
+          "d": "M22 21v-2a4 4 0 0 0-3-3.87"
         },
         "nodes": []
       },
@@ -6514,17 +7047,10 @@
           "d": "M16 3.13a4 4 0 0 1 0 7.75"
         },
         "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M21 21v-2a4 4 0 0 0 -3 -3.85"
-        },
-        "nodes": []
       }
     ]
   },
-  "IconVideoPlus": {
+  "VideoIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -6535,40 +7061,30 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-video-plus "
+      "class": "lucide lucide-video"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M15 10l4.553 -2.276a1 1 0 0 1 1.447 .894v6.764a1 1 0 0 1 -1.447 .894l-4.553 -2.276v-4z"
+          "d": "m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "rect",
         "attributes": {
-          "d": "M3 6m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M7 12l4 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M9 10l0 4"
+          "x": "2",
+          "y": "6",
+          "width": "14",
+          "height": "12",
+          "rx": "2"
         },
         "nodes": []
       }
     ]
   },
-  "IconVolume": {
+  "Volume2Icon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -6579,33 +7095,33 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-volume "
+      "class": "lucide lucide-volume2"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M15 8a5 5 0 0 1 0 8"
+          "d": "M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M17.7 5a9 9 0 0 1 0 14"
+          "d": "M16 9a5 5 0 0 1 0 6"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M6 15h-2a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h2l3.5 -4.5a.8 .8 0 0 1 1.5 .5v14a.8 .8 0 0 1 -1.5 .5l-3.5 -4.5"
+          "d": "M19.364 18.364a9 9 0 0 0 0-12.728"
         },
         "nodes": []
       }
     ]
   },
-  "IconWallet": {
+  "VolumeOffIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -6616,26 +7132,47 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-wallet "
+      "class": "lucide lucide-volume-off"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12"
+          "d": "M16 9a5 5 0 0 1 .95 2.293"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M20 12v4h-4a2 2 0 0 1 0 -4h4"
+          "d": "M19.364 5.636a9 9 0 0 1 1.889 9.96"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m2 2 20 20"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m7 7-.587.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298V11"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M9.828 4.172A.686.686 0 0 1 11 4.657v.686"
         },
         "nodes": []
       }
     ]
   },
-  "IconWaveSine": {
+  "VolumeX": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -6646,19 +7183,39 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-wave-sine "
+      "class": "lucide lucide-volume-x"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M21 12h-2c-.894 0 -1.662 -.857 -1.761 -2c-.296 -3.45 -.749 -6 -2.749 -6s-2.5 3.582 -2.5 8s-.5 8 -2.5 8s-2.452 -2.547 -2.749 -6c-.1 -1.147 -.867 -2 -1.763 -2h-2"
+          "d": "M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "22",
+          "x2": "16",
+          "y1": "9",
+          "y2": "15"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "16",
+          "x2": "22",
+          "y1": "9",
+          "y2": "15"
         },
         "nodes": []
       }
     ]
   },
-  "IconWorld": {
+  "WalletIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -6669,47 +7226,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-world "
+      "class": "lucide lucide-wallet"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"
+          "d": "M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M3.6 9h16.8"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M3.6 15h16.8"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M11.5 3a17 17 0 0 0 0 18"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M12.5 3a17 17 0 0 1 0 18"
+          "d": "M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"
         },
         "nodes": []
       }
     ]
   },
-  "IconX": {
+  "XIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -6720,26 +7256,26 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-x "
+      "class": "lucide lucide-x"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M18 6l-12 12"
+          "d": "M18 6 6 18"
         },
         "nodes": []
       },
       {
         "tag": "path",
         "attributes": {
-          "d": "M6 6l12 12"
+          "d": "m6 6 12 12"
         },
         "nodes": []
       }
     ]
   },
-  "IconZoomIn": {
+  "ZapIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -6750,40 +7286,19 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-zoom-in "
+      "class": "lucide lucide-zap"
     },
     "nodes": [
       {
         "tag": "path",
         "attributes": {
-          "d": "M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M7 10l6 0"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M10 7l0 6"
-        },
-        "nodes": []
-      },
-      {
-        "tag": "path",
-        "attributes": {
-          "d": "M21 21l-6 -6"
+          "d": "M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"
         },
         "nodes": []
       }
     ]
   },
-  "IconZoomOut": {
+  "ZoomInIcon": {
     "attributes": {
       "xmlns": "http://www.w3.org/2000/svg",
       "width": "24",
@@ -6794,30 +7309,93 @@
       "stroke-width": "2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "class": "tabler-icon tabler-icon-zoom-out "
+      "class": "lucide lucide-zoom-in"
     },
     "nodes": [
       {
-        "tag": "path",
+        "tag": "circle",
         "attributes": {
-          "d": "M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"
+          "cx": "11",
+          "cy": "11",
+          "r": "8"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "line",
         "attributes": {
-          "d": "M7 10l6 0"
+          "x1": "21",
+          "x2": "16.65",
+          "y1": "21",
+          "y2": "16.65"
         },
         "nodes": []
       },
       {
-        "tag": "path",
+        "tag": "line",
         "attributes": {
-          "d": "M21 21l-6 -6"
+          "x1": "11",
+          "x2": "11",
+          "y1": "8",
+          "y2": "14"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "8",
+          "x2": "14",
+          "y1": "11",
+          "y2": "11"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ZoomOutIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-zoom-out"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "11",
+          "cy": "11",
+          "r": "8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "21",
+          "x2": "16.65",
+          "y1": "21",
+          "y2": "16.65"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "8",
+          "x2": "14",
+          "y1": "11",
+          "y2": "11"
         },
         "nodes": []
       }
     ]
   }
-}
+};

@@ -29,8 +29,10 @@ const host = document.createElement('div');
 const attributes = node => Object.fromEntries([...node.attributes].map(attr => [attr.name, attr.value]));
 function nodes(element) { return [...element.children].map(node => ({ tag: node.localName, attributes: attributes(node), nodes: nodes(node) })); }
 function svg(component, props = {}) { host.innerHTML = renderToStaticMarkup(createElement(component, props)); const node = host.querySelector('svg'); assert(node); return { attributes: attributes(node), nodes: nodes(node) }; }
-mkdirSync('apps/docs/examples/icons/data', { recursive: true });
+mkdirSync('apps/docs/src/lib/icons', { recursive: true });
 const outputs = [];
+const licenseFiles = { lucide: 'lucide-LICENSE', tabler: 'tabler-LICENSE', hugeicons: 'hugeicons-core-LICENSE.md', phosphor: 'phosphor-LICENSE', remixicon: 'remix-LICENSE' };
+const moduleBytes = (data, library) => `/*!\n${readFileSync(`tests/reference/icons/licenses/${licenseFiles[library]}`, 'utf8')}*/\n// Generated native geometry; immutable provenance: tests/reference/icon-sources.json.\nexport default ${JSON.stringify(data, null, 2)};\n`;
 for (const [library, packageName] of Object.entries(libraryPackages)) {
   const map = readFileSync(`tests/reference/icons/upstream/__${library}__.ts`, 'utf8');
   const names = [...map.matchAll(/export \{ (\w+) \}/g)].map(match => match[1]);
@@ -44,13 +46,13 @@ for (const [library, packageName] of Object.entries(libraryPackages)) {
       icons[name] = { attributes: { xmlns: 'http://www.w3.org/2000/svg', width: '24', height: '24', viewBox: '0 0 24 24', fill: 'none', color: 'currentColor', class: '', 'stroke-width': '2', stroke: 'currentColor' }, nodes: svg(() => createElement('svg', null, ...icon.map(([tag, attrs]) => createElement(tag, attrs)))).nodes };
     } else icons[name] = svg(icon);
   }
-  const local = `apps/docs/examples/icons/data/${library}.json`;
-  const bytes = JSON.stringify(icons, null, 2) + '\n';
+  const local = `apps/docs/src/lib/icons/${library}.js`;
+  const bytes = moduleBytes(icons, library);
   if (process.argv.includes('--check')) assert.equal(readFileSync(local, 'utf8'), bytes, `${library} reproducible geometry`); else writeFileSync(local, bytes);
   outputs.push({ library, local, sha256: hash(bytes), declared: names.length, extracted: Object.keys(icons).length, missing });
 }
-const fallback = JSON.stringify(svg(packages['lucide-react'].SquareIcon), null, 2) + '\n';
-if (process.argv.includes('--check')) assert.equal(readFileSync('apps/docs/examples/icons/data/fallback.json', 'utf8'), fallback); else writeFileSync('apps/docs/examples/icons/data/fallback.json', fallback);
+const fallback = moduleBytes(svg(packages['lucide-react'].SquareIcon), 'lucide');
+if (process.argv.includes('--check')) assert.equal(readFileSync('apps/docs/src/lib/icons/fallback.js', 'utf8'), fallback); else writeFileSync('apps/docs/src/lib/icons/fallback.js', fallback);
 const inventory = { sourceCommit: manifest.commit, generator: { local: 'scripts/generate-icons.mjs', sha256: hash(readFileSync('scripts/generate-icons.mjs')) }, outputs, fallbackSha256: hash(fallback) };
 if (process.argv.includes('--check')) assert.deepEqual(JSON.parse(readFileSync('tests/reference/icon-data.json', 'utf8')), inventory); else writeFileSync('tests/reference/icon-data.json', JSON.stringify(inventory, null, 2) + '\n');
 console.log(outputs.map(item => `${item.library}: ${item.extracted}/${item.declared} genuine exported icons; ${item.missing.length} absent pinned package exports`).join('\n'));

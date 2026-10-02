@@ -2,49 +2,49 @@
   "sourceCommit": "d75a96ab781f3d659be1ad287347d5887ce9f2fc",
   "generator": {
     "local": "scripts/generate-icons.mjs",
-    "sha256": "189e7085245a874aeae26bc645a32ec8e3a5c1a9dc9ce3587c3814cd98023b5a"
+    "sha256": "a1d7e5a8ed8f452a2911ee84745ea384ef931772c136b2071d397df949035adb"
   },
   "outputs": [
     {
       "library": "lucide",
-      "local": "apps/docs/examples/icons/data/lucide.json",
-      "sha256": "17faf52698b2e2cd4d922d48f320ad2a0b391a2eff70720aac09e5cf84709bfb",
+      "local": "apps/docs/src/lib/icons/lucide.js",
+      "sha256": "151444491a4e50825ce4dedf2a1f9ad282acb261c880d11d9408902f79d76e7a",
       "declared": 186,
       "extracted": 186,
       "missing": []
     },
     {
       "library": "tabler",
-      "local": "apps/docs/examples/icons/data/tabler.json",
-      "sha256": "a8d2b3ae87c31a92f1e75c8df7fc52a8289e8ef2efdc5e6d4bdc7d0d6af13f3f",
+      "local": "apps/docs/src/lib/icons/tabler.js",
+      "sha256": "2814dd1f3db74f3eefba5ee6ce8ee143d2188e2adf4e1c29dfc152e33fe69978",
       "declared": 181,
       "extracted": 181,
       "missing": []
     },
     {
       "library": "hugeicons",
-      "local": "apps/docs/examples/icons/data/hugeicons.json",
-      "sha256": "13f2c89e3ccee568d58ab72091bd380a239cfca9642115eaa07bc854358c977a",
+      "local": "apps/docs/src/lib/icons/hugeicons.js",
+      "sha256": "a084ee2b041ee5edec61614c2086b660d5368a81bf80799f91ed75d6c9647e41",
       "declared": 191,
       "extracted": 191,
       "missing": []
     },
     {
       "library": "phosphor",
-      "local": "apps/docs/examples/icons/data/phosphor.json",
-      "sha256": "1e5a4d003558b251f3307972b0ff73b70e64a5b50303068e42f5bbba97db96bf",
+      "local": "apps/docs/src/lib/icons/phosphor.js",
+      "sha256": "35277500605bd02b8148faebfefd5cfaab8b4b0fd3923b5de8c46cc15bf2c116",
       "declared": 157,
       "extracted": 157,
       "missing": []
     },
     {
       "library": "remixicon",
-      "local": "apps/docs/examples/icons/data/remixicon.json",
-      "sha256": "4542e66342d8c552c5b630a0edcd5c70e46f81783d41701581a166f8202b69f0",
+      "local": "apps/docs/src/lib/icons/remixicon.js",
+      "sha256": "76860eb6d4487d621f36ba330bb25e9119e0236c47e90b1052cf6e550b56e4f0",
       "declared": 156,
       "extracted": 156,
       "missing": []
     }
   ],
-  "fallbackSha256": "865cc12fd626c39c30da9e4dfe640b51254848f644fa2f08496ec57709784642"
+  "fallbackSha256": "e9f619fcb5b8f65489ce0b6a4b834439517f4e2c8dd84cee403488f7ca2b001b"
 }

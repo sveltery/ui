@@ -4,7 +4,6 @@ import { createElement } from 'react';
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 import { render } from 'svelte/server';
 import { JSDOM } from 'jsdom';
-import { readFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 import { prepareIconReference } from './prepare-icon-reference.mjs';
@@ -23,7 +22,7 @@ assert.equal(actualFallback.getAttribute('stroke-width'), '7');
 let count = 0;
 for (const library of ['lucide', 'tabler', 'hugeicons', 'phosphor', 'remixicon']) {
   const reference = await loadLibrary(library);
-  const data = JSON.parse(readFileSync(`apps/docs/examples/icons/data/${library}.json`, 'utf8'));
+  const { default: data } = await import(pathToFileURL(resolve(`apps/docs/src/lib/icons/${library}.js`)));
   for (const [name, iconData] of Object.entries(data)) {
     const attributes = {};
     const actual = documentFor(render(IconSvg, { props: { data: iconData, library, attributes } }).body).querySelector('svg');
@@ -31,7 +30,7 @@ for (const library of ['lucide', 'tabler', 'hugeicons', 'phosphor', 'remixicon']
     assert.deepEqual(tree(actual), tree(expected), `${library}/${name}`); count++;
   }
 }
-const hugeData = JSON.parse(readFileSync('apps/docs/examples/icons/data/hugeicons.json', 'utf8'));
+const { default: hugeData } = await import('../apps/docs/src/lib/icons/hugeicons.js');
 const localHuge = documentFor(render(IconSvg, { props: { data: hugeData.ArrowLeft01Icon, library: 'hugeicons', attributes: {} } }).body).querySelector('svg');
 assert.equal(localHuge.getAttribute('class'), '', 'genuine Hugeicons explicit empty class retained through SVG SSR');
 console.log(`Configurable icons SSR: genuine Square fallback and ${count} actual glyphs PASS; default Hugeicons empty class preserved`);
