@@ -1,4 +1,8 @@
-# Separate Base dependency upgrade
+# Base dependency upgrades
+
+The current proposed Avatar/Accordion integration is recorded [below](#avatar-and-accordion-prerequisite-upgrade). The first upgrade record retains its original immutable source/checksum and historical checkpoints.
+
+## Historical Input/Separator prerequisite upgrade
 
 This focused change advances [the immutable Base lock](../scripts/base.lock.json) from `400ab42408f276824be7fe17250ed44bd01fd260` to [Base main `d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3`](https://github.com/sveltery/base/tree/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3). The rebuilt `@sveltery/base` archive SHA-256 is `cc6bcbdf39f661f49f098c6126620e9ac8c755adbf83ff6231c56501da6d4234`; its frozen file-dependency integrity is refreshed explicitly with pinned pnpm 12.6.0. The previous archive hash `fae93c0aa896b09f58dfcb5e1580ac6293b489994cd4556c90f1e77abaa197e7` and PR #13 evidence remain historical. Both archive and source copies must follow [the matching installation guide](installation.md).
 
@@ -30,4 +34,28 @@ Intermediate documentation/source-correction head `207ec52cb1730ec51e74fc6f8e68c
 
 Final integration retains actual Alert/documentation main `a2eb0006b2a66e4d97124b78ff2f340827c6c699` and Table With Badges main `af800a96b09df391f687cb6eeec5d31ed4b3826a` ([Table PR #23](https://github.com/sveltery/ui/pull/23)), including its native classed spans, complete selected-function/provenance assertions and both fresh consumers. No source/test expectation is weakened by the Base pin change.
 
-[Dependency PR #24](https://github.com/sveltery/ui/pull/24) remains proposed; PM approved implementing the focused upgrade, not final-head merge or any new behavior acceptance. This document records the proposed source and gates, not a final-head pass or landing. Source identity, historical Base CI and documentation consistency supply no new UI parity credit. Publication, deployment and protection bypass are outside this task.
+[Dependency PR #24](https://github.com/sveltery/ui/pull/24) landed as `647e6a1727559cc2ebe215f4ed6ac8598e553f50`, with the same tree as independently reviewed head `93e7fa45d1fe60fc73a2dabd873f08ad7363adb1`. Its exact [post-merge CI 37059032160](https://github.com/sveltery/ui/actions/runs/37059032160) and [Documentation 37059032202](https://github.com/sveltery/ui/actions/runs/37059032202) passed. Landing made the bounded dependency available; it did not approve new behavior or certify any successor. Source identity, historical Base CI and documentation consistency supply no new UI parity credit. Publication, deployment and protection bypass are outside this task.
+
+## Avatar and Accordion prerequisite upgrade
+
+This separate dependency change advances the current immutable Base pin from `d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3` (archive SHA-256 `cc6bcbdf39f661f49f098c6126620e9ac8c755adbf83ff6231c56501da6d4234`) to [landed Base `f884f3bb265485ef8e422e43a75eb3055db11fab`](https://github.com/sveltery/base/tree/f884f3bb265485ef8e422e43a75eb3055db11fab). The new archive SHA-256 is `915dd6aebd304a7a9c384b0dd5eecd589722686897079fb6dec2961608c564fd`; the frozen file-dependency integrity changes to match it. Historical pins/checksums above remain historical. [Installation commands](installation.md) consume archives and source from the same exact UI checkout.
+
+### Source, package and archive audit
+
+The complete local snapshot contains 828 files and reproduces GitHub tree `e6138c3f2f8f0732dba9b413f0c1618c9d230c77`; the signed GitHub commit payload reproduces exact commit `f884f3bb265485ef8e422e43a75eb3055db11fab`. Source changes add the eight Avatar files and twelve Accordion files, four root export lines, two package subpaths and their third-party notices. Every previously delivered runtime module, including Input, Dialog, Button, Separator, merge-props and shared utilities, retains its source bytes. Base dependency/tooling versions and its frozen lockfile are unchanged; runtime `esm-env` remains exactly 1.2.2.
+
+Two independently cleaned `dist` builds using Node 24.19.0, pnpm 12.6.0 and the normal immutable package commands produced byte-identical archives with the SHA-256 above. The 225-file archive preserves all 181 unchanged previous entries. Only the existing manifest, root JavaScript/declarations and third-party notices change; the other 40 entries are Avatar/Accordion source/declarations/private helpers. Nothing is removed. Root/subpath targets exist, the package MIT license retains exact prior bytes and the source third-party notice, including upstream MIT copyright, is present byte-for-byte. The archive is rebuilt by the ordinary bootstrap; it is not committed or published.
+
+Base Avatar landed before Accordion. [Base PR #35](https://github.com/sveltery/base/pull/35) then landed as `f884f3bb265485ef8e422e43a75eb3055db11fab`; its exact [post-merge CI 37061554239](https://github.com/sveltery/base/actions/runs/37061554239) passed all seven jobs. These dependency results establish the landed source boundary, not any new UI head's validation or exact-head independent review.
+
+### Behavior and remaining dependencies
+
+No UI component, runtime, export or gallery is added by this change. Future styled Avatar/Accordion work must use the actual primitives and preserve their separately recorded limitations in [Base Avatar](https://github.com/sveltery/base/blob/f884f3bb265485ef8e422e43a75eb3055db11fab/parity/avatar/compatibility.md) and [Base Accordion](https://github.com/sveltery/base/blob/f884f3bb265485ef8e422e43a75eb3055db11fab/parity/accordion/compatibility.md). Avatar's detached cached-hydration frame scheduling difference has no specific timing acceptance recorded. Accordion's React.Activity case remains deferred, and inherited motion/hidden-host quirks and framework substitutions retain their recorded boundaries. This pin change adds no assertion, behavior acceptance or styled-wrapper parity credit for either primitive.
+
+Input source is unchanged between both pins. The separate [native Input draft PR #34](https://github.com/sveltery/ui/pull/34) retains six genuine checked/reset failures and remains blocked on a real Base correction; adding Avatar/Accordion does not resolve them. Base UseRender and contextual Field/Form remain unavailable in this consumed snapshot. Base remains separately managed and read-only for this UI task.
+
+The immutable shadcn pin stays `d75a96ab781f3d659be1ad287347d5887ce9f2fc`, its React reference stays on `@base-ui/react` 1.6.0, and Base behavior provenance stays on 1.8.0 commit `47b40521eab921c2756bf9bdb0b0f07fbfdb8c8c`. No broad equivalence between those versions, full gallery/library parity, live assistive-technology completion or production readiness is claimed.
+
+### UI validation and review gates
+
+PM approved the exact source/archive/lock integration plan before pin mutation. Two clean archive builds, complete source identity and archive content/license checks passed locally. The sole file-dependency integrity is explicitly refreshed from the rebuilt archive’s SHA-512 and passes the existing archive/lock consistency check. Normal pnpm re-resolution was canceled after repeated 503 registry requests; its offline retry retained supply-chain verification and failed because the required metadata was unavailable. Normal frozen install, full bootstrap and full verification are not claimed yet. Full retained UI verification, fresh documented and remote archive/source-copy consumers, secured browser CI, configured review and independent final-head review remain required on the final integrated UI head before PM approval and developer-owned expected-head merge. Passing historical Base or UI checks does not certify this proposed successor. The package stays private and unpublished; release/deployment and security/access changes are outside this task.
