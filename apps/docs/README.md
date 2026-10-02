@@ -54,3 +54,5 @@ The installation check extracts the exact scaffold from the guide, installs two 
 `/kbd` and `/kbd-reference` execute the [bounded Kbd/KbdGroup examples](../../docs/kbd.md). InputGroup, Tooltip and icon compositions remain deferred.
 
 `/table` and `/table-reference` execute the [bounded native Table examples](../../docs/table.md); `/table-probe` and `/table-probe-reference` exercise native structure, reactive props, refs/attachments and horizontal overflow. Badge, DropdownMenu, Select and Input compositions remain deferred.
+
+The proposed `/card` and `/card-reference` routes compare seven actual dependency-available Card examples at the immutable shadcn pin, plus labeled supplemental probes. Seven native part lifecycle probes cover hydration/ref/attachment cleanup. Missing ToggleGroup, Field/Input, Avatar and icon compositions stay deferred; see [Card scope](../../docs/card.md).

@@ -138,6 +138,8 @@ Nova is Tailwind input CSS, not a precompiled standalone stylesheet. It imports 
 @import "@sveltery/ui/nova.css";
 @source "../node_modules/@sveltery/ui/dist";
 @theme inline {
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
@@ -156,6 +158,8 @@ Nova is Tailwind input CSS, not a precompiled standalone stylesheet. It imports 
   --radius-lg: var(--radius);
 }
 :root {
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
@@ -283,3 +287,7 @@ Import `Skeleton` from `@sveltery/ui/skeleton` (also exported at the root) using
 ### Native Kbd and KbdGroup
 
 Import `Kbd` and `KbdGroup` from `@sveltery/ui/kbd` or the root of the same reviewed archive. For source copies, copy `registry/bases/base/ui/kbd` beside `shared/classes.js`, retain the notices and scan both directories. The existing Nova/theme scaffold supplies the muted/background/radius tokens. Both leaves render `kbd`, including KbdGroup despite the React source's div prop annotation. They display keys without adding keyboard listeners or shortcut execution. See [Kbd scope](kbd.md); InputGroup/Tooltip/icon composition is deferred. Fresh archive/source-copy gates execute the route's SSR/hydration, reactive declarations and ref/attachment cleanup before remote-field opt-ins.
+
+### Native Card parts
+
+Import the seven native div parts from `@sveltery/ui/card` or the root of the same reviewed archive. For source copies, copy `registry/bases/base/ui/card` beside `shared/classes.js`, keep the notices and scan both directories. The scaffold now maps `--color-card` and `--color-card-foreground` to light consumer theme tokens. [Card scope](card.md) records `default`/`sm` sizes, native refs and attachments, seven actual examples and five deferred compositions. Archive/source-copy gates exercise all seven parts, SSR/hydration, reactive updates and cleanup.
