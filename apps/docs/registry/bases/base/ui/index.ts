@@ -11,5 +11,6 @@ export { AspectRatio } from './aspect-ratio/index.js';
 export type { AspectRatioProps } from './aspect-ratio/index.js';
 export * from './alert/index.js';
 export * from './empty/index.js';
+export * from './icons/index.js';
 export * from './example/index.js';
 export * from './separator/index.js';

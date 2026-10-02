@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createAttachmentKey } from 'svelte/attachments';
   import { untrack } from 'svelte';
-  import IconPlaceholder from '../../apps/docs/examples/icons/IconPlaceholder.svelte';
+  import IconPlaceholder from '../../apps/docs/registry/bases/base/ui/icons/IconPlaceholder.svelte';
   let ref = $state<SVGSVGElement | null>();
   let show = $state(true);
   let className = $state<string | undefined>();
