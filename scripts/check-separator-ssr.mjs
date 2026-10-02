@@ -15,7 +15,8 @@ function moduleURL(path, imports) {
   return `data:text/javascript;base64,${Buffer.from(js).toString('base64')}`;
 }
 const cn = moduleURL('tests/reference/cn.ts', { clsx: import.meta.resolve('clsx'), 'tailwind-merge': import.meta.resolve('tailwind-merge') });
-const { Separator: Reference } = await import(moduleURL('tests/reference/separator.tsx', { '@base-ui/react/separator': import.meta.resolve('@base-ui/react/separator'), cn }));
+const referenceURL = moduleURL('tests/reference/separator.tsx', { '@base-ui/react/separator': import.meta.resolve('@base-ui/react/separator'), cn });
+const { Separator: Reference } = await import(referenceURL);
 const attributes = node => Object.fromEntries([...node.attributes].map(attr => [attr.name, attr.value]).sort(([a], [b]) => a.localeCompare(b)));
 const cases = [{}, { orientation: 'horizontal' }, { orientation: 'vertical', id: 'separator', title: 'Separator & <draft>' }, { className: 'bg-red-500 w-6' }, { className: () => 'ignored' }, { 'data-slot': 'custom', role: 'presentation', 'aria-orientation': 'horizontal', 'data-vertical': '' }, { 'data-slot': undefined }, { 'data-slot': null }, { orientation: undefined, className: undefined }];
 for (const props of cases) {
@@ -28,3 +29,14 @@ for (const props of cases) {
 }
 // Bindable refs and attachments run only in the browser; see the paired hydration fixture.
 console.log('Pinned React/Svelte Separator SSR: native host, orientation, unchanged shared selector mismatch, ignored class callbacks, escaped attributes and caller precedence PASS');
+
+// Same semantic expectation as the browser comparison; catch native whitespace regressions locally.
+const exampleURL = moduleURL('tests/reference/example-scaffold.tsx', { cn });
+const { SeparatorGallery } = await import(moduleURL('tests/reference/SeparatorGallery.tsx', { react: import.meta.resolve('react'), './example-scaffold': exampleURL, './separator': referenceURL }));
+const { default: NativeGallery } = await import('../apps/docs/examples/base/SeparatorExample.svelte');
+function gallerySnapshot(html) {
+  const root = new JSDOM(html).window.document.querySelector('[data-separator-gallery]');
+  return { titles: [...root.querySelectorAll('[data-slot=example] > div:first-child')].map(item => item.textContent.trim()), content: [...root.querySelectorAll('[data-slot=example-content]')].map(item => item.textContent.replace(/\s+/g, ' ').trim()), slots: [...root.querySelectorAll('[role=separator]')].map(item => item.getAttribute('aria-orientation')) };
+}
+assert.deepEqual(gallerySnapshot(render(NativeGallery).body), gallerySnapshot(renderToStaticMarkup(createElement(SeparatorGallery))));
+console.log('All four actual Separator gallery compositions preserve exact pinned React text/structure through native SSR: PASS');
