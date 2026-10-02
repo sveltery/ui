@@ -49,7 +49,7 @@ The installation check extracts the exact scaffold from the guide, installs two 
 
 `/textarea` previews five native Textarea states and form/binding probes; `/textarea-reference` executes the pinned React wrapper in the paired native scaffold. See [Textarea scope/provenance](../../docs/textarea.md).
 
-`/skeleton` and `/skeleton-reference` execute the [bounded Skeleton examples](../../docs/skeleton.md), with avatar, text, form and table-shaped selections plus the proposed actual [SkeletonCard composition](https://github.com/sveltery/ui/pull/19). Example/ExampleWrapper layout remains a bounded native scaffold.
+`/skeleton` and `/skeleton-reference` execute the [bounded Skeleton examples](../../docs/skeleton.md), with avatar, text, form and table-shaped selections plus the landed actual [SkeletonCard composition](https://github.com/sveltery/ui/pull/19). Example/ExampleWrapper layout remains a bounded native scaffold.
 
 `/kbd` and `/kbd-reference` execute the [bounded Kbd/KbdGroup examples](../../docs/kbd.md). InputGroup, Tooltip and icon compositions remain deferred.
 
@@ -58,3 +58,5 @@ The installation check extracts the exact scaffold from the guide, installs two 
 The landed `/card` and `/card-reference` routes compare seven actual dependency-available Card examples at the immutable shadcn pin, plus labeled supplemental probes. Seven native part lifecycle probes cover hydration/ref/attachment cleanup. Missing ToggleGroup, Field/Input, Avatar and icon compositions stay deferred; see [Card scope](../../docs/card.md).
 
 `/label` and `/label-reference` compare the bounded With Textarea example; `/label-probe` and `/label-probe-reference` exercise native association/focus, exact selectors, reactive props and paired SSR/hydration. See [Label scope](../../docs/label.md); full Field/Example and Checkbox/Input/Disabled compositions remain deferred.
+
+`/aspect-ratio` and `/aspect-ratio-reference` compare four bounded ratio examples; `/aspect-ratio-probe` and its reference test responsive geometry, caller overrides and native lifecycle behavior. See [AspectRatio scope](../../docs/aspect-ratio.md); native img and sections substitute Next Image and Example scaffolds without claiming their parity.

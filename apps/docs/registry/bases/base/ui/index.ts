@@ -7,3 +7,5 @@ export type { KbdProps, KbdGroupProps } from './kbd/index.js';
 export { Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption } from './table/index.js';
 export * from './card/index.js';
 export { Label } from './label/index.js';
+export { AspectRatio } from './aspect-ratio/index.js';
+export type { AspectRatioProps } from './aspect-ratio/index.js';

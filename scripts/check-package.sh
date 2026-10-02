@@ -20,6 +20,7 @@ cat > "$consumer_directory/Consumer.svelte" <<'SVELTE'
   import { Button, buttonVariants } from '@sveltery/ui/button';
   import { Textarea } from '@sveltery/ui/textarea';
   import { Label } from '@sveltery/ui/label';
+  import { AspectRatio } from '@sveltery/ui/aspect-ratio';
   import { Skeleton } from '@sveltery/ui/skeleton';
   import { Kbd, KbdGroup } from '@sveltery/ui/kbd';
   import { Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption } from '@sveltery/ui/table';
@@ -32,6 +33,8 @@ cat > "$consumer_directory/Consumer.svelte" <<'SVELTE'
 <Card size="sm" data-probe="card"><CardHeader><CardTitle>Title</CardTitle><CardDescription>Description</CardDescription><CardAction>Action</CardAction></CardHeader><CardContent>Content</CardContent><CardFooter>Footer</CardFooter></Card>
 <KbdGroup data-probe="kbd-group"><Kbd data-probe="kbd">Ctrl &amp; K</Kbd></KbdGroup>
 <Label data-probe="label" for="consumer-message">Message &amp; notes</Label>
+<AspectRatio data-probe="aspect-ratio" ratio={16 / 9}>Aspect &amp; ratio</AspectRatio>
+<AspectRatio data-probe="aspect-ratio-override" ratio={16 / 9} style="--ratio: 1; color: red" />
 <Skeleton data-probe="skeleton" class="h-4 w-32" />
 <Table data-probe="native-table"><TableCaption>Consumer ledger</TableCaption><TableHeader><TableRow><TableHead scope="col">Invoice</TableHead><TableHead scope="col">Amount</TableHead></TableRow></TableHeader><TableBody><TableRow><TableCell rowspan={2}>INV001</TableCell><TableCell>$250.00</TableCell></TableRow><TableRow><TableCell>$150.00</TableCell></TableRow></TableBody><TableFooter><TableRow><TableCell colspan={2}>Total $400.00</TableCell></TableRow></TableFooter></Table>
 <Textarea name="notes" defaultValue="SSR & draft" rows={6} class="px-6" aria-invalid="true" />
@@ -53,6 +56,9 @@ import * as Parts from '@sveltery/ui/dialog';
 import * as Buttons from '@sveltery/ui/button';
 import * as Textareas from '@sveltery/ui/textarea';
 import * as Labels from '@sveltery/ui/label';
+import * as Ratios from '@sveltery/ui/aspect-ratio';
+assert.deepEqual(Object.keys(Ratios), ['AspectRatio']);
+assert.equal(Root.AspectRatio, Ratios.AspectRatio);
 import * as Skeletons from '@sveltery/ui/skeleton';
 import * as Keys from '@sveltery/ui/kbd';
 import * as Cards from '@sveltery/ui/card';
@@ -64,7 +70,7 @@ const tableNames = ['Table', 'TableHeader', 'TableBody', 'TableFooter', 'TableRo
 assert.deepEqual(Object.keys(Tables).sort(), tableNames.slice().sort());
 for (const name of tableNames) assert.equal(Root[name], Tables[name]);
 const names = ['Dialog', 'DialogClose', 'DialogContent', 'DialogDescription', 'DialogFooter', 'DialogHeader', 'DialogOverlay', 'DialogPortal', 'DialogTitle', 'DialogTrigger'];
-assert.deepEqual(Object.keys(Root).sort(), [...names, ...tableNames, ...cardNames, 'Button', 'buttonVariants', 'variants', 'sizes', 'Textarea', 'Label', 'Skeleton', 'Kbd', 'KbdGroup'].sort());
+assert.deepEqual(Object.keys(Root).sort(), [...names, ...tableNames, ...cardNames, 'Button', 'buttonVariants', 'variants', 'sizes', 'Textarea', 'Label', 'AspectRatio', 'Skeleton', 'Kbd', 'KbdGroup'].sort());
 assert.deepEqual(Object.keys(Buttons).sort(), ['Button', 'buttonVariants', 'sizes', 'variants']);
 assert.deepEqual(Object.keys(Parts).sort(), names);
 assert.deepEqual(Object.keys(Labels), ['Label']);
@@ -96,6 +102,15 @@ for (const html of [first, second]) {
   assert(html.includes('SSR fallback label'));
   assert.match(html, /<textarea[^>]*data-slot="textarea"[^>]*name="notes"[^>]*>SSR &amp; draft<\/textarea>/);
   assert(html.includes('cn-textarea'));
+  const aspectRatio = new JSDOM(html).window.document.querySelector('[data-probe=aspect-ratio]');
+  assert.equal(aspectRatio.tagName, 'DIV');
+  assert.equal(aspectRatio.getAttribute('data-slot'), 'aspect-ratio');
+  assert.equal(aspectRatio.style.getPropertyValue('--ratio'), String(16 / 9));
+  assert.equal(aspectRatio.className, 'relative aspect-(--ratio)');
+  assert.equal(aspectRatio.textContent, 'Aspect & ratio');
+  const ratioOverride = new JSDOM(html).window.document.querySelector('[data-probe=aspect-ratio-override]');
+  assert.equal(ratioOverride.style.getPropertyValue('--ratio'), '1');
+  assert.equal(ratioOverride.style.color, 'red');
   const nativeLabel = new JSDOM(html).window.document.querySelector('[data-probe=label]');
   assert.equal(nativeLabel.tagName, 'LABEL');
   assert.equal(nativeLabel.htmlFor, 'consumer-message');
@@ -130,7 +145,7 @@ assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file:/
 assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-table-container'));
 assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-card-footer'));
 assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-label'));
-console.log('Isolated Label, Table plus Card and existing UI tarball: Dialog, Button, Textarea, Skeleton, Kbd and Card root/subpath exports, SSR, IDs, absent portals, CSS, declarations and notices PASS');
+console.log('Isolated AspectRatio, Label, Table plus Card and existing UI tarball: Dialog, Button, Textarea, Skeleton, Kbd and Card root/subpath exports, SSR, IDs, absent portals, CSS, declarations and notices PASS');
 JS
 node --import "$sveltery_repo_root/scripts/svelte-ssr-loader.mjs" "$consumer_directory/check.mjs"
 cat > "$consumer_directory/types.ts" <<'TS'
@@ -176,5 +191,6 @@ TS
 sed 's#../apps/docs/registry/bases/base/ui/table/index.js#@sveltery/ui/table#' tests/types-table.ts > "$consumer_directory/table-types.ts"
 sed 's#../apps/docs/registry/bases/base/ui/card/index.js#@sveltery/ui/card#' tests/card-types.ts > "$consumer_directory/card-types.ts"
 sed 's#../apps/docs/registry/bases/base/ui/label/index.js#@sveltery/ui/label#' tests/label-types.ts > "$consumer_directory/label-types.ts"
-node "$sveltery_repo_root/node_modules/typescript/bin/tsc" --noEmit --strict --skipLibCheck --moduleResolution Bundler --module ESNext --target ES2022 --lib ES2022,DOM,DOM.Iterable "$consumer_directory/types.ts" "$consumer_directory/table-types.ts" "$consumer_directory/label-types.ts" "$consumer_directory/card-types.ts"
+sed 's#../apps/docs/registry/bases/base/ui/aspect-ratio/index.js#@sveltery/ui/aspect-ratio#' tests/aspect-ratio-types.ts > "$consumer_directory/aspect-ratio-types.ts"
+node "$sveltery_repo_root/node_modules/typescript/bin/tsc" --noEmit --strict --skipLibCheck --moduleResolution Bundler --module ESNext --target ES2022 --lib ES2022,DOM,DOM.Iterable "$consumer_directory/types.ts" "$consumer_directory/table-types.ts" "$consumer_directory/label-types.ts" "$consumer_directory/card-types.ts" "$consumer_directory/aspect-ratio-types.ts"
 echo 'Isolated packaged public type assertions: PASS'

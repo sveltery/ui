@@ -1,0 +1,15 @@
+{
+  "commit": "d75a96ab781f3d659be1ad287347d5887ce9f2fc",
+  "files": [
+    {
+      "upstream": "apps/v4/registry/bases/base/ui/aspect-ratio.tsx",
+      "local": "tests/reference/aspect-ratio.tsx",
+      "sha256": "6df19df6b983c450361081b695dbf3541a6fe4a9d2ec148766991e4eb0bf6473"
+    },
+    {
+      "upstream": "apps/v4/registry/bases/base/examples/aspect-ratio-example.tsx",
+      "local": "tests/reference/aspect-ratio-example.tsx",
+      "sha256": "d81a6912343f21f28f6939a20012f3033edb523e64fd892c3c9148246df4ef6a"
+    }
+  ]
+}
