@@ -1,0 +1,81 @@
+{
+  "repository": "https://github.com/mui/base-ui",
+  "commit": "b34551d644f2e58ebf8fc1050d949f6654ceca6c",
+  "version": "1.6.0",
+  "license": "MIT",
+  "ordinaryDeclarations": 2,
+  "ordinaryExpandedCases": 3,
+  "conformanceDeclarations": 15,
+  "files": [
+    {
+      "upstream": "packages/react/src/separator/Separator.test.tsx",
+      "local": "tests/reference/base-separator-1.6/upstream/packages/react/src/separator/Separator.test.tsx.txt",
+      "sha256": "575250524b4bb7f5e9e44228a02e5bc8c424c6bd0d1748a2182bb2acc2c865ff",
+      "gitBlob": "70c54d83f66d5aac81556005cf252f06afc96f7a",
+      "bytes": 903
+    },
+    {
+      "upstream": "packages/react/src/separator/Separator.tsx",
+      "local": "tests/reference/base-separator-1.6/upstream/packages/react/src/separator/Separator.tsx.txt",
+      "sha256": "9f96ca74136dd0fcf9d9c972862561b348bbee99278b966e9bd6f71668c0c017",
+      "gitBlob": "48a07d477a703c3b5ef7dc49431ce43bfc848fa4",
+      "bytes": 1321
+    },
+    {
+      "upstream": "packages/react/src/separator/SeparatorDataAttributes.ts",
+      "local": "tests/reference/base-separator-1.6/upstream/packages/react/src/separator/SeparatorDataAttributes.ts.txt",
+      "sha256": "77676da8635cf54e863588e34c86afddc67442a55c005e61948f81dad8a43a67",
+      "gitBlob": "61833e06fcd22257d5e0d237389fbd5fbaa50274",
+      "bytes": 176
+    },
+    {
+      "upstream": "packages/react/src/separator/index.ts",
+      "local": "tests/reference/base-separator-1.6/upstream/packages/react/src/separator/index.ts.txt",
+      "sha256": "4a0131380b491ed30f0766dde5d4e32cf67e9d8d2be20e2e3c6fa6ef535b9b08",
+      "gitBlob": "7fd3fd2b69f92a295ccfe7e96ca32b5c4d110caa",
+      "bytes": 76
+    },
+    {
+      "upstream": "packages/react/test/conformanceTests/className.tsx",
+      "local": "tests/reference/base-separator-1.6/upstream/packages/react/test/conformanceTests/className.tsx.txt",
+      "sha256": "ea73ff821ec5660ee854392d0744a87cc38ede0d8c14a3c5070ea08408a599bb",
+      "gitBlob": "3af310c2937d620a50d04152de3465b88eaadaac",
+      "bytes": 744
+    },
+    {
+      "upstream": "packages/react/test/conformanceTests/propForwarding.tsx",
+      "local": "tests/reference/base-separator-1.6/upstream/packages/react/test/conformanceTests/propForwarding.tsx.txt",
+      "sha256": "82043f827f31e0ad21dfb359598af51c7299a2139b20be958d07ac6313372733",
+      "gitBlob": "dfcba9d5809e26a22c6df290384bb0e57ba2cc39",
+      "bytes": 4146
+    },
+    {
+      "upstream": "packages/react/test/conformanceTests/refForwarding.tsx",
+      "local": "tests/reference/base-separator-1.6/upstream/packages/react/test/conformanceTests/refForwarding.tsx.txt",
+      "sha256": "3fff79d221c972d29f9909dfefbfa7f4bd16ab761960d795c01368e524c7fef0",
+      "gitBlob": "1fc8a3da1263b70368c50f6fbbf37d4c8434dea2",
+      "bytes": 1084
+    },
+    {
+      "upstream": "packages/react/test/conformanceTests/renderProp.tsx",
+      "local": "tests/reference/base-separator-1.6/upstream/packages/react/test/conformanceTests/renderProp.tsx.txt",
+      "sha256": "9f2094949667daaecdfeff914c231295d79ca9e3699ba754637a5c31d6eab225",
+      "gitBlob": "33990e43e15f7c5260446b887ac09f2d98367fa1",
+      "bytes": 5835
+    },
+    {
+      "upstream": "packages/react/test/conformanceTests/utils.ts",
+      "local": "tests/reference/base-separator-1.6/upstream/packages/react/test/conformanceTests/utils.ts.txt",
+      "sha256": "8db69d4e87bd8ec8d5fc15380e53ae2a67ce4a3b893e62063c142405024d41c7",
+      "gitBlob": "88fdc4f707678084a07b8dfbe6c6f18f18568a24",
+      "bytes": 166
+    },
+    {
+      "upstream": "packages/react/test/describeConformance.tsx",
+      "local": "tests/reference/base-separator-1.6/upstream/packages/react/test/describeConformance.tsx.txt",
+      "sha256": "316678dd7c2637e23c1f02e536974dae67d41bd8c7241c67c6e8c7461b74a184",
+      "gitBlob": "13f2a7cdd632238efb46ebf7f9587d3eb0ca7e6b",
+      "bytes": 2273
+    }
+  ]
+}
