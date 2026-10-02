@@ -33,6 +33,8 @@ Each genuine port must record its original declaration/assertion, immutable sour
 
 This audit changes documentation and provenance data only. It executes no copied test suite and establishes no new functionality, behavioral acceptance, complete parity or production readiness. Applicable genuine tests and all final implementation checks remain required.
 
+The separate [MessageScroller test prerequisite](message-scroller.md) executes the genuine 17-declaration/18-`expect` geometry suite against unchanged upstream reference code, with explicit harness substitution and zero Svelte implementation credit. Its runtime, SSR/hydration, browser and performance ports remain required.
+
 ## Reproducing the inventory
 
 Read the complete tree at the recorded commit with `git ls-tree -r --name-only d75a96ab781f3d659be1ad287347d5887ce9f2fc`. Discover test/spec paths using the recorded filename pattern; classify `.snap` entries separately from executable source extensions. Inspect the Vitest workspace/configuration and additional test/e2e/framework paths, then read all discovered suites and relevant imports before deciding applicability. Compute each exact source blob's SHA-256 and byte length; the JSON records Git blobs and a checksum of the full LF-terminated path listing. Apply the same complete-tree/source/package-script inspection to the independently pinned gallery repository. This documents discovery evidence rather than replacing executable test validation.
