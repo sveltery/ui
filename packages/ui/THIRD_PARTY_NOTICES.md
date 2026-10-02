@@ -46,3 +46,27 @@ The canonical configurable IconPlaceholder, resolved-library provider and native
 The modern OKLCH theme records, eight scoped style subsets, class-based dark/style variants and opt-in radius formulas derive from the same immutable shadcn pin under the MIT notice above. Exact full modern sources, isolated original style/globals dependencies, original config.test.ts and hashes are in tests/reference/themes/sources.json; section ranges/hashes are in tests/reference/themes/sections.json. One genuine upstream buildThemeForPreset test block is retained byte-exact with imports adapted to the production asset generator. Other comparisons are supplemental source-derived local assertions. This ships only current component style sections, preserves historical unscoped Nova geometry through fallback aliases, and does not port legacy HSL themes, the whole stylesheet/component inventory or gallery.
 
 The native Example and ExampleWrapper helpers derive from the complete `apps/v4/registry/bases/base/components/example.tsx` at the same immutable shadcn-ui/ui pin under the MIT notice above. The three required dark/style-lyra/style-sera custom variants derive unchanged from its `apps/v4/app/globals.css`. Byte-exact fixtures and hashes are recorded in `tests/reference/example-sources.json`. Selected Skeleton/Kbd bodies execute the actual source-derived scaffolds; other gallery dependencies and full upstream themes/presets remain outside this slice.
+
+The shared class-merging helper uses the unmodified standalone `cn` 0.2.2 package, published from shadcn-ui/cn commit `788fe9bf71006c84e387c14b8d356f60f74956b6`. The exact version and archive integrity are pinned in the workspace lock; source-copy consumers install the same version. Five original dependency conformance programs and source provenance remain in `tests/reference/cn-upstream` and `tests/reference/cn-sources.json` in the source repository; they are dependency evidence, not copied UI component runtime tests. The existing Svelte state-class callback wrapper remains a framework adaptation. The following full MIT notice applies to the dependency and preserved reference materials.
+
+MIT License
+
+Copyright (c) 2026 shadcn
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

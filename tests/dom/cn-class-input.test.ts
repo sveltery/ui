@@ -2,6 +2,9 @@
 // The expected literals were reproduced with genuine cn@0.2.2 from shadcn's exact lock.
 import { afterEach, expect, it } from 'vitest';
 import { mount, tick, unmount } from 'svelte';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { Skeleton as Reference } from '../reference/skeleton';
 import { Skeleton } from '../../apps/docs/registry/bases/base/ui/skeleton/index.js';
 
 const mounted: ReturnType<typeof mount>[] = [];
@@ -22,5 +25,8 @@ for (const [name, className, expected] of [
     mounted.push(mount(Skeleton, { target, props: { class: className } }));
     await tick();
     expect(target.querySelector('[data-slot=skeleton]')!.getAttribute('class')).toBe(expected);
+    const original = document.createElement('section');
+    original.innerHTML = renderToStaticMarkup(createElement(Reference, { className }));
+    expect(original.querySelector('[data-slot=skeleton]')!.getAttribute('class')).toBe(expected);
   });
 }
