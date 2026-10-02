@@ -11,12 +11,13 @@ export async function labelNativeAssertions(page: Page) {
     const css = getComputedStyle(node);
     return { opacity: css.opacity, pointerEvents: css.pointerEvents, cursor: css.cursor };
   });
-  expect(await style('group-true')).toEqual({ opacity: '0.5', pointerEvents: 'none', cursor: 'auto' });
+  // Native Chromium label cursor is default in both pinned/local measurements; only peer-disabled supplies a cursor rule.
+  expect(await style('group-true')).toEqual({ opacity: '0.5', pointerEvents: 'none', cursor: 'default' });
   for (const id of ['group-false', 'group-empty', 'group-missing', 'no-group', 'peer-enabled', 'no-peer', 'peer-after', 'plain-data-empty', 'aria-only', 'aria-missing']) {
-    expect(await style(id), id).toEqual({ opacity: '1', pointerEvents: 'auto', cursor: 'auto' });
+    expect(await style(id), id).toEqual({ opacity: '1', pointerEvents: 'auto', cursor: 'default' });
   }
   expect(await style('peer-disabled')).toEqual({ opacity: '0.5', pointerEvents: 'auto', cursor: 'not-allowed' });
-  for (const id of ['aria-data-empty', 'aria-data-false']) expect(await style(id), id).toEqual({ opacity: '0.5', pointerEvents: 'auto', cursor: 'auto' });
+  for (const id of ['aria-data-empty', 'aria-data-false']) expect(await style(id), id).toEqual({ opacity: '0.5', pointerEvents: 'auto', cursor: 'default' });
   expect(await page.locator('#probe-label').evaluate(node => {
     const css = getComputedStyle(node);
     return { display: css.display, gap: css.gap, fontSize: css.fontSize, fontWeight: css.fontWeight, lineHeight: css.lineHeight, userSelect: css.userSelect, color: css.color };
