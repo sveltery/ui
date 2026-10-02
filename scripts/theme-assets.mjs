@@ -91,7 +91,7 @@ export function generatedAssets() {
     sections[name] = chosen.map(({ css: _css, ...entry }) => entry);
     const body = chosen.map(entry => entry.css).join('');
     const selectors = [...new Set([...fallbackClasses, ...[...body.matchAll(/\.cn-[a-z0-9-]+/gu)].map(match => match[0])])].join(', ');
-    const reset = scope => `.${scope} :where(${selectors}) { all: revert-layer; --tw-leading: initial; }\n`;
+    const reset = scope => `.${scope} :is(${selectors}) { all: revert-layer; --tw-leading: initial; }\n`;
     assets.set(`apps/docs/registry/styles/scoped/${name}.css`, `${notice}@import "tw-animate-css";\n@custom-variant style-${name} (&:where(.style-${name} *));\n@layer base {\n  .style-${name} * { @apply border-border outline-ring/50; }\n}\n@layer components {\n${reset(`style-${name}`)}.style-${name} {\n${geometry}${body}}\n}\n`);
 
   }
