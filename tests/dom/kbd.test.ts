@@ -3,6 +3,7 @@ import { afterEach, expect, it } from 'vitest';
 import { mount, tick, unmount } from 'svelte';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
+import { readFileSync } from 'node:fs';
 import { Kbd as ReferenceKbd, KbdGroup as ReferenceGroup } from '../reference/kbd';
 import { Kbd, KbdGroup } from '../../apps/docs/registry/bases/base/ui/kbd/index.js';
 import Fixture from './KbdFixture.svelte';
@@ -11,6 +12,14 @@ import { KbdGallery } from '../reference/KbdGallery';
 const mounted: ReturnType<typeof mount>[] = [];
 afterEach(async () => { for (const component of mounted.splice(0)) await unmount(component); document.body.replaceChildren(); });
 function target() { const node = document.createElement('section'); document.body.append(node); return node; }
+it('paired supported example functions retain byte-exact actual upstream bodies', () => {
+  const original = readFileSync('tests/reference/kbd-example.tsx', 'utf8');
+  const selected = readFileSync('tests/reference/kbd-selected-examples.tsx', 'utf8');
+  for (const name of ['KbdBasic', 'KbdModifierKeys', 'KbdGroupExample', 'KbdArrowKeys', 'KbdWithSamp']) {
+    const start = original.indexOf(`function ${name}()`); const next = original.indexOf('\nfunction ', start + 1);
+    expect(start).toBeGreaterThan(-1); expect(selected).toContain(original.slice(start, next < 0 ? undefined : next).trimEnd());
+  }
+});
 for (const [component, reference] of [[Kbd, ReferenceKbd], [KbdGroup, ReferenceGroup]] as const) {
   for (const attrs of [{}, { class: 'inline-block px-6 select-text', 'data-slot': 'custom', title: 'Shortcut', 'aria-label': 'Keyboard instruction', tabIndex: 2, dir: 'rtl' as const, style: 'color: red;' }]) {
     it(`${reference.name} preserves pinned kbd host, prop precedence and classes: ${JSON.stringify(attrs)}`, async () => {

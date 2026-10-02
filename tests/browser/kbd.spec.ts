@@ -17,7 +17,7 @@ for (const width of [1280, 390]) test(`Kbd Nova and five supported pinned exampl
   expect(keys.at(-1)?.height).toBe(32); expect(keys.at(-1)?.padding).toBe('0px 12px');
   for (const current of [page, reference]) {
     await current.getByRole('button', { name: 'Before keys', exact: true }).focus(); await current.keyboard.press('Tab'); await expect(current.getByRole('button', { name: 'After keys', exact: true })).toBeFocused();
-    await current.keyboard.press('Control+k'); await expect(current.getByRole('button', { name: 'After keys', exact: true })).toBeFocused();
+    await current.keyboard.press('k'); await current.keyboard.press('ArrowRight'); await expect(current.getByRole('button', { name: 'After keys', exact: true })).toBeFocused();
   }
   await testInfo.attach(`svelte-kbd-${width}`, { body: await page.screenshot({ fullPage: true }), contentType: 'image/png' }); await testInfo.attach(`pinned-react-kbd-${width}`, { body: await reference.screenshot({ fullPage: true }), contentType: 'image/png' }); await reference.close();
 });
