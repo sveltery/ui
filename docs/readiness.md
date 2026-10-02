@@ -119,7 +119,7 @@ The [native Example/ExampleWrapper contract](example.md) ports the complete depe
 
 Proposed in [PR #28](https://github.com/sveltery/ui/pull/28); its conversation records final-head execution and review evidence.
 
-## Proposed configurable app-only icon helper## Landed configurable icon helper and proposed public distribution
+## Landed configurable icon helper and proposed public distribution
 
 [Icon PR #29](https://github.com/sveltery/ui/pull/29) integrates verified Table main `af800a96b09df391f687cb6eeec5d31ed4b3826a` and Base prerequisite main `647e6a1727559cc2ebe215f4ed6ac8598e553f50`, and adds all 871 genuine exports from the five pinned generated maps, source/package/data/license provenance, a genuine pinned React reference and asynchronous native Svelte selected-icon loading. [The icon contract](icons.md) distinguishes the resolved context API from unimplemented Next/nuqs URL/preset configuration and package-only extras. Every glyph is compared in DOM/SSR; delayed actual modules, Square fallback, nullable selected names, stale completions and all existing secured browser/fresh consumer regressions must pass on the final head. No dedicated shadcn icon runtime tests exist at the audited immutable pin; new icon assertions are source-derived, not copied upstream tests. Adding this dependency alone does not complete any deferred gallery. Full exact-head local/hosted verification, independent review, configured automatic reviews and explicit parent approval remain required before developer-controlled merge.
 
