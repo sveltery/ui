@@ -3,7 +3,13 @@ import { expect, test } from '@playwright/test';
 export function exampleLifecycleCases() {
   test('native Example SSR hosts survive hydration, reactive updates, attachments replacement and ref cleanup', async ({ page, request }) => {
     const html = await (await request.get('/example')).text();
-    expect(html).toContain('data-hydrated="false"'); expect(html).toContain('Example &amp; &lt;draft&gt;');
+    expect(html).toContain('data-hydrated="false"');
+    // React serializes > as an entity while Svelte may emit it literally in text;
+    // the source contract is the exact parsed title and absence of parsed child tags.
+    expect(await page.evaluate(source => {
+      const title = new DOMParser().parseFromString(source, 'text/html').querySelector('#probe-example > div')!;
+      return { tag: title.tagName, text: title.textContent, childElements: title.children.length };
+    }, html)).toEqual({ tag: 'DIV', text: 'Example & <draft>', childElements: 0 });
     const errors: string[] = []; page.on('pageerror', error => errors.push(error.message)); page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
     await page.goto('/example'); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true');
     let release!: () => void; const gate = new Promise<void>(resolve => { release = resolve; });
