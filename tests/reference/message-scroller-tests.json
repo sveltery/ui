@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "repository": "https://github.com/shadcn-ui/ui",
+  "commit": "d75a96ab781f3d659be1ad287347d5887ce9f2fc",
+  "source_package": {
+    "name": "@shadcn/react",
+    "version": "0.3.1"
+  },
+  "files": [
+    {
+      "source": "packages/react/src/message-scroller/geometry.test.ts",
+      "local": "tests/reference/shadcn-react/message-scroller/geometry.test.ts",
+      "blob": "c0698b2f3b1fb8dffaf53e54665a81ff39b2b28d",
+      "sha256": "d96490790e1b55a7b4b0520cf61364f9ec61c2bb4b8742466ff39361f0afdbe3",
+      "bytes": 12662
+    },
+    {
+      "source": "packages/react/src/message-scroller/geometry.ts",
+      "local": "tests/reference/shadcn-react/message-scroller/geometry.ts",
+      "blob": "c3137f68e659c9640d45f377f82c2c63ddd80e2e",
+      "sha256": "52a11fc0ece219f48e8388a3c6226c52b27e8157d4611b1eae07a3a5c222e035",
+      "bytes": 9304
+    },
+    {
+      "source": "packages/react/src/message-scroller/types.ts",
+      "local": "tests/reference/shadcn-react/message-scroller/types.ts",
+      "blob": "7959990d925c01ef30d025c9235210453fbcfec4",
+      "sha256": "9a7b9d83f92ca275ac8008a54e261fe0ad2800961c478ed67f73e1cc5379fd5f",
+      "bytes": 8785
+    },
+    {
+      "source": "packages/react/src/use-render/index.ts",
+      "local": "tests/reference/shadcn-react/use-render/index.ts",
+      "blob": "8bc41ae61cc41db71b2b673682d9451bf5e489ec",
+      "sha256": "f864ce3a3e42ee84be9383fde817472bff593040ef4221e97c723217bf701c60",
+      "bytes": 5144
+    }
+  ],
+  "adapted_test": "tests/dom/message-scroller-geometry.test.ts",
+  "test_adaptation": {
+    "original_import": "from \"./geometry\"",
+    "replacement_import": "from \"../reference/shadcn-react/message-scroller/geometry\"",
+    "changed_expectations": 0,
+    "changed_fixtures": 0
+  },
+  "harness": {
+    "upstream": "Vitest ^3.2.6/jsdom ^28.1.0",
+    "local": "Vitest5.0.3/jsdom30.1.1",
+    "substitution": "Existing project runner and DOM environment; original expectations, fixture stubs and geometry source retained."
+  },
+  "geometry": {
+    "declarations": 17,
+    "expect_calls": 18,
+    "svelte_implementation_credit": 0,
+    "cases": [
+      {
+        "id": "MS-G01",
+        "declaration": "aligns to start by subtracting content padding and margin",
+        "source_line": 155,
+        "expect_calls": 1,
+        "status": "original-reference-execution",
+        "target": "byte-exact shadcn geometry source",
+        "svelte_implementation_credit": 0
+      },
+      {
+        "id": "MS-G02",
+        "declaration": "centers the element within the padded inset",
+        "source_line": 177,
+        "expect_calls": 1,
+        "status": "original-reference-execution",
+        "target": "byte-exact shadcn geometry source",
+        "svelte_implementation_credit": 0
+      },
+      {
+        "id": "MS-G03",
+        "declaration": "aligns to end against the viewport bottom",
+        "source_line": 200,
+        "expect_calls": 1,
+        "status": "original-reference-execution",
+        "target": "byte-exact shadcn geometry source",
+        "svelte_implementation_credit": 0
+      },
+      {
+        "id": "MS-G04",
+        "declaration": "returns the current scrollTop when nearest and already visible",
+        "source_line": 223,
+        "expect_calls": 1,
+        "status": "original-reference-execution",
+        "target": "byte-exact shadcn geometry source",
+        "svelte_implementation_credit": 0
+      },
+      {
+        "id": "MS-G05",
+        "declaration": "scrolls up to reveal an element above the viewport when nearest",
+        "source_line": 247,
+        "expect_calls": 1,
+        "status": "original-reference-execution",
+        "target": "byte-exact shadcn geometry source",
+        "svelte_implementation_credit": 0
+      },
+      {
+        "id": "MS-G06",
+        "declaration": "returns padding sum when there are no items",
+        "source_line": 273,
+        "expect_calls": 1,
+        "status": "original-reference-execution",
+        "target": "byte-exact shadcn geometry source",
+        "svelte_implementation_credit": 0
+      },
+      {
+        "id": "MS-G07",
+        "declaration": "measures from the lowest item bottom plus end padding",
+        "source_line": 286,
+        "expect_calls": 1,
+        "status": "original-reference-execution",
+        "target": "byte-exact shadcn geometry source",
+        "svelte_implementation_credit": 0
+      },
+      {
+        "id": "MS-G08",
+        "declaration": "excludes the spacer from the measurement",
+        "source_line": 305,
+        "expect_calls": 1,
+        "status": "original-reference-execution",
+        "target": "byte-exact shadcn geometry source",
+        "svelte_implementation_credit": 0
+      },
+      {
+        "id": "MS-G09",
+        "declaration": "finds the first anchor at or after the previous item count",
+        "source_line": 323,
+        "expect_calls": 1,
+        "status": "original-reference-execution",
+        "target": "byte-exact shadcn geometry source",
+        "svelte_implementation_credit": 0
+      },
+      {
+        "id": "MS-G10",
+        "declaration": "returns null when no anchor exists after the boundary",
+        "source_line": 335,
+        "expect_calls": 1,
+        "status": "original-reference-execution",
+        "target": "byte-exact shadcn geometry source",
+        "svelte_implementation_credit": 0
+      },
+      {
+        "id": "MS-G11",
+        "declaration": "finds the last anchor scanning from the end",
+        "source_line": 345,
+        "expect_calls": 1,
+        "status": "original-reference-execution",
+        "target": "byte-exact shadcn geometry source",
+        "svelte_implementation_credit": 0
+      },
+      {
+        "id": "MS-G12",
+        "declaration": "returns null when there are no anchors",
+        "source_line": 355,
+        "expect_calls": 1,
+        "status": "original-reference-execution",
+        "target": "byte-exact shadcn geometry source",
+        "svelte_implementation_credit": 0
+      },
+      {
+        "id": "MS-G13",
+        "declaration": "returns the first anchor that has not been handled yet",
+        "source_line": 363,
+        "expect_calls": 2,
+        "status": "original-reference-execution",
+        "target": "byte-exact shadcn geometry source",
+        "svelte_implementation_credit": 0
+      },
+      {
+        "id": "MS-G14",
+        "declaration": "returns null when every anchor has already been handled",
+        "source_line": 377,
+        "expect_calls": 1,
+        "status": "original-reference-execution",
+        "target": "byte-exact shadcn geometry source",
+        "svelte_implementation_credit": 0
+      },
+      {
+        "id": "MS-G15",
+        "declaration": "cannot scroll toward either edge when viewport or content is missing",
+        "source_line": 386,
+        "expect_calls": 1,
+        "status": "original-reference-execution",
+        "target": "byte-exact shadcn geometry source",
+        "svelte_implementation_credit": 0
+      },
+      {
+        "id": "MS-G16",
+        "declaration": "treats sub-threshold gaps at both edges as not scrollable",
+        "source_line": 400,
+        "expect_calls": 1,
+        "status": "original-reference-execution",
+        "target": "byte-exact shadcn geometry source",
+        "svelte_implementation_credit": 0
+      },
+      {
+        "id": "MS-G17",
+        "declaration": "can scroll toward both edges past the threshold",
+        "source_line": 426,
+        "expect_calls": 1,
+        "status": "original-reference-execution",
+        "target": "byte-exact shadcn geometry source",
+        "svelte_implementation_credit": 0
+      }
+    ]
+  },
+  "remaining_suites": [
+    {
+      "path": "packages/react/src/message-scroller/message-scroller.test.tsx",
+      "declarations": 49,
+      "expect_calls": 156,
+      "status": "unported; real Svelte Base primitive required"
+    },
+    {
+      "path": "packages/react/src/message-scroller/message-scroller.browser.test.tsx",
+      "declarations": 17,
+      "expect_calls": 38,
+      "status": "unported; secured Svelte primitive browser execution required"
+    },
+    {
+      "path": "packages/react/src/message-scroller/message-scroller.perf.browser.test.tsx",
+      "declarations": 6,
+      "expect_calls": 9,
+      "status": "unported; React render/profiler/markdown performance credit zero"
+    }
+  ],
+  "architecture_boundary": "All interactive controller/state/observers/cleanup/SSR behavior belongs to a separately verified @sveltery/base/message-scroller primitive. UI wrappers only add pinned styles, local Button/icons and framework API substitution; no UI behavior shim or placeholder is introduced."
+}

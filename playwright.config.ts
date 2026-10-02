@@ -11,6 +11,11 @@ export default defineConfig({
   },
   webServer: [
     {
+      command: 'node node_modules/vite/bin/vite.js --config tests/reference/themes/reference-app/vite.config.ts --host 127.0.0.1 --port 5175 --strictPort',
+      url: 'http://127.0.0.1:5175', reuseExistingServer: false,
+      gracefulShutdown: { signal: 'SIGTERM', timeout: 5000 },
+    },
+    {
       command: preview === '1'
         ? 'node ../../node_modules/vite/bin/vite.js build && node ../../node_modules/vite/bin/vite.js preview --host 127.0.0.1 --port 5173 --strictPort'
         : 'node ../../node_modules/vite/bin/vite.js --host 127.0.0.1 --port 5173',
