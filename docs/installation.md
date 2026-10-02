@@ -136,6 +136,9 @@ Nova is Tailwind input CSS, not a precompiled standalone stylesheet. It imports 
 ```css
 @import "tailwindcss";
 @import "@sveltery/ui/nova.css";
+@custom-variant style-lyra (&:where(.style-lyra *));
+@custom-variant style-sera (&:where(.style-sera *));
+@custom-variant dark (&:is(.dark *));
 @source "../node_modules/@sveltery/ui/dist";
 @theme inline {
   --color-card: var(--card);
@@ -313,3 +316,6 @@ Import the six [native Empty parts](empty.md) from `@sveltery/ui/empty` or the r
 The reviewed local archive exports `IconPlaceholder`, `IconLibraryProvider` and `iconLibraries` from `@sveltery/ui/icons` and the root, with native props/library types. The provider takes a reactive resolved `library` value, default `lucide`; the placeholder retains all five required name strings, exact selected geometry, real Square fallback and null/unknown behavior. [The icon contract](icons.md) records framework substitutions and unimplemented Next/nuqs configuration.
 
 For source copies, copy the entire `registry/bases/base/ui/icons` directory to `src/lib/components/ui/`, including `generated` ESM modules and complete `licenses` files, retain the source SHA and package/repository notices, and import the same names from `$lib/components/ui/icons`. This full closure requires Svelte 5.57.1 and `clsx` 2.1.1 at runtime; its icon libraries and React renderers remain development references. It introduces no Base primitive or new stylesheet requirement. Future sibling wrappers using icons must include this directory in their source-copy closure. Fresh archive/source-copy gates execute actual public SSR/hydration, all five libraries, delayed native ESM chunks, null/stale results, events, refs and attachment cleanup before the separate remote-field fixture.
+## Native example scaffolds
+
+The [source-derived Example and ExampleWrapper](example.md) helpers are exported from `@sveltery/ui/example` and the root of the same reviewed archive. For source copies, copy `registry/bases/base/ui/example` beside `shared/classes.js`, retain the notices and scan both directories. Keep the three pinned dark/style-lyra/style-sera custom variants in the stylesheet above. Example's `class` styles the content div; `containerClassName`, native attributes, events and ref target the outer div. ExampleWrapper's ref/attributes/classes target the inner grid; its outer background shell is fixed. Skeleton/Kbd selected galleries use these actual native helpers; other galleries retain their documented scope. Both fresh consumer modes test scaffold SSR/hydration, responsive layout, source variant selectors, props and native ref/attachment lifecycle. Consumer token selection does not establish full upstream palette parity.

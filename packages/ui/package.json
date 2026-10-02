@@ -75,6 +75,11 @@
       "types": "./dist/icons/index.d.ts",
       "svelte": "./dist/icons/index.js",
       "default": "./dist/icons/index.js"
+    },
+    "./example": {
+      "types": "./dist/example/index.d.ts",
+      "svelte": "./dist/example/index.js",
+      "default": "./dist/example/index.js"
     }
   },
   "svelte": "./dist/index.js",
