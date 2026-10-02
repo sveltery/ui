@@ -15,14 +15,21 @@ test('immutable shadcn Table wrapper, complete examples and Nova rules retain pr
   assert(readFileSync('tests/reference/LICENSE', 'utf8').includes('Copyright (c) 2023 shadcn'));
 });
 
-test('bounded React gallery retains exact Basic, Footer and Simple functions and invoice data', () => {
+test('bounded React gallery retains exact Basic, Footer, Simple and With Badges functions and invoice data', () => {
   const source = readFileSync('tests/reference/table-example.tsx', 'utf8');
   const gallery = readFileSync('tests/reference/TableGallery.tsx', 'utf8');
   const invoices = source.slice(source.indexOf('const invoices = ['), source.indexOf('export default function TableExample'));
-  const functions = source.slice(source.indexOf('function TableBasic()'), source.indexOf('function TableWithBadges()'));
+  const functions = source.slice(source.indexOf('function TableBasic()'), source.indexOf('function TableWithActions()'));
   assert(gallery.includes(invoices));
   assert(gallery.includes(functions));
-  for (const deferred of ['TableWithBadges', 'TableWithActions', 'TableWithSelect', 'TableWithInput']) {
+  for (const deferred of ['TableWithActions', 'TableWithSelect', 'TableWithInput']) {
     assert(!gallery.includes(deferred));
   }
+});
+
+test('With Badges is six literal spans without a missing Badge dependency', () => {
+  const source = readFileSync('tests/reference/table-example.tsx', 'utf8');
+  const body = source.slice(source.indexOf('function TableWithBadges()'), source.indexOf('function TableWithActions()'));
+  assert.equal((body.match(/<span className=/g) ?? []).length, 6);
+  assert(!body.includes('<Badge'));
 });
