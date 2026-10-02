@@ -20,6 +20,7 @@ cat > "$consumer_directory/Consumer.svelte" <<'SVELTE'
   import { Button, buttonVariants } from '@sveltery/ui/button';
   import { Textarea } from '@sveltery/ui/textarea';
   import { Label } from '@sveltery/ui/label';
+  import { Alert, AlertTitle, AlertDescription, AlertAction } from '@sveltery/ui/alert';
   import { AspectRatio } from '@sveltery/ui/aspect-ratio';
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { Empty, EmptyHeader, EmptyTitle, EmptyDescription, EmptyContent, EmptyMedia } from '@sveltery/ui/empty';
@@ -33,6 +34,7 @@ cat > "$consumer_directory/Consumer.svelte" <<'SVELTE'
   <span {...props}>{#if children}{@render children()}{:else}SSR fallback label{/if}</span>
 {/snippet}
 <ExampleWrapper data-probe="example-wrapper"><Example data-probe="example" title="Example &amp; notes" class="p-4" containerClassName="max-w-none">Scaffold content</Example></ExampleWrapper>
+<Alert variant="destructive" data-probe="alert"><AlertTitle>Notice</AlertTitle><AlertDescription>Description</AlertDescription><AlertAction><button>Undo</button></AlertAction></Alert>
 <Empty data-probe="empty"><EmptyHeader><EmptyMedia variant="icon">Media</EmptyMedia><EmptyTitle>Empty title</EmptyTitle><EmptyDescription>Description &amp; notes</EmptyDescription></EmptyHeader><EmptyContent>Content</EmptyContent></Empty>
 <EmptyMedia data-probe="empty-media-null" variant={null} />
 <Card size="sm" data-probe="card"><CardHeader><CardTitle>Title</CardTitle><CardDescription>Description</CardDescription><CardAction>Action</CardAction></CardHeader><CardContent>Content</CardContent><CardFooter>Footer</CardFooter></Card>
@@ -74,6 +76,10 @@ const emptyNames = ['Empty', 'EmptyHeader', 'EmptyTitle', 'EmptyDescription', 'E
 assert.deepEqual(Object.keys(Empties).sort(), emptyNames.toSorted());
 for (const name of emptyNames) assert.equal(Root[name], Empties[name]);
 import * as Cards from '@sveltery/ui/card';
+import * as Alerts from '@sveltery/ui/alert';
+const alertNames = ['Alert', 'AlertTitle', 'AlertDescription', 'AlertAction'];
+assert.deepEqual(Object.keys(Alerts).sort(), alertNames.toSorted());
+for (const name of alertNames) assert.equal(Root[name], Alerts[name]);
 const cardNames = ['Card', 'CardHeader', 'CardTitle', 'CardDescription', 'CardAction', 'CardContent', 'CardFooter'];
 assert.deepEqual(Object.keys(Cards).sort(), cardNames.toSorted());
 for (const name of cardNames) assert.equal(Root[name], Cards[name]);
@@ -82,7 +88,7 @@ const tableNames = ['Table', 'TableHeader', 'TableBody', 'TableFooter', 'TableRo
 assert.deepEqual(Object.keys(Tables).sort(), tableNames.slice().sort());
 for (const name of tableNames) assert.equal(Root[name], Tables[name]);
 const names = ['Dialog', 'DialogClose', 'DialogContent', 'DialogDescription', 'DialogFooter', 'DialogHeader', 'DialogOverlay', 'DialogPortal', 'DialogTitle', 'DialogTrigger'];
-assert.deepEqual(Object.keys(Root).sort(), [...names, ...tableNames, ...cardNames, ...emptyNames, 'Example', 'ExampleWrapper', 'Button', 'buttonVariants', 'variants', 'sizes', 'Textarea', 'Label', 'AspectRatio', 'Skeleton', 'Kbd', 'KbdGroup'].sort());
+assert.deepEqual(Object.keys(Root).sort(), [...names, ...tableNames, ...cardNames, ...alertNames, ...emptyNames, 'Example', 'ExampleWrapper', 'Button', 'buttonVariants', 'variants', 'sizes', 'Textarea', 'Label', 'AspectRatio', 'Skeleton', 'Kbd', 'KbdGroup'].sort());
 assert.deepEqual(Object.keys(Buttons).sort(), ['Button', 'buttonVariants', 'sizes', 'variants']);
 assert.deepEqual(Object.keys(Parts).sort(), names);
 assert.deepEqual(Object.keys(Labels), ['Label']);
@@ -93,7 +99,7 @@ assert.deepEqual(Object.keys(Skeletons), ['Skeleton']);
 assert.equal(Root.Skeleton, Skeletons.Skeleton);
 assert.deepEqual(Object.keys(Keys).sort(), ['Kbd', 'KbdGroup']);
 assert.equal(Root.Kbd, Keys.Kbd); assert.equal(Root.KbdGroup, Keys.KbdGroup);
-for (const path of ['example/index.d.ts', 'example/types.d.ts', 'example/Example.svelte.d.ts', 'example/ExampleWrapper.svelte.d.ts', 'empty/index.d.ts', 'empty/types.d.ts', ...emptyNames.map(name => `empty/${name}.svelte.d.ts`), 'table/index.d.ts', ...tableNames.map(name => `table/${name}.svelte.d.ts`), 'label/index.d.ts', 'label/Label.svelte.d.ts', 'index.d.ts', 'dialog/index.d.ts', 'button/index.d.ts', 'button/Button.svelte.d.ts', 'button/types.d.ts', 'textarea/index.d.ts', 'textarea/Textarea.svelte.d.ts', 'skeleton/index.d.ts', 'skeleton/Skeleton.svelte.d.ts', 'kbd/index.d.ts', 'kbd/Kbd.svelte.d.ts', 'kbd/KbdGroup.svelte.d.ts', 'kbd/types.d.ts', 'card/index.d.ts', 'card/types.d.ts', ...cardNames.map(name => `card/${name}.svelte.d.ts`), ...names.map(name => `dialog/${name}.svelte.d.ts`)]) {
+for (const path of ['example/index.d.ts', 'example/types.d.ts', 'example/Example.svelte.d.ts', 'example/ExampleWrapper.svelte.d.ts', 'alert/index.d.ts', 'alert/types.d.ts', ...alertNames.map(name => `alert/${name}.svelte.d.ts`), 'empty/index.d.ts', 'empty/types.d.ts', ...emptyNames.map(name => `empty/${name}.svelte.d.ts`), 'table/index.d.ts', ...tableNames.map(name => `table/${name}.svelte.d.ts`), 'label/index.d.ts', 'label/Label.svelte.d.ts', 'index.d.ts', 'dialog/index.d.ts', 'button/index.d.ts', 'button/Button.svelte.d.ts', 'button/types.d.ts', 'textarea/index.d.ts', 'textarea/Textarea.svelte.d.ts', 'skeleton/index.d.ts', 'skeleton/Skeleton.svelte.d.ts', 'kbd/index.d.ts', 'kbd/Kbd.svelte.d.ts', 'kbd/KbdGroup.svelte.d.ts', 'kbd/types.d.ts', 'card/index.d.ts', 'card/types.d.ts', ...cardNames.map(name => `card/${name}.svelte.d.ts`), ...names.map(name => `dialog/${name}.svelte.d.ts`)]) {
   assert(readFileSync(new URL(`./node_modules/@sveltery/ui/dist/${path}`, import.meta.url), 'utf8').length > 0);
 }
 const first = render(Consumer).body;
@@ -151,6 +157,12 @@ for (const html of [first, second]) {
   const nativeGroup = new JSDOM(html).window.document.querySelector('[data-probe=kbd-group]');
   assert.equal(nativeGroup.tagName, 'KBD'); assert.equal(nativeGroup.getAttribute('data-slot'), 'kbd-group');
   assert.equal(nativeGroup.firstElementChild.tagName, 'KBD'); assert.equal(nativeGroup.firstElementChild.getAttribute('data-slot'), 'kbd'); assert.equal(nativeGroup.textContent, 'Ctrl & K');
+  const alert = new JSDOM(html).window.document.querySelector('[data-probe=alert]');
+  assert.equal(alert.tagName, 'DIV'); assert.equal(alert.getAttribute('role'), 'alert');
+  assert.equal(alert.getAttribute('data-slot'), 'alert');
+  assert(alert.classList.contains('cn-alert-variant-destructive'));
+  assert.equal(alert.querySelectorAll('[data-slot^=alert-]').length, 3);
+  assert.equal(alert.textContent, 'NoticeDescriptionUndo');
   const empty = new JSDOM(html).window.document.querySelector('[data-probe=empty]');
   assert.equal(empty.tagName, 'DIV'); assert.equal(empty.getAttribute('data-slot'), 'empty');
   assert.equal(empty.querySelectorAll('[data-slot^=empty]').length, 5);
@@ -175,8 +187,9 @@ assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file:/
 assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-table-container'));
 assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-card-footer'));
 assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-label'));
+assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-alert-action'));
 assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-empty-media-icon'));
-console.log('Isolated Empty, AspectRatio, Label, Table plus Card and existing UI tarball: Dialog, Button, Textarea, Skeleton, Kbd and Card root/subpath exports, SSR, IDs, absent portals, CSS, declarations and notices PASS');
+console.log('Isolated Alert, Empty, AspectRatio, Label, Table plus Card and existing UI tarball: Dialog, Button, Textarea, Skeleton, Kbd and Card root/subpath exports, SSR, IDs, absent portals, CSS, declarations and notices PASS');
 JS
 node --import "$sveltery_repo_root/scripts/svelte-ssr-loader.mjs" "$consumer_directory/check.mjs"
 cat > "$consumer_directory/types.ts" <<'TS'
@@ -223,7 +236,8 @@ sed 's#../apps/docs/registry/bases/base/ui/table/index.js#@sveltery/ui/table#' t
 sed 's#../apps/docs/registry/bases/base/ui/card/index.js#@sveltery/ui/card#' tests/card-types.ts > "$consumer_directory/card-types.ts"
 sed 's#../apps/docs/registry/bases/base/ui/label/index.js#@sveltery/ui/label#' tests/label-types.ts > "$consumer_directory/label-types.ts"
 sed 's#../apps/docs/registry/bases/base/ui/aspect-ratio/index.js#@sveltery/ui/aspect-ratio#' tests/aspect-ratio-types.ts > "$consumer_directory/aspect-ratio-types.ts"
+sed 's#../apps/docs/registry/bases/base/ui/alert/index.js#@sveltery/ui/alert#' tests/alert-types.ts > "$consumer_directory/alert-types.ts"
 sed 's#../apps/docs/registry/bases/base/ui/empty/index.js#@sveltery/ui/empty#' tests/empty-types.ts > "$consumer_directory/empty-types.ts"
 sed 's#../apps/docs/registry/bases/base/ui/example/index.js#@sveltery/ui/example#' tests/example-types.ts > "$consumer_directory/example-types.ts"
-node "$sveltery_repo_root/node_modules/typescript/bin/tsc" --noEmit --strict --skipLibCheck --moduleResolution Bundler --module ESNext --target ES2022 --lib ES2022,DOM,DOM.Iterable "$consumer_directory/types.ts" "$consumer_directory/table-types.ts" "$consumer_directory/label-types.ts" "$consumer_directory/card-types.ts" "$consumer_directory/aspect-ratio-types.ts" "$consumer_directory/empty-types.ts" "$consumer_directory/example-types.ts"
+node "$sveltery_repo_root/node_modules/typescript/bin/tsc" --noEmit --strict --skipLibCheck --moduleResolution Bundler --module ESNext --target ES2022 --lib ES2022,DOM,DOM.Iterable "$consumer_directory/types.ts" "$consumer_directory/table-types.ts" "$consumer_directory/label-types.ts" "$consumer_directory/card-types.ts" "$consumer_directory/aspect-ratio-types.ts" "$consumer_directory/alert-types.ts" "$consumer_directory/empty-types.ts" "$consumer_directory/example-types.ts"
 echo 'Isolated packaged public type assertions: PASS'
