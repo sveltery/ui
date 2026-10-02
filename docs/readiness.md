@@ -1,5 +1,7 @@
 # Dialog readiness
 
+The [complete pinned registry catalog](catalog.md) records all 62 required entries and distinguishes locked dependency availability, bounded UI delivery and genuine test-source status.
+
 ## Native Table and proposed With Badges continuation
 
 The [Table slice](table.md) adds eight native exports and the pinned horizontal scroll container on confirmed Skeleton/Kbd main `d6c1cba4f42ca8b0ab03cea25666cb67d732e449`. Basic, Footer, Simple and With Badges examples are selected; With Badges uses six native spans and needs no Badge component. DropdownMenu, Select and Input compositions remain explicitly deferred. The initial Table slice landed in PR #16; the proposed With Badges continuation starts on UI main `2eefcae79079b4f51f7288f368976912ebf90216`, integrates landed Alert main `c84a4e19f8753865ceb7b4898e23d272562e279d` in [PR #23](https://github.com/sveltery/ui/pull/23), and requires fresh exact-head gates. Dependency pins and all existing Dialog, Button, Textarea, Skeleton, Kbd and direct remote-field assertions are retained. Actual paired DOM/SSR, semantics, reactive props, undefined/null refs and attachment replacement/cleanup, secured Chromium overflow/layout/selectors and both fresh archive/source-copy consumers gate the Table head. Exact-head independent and all configured automatic reviews, including fresh ready-triggered reviews, are required before the parent decides merge. Source-derived assertions are supplemental local evidence; no copied upstream Table test inventory or full parity claim is made.
