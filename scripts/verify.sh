@@ -22,6 +22,7 @@ node --import ./scripts/svelte-ssr-loader.mjs scripts/check-example-ssr.mjs
 node --import ./scripts/svelte-ssr-loader.mjs scripts/check-icons-ssr.mjs
 node --import ./scripts/svelte-ssr-loader.mjs scripts/check-separator-ssr.mjs
 pnpm --filter @sveltery/docs build
+pnpm exec vite build --config tests/reference/themes/reference-app/vite.config.ts
 bash scripts/check-remote-fields.sh
 bash scripts/check-package.sh
 node .github/check-docs.mjs

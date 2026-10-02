@@ -71,6 +71,9 @@
       "svelte": "./dist/empty/index.js",
       "default": "./dist/empty/index.js"
     },
+    "./themes.css": "./dist/themes.css",
+    "./styles.css": "./dist/styles.css",
+    "./styles/*.css": "./dist/scoped/*.css",
     "./example": {
       "types": "./dist/example/index.d.ts",
       "svelte": "./dist/example/index.js",
