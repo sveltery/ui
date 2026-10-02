@@ -49,3 +49,18 @@ const skeletonStyle: ComponentProps<typeof Skeleton> = { style: { width: 32 } };
 // @ts-expect-error Svelte uses class
 const skeletonReactClass: ComponentProps<typeof Skeleton> = { className: 'h-4' };
 void [skeleton, skeletonVariant, skeletonRender, skeletonStyle, skeletonReactClass];
+
+import { Kbd, KbdGroup, type KbdProps, type KbdGroupProps } from '../apps/docs/registry/bases/base/ui/kbd/index.js';
+const kbd: KbdProps = { ref: undefined, class: ['px-3'], style: 'color: red', onclick: event => { const node: HTMLElement = event.currentTarget; void node; } };
+const kbdGroup: KbdGroupProps = { ref: undefined, title: 'Shortcut keys' };
+const typedKbd: ComponentProps<typeof Kbd> = kbd;
+const typedGroup: ComponentProps<typeof KbdGroup> = kbdGroup;
+// @ts-expect-error native Kbd has no variant API
+const kbdVariant: KbdProps = { variant: 'outline' };
+// @ts-expect-error KbdGroup retains its native kbd host
+const kbdRender: KbdGroupProps = { render: () => {} };
+// @ts-expect-error Svelte native CSS is a string
+const kbdStyle: KbdProps = { style: { padding: 4 } };
+// @ts-expect-error Svelte uses class
+const kbdReactClass: KbdProps = { className: 'px-3' };
+void [typedKbd, typedGroup, kbdVariant, kbdRender, kbdStyle, kbdReactClass];

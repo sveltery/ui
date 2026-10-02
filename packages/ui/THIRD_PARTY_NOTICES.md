@@ -27,3 +27,5 @@ SOFTWARE.
 The native Textarea wrapper, five-state example and scoped Nova Textarea styles derive from shadcn-ui/ui `d75a96ab781f3d659be1ad287347d5887ce9f2fc`, under the MIT notice above. Byte-exact source fixtures and hashes are recorded in `tests/reference/textarea-sources.json`; comparison tests are source-derived/local, not upstream Textarea test ports.
 
 The native Skeleton wrapper, selected avatar/text/form/table-shaped examples and scoped Nova Skeleton styles derive from the same immutable shadcn-ui/ui commit under the MIT notice above. Source files, hashes and selection provenance are recorded in `tests/reference/skeleton-sources.json`; tests are source-derived local comparisons, not copied upstream tests. Card composition is deferred.
+
+The native Kbd/KbdGroup wrappers, basic/modifier/grouped/arrows/samp examples and scoped Nova rules derive from the same immutable shadcn-ui/ui commit under the MIT notice above. Byte-exact source fixtures and hashes are in `tests/reference/kbd-sources.json`; comparison tests are source-derived local assertions. InputGroup, Tooltip and icon compositions remain deferred.

@@ -70,3 +70,7 @@ PR #13 final [CI 36965261833](https://github.com/sveltery/ui/actions/runs/369652
 ## Proposed native Skeleton gate
 
 The [native Skeleton](skeleton.md) adds no Base primitive or dependency upgrade. Keep whole-library readiness blocked: Card composition is deferred and selected examples are a bounded native scaffold. Require immutable source/hash checks, paired DOM/example assertions, public/package declarations, actual SSR and hydration/ref/attachment cleanup, mobile/desktop Nova computed styles and fresh archive/source-copy browser execution. Preserve all existing direct remote-field and control regressions. Final-head local/hosted checks plus independent and configured automatic review, including any ready-transition review, still gate this proposed slice.
+
+## Proposed native Kbd gate
+
+The [native Kbd/KbdGroup](kbd.md) leaves add no Base primitive, dependency upgrade or shortcut handling. Preserve the pinned KbdGroup kbd host. Gate the scoped Nova/example comparisons, actual SSR, hydration/ref/attachment cleanup, reactive declaration children, native Tab sequence, public/package declarations and fresh archive/source-copy execution. InputGroup, Tooltip and icon composition stay deferred. Require final-head hosted checks, independent GPT-6.1 Sol high review and completed configured automatic review after any ready transition; all prior control and direct remote-field regressions remain in the suite. Whole-library readiness remains blocked.
