@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createElement } from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
+import { renderToStaticMarkup, renderToString } from 'react-dom/server';
 import { render } from 'svelte/server';
 import { JSDOM } from 'jsdom';
 import { transpileModule, ModuleKind, ScriptTarget, JsxEmit } from 'typescript';
@@ -36,11 +36,15 @@ for (const [index, host] of hosts.entries()) { assert.equal(host.tagName, 'DIV')
 const { EmptyProbe: ReferenceProbe } = await import(moduleURL('tests/reference/EmptyProbe.tsx', { react: import.meta.resolve('react'), './empty': referenceURL }));
 const selector = '[data-empty-host], [data-testid="media-selectors"] > div';
 const actualProbe = new JSDOM(render(Probe).body).window.document;
-const expectedProbe = new JSDOM(renderToStaticMarkup(createElement(ReferenceProbe))).window.document;
+const expectedProbe = new JSDOM(renderToString(createElement(ReferenceProbe))).window.document;
 // CSS string/object serialization whitespace is a framework adaptation; compare parsed CSS.
 const snapshot = document => [...document.querySelectorAll(selector)].map(node => ({ tag: node.tagName, attributes: { ...attributes(node), ...(node.hasAttribute('style') ? { style: node.style.cssText } : {}) }, text: node.textContent }));
 assert.equal(actualProbe.querySelectorAll(selector).length, 11);
 assert.deepEqual(snapshot(actualProbe), snapshot(expectedProbe), 'supplemental probe host attributes and exact escaped aggregate host text');
 assert.equal([...actualProbe.querySelectorAll(selector)].map(node => node.textContent).join('\n'), [...expectedProbe.querySelectorAll(selector)].map(node => node.textContent).join('\n'));
+// Match the actual reference route's hydratable SSR text-node segmentation.
+for (const document of [actualProbe, expectedProbe]) {
+  assert.deepEqual([...document.querySelector('#probe-empty-3').childNodes].filter(node => node.nodeType === 3).map(node => node.textContent), ['Initial 3']);
+}
 assert.equal(actualProbe.querySelector('[data-empty-probe]').getAttribute('data-hydrated'), 'false');
 console.log(`Pinned React/Svelte six Empty SSR div hosts: ${count} source-derived class/prop/variant cases, escaped fixture children and 11 paired supplemental probe hosts PASS`);
