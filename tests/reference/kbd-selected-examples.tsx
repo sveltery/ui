@@ -1,7 +1,7 @@
+// Selected source functions unchanged; execute the actual pinned native Example scaffold.
+import { Example } from './example-scaffold';
 // Byte-exact selected function bodies from kbd-example.tsx; MIT attribution: LICENSE.
-import type { ReactNode } from "react"
 import { Kbd, KbdGroup } from "./kbd"
-function Example({ title, children }: { title: string; children: ReactNode }) { return <section data-example><h2>{title}</h2>{children}</section>; }
 function KbdBasic() {
   return (
     <Example title="Basic">

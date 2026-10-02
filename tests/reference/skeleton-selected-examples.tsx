@@ -1,8 +1,8 @@
+// Selected source functions unchanged; execute the actual pinned native Example scaffold.
+import { Example } from './example-scaffold';
 // Selected function bodies copied unchanged from the pinned example; imports/layout are harness substitutions.
-import type { ReactNode } from 'react';
 import { Skeleton } from './skeleton';
 import { Card, CardHeader, CardContent } from './card';
-function Example({ title, children }: { title: string; children: ReactNode }) { return <section><h2>{title}</h2>{children}</section>; }
 
 export function SkeletonAvatar() {
   return (
