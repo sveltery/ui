@@ -1,0 +1,21 @@
+{
+  "commit": "d75a96ab781f3d659be1ad287347d5887ce9f2fc",
+  "files": [
+    {
+      "upstream": "apps/v4/registry/bases/base/ui/alert.tsx",
+      "local": "tests/reference/alert.tsx",
+      "sha256": "639c846b57885d8af4dbdf7ddab7b15fd4d392c051f7496c67e811154e7861d9"
+    },
+    {
+      "upstream": "apps/v4/registry/bases/base/examples/alert-example.tsx",
+      "local": "tests/reference/alert-example.tsx",
+      "sha256": "2f13f1ad964a31981386a08d890acb94e329ad009d6e484b4ae4a8b6008463b2"
+    },
+    {
+      "upstream": "apps/v4/registry/styles/style-nova.css",
+      "local": "tests/reference/alert-nova.css",
+      "sha256": "fb2ddd3e4d5e71371e60321304122f498ce206db061a5b202f82595e6df97cfc",
+      "range": "19-42 (Alert section only)"
+    }
+  ]
+}
