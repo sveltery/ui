@@ -1,0 +1,7401 @@
+/*!
+ISC License
+
+Copyright (c) for portions of Lucide are held by Cole Bemis 2013-2022 as part of Feather (MIT). All other copyright (c) for Lucide are held by Lucide Contributors 2022.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+*/
+// Generated native geometry; immutable provenance: tests/reference/icon-sources.json.
+export default {
+  "ActivityIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-activity"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "AlertCircleIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-circle-alert"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "12",
+          "x2": "12",
+          "y1": "8",
+          "y2": "12"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "12",
+          "x2": "12.01",
+          "y1": "16",
+          "y2": "16"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "AlertTriangleIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-triangle-alert"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 9v4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 17h.01"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "AppWindowIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-app-window"
+    },
+    "nodes": [
+      {
+        "tag": "rect",
+        "attributes": {
+          "x": "2",
+          "y": "4",
+          "width": "20",
+          "height": "16",
+          "rx": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10 4v4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M2 8h20"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M6 4v4"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ArchiveIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-archive"
+    },
+    "nodes": [
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "20",
+          "height": "5",
+          "x": "2",
+          "y": "3",
+          "rx": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10 12h4"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ArchiveXIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-archive-x"
+    },
+    "nodes": [
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "20",
+          "height": "5",
+          "x": "2",
+          "y": "3",
+          "rx": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m9.5 17 5-5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m9.5 12 5 5"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ArrowDownIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-arrow-down"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 5v14"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m19 12-7 7-7-7"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ArrowLeftCircleIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-circle-arrow-left"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 12H8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m12 8-4 4 4 4"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ArrowLeftIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-arrow-left"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m12 19-7-7 7-7"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M19 12H5"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ArrowLeftRightIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-arrow-left-right"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 3 4 7l4 4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M4 7h16"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m16 21 4-4-4-4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M20 17H4"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ArrowRightIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-arrow-right"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M5 12h14"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m12 5 7 7-7 7"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ArrowUpIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-arrow-up"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m5 12 7-7 7 7"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 19V5"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ArrowUpRightIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-arrow-up-right"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M7 7h10v10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M7 17 17 7"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "AudioLinesIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-audio-lines"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M2 10v3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M6 6v11"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10 3v18"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14 8v7"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M18 5v13"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M22 10v3"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "BadgeCheck": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-badge-check"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m9 12 2 2 4-4"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "BadgeCheckIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-badge-check"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m9 12 2 2 4-4"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "BellIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-bell"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10.268 21a2 2 0 0 0 3.464 0"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "BlocksIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-blocks"
+    },
+    "nodes": [
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "7",
+          "height": "7",
+          "x": "14",
+          "y": "3",
+          "rx": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10 21V8a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H3"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "BluetoothIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-bluetooth"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m7 7 10 10-5 5V2l5 5L7 17"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "BoldIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-bold"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "BookOpen": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-book-open"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 7v14"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "BookOpenIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-book-open"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 7v14"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "BookmarkIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-bookmark"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "BotIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-bot"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 8V4H8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "16",
+          "height": "12",
+          "x": "4",
+          "y": "8",
+          "rx": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M2 14h2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M20 14h2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M15 13v2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M9 13v2"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "BrainIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-brain"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M17.599 6.5a3 3 0 0 0 .399-1.375"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M6.003 5.125A3 3 0 0 0 6.401 6.5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3.477 10.896a4 4 0 0 1 .585-.396"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M19.938 10.5a4 4 0 0 1 .585.396"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M6 18a4 4 0 0 1-1.967-.516"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M19.967 17.484A4 4 0 0 1 18 18"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "Building2Icon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-building2"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10 6h4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10 10h4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10 14h4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10 18h4"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CalculatorIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-calculator"
+    },
+    "nodes": [
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "16",
+          "height": "20",
+          "x": "4",
+          "y": "2",
+          "rx": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "8",
+          "x2": "16",
+          "y1": "6",
+          "y2": "6"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "16",
+          "x2": "16",
+          "y1": "14",
+          "y2": "18"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 10h.01"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 10h.01"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 10h.01"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 14h.01"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 14h.01"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 18h.01"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 18h.01"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CalendarIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-calendar"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 2v4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 2v4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "18",
+          "height": "18",
+          "x": "3",
+          "y": "4",
+          "rx": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 10h18"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CameraIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-camera"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "13",
+          "r": "3"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CaptionsIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-captions"
+    },
+    "nodes": [
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "18",
+          "height": "14",
+          "x": "3",
+          "y": "5",
+          "rx": "2",
+          "ry": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M7 15h4M15 15h2M7 11h2M13 11h4"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CarIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-car"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "7",
+          "cy": "17",
+          "r": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M9 17h6"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "17",
+          "cy": "17",
+          "r": "2"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ChartBarIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-chart-bar"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 3v16a2 2 0 0 0 2 2h16"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M7 16h8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M7 11h12"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M7 6h3"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ChartLineIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-chart-line"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 3v16a2 2 0 0 0 2 2h16"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m19 9-5 5-4-4-3 3"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ChartPieIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-chart-pie"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M21 12c.552 0 1.005-.449.95-.998a10 10 0 0 0-8.953-8.951c-.55-.055-.998.398-.998.95v8a1 1 0 0 0 1 1z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M21.21 15.89A10 10 0 1 1 8 2.83"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CheckCircle2Icon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-circle-check"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m9 12 2 2 4-4"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CheckIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-check"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M20 6 9 17l-5-5"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ChevronDownIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-chevron-down"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m6 9 6 6 6-6"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ChevronLeftIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-chevron-left"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m15 18-6-6 6-6"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ChevronRightIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-chevron-right"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m9 18 6-6-6-6"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ChevronUpIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-chevron-up"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m18 15-6-6-6 6"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ChevronsLeftIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-chevrons-left"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m11 17-5-5 5-5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m18 17-5-5 5-5"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ChevronsRightIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-chevrons-right"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m6 17 5-5-5-5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m13 17 5-5-5-5"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ChevronsUpDownIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-chevrons-up-down"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m7 15 5 5 5-5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m7 9 5-5 5 5"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CircleAlertIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-circle-alert"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "12",
+          "x2": "12",
+          "y1": "8",
+          "y2": "12"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "12",
+          "x2": "12.01",
+          "y1": "16",
+          "y2": "16"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CircleCheckIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-circle-check"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m9 12 2 2 4-4"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CircleDashedIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-circle-dashed"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10.1 2.182a10 10 0 0 1 3.8 0"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M13.9 21.818a10 10 0 0 1-3.8 0"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M17.609 3.721a10 10 0 0 1 2.69 2.7"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M2.182 13.9a10 10 0 0 1 0-3.8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M20.279 17.609a10 10 0 0 1-2.7 2.69"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M21.818 10.1a10 10 0 0 1 0 3.8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3.721 6.391a10 10 0 0 1 2.7-2.69"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M6.391 20.279a10 10 0 0 1-2.69-2.7"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CircleHelpIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-circle-help"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 17h.01"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CirclePlusIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-circle-plus"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 12h8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 8v8"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CircleUserIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-circle-user"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "10",
+          "r": "3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CircleUserRoundIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-circle-user-round"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M18 20a6 6 0 0 0-12 0"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "10",
+          "r": "4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ClipboardPasteIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-clipboard-paste"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M15 2H9a1 1 0 0 0-1 1v2c0 .6.4 1 1 1h6c.6 0 1-.4 1-1V3c0-.6-.4-1-1-1Z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M16 4h2a2 2 0 0 1 2 2v2M11 14h10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m17 10 4 4-4 4"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "Clock2Icon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-clock2"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "polyline",
+        "attributes": {
+          "points": "12 6 12 12 16 10"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ClockIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-clock"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "polyline",
+        "attributes": {
+          "points": "12 6 12 12 16 14"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CloudIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-cloud"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CodeIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-code"
+    },
+    "nodes": [
+      {
+        "tag": "polyline",
+        "attributes": {
+          "points": "16 18 22 12 16 6"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "polyline",
+        "attributes": {
+          "points": "8 6 2 12 8 18"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CoffeeIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-coffee"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10 2v2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14 2v2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M6 2v2"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "Columns3Icon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-columns3"
+    },
+    "nodes": [
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "18",
+          "height": "18",
+          "x": "3",
+          "y": "3",
+          "rx": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M9 3v18"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M15 3v18"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CommandIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-command"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ContainerIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-container"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M22 7.7c0-.6-.4-1.2-.8-1.5l-6.3-3.9a1.72 1.72 0 0 0-1.7 0l-10.3 6c-.5.2-.9.8-.9 1.4v6.6c0 .5.4 1.2.8 1.5l6.3 3.9a1.72 1.72 0 0 0 1.7 0l10.3-6c.5-.3.9-1 .9-1.5Z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10 21.9V14L2.1 9.1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m10 14 11.9-6.9"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14 19.8v-8.1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M18 17.5V9.4"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CopyIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-copy"
+    },
+    "nodes": [
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "14",
+          "height": "14",
+          "x": "8",
+          "y": "8",
+          "rx": "2",
+          "ry": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CornerUpLeftIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-corner-up-left"
+    },
+    "nodes": [
+      {
+        "tag": "polyline",
+        "attributes": {
+          "points": "9 14 4 9 9 4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M20 20v-7a4 4 0 0 0-4-4H4"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CornerUpRightIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-corner-up-right"
+    },
+    "nodes": [
+      {
+        "tag": "polyline",
+        "attributes": {
+          "points": "15 14 20 9 15 4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M4 20v-7a4 4 0 0 1 4-4h12"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "CreditCardIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-credit-card"
+    },
+    "nodes": [
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "20",
+          "height": "14",
+          "x": "2",
+          "y": "5",
+          "rx": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "2",
+          "x2": "22",
+          "y1": "10",
+          "y2": "10"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "DatabaseIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-database"
+    },
+    "nodes": [
+      {
+        "tag": "ellipse",
+        "attributes": {
+          "cx": "12",
+          "cy": "5",
+          "rx": "9",
+          "ry": "3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 5V19A9 3 0 0 0 21 19V5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 12A9 3 0 0 0 21 12"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "DownloadIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-download"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "polyline",
+        "attributes": {
+          "points": "7 10 12 15 17 10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "12",
+          "x2": "12",
+          "y1": "15",
+          "y2": "3"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "EllipsisVerticalIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-ellipsis-vertical"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "5",
+          "r": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "19",
+          "r": "1"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ExternalLinkIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-external-link"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M15 3h6v6"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10 14 21 3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "EyeIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-eye"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "3"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "EyeOffIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-eye-off"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14.084 14.158a3 3 0 0 1-4.242-4.242"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m2 2 20 20"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "FileArchiveIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-file-archive"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10 12v-1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10 18v-2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10 7V6"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14 2v4a2 2 0 0 0 2 2h4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M15.5 22H18a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v16a2 2 0 0 0 .274 1.01"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "10",
+          "cy": "20",
+          "r": "2"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "FileBarChartIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-file-chart-column-increasing"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14 2v4a2 2 0 0 0 2 2h4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 18v-2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 18v-4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 18v-6"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "FileChartColumnIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-file-chart-column"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14 2v4a2 2 0 0 0 2 2h4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 18v-1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 18v-6"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 18v-3"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "FileCodeIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-file-code"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10 12.5 8 15l2 2.5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m14 12.5 2 2.5-2 2.5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14 2v4a2 2 0 0 0 2 2h4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "FileIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-file"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14 2v4a2 2 0 0 0 2 2h4"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "FileSearchIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-file-search"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14 2v4a2 2 0 0 0 2 2h4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M4.268 21a2 2 0 0 0 1.727 1H18a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m9 18-1.5-1.5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "5",
+          "cy": "14",
+          "r": "3"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "FileTextIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-file-text"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14 2v4a2 2 0 0 0 2 2h4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10 9H8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 13H8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 17H8"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "FileWarningIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-file-warning"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 9v4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 17h.01"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "FlipHorizontalIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-flip-horizontal"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 3H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 3h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 20v2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 14v2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 8v2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 2v2"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "FlipVerticalIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-flip-vertical"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M21 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M21 16v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M4 12H2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10 12H8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 12h-2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M22 12h-2"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "FolderIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-folder"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "FolderOpenIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-folder-open"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "FolderPlusIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-folder-plus"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 10v6"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M9 13h6"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "FolderSearchIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-folder-search"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10.7 20H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H20a2 2 0 0 1 2 2v4.1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m21 21-1.9-1.9"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "17",
+          "cy": "17",
+          "r": "3"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "FrameIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-frame"
+    },
+    "nodes": [
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "22",
+          "x2": "2",
+          "y1": "6",
+          "y2": "6"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "22",
+          "x2": "2",
+          "y1": "18",
+          "y2": "18"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "6",
+          "x2": "6",
+          "y1": "2",
+          "y2": "22"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "18",
+          "x2": "18",
+          "y1": "2",
+          "y2": "22"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "GalleryVerticalEndIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-gallery-vertical-end"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M7 2h10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M5 6h14"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "18",
+          "height": "12",
+          "x": "3",
+          "y": "10",
+          "rx": "2"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "GaugeIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-gauge"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m12 14 4-4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3.34 19a10 10 0 1 1 17.32 0"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "GitBranchIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-git-branch"
+    },
+    "nodes": [
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "6",
+          "x2": "6",
+          "y1": "3",
+          "y2": "15"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "18",
+          "cy": "6",
+          "r": "3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "6",
+          "cy": "18",
+          "r": "3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M18 9a9 9 0 0 1-9 9"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "GlobeIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-globe"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M2 12h20"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "GripVerticalIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-grip-vertical"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "9",
+          "cy": "12",
+          "r": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "9",
+          "cy": "5",
+          "r": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "9",
+          "cy": "19",
+          "r": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "15",
+          "cy": "12",
+          "r": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "15",
+          "cy": "5",
+          "r": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "15",
+          "cy": "19",
+          "r": "1"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "HeartIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-heart"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "HelpCircleIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-circle-help"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 17h.01"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "HomeIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-house"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ImageIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-image"
+    },
+    "nodes": [
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "18",
+          "height": "18",
+          "x": "3",
+          "y": "3",
+          "rx": "2",
+          "ry": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "9",
+          "cy": "9",
+          "r": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "InboxIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-inbox"
+    },
+    "nodes": [
+      {
+        "tag": "polyline",
+        "attributes": {
+          "points": "22 12 16 12 14 15 10 15 8 12 2 12"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "InfoIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-info"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 16v-4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 8h.01"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ItalicIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-italic"
+    },
+    "nodes": [
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "19",
+          "x2": "10",
+          "y1": "4",
+          "y2": "4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "14",
+          "x2": "5",
+          "y1": "20",
+          "y2": "20"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "15",
+          "x2": "9",
+          "y1": "4",
+          "y2": "20"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "KeyboardIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-keyboard"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10 8h.01"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 12h.01"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14 8h.01"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 12h.01"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M18 8h.01"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M6 8h.01"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M7 16h10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 12h.01"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "20",
+          "height": "16",
+          "x": "2",
+          "y": "4",
+          "rx": "2"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "LanguagesIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-languages"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m5 8 6 6"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m4 14 6-6 2-3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M2 5h12"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M7 2h1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m22 22-5-10-5 10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14 18h6"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "LayoutDashboardIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-layout-dashboard"
+    },
+    "nodes": [
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "7",
+          "height": "9",
+          "x": "3",
+          "y": "3",
+          "rx": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "7",
+          "height": "5",
+          "x": "14",
+          "y": "3",
+          "rx": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "7",
+          "height": "9",
+          "x": "14",
+          "y": "12",
+          "rx": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "7",
+          "height": "5",
+          "x": "3",
+          "y": "16",
+          "rx": "1"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "LayoutGridIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-layout-grid"
+    },
+    "nodes": [
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "7",
+          "height": "7",
+          "x": "3",
+          "y": "3",
+          "rx": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "7",
+          "height": "7",
+          "x": "14",
+          "y": "3",
+          "rx": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "7",
+          "height": "7",
+          "x": "14",
+          "y": "14",
+          "rx": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "7",
+          "height": "7",
+          "x": "3",
+          "y": "14",
+          "rx": "1"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "LayoutIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-panels-top-left"
+    },
+    "nodes": [
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "18",
+          "height": "18",
+          "x": "3",
+          "y": "3",
+          "rx": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 9h18"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M9 21V9"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "LifeBuoy": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-life-buoy"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m4.93 4.93 4.24 4.24"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m14.83 9.17 4.24-4.24"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m14.83 14.83 4.24 4.24"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m9.17 14.83-4.24 4.24"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "4"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "LifeBuoyIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-life-buoy"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m4.93 4.93 4.24 4.24"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m14.83 9.17 4.24-4.24"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m14.83 14.83 4.24 4.24"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m9.17 14.83-4.24 4.24"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "4"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "LinkIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-link"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ListIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-list"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 12h.01"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 18h.01"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 6h.01"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 12h13"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 18h13"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 6h13"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "Loader2Icon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-loader-circle"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M21 12a9 9 0 1 1-6.219-8.56"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "LoaderIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-loader"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 2v4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m16.2 7.8 2.9-2.9"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M18 12h4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m16.2 16.2 2.9 2.9"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 18v4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m4.9 19.1 2.9-2.9"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M2 12h4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m4.9 4.9 2.9 2.9"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "LockIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-lock"
+    },
+    "nodes": [
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "18",
+          "height": "11",
+          "x": "3",
+          "y": "11",
+          "rx": "2",
+          "ry": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M7 11V7a5 5 0 0 1 10 0v4"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "LockKeyholeIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-lock-keyhole"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "16",
+          "r": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "x": "3",
+          "y": "10",
+          "width": "18",
+          "height": "12",
+          "rx": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M7 10V7a5 5 0 0 1 10 0v3"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "LogOutIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-log-out"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "polyline",
+        "attributes": {
+          "points": "16 17 21 12 16 7"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "21",
+          "x2": "9",
+          "y1": "12",
+          "y2": "12"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "MailIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-mail"
+    },
+    "nodes": [
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "20",
+          "height": "16",
+          "x": "2",
+          "y": "4",
+          "rx": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "MapIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-map"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M15 5.764v15"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M9 3.236v15"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "MaximizeIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-maximize"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 3H5a2 2 0 0 0-2 2v3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M21 8V5a2 2 0 0 0-2-2h-3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 16v3a2 2 0 0 0 2 2h3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 21h3a2 2 0 0 0 2-2v-3"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "MenuIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-menu"
+    },
+    "nodes": [
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "4",
+          "x2": "20",
+          "y1": "12",
+          "y2": "12"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "4",
+          "x2": "20",
+          "y1": "6",
+          "y2": "6"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "4",
+          "x2": "20",
+          "y1": "18",
+          "y2": "18"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "MessageCircleIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-message-circle"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M7.9 20A9 9 0 1 0 4 16.1L2 22Z"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "MessageCircleQuestionIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-message-circle-question"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M7.9 20A9 9 0 1 0 4 16.1L2 22Z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 17h.01"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "MessageSquareIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-message-square"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "MicIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-mic"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M19 10v2a7 7 0 0 1-14 0v-2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "12",
+          "x2": "12",
+          "y1": "19",
+          "y2": "22"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "MinimizeIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-minimize"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 3v3a2 2 0 0 1-2 2H3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M21 8h-3a2 2 0 0 1-2-2V3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 16h3a2 2 0 0 1 2 2v3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 21v-3a2 2 0 0 1 2-2h3"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "MinusIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-minus"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M5 12h14"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "MonitorIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-monitor"
+    },
+    "nodes": [
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "20",
+          "height": "14",
+          "x": "2",
+          "y": "3",
+          "rx": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "8",
+          "x2": "16",
+          "y1": "21",
+          "y2": "21"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "12",
+          "x2": "12",
+          "y1": "17",
+          "y2": "21"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "MoonIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-moon"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "MoreHorizontalIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-ellipsis"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "19",
+          "cy": "12",
+          "r": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "5",
+          "cy": "12",
+          "r": "1"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "MoreVerticalIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-ellipsis-vertical"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "5",
+          "r": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "19",
+          "r": "1"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "OctagonXIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-octagon-x"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m15 9-6 6"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M2.586 16.726A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2h6.624a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m9 9 6 6"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "PaintbrushIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-paintbrush"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m14.622 17.897-10.68-2.913"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M18.376 2.622a1 1 0 1 1 3.002 3.002L17.36 9.643a.5.5 0 0 0 0 .707l.944.944a2.41 2.41 0 0 1 0 3.408l-.944.944a.5.5 0 0 1-.707 0L8.354 7.348a.5.5 0 0 1 0-.707l.944-.944a2.41 2.41 0 0 1 3.408 0l.944.944a.5.5 0 0 0 .707 0z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M9 8c-1.804 2.71-3.97 3.46-6.583 3.948a.507.507 0 0 0-.302.819l7.32 8.883a1 1 0 0 0 1.185.204C12.735 20.405 16 16.792 16 15"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "PaletteIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-palette"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "13.5",
+          "cy": "6.5",
+          "r": ".5",
+          "fill": "currentColor"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "17.5",
+          "cy": "10.5",
+          "r": ".5",
+          "fill": "currentColor"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "8.5",
+          "cy": "7.5",
+          "r": ".5",
+          "fill": "currentColor"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "6.5",
+          "cy": "12.5",
+          "r": ".5",
+          "fill": "currentColor"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "PanelLeftIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-panel-left"
+    },
+    "nodes": [
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "18",
+          "height": "18",
+          "x": "3",
+          "y": "3",
+          "rx": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M9 3v18"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "PaperclipIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-paperclip"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M13.234 20.252 21 12.3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m16 6-8.414 8.586a2 2 0 0 0 0 2.828 2 2 0 0 0 2.828 0l8.414-8.586a4 4 0 0 0 0-5.656 4 4 0 0 0-5.656 0l-8.415 8.585a6 6 0 1 0 8.486 8.486"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "PencilIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-pencil"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m15 5 4 4"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "PieChartIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-chart-pie"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M21 12c.552 0 1.005-.449.95-.998a10 10 0 0 0-8.953-8.951c-.55-.055-.998.398-.998.95v8a1 1 0 0 0 1 1z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M21.21 15.89A10 10 0 1 1 8 2.83"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "PlusCircleIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-circle-plus"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 12h8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 8v8"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "PlusIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-plus"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M5 12h14"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 5v14"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "PresentationIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-presentation"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M2 3h20"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m7 21 5-5 5 5"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "RadioIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-radio"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M4.9 19.1C1 15.2 1 8.8 4.9 4.9"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M19.1 4.9C23 8.8 23 15.1 19.1 19"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "RefreshCcwIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-refresh-ccw"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 3v5h5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 16h5v5"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "RefreshCwIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-refresh-cw"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M21 3v5h-5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 16H3v5"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "RepeatIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-repeat"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m17 2 4 4-4 4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 11v-1a4 4 0 0 1 4-4h14"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m7 22-4-4 4-4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M21 13v1a4 4 0 0 1-4 4H3"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "RotateCwIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-rotate-cw"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M21 3v5h-5"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "SaveIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-save"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M7 3v4a1 1 0 0 0 1 1h7"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ScissorsIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-scissors"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "6",
+          "cy": "6",
+          "r": "3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8.12 8.12 12 12"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M20 4 8.12 15.88"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "6",
+          "cy": "18",
+          "r": "3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14.8 14.8 20 20"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "SearchIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-search"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "11",
+          "cy": "11",
+          "r": "8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m21 21-4.3-4.3"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "Send": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-send"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m21.854 2.147-10.94 10.939"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "SendIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-send"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m21.854 2.147-10.94 10.939"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ServerIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-server"
+    },
+    "nodes": [
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "20",
+          "height": "8",
+          "x": "2",
+          "y": "2",
+          "rx": "2",
+          "ry": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "20",
+          "height": "8",
+          "x": "2",
+          "y": "14",
+          "rx": "2",
+          "ry": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "6",
+          "x2": "6.01",
+          "y1": "6",
+          "y2": "6"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "6",
+          "x2": "6.01",
+          "y1": "18",
+          "y2": "18"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "Settings2Icon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-settings2"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M20 7h-9"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14 17H5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "17",
+          "cy": "17",
+          "r": "3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "7",
+          "cy": "7",
+          "r": "3"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "SettingsIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-settings"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "3"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ShareIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-share"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "polyline",
+        "attributes": {
+          "points": "16 6 12 2 8 6"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "12",
+          "x2": "12",
+          "y1": "2",
+          "y2": "15"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ShieldIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-shield"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ShoppingBagIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-shopping-bag"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 6h18"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 10a4 4 0 0 1-8 0"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ShoppingCartIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-shopping-cart"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "8",
+          "cy": "21",
+          "r": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "19",
+          "cy": "21",
+          "r": "1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "SmileIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-smile"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 14s1.5 2 4 2 4-2 4-2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "9",
+          "x2": "9.01",
+          "y1": "9",
+          "y2": "9"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "15",
+          "x2": "15.01",
+          "y1": "9",
+          "y2": "9"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "SparklesIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-sparkles"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M20 3v4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M22 5h-4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M4 17v2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M5 18H3"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "SquareIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-square"
+    },
+    "nodes": [
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "18",
+          "height": "18",
+          "x": "3",
+          "y": "3",
+          "rx": "2"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "StarIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-star"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "StarOffIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-star-off"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8.34 8.34 2 9.27l5 4.87L5.82 21 12 17.77 18.18 21l-.59-3.43"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M18.42 12.76 22 9.27l-6.91-1L12 2l-1.44 2.91"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "2",
+          "x2": "22",
+          "y1": "2",
+          "y2": "22"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "StopCircleIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-circle-stop"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "x": "9",
+          "y": "9",
+          "width": "6",
+          "height": "6",
+          "rx": "1"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "SunIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-sun"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 2v2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 20v2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m4.93 4.93 1.41 1.41"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m17.66 17.66 1.41 1.41"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M2 12h2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M20 12h2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m6.34 17.66-1.41 1.41"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m19.07 4.93-1.41 1.41"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "TableIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-table"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 3v18"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "18",
+          "height": "18",
+          "x": "3",
+          "y": "3",
+          "rx": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 9h18"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 15h18"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "TargetIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-target"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "10"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "6"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "12",
+          "r": "2"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "TerminalIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-terminal"
+    },
+    "nodes": [
+      {
+        "tag": "polyline",
+        "attributes": {
+          "points": "4 17 10 11 4 5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "12",
+          "x2": "20",
+          "y1": "19",
+          "y2": "19"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "TerminalSquareIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-square-terminal"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m7 11 2-2-2-2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M11 13h4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "18",
+          "height": "18",
+          "x": "3",
+          "y": "3",
+          "rx": "2",
+          "ry": "2"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ThermometerIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-thermometer"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ThumbsDownIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-thumbs-down"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M17 14V2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ThumbsUpIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-thumbs-up"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M7 10v12"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "TimerIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-timer"
+    },
+    "nodes": [
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "10",
+          "x2": "14",
+          "y1": "2",
+          "y2": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "12",
+          "x2": "15",
+          "y1": "14",
+          "y2": "11"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "14",
+          "r": "8"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "Trash2Icon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-trash2"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 6h18"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "10",
+          "x2": "10",
+          "y1": "11",
+          "y2": "17"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "14",
+          "x2": "14",
+          "y1": "11",
+          "y2": "17"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "TrashIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-trash"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 6h18"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "TrendingDownIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-trending-down"
+    },
+    "nodes": [
+      {
+        "tag": "polyline",
+        "attributes": {
+          "points": "22 17 13.5 8.5 8.5 13.5 2 7"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "polyline",
+        "attributes": {
+          "points": "16 17 22 17 22 11"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "TrendingUpIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-trending-up"
+    },
+    "nodes": [
+      {
+        "tag": "polyline",
+        "attributes": {
+          "points": "22 7 13.5 15.5 8.5 10.5 2 17"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "polyline",
+        "attributes": {
+          "points": "16 7 22 7 22 13"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "TriangleAlertIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-triangle-alert"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 9v4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 17h.01"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "TvIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-tv"
+    },
+    "nodes": [
+      {
+        "tag": "rect",
+        "attributes": {
+          "width": "20",
+          "height": "15",
+          "x": "2",
+          "y": "7",
+          "rx": "2",
+          "ry": "2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "polyline",
+        "attributes": {
+          "points": "17 2 12 7 7 2"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "UnderlineIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-underline"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M6 4v6a6 6 0 0 0 12 0V4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "4",
+          "x2": "20",
+          "y1": "20",
+          "y2": "20"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "UploadCloudIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-cloud-upload"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M12 13v8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m8 17 4-4 4 4"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "UserIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-user"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "12",
+          "cy": "7",
+          "r": "4"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "UserRoundXIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-user-round-x"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M2 21a8 8 0 0 1 11.873-7"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "10",
+          "cy": "8",
+          "r": "5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m17 17 5 5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m22 17-5 5"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "UsersIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-users"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "9",
+          "cy": "7",
+          "r": "4"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M22 21v-2a4 4 0 0 0-3-3.87"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 3.13a4 4 0 0 1 0 7.75"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "VideoIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-video"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "rect",
+        "attributes": {
+          "x": "2",
+          "y": "6",
+          "width": "14",
+          "height": "12",
+          "rx": "2"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "Volume2Icon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-volume2"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 9a5 5 0 0 1 0 6"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M19.364 18.364a9 9 0 0 0 0-12.728"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "VolumeOffIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-volume-off"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M16 9a5 5 0 0 1 .95 2.293"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M19.364 5.636a9 9 0 0 1 1.889 9.96"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m2 2 20 20"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m7 7-.587.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298V11"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M9.828 4.172A.686.686 0 0 1 11 4.657v.686"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "VolumeX": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-volume-x"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "22",
+          "x2": "16",
+          "y1": "9",
+          "y2": "15"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "16",
+          "x2": "22",
+          "y1": "9",
+          "y2": "15"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "WalletIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-wallet"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "XIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-x"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M18 6 6 18"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "m6 6 12 12"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ZapIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-zap"
+    },
+    "nodes": [
+      {
+        "tag": "path",
+        "attributes": {
+          "d": "M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ZoomInIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-zoom-in"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "11",
+          "cy": "11",
+          "r": "8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "21",
+          "x2": "16.65",
+          "y1": "21",
+          "y2": "16.65"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "11",
+          "x2": "11",
+          "y1": "8",
+          "y2": "14"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "8",
+          "x2": "14",
+          "y1": "11",
+          "y2": "11"
+        },
+        "nodes": []
+      }
+    ]
+  },
+  "ZoomOutIcon": {
+    "attributes": {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "fill": "none",
+      "stroke": "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "class": "lucide lucide-zoom-out"
+    },
+    "nodes": [
+      {
+        "tag": "circle",
+        "attributes": {
+          "cx": "11",
+          "cy": "11",
+          "r": "8"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "21",
+          "x2": "16.65",
+          "y1": "21",
+          "y2": "16.65"
+        },
+        "nodes": []
+      },
+      {
+        "tag": "line",
+        "attributes": {
+          "x1": "8",
+          "x2": "14",
+          "y1": "11",
+          "y2": "11"
+        },
+        "nodes": []
+      }
+    ]
+  }
+};

@@ -1,38 +1,37 @@
 "use client"
 
-import * as React from "react"
 import { lazy, Suspense } from "react"
 import { SquareIcon } from "lucide-react"
-import type { IconLibraryName } from "./icons/config"
+import type { IconLibraryName } from "shadcn/icons"
 
-import { useDesignSystemSearchParams } from "./icons/search-params"
+import { useDesignSystemSearchParams } from "@/app/(app)/(create)/lib/search-params"
 
 const IconLucide = lazy(() =>
-  import("./icons/icon-lucide").then((mod) => ({
+  import("@/registry/icons/icon-lucide").then((mod) => ({
     default: mod.IconLucide,
   }))
 )
 
 const IconTabler = lazy(() =>
-  import("./icons/icon-tabler").then((mod) => ({
+  import("@/registry/icons/icon-tabler").then((mod) => ({
     default: mod.IconTabler,
   }))
 )
 
 const IconHugeicons = lazy(() =>
-  import("./icons/icon-hugeicons").then((mod) => ({
+  import("@/registry/icons/icon-hugeicons").then((mod) => ({
     default: mod.IconHugeicons,
   }))
 )
 
 const IconPhosphor = lazy(() =>
-  import("./icons/icon-phosphor").then((mod) => ({
+  import("@/registry/icons/icon-phosphor").then((mod) => ({
     default: mod.IconPhosphor,
   }))
 )
 
 const IconRemixicon = lazy(() =>
-  import("./icons/icon-remixicon").then((mod) => ({
+  import("@/registry/icons/icon-remixicon").then((mod) => ({
     default: mod.IconRemixicon,
   }))
 )
@@ -40,11 +39,11 @@ const IconRemixicon = lazy(() =>
 // Preload all icon renderer modules so switching libraries is instant.
 // These warm the browser module cache; React.lazy resolves immediately
 // for modules that are already loaded.
-void import("./icons/icon-lucide")
-void import("./icons/icon-tabler")
-void import("./icons/icon-hugeicons")
-void import("./icons/icon-phosphor")
-void import("./icons/icon-remixicon")
+void import("@/registry/icons/icon-lucide")
+void import("@/registry/icons/icon-tabler")
+void import("@/registry/icons/icon-hugeicons")
+void import("@/registry/icons/icon-phosphor")
+void import("@/registry/icons/icon-remixicon")
 
 export function IconPlaceholder({
   ...props
