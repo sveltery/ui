@@ -50,6 +50,6 @@ it('undefined refs, symbol attachments, reactive children/classes and native eve
 it('five supported actual pinned example bodies retain text, grouping and samp composition', async () => {
   const node = target(); mounted.push(mount(Example, { target: node })); await tick();
   const reference = document.createElement('section'); reference.innerHTML = renderToStaticMarkup(createElement(KbdGallery));
-  function examples(container: HTMLElement) { return [...container.querySelectorAll('[data-example]')].map(example => ({ title: example.querySelector('h2')?.textContent, keys: [...example.querySelectorAll('kbd')].map(key => ({ text: key.textContent, slot: key.dataset.slot, class: key.className, parent: key.parentElement?.tagName, samp: key.querySelector('samp')?.textContent ?? null })) })); }
-  expect(examples(node)).toEqual(examples(reference)); expect(node.querySelectorAll('[data-example]')).toHaveLength(5);
+  function examples(container: HTMLElement) { return [...container.querySelectorAll('[data-slot=example]')].map(example => ({ title: example.firstElementChild?.textContent, keys: [...example.querySelectorAll('kbd')].map(key => ({ text: key.textContent, slot: key.dataset.slot, class: key.className, parent: key.parentElement?.tagName, samp: key.querySelector('samp')?.textContent ?? null })) })); }
+  expect(examples(node)).toEqual(examples(reference)); expect(node.querySelectorAll('[data-slot=example]')).toHaveLength(5);
 });

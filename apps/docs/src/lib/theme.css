@@ -2,6 +2,9 @@
 @import "@sveltery/ui/themes.css";
 @import "@sveltery/ui/nova.css";
 @import "@sveltery/ui/styles.css";
+@custom-variant style-lyra (&:where(.style-lyra *));
+@custom-variant style-sera (&:where(.style-sera *));
+@custom-variant dark (&:is(.dark *));
 @source "../../../../packages/ui/dist";
 @source "../../../../tests/reference";
 body { margin: 0; background: var(--background); color: var(--foreground); font-family: Arial, sans-serif; }
