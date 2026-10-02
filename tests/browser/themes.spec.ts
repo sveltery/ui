@@ -43,22 +43,22 @@ for (const width of [1280, 390]) test(`all eight canonical component styles matc
       await expect(page.locator('html')).toHaveClass(new RegExp(`style-${style}`));
       const actual = await measurements(page);
       expect(actual.length).toBeGreaterThan(45);
-      expect(actual).toEqual(await measurements(reference));
+      expect(actual, `${style} ${dark ? 'dark' : 'light'} initial`).toEqual(await measurements(reference));
       // Actual Base portals must inherit the selected palette/style from html.
       for (const current of [page, reference]) {
         await current.getByRole('button', { name: 'Open theme dialog', exact: true }).click();
         await expect(current.getByRole('dialog')).toBeVisible();
         await current.getByRole('dialog').evaluate(async node => { await Promise.all(node.getAnimations().map(animation => animation.finished)); });
       }
-      expect(await measurements(page)).toEqual(await measurements(reference));
+      expect(await measurements(page), `${style} ${dark ? 'dark' : 'light'} dialog`).toEqual(await measurements(reference));
       for (const current of [page, reference]) { await current.getByRole('button', { name: 'Done', exact: true }).click(); await expect(current.getByRole('dialog')).toHaveCount(0); }
       // Hover and focus exercise source dark opacity/mix and ring selectors.
       for (const index of [0, 1, 2, 3, 4, 5]) {
         for (const current of [page, reference]) await current.locator('[data-theme-gallery] [data-slot=button]').nth(index).hover();
-        expect(await measurements(page)).toEqual(await measurements(reference));
+        expect(await measurements(page), `${style} ${dark ? 'dark' : 'light'} hover ${index}`).toEqual(await measurements(reference));
       }
       for (const current of [page, reference]) { await current.locator('#theme-notes').focus(); await current.mouse.move(0, 0); }
-      expect(await measurements(page)).toEqual(await measurements(reference));
+      expect(await measurements(page), `${style} ${dark ? 'dark' : 'light'} focus`).toEqual(await measurements(reference));
       for (const current of [page, reference]) await current.locator('#theme-notes').blur();
     }
   }
