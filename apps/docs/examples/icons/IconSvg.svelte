@@ -9,7 +9,7 @@
   const nodes = $derived(iconNodes(data, library));
   // Svelte removes an explicit empty class during client attribute updates,
   // while SVG SSR and the pinned React renderers retain it. Reflect that native attribute.
-  $effect(() => { if (ref && svgAttributes.class === '') ref.setAttribute('class', ''); });
+  $effect(() => { if (ref && svgAttributes.class === '' && !ref.hasAttribute('class')) ref.setAttribute('class', ''); });
 </script>
 <svg bind:this={ref} {...svgAttributes}>
   {#if library === 'tabler' && attributes.title}<title>{attributes.title}</title>{/if}

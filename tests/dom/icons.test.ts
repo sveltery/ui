@@ -71,3 +71,22 @@ it('selected native SVG maintains refs, native events, caller children, symbol a
   component.swap(); await tick(); expect(component.snapshot()).toEqual({ ref: svg, attached: 2, detached: 1, clicks: 1 }); expect(svg.getAttribute('data-attached')).toBe('second');
   component.remove(); await tick(); expect(component.snapshot()).toEqual({ ref: null, attached: 2, detached: 2, clicks: 1 });
 });
+
+for (const library of iconLibraries) {
+  it(`${library} preserves genuine caller-child order or library-specific omission`, async () => {
+    const { default: Children } = await import('./IconsChildrenFixture.svelte');
+    const reference = await loadLibrary(library); const name = names[library]; await loadIcon(library, name);
+    const host = target(); mounted.push(mount(Children, { target: host, props: { library } })); await tick();
+    const child = createElement('text', { 'data-child': '' }, 'Provided & child');
+    const expected = target(); const icon = reference[name as keyof typeof reference];
+    expected.innerHTML = renderToStaticMarkup(createElement(library === 'hugeicons' ? HugeiconsIcon : icon, { ...names, title: 'Native title', ...(library === 'hugeicons' ? { icon, strokeWidth: 2 } : {}) } as never, child));
+    expect(tree(host.querySelector('svg')!)).toEqual(tree(expected.querySelector('svg')!));
+  });
+}
+it('uncached names display genuine Square before settling and discard a stale library/name resolution', async () => {
+  const host = target(); const component = flushSync(() => mount(Fixture, { target: host })); mounted.push(component);
+  component.select('tabler'); component.unknown(); flushSync();
+  const svg = host.querySelector('svg')!; expect(svg.getAttribute('class')).toBe('lucide lucide-square'); expect(svg.getAttribute('stroke-width')).toBe('7'); expect(svg.querySelector('rect')!.getAttribute('width')).toBe('18');
+  component.select('phosphor'); component.restore(); flushSync(); await Promise.all([loadIcon('tabler', 'UnknownExport'), loadIcon('phosphor', names.phosphor)]); await tick();
+  expect(host.querySelector('svg')!.getAttribute('viewBox')).toBe('0 0 256 256'); expect(host.querySelector('svg')!.getAttribute('phosphor')).toBe(names.phosphor);
+});
