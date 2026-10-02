@@ -136,6 +136,9 @@ Nova is Tailwind input CSS, not a precompiled standalone stylesheet. It imports 
 ```css
 @import "tailwindcss";
 @import "@sveltery/ui/nova.css";
+@custom-variant style-lyra (&:where(.style-lyra *));
+@custom-variant style-sera (&:where(.style-sera *));
+@custom-variant dark (&:is(.dark *));
 @source "../node_modules/@sveltery/ui/dist";
 @theme inline {
   --color-card: var(--card);
@@ -303,3 +306,7 @@ Import `AspectRatio` from `@sveltery/ui/aspect-ratio` or the root of the same re
 ### Native Empty
 
 Import the six [native Empty parts](empty.md) from `@sveltery/ui/empty` or the root of the same reviewed archive. For source copies, copy `registry/bases/base/ui/empty` beside `shared/classes.js`, retain the notices and scan both directories with Tailwind. Keep `class-variance-authority` 0.7.1, `clsx` 2.1.1 and `tailwind-merge` 3.6.0. Nova supplies the Empty rules using existing theme tokens. EmptyDescription renders a div; EmptyMedia uses `data-slot="empty-icon"` and default/icon/null variants. Both fresh consumer modes exercise supplemental native primitives, SSR/hydration, styles, props, refs and attachment cleanup. Actual gallery compositions remain deferred for missing icons and/or InputGroup.
+
+## Native example scaffolds
+
+The [source-derived Example and ExampleWrapper](example.md) helpers are exported from `@sveltery/ui/example` and the root of the same reviewed archive. For source copies, copy `registry/bases/base/ui/example` beside `shared/classes.js`, retain the notices and scan both directories. Keep the three pinned dark/style-lyra/style-sera custom variants in the stylesheet above. Example's `class` styles the content div; `containerClassName`, native attributes, events and ref target the outer div. ExampleWrapper's ref/attributes/classes target the inner grid; its outer background shell is fixed. Skeleton/Kbd selected galleries use these actual native helpers; other galleries retain their documented scope. Both fresh consumer modes test scaffold SSR/hydration, responsive layout, source variant selectors, props and native ref/attachment lifecycle. Consumer token selection does not establish full upstream palette parity.

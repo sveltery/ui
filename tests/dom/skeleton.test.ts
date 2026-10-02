@@ -58,7 +58,7 @@ it('bounded examples preserve actual pinned avatar/card/text/form/table native s
   function tree(root: Element) { return [...root.children].map(section => ({ title: section.querySelector('h2')?.textContent, descendants: [...section.querySelectorAll('*')].map(child => ({ tag: child.tagName, class: child.getAttribute('class'), slot: child.getAttribute('data-slot'), text: child.tagName === 'H2' ? child.textContent : null })) })); }
   expect(tree(node.querySelector('[data-gallery]')!)).toEqual(tree(reference.querySelector('[data-gallery]')!));
   expect(node.querySelectorAll('[data-slot=skeleton]')).toHaveLength(24);
-  expect(node.querySelectorAll('[data-slot]')).toHaveLength(28);
+  expect(node.querySelectorAll('[data-slot]')).toHaveLength(43);
   const card = node.querySelector('[data-slot=card]')!;
   expect(card.tagName).toBe('DIV'); expect(card.className).toBe('cn-card group/card flex flex-col w-full'); expect(card.getAttribute('data-size')).toBe('default');
   expect([...card.children].map(child => child.getAttribute('data-slot'))).toEqual(['card-header', 'card-content']);

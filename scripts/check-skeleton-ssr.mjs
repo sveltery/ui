@@ -17,8 +17,9 @@ const cn = moduleURL('tests/reference/cn.ts', { clsx: import.meta.resolve('clsx'
 const { Skeleton: Reference } = await import(moduleURL('tests/reference/skeleton.tsx', { react: import.meta.resolve('react'), cn }));
 const skeletonURL = moduleURL('tests/reference/skeleton.tsx', { react: import.meta.resolve('react'), cn });
 const cardURL = moduleURL('tests/reference/card.tsx', { react: import.meta.resolve('react'), cn });
-const selectedURL = moduleURL('tests/reference/skeleton-selected-examples.tsx', { './skeleton': skeletonURL, './card': cardURL });
-const { SkeletonGallery } = await import(moduleURL('tests/reference/SkeletonGallery.tsx', { react: import.meta.resolve('react'), './skeleton': skeletonURL, './skeleton-selected-examples': selectedURL }));
+const scaffoldURL = moduleURL('tests/reference/example-scaffold.tsx', { cn });
+const selectedURL = moduleURL('tests/reference/skeleton-selected-examples.tsx', { './skeleton': skeletonURL, './card': cardURL, './example-scaffold': scaffoldURL });
+const { SkeletonGallery } = await import(moduleURL('tests/reference/SkeletonGallery.tsx', { react: import.meta.resolve('react'), './skeleton': skeletonURL, './skeleton-selected-examples': selectedURL, './example-scaffold': scaffoldURL }));
 for (const props of [{}, { id: 'load', className: 'h-4 w-32', title: 'Loading & <draft>' }, { 'data-slot': 'custom', className: 'rounded-none animate-none' }]) {
   const expected = new JSDOM(renderToStaticMarkup(createElement(Reference, props, 'Loading & <draft>'))).window.document.querySelector('div');
   const { className: classProp, ...rest } = props;
@@ -32,7 +33,7 @@ const actualGallery = new JSDOM(render(Example).body).window.document.querySelec
 function tree(node) { return { tag: node.tagName, attributes: Object.fromEntries([...node.attributes].map(attr => [attr.name, attr.value])), text: node.children.length ? null : node.textContent, children: [...node.children].map(tree) }; }
 assert.deepEqual(tree(actualGallery), tree(expectedGallery));
 assert.equal(actualGallery.querySelectorAll('[data-slot=skeleton]').length, 24);
-assert.equal(actualGallery.querySelectorAll('[data-slot]').length, 28);
+assert.equal(actualGallery.querySelectorAll('[data-slot]').length, 42);
 const card = actualGallery.querySelector('[data-slot=card]');
 assert.equal(card.getAttribute('data-size'), 'default');
 assert.deepEqual([...card.children].map(child => child.getAttribute('data-slot')), ['card-header', 'card-content']);

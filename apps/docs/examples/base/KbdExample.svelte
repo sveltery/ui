@@ -1,12 +1,13 @@
 <script lang="ts">
+  import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { Kbd, KbdGroup } from '@sveltery/ui/kbd';
 </script>
-<!-- Supported pinned example bodies; native section/headings replace Example/ExampleWrapper. -->
-<section data-gallery class="grid gap-6">
-  <section data-example><h2>Basic</h2><div class="flex items-center gap-2"><Kbd>Ctrl</Kbd><Kbd>⌘K</Kbd><Kbd>Ctrl + B</Kbd></div></section>
-  <section data-example><h2>Modifier Keys</h2><div class="flex items-center gap-2"><Kbd>⌘</Kbd><Kbd>C</Kbd></div></section>
-  <section data-example><h2>KbdGroup</h2><KbdGroup><Kbd>Ctrl</Kbd><Kbd>Shift</Kbd><Kbd>P</Kbd></KbdGroup></section>
-  <section data-example><h2>Arrow Keys</h2><div class="flex items-center gap-2"><Kbd>↑</Kbd><Kbd>↓</Kbd><Kbd>←</Kbd><Kbd>→</Kbd></div></section>
-  <section data-example><h2>With samp</h2><Kbd><samp>File</samp></Kbd></section>
+<!-- Actual pinned scaffold; four dependency-blocked example functions remain omitted. -->
+<ExampleWrapper data-gallery>
+  <Example title="Basic"><div class="flex items-center gap-2"><Kbd>Ctrl</Kbd><Kbd>⌘K</Kbd><Kbd>Ctrl + B</Kbd></div></Example>
+  <Example title="Modifier Keys"><div class="flex items-center gap-2"><Kbd>⌘</Kbd><Kbd>C</Kbd></div></Example>
+  <Example title="KbdGroup"><KbdGroup><Kbd>Ctrl</Kbd><Kbd>Shift</Kbd><Kbd>P</Kbd></KbdGroup></Example>
+  <Example title="Arrow Keys"><div class="flex items-center gap-2"><Kbd>↑</Kbd><Kbd>↓</Kbd><Kbd>←</Kbd><Kbd>→</Kbd></div></Example>
+  <Example title="With samp"><Kbd><samp>File</samp></Kbd></Example>
   <Kbd data-testid="override" class="h-8 min-w-8 rounded-none px-3 text-sm">Alt</Kbd>
-</section>
+</ExampleWrapper>

@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 // Paired source-derived probes; unchanged selected upstream functions execute in the reference gallery.
 async function measurements(page: Page) {
-  return page.locator('[data-gallery] [data-slot]').evaluateAll(nodes => nodes.map(node => {
+  return page.locator('[data-gallery] [data-slot]:not([data-slot=example]):not([data-slot=example-content])').evaluateAll(nodes => nodes.map(node => {
     const s = getComputedStyle(node); const r = node.getBoundingClientRect();
     return { host: node.tagName, slot: node.getAttribute('data-slot'), width: r.width, height: r.height, radius: s.borderRadius, background: s.backgroundColor, display: s.display, shrink: s.flexShrink, animationName: s.animationName, animationDuration: s.animationDuration, animationTiming: s.animationTimingFunction, animationCount: s.animationIterationCount };
   }));
