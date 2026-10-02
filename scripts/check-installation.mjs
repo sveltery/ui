@@ -11,6 +11,7 @@ assert(process.argv.slice(2).every(arg => arg === '--browser'), 'Only --browser 
 const guide = readFileSync(join(repo, 'docs/installation.md'), 'utf8');
 const files = [...guide.matchAll(/<!-- consumer-file: ([\w./+-]+) -->\n```[^\n]*\n([\s\S]*?)\n```/gu)];
 assert.equal(files.length, 9, 'Expected the nine documented scaffold files');
+const remoteFixtureFiles = ['schema.ts', 'form.remote.ts', '+page.svelte', 'type-contract.ts'];
 const copyCommands = guide.match(/<!-- consumer-copy -->\n```sh\n([\s\S]*?)\n```/u)?.[1];
 assert(copyCommands, 'Expected the documented source-copy commands');
 const temporary = mkdtempSync(join(tmpdir(), 'sveltery-installation-'));
@@ -62,14 +63,34 @@ try {
     }
     run('pnpm', ['install'], consumer);
     run('pnpm', ['install', '--frozen-lockfile'], consumer);
-    run('pnpm', ['check'], consumer);
-    run('pnpm', ['build'], consumer);
-    if (browser) {
-      execFileSync('pnpm', ['exec', 'playwright', 'test', '--config', 'scripts/installation-playwright.config.ts'], {
-        cwd: repo, stdio: 'inherit', env: { ...process.env, SVELTERY_INSTALLATION_CONSUMER: consumer },
-      });
+    const check = (remote) => {
+      run('pnpm', ['check'], consumer);
+      run('pnpm', ['build'], consumer);
+      if (browser) {
+        execFileSync('pnpm', ['exec', 'playwright', 'test', '--config', 'scripts/installation-playwright.config.ts'], {
+          cwd: repo, stdio: 'inherit', env: { ...process.env, SVELTERY_INSTALLATION_CONSUMER: consumer, SVELTERY_INSTALLATION_REMOTE: remote ? '1' : '0' },
+        });
+      }
+      console.log(`Fresh ${mode} ${remote ? 'experimental remote-field fixture' : 'documented consumer'}: types, SSR/client build${browser ? ' and secured browser' : ''} PASS`);
+    };
+    check(false);
+    // Remote fields are a separate experimental test fixture, not part of the
+    // documented consumer scaffold or the production docs application.
+    const svelteConfig = join(consumer, 'svelte.config.js');
+    const documentedConfig = readFileSync(svelteConfig, 'utf8').replace('export default', "/** @type {import('@sveltejs/kit').Config} */\nconst documentedConfig =");
+    writeFileSync(svelteConfig, `${documentedConfig}
+export default { ...documentedConfig, compilerOptions: { ...documentedConfig.compilerOptions, experimental: { ...documentedConfig.compilerOptions?.experimental, async: true } }, kit: { ...documentedConfig.kit, experimental: { ...documentedConfig.kit?.experimental, remoteFunctions: true } } };
+`);
+    const remoteRoute = join(consumer, 'src/routes/remote-fields');
+    mkdirSync(remoteRoute, { recursive: true });
+    for (const file of remoteFixtureFiles) {
+      let content = readFileSync(join(repo, 'apps/docs/remote-fields-fixture/src/routes', file), 'utf8');
+      if (mode === 'copy') {
+        content = content.replaceAll('@sveltery/ui/textarea', '$lib/components/ui/textarea').replaceAll('@sveltery/ui/button', '$lib/components/ui/button');
+      }
+      writeFileSync(join(remoteRoute, file), content);
     }
-    console.log(`Fresh documented ${mode} consumer: install, frozen lock, types, SSR/client build${browser ? ' and secured browser' : ''} PASS`);
+    check(true);
   }
 } finally {
   rmSync(temporary, { recursive: true, force: true });
