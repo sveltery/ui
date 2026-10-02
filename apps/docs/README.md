@@ -21,8 +21,10 @@ The structure follows the original [shadcn registry](https://github.com/shadcn-u
 
 | Path | Purpose |
 | --- | --- |
-| [registry/bases/base/ui/dialog](registry/bases/base/ui/dialog) | Ten Svelte Dialog wrappers and their class helper |
+| [registry/bases/base/ui/dialog](registry/bases/base/ui/dialog) | Ten Svelte Dialog wrappers |
 | [registry/bases/base/ui/button](registry/bases/base/ui/button) | Styled Base Button and pinned variant/size API |
+| [registry/bases/base/ui/textarea](registry/bases/base/ui/textarea) | Native styled Textarea |
+| [registry/bases/base/ui/shared](registry/bases/base/ui/shared) | Shared class-merging helper and native close utility classes |
 | [registry/styles/style-nova.css](registry/styles/style-nova.css) | Scoped Nova Dialog, Button and native Textarea styles |
 | [examples/base](examples/base) | Svelte browser fixtures |
 | [src/lib/theme.css](src/lib/theme.css) | Tailwind source registration and light theme tokens for this workspace |
