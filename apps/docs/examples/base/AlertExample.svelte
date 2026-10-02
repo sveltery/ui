@@ -5,7 +5,7 @@
   let hydrated = $state(false);
   onMount(() => { hydrated = true; });
 </script>
-<section data-alert-gallery data-hydrated={hydrated} class="grid gap-6">
+<section data-alert-gallery="true" data-hydrated={hydrated} class="grid gap-6">
   <section><h2>Basic</h2>
     <div class="mx-auto flex w-full max-w-lg flex-col gap-4">
       <Alert><AlertTitle>Success! Your changes have been saved.</AlertTitle></Alert>
