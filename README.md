@@ -24,7 +24,7 @@ The native `/skeleton` and pinned `/skeleton-reference` fixtures cover [Skeleton
 
 The native `/kbd` and pinned `/kbd-reference` fixtures cover [Kbd/KbdGroup scope and omissions](docs/kbd.md). The pinned group host remains `kbd`; display keys introduce no shortcut behavior.
 
-The native `/table` and pinned `/table-reference` fixtures cover the [eight Table exports and Basic/Footer/Simple examples](docs/table.md). Badge, DropdownMenu, Select and Input compositions remain deferred; `/table-probe` and its paired reference exercise native semantics, refs and overflow.
+The native `/table` and pinned `/table-reference` fixtures cover the [eight Table exports and Basic/Footer/Simple/With Badges examples](docs/table.md). With Badges uses six native spans; DropdownMenu, Select and Input compositions remain deferred; `/table-probe` and its paired reference exercise native semantics, refs and overflow.
 
 The landed [native Card slice](docs/card.md) adds seven div parts, default/small sizes and seven actual dependency-available examples. It retains Table's actual landed main merge; five composition examples and full parity remain deferred. Card landed through [PR #17](https://github.com/sveltery/ui/pull/17); changed heads require fresh exact-head checks and independent/configured review.
 
@@ -33,3 +33,5 @@ The landed [native Label slice](docs/label.md) adds one native export and the bo
 The proposed native `/aspect-ratio` and paired `/aspect-ratio-reference` fixtures cover [AspectRatio](docs/aspect-ratio.md): the required ratio, exact source classes and caller-style replacement, with four bounded example bodies. Next Image and Example/ExampleWrapper framework scaffolds remain unimplemented.
 
 The [native Empty slice](docs/empty.md) adds six div parts and supplemental `/empty-probe` and paired reference routes. All actual gallery functions remain deferred for missing configurable icons and/or InputGroup; source-derived native probes do not claim gallery parity.
+
+The landed [native Alert slice](docs/alert.md) adds Alert, AlertTitle, AlertDescription and AlertAction, with `/alert` and paired `/alert-reference` fixtures for the bounded Basic example. Configurable icon/Badge compositions and full scaffold/theme parity remain deferred; `/alert-probe` and its paired reference provide supplemental native selector and interaction evidence.
