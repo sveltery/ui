@@ -1,0 +1,76 @@
+{
+  "commit": "d75a96ab781f3d659be1ad287347d5887ce9f2fc",
+  "repository": "shadcn-ui/ui",
+  "files": [
+    {
+      "upstream": "apps/v4/registry/themes.ts",
+      "local": "tests/reference/themes/upstream/themes.ts.source",
+      "sha256": "60cb5ed25f7b39d9973e2280f476dd2119a4268317f45bd7ee3cac7883db8ea0"
+    },
+    {
+      "upstream": "apps/v4/registry/styles.tsx",
+      "local": "tests/reference/themes/upstream/styles.tsx.source",
+      "sha256": "78c2d54e8c52f0b2b7d59a9fc8872d6f871849a97c6ddaddd36146dacafe83db"
+    },
+    {
+      "upstream": "apps/v4/registry/base-colors.ts",
+      "local": "tests/reference/themes/upstream/base-colors.ts.source",
+      "sha256": "befafe605a5ff322e774db9b9abf7c3355f28d66d97e4f473ce169bd743d5336"
+    },
+    {
+      "upstream": "apps/v4/registry/config.ts",
+      "local": "tests/reference/themes/upstream/config.ts.source",
+      "sha256": "4b93e49cdb39c146a548396511da2c493fcd322acb63140b2f3fe34e27fd0c43"
+    },
+    {
+      "upstream": "apps/v4/app/globals.css",
+      "local": "tests/reference/themes/upstream/globals.css",
+      "sha256": "cbae6d633c38be59fc036d1e5cf60203ae7619ea6af9b4cdd8d632a211ccffa9"
+    },
+    {
+      "upstream": "apps/v4/app/(app)/(create)/lib/merge-theme.ts",
+      "local": "tests/reference/themes/upstream/merge-theme.ts.source",
+      "sha256": "c41c72d753a3ecbed4af9778b5239855a97aeb8912da549e338432efa1d77327"
+    },
+    {
+      "upstream": "apps/v4/registry/styles/style-vega.css",
+      "local": "tests/reference/themes/upstream/style-vega.css",
+      "sha256": "7b0dc3a9d2245ab6ce3d17653fa74a07f0ce2541e480bef36d2600fe38f1281b"
+    },
+    {
+      "upstream": "apps/v4/registry/styles/style-nova.css",
+      "local": "tests/reference/themes/upstream/style-nova.css",
+      "sha256": "5d5751579c015b61e77cf0822862a43ac79f3e6fed236a17624be8e6d1ebea1d"
+    },
+    {
+      "upstream": "apps/v4/registry/styles/style-maia.css",
+      "local": "tests/reference/themes/upstream/style-maia.css",
+      "sha256": "0a1e5a658ea601ee7a9427b91ea567c6fc915a385d7466bea19f42ec726added"
+    },
+    {
+      "upstream": "apps/v4/registry/styles/style-lyra.css",
+      "local": "tests/reference/themes/upstream/style-lyra.css",
+      "sha256": "7d75035683a22e61f5dace0b115e97f9e9b643500c1f4bfe2b31ad4dcdaa0c4a"
+    },
+    {
+      "upstream": "apps/v4/registry/styles/style-mira.css",
+      "local": "tests/reference/themes/upstream/style-mira.css",
+      "sha256": "025f54a060adeb60489d17eb3eb935e1118ee091ba5c618d5463eb27f2b1d003"
+    },
+    {
+      "upstream": "apps/v4/registry/styles/style-luma.css",
+      "local": "tests/reference/themes/upstream/style-luma.css",
+      "sha256": "a698210162ca2d3385142a47334f22985831b1e91716c2d3175828d928a59707"
+    },
+    {
+      "upstream": "apps/v4/registry/styles/style-sera.css",
+      "local": "tests/reference/themes/upstream/style-sera.css",
+      "sha256": "eda71a39ba86625eb81b25f2e5824579952ced0cf0451be16be3f4dd70bf9876"
+    },
+    {
+      "upstream": "apps/v4/registry/styles/style-rhea.css",
+      "local": "tests/reference/themes/upstream/style-rhea.css",
+      "sha256": "bcb242a7845316f93b0562345dd5c32a46a2988b506a8e8d7df1c836a1637b49"
+    }
+  ]
+}
