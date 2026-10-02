@@ -3,7 +3,7 @@
   import { Kbd, KbdGroup } from '@sveltery/ui/kbd';
 </script>
 <!-- Actual pinned scaffold; four dependency-blocked example functions remain omitted. -->
-<ExampleWrapper data-gallery>
+<ExampleWrapper data-gallery="">
   <Example title="Basic"><div class="flex items-center gap-2"><Kbd>Ctrl</Kbd><Kbd>⌘K</Kbd><Kbd>Ctrl + B</Kbd></div></Example>
   <Example title="Modifier Keys"><div class="flex items-center gap-2"><Kbd>⌘</Kbd><Kbd>C</Kbd></div></Example>
   <Example title="KbdGroup"><KbdGroup><Kbd>Ctrl</Kbd><Kbd>Shift</Kbd><Kbd>P</Kbd></KbdGroup></Example>

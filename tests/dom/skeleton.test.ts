@@ -55,7 +55,7 @@ it('undefined ref, symbol attachment, children, native events and reactive decla
 it('bounded examples preserve actual pinned avatar/card/text/form/table native structure and classes', async () => {
   const node = target(); mounted.push(mount(Example, { target: node })); await tick();
   const reference = document.createElement('section'); reference.innerHTML = renderToStaticMarkup(createElement(SkeletonGallery));
-  function tree(root: Element) { return [...root.children].map(section => ({ title: section.querySelector('h2')?.textContent, descendants: [...section.querySelectorAll('*')].map(child => ({ tag: child.tagName, class: child.getAttribute('class'), slot: child.getAttribute('data-slot'), text: child.tagName === 'H2' ? child.textContent : null })) })); }
+  function tree(root: Element) { return [...root.children].map(section => ({ title: section.firstElementChild?.textContent, descendants: [...section.querySelectorAll('*')].map(child => ({ tag: child.tagName, class: child.getAttribute('class'), slot: child.getAttribute('data-slot'), text: child.children.length ? null : child.textContent })) })); }
   expect(tree(node.querySelector('[data-gallery]')!)).toEqual(tree(reference.querySelector('[data-gallery]')!));
   expect(node.querySelectorAll('[data-slot=skeleton]')).toHaveLength(24);
   expect(node.querySelectorAll('[data-slot]')).toHaveLength(43);

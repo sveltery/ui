@@ -4,7 +4,7 @@
   import { Card, CardHeader, CardContent } from '@sveltery/ui/card';
 </script>
 <!-- Actual pinned native scaffold and selected bodies; Basic/Override remain supplemental. -->
-<ExampleWrapper data-gallery>
+<ExampleWrapper data-gallery="">
   <Example title="Basic"><Skeleton class="h-4 w-40" /></Example>
   <Example title="Avatar"><div class="flex w-full items-center gap-4"><Skeleton class="size-10 shrink-0 rounded-full" /><div class="grid gap-2"><Skeleton class="h-4 w-[150px]" /><Skeleton class="h-4 w-[100px]" /></div></div></Example>
   <Example title="Card"><Card class="w-full"><CardHeader><Skeleton class="h-4 w-2/3" /><Skeleton class="h-4 w-1/2" /></CardHeader><CardContent><Skeleton class="aspect-square w-full" /></CardContent></Card></Example>

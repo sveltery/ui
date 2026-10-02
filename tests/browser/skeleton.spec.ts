@@ -15,7 +15,7 @@ async function cardGeometry(page: Page) {
       const css = getComputedStyle(node); const rect = node.getBoundingClientRect();
       return { width: rect.width, height: rect.height, animation: css.animationName, duration: css.animationDuration, timing: css.animationTimingFunction, count: css.animationIterationCount };
     });
-    return { cardWidth: card.getBoundingClientRect().width, parentWidth: card.parentElement!.getBoundingClientRect().width, headerWidth: innerWidth(header), contentWidth: innerWidth(content), skeletons };
+    return { cardWidth: card.getBoundingClientRect().width, parentWidth: innerWidth(card.parentElement!), headerWidth: innerWidth(header), contentWidth: innerWidth(content), skeletons };
   });
 }
 for (const width of [1280, 390]) test(`Skeleton selected examples and Nova match pinned wrapper at ${width}px`, async ({ page, context }, testInfo) => {
