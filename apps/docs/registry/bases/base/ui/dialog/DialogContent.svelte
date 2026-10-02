@@ -3,7 +3,7 @@
   import * as Primitive from '@sveltery/base/dialog';
   import DialogPortal from './DialogPortal.svelte';
   import DialogOverlay from './DialogOverlay.svelte';
-  import { classes, closeBase } from './classes.js';
+  import { classes, closeBase } from '../shared/classes.js';
   let { children, class: classProp, showCloseButton = true, ref = $bindable(null), ...props }: ComponentProps<typeof Primitive.Popup> & { showCloseButton?: boolean } = $props();
 </script>
 <DialogPortal>

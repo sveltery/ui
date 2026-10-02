@@ -8,12 +8,14 @@ The Installation → Usage → Components organization and Dialog anatomy follow
 
 ### 1. Build pinned local archives
 
-Use Bash, Git, Node `>=24.15.0 <25`, and pnpm `12.6.0` (or Corepack, which the repository launcher uses to select that exact pnpm). These commands build the existing UI main snapshot, not a moving branch. Run them in an empty working directory:
+Use Bash, Git, Node `>=24.15.0 <25`, and pnpm `12.6.0` (or Corepack, which the repository launcher uses to select that exact pnpm). Select the exact 40-character UI commit from the reviewed checkout or pull request you intend to consume, and export it as `SVELTERY_UI_SHA`. Build archives and copy source from that same detached commit; the commands do not select a moving branch or a historical fallback. Run them in an empty working directory:
 
 ```sh
+: "${SVELTERY_UI_SHA:?Export the exact reviewed 40-character UI commit SHA first}"
 git clone https://github.com/sveltery/ui.git sveltery-ui
 cd sveltery-ui
-git checkout --detach 27d334b8014be1b718c166c29196e441a8ca3b76
+git checkout --detach "$SVELTERY_UI_SHA"
+git rev-parse HEAD > ../SVELTERY_UI_SHA
 bash scripts/bootstrap.sh
 source scripts/toolchain.sh
 pnpm --filter @sveltery/ui build
@@ -22,12 +24,12 @@ pnpm --filter @sveltery/ui pack --pack-destination ../dialog-app/vendor
 cp .vendor/sveltery-base-0.0.0.tgz ../dialog-app/vendor/
 cd ../dialog-app
 printf '%s  %s\n' \
-  04ef536d7c688dee1d6ad49a869b75f50f8ff6ea7454a2241bd4a7ba9fd09f7f \
+  0f15a815e69e8553b2c67f8b5315ee7334c8b001cc0fcf1efde09c5e5c4289d6 \
   vendor/sveltery-base-0.0.0.tgz | sha256sum --check
 sha256sum vendor/*.tgz > vendor/SHA256SUMS
 ```
 
-Bootstrap rebuilds Base commit `de6b35688d23c818dd240e9b73eee6bce53e0490` and verifies its archive against [base.lock.json](../scripts/base.lock.json). Keep the UI source SHA, both archives, and `vendor/SHA256SUMS` with your consumer. The generated UI checksum records your local artifact; it is not a published release checksum. On macOS, use `shasum -a 256` / `shasum -a 256 -c` in place of `sha256sum` / `sha256sum --check`.
+Bootstrap rebuilds Base commit `4dd04e495fc9f5bb6a0bb872fe103563d49535b1` and verifies its archive against [base.lock.json](../scripts/base.lock.json). Keep the recorded `SVELTERY_UI_SHA`, both archives, and `vendor/SHA256SUMS` with your consumer. These Base pin/checksum instructions match this reviewed source generation; when selecting another UI commit, check its `scripts/base.lock.json` and matching installation guide rather than mixing archives across snapshots. The generated UI checksum records your local artifact; it is not a published release checksum. On macOS, use `shasum -a 256` / `shasum -a 256 -c` in place of `sha256sum` / `sha256sum --check`.
 
 ### 2. Create the consumer
 
@@ -242,12 +244,13 @@ An unpositioned panel usually means the `@source` path is wrong. Missing colors 
 
 ## Components: copy the Dialog source instead
 
-For an app-owned copy, first complete the scaffold above. From `dialog-app`, copy from the pinned sibling checkout, retaining the ten wrappers, barrel, helper, CSS and notices together:
+For an app-owned copy, first complete the scaffold above. From `dialog-app`, copy from the pinned sibling checkout, retaining the ten wrappers, barrel, sibling shared helper, CSS and notices together:
 
 <!-- consumer-copy -->
 ```sh
 mkdir -p src/lib/components/ui src/lib/styles
 cp -R ../sveltery-ui/apps/docs/registry/bases/base/ui/dialog src/lib/components/ui/
+cp -R ../sveltery-ui/apps/docs/registry/bases/base/ui/shared src/lib/components/ui/
 cp ../sveltery-ui/apps/docs/registry/styles/style-nova.css src/lib/styles/nova.css
 cp ../sveltery-ui/packages/ui/LICENSE src/lib/components/ui/LICENSE
 cp ../sveltery-ui/packages/ui/THIRD_PARTY_NOTICES.md src/lib/components/ui/THIRD_PARTY_NOTICES.md
@@ -256,7 +259,7 @@ cp ../sveltery-ui/packages/ui/THIRD_PARTY_NOTICES.md src/lib/components/ui/THIRD
 Make these three edits:
 
 1. In `package.json`, remove the `@sveltery/ui` dependency. Keep the verified Base archive, Svelte, `clsx`, `tailwind-merge`, Tailwind and `tw-animate-css` dependencies.
-2. In `src/app.css`, replace `@import "@sveltery/ui/nova.css";` with `@import "./lib/styles/nova.css";` and replace the installed-package `@source` line with `@source "./lib/components/ui/dialog";`.
-3. In `src/routes/+page.svelte`, import the same names from `$lib/components/ui/dialog`.
+2. In `src/app.css`, replace `@import "@sveltery/ui/nova.css";` with `@import "./lib/styles/nova.css";` and replace the installed-package `@source` line with `@source "./lib/components/ui";`.
+3. In `src/routes/+page.svelte`, import the same names from `$lib/components/ui/dialog`. The broader Tailwind source path also scans `shared/classes.js`, which supplies native close-button utility classes.
 
 Run `pnpm install` to update the consumer lockfile, then repeat the frozen install, checks, build and browser instructions. The copied wrappers still depend on Base; copying them does not vendor its behavior implementation. Keep the source SHA and notices with your copy, including when redistributing it. Review local modifications and upstream updates explicitly. See [Dialog API adaptations](dialog.md) for controlled state, render snippets, native events and the remaining focus/compatibility limits.

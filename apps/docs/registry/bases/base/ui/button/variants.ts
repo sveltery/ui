@@ -1,7 +1,7 @@
 // Adapted from shadcn-ui/ui d75a96ab; MIT: packages/ui/THIRD_PARTY_NOTICES.md.
 import { cva } from 'class-variance-authority';
 import type { VariantProps } from 'class-variance-authority';
-import { closeBase } from '../dialog/classes.js';
+import { closeBase } from '../shared/classes.js';
 export const variants = ['default', 'outline', 'secondary', 'ghost', 'destructive', 'link'] as const;
 export const sizes = ['default', 'xs', 'sm', 'lg', 'icon', 'icon-xs', 'icon-sm', 'icon-lg'] as const;
 export const buttonVariants = cva(closeBase, {
