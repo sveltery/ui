@@ -1,5 +1,6 @@
 // Source-derived supplemental native probes; refs/attachments are Svelte-only and not React parity credit.
 import { expect, test, type Page } from '@playwright/test';
+import { JSDOM } from 'jsdom';
 export async function alertState(page: Page) { return JSON.parse(await page.getByTestId('probe-state').innerText()); }
 export async function alertNativeAssertions(page: Page) {
   await expect(page.locator('#probe-alert')).toHaveAttribute('role', 'alert');
@@ -49,7 +50,7 @@ export async function alertNativeAssertions(page: Page) {
 }
 export function alertLifecycleCases(route = '/alert-probe') {
   test('native Alert parts retain SSR identity; undefined/null refs and attachments replace and clean up', async ({ page, request }) => {
-    const html = await (await request.get(route)).text(); expect(html).toContain('data-hydrated="false"'); expect(html).toContain('Initial &amp; &lt;alert&gt;');
+    const html = await (await request.get(route)).text(); expect(html).toContain('data-hydrated="false"'); expect(new JSDOM(html).window.document.querySelector('#probe-alert')?.getAttribute('title')).toBe('Initial & <alert>');
     const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
     page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
     await page.goto(route); await expect(page.locator('[data-alert-probe]')).toHaveAttribute('data-hydrated', 'true');

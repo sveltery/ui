@@ -25,11 +25,7 @@
   <button type="button">Before alert</button>
   <section data-testid="composition">
     {#if show}
-      <Alert id="probe-alert" variant={changed ? 'destructive' : 'default'} role={changed ? 'status' : 'alert'} class={changed ? ['rounded-none', { 'text-lg': true }] : undefined} title={changed ? 'Updated & <alert>' : 'Initial & <alert>'} data-custom={changed ? 'updated' : 'initial'} bind:ref={refs[0]} {@attach attach}>
-        <AlertTitle id="probe-title" bind:ref={refs[1]} {@attach attach}>{changed ? 'Updated title' : 'Initial title'} <a href="#details">Details</a></AlertTitle>
-        <AlertDescription id="probe-description" bind:ref={refs[2]} {@attach attach}><p>First description paragraph.</p><p>{changed ? 'Updated message' : 'Initial message'} <a href="#help">Help</a></p></AlertDescription>
-        <AlertAction id="probe-action" bind:ref={refs[3]} {@attach attach} onclick={() => clicks++}><button type="button">Undo</button></AlertAction>
-      </Alert>
+      <Alert id="probe-alert" variant={changed ? 'destructive' : 'default'} role={changed ? 'status' : 'alert'} class={changed ? ['rounded-none', { 'text-lg': true }] : undefined} title={changed ? 'Updated & <alert>' : 'Initial & <alert>'} data-custom={changed ? 'updated' : 'initial'} bind:ref={refs[0]} {@attach attach}><AlertTitle id="probe-title" bind:ref={refs[1]} {@attach attach}>{changed ? 'Updated title' : 'Initial title'} <a href="#details">Details</a></AlertTitle><AlertDescription id="probe-description" bind:ref={refs[2]} {@attach attach}><p>First description paragraph.</p><p>{changed ? 'Updated message' : 'Initial message'} <a href="#help">Help</a></p></AlertDescription><AlertAction id="probe-action" bind:ref={refs[3]} {@attach attach} onclick={() => clicks++}><button type="button">Undo</button></AlertAction></Alert>
     {/if}
   </section>
   <button type="button">After alert</button>
