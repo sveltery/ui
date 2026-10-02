@@ -6,6 +6,8 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import * as Reference from '../reference/table';
 import * as UI from '../../apps/docs/registry/bases/base/ui/table/index.js';
 import Fixture from './TableFixture.svelte';
+import TableExample from '../../apps/docs/examples/base/TableExample.svelte';
+import { TableGallery } from '../reference/TableGallery';
 
 const mounted: ReturnType<typeof mount>[] = [];
 afterEach(async () => { for (const component of mounted.splice(0)) await unmount(component); document.body.replaceChildren(); });
@@ -149,4 +151,19 @@ it('native Svelte class arrays/objects merge through the same pinned cn helper',
   const expected = document.createElement('section');
   expected.innerHTML = renderToStaticMarkup(createElement(Reference.Table, { className: 'px-2 px-6' }));
   compare(host.firstElementChild!, expected.firstElementChild!);
+});
+
+it('four selected example bodies retain exact native trees and the six literal With Badges spans', async () => {
+  const host = target(); mounted.push(mount(TableExample, { target: host })); await tick();
+  const expected = document.createElement('section'); expected.innerHTML = renderToStaticMarkup(createElement(TableGallery));
+  const actualTables = host.querySelectorAll('table'); const referenceTables = expected.querySelectorAll('table');
+  actualTables.forEach((table, index) => compare(table, referenceTables[index]));
+  expect([...host.querySelectorAll('h2')].map(node => node.textContent)).toEqual([...expected.querySelectorAll('h2')].map(node => node.textContent));
+  expect(host.querySelectorAll('table')).toHaveLength(4);
+  const badges = host.querySelectorAll('table')[3];
+  expect([...badges.querySelectorAll('tbody tr')].map(row => [...row.querySelectorAll('td')].map(cell => cell.textContent!.trim()))).toEqual([
+    ['Design homepage', 'Completed', 'High'], ['Implement API', 'In Progress', 'Medium'], ['Write tests', 'Pending', 'Low'],
+  ]);
+  expect(badges.querySelectorAll('span')).toHaveLength(6);
+  expect(badges.querySelector('caption, tfoot, [data-slot="badge"], [role], button, input, select')).toBeNull();
 });

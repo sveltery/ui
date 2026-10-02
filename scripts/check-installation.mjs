@@ -71,7 +71,13 @@ try {
       mkdirSync(dirname(routePath), { recursive: true });
       let content = readFileSync(join(repo, source), 'utf8');
       if (mode === 'copy') content = content.replaceAll('@sveltery/ui/table', '$lib/components/ui/table');
-      writeFileSync(routePath, content);
+      if (route === 'table') {
+        const fixture = readFileSync(join(repo, 'apps/docs/src/routes/table/+page.svelte'), 'utf8').replace('../../../examples/base/TableExample.svelte', './TableExample.svelte');
+        writeFileSync(routePath, fixture);
+        writeFileSync(join(dirname(routePath), 'TableExample.svelte'), content);
+      } else {
+        writeFileSync(routePath, content);
+      }
     }
     const tableTypesPath = join(consumer, 'src/routes/table-types.ts');
     const tableTypes = readFileSync(join(repo, 'tests/types-table.ts'), 'utf8').replace('../apps/docs/registry/bases/base/ui/table/index.js', mode === 'copy' ? '$lib/components/ui/table' : '@sveltery/ui/table');

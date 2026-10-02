@@ -8,6 +8,7 @@ import { JSDOM } from 'jsdom';
 import { transpileModule, ModuleKind, ScriptTarget, JsxEmit } from 'typescript';
 import * as components from '../apps/docs/registry/bases/base/ui/table/index.js';
 import TableProbe from '../apps/docs/examples/base/TableProbe.svelte';
+import TableExample from '../apps/docs/examples/base/TableExample.svelte';
 function moduleURL(path, imports) {
   let source = readFileSync(path, 'utf8');
   for (const [name, url] of Object.entries(imports)) source = source.replaceAll(`"${name}"`, JSON.stringify(url)).replaceAll(`'${name}'`, JSON.stringify(url));
@@ -44,3 +45,12 @@ for (const [name, tag] of Object.entries(tags)) {
 assert.equal(actual.querySelector('[data-slot="table-container"]').className, 'cn-table-container');
 assert.equal(actual.querySelector('table').parentElement.getAttribute('id'), null, 'Table props belong to table, not its pinned scroll container');
 console.log('Pinned React/Svelte Table SSR: paired semantic tree and 24 native class/prop precedence cases PASS');
+
+const { TableGallery } = await import(moduleURL('tests/reference/TableGallery.tsx', { react: import.meta.resolve('react'), './table': tableURL }));
+const expectedGallery = new JSDOM(renderToStaticMarkup(createElement(TableGallery))).window.document;
+const actualGallery = new JSDOM(render(TableExample).body).window.document;
+assert.deepEqual([...actualGallery.querySelectorAll('table')].map(snapshot), [...expectedGallery.querySelectorAll('table')].map(snapshot), 'four selected actual example bodies, including With Badges literal spans');
+assert.equal(actualGallery.querySelectorAll('table').length, 4);
+assert.equal(actualGallery.querySelectorAll('table')[3].querySelectorAll('span').length, 6);
+assert.equal(actualGallery.querySelectorAll('table')[3].querySelector('[data-slot="badge"], [role], button, input, select'), null);
+console.log('Pinned React/Svelte Table gallery SSR: four native example trees and six literal badge spans PASS');

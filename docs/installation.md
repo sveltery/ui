@@ -273,7 +273,7 @@ Run `pnpm install` to update the consumer lockfile, then repeat the frozen insta
 
 ## Native Table
 
-The same reviewed archive exports the eight [native Table components](table.md) at `@sveltery/ui/table` and the root. Their fixed container provides horizontal scrolling; attributes, native events and `bind:ref` belong to the inner table. Keep Nova and Tailwind scanning configured as above. Only Basic, Footer and Simple examples are implemented; Badge, DropdownMenu, Select and Input compositions remain deferred.
+The same reviewed archive exports the eight [native Table components](table.md) at `@sveltery/ui/table` and the root. Their fixed container provides horizontal scrolling; attributes, native events and `bind:ref` belong to the inner table. Keep Nova and Tailwind scanning configured as above. Basic, Footer, Simple and the dependency-free With Badges body are implemented; its six badge-shaped elements are literal native spans. DropdownMenu, Select and Input compositions remain deferred. Native Example/ExampleWrapper scaffold is still a bounded substitution.
 
 For an app-owned Table copy, retain the `table` directory alongside the shared helper and notices from the same selected checkout:
 
