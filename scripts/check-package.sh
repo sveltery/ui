@@ -13,6 +13,16 @@ for dependency in svelte clsx tailwind-merge class-variance-authority jsdom; do
 done
 cmp packages/ui/LICENSE "$consumer_directory/node_modules/@sveltery/ui/LICENSE"
 cmp packages/ui/THIRD_PARTY_NOTICES.md "$consumer_directory/node_modules/@sveltery/ui/THIRD_PARTY_NOTICES.md"
+for license in lucide-LICENSE tabler-LICENSE hugeicons-core-LICENSE.md phosphor-LICENSE remix-LICENSE; do
+  cmp "tests/reference/icons/licenses/$license" "$consumer_directory/node_modules/@sveltery/ui/dist/icons/licenses/$license"
+done
+for module in fallback lucide tabler hugeicons phosphor remixicon; do
+  cmp "apps/docs/registry/bases/base/ui/icons/generated/$module.js" "$consumer_directory/node_modules/@sveltery/ui/dist/icons/generated/$module.js"
+done
+if find "$consumer_directory/node_modules/@sveltery/ui" -iname '*hugeicons-react*' -print -quit | read -r restricted_renderer; then
+  echo 'Restricted Hugeicons renderer must remain reference-only' >&2
+  exit 1
+fi
 cat > "$consumer_directory/Consumer.svelte" <<'SVELTE'
 <script lang="ts">
   import { Dialog, DialogTrigger, DialogTitle, DialogDescription, DialogHeader, DialogFooter, DialogClose, DialogContent } from '@sveltery/ui';
@@ -52,12 +62,21 @@ cat > "$consumer_directory/Consumer.svelte" <<'SVELTE'
 <Dialog defaultOpen><DialogTrigger>First</DialogTrigger><DialogHeader><DialogTitle>First title</DialogTitle><DialogDescription>First description</DialogDescription></DialogHeader><DialogFooter><DialogClose>Close</DialogClose></DialogFooter><DialogContent>Client only content</DialogContent></Dialog>
 <Parts.Dialog><Parts.DialogTrigger>Second</Parts.DialogTrigger><Parts.DialogTitle>Second title</Parts.DialogTitle><Parts.DialogPortal><Parts.DialogOverlay /></Parts.DialogPortal></Parts.Dialog>
 SVELTE
+cat > "$consumer_directory/IconConsumer.svelte" <<'SVELTE'
+<script lang="ts">
+  import { IconPlaceholder, IconLibraryProvider, type IconLibraryName } from '@sveltery/ui/icons';
+  let { library = 'lucide' }: { library?: IconLibraryName } = $props();
+  const names = { lucide: 'ArrowLeftIcon', tabler: 'IconArrowLeft', hugeicons: 'ArrowLeft01Icon', phosphor: 'ArrowLeftIcon', remixicon: 'RiArrowLeftLine' };
+</script>
+<IconLibraryProvider {library}><IconPlaceholder {...names} data-probe="packaged-icon" strokeWidth={7} /></IconLibraryProvider>
+SVELTE
 cat > "$consumer_directory/check.mjs" <<'JS'
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { render } from 'svelte/server';
 import { JSDOM } from 'jsdom';
 import Consumer from './Consumer.svelte';
+import IconConsumer from './IconConsumer.svelte';
 import * as Root from '@sveltery/ui';
 import * as Parts from '@sveltery/ui/dialog';
 import * as Buttons from '@sveltery/ui/button';
@@ -68,6 +87,30 @@ assert.deepEqual(Object.keys(Ratios), ['AspectRatio']);
 assert.equal(Root.AspectRatio, Ratios.AspectRatio);
 import * as Skeletons from '@sveltery/ui/skeleton';
 import * as Keys from '@sveltery/ui/kbd';
+import * as Icons from '@sveltery/ui/icons';
+const iconNames = ['IconPlaceholder', 'IconLibraryProvider', 'iconLibraries'];
+assert.deepEqual(Object.keys(Icons).sort(), iconNames.toSorted());
+for (const name of iconNames) assert.equal(Root[name], Icons[name]);
+assert.deepEqual(Icons.iconLibraries, ['lucide', 'tabler', 'hugeicons', 'phosphor', 'remixicon']);
+const firstIcon = new JSDOM(render(IconConsumer).body).window.document.querySelector('svg');
+assert.equal(firstIcon.getAttribute('class'), 'lucide lucide-square');
+assert.equal(firstIcon.getAttribute('stroke-width'), '7');
+for (const library of Icons.iconLibraries) {
+  const props = { library };
+  render(IconConsumer, { props });
+  // Observe actual asynchronous completion through the public renderer. Native
+  // ESM filesystem work may need more than one turn; the expected glyph stays fixed.
+  const deadline = performance.now() + 5000;
+  let icon;
+  do {
+    await new Promise(resolve => setTimeout(resolve, 5));
+    icon = new JSDOM(render(IconConsumer, { props }).body).window.document.querySelector('svg');
+  } while (icon?.classList.contains('lucide-square') && performance.now() < deadline);
+  assert(icon.querySelector('path'), `${library}: genuine settled packaged geometry`);
+  assert.equal(icon.getAttribute(library), { lucide: 'ArrowLeftIcon', tabler: 'IconArrowLeft', hugeicons: 'ArrowLeft01Icon', phosphor: 'ArrowLeftIcon', remixicon: 'RiArrowLeftLine' }[library]);
+  assert.equal(icon.classList.contains('lucide-square'), false, `${library}: no unresolved fallback`);
+}
+
 import * as Examples from '@sveltery/ui/example';
 assert.deepEqual(Object.keys(Examples).sort(), ['Example', 'ExampleWrapper']);
 assert.equal(Root.Example, Examples.Example); assert.equal(Root.ExampleWrapper, Examples.ExampleWrapper);
@@ -88,7 +131,7 @@ const tableNames = ['Table', 'TableHeader', 'TableBody', 'TableFooter', 'TableRo
 assert.deepEqual(Object.keys(Tables).sort(), tableNames.slice().sort());
 for (const name of tableNames) assert.equal(Root[name], Tables[name]);
 const names = ['Dialog', 'DialogClose', 'DialogContent', 'DialogDescription', 'DialogFooter', 'DialogHeader', 'DialogOverlay', 'DialogPortal', 'DialogTitle', 'DialogTrigger'];
-assert.deepEqual(Object.keys(Root).sort(), [...names, ...tableNames, ...cardNames, ...alertNames, ...emptyNames, 'Example', 'ExampleWrapper', 'Button', 'buttonVariants', 'variants', 'sizes', 'Textarea', 'Label', 'AspectRatio', 'Skeleton', 'Kbd', 'KbdGroup'].sort());
+assert.deepEqual(Object.keys(Root).sort(), [...names, ...tableNames, ...cardNames, ...alertNames, ...emptyNames, ...iconNames, 'Example', 'ExampleWrapper', 'Button', 'buttonVariants', 'variants', 'sizes', 'Textarea', 'Label', 'AspectRatio', 'Skeleton', 'Kbd', 'KbdGroup'].sort());
 assert.deepEqual(Object.keys(Buttons).sort(), ['Button', 'buttonVariants', 'sizes', 'variants']);
 assert.deepEqual(Object.keys(Parts).sort(), names);
 assert.deepEqual(Object.keys(Labels), ['Label']);
@@ -99,7 +142,7 @@ assert.deepEqual(Object.keys(Skeletons), ['Skeleton']);
 assert.equal(Root.Skeleton, Skeletons.Skeleton);
 assert.deepEqual(Object.keys(Keys).sort(), ['Kbd', 'KbdGroup']);
 assert.equal(Root.Kbd, Keys.Kbd); assert.equal(Root.KbdGroup, Keys.KbdGroup);
-for (const path of ['example/index.d.ts', 'example/types.d.ts', 'example/Example.svelte.d.ts', 'example/ExampleWrapper.svelte.d.ts', 'alert/index.d.ts', 'alert/types.d.ts', ...alertNames.map(name => `alert/${name}.svelte.d.ts`), 'empty/index.d.ts', 'empty/types.d.ts', ...emptyNames.map(name => `empty/${name}.svelte.d.ts`), 'table/index.d.ts', ...tableNames.map(name => `table/${name}.svelte.d.ts`), 'label/index.d.ts', 'label/Label.svelte.d.ts', 'index.d.ts', 'dialog/index.d.ts', 'button/index.d.ts', 'button/Button.svelte.d.ts', 'button/types.d.ts', 'textarea/index.d.ts', 'textarea/Textarea.svelte.d.ts', 'skeleton/index.d.ts', 'skeleton/Skeleton.svelte.d.ts', 'kbd/index.d.ts', 'kbd/Kbd.svelte.d.ts', 'kbd/KbdGroup.svelte.d.ts', 'kbd/types.d.ts', 'card/index.d.ts', 'card/types.d.ts', ...cardNames.map(name => `card/${name}.svelte.d.ts`), ...names.map(name => `dialog/${name}.svelte.d.ts`)]) {
+for (const path of ['example/index.d.ts', 'example/types.d.ts', 'example/Example.svelte.d.ts', 'example/ExampleWrapper.svelte.d.ts', 'icons/index.d.ts', 'icons/types.d.ts', 'icons/config.d.ts', 'icons/IconPlaceholder.svelte.d.ts', 'icons/IconLibraryProvider.svelte.d.ts', 'empty/index.d.ts', 'empty/types.d.ts', ...emptyNames.map(name => `empty/${name}.svelte.d.ts`), 'alert/index.d.ts', 'alert/types.d.ts', ...alertNames.map(name => `alert/${name}.svelte.d.ts`), 'table/index.d.ts', ...tableNames.map(name => `table/${name}.svelte.d.ts`), 'label/index.d.ts', 'label/Label.svelte.d.ts', 'index.d.ts', 'dialog/index.d.ts', 'button/index.d.ts', 'button/Button.svelte.d.ts', 'button/types.d.ts', 'textarea/index.d.ts', 'textarea/Textarea.svelte.d.ts', 'skeleton/index.d.ts', 'skeleton/Skeleton.svelte.d.ts', 'kbd/index.d.ts', 'kbd/Kbd.svelte.d.ts', 'kbd/KbdGroup.svelte.d.ts', 'kbd/types.d.ts', 'card/index.d.ts', 'card/types.d.ts', ...cardNames.map(name => `card/${name}.svelte.d.ts`), ...names.map(name => `dialog/${name}.svelte.d.ts`)]) {
   assert(readFileSync(new URL(`./node_modules/@sveltery/ui/dist/${path}`, import.meta.url), 'utf8').length > 0);
 }
 const first = render(Consumer).body;
@@ -247,6 +290,7 @@ sed 's#../apps/docs/registry/bases/base/ui/label/index.js#@sveltery/ui/label#' t
 sed 's#../apps/docs/registry/bases/base/ui/aspect-ratio/index.js#@sveltery/ui/aspect-ratio#' tests/aspect-ratio-types.ts > "$consumer_directory/aspect-ratio-types.ts"
 sed 's#../apps/docs/registry/bases/base/ui/alert/index.js#@sveltery/ui/alert#' tests/alert-types.ts > "$consumer_directory/alert-types.ts"
 sed 's#../apps/docs/registry/bases/base/ui/empty/index.js#@sveltery/ui/empty#' tests/empty-types.ts > "$consumer_directory/empty-types.ts"
+sed -e 's#../apps/docs/registry/bases/base/ui/icons/index.js#@sveltery/ui/icons#' -e 's#../apps/docs/registry/bases/base/ui/index.js#@sveltery/ui#' tests/icons-types.ts > "$consumer_directory/icons-types.ts"
 sed 's#../apps/docs/registry/bases/base/ui/example/index.js#@sveltery/ui/example#' tests/example-types.ts > "$consumer_directory/example-types.ts"
-node "$sveltery_repo_root/node_modules/typescript/bin/tsc" --noEmit --strict --skipLibCheck --moduleResolution Bundler --module ESNext --target ES2022 --lib ES2022,DOM,DOM.Iterable "$consumer_directory/types.ts" "$consumer_directory/table-types.ts" "$consumer_directory/label-types.ts" "$consumer_directory/card-types.ts" "$consumer_directory/aspect-ratio-types.ts" "$consumer_directory/alert-types.ts" "$consumer_directory/empty-types.ts" "$consumer_directory/example-types.ts"
+node "$sveltery_repo_root/node_modules/typescript/bin/tsc" --noEmit --strict --skipLibCheck --moduleResolution Bundler --module ESNext --target ES2022 --lib ES2022,DOM,DOM.Iterable "$consumer_directory/types.ts" "$consumer_directory/table-types.ts" "$consumer_directory/label-types.ts" "$consumer_directory/card-types.ts" "$consumer_directory/aspect-ratio-types.ts" "$consumer_directory/alert-types.ts" "$consumer_directory/empty-types.ts" "$consumer_directory/icons-types.ts" "$consumer_directory/example-types.ts"
 echo 'Isolated packaged public type assertions: PASS'
