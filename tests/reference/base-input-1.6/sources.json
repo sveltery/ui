@@ -1,0 +1,204 @@
+{
+  "repository": "mui/base-ui",
+  "commit": "b34551d644f2e58ebf8fc1050d949f6654ceca6c",
+  "release_tag": "v1.6.0",
+  "annotated_tag_object": "00c3db48a68782b2b51264c0ad0f361736d08f79",
+  "files": [
+    {
+      "upstream": "packages/react/src/input/Input.tsx",
+      "local": "tests/reference/base-input-1.6/upstream/packages/react/src/input/Input.tsx.txt",
+      "sha256": "db7ca0caefffbd5638a5bc14c758a0c96afd4262b06ab9f4a2c8a43173da6112"
+    },
+    {
+      "upstream": "packages/react/src/input/Input.test.tsx",
+      "local": "tests/reference/base-input-1.6/upstream/packages/react/src/input/Input.test.tsx.txt",
+      "sha256": "e98e9fa9a7afb587bd2a2daee8a5e6c59517f4fa6708c207bce1b584f6093e5f"
+    },
+    {
+      "upstream": "packages/react/src/field/control/FieldControl.tsx",
+      "local": "tests/reference/base-input-1.6/upstream/packages/react/src/field/control/FieldControl.tsx.txt",
+      "sha256": "da5925e7a9d94de380dce730d34b1b8aa8e2c3aeeab2c0cae7feb9a0b7b3a125"
+    },
+    {
+      "upstream": "packages/react/src/field/control/FieldControl.test.tsx",
+      "local": "tests/reference/base-input-1.6/upstream/packages/react/src/field/control/FieldControl.test.tsx.txt",
+      "sha256": "be2e87ce6fed76fc2250441b217dbe68dd2283c510b099eed23e2aea043812f1"
+    },
+    {
+      "upstream": "packages/react/src/internals/field-constants/constants.ts",
+      "local": "tests/reference/base-input-1.6/upstream/packages/react/src/internals/field-constants/constants.ts.txt",
+      "sha256": "1913b29171bcf17f3bf1ba88e7592578f5a7e8856972421fd5d410da3e67a218"
+    },
+    {
+      "upstream": "packages/react/src/internals/field-root-context/FieldRootContext.ts",
+      "local": "tests/reference/base-input-1.6/upstream/packages/react/src/internals/field-root-context/FieldRootContext.ts.txt",
+      "sha256": "1b1f0c70694b0880a72279bb248e9a2715dde2590a4fc94b713cd9bb680fc605"
+    },
+    {
+      "upstream": "packages/react/src/internals/labelable-provider/useLabelableId.ts",
+      "local": "tests/reference/base-input-1.6/upstream/packages/react/src/internals/labelable-provider/useLabelableId.ts.txt",
+      "sha256": "82ac8bb9576337e326614f9b64873fcaa95064f86698b3db7b4287f9f2e39ff8"
+    },
+    {
+      "upstream": "packages/react/test/describeConformance.tsx",
+      "local": "tests/reference/base-input-1.6/upstream/packages/react/test/describeConformance.tsx.txt",
+      "sha256": "316678dd7c2637e23c1f02e536974dae67d41bd8c7241c67c6e8c7461b74a184"
+    },
+    {
+      "upstream": "packages/react/test/conformanceTests/className.tsx",
+      "local": "tests/reference/base-input-1.6/upstream/packages/react/test/conformanceTests/className.tsx.txt",
+      "sha256": "ea73ff821ec5660ee854392d0744a87cc38ede0d8c14a3c5070ea08408a599bb"
+    },
+    {
+      "upstream": "packages/react/test/conformanceTests/propForwarding.tsx",
+      "local": "tests/reference/base-input-1.6/upstream/packages/react/test/conformanceTests/propForwarding.tsx.txt",
+      "sha256": "82043f827f31e0ad21dfb359598af51c7299a2139b20be958d07ac6313372733"
+    },
+    {
+      "upstream": "packages/react/test/conformanceTests/refForwarding.tsx",
+      "local": "tests/reference/base-input-1.6/upstream/packages/react/test/conformanceTests/refForwarding.tsx.txt",
+      "sha256": "3fff79d221c972d29f9909dfefbfa7f4bd16ab761960d795c01368e524c7fef0"
+    },
+    {
+      "upstream": "packages/react/test/conformanceTests/renderProp.tsx",
+      "local": "tests/reference/base-input-1.6/upstream/packages/react/test/conformanceTests/renderProp.tsx.txt",
+      "sha256": "9f2094949667daaecdfeff914c231295d79ca9e3699ba754637a5c31d6eab225"
+    },
+    {
+      "upstream": "packages/react/test/conformanceTests/utils.ts",
+      "local": "tests/reference/base-input-1.6/upstream/packages/react/test/conformanceTests/utils.ts.txt",
+      "sha256": "8db69d4e87bd8ec8d5fc15380e53ae2a67ce4a3b893e62063c142405024d41c7"
+    }
+  ],
+  "license": {
+    "local": "tests/reference/base-input-1.6/UPSTREAM_LICENSE",
+    "sha256": "07fc1b39d69d14bc7d40482a628f47226258eb01265db68ae684944b916beb2a"
+  },
+  "ordinary_input_declarations": 0,
+  "shared_conformance_declarations": 15,
+  "helper_inventory": [
+    {
+      "source": "packages/react/test/conformanceTests/className.tsx",
+      "line": 20,
+      "title": "should apply the className when passed as a string",
+      "status": "ported and executed locally in actual React1.6 and Base Svelte standalone",
+      "category": "Base React1.6 shared conformance; not shadcn wrapper test",
+      "execution": "tests/dom/base-input-1.6-conformance.test.ts"
+    },
+    {
+      "source": "packages/react/test/conformanceTests/propForwarding.tsx",
+      "line": 23,
+      "title": "forwards custom props to the default element",
+      "status": "ported and executed locally in actual React1.6 and Base Svelte standalone",
+      "category": "Base React1.6 shared conformance; not shadcn wrapper test",
+      "execution": "tests/dom/base-input-1.6-conformance.test.ts"
+    },
+    {
+      "source": "packages/react/test/conformanceTests/propForwarding.tsx",
+      "line": 38,
+      "title": "forwards custom props to the customized element defined with a function",
+      "status": "ported and executed locally in actual React1.6 and Base Svelte standalone",
+      "category": "Base React1.6 shared conformance; not shadcn wrapper test",
+      "execution": "tests/dom/base-input-1.6-conformance.test.ts"
+    },
+    {
+      "source": "packages/react/test/conformanceTests/propForwarding.tsx",
+      "line": 61,
+      "title": "forwards custom props to the customized element defined using JSX",
+      "status": "ported and executed locally in actual React1.6 and Base Svelte standalone",
+      "category": "Base React1.6 shared conformance; not shadcn wrapper test",
+      "execution": "tests/dom/base-input-1.6-conformance.test.ts"
+    },
+    {
+      "source": "packages/react/test/conformanceTests/propForwarding.tsx",
+      "line": 82,
+      "title": "forwards the custom `style` attribute defined on the component",
+      "status": "ported and executed locally in actual React1.6 and Base Svelte standalone",
+      "category": "Base React1.6 shared conformance; not shadcn wrapper test",
+      "execution": "tests/dom/base-input-1.6-conformance.test.ts"
+    },
+    {
+      "source": "packages/react/test/conformanceTests/propForwarding.tsx",
+      "line": 97,
+      "title": "forwards the custom `style` attribute defined on the render function",
+      "status": "ported and executed locally in actual React1.6 and Base Svelte standalone",
+      "category": "Base React1.6 shared conformance; not shadcn wrapper test",
+      "execution": "tests/dom/base-input-1.6-conformance.test.ts"
+    },
+    {
+      "source": "packages/react/test/conformanceTests/propForwarding.tsx",
+      "line": 114,
+      "title": "forwards the custom `style` attribute defined on the render function",
+      "status": "ported and executed locally in actual React1.6 and Base Svelte standalone",
+      "category": "Base React1.6 shared conformance; not shadcn wrapper test",
+      "execution": "tests/dom/base-input-1.6-conformance.test.ts"
+    },
+    {
+      "source": "packages/react/test/conformanceTests/refForwarding.tsx",
+      "line": 32,
+      "title": "attaches the ref",
+      "status": "ported and executed locally in actual React1.6 and Base Svelte standalone",
+      "category": "Base React1.6 shared conformance; not shadcn wrapper test",
+      "execution": "tests/dom/base-input-1.6-conformance.test.ts"
+    },
+    {
+      "source": "packages/react/test/conformanceTests/renderProp.tsx",
+      "line": 41,
+      "title": "renders a customized root element with a function",
+      "status": "ported and executed locally in actual React1.6 and Base Svelte standalone",
+      "category": "Base React1.6 shared conformance; not shadcn wrapper test",
+      "execution": "tests/dom/base-input-1.6-conformance.test.ts"
+    },
+    {
+      "source": "packages/react/test/conformanceTests/renderProp.tsx",
+      "line": 61,
+      "title": "renders a customized root element with an element",
+      "status": "ported and executed locally in actual React1.6 and Base Svelte standalone",
+      "category": "Base React1.6 shared conformance; not shadcn wrapper test",
+      "execution": "tests/dom/base-input-1.6-conformance.test.ts"
+    },
+    {
+      "source": "packages/react/test/conformanceTests/renderProp.tsx",
+      "line": 78,
+      "title": "renders a customized root element with an element",
+      "status": "ported and executed locally in actual React1.6 and Base Svelte standalone",
+      "category": "Base React1.6 shared conformance; not shadcn wrapper test",
+      "execution": "tests/dom/base-input-1.6-conformance.test.ts"
+    },
+    {
+      "source": "packages/react/test/conformanceTests/renderProp.tsx",
+      "line": 93,
+      "title": "should pass the ref to the custom component",
+      "status": "ported and executed locally in actual React1.6 and Base Svelte standalone",
+      "category": "Base React1.6 shared conformance; not shadcn wrapper test",
+      "execution": "tests/dom/base-input-1.6-conformance.test.ts"
+    },
+    {
+      "source": "packages/react/test/conformanceTests/renderProp.tsx",
+      "line": 115,
+      "title": "should merge the rendering element ref with the custom component ref",
+      "status": "ported and executed locally in actual React1.6 and Base Svelte standalone",
+      "category": "Base React1.6 shared conformance; not shadcn wrapper test",
+      "execution": "tests/dom/base-input-1.6-conformance.test.ts"
+    },
+    {
+      "source": "packages/react/test/conformanceTests/renderProp.tsx",
+      "line": 146,
+      "title": "should merge the rendering element className with the custom component className",
+      "status": "ported and executed locally in actual React1.6 and Base Svelte standalone",
+      "category": "Base React1.6 shared conformance; not shadcn wrapper test",
+      "execution": "tests/dom/base-input-1.6-conformance.test.ts"
+    },
+    {
+      "source": "packages/react/test/conformanceTests/renderProp.tsx",
+      "line": 163,
+      "title": "should merge the rendering element resolved className with the custom component className",
+      "status": "ported and executed locally in actual React1.6 and Base Svelte standalone",
+      "category": "Base React1.6 shared conformance; not shadcn wrapper test",
+      "execution": "tests/dom/base-input-1.6-conformance.test.ts"
+    }
+  ],
+  "contextual_field_control_declarations": 4,
+  "field_control_status": "unported: all four require real Base Field.Root context, absent from standalone Base Input and styled Field composition",
+  "implementation_status": "15 shared declarations run as30 paired DOM executions through explicit framework infrastructure; zero shadcn Input ordinary declarations, zero styled-wrapper helper credit, contextual Field.Control unported"
+}
