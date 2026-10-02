@@ -9,5 +9,5 @@
 @import "../upstream/style-sera.css" layer(components);
 @import "../upstream/style-rhea.css" layer(components);
 @source "../../";
-/* Explicit shared consumer shell/font input; component declarations remain upstream originals. */
-body { margin: 0; font-family: Arial, sans-serif; }
+/* Explicit shared consumer shell/font/palette input; component declarations remain upstream originals. */
+body { margin: 0; background: var(--background); color: var(--foreground); font-family: Arial, sans-serif; }
