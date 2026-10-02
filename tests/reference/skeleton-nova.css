@@ -1,0 +1,4 @@
+  /* MARK: Skeleton */
+  .cn-skeleton {
+    @apply bg-muted rounded-md;
+  }
