@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { tableLifecycleCases, tableState } from './table-cases';
+import { assertTableBadges, setTableBadgeTheme, tableBadgeHosts, tableBadgeMeasurements, tableBadgeSnapshot, tableGalleryHydrated } from './table-badges-cases';
 // Source-derived probes, not copied upstream assertions; see table-sources.json.
 tableLifecycleCases();
 async function tableSnapshot(page: Page) {
@@ -104,10 +105,51 @@ for (const width of [1280, 390]) for (const theme of ['light', 'dark']) test(`pa
   await testInfo.attach(`pinned-react-table-${width}-${theme}`, { body: await reference.screenshot({ fullPage: true }), contentType: 'image/png' });
   await reference.close();
 });
-test('bounded Basic, Footer and Simple example content matches pinned React', async ({ page, context }) => {
+test('bounded Basic, Footer, Simple and With Badges example content matches pinned React', async ({ page, context }) => {
   await page.goto('/table'); await expect(page.locator('[data-gallery]')).toBeVisible();
   const reference = await context.newPage(); await reference.goto('/table-reference'); await expect(reference.locator('[data-hydrated=true]')).toBeVisible();
   const semantic = (current: Page) => current.locator('[data-gallery] table').evaluateAll(tables => tables.map(table => ({ caption: table.querySelector('caption')?.textContent?.trim(), headers: [...table.querySelectorAll('th')].map(node => node.textContent?.trim()), rows: [...table.querySelectorAll('tbody tr')].map(row => [...row.querySelectorAll('td')].map(node => node.textContent?.trim())), footers: [...table.querySelectorAll('tfoot td')].map(node => ({ text: node.textContent?.trim(), span: node.getAttribute('colspan') })) })));
-  expect(await semantic(page)).toEqual(await semantic(reference)); expect(await semantic(page)).toHaveLength(3);
+  expect(await semantic(page)).toEqual(await semantic(reference)); expect(await semantic(page)).toHaveLength(4);
   await expect(page.locator('tfoot')).toContainText('$2,500.00'); await reference.close();
+});
+
+for (const width of [1280, 390]) test(`actual With Badges native spans match pinned React geometry and light/dark colors at ${width}px`, async ({ page, context }, testInfo) => {
+  const reference = await context.newPage();
+  try {
+    for (const [current, route] of [[page, '/table'], [reference, '/table-reference']] as const) {
+      await current.setViewportSize({ width, height: 1400 }); await current.goto(route); await expect(tableGalleryHydrated(current)).toHaveAttribute('data-hydrated', 'true');
+    }
+    for (const dark of [false, true]) {
+      for (const current of [page, reference]) { await setTableBadgeTheme(current, dark); await assertTableBadges(current, dark); }
+      expect(await tableBadgeSnapshot(page)).toEqual(await tableBadgeSnapshot(reference));
+      expect(await tableBadgeMeasurements(page)).toEqual(await tableBadgeMeasurements(reference));
+      await testInfo.attach(`svelte-table-badges-${width}-${dark ? 'dark' : 'light'}`, { body: await page.screenshot({ fullPage: true }), contentType: 'image/png' });
+      await testInfo.attach(`pinned-react-table-badges-${width}-${dark ? 'dark' : 'light'}`, { body: await reference.screenshot({ fullPage: true }), contentType: 'image/png' });
+    }
+  } finally { await reference.close(); }
+});
+test('paired actual With Badges table and six spans preserve SSR identity through hydration', async ({ page, context }) => {
+  const reference = await context.newPage(); const pairs = [[page, '/table'], [reference, '/table-reference']] as const;
+  const errors: string[] = [];
+  for (const [current, route] of pairs) {
+    current.on('pageerror', error => errors.push(error.message)); current.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+    await current.goto(route); await expect(tableGalleryHydrated(current)).toHaveAttribute('data-hydrated', 'true');
+  }
+  let release!: () => void; const gate = new Promise<void>(resolve => { release = resolve; });
+  for (const [current] of pairs) await current.route('**/*', async route => { if (route.request().resourceType() === 'script') await gate; await route.continue(); });
+  try {
+    const captured = [];
+    for (const [current, route] of pairs) {
+      await current.goto(route, { waitUntil: 'commit' }); await expect(tableGalleryHydrated(current)).toHaveAttribute('data-hydrated', 'false');
+      const hosts = await current.locator(tableBadgeHosts).elementHandles(); expect(hosts).toHaveLength(25); captured.push({ current, hosts });
+    }
+    const before = await tableBadgeSnapshot(page); expect(before).toEqual(await tableBadgeSnapshot(reference));
+    release();
+    for (const { current, hosts } of captured) {
+      await expect(tableGalleryHydrated(current)).toHaveAttribute('data-hydrated', 'true');
+      for (const [index, host] of hosts.entries()) expect(await host.evaluate((node, i) => node.isConnected && node === document.querySelectorAll('[data-gallery] > section:nth-child(4) table, [data-gallery] > section:nth-child(4) table *')[i], index)).toBe(true);
+      expect(await tableBadgeSnapshot(current)).toEqual(before); await assertTableBadges(current);
+    }
+    expect(errors).toEqual([]);
+  } finally { release(); await reference.close(); }
 });
