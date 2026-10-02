@@ -15,6 +15,8 @@ export async function tableBadgeSnapshot(page: Page) {
   });
 }
 export async function tableBadgeMeasurements(page: Page) {
+  // Real class-based palette changes animate inherited row colors; compare settled source outputs.
+  await page.evaluate(async () => { await Promise.all(document.getAnimations().filter(animation => Number.isFinite(animation.effect?.getComputedTiming().endTime)).map(animation => animation.finished.catch(() => {}))); });
   return page.locator(tableBadgeHosts).evaluateAll(nodes => nodes.map(node => {
     const css = getComputedStyle(node); const rect = node.getBoundingClientRect();
     return { tag: node.tagName, width: rect.width, height: rect.height, display: css.display, alignItems: css.alignItems, padding: css.padding, radius: css.borderRadius, background: css.backgroundColor, color: css.color, fontSize: css.fontSize, fontWeight: css.fontWeight, lineHeight: css.lineHeight, textAlign: css.textAlign, borderWidth: css.borderWidth, whiteSpace: css.whiteSpace };
