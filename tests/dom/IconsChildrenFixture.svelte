@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { IconLibraryName } from '../../apps/docs/examples/icons/config.js';
-  import IconLibraryProvider from '../../apps/docs/examples/icons/IconLibraryProvider.svelte';
-  import IconPlaceholder from '../../apps/docs/examples/icons/IconPlaceholder.svelte';
+  import type { IconLibraryName } from '../../apps/docs/registry/bases/base/ui/icons/config.js';
+  import IconLibraryProvider from '../../apps/docs/registry/bases/base/ui/icons/IconLibraryProvider.svelte';
+  import IconPlaceholder from '../../apps/docs/registry/bases/base/ui/icons/IconPlaceholder.svelte';
   let { library }: { library: IconLibraryName } = $props();
 </script>
 <IconLibraryProvider {library}>

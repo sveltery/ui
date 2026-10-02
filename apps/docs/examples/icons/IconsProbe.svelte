@@ -1,8 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import IconLibraryProvider from './IconLibraryProvider.svelte';
-  import IconPlaceholder from './IconPlaceholder.svelte';
-  import type { IconLibraryName } from './config.js';
+  import { IconLibraryProvider, IconPlaceholder, type IconLibraryName } from '@sveltery/ui/icons';
   let library = $state<IconLibraryName>('lucide');
   const original = { lucide: 'ArrowLeftIcon', tabler: 'IconArrowLeft', hugeicons: 'ArrowLeft01Icon', phosphor: 'ArrowLeftIcon', remixicon: 'RiArrowLeftLine' };
   let names = $state({ ...original });
