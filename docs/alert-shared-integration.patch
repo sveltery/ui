@@ -1,0 +1,155 @@
+diff --git a/apps/docs/registry/bases/base/ui/index.ts b/apps/docs/registry/bases/base/ui/index.ts
+index fe39d2d411eb36359eddf3f027ebe85cb7ff4d8b..b0e36f8cb043cfcf4d61299995c1405a195af2f4 100644
+--- a/apps/docs/registry/bases/base/ui/index.ts
++++ b/apps/docs/registry/bases/base/ui/index.ts
+@@ -9,0 +10 @@ export { Label } from './label/index.js';
++export * from './alert/index.js';
+diff --git a/apps/docs/registry/styles/style-nova.css b/apps/docs/registry/styles/style-nova.css
+index e44f4ea330d51afdc2a80dc800996d07d1dd23b7..03cb10988f1fc619012df6c449c49cfd7c16c3e0 100644
+--- a/apps/docs/registry/styles/style-nova.css
++++ b/apps/docs/registry/styles/style-nova.css
+@@ -3,0 +4,25 @@
++  /* MARK: Alert */
++  .cn-alert {
++    @apply grid gap-0.5 rounded-lg border px-2.5 py-2 text-left text-sm has-data-[slot=alert-action]:relative has-data-[slot=alert-action]:pr-18 has-[>svg]:grid-cols-[auto_1fr] has-[>svg]:gap-x-2 *:[svg]:row-span-2 *:[svg]:translate-y-0.5 *:[svg]:text-current *:[svg:not([class*='size-'])]:size-4;
++  }
++
++  .cn-alert-variant-default {
++    @apply bg-card text-card-foreground;
++  }
++
++  .cn-alert-variant-destructive {
++    @apply text-destructive bg-card *:data-[slot=alert-description]:text-destructive/90 *:[svg]:text-current;
++  }
++
++  .cn-alert-title {
++    @apply font-medium group-has-[>svg]/alert:col-start-2;
++  }
++
++  .cn-alert-description {
++    @apply text-muted-foreground text-sm text-balance md:text-pretty [&_p:not(:last-child)]:mb-4;
++  }
++
++  .cn-alert-action {
++    @apply absolute top-2 right-2;
++  }
++
+diff --git a/docs/installation.md b/docs/installation.md
+index 5b99812e51ca4bfd4ffed78b6a5a76d8d75d7a0b..1382d3ef1b157ea82f83e68a0f77c5f70f1a9e9f 100644
+--- a/docs/installation.md
++++ b/docs/installation.md
+@@ -297,0 +298,4 @@ Import the single `Label` export from `@sveltery/ui/label` or the root of the sa
++
++### Native Alert
++
++After the serialized Alert integration lands, import `Alert`, `AlertTitle`, `AlertDescription` and `AlertAction` from `@sveltery/ui/alert` or the root of the same reviewed archive. All parts render native divs. Root supports `default`, `destructive` and null variants; caller role/data-slot overrides remain observable. For source copies, copy `registry/bases/base/ui/alert` beside `shared/classes.js`, keep the notices, `clsx` and `tailwind-merge`, install `class-variance-authority` 0.7.1 for this source copy (`pnpm add class-variance-authority@0.7.1`), and scan both directories. Existing card, foreground, muted, destructive and radius tokens support Nova. [Alert scope](alert.md) records native APIs, Basic's bounded scaffold and deferred icon/Badge compositions. Fresh archive/source-copy gates exercise all four parts, SSR/client builds, reactive props, refs/attachments and secured browsers before experimental remote-field opt-ins.
+diff --git a/docs/readiness.md b/docs/readiness.md
+index 4ed398836c17c51e0b508c31d62d732111072d6b..1ded6c314d27742013e77a671eef2d09f8be4bc5 100644
+--- a/docs/readiness.md
++++ b/docs/readiness.md
+@@ -88,0 +89,4 @@ The proposed [native Label slice](label.md) preserves Table main `39979bdaaf8217
++
++## Proposed bounded native Alert
++
++The [Alert slice](alert.md) preserves the four pinned native div wrappers, CVA default/destructive/null semantics and role/data-slot/class precedence without adding dependencies. Basic is the selected actual example; full Example/ExampleWrapper and icon/Badge compositions remain incomplete. Shared integration is held behind PR19 SkeletonCard approval and PR20 AspectRatio serialization. Require full final-head verification, fresh archive/source-copy consumers, secured hosted browsers with zero retries, independent GPT-6.1 Sol high review and every configured automatic review after stable integration. Alert-local proposed-snapshot checks do not establish merge eligibility, final-head parity or production readiness.
+diff --git a/docs/upstream-differences.md b/docs/upstream-differences.md
+index 88f8d483361e273d6e79786e033a587e6cbbd287..2ac2fa7cb82bc69dbf7e22a454233235bd5fd27e 100644
+--- a/docs/upstream-differences.md
++++ b/docs/upstream-differences.md
+@@ -130,0 +131,13 @@ With Checkbox, With Input and Disabled are unimplemented compositions with missi
++
++## Proposed native Alert
++
++Immutable source: [Alert wrapper](https://github.com/shadcn-ui/ui/blob/d75a96ab781f3d659be1ad287347d5887ce9f2fc/apps/v4/registry/bases/base/ui/alert.tsx), [complete examples](https://github.com/shadcn-ui/ui/blob/d75a96ab781f3d659be1ad287347d5887ce9f2fc/apps/v4/registry/bases/base/examples/alert-example.tsx), and Nova lines 19–42. See [Alert contract](alert.md), [hash manifest](../tests/reference/alert-sources.json) and proposed [draft PR21](https://github.com/sveltery/ui/pull/21). Alert-local work starts at landed Label main `b7d5ed09ebc6530adc57be1d85cfa8a4680ea3c2`; this exact shared patch must be reconciled after PR19 and PR20 integrate. Existing records and dependency pins are retained.
++
++| Adaptation/source | Observable pinned React versus local behavior | Rationale, evidence and decision status |
++| --- | --- | --- |
++| Native div framework API; wrapper above | React className, children, style objects, refs and synthetic events become Svelte class, snippets, CSS strings, undefined/null bindable native div refs/symbol attachments and native events. All four parts remain divs; root role/data-slot and caller class precedence remain pinned. Named native props types are added as Svelte conveniences; the private CVA helper stays private. | Idiomatic supported Svelte integration; paired [DOM](../tests/dom/alert.test.ts), [SSR](../scripts/check-alert-ssr.mjs), [types](../tests/alert-types.ts), [browser](../tests/browser/alert.spec.ts) and [fresh consumers](../tests/installation/alert.spec.ts). Proposed and unlanded. Existing recorded framework-substitution acceptance covers class/snippets/refs/attachments/native events/CSS where exposed; no additional Alert-specific or named-type acceptance decision is recorded. Framework assertions earn no React parity credit. |
++| Basic Example/ExampleWrapper scaffold; examples above | The actual Basic body runs under native sections/headings in local and paired galleries. The three Alert compositions retain text/classes/parts; upstream scaffold layout/APIs remain unimplemented. | Keep the dependency-available bounded example. [Exact-function provenance](../scripts/tests/alert-provenance.test.mjs) and paired browser probes. Proposed; separate scaffold acceptance not recorded. |
++| Nova and theme scaffold; Nova lines above | The upstream `.style-nova` scope becomes the existing repository component layer; both paired harnesses use current consumer light tokens and supplemental dark-class witnesses. Full upstream stylesheet scope/theme packaging and dark palettes are unimplemented. | Existing Nova packaging, exact source bytes and paired computed style probes. Proposed; separate stylesheet/theme scaffold acceptance is not recorded. |
++| With Icons, Destructive and With Actions examples | These actual function bodies require missing configurable IconPlaceholder and/or Badge. They remain unimplemented; destructive/action/inline-SVG/link selector probes are supplemental native tests only. | Explicit deferred scope; no substituted gallery or full parity claim. |
++
++No dedicated upstream Alert tests are claimed or ported. Source-derived local assertions and passing proposed-snapshot checks certify only the exercised behavior. Final integration, final-head secured CI and independent/configured automatic reviews remain blocked until pending checkpoints serialize; full gallery/library parity and production readiness remain blocked.
+diff --git a/packages/ui/THIRD_PARTY_NOTICES.md b/packages/ui/THIRD_PARTY_NOTICES.md
+index bbe9d007723b18a32286783dcfeb8d97deaaa858..b3cc760f6945fcaf048d49a290a0a9360aa81551 100644
+--- a/packages/ui/THIRD_PARTY_NOTICES.md
++++ b/packages/ui/THIRD_PARTY_NOTICES.md
+@@ -36,0 +37,2 @@ The native Label wrapper, bounded With Textarea example and scoped Nova rules de
++
++The four native Alert div wrappers, selected Basic example and scoped Nova rules derive from the same immutable shadcn-ui/ui pin under the MIT notice above. Exact bytes and hashes are in `tests/reference/alert-sources.json`; assertions are local and source-derived. Native sections/headings replace Example/ExampleWrapper. With Icons, Destructive and With Actions example compositions remain deferred due to missing configurable icons and Badge.
+diff --git a/packages/ui/package.json b/packages/ui/package.json
+index d2cadbc246f53ca224cbf7d8d44ab031a1529860..aaeaad140bbce92474d1bc3ca0502fa54eea14b8 100644
+--- a/packages/ui/package.json
++++ b/packages/ui/package.json
+@@ -57,0 +58,5 @@
++    },
++    "./alert": {
++      "types": "./dist/alert/index.d.ts",
++      "svelte": "./dist/alert/index.js",
++      "default": "./dist/alert/index.js"
+diff --git a/packages/ui/tsconfig.json b/packages/ui/tsconfig.json
+index 26ebf51284e005432916b48b82e55154d572a6e7..259e715cff97513c7db94582ca350bd38353a77b 100644
+--- a/packages/ui/tsconfig.json
++++ b/packages/ui/tsconfig.json
+@@ -19 +19,2 @@
+-    "../../tests/label-types.ts"
++    "../../tests/label-types.ts",
++    "../../tests/alert-types.ts"
+diff --git a/scripts/check-installation.mjs b/scripts/check-installation.mjs
+index f498440f47b4e757b563d212f277c5e5764e6d27..7c9a0e41534a3b7c5d6a66fe00256cc45896a95c 100644
+--- a/scripts/check-installation.mjs
++++ b/scripts/check-installation.mjs
+@@ -25 +25 @@ try {
+-  for (const path of ['apps/docs/registry/bases/base/ui/dialog', 'apps/docs/registry/bases/base/ui/button', 'apps/docs/registry/bases/base/ui/textarea', 'apps/docs/registry/bases/base/ui/skeleton', 'apps/docs/registry/bases/base/ui/kbd', 'apps/docs/registry/bases/base/ui/table', 'apps/docs/registry/bases/base/ui/card', 'apps/docs/registry/bases/base/ui/label', 'apps/docs/registry/bases/base/ui/shared', 'apps/docs/registry/styles/style-nova.css', 'packages/ui/LICENSE', 'packages/ui/THIRD_PARTY_NOTICES.md']) {
++  for (const path of ['apps/docs/registry/bases/base/ui/dialog', 'apps/docs/registry/bases/base/ui/button', 'apps/docs/registry/bases/base/ui/textarea', 'apps/docs/registry/bases/base/ui/skeleton', 'apps/docs/registry/bases/base/ui/kbd', 'apps/docs/registry/bases/base/ui/table', 'apps/docs/registry/bases/base/ui/card', 'apps/docs/registry/bases/base/ui/label', 'apps/docs/registry/bases/base/ui/alert', 'apps/docs/registry/bases/base/ui/shared', 'apps/docs/registry/styles/style-nova.css', 'packages/ui/LICENSE', 'packages/ui/THIRD_PARTY_NOTICES.md']) {
+@@ -91,0 +92,8 @@ try {
++    for (const [route, source] of [['alert', 'apps/docs/examples/base/AlertExample.svelte'], ['alert-probe', 'apps/docs/examples/base/AlertProbe.svelte']]) {
++      const routePath = join(consumer, `src/routes/${route}/+page.svelte`);
++      mkdirSync(dirname(routePath), { recursive: true });
++      let content = readFileSync(join(repo, source), 'utf8');
++      if (mode === 'copy') content = content.replaceAll('@sveltery/ui/alert', '$lib/components/ui/alert');
++      writeFileSync(routePath, content);
++    }
++    writeFileSync(join(consumer, 'src/routes/alert-types.ts'), readFileSync(join(repo, 'tests/alert-types.ts'), 'utf8').replace('../apps/docs/registry/bases/base/ui/alert/index.js', mode === 'copy' ? '$lib/components/ui/alert' : '@sveltery/ui/alert'));
+@@ -107,0 +116 @@ try {
++      cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/alert'), join(consumer, 'src/lib/components/ui/alert'), { recursive: true });
+diff --git a/scripts/check-package.sh b/scripts/check-package.sh
+index 9efe4423b6f9017b6b48db3beb31816ca5283260..ac6f6497819d34427e31f5a3a86d9b772f39fd24 100644
+--- a/scripts/check-package.sh
++++ b/scripts/check-package.sh
+@@ -22,0 +23 @@ cat > "$consumer_directory/Consumer.svelte" <<'SVELTE'
++  import { Alert, AlertTitle, AlertDescription, AlertAction } from '@sveltery/ui/alert';
+@@ -31,0 +33 @@ cat > "$consumer_directory/Consumer.svelte" <<'SVELTE'
++<Alert variant="destructive" data-probe="alert"><AlertTitle>Notice</AlertTitle><AlertDescription>Description</AlertDescription><AlertAction><button>Undo</button></AlertAction></Alert>
+@@ -58,0 +61,4 @@ import * as Cards from '@sveltery/ui/card';
++import * as Alerts from '@sveltery/ui/alert';
++const alertNames = ['Alert', 'AlertTitle', 'AlertDescription', 'AlertAction'];
++assert.deepEqual(Object.keys(Alerts).sort(), alertNames.toSorted());
++for (const name of alertNames) assert.equal(Root[name], Alerts[name]);
+@@ -67 +73 @@ const names = ['Dialog', 'DialogClose', 'DialogContent', 'DialogDescription', 'D
+-assert.deepEqual(Object.keys(Root).sort(), [...names, ...tableNames, ...cardNames, 'Button', 'buttonVariants', 'variants', 'sizes', 'Textarea', 'Label', 'Skeleton', 'Kbd', 'KbdGroup'].sort());
++assert.deepEqual(Object.keys(Root).sort(), [...names, ...tableNames, ...cardNames, ...alertNames, 'Button', 'buttonVariants', 'variants', 'sizes', 'Textarea', 'Label', 'Skeleton', 'Kbd', 'KbdGroup'].sort());
+@@ -78 +84 @@ assert.equal(Root.Kbd, Keys.Kbd); assert.equal(Root.KbdGroup, Keys.KbdGroup);
+-for (const path of ['table/index.d.ts', ...tableNames.map(name => `table/${name}.svelte.d.ts`), 'label/index.d.ts', 'label/Label.svelte.d.ts', 'index.d.ts', 'dialog/index.d.ts', 'button/index.d.ts', 'button/Button.svelte.d.ts', 'button/types.d.ts', 'textarea/index.d.ts', 'textarea/Textarea.svelte.d.ts', 'skeleton/index.d.ts', 'skeleton/Skeleton.svelte.d.ts', 'kbd/index.d.ts', 'kbd/Kbd.svelte.d.ts', 'kbd/KbdGroup.svelte.d.ts', 'kbd/types.d.ts', 'card/index.d.ts', 'card/types.d.ts', ...cardNames.map(name => `card/${name}.svelte.d.ts`), ...names.map(name => `dialog/${name}.svelte.d.ts`)]) {
++for (const path of ['alert/index.d.ts', 'alert/types.d.ts', ...alertNames.map(name => `alert/${name}.svelte.d.ts`), 'table/index.d.ts', ...tableNames.map(name => `table/${name}.svelte.d.ts`), 'label/index.d.ts', 'label/Label.svelte.d.ts', 'index.d.ts', 'dialog/index.d.ts', 'button/index.d.ts', 'button/Button.svelte.d.ts', 'button/types.d.ts', 'textarea/index.d.ts', 'textarea/Textarea.svelte.d.ts', 'skeleton/index.d.ts', 'skeleton/Skeleton.svelte.d.ts', 'kbd/index.d.ts', 'kbd/Kbd.svelte.d.ts', 'kbd/KbdGroup.svelte.d.ts', 'kbd/types.d.ts', 'card/index.d.ts', 'card/types.d.ts', ...cardNames.map(name => `card/${name}.svelte.d.ts`), ...names.map(name => `dialog/${name}.svelte.d.ts`)]) {
+@@ -118,0 +125,6 @@ for (const html of [first, second]) {
++  const alert = new JSDOM(html).window.document.querySelector('[data-probe=alert]');
++  assert.equal(alert.tagName, 'DIV'); assert.equal(alert.getAttribute('role'), 'alert');
++  assert.equal(alert.getAttribute('data-slot'), 'alert');
++  assert(alert.classList.contains('cn-alert-variant-destructive'));
++  assert.equal(alert.querySelectorAll('[data-slot^=alert-]').length, 3);
++  assert.equal(alert.textContent, 'NoticeDescriptionUndo');
+@@ -133 +145,2 @@ assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file:/
+-console.log('Isolated Label, Table plus Card and existing UI tarball: Dialog, Button, Textarea, Skeleton, Kbd and Card root/subpath exports, SSR, IDs, absent portals, CSS, declarations and notices PASS');
++assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-alert-action'));
++console.log('Isolated Alert, Label, Table plus Card and existing UI tarball: Dialog, Button, Textarea, Skeleton, Kbd and Card root/subpath exports, SSR, IDs, absent portals, CSS, declarations and notices PASS');
+@@ -179 +192,2 @@ sed 's#../apps/docs/registry/bases/base/ui/label/index.js#@sveltery/ui/label#' t
+-node "$sveltery_repo_root/node_modules/typescript/bin/tsc" --noEmit --strict --skipLibCheck --moduleResolution Bundler --module ESNext --target ES2022 --lib ES2022,DOM,DOM.Iterable "$consumer_directory/types.ts" "$consumer_directory/table-types.ts" "$consumer_directory/label-types.ts" "$consumer_directory/card-types.ts"
++sed 's#../apps/docs/registry/bases/base/ui/alert/index.js#@sveltery/ui/alert#' tests/alert-types.ts > "$consumer_directory/alert-types.ts"
++node "$sveltery_repo_root/node_modules/typescript/bin/tsc" --noEmit --strict --skipLibCheck --moduleResolution Bundler --module ESNext --target ES2022 --lib ES2022,DOM,DOM.Iterable "$consumer_directory/types.ts" "$consumer_directory/table-types.ts" "$consumer_directory/label-types.ts" "$consumer_directory/card-types.ts" "$consumer_directory/alert-types.ts"
+diff --git a/scripts/verify.sh b/scripts/verify.sh
+index 71d09e418d54808f632242708739000e111fdb7a..102539899f7f306300eb43d63424168315fb0930 100644
+--- a/scripts/verify.sh
++++ b/scripts/verify.sh
+@@ -16,0 +17 @@ node --import ./scripts/svelte-ssr-loader.mjs scripts/check-label-ssr.mjs
++node --import ./scripts/svelte-ssr-loader.mjs scripts/check-alert-ssr.mjs
