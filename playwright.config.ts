@@ -1,10 +1,11 @@
 import { defineConfig } from '@playwright/test';
+import { browserProjects } from './scripts/browser-projects';
 export default defineConfig({
   testDir: './tests/browser', workers: 1, fullyParallel: false, retries: 0, reporter: [['list']],
+  projects: browserProjects,
   use: {
-    baseURL: 'http://127.0.0.1:5173', browserName: 'chromium', viewport: { width: 1280, height: 900 },
+    baseURL: 'http://127.0.0.1:5173', viewport: { width: 1280, height: 900 },
     deviceScaleFactor: 1, locale: 'en-US', colorScheme: 'light', reducedMotion: 'no-preference',
-    launchOptions: { chromiumSandbox: true, executablePath: process.env.DIALOG_CHROMIUM_PATH },
   },
   webServer: [
     {
