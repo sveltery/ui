@@ -19,6 +19,7 @@
     "../../tests/label-types.ts",
     "../../tests/aspect-ratio-types.ts",
     "../../tests/alert-types.ts",
-    "../../tests/empty-types.ts"
+    "../../tests/empty-types.ts",
+    "../../tests/example-types.ts"
   ]
 }
