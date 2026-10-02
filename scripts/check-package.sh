@@ -82,7 +82,9 @@ for (const html of [first, second]) {
   const nativeSkeleton = new JSDOM(html).window.document.querySelector('[data-probe=skeleton]');
   assert.equal(nativeSkeleton.tagName, 'DIV'); assert.equal(nativeSkeleton.getAttribute('data-slot'), 'skeleton'); assert.equal(nativeSkeleton.textContent, '');
   assert(html.includes('cn-skeleton'));
-  assert.match(html, /<kbd[^>]*data-slot="kbd-group"[^>]*><kbd[^>]*data-slot="kbd"[^>]*>Ctrl &amp; K<\/kbd><\/kbd>/);
+  const nativeGroup = new JSDOM(html).window.document.querySelector('[data-probe=kbd-group]');
+  assert.equal(nativeGroup.tagName, 'KBD'); assert.equal(nativeGroup.getAttribute('data-slot'), 'kbd-group');
+  assert.equal(nativeGroup.firstElementChild.tagName, 'KBD'); assert.equal(nativeGroup.firstElementChild.getAttribute('data-slot'), 'kbd'); assert.equal(nativeGroup.textContent, 'Ctrl & K');
   assert(html.includes('role="button"'));
   assert.match(html, /<button[^>]*name="save"[^>]*class="[^"]*px-6/);
 }
