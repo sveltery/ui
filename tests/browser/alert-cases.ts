@@ -51,11 +51,16 @@ export async function alertNativeAssertions(page: Page) {
 export function alertLifecycleCases(route = '/alert-probe') {
   test('native Alert parts retain SSR identity; undefined/null refs and attachments replace and clean up', async ({ page, request }) => {
     const html = await (await request.get(route)).text(); expect(html).toContain('data-hydrated="false"'); expect(new JSDOM(html).window.document.querySelector('#probe-alert')?.getAttribute('title')).toBe('Initial & <alert>');
-    const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
-    page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+    let phase = 'warmup';
+    const errors: string[] = []; page.on('pageerror', error => { errors.push(error.message); console.log('ALERT_PAGEERROR_PHASE', JSON.stringify({ phase, message: error.message, stack: error.stack })); });
+    page.on('console', message => { if (message.type() === 'error') { errors.push(message.text()); console.log('ALERT_CONSOLE_PHASE', JSON.stringify({ phase, message: message.text(), location: message.location() })); } });
+    page.on('requestfailed', request => console.log('ALERT_REQUESTFAILED_PHASE', JSON.stringify({ phase, url: request.url(), type: request.resourceType(), failure: request.failure() })));
+    page.on('response', response => { if (response.status() >= 400) console.log('ALERT_RESPONSE_PHASE', JSON.stringify({ phase, url: response.url(), status: response.status(), contentType: response.headers()['content-type'] })); });
+    page.on('framenavigated', frame => { if (frame === page.mainFrame()) console.log('ALERT_NAVIGATION_PHASE', JSON.stringify({ phase, url: frame.url() })); });
     await page.goto(route); await expect(page.locator('[data-alert-probe]')).toHaveAttribute('data-hydrated', 'true');
     // Complete the warm-up module requests before the identity navigation can cancel them.
     await page.waitForLoadState('networkidle');
+    console.log('ALERT_WARMUP_COMPLETE', JSON.stringify({ errors })); phase = 'identity';
     let release!: () => void; const gate = new Promise<void>(resolve => { release = resolve; });
     await page.route('**/*', async requestRoute => { if (requestRoute.request().resourceType() === 'script') await gate; await requestRoute.continue(); });
     try {
