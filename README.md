@@ -24,7 +24,7 @@ The native `/skeleton` and pinned `/skeleton-reference` fixtures cover [Skeleton
 
 The native `/kbd` and pinned `/kbd-reference` fixtures cover [Kbd/KbdGroup scope and omissions](docs/kbd.md). The pinned group host remains `kbd`; display keys introduce no shortcut behavior.
 
-The native `/table` and pinned `/table-reference` fixtures cover the [eight Table exports and Basic/Footer/Simple examples](docs/table.md). Badge, DropdownMenu, Select and Input compositions remain deferred; `/table-probe` and its paired reference exercise native semantics, refs and overflow.
+The native `/table` and pinned `/table-reference` fixtures cover the [eight Table exports and Basic/Footer/Simple/With Badges examples](docs/table.md). With Badges uses six native spans; DropdownMenu, Select and Input compositions remain deferred; `/table-probe` and its paired reference exercise native semantics, refs and overflow.
 
 The landed [native Card slice](docs/card.md) adds seven div parts, default/small sizes and seven actual dependency-available examples. It retains Table's actual landed main merge; five composition examples and full parity remain deferred. Card landed through [PR #17](https://github.com/sveltery/ui/pull/17); changed heads require fresh exact-head checks and independent/configured review.
 
