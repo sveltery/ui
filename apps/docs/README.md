@@ -49,13 +49,13 @@ The installation check extracts the exact scaffold from the guide, installs two 
 
 `/textarea` previews five native Textarea states and form/binding probes; `/textarea-reference` executes the pinned React wrapper in the paired native scaffold. See [Textarea scope/provenance](../../docs/textarea.md).
 
-`/skeleton` and `/skeleton-reference` execute the [bounded Skeleton examples](../../docs/skeleton.md), with avatar, text, form and table-shaped selections. Card composition remains deferred.
+`/skeleton` and `/skeleton-reference` execute the [bounded Skeleton examples](../../docs/skeleton.md), with avatar, text, form and table-shaped selections plus the landed actual [SkeletonCard composition](https://github.com/sveltery/ui/pull/19). Example/ExampleWrapper layout remains a bounded native scaffold.
 
 `/kbd` and `/kbd-reference` execute the [bounded Kbd/KbdGroup examples](../../docs/kbd.md). InputGroup, Tooltip and icon compositions remain deferred.
 
 `/table` and `/table-reference` execute the [bounded native Table examples](../../docs/table.md); `/table-probe` and `/table-probe-reference` exercise native structure, reactive props, refs/attachments and horizontal overflow. Badge, DropdownMenu, Select and Input compositions remain deferred.
 
-The proposed `/card` and `/card-reference` routes compare seven actual dependency-available Card examples at the immutable shadcn pin, plus labeled supplemental probes. Seven native part lifecycle probes cover hydration/ref/attachment cleanup. Missing ToggleGroup, Field/Input, Avatar and icon compositions stay deferred; see [Card scope](../../docs/card.md).
+The landed `/card` and `/card-reference` routes compare seven actual dependency-available Card examples at the immutable shadcn pin, plus labeled supplemental probes. Seven native part lifecycle probes cover hydration/ref/attachment cleanup. Missing ToggleGroup, Field/Input, Avatar and icon compositions stay deferred; see [Card scope](../../docs/card.md).
 
 `/label` and `/label-reference` compare the bounded With Textarea example; `/label-probe` and `/label-probe-reference` exercise native association/focus, exact selectors, reactive props and paired SSR/hydration. See [Label scope](../../docs/label.md); full Field/Example and Checkbox/Input/Disabled compositions remain deferred.
 
