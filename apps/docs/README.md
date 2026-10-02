@@ -1,6 +1,6 @@
 # Local documentation and examples
 
-This private SvelteKit app previews the bounded, unpublished Sveltery UI Dialog, Button and native Textarea and Skeleton. Start with the [SvelteKit installation/copy guide](../../docs/installation.md) for an independent consumer, the [Dialog API](../../docs/dialog.md) for adaptations, and [readiness gates](../../docs/readiness.md) for limits and review requirements.
+This private SvelteKit app previews the bounded, unpublished Sveltery UI Dialog, Button and native Textarea, Skeleton and Kbd/KbdGroup. Start with the [SvelteKit installation/copy guide](../../docs/installation.md) for an independent consumer, the [Dialog API](../../docs/dialog.md) for adaptations, and [readiness gates](../../docs/readiness.md) for limits and review requirements.
 
 ## Run locally
 
@@ -50,3 +50,5 @@ The installation check extracts the exact scaffold from the guide, installs two 
 `/textarea` previews five native Textarea states and form/binding probes; `/textarea-reference` executes the pinned React wrapper in the paired native scaffold. See [Textarea scope/provenance](../../docs/textarea.md).
 
 `/skeleton` and `/skeleton-reference` execute the [bounded Skeleton examples](../../docs/skeleton.md), with avatar, text, form and table-shaped selections. Card composition remains deferred.
+
+`/kbd` and `/kbd-reference` execute the [bounded Kbd/KbdGroup examples](../../docs/kbd.md). InputGroup, Tooltip and icon compositions remain deferred.

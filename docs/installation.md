@@ -267,3 +267,7 @@ Run `pnpm install` to update the consumer lockfile, then repeat the frozen insta
 ### Native Skeleton
 
 Import `Skeleton` from `@sveltery/ui/skeleton` (also exported at the root) using the same reviewed archive. For source copies, copy `registry/bases/base/ui/skeleton` beside `shared/classes.js`, retain the MIT notices and scan both directories with Tailwind. The shared Nova CSS includes `.cn-skeleton`; consumer theme tokens must include the scaffold's existing `--color-muted` mapping and radius tokens. The [feature contract](skeleton.md) documents native div props, snippets, bindable refs and attachments, plus deferred Card composition. The fresh consumer gate adds a native Skeleton route to both archive and source-copy modes before experimental remote-field configuration.
+
+### Native Kbd and KbdGroup
+
+Import `Kbd` and `KbdGroup` from `@sveltery/ui/kbd` or the root of the same reviewed archive. For source copies, copy `registry/bases/base/ui/kbd` beside `shared/classes.js`, retain the notices and scan both directories. The existing Nova/theme scaffold supplies the muted/background/radius tokens. Both leaves render `kbd`, including KbdGroup despite the React source's div prop annotation. They display keys without adding keyboard listeners or shortcut execution. See [Kbd scope](kbd.md); InputGroup/Tooltip/icon composition is deferred. Fresh archive/source-copy gates execute the route's SSR/hydration, reactive declarations and ref/attachment cleanup before remote-field opt-ins.

@@ -35,6 +35,11 @@
       "types": "./dist/skeleton/index.d.ts",
       "svelte": "./dist/skeleton/index.js",
       "default": "./dist/skeleton/index.js"
+    },
+    "./kbd": {
+      "types": "./dist/kbd/index.d.ts",
+      "svelte": "./dist/kbd/index.js",
+      "default": "./dist/kbd/index.js"
     }
   },
   "svelte": "./dist/index.js",
