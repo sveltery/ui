@@ -8,7 +8,7 @@ pnpm --filter @sveltery/ui pack --pack-destination "$consumer_directory"
 mkdir -p "$consumer_directory/node_modules/@sveltery/ui" "$consumer_directory/node_modules/@sveltery/base"
 tar -xzf "$consumer_directory/sveltery-ui-0.0.0.tgz" --strip-components=1 -C "$consumer_directory/node_modules/@sveltery/ui"
 tar -xzf .vendor/sveltery-base-0.0.0.tgz --strip-components=1 -C "$consumer_directory/node_modules/@sveltery/base"
-for dependency in svelte clsx tailwind-merge class-variance-authority; do
+for dependency in svelte clsx tailwind-merge class-variance-authority jsdom; do
   ln -s "$sveltery_repo_root/node_modules/$dependency" "$consumer_directory/node_modules/$dependency"
 done
 cmp packages/ui/LICENSE "$consumer_directory/node_modules/@sveltery/ui/LICENSE"
@@ -38,6 +38,7 @@ cat > "$consumer_directory/check.mjs" <<'JS'
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { render } from 'svelte/server';
+import { JSDOM } from 'jsdom';
 import Consumer from './Consumer.svelte';
 import * as Root from '@sveltery/ui';
 import * as Parts from '@sveltery/ui/dialog';
@@ -73,7 +74,8 @@ for (const html of [first, second]) {
   assert(html.includes('SSR fallback label'));
   assert.match(html, /<textarea[^>]*data-slot="textarea"[^>]*name="notes"[^>]*>SSR &amp; draft<\/textarea>/);
   assert(html.includes('cn-textarea'));
-  assert.match(html, /<div[^>]*data-slot="skeleton"[^>]*data-probe="skeleton"[^>]*><\/div>/);
+  const nativeSkeleton = new JSDOM(html).window.document.querySelector('[data-probe=skeleton]');
+  assert.equal(nativeSkeleton.tagName, 'DIV'); assert.equal(nativeSkeleton.getAttribute('data-slot'), 'skeleton'); assert.equal(nativeSkeleton.textContent, '');
   assert(html.includes('cn-skeleton'));
   assert(html.includes('role="button"'));
   assert.match(html, /<button[^>]*name="save"[^>]*class="[^"]*px-6/);
