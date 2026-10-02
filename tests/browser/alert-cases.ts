@@ -51,11 +51,11 @@ export async function alertNativeAssertions(page: Page) {
 export function alertLifecycleCases(route = '/alert-probe') {
   test('native Alert parts retain SSR identity; undefined/null refs and attachments replace and clean up', async ({ page, request }) => {
     const html = await (await request.get(route)).text(); expect(html).toContain('data-hydrated="false"'); expect(new JSDOM(html).window.document.querySelector('#probe-alert')?.getAttribute('title')).toBe('Initial & <alert>');
-    const errors: string[] = []; page.on('pageerror', error => { errors.push(error.message); console.log('ALERT_PAGEERROR_DIAGNOSTIC', JSON.stringify({ message: error.message, stack: error.stack })); });
-    page.on('console', message => { if (message.type() === 'error') { errors.push(message.text()); console.log('ALERT_CONSOLE_DIAGNOSTIC', JSON.stringify({ message: message.text(), location: message.location() })); } });
-    page.on('requestfailed', request => console.log('ALERT_REQUESTFAILED_DIAGNOSTIC', JSON.stringify({ url: request.url(), type: request.resourceType(), failure: request.failure() })));
-    page.on('response', response => { if (!response.ok()) console.log('ALERT_RESPONSE_DIAGNOSTIC', JSON.stringify({ url: response.url(), status: response.status(), type: response.request().resourceType(), contentType: response.headers()['content-type'] })); });
+    const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
+    page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
     await page.goto(route); await expect(page.locator('[data-alert-probe]')).toHaveAttribute('data-hydrated', 'true');
+    // Complete the warm-up module requests before the identity navigation can cancel them.
+    await page.waitForLoadState('networkidle');
     let release!: () => void; const gate = new Promise<void>(resolve => { release = resolve; });
     await page.route('**/*', async requestRoute => { if (requestRoute.request().resourceType() === 'script') await gate; await requestRoute.continue(); });
     try {

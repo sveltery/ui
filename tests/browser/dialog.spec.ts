@@ -50,10 +50,14 @@ test('SSR/hydration preserves trigger IDs and mounts initially open content with
 test('Nova animation holds exit presence, removes it after completion and cancels stale close on reopen', async ({ page }) => {
   await page.goto('/dialog'); await expect(page.locator('[data-hydrated=true]')).toBeVisible(); await page.getByTestId('trigger').click(); const popup = page.getByRole('dialog'); await expect(popup).toBeVisible();
   await expect.poll(() => popup.evaluate(node => getComputedStyle(node).animationDuration)).toBe('0.1s');
-  const exiting = await page.getByTestId('owner-close').evaluate((node: HTMLButtonElement) => {
-    node.click(); return new Promise(resolve => requestAnimationFrame(() => { const popup = document.querySelector('[data-slot=dialog-content]')!; resolve({ connected: popup.isConnected, closed: popup.hasAttribute('data-closed'), animations: popup.getAnimations().length, overlay: !!document.querySelector('[data-slot=dialog-overlay][data-closed]') }); }));
-  });
-  expect(exiting).toMatchObject({ connected: true, closed: true, overlay: true }); expect((exiting as { animations: number }).animations).toBeGreaterThan(0);
+  // Hold the real Nova animation while observing it; a delayed frame can outlast its 100ms duration.
+  const exitControl = await page.addStyleTag({ content: '[data-slot="dialog-content"], [data-slot="dialog-overlay"] { animation-play-state: paused !important; }' });
+  try {
+    const exiting = await page.getByTestId('owner-close').evaluate((node: HTMLButtonElement) => {
+      node.click(); return new Promise(resolve => requestAnimationFrame(() => { const popup = document.querySelector('[data-slot=dialog-content]')!; const style = getComputedStyle(popup); resolve({ connected: popup.isConnected, closed: popup.hasAttribute('data-closed'), name: style.animationName, duration: style.animationDuration, animations: popup.getAnimations().length, paused: popup.getAnimations().every(animation => animation.playState === 'paused'), overlay: !!document.querySelector('[data-slot=dialog-overlay][data-closed]') }); }));
+    });
+    expect(exiting).toMatchObject({ connected: true, closed: true, overlay: true, name: 'exit', duration: '0.1s', paused: true }); expect((exiting as { animations: number }).animations).toBeGreaterThan(0);
+  } finally { await exitControl.evaluate(node => node.remove()); }
   await expect(popup).toHaveCount(0); await expect(page.locator('[data-slot=dialog-overlay]')).toHaveCount(0);
   await page.getByTestId('trigger').press('Enter'); await expect(popup).toBeVisible();
   await page.getByTestId('owner-close').evaluate((node: HTMLButtonElement) => { node.click(); requestAnimationFrame(() => (document.querySelector('[data-testid=reopen]') as HTMLButtonElement).click()); });
