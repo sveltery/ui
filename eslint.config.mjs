@@ -6,5 +6,5 @@ export default [
   { ignores: ['**/node_modules/**', '**/dist/**', '**/.svelte-kit/**', '**/build/**', '.checks/**', '.vendor/**', 'test-results/**', 'playwright-report/**', 'tests/reference/dialog.tsx', 'tests/reference/button.tsx', 'tests/reference/textarea.tsx', 'tests/reference/textarea-example.tsx'] },
   js.configs.recommended, ...ts.configs.recommended, ...svelte.configs['flat/recommended'],
   { languageOptions: { globals: { ...globals.node, ...globals.browser } }, rules: { '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }] } },
-  { files: ['**/*.svelte', '**/*.svelte.ts'], languageOptions: { parserOptions: { parser: ts.parser } } },
+  { files: ['**/*.svelte', '**/*.svelte.ts'], languageOptions: { parserOptions: { parser: ts.parser } }, rules: { 'svelte/no-at-const-tags': 'error' } },
 ];
