@@ -7,6 +7,7 @@ test('immutable Alert wrapper, complete examples and scoped Nova retain byte-exa
   assert.equal(pin.commit, 'd75a96ab781f3d659be1ad287347d5887ce9f2fc'); assert.equal(pin.files.length, 3);
   for (const file of pin.files) assert.equal(createHash('sha256').update(readFileSync(file.local)).digest('hex'), file.sha256);
   assert.equal(pin.files[2].range, '19-42 (Alert section only)');
+  assert(readFileSync('apps/docs/registry/styles/style-nova.css', 'utf8').includes(readFileSync('tests/reference/alert-nova.css', 'utf8').trimEnd()));
   assert(readFileSync('tests/reference/LICENSE', 'utf8').includes('Copyright (c) 2023 shadcn'));
 });
 test('Basic function is byte-exact inside an explicitly native Example scaffold; missing compositions stay deferred', () => {
