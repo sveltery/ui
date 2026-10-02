@@ -1145,5 +1145,36 @@
       "turbo.json"
     ]
   },
-  "credit_boundary": "This inventory is provenance data, not executable copied tests. shadcn wrapper/source-derived probes, copied shadcn test assertions, separately pinned Base UI conformance suites and local framework supplements must retain separate credit and expectation provenance."
+  "credit_boundary": "This inventory is provenance data, not executable copied tests. shadcn wrapper/source-derived probes, copied shadcn test assertions, separately pinned Base UI conformance suites and local framework supplements must retain separate credit and expectation provenance.",
+  "react_runtime_registry_scope": [
+    {
+      "component": "MessageScroller",
+      "registry_source": "apps/v4/registry/bases/base/ui/message-scroller.tsx",
+      "registry_blob": "37268f119d3298c7c428bda0751c2af32f0ada9e",
+      "primitive_import": "@shadcn/react/message-scroller",
+      "required_project_scope": true,
+      "implementation_status": "unimplemented",
+      "upstream_test_port_status": "unported",
+      "test_sources": [
+        "packages/react/src/message-scroller/geometry.test.ts",
+        "packages/react/src/message-scroller/message-scroller.test.tsx",
+        "packages/react/src/message-scroller/message-scroller.browser.test.tsx",
+        "packages/react/src/message-scroller/message-scroller.perf.browser.test.tsx"
+      ]
+    },
+    {
+      "component": "Questionnaire",
+      "registry_source": "apps/v4/registry/bases/base/ui/questionnaire.tsx",
+      "registry_blob": "59de4ea25facd1a4514a192eb08d6fe7987ca14e",
+      "primitive_import": "@shadcn/react/questionnaire",
+      "required_project_scope": true,
+      "implementation_status": "unimplemented",
+      "upstream_test_port_status": "unported",
+      "test_sources": [
+        "packages/react/src/questionnaire/questionnaire.test.tsx",
+        "packages/react/src/questionnaire/questionnaire-ssr.test.tsx",
+        "packages/react/src/questionnaire/questionnaire.browser.test.tsx"
+      ]
+    }
+  ]
 }
