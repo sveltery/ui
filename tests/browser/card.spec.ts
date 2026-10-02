@@ -5,8 +5,12 @@ cardConsumerCases();
 async function measurements(page: Page) {
   return page.locator('[data-gallery] [data-slot]').evaluateAll(nodes => nodes.map(node => {
     const s = getComputedStyle(node); const rect = node.getBoundingClientRect();
+    // Svelte retains whitespace between component tags; compare visible text chunks rather than their serialization.
+    const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT); const parts: string[] = [];
+    let textNode: Node | null;
+    while ((textNode = walker.nextNode())) { const text = textNode.textContent?.replace(/\s+/g, ' ').trim(); if (text) parts.push(text); }
     return {
-      tag: node.tagName, slot: node.getAttribute('data-slot'), size: node.getAttribute('data-size'), text: node.textContent?.replace(/\s+/g, ' ').trim(),
+      tag: node.tagName, slot: node.getAttribute('data-slot'), size: node.getAttribute('data-size'), text: parts.join(' '),
       width: rect.width, height: rect.height, display: s.display, spacing: s.getPropertyValue('--card-spacing'), padding: s.padding, margin: s.margin,
       gap: s.gap, borderWidth: s.borderWidth, borderStyle: s.borderStyle, borderColor: s.borderColor, radius: s.borderRadius, shadow: s.boxShadow,
       background: s.backgroundColor, color: s.color, fontFamily: s.fontFamily, fontSize: s.fontSize, fontWeight: s.fontWeight, lineHeight: s.lineHeight,
