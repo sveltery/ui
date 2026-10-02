@@ -55,6 +55,11 @@
       "types": "./dist/label/index.d.ts",
       "svelte": "./dist/label/index.js",
       "default": "./dist/label/index.js"
+    },
+    "./aspect-ratio": {
+      "types": "./dist/aspect-ratio/index.d.ts",
+      "svelte": "./dist/aspect-ratio/index.js",
+      "default": "./dist/aspect-ratio/index.js"
     }
   },
   "svelte": "./dist/index.js",

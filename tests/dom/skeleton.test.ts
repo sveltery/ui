@@ -19,7 +19,7 @@ it('immutable Skeleton sources, unchanged selected example bodies and scoped Nov
   for (const file of [...pin.files, pin.license]) expect(createHash('sha256').update(readFileSync(file.local)).digest('hex')).toBe(file.sha256);
   const full = readFileSync('tests/reference/skeleton-example.tsx', 'utf8');
   const selected = readFileSync('tests/reference/skeleton-selected-examples.tsx', 'utf8');
-  for (const name of ['Avatar', 'Text', 'Form', 'Table']) {
+  for (const name of ['Avatar', 'Card', 'Text', 'Form', 'Table']) {
     const start = full.indexOf(`function Skeleton${name}()`); const end = full.indexOf('\nfunction ', start + 1);
     expect(selected).toContain(full.slice(start, end < 0 ? undefined : end).trimEnd());
   }
@@ -52,11 +52,20 @@ it('undefined ref, symbol attachment, children, native events and reactive decla
   component.show(); await tick(); expect(component.snapshot().ref).not.toBe(host); expect(component.snapshot().attached).toBe(2);
   await unmount(component); mounted.pop(); expect(component.snapshot().ref).toBeNull(); expect(component.snapshot().detached).toBe(2);
 });
-it('bounded examples preserve actual pinned avatar/text/form/table native structure and classes', async () => {
+it('bounded examples preserve actual pinned avatar/card/text/form/table native structure and classes', async () => {
   const node = target(); mounted.push(mount(Example, { target: node })); await tick();
   const reference = document.createElement('section'); reference.innerHTML = renderToStaticMarkup(createElement(SkeletonGallery));
   function tree(root: Element) { return [...root.children].map(section => ({ title: section.querySelector('h2')?.textContent, descendants: [...section.querySelectorAll('*')].map(child => ({ tag: child.tagName, class: child.getAttribute('class'), slot: child.getAttribute('data-slot'), text: child.tagName === 'H2' ? child.textContent : null })) })); }
   expect(tree(node.querySelector('[data-gallery]')!)).toEqual(tree(reference.querySelector('[data-gallery]')!));
-  expect(node.querySelectorAll('[data-slot=skeleton]')).toHaveLength(21);
+  expect(node.querySelectorAll('[data-slot=skeleton]')).toHaveLength(24);
+  expect(node.querySelectorAll('[data-slot]')).toHaveLength(28);
+  const card = node.querySelector('[data-slot=card]')!;
+  expect(card.tagName).toBe('DIV'); expect(card.className).toBe('cn-card group/card flex flex-col w-full'); expect(card.getAttribute('data-size')).toBe('default');
+  expect([...card.children].map(child => child.getAttribute('data-slot'))).toEqual(['card-header', 'card-content']);
+  expect([...card.querySelectorAll('[data-slot=skeleton]')].map(child => ({ tag: child.tagName, class: child.className, text: child.textContent }))).toEqual([
+    { tag: 'DIV', class: 'cn-skeleton animate-pulse h-4 w-2/3', text: '' },
+    { tag: 'DIV', class: 'cn-skeleton animate-pulse h-4 w-1/2', text: '' },
+    { tag: 'DIV', class: 'cn-skeleton animate-pulse aspect-square w-full', text: '' },
+  ]);
   expect(node.querySelectorAll('input, button, table, [role]')).toHaveLength(0);
 });
