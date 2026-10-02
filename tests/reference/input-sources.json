@@ -1,0 +1,21 @@
+{
+  "commit": "d75a96ab781f3d659be1ad287347d5887ce9f2fc",
+  "files": [
+    {
+      "upstream": "apps/v4/registry/bases/base/ui/input.tsx",
+      "local": "tests/reference/input.tsx",
+      "sha256": "00213ec177e4556e69b6680128c18023d859a8e4eaf4106fbcf6abdc4f2c419b"
+    },
+    {
+      "upstream": "apps/v4/registry/bases/base/examples/input-example.tsx",
+      "local": "tests/reference/input-example.tsx",
+      "sha256": "f77f44d96b1f4e268191fff736a2daa7884bd3d04ffb63fa6f9dbb821da3cdd2"
+    },
+    {
+      "upstream": "apps/v4/registry/styles/style-nova.css",
+      "local": "tests/reference/input-nova.css",
+      "sha256": "80e463233087007c236f4fe6fefcafb5b7cc9a4962774616cb4cc281c25a5f59",
+      "range": "677-680 (Input section only)"
+    }
+  ]
+}
