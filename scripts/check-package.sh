@@ -19,6 +19,7 @@ cat > "$consumer_directory/Consumer.svelte" <<'SVELTE'
   import * as Parts from '@sveltery/ui/dialog';
   import { Button, buttonVariants } from '@sveltery/ui/button';
   import { Textarea } from '@sveltery/ui/textarea';
+  import { Label } from '@sveltery/ui/label';
   import { Skeleton } from '@sveltery/ui/skeleton';
   import { Kbd, KbdGroup } from '@sveltery/ui/kbd';
   import { Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption } from '@sveltery/ui/table';
@@ -30,6 +31,7 @@ cat > "$consumer_directory/Consumer.svelte" <<'SVELTE'
 {/snippet}
 <Card size="sm" data-probe="card"><CardHeader><CardTitle>Title</CardTitle><CardDescription>Description</CardDescription><CardAction>Action</CardAction></CardHeader><CardContent>Content</CardContent><CardFooter>Footer</CardFooter></Card>
 <KbdGroup data-probe="kbd-group"><Kbd data-probe="kbd">Ctrl &amp; K</Kbd></KbdGroup>
+<Label data-probe="label" for="consumer-message">Message &amp; notes</Label>
 <Skeleton data-probe="skeleton" class="h-4 w-32" />
 <Table data-probe="native-table"><TableCaption>Consumer ledger</TableCaption><TableHeader><TableRow><TableHead scope="col">Invoice</TableHead><TableHead scope="col">Amount</TableHead></TableRow></TableHeader><TableBody><TableRow><TableCell rowspan={2}>INV001</TableCell><TableCell>$250.00</TableCell></TableRow><TableRow><TableCell>$150.00</TableCell></TableRow></TableBody><TableFooter><TableRow><TableCell colspan={2}>Total $400.00</TableCell></TableRow></TableFooter></Table>
 <Textarea name="notes" defaultValue="SSR & draft" rows={6} class="px-6" aria-invalid="true" />
@@ -50,6 +52,7 @@ import * as Root from '@sveltery/ui';
 import * as Parts from '@sveltery/ui/dialog';
 import * as Buttons from '@sveltery/ui/button';
 import * as Textareas from '@sveltery/ui/textarea';
+import * as Labels from '@sveltery/ui/label';
 import * as Skeletons from '@sveltery/ui/skeleton';
 import * as Keys from '@sveltery/ui/kbd';
 import * as Cards from '@sveltery/ui/card';
@@ -61,16 +64,18 @@ const tableNames = ['Table', 'TableHeader', 'TableBody', 'TableFooter', 'TableRo
 assert.deepEqual(Object.keys(Tables).sort(), tableNames.slice().sort());
 for (const name of tableNames) assert.equal(Root[name], Tables[name]);
 const names = ['Dialog', 'DialogClose', 'DialogContent', 'DialogDescription', 'DialogFooter', 'DialogHeader', 'DialogOverlay', 'DialogPortal', 'DialogTitle', 'DialogTrigger'];
-assert.deepEqual(Object.keys(Root).sort(), [...names, ...tableNames, ...cardNames, 'Button', 'buttonVariants', 'variants', 'sizes', 'Textarea', 'Skeleton', 'Kbd', 'KbdGroup'].sort());
+assert.deepEqual(Object.keys(Root).sort(), [...names, ...tableNames, ...cardNames, 'Button', 'buttonVariants', 'variants', 'sizes', 'Textarea', 'Label', 'Skeleton', 'Kbd', 'KbdGroup'].sort());
 assert.deepEqual(Object.keys(Buttons).sort(), ['Button', 'buttonVariants', 'sizes', 'variants']);
 assert.deepEqual(Object.keys(Parts).sort(), names);
+assert.deepEqual(Object.keys(Labels), ['Label']);
+assert.equal(Root.Label, Labels.Label);
 assert.deepEqual(Object.keys(Textareas), ['Textarea']);
 assert.equal(Root.Textarea, Textareas.Textarea);
 assert.deepEqual(Object.keys(Skeletons), ['Skeleton']);
 assert.equal(Root.Skeleton, Skeletons.Skeleton);
 assert.deepEqual(Object.keys(Keys).sort(), ['Kbd', 'KbdGroup']);
 assert.equal(Root.Kbd, Keys.Kbd); assert.equal(Root.KbdGroup, Keys.KbdGroup);
-for (const path of ['table/index.d.ts', ...tableNames.map(name => `table/${name}.svelte.d.ts`), 'index.d.ts', 'dialog/index.d.ts', 'button/index.d.ts', 'button/Button.svelte.d.ts', 'button/types.d.ts', 'textarea/index.d.ts', 'textarea/Textarea.svelte.d.ts', 'skeleton/index.d.ts', 'skeleton/Skeleton.svelte.d.ts', 'kbd/index.d.ts', 'kbd/Kbd.svelte.d.ts', 'kbd/KbdGroup.svelte.d.ts', 'kbd/types.d.ts', 'card/index.d.ts', 'card/types.d.ts', ...cardNames.map(name => `card/${name}.svelte.d.ts`), ...names.map(name => `dialog/${name}.svelte.d.ts`)]) {
+for (const path of ['table/index.d.ts', ...tableNames.map(name => `table/${name}.svelte.d.ts`), 'label/index.d.ts', 'label/Label.svelte.d.ts', 'index.d.ts', 'dialog/index.d.ts', 'button/index.d.ts', 'button/Button.svelte.d.ts', 'button/types.d.ts', 'textarea/index.d.ts', 'textarea/Textarea.svelte.d.ts', 'skeleton/index.d.ts', 'skeleton/Skeleton.svelte.d.ts', 'kbd/index.d.ts', 'kbd/Kbd.svelte.d.ts', 'kbd/KbdGroup.svelte.d.ts', 'kbd/types.d.ts', 'card/index.d.ts', 'card/types.d.ts', ...cardNames.map(name => `card/${name}.svelte.d.ts`), ...names.map(name => `dialog/${name}.svelte.d.ts`)]) {
   assert(readFileSync(new URL(`./node_modules/@sveltery/ui/dist/${path}`, import.meta.url), 'utf8').length > 0);
 }
 const first = render(Consumer).body;
@@ -91,6 +96,12 @@ for (const html of [first, second]) {
   assert(html.includes('SSR fallback label'));
   assert.match(html, /<textarea[^>]*data-slot="textarea"[^>]*name="notes"[^>]*>SSR &amp; draft<\/textarea>/);
   assert(html.includes('cn-textarea'));
+  const nativeLabel = new JSDOM(html).window.document.querySelector('[data-probe=label]');
+  assert.equal(nativeLabel.tagName, 'LABEL');
+  assert.equal(nativeLabel.htmlFor, 'consumer-message');
+  assert.equal(nativeLabel.textContent, 'Message & notes');
+  assert.equal(nativeLabel.getAttribute('data-slot'), 'label');
+  assert(nativeLabel.classList.contains('cn-label'));
   const nativeTable = new JSDOM(html).window.document.querySelector('[data-probe=native-table]');
   assert.equal(nativeTable.tagName, 'TABLE');
   assert.equal(nativeTable.parentElement.getAttribute('data-slot'), 'table-container');
@@ -118,7 +129,8 @@ assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file:/
 assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-kbd-group'));
 assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-table-container'));
 assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-card-footer'));
-console.log('Isolated Table plus Card and existing UI tarball: Dialog, Button, Textarea, Skeleton, Kbd and Card root/subpath exports, SSR, IDs, absent portals, CSS, declarations and notices PASS');
+assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-label'));
+console.log('Isolated Label, Table plus Card and existing UI tarball: Dialog, Button, Textarea, Skeleton, Kbd and Card root/subpath exports, SSR, IDs, absent portals, CSS, declarations and notices PASS');
 JS
 node --import "$sveltery_repo_root/scripts/svelte-ssr-loader.mjs" "$consumer_directory/check.mjs"
 cat > "$consumer_directory/types.ts" <<'TS'
@@ -163,5 +175,6 @@ void [root, trigger, popup, footer, portal, overlay, badStyle, badVariant, butto
 TS
 sed 's#../apps/docs/registry/bases/base/ui/table/index.js#@sveltery/ui/table#' tests/types-table.ts > "$consumer_directory/table-types.ts"
 sed 's#../apps/docs/registry/bases/base/ui/card/index.js#@sveltery/ui/card#' tests/card-types.ts > "$consumer_directory/card-types.ts"
-node "$sveltery_repo_root/node_modules/typescript/bin/tsc" --noEmit --strict --skipLibCheck --moduleResolution Bundler --module ESNext --target ES2022 --lib ES2022,DOM,DOM.Iterable "$consumer_directory/types.ts" "$consumer_directory/table-types.ts" "$consumer_directory/card-types.ts"
+sed 's#../apps/docs/registry/bases/base/ui/label/index.js#@sveltery/ui/label#' tests/label-types.ts > "$consumer_directory/label-types.ts"
+node "$sveltery_repo_root/node_modules/typescript/bin/tsc" --noEmit --strict --skipLibCheck --moduleResolution Bundler --module ESNext --target ES2022 --lib ES2022,DOM,DOM.Iterable "$consumer_directory/types.ts" "$consumer_directory/table-types.ts" "$consumer_directory/label-types.ts" "$consumer_directory/card-types.ts"
 echo 'Isolated packaged public type assertions: PASS'

@@ -15,6 +15,7 @@
     "../../apps/docs/registry/bases/base/ui/**/*",
     "../../tests/types.ts",
     "../../tests/types-table.ts",
-    "../../tests/card-types.ts"
+    "../../tests/card-types.ts",
+    "../../tests/label-types.ts"
   ]
 }

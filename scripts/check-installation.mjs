@@ -22,7 +22,7 @@ try {
   run('pnpm', ['--filter', '@sveltery/ui', 'build'], repo);
   run('pnpm', ['--filter', '@sveltery/ui', 'pack', '--pack-destination', artifacts], repo);
   cpSync(join(repo, '.vendor/sveltery-base-0.0.0.tgz'), join(artifacts, 'sveltery-base-0.0.0.tgz'));
-  for (const path of ['apps/docs/registry/bases/base/ui/dialog', 'apps/docs/registry/bases/base/ui/button', 'apps/docs/registry/bases/base/ui/textarea', 'apps/docs/registry/bases/base/ui/skeleton', 'apps/docs/registry/bases/base/ui/kbd', 'apps/docs/registry/bases/base/ui/table', 'apps/docs/registry/bases/base/ui/card', 'apps/docs/registry/bases/base/ui/shared', 'apps/docs/registry/styles/style-nova.css', 'packages/ui/LICENSE', 'packages/ui/THIRD_PARTY_NOTICES.md']) {
+  for (const path of ['apps/docs/registry/bases/base/ui/dialog', 'apps/docs/registry/bases/base/ui/button', 'apps/docs/registry/bases/base/ui/textarea', 'apps/docs/registry/bases/base/ui/skeleton', 'apps/docs/registry/bases/base/ui/kbd', 'apps/docs/registry/bases/base/ui/table', 'apps/docs/registry/bases/base/ui/card', 'apps/docs/registry/bases/base/ui/label', 'apps/docs/registry/bases/base/ui/shared', 'apps/docs/registry/styles/style-nova.css', 'packages/ui/LICENSE', 'packages/ui/THIRD_PARTY_NOTICES.md']) {
     const destination = join(temporary, 'sveltery-ui', path);
     mkdirSync(dirname(destination), { recursive: true });
     cpSync(join(repo, path), destination, { recursive: true });
@@ -81,6 +81,14 @@ try {
     writeFileSync(cardRoute, readFileSync(join(repo, 'scripts/card-consumer.svelte'), 'utf8'));
     const cardTypes = readFileSync(join(repo, 'tests/card-types.ts'), 'utf8').replace('../apps/docs/registry/bases/base/ui/card/index.js', mode === 'copy' ? '$lib/components/ui/card' : '@sveltery/ui/card');
     writeFileSync(join(consumer, 'src/routes/card-types.ts'), cardTypes);
+    for (const [route, source] of [['label', 'apps/docs/examples/base/LabelExample.svelte'], ['label-probe', 'apps/docs/examples/base/LabelProbe.svelte']]) {
+      const routePath = join(consumer, `src/routes/${route}/+page.svelte`);
+      mkdirSync(dirname(routePath), { recursive: true });
+      let content = readFileSync(join(repo, source), 'utf8');
+      if (mode === 'copy') content = content.replaceAll('@sveltery/ui/label', '$lib/components/ui/label').replaceAll('@sveltery/ui/textarea', '$lib/components/ui/textarea');
+      writeFileSync(routePath, content);
+    }
+    writeFileSync(join(consumer, 'src/routes/label-types.ts'), readFileSync(join(repo, 'tests/label-types.ts'), 'utf8').replace('../apps/docs/registry/bases/base/ui/label/index.js', mode === 'copy' ? '$lib/components/ui/label' : '@sveltery/ui/label'));
     const consumerManifestPath = join(consumer, 'package.json');
     const consumerManifest = JSON.parse(readFileSync(consumerManifestPath, 'utf8'));
     consumerManifest.dependencies['class-variance-authority'] = '0.7.1';
@@ -96,6 +104,7 @@ try {
       cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/table'), join(consumer, 'src/lib/components/ui/table'), { recursive: true });
       cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/card'), join(consumer, 'src/lib/components/ui/card'), { recursive: true });
       writeFileSync(cardRoute, readFileSync(cardRoute, 'utf8').replaceAll('@sveltery/ui/card', '$lib/components/ui/card'));
+      cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/label'), join(consumer, 'src/lib/components/ui/label'), { recursive: true });
       run('bash', ['-euo', 'pipefail', '-c', copyCommands], consumer);
       const manifestPath = join(consumer, 'package.json');
       const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
