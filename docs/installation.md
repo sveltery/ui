@@ -291,3 +291,7 @@ Import `Kbd` and `KbdGroup` from `@sveltery/ui/kbd` or the root of the same revi
 ### Native Card parts
 
 Import the seven native div parts from `@sveltery/ui/card` or the root of the same reviewed archive. For source copies, copy `registry/bases/base/ui/card` beside `shared/classes.js`, keep the notices and scan both directories. The scaffold now maps `--color-card` and `--color-card-foreground` to light consumer theme tokens. [Card scope](card.md) records `default`/`sm` sizes, native refs and attachments, seven actual examples and five deferred compositions. Archive/source-copy gates exercise all seven parts, SSR/hydration, reactive updates and cleanup.
+
+### Native Label
+
+Import the single `Label` export from `@sveltery/ui/label` or the root of the same reviewed archive. Use Svelte `for` with a matching native control `id`; `bind:ref` exposes the native label. For source copies, copy `registry/bases/base/ui/label` beside `shared/classes.js`, retain the notices and scan both directories. Nova includes `.cn-label` and the separate opt-in `.cn-label-aria` rule. The [Label contract](label.md) records exact disabled styling selectors and the bounded With Textarea example's native Field/Example scaffold substitution; Checkbox/Input/Disabled compositions remain deferred. Both consumer modes exercise actual Label code/CSS, SSR/hydration, trusted association/focus, reactive props and refs/attachments before remote-field opt-ins.
