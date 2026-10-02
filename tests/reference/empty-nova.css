@@ -1,0 +1,32 @@
+  /* MARK: Empty */
+  .cn-empty {
+    @apply gap-4 rounded-xl border-dashed p-6;
+  }
+
+  .cn-empty-header {
+    @apply gap-2;
+  }
+
+  .cn-empty-media {
+    @apply mb-2;
+  }
+
+  .cn-empty-media-default {
+    @apply bg-transparent;
+  }
+
+  .cn-empty-media-icon {
+    @apply bg-muted text-foreground flex size-8 shrink-0 items-center justify-center rounded-lg [&_svg:not([class*='size-'])]:size-4;
+  }
+
+  .cn-empty-title {
+    @apply text-sm font-medium tracking-tight;
+  }
+
+  .cn-empty-description {
+    @apply text-sm/relaxed;
+  }
+
+  .cn-empty-content {
+    @apply gap-2.5 text-sm;
+  }

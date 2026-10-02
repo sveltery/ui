@@ -22,7 +22,7 @@ try {
   run('pnpm', ['--filter', '@sveltery/ui', 'build'], repo);
   run('pnpm', ['--filter', '@sveltery/ui', 'pack', '--pack-destination', artifacts], repo);
   cpSync(join(repo, '.vendor/sveltery-base-0.0.0.tgz'), join(artifacts, 'sveltery-base-0.0.0.tgz'));
-  for (const path of ['apps/docs/registry/bases/base/ui/dialog', 'apps/docs/registry/bases/base/ui/button', 'apps/docs/registry/bases/base/ui/textarea', 'apps/docs/registry/bases/base/ui/skeleton', 'apps/docs/registry/bases/base/ui/kbd', 'apps/docs/registry/bases/base/ui/table', 'apps/docs/registry/bases/base/ui/card', 'apps/docs/registry/bases/base/ui/label', 'apps/docs/registry/bases/base/ui/aspect-ratio', 'apps/docs/registry/bases/base/ui/shared', 'apps/docs/registry/styles/style-nova.css', 'packages/ui/LICENSE', 'packages/ui/THIRD_PARTY_NOTICES.md']) {
+  for (const path of ['apps/docs/registry/bases/base/ui/dialog', 'apps/docs/registry/bases/base/ui/button', 'apps/docs/registry/bases/base/ui/textarea', 'apps/docs/registry/bases/base/ui/skeleton', 'apps/docs/registry/bases/base/ui/kbd', 'apps/docs/registry/bases/base/ui/table', 'apps/docs/registry/bases/base/ui/card', 'apps/docs/registry/bases/base/ui/label', 'apps/docs/registry/bases/base/ui/aspect-ratio', 'apps/docs/registry/bases/base/ui/empty', 'apps/docs/registry/bases/base/ui/shared', 'apps/docs/registry/styles/style-nova.css', 'packages/ui/LICENSE', 'packages/ui/THIRD_PARTY_NOTICES.md']) {
     const destination = join(temporary, 'sveltery-ui', path);
     mkdirSync(dirname(destination), { recursive: true });
     cpSync(join(repo, path), destination, { recursive: true });
@@ -95,6 +95,12 @@ try {
     if (mode === 'copy') aspectRatioFixture = aspectRatioFixture.replaceAll('@sveltery/ui/aspect-ratio', '$lib/components/ui/aspect-ratio');
     writeFileSync(aspectRatioRoute, aspectRatioFixture);
     writeFileSync(join(consumer, 'src/routes/aspect-ratio-types.ts'), readFileSync(join(repo, 'tests/aspect-ratio-types.ts'), 'utf8').replace('../apps/docs/registry/bases/base/ui/aspect-ratio/index.js', mode === 'copy' ? '$lib/components/ui/aspect-ratio' : '@sveltery/ui/aspect-ratio'));
+    const emptyRoute = join(consumer, 'src/routes/empty-probe/+page.svelte');
+    mkdirSync(dirname(emptyRoute), { recursive: true });
+    let emptyFixture = readFileSync(join(repo, 'apps/docs/examples/base/EmptyProbe.svelte'), 'utf8');
+    if (mode === 'copy') emptyFixture = emptyFixture.replaceAll('@sveltery/ui/empty', '$lib/components/ui/empty');
+    writeFileSync(emptyRoute, emptyFixture);
+    writeFileSync(join(consumer, 'src/routes/empty-types.ts'), readFileSync(join(repo, 'tests/empty-types.ts'), 'utf8').replace('../apps/docs/registry/bases/base/ui/empty/index.js', mode === 'copy' ? '$lib/components/ui/empty' : '@sveltery/ui/empty'));
     const consumerManifestPath = join(consumer, 'package.json');
     const consumerManifest = JSON.parse(readFileSync(consumerManifestPath, 'utf8'));
     consumerManifest.dependencies['class-variance-authority'] = '0.7.1';
@@ -112,6 +118,7 @@ try {
       writeFileSync(cardRoute, readFileSync(cardRoute, 'utf8').replaceAll('@sveltery/ui/card', '$lib/components/ui/card'));
       cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/label'), join(consumer, 'src/lib/components/ui/label'), { recursive: true });
       cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/aspect-ratio'), join(consumer, 'src/lib/components/ui/aspect-ratio'), { recursive: true });
+      cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/empty'), join(consumer, 'src/lib/components/ui/empty'), { recursive: true });
       run('bash', ['-euo', 'pipefail', '-c', copyCommands], consumer);
       const manifestPath = join(consumer, 'package.json');
       const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));

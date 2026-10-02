@@ -60,6 +60,11 @@
       "types": "./dist/aspect-ratio/index.d.ts",
       "svelte": "./dist/aspect-ratio/index.js",
       "default": "./dist/aspect-ratio/index.js"
+    },
+    "./empty": {
+      "types": "./dist/empty/index.d.ts",
+      "svelte": "./dist/empty/index.js",
+      "default": "./dist/empty/index.js"
     }
   },
   "svelte": "./dist/index.js",
