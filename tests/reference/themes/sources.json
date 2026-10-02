@@ -76,6 +76,16 @@
       "upstream": "apps/v4/registry/config.test.ts",
       "local": "tests/reference/themes/upstream/config.test.ts.source",
       "sha256": "eb3f4f997de7eb47c6e653493bb2cc51e6b1a531a857414f1644ab50709e6065"
+    },
+    {
+      "upstream": "packages/shadcn/src/tailwind.css",
+      "local": "tests/reference/themes/upstream/shadcn-tailwind.css",
+      "sha256": "4c371f7a1ff5d219ae2f7ff28bd256b4346fd546fe46fbae22092e57db2f0fae"
+    },
+    {
+      "upstream": "apps/v4/app/legacy-themes.css",
+      "local": "tests/reference/themes/upstream/legacy-themes.css",
+      "sha256": "b53f086328b730f0330d1d0eee6301564811511fa38cdbd3832db55ee3e32f85"
     }
   ]
 }

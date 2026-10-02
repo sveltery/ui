@@ -7,7 +7,7 @@ import { THEMES, baseColors, buildThemeForPreset, DEFAULT_CONFIG, generatedAsset
 test('pinned modern themes and all original styles retain exact source hashes', () => {
   const pin = JSON.parse(readFileSync('tests/reference/themes/sources.json', 'utf8'));
   assert.equal(pin.commit, 'd75a96ab781f3d659be1ad287347d5887ce9f2fc');
-  assert.equal(pin.files.length, 15);
+  assert.equal(pin.files.length, 17);
   for (const file of pin.files) assert.equal(createHash('sha256').update(readFileSync(file.local)).digest('hex'), file.sha256, file.upstream);
   assert.equal(styles.length, 8); assert.equal(THEMES.length, 24); assert.equal(baseColors.length, 7);
   for (const [path, expected] of generatedAssets()) assert.equal(readFileSync(path, 'utf8'), expected, path);
@@ -26,4 +26,13 @@ test('every complete base plus permitted accent merges exact light/dark records'
     const base = THEMES.find(record => record.name === baseColor);
     for (const mode of ['light', 'dark']) assert.deepEqual(actual.cssVars[mode], { ...base.cssVars[mode], ...theme.cssVars[mode] });
   }
+});
+
+test('independent browser source app imports full original styles without production CSS or compatibility reset', () => {
+  const original = readFileSync('tests/reference/themes/upstream/globals.css', 'utf8');
+  assert.equal(readFileSync('tests/reference/themes/upstream/globals.reference.css', 'utf8'), original.replace('@import "shadcn/tailwind.css";', '@import "./shadcn-tailwind.css";'));
+  const reference = readFileSync('tests/reference/themes/reference-app/reference.css', 'utf8');
+  for (const style of styles) assert(reference.includes(`@import "../upstream/style-${style}.css" layer(components);`));
+  assert(reference.includes('@import "../upstream/globals.reference.css";'));
+  assert(!reference.includes('@sveltery/ui')); assert(!reference.includes('revert-layer'));
 });

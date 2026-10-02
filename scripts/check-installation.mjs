@@ -22,7 +22,7 @@ try {
   run('pnpm', ['--filter', '@sveltery/ui', 'build'], repo);
   run('pnpm', ['--filter', '@sveltery/ui', 'pack', '--pack-destination', artifacts], repo);
   cpSync(join(repo, '.vendor/sveltery-base-0.0.0.tgz'), join(artifacts, 'sveltery-base-0.0.0.tgz'));
-  for (const path of ['apps/docs/registry/bases/base/ui/dialog', 'apps/docs/registry/bases/base/ui/button', 'apps/docs/registry/bases/base/ui/textarea', 'apps/docs/registry/bases/base/ui/skeleton', 'apps/docs/registry/bases/base/ui/kbd', 'apps/docs/registry/bases/base/ui/table', 'apps/docs/registry/bases/base/ui/card', 'apps/docs/registry/bases/base/ui/label', 'apps/docs/registry/bases/base/ui/alert', 'apps/docs/registry/bases/base/ui/aspect-ratio', 'apps/docs/registry/bases/base/ui/empty', 'apps/docs/registry/bases/base/ui/shared', 'apps/docs/registry/styles/style-nova.css', 'packages/ui/LICENSE', 'packages/ui/THIRD_PARTY_NOTICES.md']) {
+  for (const path of ['apps/docs/registry/bases/base/ui/dialog', 'apps/docs/registry/bases/base/ui/button', 'apps/docs/registry/bases/base/ui/textarea', 'apps/docs/registry/bases/base/ui/skeleton', 'apps/docs/registry/bases/base/ui/kbd', 'apps/docs/registry/bases/base/ui/table', 'apps/docs/registry/bases/base/ui/card', 'apps/docs/registry/bases/base/ui/label', 'apps/docs/registry/bases/base/ui/alert', 'apps/docs/registry/bases/base/ui/aspect-ratio', 'apps/docs/registry/bases/base/ui/empty', 'apps/docs/registry/bases/base/ui/shared', 'apps/docs/registry/styles', 'packages/ui/LICENSE', 'packages/ui/THIRD_PARTY_NOTICES.md']) {
     const destination = join(temporary, 'sveltery-ui', path);
     mkdirSync(dirname(destination), { recursive: true });
     cpSync(join(repo, path), destination, { recursive: true });
@@ -71,7 +71,13 @@ try {
       mkdirSync(dirname(routePath), { recursive: true });
       let content = readFileSync(join(repo, source), 'utf8');
       if (mode === 'copy') content = content.replaceAll('@sveltery/ui/table', '$lib/components/ui/table');
-      writeFileSync(routePath, content);
+      if (route === 'table') {
+        const fixture = readFileSync(join(repo, 'apps/docs/src/routes/table/+page.svelte'), 'utf8').replace('../../../examples/base/TableExample.svelte', './TableExample.svelte');
+        writeFileSync(routePath, fixture);
+        writeFileSync(join(dirname(routePath), 'TableExample.svelte'), content);
+      } else {
+        writeFileSync(routePath, content);
+      }
     }
     const tableTypesPath = join(consumer, 'src/routes/table-types.ts');
     const tableTypes = readFileSync(join(repo, 'tests/types-table.ts'), 'utf8').replace('../apps/docs/registry/bases/base/ui/table/index.js', mode === 'copy' ? '$lib/components/ui/table' : '@sveltery/ui/table');
@@ -109,6 +115,11 @@ try {
     if (mode === 'copy') emptyFixture = emptyFixture.replaceAll('@sveltery/ui/empty', '$lib/components/ui/empty');
     writeFileSync(emptyRoute, emptyFixture);
     writeFileSync(join(consumer, 'src/routes/empty-types.ts'), readFileSync(join(repo, 'tests/empty-types.ts'), 'utf8').replace('../apps/docs/registry/bases/base/ui/empty/index.js', mode === 'copy' ? '$lib/components/ui/empty' : '@sveltery/ui/empty'));
+    const themeRoute = join(consumer, 'src/routes/themes/+page.svelte');
+    mkdirSync(dirname(themeRoute), { recursive: true });
+    let themeFixture = readFileSync(join(repo, 'apps/docs/examples/base/ThemeExample.svelte'), 'utf8');
+    if (mode === 'copy') themeFixture = themeFixture.replaceAll('@sveltery/ui/', '$lib/components/ui/');
+    writeFileSync(themeRoute, themeFixture);
     const consumerManifestPath = join(consumer, 'package.json');
     const consumerManifest = JSON.parse(readFileSync(consumerManifestPath, 'utf8'));
     consumerManifest.dependencies['class-variance-authority'] = '0.7.1';
@@ -134,7 +145,7 @@ try {
       delete manifest.dependencies['@sveltery/ui'];
       writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
       const cssPath = join(consumer, 'src/app.css');
-      writeFileSync(cssPath, readFileSync(cssPath, 'utf8').replace('@sveltery/ui/nova.css', './lib/styles/nova.css').replace('../node_modules/@sveltery/ui/dist', './lib/components/ui'));
+      writeFileSync(cssPath, readFileSync(cssPath, 'utf8').replace('@sveltery/ui/nova.css', './lib/styles/nova.css').replace('@sveltery/ui/themes.css', './lib/styles/themes.css').replace('@sveltery/ui/styles.css', './lib/styles/styles.css').replace('../node_modules/@sveltery/ui/dist', './lib/components/ui'));
       const pagePath = join(consumer, 'src/routes/+page.svelte');
       writeFileSync(pagePath, readFileSync(pagePath, 'utf8').replace('@sveltery/ui/dialog', '$lib/components/ui/dialog'));
     }

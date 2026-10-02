@@ -135,52 +135,15 @@ Nova is Tailwind input CSS, not a precompiled standalone stylesheet. It imports 
 <!-- consumer-file: src/app.css -->
 ```css
 @import "tailwindcss";
+@import "@sveltery/ui/themes.css";
 @import "@sveltery/ui/nova.css";
+@import "@sveltery/ui/styles.css";
 @source "../node_modules/@sveltery/ui/dist";
-@theme inline {
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-destructive: var(--destructive);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-}
-:root {
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --radius: 0.625rem;
-}
 body { margin: 0; background: var(--background); color: var(--foreground); font-family: Arial, sans-serif; }
 .cn-font-heading { font-family: inherit; }
 ```
 
-These are the light theme tokens needed by the current Nova Dialog/native-close subset. Match the variable mappings and values when adapting your theme. Adding a `.dark` class alone does not define a dark palette. The heading utility deliberately inherits the app font.
+The [modern theme and style assets](themes.md) provide the exact pinned Neutral light/dark palette, all seven complete bases and seventeen accent overlays. The default unscoped Nova retains historical geometry. Opt into genuine scoped geometry with `class="style-nova"` on `html`; select a complete base and optional accent on that same root (for example `class="style-maia theme-zinc theme-blue dark"`). Put `.dark` on `html` to apply the actual palette and class-based dark selectors, including portaled Dialog content. Media preference alone does not select dark mode. The heading utility inherits the app font; fonts and complete gallery parity remain outside this slice.
 
 #### `src/routes/+layout.svelte`
 
@@ -256,6 +219,9 @@ mkdir -p src/lib/components/ui src/lib/styles
 cp -R ../sveltery-ui/apps/docs/registry/bases/base/ui/dialog src/lib/components/ui/
 cp -R ../sveltery-ui/apps/docs/registry/bases/base/ui/shared src/lib/components/ui/
 cp ../sveltery-ui/apps/docs/registry/styles/style-nova.css src/lib/styles/nova.css
+cp ../sveltery-ui/apps/docs/registry/styles/themes.css src/lib/styles/themes.css
+cp ../sveltery-ui/apps/docs/registry/styles/styles.css src/lib/styles/styles.css
+cp -R ../sveltery-ui/apps/docs/registry/styles/scoped src/lib/styles/
 cp ../sveltery-ui/packages/ui/LICENSE src/lib/components/ui/LICENSE
 cp ../sveltery-ui/packages/ui/THIRD_PARTY_NOTICES.md src/lib/components/ui/THIRD_PARTY_NOTICES.md
 ```
@@ -263,14 +229,14 @@ cp ../sveltery-ui/packages/ui/THIRD_PARTY_NOTICES.md src/lib/components/ui/THIRD
 Make these three edits:
 
 1. In `package.json`, remove the `@sveltery/ui` dependency. Keep the verified Base archive, Svelte, `clsx`, `tailwind-merge`, Tailwind and `tw-animate-css` dependencies.
-2. In `src/app.css`, replace `@import "@sveltery/ui/nova.css";` with `@import "./lib/styles/nova.css";` and replace the installed-package `@source` line with `@source "./lib/components/ui";`.
+2. In `src/app.css`, replace `@import "@sveltery/ui/nova.css";` with `@import "./lib/styles/nova.css";` replace `@import "@sveltery/ui/themes.css";` and `@import "@sveltery/ui/styles.css";` with imports from `./lib/styles/themes.css` and `./lib/styles/styles.css`, and replace the installed-package `@source` line with `@source "./lib/components/ui";`.
 3. In `src/routes/+page.svelte`, import the same names from `$lib/components/ui/dialog`. The broader Tailwind source path also scans `shared/classes.js`, which supplies native close-button utility classes.
 
 Run `pnpm install` to update the consumer lockfile, then repeat the frozen install, checks, build and browser instructions. The copied wrappers still depend on Base; copying them does not vendor its behavior implementation. Keep the source SHA and notices with your copy, including when redistributing it. Review local modifications and upstream updates explicitly. See [Dialog API adaptations](dialog.md) for controlled state, render snippets, native events and the remaining focus/compatibility limits.
 
 ## Native Table
 
-The same reviewed archive exports the eight [native Table components](table.md) at `@sveltery/ui/table` and the root. Their fixed container provides horizontal scrolling; attributes, native events and `bind:ref` belong to the inner table. Keep Nova and Tailwind scanning configured as above. Only Basic, Footer and Simple examples are implemented; Badge, DropdownMenu, Select and Input compositions remain deferred.
+The same reviewed archive exports the eight [native Table components](table.md) at `@sveltery/ui/table` and the root. Their fixed container provides horizontal scrolling; attributes, native events and `bind:ref` belong to the inner table. Keep Nova and Tailwind scanning configured as above. Basic, Footer, Simple and the dependency-free With Badges body are implemented; its six badge-shaped elements are literal native spans. DropdownMenu, Select and Input compositions remain deferred. Native Example/ExampleWrapper scaffold is still a bounded substitution.
 
 For an app-owned Table copy, retain the `table` directory alongside the shared helper and notices from the same selected checkout:
 

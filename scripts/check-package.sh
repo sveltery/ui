@@ -176,6 +176,15 @@ assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file:/
 assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-label'));
 assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-alert-action'));
 assert(readFileSync(import.meta.resolve('@sveltery/ui/nova.css').replace('file://', ''), 'utf8').includes('.cn-empty-media-icon'));
+for (const style of ['vega', 'nova', 'maia', 'lyra', 'mira', 'luma', 'sera', 'rhea']) {
+  const css = readFileSync(import.meta.resolve(`@sveltery/ui/styles/${style}.css`).replace('file://', ''), 'utf8');
+  assert(css.includes(`.style-${style}`)); assert(css.includes('.cn-dialog-content')); assert(css.includes('.cn-textarea'));
+}
+assert(readFileSync(import.meta.resolve('@sveltery/ui/styles.css').replace('file://', ''), 'utf8').includes('./scoped/rhea.css'));
+const themes = readFileSync(import.meta.resolve('@sveltery/ui/themes.css').replace('file://', ''), 'utf8');
+assert(themes.includes('@custom-variant dark (&:is(.dark *))'));
+assert(themes.includes('.theme-taupe')); assert(themes.includes('.theme-yellow'));
+assert(themes.includes('--background: oklch(0.145 0 0)'));
 console.log('Isolated Alert, Empty, AspectRatio, Label, Table plus Card and existing UI tarball: Dialog, Button, Textarea, Skeleton, Kbd and Card root/subpath exports, SSR, IDs, absent portals, CSS, declarations and notices PASS');
 JS
 node --import "$sveltery_repo_root/scripts/svelte-ssr-loader.mjs" "$consumer_directory/check.mjs"

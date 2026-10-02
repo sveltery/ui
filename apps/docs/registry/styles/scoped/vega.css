@@ -1,7 +1,19 @@
 /* Derived from shadcn-ui/ui d75a96ab781f3d659be1ad287347d5887ce9f2fc; MIT: packages/ui/THIRD_PARTY_NOTICES.md. */
 @import "tw-animate-css";
+@custom-variant style-vega (&:where(.style-vega *));
+@layer base {
+  .style-vega * { @apply border-border outline-ring/50; }
+}
 @layer components {
+.style-vega :where(.cn-alert, .cn-alert-variant-default, .cn-alert-variant-destructive, .cn-alert-title, .cn-alert-description, .cn-alert-action, .cn-button, .cn-button-variant-default, .cn-button-variant-outline, .cn-button-variant-secondary, .cn-button-variant-ghost, .cn-button-variant-destructive, .cn-button-variant-link, .cn-button-size-xs, .cn-button-size-sm, .cn-button-size-default, .cn-button-size-lg, .cn-button-size-icon-xs, .cn-button-size-icon-sm, .cn-button-size-icon, .cn-button-size-icon-lg, .cn-card, .cn-card-header, .cn-card-title, .cn-card-description, .cn-card-content, .cn-card-footer, .cn-dialog-overlay, .cn-dialog-content, .cn-dialog-close, .cn-dialog-header, .cn-dialog-footer, .cn-dialog-title, .cn-dialog-description, .cn-empty, .cn-empty-header, .cn-empty-media, .cn-empty-media-default, .cn-empty-media-icon, .cn-empty-title, .cn-empty-description, .cn-empty-content, .cn-kbd, .cn-kbd-group, .cn-label, .cn-label-aria, .cn-skeleton, .cn-table-container, .cn-table, .cn-table-header, .cn-table-body, .cn-table-footer, .cn-table-row, .cn-table-row-aria, .cn-table-head, .cn-table-head-aria, .cn-table-cell, .cn-table-cell-aria, .cn-table-caption, .cn-textarea) { all: revert-layer; }
 .style-vega {
+  --ui-radius-sm: calc(var(--radius) * 0.6);
+  --ui-radius-md: calc(var(--radius) * 0.8);
+  --ui-radius-lg: calc(var(--radius) * 1);
+  --ui-radius-xl: calc(var(--radius) * 1.4);
+  --ui-radius-2xl: calc(var(--radius) * 1.8);
+  --ui-radius-3xl: calc(var(--radius) * 2.2);
+  --ui-radius-4xl: calc(var(--radius) * 2.6);
   /* MARK: Alert */
   .cn-alert {
     @apply grid gap-0.5 rounded-lg border px-4 py-3 text-left text-sm has-data-[slot=alert-action]:relative has-data-[slot=alert-action]:pr-18 has-[>svg]:grid-cols-[auto_1fr] has-[>svg]:gap-x-2.5 *:[svg]:row-span-2 *:[svg]:translate-y-0.5 *:[svg]:text-current *:[svg:not([class*='size-'])]:size-4;

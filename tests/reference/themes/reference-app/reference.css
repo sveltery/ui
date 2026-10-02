@@ -1,0 +1,13 @@
+/* Isolated reference document: full byte-exact pinned styles in the component layer (caller utility precedence), original globals with one package-import path substitution. */
+@import "../upstream/globals.reference.css";
+@import "../upstream/style-vega.css" layer(components);
+@import "../upstream/style-nova.css" layer(components);
+@import "../upstream/style-maia.css" layer(components);
+@import "../upstream/style-lyra.css" layer(components);
+@import "../upstream/style-mira.css" layer(components);
+@import "../upstream/style-luma.css" layer(components);
+@import "../upstream/style-sera.css" layer(components);
+@import "../upstream/style-rhea.css" layer(components);
+@source "../../";
+/* Explicit shared consumer shell/font input; component declarations remain upstream originals. */
+body { margin: 0; font-family: Arial, sans-serif; }

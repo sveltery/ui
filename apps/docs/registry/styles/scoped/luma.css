@@ -1,7 +1,19 @@
 /* Derived from shadcn-ui/ui d75a96ab781f3d659be1ad287347d5887ce9f2fc; MIT: packages/ui/THIRD_PARTY_NOTICES.md. */
 @import "tw-animate-css";
+@custom-variant style-luma (&:where(.style-luma *));
+@layer base {
+  .style-luma * { @apply border-border outline-ring/50; }
+}
 @layer components {
+.style-luma :where(.cn-button, .cn-button-variant-default, .cn-button-variant-outline, .cn-button-variant-secondary, .cn-button-variant-ghost, .cn-button-variant-destructive, .cn-button-variant-link, .cn-button-size-xs, .cn-button-size-sm, .cn-button-size-default, .cn-button-size-lg, .cn-button-size-icon-xs, .cn-button-size-icon-sm, .cn-button-size-icon, .cn-button-size-icon-lg, .cn-textarea, .cn-card, .cn-card-header, .cn-card-title, .cn-card-description, .cn-card-content, .cn-card-footer, .cn-alert, .cn-alert-variant-default, .cn-alert-variant-destructive, .cn-alert-title, .cn-alert-description, .cn-alert-action, .cn-dialog-overlay, .cn-dialog-content, .cn-dialog-close, .cn-dialog-header, .cn-dialog-footer, .cn-dialog-title, .cn-dialog-description, .cn-kbd, .cn-kbd-group, .cn-label, .cn-label-aria, .cn-skeleton, .cn-table-container, .cn-table, .cn-table-header, .cn-table-body, .cn-table-footer, .cn-table-row, .cn-table-row-aria, .cn-table-head, .cn-table-head-aria, .cn-table-cell, .cn-table-cell-aria, .cn-table-caption, .cn-empty, .cn-empty-header, .cn-empty-media, .cn-empty-media-default, .cn-empty-media-icon, .cn-empty-title, .cn-empty-description, .cn-empty-content) { all: revert-layer; }
 .style-luma {
+  --ui-radius-sm: calc(var(--radius) * 0.6);
+  --ui-radius-md: calc(var(--radius) * 0.8);
+  --ui-radius-lg: calc(var(--radius) * 1);
+  --ui-radius-xl: calc(var(--radius) * 1.4);
+  --ui-radius-2xl: calc(var(--radius) * 1.8);
+  --ui-radius-3xl: calc(var(--radius) * 2.2);
+  --ui-radius-4xl: calc(var(--radius) * 2.6);
   /* MARK: Button */
   .cn-button {
     @apply focus-visible:border-ring focus-visible:ring-ring/30 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-4xl border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4;

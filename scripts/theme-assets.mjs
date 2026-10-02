@@ -55,7 +55,7 @@ export function buildThemeForPreset(config) {
 
 export function selectStyleSections(name) {
   const source = readFileSync(`${sourceRoot}style-${name}.css`, 'utf8');
-  const markers = [...source.matchAll(/^  \/\* MARK: (.+) \*\/\n/gmu)];
+  const markers = [...source.matchAll(/^ {2}\/\* MARK: (.+) \*\/\n/gmu)];
   return markers.flatMap((marker, index) => {
     if (!components.includes(marker[1])) return [];
     const start = marker.index;
@@ -65,28 +65,34 @@ export function selectStyleSections(name) {
   });
 }
 const declarations = vars => Object.entries(vars).map(([key, value]) => `  --${key}: ${value};\n`).join('');
+const geometry = Object.entries({ sm: 0.6, md: 0.8, lg: 1, xl: 1.4, '2xl': 1.8, '3xl': 2.2, '4xl': 2.6 }).map(([name, factor]) => `  --ui-radius-${name}: calc(var(--radius) * ${factor});\n`).join('');
 const notice = '/* Derived from shadcn-ui/ui d75a96ab781f3d659be1ad287347d5887ce9f2fc; MIT: packages/ui/THIRD_PARTY_NOTICES.md. */\n';
 export function themeCSS() {
   const neutral = buildThemeForPreset(DEFAULT_CONFIG).cssVars;
   const keys = Object.keys(neutral.light).filter(key => key !== 'radius');
-  let css = `${notice}@custom-variant dark (&:is(.dark *));\n@theme inline {\n${keys.map(key => `  --color-${key}: var(--${key});\n`).join('')}  --radius-sm: calc(var(--radius) * 0.6);\n  --radius-md: calc(var(--radius) * 0.8);\n  --radius-lg: var(--radius);\n  --radius-xl: calc(var(--radius) * 1.4);\n  --radius-2xl: calc(var(--radius) * 1.8);\n  --radius-3xl: calc(var(--radius) * 2.2);\n  --radius-4xl: calc(var(--radius) * 2.6);\n}\n:root {\n${declarations(neutral.light)}}\n.dark {\n${declarations(neutral.dark)}}\n`;
+  const radiusScales = { sm: 0.6, md: 0.8, lg: 1, xl: 1.4, '2xl': 1.8, '3xl': 2.2, '4xl': 2.6 };
+  const fallback = { sm: '0.125rem', md: 'calc(var(--radius) - 2px)', lg: 'var(--radius)', xl: '0.75rem', '2xl': '1rem', '3xl': '1.5rem', '4xl': '2rem' };
+  const radiusMappings = Object.keys(radiusScales).map(key => `  --radius-${key}: var(--ui-radius-${key}, ${fallback[key]});\n`).join('');
+  let css = `${notice}@custom-variant dark (&:is(.dark *));\n@theme inline {\n${keys.map(key => `  --color-${key}: var(--${key});\n`).join('')}${radiusMappings}}\n:root {\n${declarations(neutral.light)}}\n.dark {\n${declarations(neutral.dark)}}\n`;
   for (const theme of THEMES) css += `.theme-${theme.name} {\n${declarations(theme.cssVars.light)}}\n.dark.theme-${theme.name}, .dark .theme-${theme.name} {\n${declarations(theme.cssVars.dark)}}\n`;
   return css;
 }
 export function generatedAssets() {
   const assets = new Map([['apps/docs/registry/styles/themes.css', themeCSS()]]);
   const sections = {};
-  let references = `${notice}@layer components {\n`;
+
   for (const name of styles) {
     const chosen = selectStyleSections(name);
     assert.equal(chosen.length, components.length, `Every current component section exists in ${name}`);
     sections[name] = chosen.map(({ css: _css, ...entry }) => entry);
     const body = chosen.map(entry => entry.css).join('');
-    assets.set(`apps/docs/registry/styles/scoped/${name}.css`, `${notice}@import "tw-animate-css";\n@layer components {\n.style-${name} {\n${body}}\n}\n`);
-    references += `.reference-style-${name} {\n${body}}\n`;
+    const selectors = [...new Set([...body.matchAll(/\.cn-[a-z0-9-]+/gu)].map(match => match[0]))].join(', ');
+    const reset = scope => `.${scope} :where(${selectors}) { all: revert-layer; }\n`;
+    assets.set(`apps/docs/registry/styles/scoped/${name}.css`, `${notice}@import "tw-animate-css";\n@custom-variant style-${name} (&:where(.style-${name} *));\n@layer base {\n  .style-${name} * { @apply border-border outline-ring/50; }\n}\n@layer components {\n${reset(`style-${name}`)}.style-${name} {\n${geometry}${body}}\n}\n`);
+
   }
   assets.set('apps/docs/registry/styles/styles.css', `${notice}${styles.map(name => `@import "./scoped/${name}.css";\n`).join('')}${styles.map(name => `@custom-variant style-${name} (&:where(.style-${name} *));\n`).join('')}`);
-  assets.set('tests/reference/themes/reference-styles.css', `${references}}\n`);
+
   assets.set('tests/reference/themes/sections.json', `${JSON.stringify(sections, null, 2)}\n`);
   return assets;
 }
