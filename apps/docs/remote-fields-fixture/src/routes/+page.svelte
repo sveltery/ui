@@ -45,7 +45,7 @@
       <button id="reset" type="reset">Reset</button>
     </form>
   {/if}
-  <button id="mode-default" type="button" onclick={() => mode = 'default'}>Default enhancement</button>
+  <p>Default enhancement is tested on a fresh page. Custom enhancement callbacks remain on this Kit form instance.</p>
   <button id="mode-retain" type="button" onclick={() => mode = 'retain'}>Retain enhancement</button>
   <button id="mode-reset" type="button" onclick={() => mode = 'reset'}>Explicit reset enhancement</button>
   <button id="field-set" type="button" onclick={() => { current.fields.nativeText.set('Individual native'); current.fields.text.set('Individual UI'); }}>Set individual fields</button>

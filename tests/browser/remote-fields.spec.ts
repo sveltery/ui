@@ -43,11 +43,23 @@ test('native reset restores defaults and no-default Textarea and subsequent subm
 });
 
 for (const mode of ['default', 'retain', 'reset'] as const) test(`${mode} enhancement preserves its value/reset contract`, async ({ page }) => {
-  await hydrated(page); await page.locator(`#mode-${mode}`).click(); await edit(page); await page.locator('#ui-submit').click();
+  await hydrated(page); if (mode !== 'default') await page.locator(`#mode-${mode}`).click(); await edit(page); await page.locator('#ui-submit').click();
   await parsed(page, { nativeText: 'Edited native', text: 'Edited UI', emptyText: '', uiAction: 'ui' });
   const native = mode === 'retain' ? 'Edited native' : 'Draft'; const ui = mode === 'retain' ? 'Edited UI' : 'Draft';
   await expect(page.locator('#native-text')).toHaveValue(native); await expect(page.locator('#ui-text')).toHaveValue(ui);
   await page.locator('#ui-submit').click(); await parsed(page, { nativeText: native, text: ui, emptyText: '', uiAction: 'ui' });
+});
+
+test('custom enhancement switches from retain to reset and fresh navigation restores the default callback', async ({ page }) => {
+  await hydrated(page); await page.locator('#mode-retain').click(); await edit(page); await page.locator('#ui-submit').click();
+  await parsed(page, { nativeText: 'Edited native', text: 'Edited UI', emptyText: '', uiAction: 'ui' });
+  await expect(page.locator('#ui-text')).toHaveValue('Edited UI');
+  await page.locator('#mode-reset').click(); await page.locator('#ui-submit').click();
+  await parsed(page, { nativeText: 'Edited native', text: 'Edited UI', emptyText: '', uiAction: 'ui' });
+  await expect(page.locator('#ui-text')).toHaveValue('Draft');
+  await hydrated(page); await edit(page, 'Fresh native', 'Fresh UI'); await page.locator('#ui-submit').click();
+  await parsed(page, { nativeText: 'Fresh native', text: 'Fresh UI', emptyText: '', uiAction: 'ui' });
+  await expect(page.locator('#native-text')).toHaveValue('Draft'); await expect(page.locator('#ui-text')).toHaveValue('Draft');
 });
 
 for (const [id, field, value] of submitters) test(`${id} forwards submit attrs and clears the previous submitter`, async ({ page }) => {
