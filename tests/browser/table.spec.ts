@@ -8,6 +8,39 @@ async function tableSnapshot(page: Page) {
     return snapshot(table);
   });
 }
+test('paired pinned React and Svelte SSR table nodes retain identity and semantics through hydration', async ({ page, context }) => {
+  const reference = await context.newPage();
+  const pairs = [[page, '/table-probe'], [reference, '/table-probe-reference']] as const;
+  const errors: string[] = [];
+  for (const [current] of pairs) {
+    current.on('pageerror', error => errors.push(error.message));
+    current.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+  }
+  // Complete dependency discovery for both harnesses before capturing fresh SSR documents.
+  await Promise.all(pairs.map(async ([current, route]) => { await current.goto(route); await expect(current.locator('[data-table-probe]')).toHaveAttribute('data-hydrated', 'true'); }));
+  let release!: () => void; const gate = new Promise<void>(resolve => { release = resolve; });
+  const selector = '#probe-table, #probe-table caption, #probe-table thead, #probe-table tbody, #probe-table tfoot, #probe-table tr, #probe-table th, #probe-table td';
+  for (const [current] of pairs) await current.route('**/*', async requestRoute => { if (requestRoute.request().resourceType() === 'script') await gate; await requestRoute.continue(); });
+  try {
+    const captured = [];
+    for (const [current, route] of pairs) {
+      await current.goto(route, { waitUntil: 'commit' });
+      await expect(current.locator('[data-table-probe]')).toHaveAttribute('data-hydrated', 'false');
+      const hosts = await current.locator(selector).elementHandles();
+      expect(hosts.length).toBeGreaterThan(8); captured.push({ current, hosts });
+    }
+    expect(captured[0].hosts.length).toBe(captured[1].hosts.length);
+    const before = await tableSnapshot(page); expect(before).toEqual(await tableSnapshot(reference));
+    release();
+    for (const { current, hosts } of captured) {
+      await expect(current.locator('[data-table-probe]')).toHaveAttribute('data-hydrated', 'true');
+      expect(await current.locator(selector).count()).toBe(hosts.length);
+      for (const [index, host] of hosts.entries()) expect(await host.evaluate((node, args) => node.isConnected && node === document.querySelectorAll(args.selector)[args.index], { selector, index })).toBe(true);
+      expect(await tableSnapshot(current)).toEqual(before);
+    }
+    expect(await tableSnapshot(page)).toEqual(await tableSnapshot(reference)); expect(errors).toEqual([]);
+  } finally { release(); await reference.close(); }
+});
 async function measurements(page: Page) {
   return page.locator('[data-table-probe] table, [data-table-probe] caption, [data-table-probe] thead, [data-table-probe] tbody, [data-table-probe] tfoot, [data-table-probe] tr, [data-table-probe] th, [data-table-probe] td, [data-table-probe] [data-slot=table-container]').evaluateAll(nodes => nodes.map(node => {
     const s = getComputedStyle(node); const r = node.getBoundingClientRect();
@@ -16,7 +49,14 @@ async function measurements(page: Page) {
 }
 async function darkTheme(page: Page) {
   // Supplemental theme tokens are identical on both harnesses; not a claimed upstream theme port.
-  await page.evaluate(() => { document.documentElement.classList.add('dark'); for (const [key, value] of Object.entries({ background: 'oklch(0.145 0 0)', foreground: 'oklch(0.985 0 0)', muted: 'oklch(0.269 0 0)', 'muted-foreground': 'oklch(0.708 0 0)', border: 'oklch(0.269 0 0)' })) document.documentElement.style.setProperty(`--${key}`, value); });
+  await page.evaluate(async () => {
+    document.documentElement.classList.add('dark');
+    for (const [key, value] of Object.entries({ background: 'oklch(0.145 0 0)', foreground: 'oklch(0.985 0 0)', muted: 'oklch(0.269 0 0)', 'muted-foreground': 'oklch(0.708 0 0)', border: 'oklch(0.269 0 0)' })) document.documentElement.style.setProperty(`--${key}`, value);
+    // Flush the token mutation before collecting the real row color transitions.
+    await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
+    const table = document.querySelector('#probe-table')!;
+    await Promise.all(table.getAnimations({ subtree: true }).map(animation => animation.finished));
+  });
 }
 for (const width of [1280, 390]) for (const theme of ['light', 'dark']) test(`paired native Table semantics, Nova selectors and overflow at ${width}px ${theme}`, async ({ page, context }, testInfo) => {
   await page.setViewportSize({ width, height: 1100 }); await page.goto('/table-probe'); await expect(page.locator('[data-table-probe]')).toHaveAttribute('data-hydrated', 'true');
