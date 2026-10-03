@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { cardGallerySelector, cardGalleryHosts, cardGalleryHydrated, cardGallerySnapshot, assertCardGalleryScaffold, assertCardGalleryVariants } from '../browser/card-cases';
 const ids = ['consumer-card', 'consumer-card-header', 'consumer-card-title', 'consumer-card-description', 'consumer-card-action', 'consumer-card-content', 'consumer-card-footer'];
 test('fresh seven-part Card archive/source copy preserves SSR hosts, hydration identity and lifecycle', async ({ page, request }) => {
   const html = await (await request.get('/card')).text();
@@ -48,4 +49,30 @@ test('fresh Card Nova styles, small size, class override and native inert semant
     expect(await page.locator('#consumer-card-content').evaluate(node => getComputedStyle(node).paddingLeft)).toBe('24px');
     expect(await page.locator('#consumer-card-footer').evaluate(node => { const css = getComputedStyle(node); return { padding: css.paddingLeft, border: css.borderTopWidth, display: css.display }; })).toEqual({ padding: '12px', border: '1px', display: 'flex' });
   }
+});
+
+// Actual CardExample delivery, separate from the preserved seven-part lifecycle consumer.
+test('fresh seven-Card gallery delivers genuine scaffolds, source variants and all original SSR hosts', async ({ page, request }) => {
+  const html = await (await request.get('/card-gallery')).text(); expect(html).toContain('data-hydrated="false"');
+  for (const slot of ['example-wrapper', 'example', 'example-content']) expect(html).toContain(`data-slot="${slot}"`);
+  const errors: string[] = []; page.on('pageerror', error => errors.push(error.message)); page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+  await page.goto('/card-gallery'); await expect(cardGalleryHydrated(page)).toHaveAttribute('data-hydrated', 'true');
+  let release!: () => void; const gate = new Promise<void>(resolve => { release = resolve; });
+  await page.route('**/*', async route => { if (route.request().resourceType() === 'script') await gate; await route.continue(); });
+  try {
+    await page.goto('/card-gallery', { waitUntil: 'commit' }); await expect(cardGalleryHydrated(page)).toHaveAttribute('data-hydrated', 'false');
+    const hosts = await page.locator(cardGalleryHosts).elementHandles(); expect(hosts).toHaveLength(74);
+    const before = await cardGallerySnapshot(page); release(); await expect(cardGalleryHydrated(page)).toHaveAttribute('data-hydrated', 'true');
+    expect(await page.locator(cardGalleryHosts).count()).toBe(hosts.length);
+    for (const [index, host] of hosts.entries()) expect(await host.evaluate((node, args) => node.isConnected && node === document.querySelectorAll(args.selector)[args.index], { selector: cardGalleryHosts, index })).toBe(true);
+    expect(await cardGallerySnapshot(page)).toEqual(before);
+    for (const width of [390, 640, 768, 1024, 1536]) {
+      await page.setViewportSize({ width, height: 1600 }); await assertCardGalleryScaffold(page, width, 1600);
+    }
+    await assertCardGalleryVariants(page);
+    const examples = page.locator(`${cardGallerySelector} > [data-slot="example"]`); await expect(examples).toHaveCount(7);
+    const edge = examples.nth(2).locator('[data-slot="example-content"] [data-slot="card-content"]'); await expect(edge).toHaveCount(1);
+    expect(await edge.evaluate(node => getComputedStyle(node).paddingLeft)).toBe('0px'); expect(await edge.evaluate(node => getComputedStyle(node).marginBottom)).toBe('-16px');
+    expect(errors).toEqual([]);
+  } finally { release(); }
 });

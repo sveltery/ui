@@ -87,6 +87,14 @@ try {
     const cardRoute = join(consumer, 'src/routes/card/+page.svelte');
     mkdirSync(dirname(cardRoute), { recursive: true });
     writeFileSync(cardRoute, readFileSync(join(repo, 'scripts/card-consumer.svelte'), 'utf8'));
+    // Actual existing gallery, kept separate from the unchanged seven-part lifecycle route.
+    const cardGalleryDirectory = join(consumer, 'src/routes/card-gallery');
+    mkdirSync(cardGalleryDirectory, { recursive: true });
+    let cardGallery = readFileSync(join(repo, 'apps/docs/examples/base/CardExample.svelte'), 'utf8')
+      .replace('../../registry/bases/base/ui/card/index.js', '@sveltery/ui/card');
+    if (mode === 'copy') cardGallery = cardGallery.replaceAll('@sveltery/ui/card', '$lib/components/ui/card').replaceAll('@sveltery/ui/button', '$lib/components/ui/button').replaceAll('@sveltery/ui/example', '$lib/components/ui/example');
+    writeFileSync(join(cardGalleryDirectory, 'CardExample.svelte'), cardGallery);
+    writeFileSync(join(cardGalleryDirectory, '+page.svelte'), `<script lang="ts">import { onMount } from 'svelte'; import CardExample from './CardExample.svelte'; let hydrated = $state(false); onMount(() => { hydrated = true; });</script><main class="p-8" data-hydrated={hydrated}><CardExample /></main>\n`);
     const cardTypes = readFileSync(join(repo, 'tests/card-types.ts'), 'utf8').replace('../apps/docs/registry/bases/base/ui/card/index.js', mode === 'copy' ? '$lib/components/ui/card' : '@sveltery/ui/card');
     writeFileSync(join(consumer, 'src/routes/card-types.ts'), cardTypes);
     for (const [route, source] of [['label', 'apps/docs/examples/base/LabelExample.svelte'], ['label-probe', 'apps/docs/examples/base/LabelProbe.svelte']]) {

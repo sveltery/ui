@@ -1,13 +1,15 @@
 // Paired harness; actual selected example bodies remain unchanged in card-selected-examples.tsx.
 import { useEffect, useState } from 'react';
 import { Button } from './button';
+import { ExampleWrapper } from './example-scaffold';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, CardAction } from './card';
 import { CardDefault, CardSmall, CardContentEdgeToEdge, CardHeaderWithBorder, CardFooterWithBorder, CardHeaderWithBorderSmall, CardFooterWithBorderSmall } from './card-selected-examples';
 export function CardGallery() {
   const [hydrated, setHydrated] = useState(false);
   useEffect(() => { setHydrated(true); }, []);
-  return <div data-hydrated={hydrated}><section data-gallery className="grid gap-6">
+  return <div data-hydrated={hydrated}><ExampleWrapper>
     <CardDefault /><CardSmall /><CardContentEdgeToEdge /><CardHeaderWithBorder /><CardFooterWithBorder /><CardHeaderWithBorderSmall /><CardFooterWithBorderSmall />
+  </ExampleWrapper><section className="grid gap-6">
     {/* Supplemental probes; these are not selected upstream examples. */}
     <section data-supplemental="action"><h2>Supplemental action grid</h2>
       <Card className="mx-auto w-full max-w-sm"><CardHeader><CardTitle>Action grid</CardTitle><CardDescription>Description occupies the second row.</CardDescription><CardAction><Button variant="outline" size="sm">Options</Button></CardAction></CardHeader><CardContent>Supplemental content</CardContent><CardFooter>Supplemental footer</CardFooter></Card>

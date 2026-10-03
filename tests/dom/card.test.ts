@@ -6,6 +6,8 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import * as Reference from '../reference/card';
 import { Card, CardHeader, CardTitle, CardDescription, CardAction, CardContent, CardFooter } from '../../apps/docs/registry/bases/base/ui/card/index.js';
 import Fixture from './CardFixture.svelte';
+import Gallery from '../../apps/docs/examples/base/CardExample.svelte';
+import { CardGallery } from '../reference/CardGallery';
 const parts = { Card, CardHeader, CardTitle, CardDescription, CardAction, CardContent, CardFooter };
 const mounted: ReturnType<typeof mount>[] = [];
 afterEach(async () => { for (const component of mounted.splice(0)) await unmount(component); document.body.replaceChildren(); });
@@ -15,6 +17,23 @@ function attributes(actual: HTMLElement, expected: HTMLElement) {
   expect(actual.getAttributeNames().sort()).toEqual(expected.getAttributeNames().sort());
   for (const name of expected.getAttributeNames()) expect(name === 'style' ? actual.style.cssText : actual.getAttribute(name), name).toBe(name === 'style' ? expected.style.cssText : expected.getAttribute(name));
 }
+it('seven selected galleries retain genuine shell/grid/title/content/native Card/Button trees', async () => {
+  const node = target(); mounted.push(mount(Gallery, { target: node })); await tick();
+  const reference = target(); reference.innerHTML = renderToStaticMarkup(createElement(CardGallery));
+  const selector = '[data-slot="example-wrapper"]';
+  const actual = node.querySelector(selector)!; const expected = reference.querySelector(selector)!;
+  expect(actual).not.toBeNull(); expect(expected).not.toBeNull();
+  const snapshot = (host: Element): unknown => ({ tag: host.tagName, attrs: Object.fromEntries([...host.attributes].map(attr => [attr.name, attr.value]).sort(([a], [b]) => a.localeCompare(b))), text: [...host.childNodes].filter(child => child.nodeType === 3).map(child => child.textContent!.replace(/\s+/gu, ' ').trim()).filter(Boolean), children: [...host.children].map(snapshot) });
+  expect(snapshot(actual.parentElement!)).toEqual(snapshot(expected.parentElement!));
+  expect(actual.parentElement!.className).toBe('w-full bg-muted dark:bg-background');
+  expect(actual.children).toHaveLength(7);
+  expect([...actual.children].map(example => ({ tag: example.tagName, slot: example.getAttribute('data-slot'), titleTag: example.firstElementChild!.tagName, title: example.firstElementChild!.textContent, content: example.lastElementChild!.getAttribute('data-slot') }))).toEqual(['Default Size', 'Small Size', 'Content Edge to Edge', 'Header with Border', 'Footer with Border', 'Header with Border (Small)', 'Footer with Border (Small)'].map(title => ({ tag: 'DIV', slot: 'example', titleTag: 'DIV', title, content: 'example-content' })));
+  expect(actual.querySelectorAll('section,h2,[data-supplemental]')).toHaveLength(0);
+  expect(actual.parentElement!.querySelectorAll('[data-slot]')).toHaveLength(55);
+  expect(actual.querySelectorAll('[data-slot="example-content"] [data-slot]')).toHaveLength(40);
+  expect(actual.parentElement!.querySelectorAll('*').length).toBe(expected.parentElement!.querySelectorAll('*').length);
+  for (const name of ['action', 'override']) expect(snapshot(node.querySelector(`[data-supplemental="${name}"]`)!)).toEqual(snapshot(reference.querySelector(`[data-supplemental="${name}"]`)!));
+});
 for (const [name, Local] of Object.entries(parts)) {
   for (const attrs of [{}, { class: 'block grid grid-cols-3 items-end self-end row-start-3 px-6', 'data-slot': 'custom', title: 'Card & <draft>', 'aria-label': 'Card details', tabIndex: 2, dir: 'rtl' as const, hidden: true, style: 'color: red;' }]) {
     it(`${name} matches pinned native div, classes and spread precedence: ${JSON.stringify(attrs)}`, async () => {

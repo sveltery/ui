@@ -1,9 +1,8 @@
 // Exact selected function bodies from shadcn d75a96ab781f3d659be1ad287347d5887ce9f2fc.
-// MIT attribution: tests/reference/LICENSE. Imports and Example scaffold are harness substitutions.
-import type { ReactNode } from 'react';
+// MIT attribution: tests/reference/LICENSE. Import remapping is harness-only; genuine Example retains original composition.
+import { Example } from './example-scaffold';
 import { Button } from './button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './card';
-function Example({ title, children }: { title: string; children: ReactNode }) { return <section><h2>{title}</h2>{children}</section>; }
 
 export function CardDefault() {
   return (
