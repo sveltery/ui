@@ -69,10 +69,11 @@ test('fresh seven-Card gallery delivers genuine scaffolds, source variants and a
     for (const width of [390, 640, 768, 1024, 1536]) {
       await page.setViewportSize({ width, height: 1600 }); await assertCardGalleryScaffold(page, width, 1600);
     }
-    await assertCardGalleryVariants(page);
     const examples = page.locator(`${cardGallerySelector} > [data-slot="example"]`); await expect(examples).toHaveCount(7);
     const edge = examples.nth(2).locator('[data-slot="example-content"] [data-slot="card-content"]'); await expect(edge).toHaveCount(1);
     expect(await edge.evaluate(node => getComputedStyle(node).paddingLeft)).toBe('0px'); expect(await edge.evaluate(node => getComputedStyle(node).marginBottom)).toBe('-16px');
+    // Keep Nova geometry before the source-selector witness switches to Sera's 32px spacing.
+    await assertCardGalleryVariants(page);
     expect(errors).toEqual([]);
   } finally { release(); }
 });
