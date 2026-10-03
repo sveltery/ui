@@ -73,11 +73,11 @@ test('four original AspectRatio galleries preserve responsive scaffolds, decoded
       for (const current of [page, reference]) await aspectTheme(current, style, dark);
       for (const width of [390, 640, 768, 1024, 1536]) {
         for (const current of [page, reference]) await current.setViewportSize({ width, height: 1600 });
-        await assertAspectGallery(page, width, 1600, style); await assertAspectGallery(reference, width, 1600, style, true);
+        await assertAspectGallery(page, width, 1600, style); await assertAspectGallery(reference, width, 1600, style);
         const actual = await aspectGalleryMeasurements(page); const original = await aspectGalleryMeasurements(reference);
-        // Strictly asserted12px/24px versus14px/22px registered-radius difference
-        // remains the existing unaccepted theme boundary. All other fields compare.
-        expect(actual.map(({ radius: _radius, ...value }) => value)).toEqual(original.map(({ radius: _radius, ...value }) => value));
+        // All explicit scoped styles retain genuine radius factors; historical
+        // unscoped Nova geometry is a separate unchanged environment.
+        expect(actual).toEqual(original);
         expect(actual.filter(node => node.tag === 'IMG').map(node => node.filter)).toEqual(Array(4).fill(dark ? 'grayscale(1) brightness(0.2)' : 'grayscale(1)'));
       }
     }
