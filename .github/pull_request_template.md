@@ -6,6 +6,7 @@ For executable ports, include the source mapping below or link to a tracked cont
 | --- | --- | --- | --- | --- | --- |
 | | | | | | |
 
+- [ ] Change follows the [current target selection](../docs/target-scope.md); excluded source rows receive no implementation credit or automatic port assignment.
 - [ ] Complete original implementation, transitive helpers/dependencies and global/component CSS read before coding.
 - [ ] Genuine available helpers/components and framework-independent packages reused; missing prerequisites remain explicit.
 - [ ] API/behavior/architecture differences recorded with evidence and actual acceptance status; earlier decisions preserved within their scope.

@@ -28,6 +28,8 @@ Use the [upstream differences](docs/upstream-differences.md) as the central inde
 
 ## Source-first implementation workflow
 
+Read the [current target selection](docs/target-scope.md) before interpreting the historical source inventory or choosing work. The separate Command and Sonner entries are excluded from current delivery; selected Toast, Combobox and Drawer follow their actual Base-native originals. Do not introduce a Command facade, cmdk/Sonner/Vaul port or substitute engine for this selection. All other selected families retain their original source contracts and readiness gates.
+
 Before writing executable code:
 
 1. Read the complete original file at the immutable shadcn pin, its transitive internal helpers, external imports, registry metadata and relevant global/component CSS. Read the actual consumed Base API rather than assuming version or API equivalence. Record the source paths, immutable pins and authenticated original bytes.

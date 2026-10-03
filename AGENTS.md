@@ -1,6 +1,6 @@
 # Repository guidance
 
-Read [CONTRIBUTING.md](CONTRIBUTING.md), the pinned source contracts and the [upstream differences](docs/upstream-differences.md) before porting or reviewing changes. Inspect current main and any relevant repository skills before editing. Keep changes focused and preserve upstream attribution.
+Read [CONTRIBUTING.md](CONTRIBUTING.md), the [current target selection](docs/target-scope.md), the pinned source contracts and the [upstream differences](docs/upstream-differences.md) before porting or reviewing changes. Inspect current main and any relevant repository skills before editing. Keep changes focused and preserve upstream attribution.
 
 ## Upstream porting policy
 

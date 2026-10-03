@@ -4,13 +4,15 @@ Audited on October 3, 2026 UTC. This report compares actual landed production co
 
 ## Current selected product scope
 
+The canonical [current target selection](target-scope.md) is separate from the historical source inventory.
+
 Current delivery selects the pinned Base Toast, Combobox and Drawer wrappers over corresponding Sveltery Base primitives. The separate cmdk-backed Command entry and optional Sonner entry are excluded from current delivery, not completed. Vaul is unnecessary for the selected Base Drawer. No Command facade or substitute engine is introduced. All other selected families and their existing React-specific closures remain unchanged.
 
 The immutable source inventory below still records the original families/imports, including Command and Sonner. Those rows describe authenticated source, not authorization to port an excluded engine. Historical 62-entry/373-export and 29-package counts remain intact; current delivery is a separate selection overlay, not a rewrite of original provenance.
 
 ## Verified repair after the audit
 
-The missing support-CSS dependency identified at `db25cb86` has been repaired by [PR #40](https://github.com/sveltery/ui/pull/40), merged as `0c4e1e5be376c7a8d298f0e28d8a8d3b8c1980dd`. Current delivery uses genuine `shadcn` 4.21.1 `tailwind.css`, retains UI `cn` 0.2.2 separately from the original CLI/registry `cn` 0.2.4, and corrects the central Separator interpretation using the complete authenticated CSS environment. [Post-merge CI](https://github.com/sveltery/ui/actions/runs/37088455405) and [Documentation](https://github.com/sveltery/ui/actions/runs/37088455389) passed on that exact merge.
+The missing support-CSS dependency identified at `db25cb86` has been repaired by [PR #40](https://github.com/sveltery/ui/pull/40), merged as `0c4e1e5be376c7a8d298f0e28d8a8d3b8c1980dd`. The [landed CSS contract](shadcn-css.md) records current delivery of genuine `shadcn` 4.21.1 `tailwind.css`, retains UI `cn` 0.2.2 separately from the original CLI/registry `cn` 0.2.4, and corrects the central Separator interpretation using the complete authenticated CSS environment. [Post-merge CI](https://github.com/sveltery/ui/actions/runs/37088455405) and [Documentation](https://github.com/sveltery/ui/actions/runs/37088455389) passed on that exact merge.
 
 Statements below that CSS is missing describe the immutable audited `db25cb86` checkpoint, not present delivery. The original findings, package versions, source hashes and provenance remain unchanged. This subsequent repair does not establish full-library implementation parity or copied ordinary upstream UI test credit; the remaining composition/helper/default-style findings retain their own scope.
 
