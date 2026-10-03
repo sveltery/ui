@@ -4,7 +4,7 @@
   import type { HTMLAttributes, HTMLImgAttributes } from 'svelte/elements';
   import { createAttachmentKey } from 'svelte/attachments';
   import { untrack } from 'svelte';
-  import { Avatar, AvatarImage, AvatarFallback, type AvatarRootState, type AvatarImageState, type AvatarFallbackState } from '@sveltery/ui/avatar';
+  import { Avatar, AvatarImage, AvatarFallback, AvatarGroup, AvatarGroupCount, type AvatarRootState, type AvatarImageState, type AvatarFallbackState } from '@sveltery/ui/avatar';
   let root = $state<HTMLSpanElement>();
   let image = $state<HTMLImageElement>();
   let fallback = $state<HTMLSpanElement>();
@@ -12,10 +12,11 @@
   let error = $state(false);
   let attached = $state(0);
   let cleaned = $state(0);
+  let trace = $state<{ status: string; rootDOMStatus: string | null }[]>([]);
   const attachment = { [createAttachmentKey()]: () => { untrack(() => { attached++; }); return () => { untrack(() => { cleaned++; }); }; } };
 </script>
 {#snippet rootRender(props: Record<string | symbol, unknown>, _state: AvatarRootState, children: Snippet | undefined)}
-  <span {...(props as HTMLAttributes<HTMLSpanElement>)} bind:this={root}>{@render children?.()}</span>
+  <span {...(props as HTMLAttributes<HTMLSpanElement>)} data-root-status={_state.imageLoadingStatus} bind:this={root}>{@render children?.()}</span>
 {/snippet}
 {#snippet imageRender(props: Record<string | symbol, unknown>, _state: AvatarImageState, children: Snippet | undefined)}
   <img {...(props as HTMLImgAttributes)} bind:this={image} />{@render children?.()}
@@ -26,11 +27,16 @@
 <section data-avatar-render-probe>
   {#if shown}
     <Avatar id="render-avatar-root" render={rootRender} {...attachment}>
-      <AvatarImage id="render-avatar-image" src={error ? '/avatar-error.png' : '/avatar-probe.png'} alt="Rendered actual portrait" render={imageRender} {...attachment} />
+      <AvatarImage id="render-avatar-image" src={error ? '/avatar-error.png' : '/avatar-probe.png'} alt="Rendered actual portrait" render={imageRender} {...attachment} onLoadingStatusChange={status => trace.push({ status, rootDOMStatus: root?.dataset.rootStatus ?? null })} />
       <AvatarFallback id="render-avatar-fallback" render={fallbackRender} {...attachment}>Rendered CN</AvatarFallback>
     </Avatar>
   {/if}
   <button onclick={() => { error = !error; }}>Change rendered Avatar source</button>
   <button onclick={() => { shown = !shown; }}>Toggle rendered Avatar</button>
   <output data-testid="avatar-render-state">{JSON.stringify({ refs: [root, image, fallback].map(node => node?.id ?? null), attached, cleaned })}</output>
+  <output data-testid="avatar-callback-trace">{JSON.stringify(trace)}</output>
+</section>
+<section data-avatar-mixed>
+  <AvatarGroup><Avatar size="sm"><AvatarFallback>Small</AvatarFallback></Avatar><Avatar size="lg"><AvatarFallback>Large</AvatarFallback></Avatar><AvatarGroupCount>+3</AvatarGroupCount></AvatarGroup>
+  <Avatar size="sm" data-size="lg"><AvatarFallback>Caller size</AvatarFallback></Avatar>
 </section>

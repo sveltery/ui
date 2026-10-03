@@ -1,7 +1,9 @@
 import { expect, test } from '@playwright/test';
-import { avatarGallery, avatarHosts, avatarStyles, portraitPNG, assertAvatarGallery, assertAvatarLifecycle } from '../browser/avatar-cases';
+import { avatarGallery, avatarHosts, avatarStyles, portraitPNG, assertAvatarGallery, assertAvatarLifecycle, assertAvatarStaleCompletion, assertOriginalAvatarImages } from '../browser/avatar-cases';
 test('fresh actual Avatar gallery retains complete original HTML hosts, hydration and style selectors', async ({ page, context, request }) => {
-  const html = await (await request.get('/avatar')).text(); expect(html).toContain('data-hydrated="false"'); expect(html).toContain('https://github.com/shadcn.png');
+  const html = await (await request.get('/avatar')).text(); expect(html).toContain('data-hydrated="false"');
+  // Genuine Image SSR is absent; exact source URLs/alt/order are asserted on 39 loaded CSR hosts.
+  expect(await page.evaluate(source => { const document = new DOMParser().parseFromString(source, 'text/html'); return { fallback: document.querySelectorAll('[data-slot="avatar-fallback"]').length, image: document.querySelectorAll('[data-slot="avatar-image"]').length }; }, html)).toEqual({ fallback: 48, image: 0 });
   let releaseImages!: () => void; const gate = new Promise<void>(resolve => { releaseImages = resolve; });
   await context.route('https://github.com/*.png', async route => { await gate; await route.fulfill({ status: 200, contentType: 'image/png', body: portraitPNG }); });
   const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
@@ -15,6 +17,7 @@ test('fresh actual Avatar gallery retains complete original HTML hosts, hydratio
     releaseScripts(); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true');
     for (const [index, host] of hosts.entries()) expect(await host.evaluate((node, input) => node.isConnected && node === document.querySelectorAll(input.selector)[input.index], { selector: avatarHosts, index })).toBe(true);
     releaseImages(); await expect(page.locator(`${avatarGallery} img`)).toHaveCount(39); await expect(page.locator(`${avatarGallery} [data-slot="avatar-fallback"]`)).toHaveCount(9);
+    await assertOriginalAvatarImages(page);
     for (const width of [390, 768, 1536]) { await page.setViewportSize({ width, height: 1600 }); await assertAvatarGallery(page, width); }
     for (const style of avatarStyles) for (const dark of [false, true]) {
       await page.evaluate(({ style, dark }) => { document.documentElement.className = `style-${style}${dark ? ' dark' : ''}`; }, { style, dark });
@@ -26,4 +29,7 @@ test('fresh actual Avatar gallery retains complete original HTML hosts, hydratio
 });
 test('fresh six-part Avatar consumer preserves actual decode/cache/error/source and native lifecycle', async ({ page }) => {
   const errors: string[] = []; page.on('pageerror', error => errors.push(error.message)); await assertAvatarLifecycle(page); expect(errors).toEqual([]);
+});
+test('fresh actual image owner suppresses an old valid response after the newer error', async ({ page }) => {
+  const errors: string[] = []; page.on('pageerror', error => errors.push(error.message)); await assertAvatarStaleCompletion(page); expect(errors).toEqual([]);
 });

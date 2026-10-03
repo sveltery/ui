@@ -1,10 +1,41 @@
 // Authored source-derived witnesses; no ordinary pinned styled Avatar runtime suite exists.
 import { expect, type Page } from '@playwright/test';
+import { readFileSync } from 'node:fs';
+import * as ts from 'typescript';
+import { THEMES } from '../../scripts/theme-assets.mjs';
 export const avatarGallery = '[data-slot="example-wrapper"]';
 export const avatarHosts = `div:has(> ${avatarGallery}), ${avatarGallery}, ${avatarGallery} *:not(svg):not(svg *)`;
 export const avatarStyles = ['vega', 'nova', 'maia', 'lyra', 'mira', 'luma', 'sera', 'rhea'];
 export const avatarTitles = ['Sizes', 'Badge', 'Badge with Icon', 'Group', 'Group with Count', 'Group with Icon Count', 'In Empty'];
 export const portraitPNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGP4z8DwHwAFAAH/iZk9HQAAAABJRU5ErkJggg==', 'base64');
+const originalSource = ts.createSourceFile('avatar-example.tsx', readFileSync(new URL('../reference/avatar-example.tsx', import.meta.url), 'utf8'), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+export const avatarOriginalImages: { src: string; alt: string }[] = [];
+function imageSources(node: ts.Node) {
+  if (ts.isJsxSelfClosingElement(node) && node.tagName.getText(originalSource) === 'AvatarImage') {
+    const attribute = (name: string) => {
+      const attr = node.attributes.properties.find(prop => ts.isJsxAttribute(prop) && prop.name.getText(originalSource) === name);
+      if (!attr || !ts.isJsxAttribute(attr) || !attr.initializer || !ts.isStringLiteral(attr.initializer)) throw new Error(`Original Avatar ${name} must be an authenticated literal`);
+      return attr.initializer.text;
+    };
+    avatarOriginalImages.push({ src: attribute('src'), alt: attribute('alt') });
+  }
+  ts.forEachChild(node, imageSources);
+}
+imageSources(originalSource);
+if (avatarOriginalImages.length !== 39) throw new Error('Complete original seven-function source must contain 39 literal images');
+export async function applyAvatarTheme(page: Page, style: string, dark: boolean) {
+  // Direct immutable neutral record input, independent of production theme construction.
+  // Original globals alone have foreground0; the actual neutral preset selects foreground0.145.
+  const source = THEMES.find(record => record.name === 'neutral')!;
+  const tokens = { ...source.cssVars[dark ? 'dark' : 'light'] };
+  await page.evaluate(({ style, dark, tokens }) => {
+    document.documentElement.className = `style-${style}${dark ? ' dark' : ''}`;
+    for (const [name, value] of Object.entries(tokens)) document.documentElement.style.setProperty(`--${name}`, value as string);
+  }, { style, dark, tokens });
+}
+export async function assertOriginalAvatarImages(page: Page) {
+  expect(await page.locator(`${avatarGallery} [data-slot="avatar-image"]`).evaluateAll(nodes => nodes.map(node => ({ src: node.getAttribute('src'), alt: node.getAttribute('alt') })))).toEqual(avatarOriginalImages);
+}
 export async function avatarSnapshot(page: Page) {
   return page.locator(avatarGallery).evaluate(wrapper => {
     const snapshot = (node: Element): unknown => ({ tag: node.tagName, attrs: Object.fromEntries([...node.attributes].map(attr => [attr.name, attr.value]).sort(([a], [b]) => a.localeCompare(b))), text: [...node.childNodes].filter(child => child.nodeType === 3).map(child => child.textContent!.replace(/\s+/gu, ' ').trim()).filter(Boolean), children: [...node.children].map(snapshot) });
@@ -35,6 +66,26 @@ export async function assertAvatarGallery(page: Page, width: number) {
 }
 export async function avatarState(page: Page) {
   return JSON.parse(await page.getByTestId('avatar-state').innerText()) as { refs: (string | null)[]; attached: number; cleaned: number; statuses: string[]; clicks: string[] };
+}
+export async function assertAvatarStaleCompletion(page: Page) {
+  // OLD valid completion after NEW invalid completion discriminates a stale-owner bug.
+  let release!: () => void; const gate = new Promise<void>(resolve => { release = resolve; });
+  let intercepted = 0;
+  await page.route('**/avatar-second.png', async route => { intercepted++; await gate; await route.fulfill({ status: 200, contentType: 'image/png', body: portraitPNG }); });
+  try {
+    await page.goto('/avatar-probe'); await expect(page.locator('#probe-avatar-1')).toBeVisible();
+    await page.getByRole('button', { name: 'Replace Avatar source', exact: true }).click();
+    await expect.poll(() => intercepted).toBe(1); await expect(page.locator('#probe-avatar-2')).toBeVisible();
+    await page.getByRole('button', { name: 'Fail Avatar source', exact: true }).click();
+    await expect.poll(async () => (await avatarState(page)).statuses.at(-1)).toBe('error');
+    const before = await avatarState(page); const response = page.waitForResponse(value => value.url().endsWith('/avatar-second.png'));
+    release(); await (await response).finished();
+    // Wait genuine rendering turns after the completed old network response, no timers/controller shim.
+    await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
+    expect((await avatarState(page)).statuses).toEqual(before.statuses); await expect(page.locator('#probe-avatar-1')).toHaveCount(0);
+    await expect(page.locator('#probe-avatar-2')).toHaveText('CN <portrait>');
+    expect((await avatarState(page)).refs).toEqual(before.refs);
+  } finally { release(); }
 }
 export async function assertAvatarLifecycle(page: Page) {
   await page.goto('/avatar-probe'); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true');
