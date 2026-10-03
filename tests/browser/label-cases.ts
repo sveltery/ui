@@ -17,7 +17,11 @@ export async function labelNativeAssertions(page: Page) {
     expect(await style(id), id).toEqual({ opacity: '1', pointerEvents: 'auto', cursor: 'default' });
   }
   expect(await style('peer-disabled')).toEqual({ opacity: '0.5', pointerEvents: 'auto', cursor: 'not-allowed' });
-  for (const id of ['aria-data-empty', 'aria-data-false']) expect(await style(id), id).toEqual({ opacity: '0.5', pointerEvents: 'auto', cursor: 'default' });
+  // Genuine shadcn support CSS accepts presence but explicitly excludes false.
+  // The prior presence-only false expectation used an incomplete CSS oracle;
+  // exact full-source secured React/native evidence is retained in PR #40.
+  expect(await style('aria-data-empty')).toEqual({ opacity: '0.5', pointerEvents: 'auto', cursor: 'default' });
+  expect(await style('aria-data-false')).toEqual({ opacity: '1', pointerEvents: 'auto', cursor: 'default' });
   expect(await page.locator('#probe-label').evaluate(node => {
     const css = getComputedStyle(node);
     return { display: css.display, gap: css.gap, fontSize: css.fontSize, fontWeight: css.fontWeight, lineHeight: css.lineHeight, userSelect: css.userSelect, color: css.color };
