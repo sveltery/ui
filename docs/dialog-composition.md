@@ -1,6 +1,6 @@
 # Canonical Dialog composition repair
 
-This proposed repair restores the original shadcn Dialog helper graph in the two existing production wrappers. It does not add a Dialog state machine, change the consumed Base pin, migrate a gallery or establish full-library parity. The [historical audit](source-fidelity-audit.md) remains anchored to UI `db25cb86dd2d8ebbbb78f83b5f6c20cc36cea946`; its original findings and evidence are unchanged.
+This repair, proposed in [PR #43](https://github.com/sveltery/ui/pull/43), restores the original shadcn Dialog helper graph in the two existing production wrappers. It does not add a Dialog state machine, change the consumed Base pin, migrate a gallery or establish full-library parity. The [historical audit](source-fidelity-audit.md) remains anchored to UI `db25cb86dd2d8ebbbb78f83b5f6c20cc36cea946`; its original findings and evidence are unchanged.
 
 ## Immutable source and dependency environment
 

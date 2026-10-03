@@ -9,6 +9,7 @@ import { iconLibraries } from '../../apps/docs/registry/bases/base/ui/icons/inde
 import { loadIcon } from '../../apps/docs/registry/bases/base/ui/icons/data.js';
 import { loadLibrary } from '../reference/icons/load-library';
 const mounted: ReturnType<typeof mount>[] = [];
+const names = { lucide: 'XIcon', tabler: 'IconX', hugeicons: 'Cancel01Icon', phosphor: 'XIcon', remixicon: 'RiCloseLine' };
 async function settle() { await tick(); await new Promise(resolve => setTimeout(resolve, 70)); await tick(); }
 function setup(props: Parameters<typeof Fixture>[1] = {}) {
   const host = document.createElement('div'); document.body.append(host);
@@ -39,21 +40,27 @@ it('both built-in closes use one canonical native Button with original slots, va
   expect(footerClose.textContent?.trim()).toBe('Close');
   expect(popup.querySelector('[data-testid=owner-child]')!.textContent).toBe('Owner content');
 });
-it('Content selects all five original names and matches their genuine React icon geometry', async () => {
+for (const library of iconLibraries) it(`Content selects the original ${library} name and matches its genuine React icon geometry`, async () => {
   const fixture = setup(); await settle();
-  const names = { lucide: 'XIcon', tabler: 'IconX', hugeicons: 'Cancel01Icon', phosphor: 'XIcon', remixicon: 'RiCloseLine' };
+  fixture.setLibrary(library);
+  const [, reference] = await Promise.all([loadIcon(library, names[library]), loadLibrary(library)]); await settle();
+  const svg = fixture.observed().popup!.querySelector('.cn-dialog-close svg')!;
+  expect(svg).not.toBeNull(); expect(svg.getAttribute(library)).toBe(names[library]);
+  expect(svg.querySelector('path, line, rect, circle, polyline, polygon, ellipse, g')).not.toBeNull();
+  expect(svg.hasAttribute('aria-hidden')).toBe(false);
+  expect(svg.classList.contains('lucide-square')).toBe(false);
+  const icon = reference[names[library] as keyof typeof reference];
+  const expected = document.createElement('div');
+  expected.innerHTML = renderToStaticMarkup(createElement(library === 'hugeicons' ? HugeiconsIcon : icon, { ...names, ...(library === 'hugeicons' ? { icon, strokeWidth: 2 } : {}) } as never));
+  expect(geometry(svg), library).toEqual(geometry(expected.querySelector('svg')!));
+});
+it('changing between all five original icon libraries preserves the actual composed Close Button host', async () => {
+  const fixture = setup(); await settle();
+  const close = fixture.observed().popup!.querySelector('.cn-dialog-close')!;
   for (const library of iconLibraries) {
-    fixture.setLibrary(library);
-    const [, reference] = await Promise.all([loadIcon(library, names[library]), loadLibrary(library)]); await settle();
-    const svg = fixture.observed().popup!.querySelector('.cn-dialog-close svg')!;
-    expect(svg).not.toBeNull(); expect(svg.getAttribute(library)).toBe(names[library]);
-    expect(svg.querySelector('path, line, rect, circle, polyline, polygon, ellipse, g')).not.toBeNull();
-    expect(svg.hasAttribute('aria-hidden')).toBe(false);
-    expect(svg.classList.contains('lucide-square')).toBe(false);
-    const icon = reference[names[library] as keyof typeof reference];
-    const expected = document.createElement('div');
-    expected.innerHTML = renderToStaticMarkup(createElement(library === 'hugeicons' ? HugeiconsIcon : icon, { ...names, ...(library === 'hugeicons' ? { icon, strokeWidth: 2 } : {}) } as never));
-    expect(geometry(svg), library).toEqual(geometry(expected.querySelector('svg')!));
+    fixture.setLibrary(library); await loadIcon(library, names[library]); await settle();
+    expect(fixture.observed().popup!.querySelector('.cn-dialog-close')).toBe(close);
+    expect(close.querySelector('svg')!.getAttribute(library)).toBe(names[library]);
   }
 });
 for (const custom of [false, true]) for (const close of ['content', 'footer']) it(`rendered ${close} Button preserves cancellation, one close request, supplied children and attachment cleanup (custom=${custom})`, async () => {
