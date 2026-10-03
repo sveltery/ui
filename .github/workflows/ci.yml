@@ -92,13 +92,23 @@ jobs:
         id: browser-install
         run: bash -c 'source scripts/toolchain.sh; pnpm exec playwright install --with-deps "$SVELTERY_BROWSER_PROJECT"'
       - name: Styled Svelte and pinned React reference acceptance
+        id: main-browser
         if: ${{ !cancelled() && steps.browser-install.outcome == 'success' }}
         run: bash -c 'source scripts/toolchain.sh; pnpm test:browser --project "$SVELTERY_BROWSER_PROJECT"'
+      - name: Preserve main-suite results before fresh consumers
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: ${{ !cancelled() && (steps.main-browser.outcome == 'success' || steps.main-browser.outcome == 'failure') }}
+        with:
+          name: browser-${{ matrix.engine }}-main-results
+          path: test-results/
+          retention-days: 7
       - name: Documented fresh consumers in selected browser
+        id: fresh-browser
         if: ${{ !cancelled() && steps.browser-install.outcome == 'success' }}
         run: bash scripts/check-installation.sh --browser
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        if: failure()
+      - name: Upload fresh-consumer failure artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: ${{ !cancelled() && steps.fresh-browser.outcome == 'failure' }}
         with:
           name: browser-${{ matrix.engine }}-failures
           path: test-results/
