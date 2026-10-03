@@ -38,6 +38,7 @@ test('Avatar complete initial HTML hosts preserve SSR hydration identity while g
   try {
     for (const [current, label] of [[page, 'native'], [original, 'original']] as const) {
       current.on('pageerror', error => errors.push(error.message));
+      current.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
       current.on('request', request => { if (request.resourceType() === 'script') { activeScripts.add(`${label}:${request.url()}`); scriptEvents.push({ page: label, event: 'request', url: request.url() }); } });
       current.on('requestfinished', request => { if (request.resourceType() === 'script') { activeScripts.delete(`${label}:${request.url()}`); scriptEvents.push({ page: label, event: 'finished', url: request.url() }); } });
       current.on('requestfailed', request => { if (request.resourceType() === 'script') { activeScripts.delete(`${label}:${request.url()}`); scriptEvents.push({ page: label, event: 'failed', url: request.url(), error: request.failure()?.errorText }); } });
@@ -68,12 +69,12 @@ test('Avatar complete initial HTML hosts preserve SSR hydration identity while g
 });
 
 test('six-part Avatar preserves native decode/source/error/cache, refs, attachments, overrides and disposal', async ({ page }) => {
-  const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
+  const errors: string[] = []; page.on('pageerror', error => errors.push(error.message)); page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
   await assertAvatarLifecycle(page); expect(errors).toEqual([]);
 });
 
 test('actual old valid image completion cannot replace the newer error/fallback state', async ({ page }) => {
-  const errors: string[] = []; page.on('pageerror', error => errors.push(error.message)); await assertAvatarStaleCompletion(page); expect(errors).toEqual([]);
+  const errors: string[] = []; page.on('pageerror', error => errors.push(error.message)); page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); }); await assertAvatarStaleCompletion(page); expect(errors).toEqual([]);
 });
 
 test('actual Avatar Plus and Check glyphs match genuine five-library resolved providers', async ({ page, context }) => {
@@ -84,7 +85,7 @@ test('actual Avatar Plus and Check glyphs match genuine five-library resolved pr
     return nodes.map(tree);
   });
   try {
-    for (const current of [page, original]) current.on('pageerror', error => errors.push(error.message));
+    for (const current of [page, original]) { current.on('pageerror', error => errors.push(error.message)); current.on('console', message => { if (message.type() === 'error') errors.push(message.text()); }); }
     for (const library of ['lucide', 'tabler', 'hugeicons', 'phosphor', 'remixicon']) {
       for (const [current, path] of [[page, `/avatar?library=${library}`], [original, `http://127.0.0.1:5175/avatar?library=${library}`]] as const) {
         await current.goto(path); await expect(current.locator(`${avatarGallery} svg`)).toHaveCount(11); await expect(current.locator(`${avatarGallery} svg.lucide-square`)).toHaveCount(0);
@@ -100,7 +101,7 @@ test('actual caller callback sees preceding parent DOM status and mixed size/aft
   const original = await context.newPage(); const errors: string[] = [];
   try {
     for (const [current, path] of [[page, '/avatar-probe'], [original, 'http://127.0.0.1:5175/avatar-probe']] as const) {
-      current.on('pageerror', error => errors.push(error.message)); await current.goto(path); await expect(current.locator('#render-avatar-image')).toBeVisible();
+      current.on('pageerror', error => errors.push(error.message)); current.on('console', message => { if (message.type() === 'error') errors.push(message.text()); }); await current.goto(path); await expect(current.locator('#render-avatar-image')).toBeVisible();
       await current.getByRole('button', { name: 'Change rendered Avatar source', exact: true }).click(); await expect(current.locator('#render-avatar-fallback')).toBeVisible();
       // This witnesses observable DOM commit order, not an internal batched context setter.
       await expect.poll(async () => JSON.parse(await current.getByTestId('avatar-callback-trace').innerText()).slice(-2)).toEqual([{ status: 'loading', rootDOMStatus: 'loaded' }, { status: 'error', rootDOMStatus: 'loading' }]);
