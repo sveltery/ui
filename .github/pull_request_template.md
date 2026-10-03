@@ -1,6 +1,6 @@
 Describe the concrete problem and resulting behavior. Keep experimental status, missing scope and Base readiness accurate. Record the immutable original source pin and the final PR head used by review/checks.
 
-For executable ports, include the source mapping below or link to a tracked contract containing it. Documentation-only changes may mark the implementation rows/checks not applicable and explain why.
+For every executable PR, including bug fixes and refactors, include the source mapping below or link to a tracked contract containing it. Documentation-only changes may mark the implementation rows/checks not applicable and explain why.
 
 | Original immutable source/export | Local source/export | Host, dependencies and composition | Branches/defaults, variants/classes and spread order | Required framework translation or intentional difference | Independent source and runtime evidence |
 | --- | --- | --- | --- | --- | --- |
