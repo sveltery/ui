@@ -53,6 +53,7 @@ Create the following files in `dialog-app`. The exact versions match the reposit
   "dependencies": {
     "@sveltery/base": "file:vendor/sveltery-base-0.0.0.tgz",
     "@sveltery/ui": "file:vendor/sveltery-ui-0.0.0.tgz",
+    "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "cn": "0.2.2",
     "svelte": "5.57.1"
@@ -219,12 +220,14 @@ An unpositioned panel usually means the `@source` path is wrong. Missing colors 
 
 ## Components: copy the Dialog source instead
 
-For an app-owned copy, first complete the scaffold above. From `dialog-app`, copy from the pinned sibling checkout, retaining the ten wrappers, barrel, sibling shared helper, CSS and notices together:
+For an app-owned copy, first complete the scaffold above. From `dialog-app`, copy from the pinned sibling checkout, retaining the ten wrappers, barrel, canonical Button and IconPlaceholder dependencies, shared helper, CSS and complete notices together. The built-in closes use the same Button and configurable icon composition as the pinned original; copying only the Dialog directory is insufficient.
 
 <!-- consumer-copy -->
 ```sh
 mkdir -p src/lib/components/ui src/lib/styles
 cp -R ../sveltery-ui/apps/docs/registry/bases/base/ui/dialog src/lib/components/ui/
+cp -R ../sveltery-ui/apps/docs/registry/bases/base/ui/button src/lib/components/ui/
+cp -R ../sveltery-ui/apps/docs/registry/bases/base/ui/icons src/lib/components/ui/
 cp -R ../sveltery-ui/apps/docs/registry/bases/base/ui/shared src/lib/components/ui/
 cp ../sveltery-ui/apps/docs/registry/styles/style-nova.css src/lib/styles/nova.css
 cp ../sveltery-ui/apps/docs/registry/styles/themes.css src/lib/styles/themes.css
@@ -236,9 +239,9 @@ cp ../sveltery-ui/packages/ui/THIRD_PARTY_NOTICES.md src/lib/components/ui/THIRD
 
 Make these three edits:
 
-1. In `package.json`, remove the `@sveltery/ui` dependency. Keep the verified Base archive, Svelte, `cn` 0.2.2, `clsx` 2.1.1, Tailwind, `tw-animate-css` and `shadcn` 4.21.1 dependencies. Retain the scaffold's `pnpm-workspace.yaml` override `"shadcn@4.21.1>cn": "0.2.4"`; it pins the original CLI dependency separately from the application's `cn` 0.2.2. The copied Nova and scoped CSS still import the genuine `shadcn/tailwind.css` export.
+1. In `package.json`, remove the `@sveltery/ui` dependency. Keep the verified Base archive, Svelte, `class-variance-authority` 0.7.1, `cn` 0.2.2, `clsx` 2.1.1, Tailwind, `tw-animate-css` and `shadcn` 4.21.1 dependencies. Retain every icon implementation, generated data and license file. Retain the scaffold's `pnpm-workspace.yaml` override `"shadcn@4.21.1>cn": "0.2.4"`; it pins the original CLI dependency separately from the application's `cn` 0.2.2. The copied Nova and scoped CSS still import the genuine `shadcn/tailwind.css` export.
 2. In `src/app.css`, replace `@import "@sveltery/ui/nova.css";` with `@import "./lib/styles/nova.css";` replace `@import "@sveltery/ui/themes.css";` and `@import "@sveltery/ui/styles.css";` with imports from `./lib/styles/themes.css` and `./lib/styles/styles.css`, and replace the installed-package `@source` line with `@source "./lib/components/ui";`.
-3. In `src/routes/+page.svelte`, import the same names from `$lib/components/ui/dialog`. The broader Tailwind source path also scans `shared/classes.js`, which supplies native close-button utility classes.
+3. In `src/routes/+page.svelte`, import the same names from `$lib/components/ui/dialog`. The broader Tailwind source path also scans the canonical Button variants and `shared/classes.js`; Dialog imports the sibling Button and full icon closure.
 
 Run `pnpm install` to update the consumer lockfile, then repeat the frozen install, checks, build and browser instructions. The copied wrappers still depend on Base; copying them does not vendor its behavior implementation. Keep the source SHA and notices with your copy, including when redistributing it. Review local modifications and upstream updates explicitly. See [Dialog API adaptations](dialog.md) for controlled state, render snippets, native events and the remaining focus/compatibility limits.
 
