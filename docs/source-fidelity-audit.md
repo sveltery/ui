@@ -10,9 +10,11 @@ Current delivery selects the pinned Base Toast, Combobox and Drawer wrappers ove
 
 The immutable source inventory below still records the original families/imports, including Command and Sonner. Those rows describe authenticated source, not authorization to port an excluded engine. Historical 62-entry/373-export and 29-package counts remain intact; current delivery is a separate selection overlay, not a rewrite of original provenance.
 
-## Verified repair after the audit
+## Verified repairs after the audit
 
 The missing support-CSS dependency identified at `db25cb86` has been repaired by [PR #40](https://github.com/sveltery/ui/pull/40), merged as `0c4e1e5be376c7a8d298f0e28d8a8d3b8c1980dd`. The [landed CSS contract](shadcn-css.md) records current delivery of genuine `shadcn` 4.21.1 `tailwind.css`, retains UI `cn` 0.2.2 separately from the original CLI/registry `cn` 0.2.4, and corrects the central Separator interpretation using the complete authenticated CSS environment. [Post-merge CI](https://github.com/sveltery/ui/actions/runs/37088455405) and [Documentation](https://github.com/sveltery/ui/actions/runs/37088455389) passed on that exact merge.
+
+Current readiness records were subsequently reconciled by [PR #42](https://github.com/sveltery/ui/pull/42), merged as `01b8ea72e71574317587006115b389e7f68ddbee`, with passing [post-merge CI](https://github.com/sveltery/ui/actions/runs/37095183526) and [Documentation](https://github.com/sveltery/ui/actions/runs/37095183545). The [readiness checklist](readiness.md), affected [Card](card.md), [Alert](alert.md), [Kbd](kbd.md) and [Empty](empty.md) contracts, and [compatibility register](upstream-differences.md) now distinguish available Example/IconPlaceholder dependencies from actual migrated gallery functions. The six icon/image examples identified below remain unimplemented despite their available dependencies; other genuine styled-component and framework blockers retain their own scope. This documentation repair grants no new component, gallery, acceptance or test credit.
 
 Statements below that CSS is missing describe the immutable audited `db25cb86` checkpoint, not present delivery. The original findings, package versions, source hashes and provenance remain unchanged. This subsequent repair does not establish full-library implementation parity or copied ordinary upstream UI test credit; the remaining composition/helper/default-style findings retain their own scope.
 
