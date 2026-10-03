@@ -1,6 +1,12 @@
 # Implementation fidelity audit
 
-Audited on October 3, 2026. This report compares actual landed production code with immutable original source. It records implementation correspondence and gaps separately from test success and release readiness. Later repairs do not retroactively change this checkpoint.
+Audited on October 3, 2026 UTC. This report compares actual landed production code with immutable original source. It records implementation correspondence and gaps separately from test success and release readiness. Later repairs do not retroactively change this checkpoint.
+
+## Current selected product scope
+
+Current delivery selects the pinned Base Toast, Combobox and Drawer wrappers over corresponding Sveltery Base primitives. The separate cmdk-backed Command entry and optional Sonner entry are excluded from current delivery, not completed. Vaul is unnecessary for the selected Base Drawer. No Command facade or substitute engine is introduced. All other selected families and their existing React-specific closures remain unchanged.
+
+The immutable source inventory below still records the original families/imports, including Command and Sonner. Those rows describe authenticated source, not authorization to port an excluded engine. Historical 62-entry/373-export and 29-package counts remain intact; current delivery is a separate selection overlay, not a rewrite of original provenance.
 
 ## Immutable scope
 

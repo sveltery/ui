@@ -1,10 +1,18 @@
 # External dependency inventory
 
-Audited on October 3, 2026. Landed UI `db25cb86dd2d8ebbbb78f83b5f6c20cc36cea946` (tree `4ac2f00bd7cdefbfcc79d782b0408860856a6faf`) against immutable shadcn/ui `d75a96ab781f3d659be1ad287347d5887ce9f2fc` (tree `b5fe6239eadcaa7167662cc28e55b4f7911a1e1e`). This is read-only evidence; it creates no component readiness or test-parity credit. The audit did not install, change repository code/refs, consume a new Base pin, or modify Base.
+Audited on October 3, 2026 UTC. Landed UI `db25cb86dd2d8ebbbb78f83b5f6c20cc36cea946` (tree `4ac2f00bd7cdefbfcc79d782b0408860856a6faf`) against immutable shadcn/ui `d75a96ab781f3d659be1ad287347d5887ce9f2fc` (tree `b5fe6239eadcaa7167662cc28e55b4f7911a1e1e`). This is read-only evidence; it creates no component readiness or test-parity credit. The audit did not install, change repository code/refs, consume a new Base pin, or modify Base.
 
 The complete scope contains **62 Base registry wrappers, 66 genuine Base example/gallery source files**, both native `@shadcn/react` families and their helpers, reusable `@shadcn/helpers`, shared icon loaders and all five generated icon export maps. TypeScript AST extraction follows the exact upstream TS aliases and dynamic literal imports. The generated-map roots explicitly cover the computed `./__${libraryName}__` loader path. **198 source files and 29 distinct imported packages** are recorded. Three CSS imports are recorded separately. Every source has its exact Git blob, SHA-256, byte length and immutable source URL in the JSON inventory; all internal static imports resolve. Original importer lock selections, including peer contexts, are retained rather than replacing ranges with current npm versions.
 
 This is the package inventory accompanying the [implementation fidelity audit](source-fidelity-audit.md). The 29-package count below covers actual imports in the audited component/helper graph; it is not the complete upstream workspace dependency count. The full manifest appendix retains separate CLI, build, application and optional integration roles.
+
+## Current selected product scope
+
+Current delivery selects the pinned Base Toast, Combobox and Drawer wrappers over corresponding Sveltery Base primitives. The separate cmdk-backed Command entry and optional Sonner entry are excluded from current delivery, not completed. Vaul is unnecessary for the selected Base Drawer. No Command facade or substitute engine is introduced. All other selected families and their existing React-specific closures remain unchanged.
+
+The immutable source inventory below still records the original families/imports, including Command and Sonner. Those rows describe authenticated source, not authorization to port an excluded engine. Historical 62-entry/373-export and 29-package counts remain intact; current delivery is a separate selection overlay, not a rewrite of original provenance.
+
+All “current UI” status statements in this inventory refer to the audited `db25cb86` checkpoint, rather than later repair/selection PRs. Exact importer versions and source roles remain historical facts.
 
 ## Principal conclusions
 
