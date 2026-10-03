@@ -62,3 +62,5 @@ The landed `/card` and `/card-reference` routes compare seven actual dependency-
 `/aspect-ratio` and `/aspect-ratio-reference` compare four bounded ratio examples; `/aspect-ratio-probe` and its reference test responsive geometry, caller overrides and native lifecycle behavior. See [AspectRatio scope](../../docs/aspect-ratio.md); native img and sections substitute Next Image and Example scaffolds without claiming their parity.
 
 `/empty-probe` and `/empty-probe-reference` exercise the [six native Empty parts](../../docs/empty.md), with supplemental variant/selector and SSR/hydration/lifecycle probes. All six pinned gallery functions remain unimplemented. Basic/Muted Background/Icon/In Card now have available native helpers; Border/Muted Background Alt still require styled InputGroup parts.
+
+`/separator` and `/separator-reference` execute all four actual pinned Separator gallery functions. `/separator-probe` and its reference exercise genuine orientation variants under the complete original support CSS, native render snippets, style/events, refs/attachments and SSR/hydration. See [Separator scope and genuine tests](../../docs/separator.md).

@@ -24,7 +24,7 @@ try {
   run('pnpm', ['--filter', '@sveltery/ui', 'build'], repo);
   run('pnpm', ['--filter', '@sveltery/ui', 'pack', '--pack-destination', artifacts], repo);
   cpSync(join(repo, '.vendor/sveltery-base-0.0.0.tgz'), join(artifacts, 'sveltery-base-0.0.0.tgz'));
-  for (const path of ['apps/docs/registry/bases/base/ui/dialog', 'apps/docs/registry/bases/base/ui/button', 'apps/docs/registry/bases/base/ui/textarea', 'apps/docs/registry/bases/base/ui/skeleton', 'apps/docs/registry/bases/base/ui/kbd', 'apps/docs/registry/bases/base/ui/table', 'apps/docs/registry/bases/base/ui/card', 'apps/docs/registry/bases/base/ui/label', 'apps/docs/registry/bases/base/ui/alert', 'apps/docs/registry/bases/base/ui/aspect-ratio', 'apps/docs/registry/bases/base/ui/empty', 'apps/docs/registry/bases/base/ui/icons', 'apps/docs/registry/bases/base/ui/example', 'apps/docs/registry/bases/base/ui/shared', 'apps/docs/registry/styles', 'packages/ui/LICENSE', 'packages/ui/THIRD_PARTY_NOTICES.md']) {
+  for (const path of ['apps/docs/registry/bases/base/ui/dialog', 'apps/docs/registry/bases/base/ui/button', 'apps/docs/registry/bases/base/ui/textarea', 'apps/docs/registry/bases/base/ui/skeleton', 'apps/docs/registry/bases/base/ui/kbd', 'apps/docs/registry/bases/base/ui/table', 'apps/docs/registry/bases/base/ui/card', 'apps/docs/registry/bases/base/ui/label', 'apps/docs/registry/bases/base/ui/alert', 'apps/docs/registry/bases/base/ui/aspect-ratio', 'apps/docs/registry/bases/base/ui/empty', 'apps/docs/registry/bases/base/ui/icons', 'apps/docs/registry/bases/base/ui/example', 'apps/docs/registry/bases/base/ui/separator', 'apps/docs/registry/bases/base/ui/shared', 'apps/docs/registry/styles', 'packages/ui/LICENSE', 'packages/ui/THIRD_PARTY_NOTICES.md']) {
     const destination = join(temporary, 'sveltery-ui', path);
     mkdirSync(dirname(destination), { recursive: true });
     cpSync(join(repo, path), destination, { recursive: true });
@@ -144,6 +144,14 @@ try {
     if (mode === 'copy') exampleFixture = exampleFixture.replaceAll('@sveltery/ui/example', '$lib/components/ui/example');
     writeFileSync(exampleRoute, exampleFixture);
     writeFileSync(join(consumer, 'src/routes/example-types.ts'), readFileSync(join(repo, 'tests/example-types.ts'), 'utf8').replace('../apps/docs/registry/bases/base/ui/example/index.js', mode === 'copy' ? '$lib/components/ui/example' : '@sveltery/ui/example'));
+    for (const [route, source] of [['separator', 'apps/docs/examples/base/SeparatorExample.svelte'], ['separator-probe', 'apps/docs/examples/base/SeparatorProbe.svelte']]) {
+      const routePath = join(consumer, `src/routes/${route}/+page.svelte`);
+      mkdirSync(dirname(routePath), { recursive: true });
+      let content = readFileSync(join(repo, source), 'utf8');
+      if (mode === 'copy') content = content.replaceAll('@sveltery/ui/separator', '$lib/components/ui/separator').replaceAll('@sveltery/ui/example', '$lib/components/ui/example');
+      writeFileSync(routePath, content);
+    }
+    writeFileSync(join(consumer, 'src/routes/separator-types.ts'), readFileSync(join(repo, 'tests/separator-types.ts'), 'utf8').replace('../apps/docs/registry/bases/base/ui/separator/index.js', mode === 'copy' ? '$lib/components/ui/separator' : '@sveltery/ui/separator'));
     const consumerManifestPath = join(consumer, 'package.json');
     const consumerManifest = JSON.parse(readFileSync(consumerManifestPath, 'utf8'));
     consumerManifest.dependencies['class-variance-authority'] = '0.7.1';
@@ -163,6 +171,7 @@ try {
       cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/aspect-ratio'), join(consumer, 'src/lib/components/ui/aspect-ratio'), { recursive: true });
       cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/alert'), join(consumer, 'src/lib/components/ui/alert'), { recursive: true });
       cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/empty'), join(consumer, 'src/lib/components/ui/empty'), { recursive: true });
+      cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/separator'), join(consumer, 'src/lib/components/ui/separator'), { recursive: true });
       cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/icons'), join(consumer, 'src/lib/components/ui/icons'), { recursive: true });
       cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/example'), join(consumer, 'src/lib/components/ui/example'), { recursive: true });
       run('bash', ['-euo', 'pipefail', '-c', copyCommands], consumer);
