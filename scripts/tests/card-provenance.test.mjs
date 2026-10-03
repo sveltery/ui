@@ -23,3 +23,22 @@ test('selected actual Card example function bodies remain byte-exact', () => {
     assert(selected.includes(body), `${name} keeps its actual body`);
   }
 });
+
+// Authored source-fidelity regression: no dedicated ordinary upstream Card suite exists.
+test('selected Card galleries compose genuine Example helpers with the original plain wrapper', () => {
+  const selected = readFileSync('tests/reference/card-selected-examples.tsx', 'utf8');
+  const reference = readFileSync('tests/reference/CardGallery.tsx', 'utf8');
+  const native = readFileSync('apps/docs/examples/base/CardExample.svelte', 'utf8');
+  assert.match(selected, /import \{ Example \} from ['"]\.\/example-scaffold['"]/u);
+  assert.doesNotMatch(selected, /function Example\(/u);
+  assert.match(reference, /import \{ ExampleWrapper \} from ['"]\.\/example-scaffold['"]/u);
+  assert.match(native, /import \{ Example, ExampleWrapper \} from ['"]@sveltery\/ui\/example['"]/u);
+  for (const [name, source] of [['React', reference], ['Svelte', native]]) {
+    assert.match(source, /<ExampleWrapper>/u, `${name}: original wrapper has no props`);
+    assert.equal((source.match(/<ExampleWrapper\b/gu) ?? []).length, 1);
+    assert.doesNotMatch(source, /data-gallery|lg:grid-cols-1/u);
+    const original = source.slice(source.indexOf('<ExampleWrapper>'), source.indexOf('</ExampleWrapper>'));
+    assert.doesNotMatch(original, /<section\b|<h2\b|data-supplemental/u, `${name}: source functions stay inside the original helper tree`);
+  }
+  assert.equal((native.match(/<Example title=/gu) ?? []).length, 7);
+});
