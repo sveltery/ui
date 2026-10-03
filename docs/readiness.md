@@ -1,6 +1,6 @@
 # Dialog readiness
 
-The [complete pinned registry catalog](catalog.md) records all 62 required entries and distinguishes locked dependency availability, bounded UI delivery and genuine test-source status.
+The [complete pinned registry catalog](catalog.md) records all 62 raw source entries and distinguishes locked dependency availability, bounded UI delivery and genuine test-source status. The separate [current target selection](target-scope.md) uses Base Toast, Combobox and Drawer and excludes the optional Command/cmdk and Sonner ports; Vaul is unnecessary for Base Drawer. Exclusion is not completion. All other selected families and the gates below remain unchanged.
 
 ## Native Table and proposed With Badges continuation
 

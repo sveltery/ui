@@ -16,7 +16,7 @@ Source organization follows upstream: `apps/docs/registry/bases/base/ui/dialog` 
 
 Try the [SvelteKit installation and source-copy guide](docs/installation.md) for verified local archives, Nova prerequisites and a minimal accessible Dialog. See the [local docs app README](apps/docs/README.md) for fixture routes, source organization and validation commands.
 
-The [complete pinned registry catalog](docs/catalog.md) records all 62 required entries, exact source/anatomy, locked dependency blockers and separate test provenance.
+The [complete pinned registry catalog](docs/catalog.md) records all 62 original source entries, exact source/anatomy, locked dependency blockers and separate test provenance. The [current target selection](docs/target-scope.md) uses Base Toast, Combobox and Drawer and excludes the separate Command/cmdk and Sonner entries. Scope exclusions do not count as completed components.
 
 The [upstream differences register](docs/upstream-differences.md) discloses inherited Base corrections, styled/API adaptations and the React 1.6.0 versus Base 1.8.0 evidence boundary. The [upstream test inventory](docs/upstream-tests.md) distinguishes actual shadcn suites, separately pinned Base UI conformance and local source-derived probes.
 
