@@ -8,6 +8,12 @@ Current delivery selects the pinned Base Toast, Combobox and Drawer wrappers ove
 
 The immutable source inventory below still records the original families/imports, including Command and Sonner. Those rows describe authenticated source, not authorization to port an excluded engine. Historical 62-entry/373-export and 29-package counts remain intact; current delivery is a separate selection overlay, not a rewrite of original provenance.
 
+## Verified repair after the audit
+
+The missing support-CSS dependency identified at `db25cb86` has been repaired by [PR #40](https://github.com/sveltery/ui/pull/40), merged as `0c4e1e5be376c7a8d298f0e28d8a8d3b8c1980dd`. Current delivery uses genuine `shadcn` 4.21.1 `tailwind.css`, retains UI `cn` 0.2.2 separately from the original CLI/registry `cn` 0.2.4, and corrects the central Separator interpretation using the complete authenticated CSS environment. [Post-merge CI](https://github.com/sveltery/ui/actions/runs/37088455405) and [Documentation](https://github.com/sveltery/ui/actions/runs/37088455389) passed on that exact merge.
+
+Statements below that CSS is missing describe the immutable audited `db25cb86` checkpoint, not present delivery. The original findings, package versions, source hashes and provenance remain unchanged. This subsequent repair does not establish full-library implementation parity or copied ordinary upstream UI test credit; the remaining composition/helper/default-style findings retain their own scope.
+
 ## Immutable scope
 
 | Source | Commit / identity |
@@ -47,7 +53,9 @@ Original paths are under `apps/v4/registry/bases/base/ui/` at the shadcn pin abo
 | AspectRatio / 1 | [aspect-ratio.tsx:3–22](https://github.com/shadcn-ui/ui/blob/d75a96ab781f3d659be1ad287347d5887ce9f2fc/apps/v4/registry/bases/base/ui/aspect-ratio.tsx#L3) | [AspectRatio.svelte](../apps/docs/registry/bases/base/ui/aspect-ratio/AspectRatio.svelte): native div/required ratio; derived CSS-string expression retains caller style replacement including null/undefined. No measurement observer. |
 | Empty / 6 | [empty.tsx:4–103](https://github.com/shadcn-ui/ui/blob/d75a96ab781f3d659be1ad287347d5887ce9f2fc/apps/v4/registry/bases/base/ui/empty.tsx#L4) | [Empty family](../apps/docs/registry/bases/base/ui/empty/index.ts): six native divs, including Description despite original paragraph-props annotation; default/icon CVA, empty-icon slot, data-variant and link selectors preserved. |
 
-## Actionable implementation gaps
+## Findings at the audited checkpoint
+
+The support-CSS finding below is now repaired as recorded above. Other findings remain distinct from that dependency repair.
 
 ### Genuine shadcn support CSS is absent
 

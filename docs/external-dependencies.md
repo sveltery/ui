@@ -14,6 +14,12 @@ The immutable source inventory below still records the original families/imports
 
 All “current UI” status statements in this inventory refer to the audited `db25cb86` checkpoint, rather than later repair/selection PRs. Exact importer versions and source roles remain historical facts.
 
+## Verified repair after the audit
+
+The missing support-CSS dependency identified at `db25cb86` has been repaired by [PR #40](https://github.com/sveltery/ui/pull/40), merged as `0c4e1e5be376c7a8d298f0e28d8a8d3b8c1980dd`. Current delivery uses genuine `shadcn` 4.21.1 `tailwind.css`, retains UI `cn` 0.2.2 separately from the original CLI/registry `cn` 0.2.4, and corrects the central Separator interpretation using the complete authenticated CSS environment. [Post-merge CI](https://github.com/sveltery/ui/actions/runs/37088455405) and [Documentation](https://github.com/sveltery/ui/actions/runs/37088455389) passed on that exact merge.
+
+Statements below that CSS is missing describe the immutable audited `db25cb86` checkpoint, not present delivery. The original findings, package versions, source hashes and provenance remain unchanged. This subsequent repair does not establish full-library implementation parity or copied ordinary upstream UI test credit; the remaining composition/helper/default-style findings retain their own scope.
+
 ## Principal conclusions
 
 - Modern `cn` is a standalone, framework-independent package with its own class-merging engine. The selected UI app pin is **0.2.2**, now genuinely landed; the same upstream CLI/registry importers separately select **0.2.4**. Mixing these pins would not be fidelity to the audited UI app. `tailwind-merge` is only a development conformance oracle in current UI, not the product merge engine.
