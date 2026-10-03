@@ -1,0 +1,968 @@
+{
+  "schema": 1,
+  "kind": "Supplemental source-derived native-browser classification; no copied upstream test credit",
+  "commit": "0a642227cccc1b892bab2487ecd049fe4a76ccb9",
+  "base": "dd7b22431dacd5ba46268cf94ffe667320dd46ad",
+  "workflow": "https://github.com/sveltery/ui/actions/runs/37067050448",
+  "shadcnPin": "d75a96ab781f3d659be1ad287347d5887ce9f2fc",
+  "retainedControls": {
+    "workers": 1,
+    "retries": 0,
+    "chromiumSandbox": true,
+    "firefoxAndWebkit": "native launch defaults"
+  },
+  "witnessSourceAtCommit": [
+    "tests/browser/engine-native-diagnostic.spec.ts",
+    "tests/reference/ButtonFocusProbe.tsx",
+    "tests/reference/LabelProbe.tsx",
+    "tests/reference/AlertProbe.tsx"
+  ],
+  "limitations": [
+    "All engine jobs failed; no repaired final-head execution is certified by this record.",
+    "Production proof was incompatible with dev module-delay patterns and exact unminified theme token lexemes; WebKit additionally bypassed several script-only SSR gates. It does not certify production acceptance.",
+    "The pure HTML diagnostic Label used inline text layout; repaired native helper uses the equivalent actual flex anatomy and retains independent name, control and focus assertions."
+  ],
+  "engines": {
+    "chromium": {
+      "job": "https://github.com/sveltery/ui/actions/runs/37067050448/job/111037407015",
+      "originalDev": {
+        "passed": 129,
+        "failed": 0
+      },
+      "fresh": [
+        {
+          "phase": "archive documented",
+          "passed": 24,
+          "failed": 0
+        },
+        {
+          "phase": "archive experimental",
+          "passed": 10,
+          "failed": 0
+        },
+        {
+          "phase": "copy documented",
+          "passed": 24,
+          "failed": 0
+        },
+        {
+          "phase": "copy experimental",
+          "passed": 10,
+          "failed": 0
+        }
+      ],
+      "temporaryPreview": {
+        "passed": 127,
+        "failed": 2
+      },
+      "witnesses": [
+        {
+          "timestamp": "2026-10-02T21:34:54.7745237Z",
+          "marker": "ALERT_NATIVE_SPACING",
+          "value": {
+            "route": "/alert-probe-reference",
+            "top": "8px",
+            "right": "8px",
+            "nativeTop": "8px",
+            "nativeRight": "8px",
+            "spacing": "0.25rem",
+            "rootFont": "16px",
+            "actionFont": "14px",
+            "rules": [
+              ".cn-alert-action { position: absolute; top: calc(var(--spacing) * 2); right: calc(var(--spacing) * 2); }"
+            ]
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:34:54.9701314Z",
+          "marker": "ALERT_NATIVE_SPACING",
+          "value": {
+            "route": "/alert-probe",
+            "top": "8px",
+            "right": "8px",
+            "nativeTop": "8px",
+            "nativeRight": "8px",
+            "spacing": "0.25rem",
+            "rootFont": "16px",
+            "actionFont": "14px",
+            "rules": [
+              ".cn-alert-action { position: absolute; top: calc(var(--spacing) * 2); right: calc(var(--spacing) * 2); }"
+            ]
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:34:55.4894580Z",
+          "marker": "LABEL_NATIVE_ASSOCIATION",
+          "value": {
+            "route": "/label-probe-reference",
+            "association": {
+              "for": "probe-second",
+              "control": "probe-second",
+              "inputs": [
+                {
+                  "id": "probe-first",
+                  "labels": []
+                },
+                {
+                  "id": "probe-second",
+                  "labels": [
+                    "probe-label"
+                  ]
+                }
+              ]
+            },
+            "first": "- textbox",
+            "second": "- textbox \"Updated name optional\""
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:34:55.7666985Z",
+          "marker": "LABEL_NATIVE_ASSOCIATION",
+          "value": {
+            "route": "/label-probe",
+            "association": {
+              "for": "probe-second",
+              "control": "probe-second",
+              "inputs": [
+                {
+                  "id": "probe-first",
+                  "labels": []
+                },
+                {
+                  "id": "probe-second",
+                  "labels": [
+                    "probe-label"
+                  ]
+                }
+              ]
+            },
+            "first": "- textbox",
+            "second": "- textbox \"Updated name optional\""
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:34:55.8635084Z",
+          "marker": "LABEL_NATIVE_ASSOCIATION",
+          "value": {
+            "route": "native",
+            "association": {
+              "for": "probe-second",
+              "control": "probe-second",
+              "inputs": [
+                {
+                  "id": "probe-first",
+                  "labels": []
+                },
+                {
+                  "id": "probe-second",
+                  "labels": [
+                    "probe-label"
+                  ]
+                }
+              ]
+            },
+            "first": "- textbox",
+            "second": "- textbox \"Updated nameoptional\""
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:34:56.3789717Z",
+          "marker": "BUTTON_NATIVE_TAB",
+          "value": {
+            "route": "/button-focus-reference?case=native-focusable",
+            "withoutFollowing": {
+              "tag": "BODY",
+              "id": ""
+            },
+            "withFollowing": "following-button"
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:34:56.5582806Z",
+          "marker": "BUTTON_NATIVE_TAB",
+          "value": {
+            "route": "/button?case=native-focusable",
+            "withoutFollowing": {
+              "tag": "BODY",
+              "id": ""
+            },
+            "withFollowing": "following-button"
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:34:56.7335788Z",
+          "marker": "BUTTON_NATIVE_TAB",
+          "value": {
+            "route": "/button-focus-reference?case=custom-focusable",
+            "withoutFollowing": {
+              "tag": "BODY",
+              "id": ""
+            },
+            "withFollowing": "following-button"
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:34:56.8507337Z",
+          "marker": "BUTTON_NATIVE_TAB",
+          "value": {
+            "route": "/button?case=custom-focusable",
+            "withoutFollowing": {
+              "tag": "BODY",
+              "id": ""
+            },
+            "withFollowing": "following-button"
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:34:56.8678877Z",
+          "marker": "BUTTON_NATIVE_TAB",
+          "value": {
+            "route": "native",
+            "withoutFollowing": {
+              "tag": "BODY",
+              "id": ""
+            },
+            "withFollowing": "following-button"
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:34:57.9704000Z",
+          "marker": "PAIRED_DIALOG_ANIMATION_KINDS",
+          "value": {
+            "route": "/reference",
+            "name": "exit",
+            "duration": "0.1s",
+            "animations": [
+              {
+                "kind": "CSSAnimation",
+                "cssAnimation": true,
+                "cssTransition": false,
+                "name": "exit",
+                "property": null,
+                "state": "paused",
+                "timing": {
+                  "delay": 0,
+                  "direction": "normal",
+                  "duration": 100,
+                  "easing": "linear",
+                  "endDelay": 0,
+                  "fill": "none",
+                  "iterationStart": 0,
+                  "iterations": 1,
+                  "activeDuration": 100,
+                  "currentIteration": 0,
+                  "endTime": 100,
+                  "localTime": 0,
+                  "progress": 0
+                }
+              }
+            ]
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:34:58.3931290Z",
+          "marker": "PAIRED_DIALOG_ANIMATION_KINDS",
+          "value": {
+            "route": "/dialog",
+            "name": "exit",
+            "duration": "0.1s",
+            "animations": [
+              {
+                "kind": "CSSAnimation",
+                "cssAnimation": true,
+                "cssTransition": false,
+                "name": "exit",
+                "property": null,
+                "state": "paused",
+                "timing": {
+                  "delay": 0,
+                  "direction": "normal",
+                  "duration": 100,
+                  "easing": "linear",
+                  "endDelay": 0,
+                  "fill": "none",
+                  "iterationStart": 0,
+                  "iterations": 1,
+                  "activeDuration": 100,
+                  "currentIteration": 0,
+                  "endTime": 100,
+                  "localTime": 0,
+                  "progress": 0
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "firefox": {
+      "job": "https://github.com/sveltery/ui/actions/runs/37067050448/job/111037406713",
+      "originalDev": {
+        "passed": 116,
+        "failed": 13
+      },
+      "fresh": [
+        {
+          "phase": "archive documented",
+          "passed": 22,
+          "failed": 2
+        },
+        {
+          "phase": "archive experimental",
+          "status": "blocked by previous failed phase"
+        },
+        {
+          "phase": "copy documented",
+          "status": "blocked by previous failed phase"
+        },
+        {
+          "phase": "copy experimental",
+          "status": "blocked by previous failed phase"
+        }
+      ],
+      "temporaryPreview": {
+        "passed": 115,
+        "failed": 14
+      },
+      "witnesses": [
+        {
+          "timestamp": "2026-10-02T21:38:31.4741112Z",
+          "marker": "ALERT_NATIVE_SPACING",
+          "value": {
+            "route": "/alert-probe-reference",
+            "top": "8px",
+            "right": "6px",
+            "nativeTop": "8px",
+            "nativeRight": "6px",
+            "spacing": "0.25rem",
+            "rootFont": "16px",
+            "actionFont": "14px",
+            "rules": [
+              ".cn-alert-action { position: absolute; top: calc(var(--spacing) * 2); right: calc(var(--spacing) * 2); }"
+            ]
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:38:31.7726324Z",
+          "marker": "ALERT_NATIVE_SPACING",
+          "value": {
+            "route": "/alert-probe",
+            "top": "8px",
+            "right": "6px",
+            "nativeTop": "8px",
+            "nativeRight": "6px",
+            "spacing": "0.25rem",
+            "rootFont": "16px",
+            "actionFont": "14px",
+            "rules": [
+              ".cn-alert-action { position: absolute; top: calc(var(--spacing) * 2); right: calc(var(--spacing) * 2); }"
+            ]
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:38:32.5958439Z",
+          "marker": "LABEL_NATIVE_ASSOCIATION",
+          "value": {
+            "route": "/label-probe-reference",
+            "association": {
+              "for": "probe-second",
+              "control": "probe-second",
+              "inputs": [
+                {
+                  "id": "probe-first",
+                  "labels": [
+                    "probe-label"
+                  ]
+                },
+                {
+                  "id": "probe-second",
+                  "labels": [
+                    "probe-label"
+                  ]
+                }
+              ]
+            },
+            "first": "- textbox \"Updated name optional\"",
+            "second": "- textbox \"Updated name optional\""
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:38:33.0252607Z",
+          "marker": "LABEL_NATIVE_ASSOCIATION",
+          "value": {
+            "route": "/label-probe",
+            "association": {
+              "for": "probe-second",
+              "control": "probe-second",
+              "inputs": [
+                {
+                  "id": "probe-first",
+                  "labels": [
+                    "probe-label"
+                  ]
+                },
+                {
+                  "id": "probe-second",
+                  "labels": [
+                    "probe-label"
+                  ]
+                }
+              ]
+            },
+            "first": "- textbox \"Updated name optional\"",
+            "second": "- textbox \"Updated name optional\""
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:38:33.1716895Z",
+          "marker": "LABEL_NATIVE_ASSOCIATION",
+          "value": {
+            "route": "native",
+            "association": {
+              "for": "probe-second",
+              "control": "probe-second",
+              "inputs": [
+                {
+                  "id": "probe-first",
+                  "labels": [
+                    "probe-label"
+                  ]
+                },
+                {
+                  "id": "probe-second",
+                  "labels": [
+                    "probe-label"
+                  ]
+                }
+              ]
+            },
+            "first": "- textbox \"Updated nameoptional\"",
+            "second": "- textbox \"Updated nameoptional\""
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:38:33.9878351Z",
+          "marker": "BUTTON_NATIVE_TAB",
+          "value": {
+            "route": "/button-focus-reference?case=native-focusable",
+            "withoutFollowing": {
+              "tag": "BUTTON",
+              "id": "tested-button"
+            },
+            "withFollowing": "following-button"
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:38:34.2806127Z",
+          "marker": "BUTTON_NATIVE_TAB",
+          "value": {
+            "route": "/button?case=native-focusable",
+            "withoutFollowing": {
+              "tag": "BUTTON",
+              "id": "tested-button"
+            },
+            "withFollowing": "following-button"
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:38:34.6834183Z",
+          "marker": "BUTTON_NATIVE_TAB",
+          "value": {
+            "route": "/button-focus-reference?case=custom-focusable",
+            "withoutFollowing": {
+              "tag": "SPAN",
+              "id": "tested-button"
+            },
+            "withFollowing": "following-button"
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:38:34.9948575Z",
+          "marker": "BUTTON_NATIVE_TAB",
+          "value": {
+            "route": "/button?case=custom-focusable",
+            "withoutFollowing": {
+              "tag": "SPAN",
+              "id": "tested-button"
+            },
+            "withFollowing": "following-button"
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:38:35.0309366Z",
+          "marker": "BUTTON_NATIVE_TAB",
+          "value": {
+            "route": "native",
+            "withoutFollowing": {
+              "tag": "BUTTON",
+              "id": "tested-button"
+            },
+            "withFollowing": "following-button"
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:38:36.0028712Z",
+          "marker": "PAIRED_DIALOG_ANIMATION_KINDS",
+          "value": {
+            "route": "/reference",
+            "name": "exit",
+            "duration": "0.1s",
+            "animations": [
+              {
+                "kind": "CSSTransition",
+                "cssAnimation": false,
+                "cssTransition": true,
+                "name": null,
+                "property": "filter",
+                "state": "running",
+                "timing": {
+                  "delay": 0,
+                  "direction": "normal",
+                  "duration": 100,
+                  "easing": "ease",
+                  "endDelay": 0,
+                  "fill": "backwards",
+                  "iterationStart": 0,
+                  "iterations": 1,
+                  "activeDuration": 100,
+                  "currentIteration": 0,
+                  "endTime": 100,
+                  "localTime": 0,
+                  "progress": 0,
+                  "startTime": 0
+                }
+              },
+              {
+                "kind": "CSSTransition",
+                "cssAnimation": false,
+                "cssTransition": true,
+                "name": null,
+                "property": "opacity",
+                "state": "running",
+                "timing": {
+                  "delay": 0,
+                  "direction": "normal",
+                  "duration": 100,
+                  "easing": "ease",
+                  "endDelay": 0,
+                  "fill": "backwards",
+                  "iterationStart": 0,
+                  "iterations": 1,
+                  "activeDuration": 100,
+                  "currentIteration": 0,
+                  "endTime": 100,
+                  "localTime": 0,
+                  "progress": 0,
+                  "startTime": 0
+                }
+              },
+              {
+                "kind": "CSSTransition",
+                "cssAnimation": false,
+                "cssTransition": true,
+                "name": null,
+                "property": "transform",
+                "state": "running",
+                "timing": {
+                  "delay": 0,
+                  "direction": "normal",
+                  "duration": 100,
+                  "easing": "ease",
+                  "endDelay": 0,
+                  "fill": "backwards",
+                  "iterationStart": 0,
+                  "iterations": 1,
+                  "activeDuration": 100,
+                  "currentIteration": 0,
+                  "endTime": 100,
+                  "localTime": 0,
+                  "progress": 0,
+                  "startTime": 0
+                }
+              },
+              {
+                "kind": "CSSAnimation",
+                "cssAnimation": true,
+                "cssTransition": false,
+                "name": "exit",
+                "property": null,
+                "state": "paused",
+                "timing": {
+                  "delay": 0,
+                  "direction": "normal",
+                  "duration": 100,
+                  "easing": "linear",
+                  "endDelay": 0,
+                  "fill": "none",
+                  "iterationStart": 0,
+                  "iterations": 1,
+                  "activeDuration": 100,
+                  "currentIteration": 0,
+                  "endTime": 100,
+                  "localTime": 0,
+                  "progress": 0,
+                  "startTime": 0
+                }
+              }
+            ]
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:38:36.7225566Z",
+          "marker": "PAIRED_DIALOG_ANIMATION_KINDS",
+          "value": {
+            "route": "/dialog",
+            "name": "exit",
+            "duration": "0.1s",
+            "animations": [
+              {
+                "kind": "CSSTransition",
+                "cssAnimation": false,
+                "cssTransition": true,
+                "name": null,
+                "property": "opacity",
+                "state": "running",
+                "timing": {
+                  "delay": 0,
+                  "direction": "normal",
+                  "duration": 100,
+                  "easing": "ease",
+                  "endDelay": 0,
+                  "fill": "backwards",
+                  "iterationStart": 0,
+                  "iterations": 1,
+                  "activeDuration": 100,
+                  "currentIteration": 0,
+                  "endTime": 100,
+                  "localTime": 0,
+                  "progress": 0,
+                  "startTime": 0
+                }
+              },
+              {
+                "kind": "CSSTransition",
+                "cssAnimation": false,
+                "cssTransition": true,
+                "name": null,
+                "property": "transform",
+                "state": "running",
+                "timing": {
+                  "delay": 0,
+                  "direction": "normal",
+                  "duration": 100,
+                  "easing": "ease",
+                  "endDelay": 0,
+                  "fill": "backwards",
+                  "iterationStart": 0,
+                  "iterations": 1,
+                  "activeDuration": 100,
+                  "currentIteration": 0,
+                  "endTime": 100,
+                  "localTime": 0,
+                  "progress": 0,
+                  "startTime": 0
+                }
+              },
+              {
+                "kind": "CSSAnimation",
+                "cssAnimation": true,
+                "cssTransition": false,
+                "name": "exit",
+                "property": null,
+                "state": "paused",
+                "timing": {
+                  "delay": 0,
+                  "direction": "normal",
+                  "duration": 100,
+                  "easing": "linear",
+                  "endDelay": 0,
+                  "fill": "none",
+                  "iterationStart": 0,
+                  "iterations": 1,
+                  "activeDuration": 100,
+                  "currentIteration": 0,
+                  "endTime": 100,
+                  "localTime": 0,
+                  "progress": 0,
+                  "startTime": 0
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "webkit": {
+      "job": "https://github.com/sveltery/ui/actions/runs/37067050448/job/111037406875",
+      "originalDev": {
+        "passed": 128,
+        "failed": 1
+      },
+      "fresh": [
+        {
+          "phase": "archive documented",
+          "passed": 24,
+          "failed": 0
+        },
+        {
+          "phase": "archive experimental",
+          "passed": 10,
+          "failed": 0
+        },
+        {
+          "phase": "copy documented",
+          "passed": 24,
+          "failed": 0
+        },
+        {
+          "phase": "copy experimental",
+          "passed": 10,
+          "failed": 0
+        }
+      ],
+      "temporaryPreview": {
+        "passed": 122,
+        "failed": 7
+      },
+      "witnesses": [
+        {
+          "timestamp": "2026-10-02T21:39:28.6082838Z",
+          "marker": "ALERT_NATIVE_SPACING",
+          "value": {
+            "route": "/alert-probe-reference",
+            "top": "8px",
+            "right": "8px",
+            "nativeTop": "8px",
+            "nativeRight": "8px",
+            "spacing": "0.25rem",
+            "rootFont": "16px",
+            "actionFont": "14px",
+            "rules": [
+              ".cn-alert-action { position: absolute; top: calc(var(--spacing) * 2); right: calc(var(--spacing) * 2); }"
+            ]
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:39:28.8632874Z",
+          "marker": "ALERT_NATIVE_SPACING",
+          "value": {
+            "route": "/alert-probe",
+            "top": "8px",
+            "right": "8px",
+            "nativeTop": "8px",
+            "nativeRight": "8px",
+            "spacing": "0.25rem",
+            "rootFont": "16px",
+            "actionFont": "14px",
+            "rules": [
+              ".cn-alert-action { position: absolute; top: calc(var(--spacing) * 2); right: calc(var(--spacing) * 2); }"
+            ]
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:39:30.0960576Z",
+          "marker": "LABEL_NATIVE_ASSOCIATION",
+          "value": {
+            "route": "/label-probe-reference",
+            "association": {
+              "for": "probe-second",
+              "control": "probe-second",
+              "inputs": [
+                {
+                  "id": "probe-first",
+                  "labels": []
+                },
+                {
+                  "id": "probe-second",
+                  "labels": [
+                    "probe-label"
+                  ]
+                }
+              ]
+            },
+            "first": "- textbox",
+            "second": "- textbox \"Updated name optional\""
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:39:30.4415438Z",
+          "marker": "LABEL_NATIVE_ASSOCIATION",
+          "value": {
+            "route": "/label-probe",
+            "association": {
+              "for": "probe-second",
+              "control": "probe-second",
+              "inputs": [
+                {
+                  "id": "probe-first",
+                  "labels": []
+                },
+                {
+                  "id": "probe-second",
+                  "labels": [
+                    "probe-label"
+                  ]
+                }
+              ]
+            },
+            "first": "- textbox",
+            "second": "- textbox \"Updated name optional\""
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:39:30.5324100Z",
+          "marker": "LABEL_NATIVE_ASSOCIATION",
+          "value": {
+            "route": "native",
+            "association": {
+              "for": "probe-second",
+              "control": "probe-second",
+              "inputs": [
+                {
+                  "id": "probe-first",
+                  "labels": []
+                },
+                {
+                  "id": "probe-second",
+                  "labels": [
+                    "probe-label"
+                  ]
+                }
+              ]
+            },
+            "first": "- textbox",
+            "second": "- textbox \"Updated nameoptional\""
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:39:31.7242491Z",
+          "marker": "BUTTON_NATIVE_TAB",
+          "value": {
+            "route": "/button-focus-reference?case=native-focusable",
+            "withoutFollowing": {
+              "tag": "BODY",
+              "id": ""
+            },
+            "withFollowing": "following-button"
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:39:31.9514254Z",
+          "marker": "BUTTON_NATIVE_TAB",
+          "value": {
+            "route": "/button?case=native-focusable",
+            "withoutFollowing": {
+              "tag": "BODY",
+              "id": ""
+            },
+            "withFollowing": "following-button"
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:39:32.1676217Z",
+          "marker": "BUTTON_NATIVE_TAB",
+          "value": {
+            "route": "/button-focus-reference?case=custom-focusable",
+            "withoutFollowing": {
+              "tag": "BODY",
+              "id": ""
+            },
+            "withFollowing": "following-button"
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:39:32.3907408Z",
+          "marker": "BUTTON_NATIVE_TAB",
+          "value": {
+            "route": "/button?case=custom-focusable",
+            "withoutFollowing": {
+              "tag": "BODY",
+              "id": ""
+            },
+            "withFollowing": "following-button"
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:39:32.4234676Z",
+          "marker": "BUTTON_NATIVE_TAB",
+          "value": {
+            "route": "native",
+            "withoutFollowing": {
+              "tag": "BODY",
+              "id": ""
+            },
+            "withFollowing": "following-button"
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:39:34.2090369Z",
+          "marker": "PAIRED_DIALOG_ANIMATION_KINDS",
+          "value": {
+            "route": "/reference",
+            "name": "exit",
+            "duration": "0.1s",
+            "animations": [
+              {
+                "kind": "CSSAnimation",
+                "cssAnimation": true,
+                "cssTransition": false,
+                "name": "exit",
+                "property": null,
+                "state": "paused",
+                "timing": {
+                  "delay": 0,
+                  "direction": "normal",
+                  "duration": 100,
+                  "easing": "linear",
+                  "endDelay": 0,
+                  "fill": "none",
+                  "iterationStart": 0,
+                  "iterations": 1,
+                  "activeDuration": 100,
+                  "currentIteration": 0,
+                  "endTime": 100,
+                  "localTime": 0,
+                  "progress": 0
+                }
+              }
+            ]
+          }
+        },
+        {
+          "timestamp": "2026-10-02T21:39:34.7837252Z",
+          "marker": "PAIRED_DIALOG_ANIMATION_KINDS",
+          "value": {
+            "route": "/dialog",
+            "name": "exit",
+            "duration": "0.1s",
+            "animations": [
+              {
+                "kind": "CSSAnimation",
+                "cssAnimation": true,
+                "cssTransition": false,
+                "name": "exit",
+                "property": null,
+                "state": "paused",
+                "timing": {
+                  "delay": 0,
+                  "direction": "normal",
+                  "duration": 100,
+                  "easing": "linear",
+                  "endDelay": 0,
+                  "fill": "none",
+                  "iterationStart": 0,
+                  "iterations": 1,
+                  "activeDuration": 100,
+                  "currentIteration": 0,
+                  "endTime": 100,
+                  "localTime": 0,
+                  "progress": 0
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

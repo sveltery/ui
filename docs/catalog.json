@@ -381,8 +381,8 @@
     {
       "entry": "separator",
       "issue": "https://github.com/sveltery/ui/issues/27",
-      "status": "preserve-pinned-selector-mismatch; no silent correction",
-      "limitation": "Original sizing selectors and primitive orientation attributes disagree; shared source behavior requires separate correction decision."
+      "status": "historical-diagnosis-invalidated-by-complete-original-css",
+      "limitation": "The historical SSR-only diagnosis omitted genuine shadcn/tailwind.css, which maps original sizing utilities to primitive data-orientation attributes. No shared upstream sizing defect established; preserve original wrapper classes. See docs/shadcn-css.md."
     }
   ],
   "entries": [
@@ -6406,7 +6406,7 @@
         "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
         "blockers": [
           "styled-wrapper-unimplemented",
-          "preserve-shared-selector-bug-issue27"
+          "restore-genuine-original-support-css"
         ]
       },
       "tests": {

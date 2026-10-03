@@ -38,7 +38,8 @@ for (const scenario of ['native-disabled', 'custom-disabled', 'native-focusable'
   for (const channel of ['click', 'pointer', 'mouse', 'keydown', 'keyup']) expect((await calls(page))[channel]).toBe(0);
   // Render handlers run before Base guards; disabled Base callbacks stay suppressed.
   if (scenario.startsWith('custom')) expect((await calls(page)).render).toBe(1);
-  if (focusable) { await expect(button).toBeFocused(); await page.keyboard.press('Tab'); await expect(button).not.toBeFocused(); }
+  // A known following control makes traversal observable even when the browser cycles a sole focusable host.
+  if (focusable) { await expect(button).toBeFocused(); await page.keyboard.press('Tab'); await expect(button).not.toBeFocused(); await expect(page.locator('#following-button')).toBeFocused(); }
 });
 for (const scenario of ['default', 'submit', 'reset', 'undefined-type', 'null-type', 'submit-disabled', 'submit-focusable', 'reset-disabled', 'reset-focusable']) test(`native form defaults and disabled submission/reset: ${scenario}`, async ({ page }) => {
   const button = await setup(page, scenario); const disabled = scenario.includes('disabled') || scenario.includes('focusable');

@@ -30,7 +30,7 @@ test('every complete base plus permitted accent merges exact light/dark records'
 
 test('independent browser source app imports full original styles without production CSS or compatibility reset', () => {
   const original = readFileSync('tests/reference/themes/upstream/globals.css', 'utf8');
-  assert.equal(readFileSync('tests/reference/themes/upstream/globals.reference.css', 'utf8'), original.replace('@import "shadcn/tailwind.css";', '@import "./shadcn-tailwind.css";'));
+  assert.equal(readFileSync('tests/reference/themes/upstream/globals.reference.css', 'utf8'), original);
   const reference = readFileSync('tests/reference/themes/reference-app/reference.css', 'utf8');
   for (const style of styles) assert(reference.includes(`@import "../upstream/style-${style}.css" layer(components);`));
   assert(reference.includes('@import "../upstream/globals.reference.css";'));

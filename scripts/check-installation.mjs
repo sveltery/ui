@@ -8,6 +8,8 @@ import { fileURLToPath } from 'node:url';
 const repo = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const browser = process.argv.includes('--browser');
 assert(process.argv.slice(2).every(arg => arg === '--browser'), 'Only --browser is supported');
+const browserProject = process.env.SVELTERY_BROWSER_PROJECT;
+assert(browserProject === undefined || ['chromium', 'firefox', 'webkit'].includes(browserProject), 'SVELTERY_BROWSER_PROJECT must name an actual configured engine');
 const guide = readFileSync(join(repo, 'docs/installation.md'), 'utf8');
 const files = [...guide.matchAll(/<!-- consumer-file: ([\w./+-]+) -->\n```[^\n]*\n([\s\S]*?)\n```/gu)];
 assert.equal(files.length, 9, 'Expected the nine documented scaffold files');
@@ -121,6 +123,15 @@ try {
     if (mode === 'copy') iconsFixture = iconsFixture.replaceAll('@sveltery/ui/icons', '$lib/components/ui/icons');
     writeFileSync(iconsRoute, iconsFixture);
     writeFileSync(join(consumer, 'src/routes/icons-types.ts'), readFileSync(join(repo, 'tests/icons-types.ts'), 'utf8').replace('../apps/docs/registry/bases/base/ui/icons/index.js', mode === 'copy' ? '$lib/components/ui/icons' : '@sveltery/ui/icons').replace('../apps/docs/registry/bases/base/ui/index.js', mode === 'copy' ? '$lib/components/ui/icons' : '@sveltery/ui'));
+    const classMergeRoute = join(consumer, 'src/routes/class-merge/+page.svelte');
+    mkdirSync(dirname(classMergeRoute), { recursive: true });
+    let classMergeFixture = readFileSync(join(repo, 'apps/docs/examples/base/ClassMergeProbe.svelte'), 'utf8');
+    if (mode === 'copy') classMergeFixture = classMergeFixture.replaceAll('@sveltery/ui/skeleton', '$lib/components/ui/skeleton');
+    writeFileSync(classMergeRoute, classMergeFixture);
+    const cssEnvironmentRoute = join(consumer, 'src/routes/css-environment/+page.svelte');
+    mkdirSync(dirname(cssEnvironmentRoute), { recursive: true });
+    writeFileSync(cssEnvironmentRoute, readFileSync(join(repo, 'apps/docs/examples/base/CssEnvironmentProbe.svelte'), 'utf8').replace('../../../../tests/reference/css-state-witnesses', './css-state-witnesses'));
+    cpSync(join(repo, 'tests/reference/css-state-witnesses.ts'), join(dirname(cssEnvironmentRoute), 'css-state-witnesses.ts'));
     const themeRoute = join(consumer, 'src/routes/themes/+page.svelte');
     mkdirSync(dirname(themeRoute), { recursive: true });
     let themeFixture = readFileSync(join(repo, 'apps/docs/examples/base/ThemeExample.svelte'), 'utf8');
@@ -179,11 +190,13 @@ try {
       run('pnpm', ['check'], consumer);
       run('pnpm', ['build'], consumer);
       if (browser) {
-        execFileSync('pnpm', ['exec', 'playwright', 'test', '--config', 'scripts/installation-playwright.config.ts'], {
+        const args = ['exec', 'playwright', 'test', '--config', 'scripts/installation-playwright.config.ts'];
+        if (browserProject) args.push('--project', browserProject);
+        execFileSync('pnpm', args, {
           cwd: repo, stdio: 'inherit', env: { ...process.env, SVELTERY_INSTALLATION_CONSUMER: consumer, SVELTERY_INSTALLATION_REMOTE: remote ? '1' : '0' },
         });
       }
-      console.log(`Fresh ${mode} ${remote ? 'experimental remote-field fixture' : 'documented consumer'}: types, SSR/client build${browser ? ' and secured browser' : ''} PASS`);
+      console.log(`Fresh ${mode} ${remote ? 'experimental remote-field fixture' : 'documented consumer'}: types, SSR/client build${browser ? ` and ${browserProject ?? 'all configured engines'} browser` : ''} PASS`);
     };
     check(false);
     // Remote fields are a separate experimental test fixture, not part of the

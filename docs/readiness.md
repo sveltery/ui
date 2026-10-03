@@ -1,6 +1,10 @@
 # Dialog readiness
 
-The [complete pinned registry catalog](catalog.md) records all 62 required entries and distinguishes locked dependency availability, bounded UI delivery and genuine test-source status.
+## Proposed three-engine acceptance continuation
+
+The [Chromium/Firefox/WebKit gates](browser-engines.md) run retained cases, immutable source pins, zero retries and fresh archive/source-copy documented/experimental phases. [Executable source mapping](browser-source-map.md) distinguishes earlier authored Alert/Label expectation corrections and observational harness changes from unchanged genuine tests. Exact final-head hosted execution is required for each engine, alongside Standards, Verification, Documentation and independent source/environment review. Current discovery certifies inventory only; existing Chromium landing evidence does not certify Firefox or WebKit. Whole-library and production readiness remain blocked.
+
+The [complete pinned registry catalog](catalog.md) records all 62 raw source entries and distinguishes locked dependency availability, bounded UI delivery and genuine test-source status. The separate [current target selection](target-scope.md) uses Base Toast, Combobox and Drawer and excludes the optional Command/cmdk and Sonner ports; Vaul is unnecessary for Base Drawer. Exclusion is not completion. All other selected families and the gates below remain unchanged.
 
 ## Native Table and proposed With Badges continuation
 
@@ -113,7 +117,7 @@ The [Alert slice](alert.md) preserves the four pinned native div wrappers, CVA d
 
 ## Native Empty gate
 
-The [six native Empty wrappers](empty.md) add no Base primitive or dependency upgrade. All actual gallery compositions require missing icons and/or InputGroup and remain deferred. Require immutable source/hash checks, paired DOM and SSR, desktop/mobile Nova selector and geometry witnesses, six-host SSR/hydration identity, media default/icon/null/spread precedence, native interactions, refs/attachments and cleanup, packaged exports/declarations/types and both fresh archive/source-copy consumer gates. Preserve existing control and direct remote-field regressions. Independent GPT-6.1 Sol high review and configured automatic review cover the final head; only actually reported exhausted quota permits the automatic-review exception. Post-merge CI and Documentation must be verified against the merge SHA. Production readiness, full gallery/theme parity and live assistive technology remain blocked.
+The [six native Empty wrappers](empty.md) add no Base primitive or dependency upgrade. All six actual gallery functions remain unimplemented. Basic, With Muted Background, With Icon and In Card now have available native dependencies; With Border and With Muted Background Alt still require styled InputGroup parts. Require immutable source/hash checks, paired DOM and SSR, desktop/mobile Nova selector and geometry witnesses, six-host SSR/hydration identity, media default/icon/null/spread precedence, native interactions, refs/attachments and cleanup, packaged exports/declarations/types and both fresh archive/source-copy consumer gates. Preserve existing control and direct remote-field regressions. Independent GPT-6.1 Sol high review and configured automatic review cover the final head; only actually reported exhausted quota permits the automatic-review exception. Post-merge CI and Documentation must be verified against the merge SHA. Production readiness, full gallery/theme parity and live assistive technology remain blocked.
 
 ## Proposed modern theme/style scope
 
@@ -122,6 +126,17 @@ The [six native Empty wrappers](empty.md) add no Base primitive or dependency up
 ## Native Example scaffold continuation
 
 The [native Example/ExampleWrapper contract](example.md) ports the complete dependency-available source helper and removes substituted sections/headings for selected Skeleton/Kbd galleries. Exact wrapper/title/content classes and precedence, required class-based dark/Lyra/Sera variants, paired DOM/SSR/browser responsive geometry, native hydration/ref/attachment replacement, package types/exports and both fresh consumer modes gate the proposed head. Original component and remote-field assertions are preserved. Card/Table/Label/AspectRatio galleries and upstream global theme/preset scope retain their documented limits. No copied upstream runtime test inventory or full library/readiness credit is claimed. Exact-head local/hosted checks, independent review and all fresh automatic reviews precede parent approval and developer merge; proposed landing and specific framework/distribution acceptance are distinct.
+
+## Current gallery prerequisites
+
+Genuine [Example/ExampleWrapper](example.md) landed in [PR #28](https://github.com/sveltery/ui/pull/28), and [public configurable IconPlaceholder](icons.md) landed in [PR #33](https://github.com/sveltery/ui/pull/33). Historical missing-helper rationales are not current dependency blockers. Available helpers must be used when migrating original compositions; their availability completes no gallery by itself.
+
+- CardWithImage/CardWithImageSmall, KbdWithIcons/KbdWithIconsAndText and AlertExample2/AlertExample3 have available native component/helper dependencies. All six original functions remain unimplemented.
+- EmptyBasic/EmptyWithMutedBackground/EmptyWithIcon/EmptyInCard have available native dependencies. All four remain unimplemented; three require the existing Button render/nativeButton anchor composition, not a plain-link substitute.
+- Card/Table/Alert/AspectRatio outer Example scaffold migrations have no missing helper prerequisite. Textarea/Label also have Example available, while their genuine Field compositions remain missing. AspectRatio's Next Image adaptation and the icon helper's Next/nuqs configuration limits remain separate framework scope.
+- Styled ToggleGroup, Field/Input, Avatar, InputGroup, Tooltip and Badge still block their specific Card/Kbd/Alert/Empty functions; Table's DropdownMenu/Select/Input and Label's Checkbox/Input functions retain their existing blockers.
+
+Preserve original source/test inventories, historical check receipts and explicit adaptation decisions. These documentation corrections earn no new implementation, original-gallery, copied-test, full API or live assistive-technology credit. The [current Base-only selection](target-scope.md) and exact-head review/delivery gates remain unchanged.
 
 Proposed in [PR #28](https://github.com/sveltery/ui/pull/28); its conversation records final-head execution and review evidence.
 
@@ -135,6 +150,8 @@ Proposed in [PR #28](https://github.com/sveltery/ui/pull/28); its conversation r
 
 [Icon PR #29](https://github.com/sveltery/ui/pull/29) landed as main `125da200ec560c96560489abea6221054fdf58ac`; exact post-merge [CI 37061583594](https://github.com/sveltery/ui/actions/runs/37061583594) and [Documentation 37061583658](https://github.com/sveltery/ui/actions/runs/37061583658) passed. The separate [public distribution PR #33](https://github.com/sveltery/ui/pull/33) relocates that single renderer and all byte-identical native geometry into one registry/source-copy/package closure. Public types, root/subpath identity, complete original license presence and actual fresh-consumer asynchronous ESM/SSR/hydration/lifecycle probes are required on this new final head. Historical PR #29 evidence gives this distribution change no acceptance credit. Independent review, configured-review response under the recorded quota exception, all hosted checks and explicit PM approval remain required before owning-developer guarded merge. This prerequisite does not complete any deferred gallery, Next/nuqs configuration or the whole library.
 
+That PR #33 gate description is a historical implementation record: its public closure has since landed as main `8d92c62d9f2006aff60d1c947e0921d8f3dc6c32`. Current gallery migration status is the checklist above; helper availability is separate from original-composition completion and acceptance.
+
 ## Proposed native styled Separator
 
-[Separator scope and evidence](separator.md) retains the actual Base primitive and literal pinned wrapper utilities, all four actual source gallery functions, two genuine React1.6 ordinary declarations expanded into three cases and fifteen separate conformance helpers. Preserve shared selector issue27 and the source ignored class callback limit; no orientation alias, corrected selector or weakened expectation is permitted. Full final-head verification, fresh archive/source-copy type/SSR/client/secured browser gates, independent/configured review, PM SHA approval and owning developer guarded merge precede landing; verify post-merge gates. Full library, live assistive technology and production readiness remain incomplete.
+[Separator scope and evidence](separator.md) retains the actual Base primitive and literal pinned wrapper utilities, all four actual source gallery functions, two genuine React 1.6 ordinary declarations expanded into three cases and fifteen separate conformance helpers. The old issue #27 selector diagnosis omitted the genuine support CSS and is invalid; unchanged wrapper classes must be validated with the original orientation variants. Preserve the source ignored class callback limit. Full final-head verification, fresh archive/source-copy type/SSR/client/secured three-engine browser gates, independent/configured review, PM SHA approval and owning developer guarded merge precede landing; verify post-merge gates. Full library, live assistive technology and production readiness remain incomplete.

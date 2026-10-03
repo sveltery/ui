@@ -1,0 +1,337 @@
+{
+  "repository": "https://github.com/shadcn-ui/ui",
+  "commit": "d75a96ab781f3d659be1ad287347d5887ce9f2fc",
+  "tree": "b5fe6239eadcaa7167662cc28e55b4f7911a1e1e",
+  "version": "4.21.1",
+  "files": [
+    {
+      "upstream": "packages/shadcn/package.json",
+      "local": "tests/reference/shadcn-css-upstream/package.json.source",
+      "bytes": 4249,
+      "sha256": "acf528ebdce3ea5024a09c5bd44f1cf96c4368a4dd72542ce1e894c3119a3d7d",
+      "gitBlob": "dd1705db005b1d6610599bba69e647e4a26502e3"
+    },
+    {
+      "upstream": "LICENSE.md",
+      "local": "tests/reference/shadcn-css-upstream/LICENSE.md",
+      "bytes": 1063,
+      "sha256": "1564074e13439397221ffd522e2e504d56561994a23d371aa5e3ad43e4f5423f",
+      "gitBlob": "fad4d887a681dd49233e5ed01ee2c7a1513089a0"
+    },
+    {
+      "upstream": "packages/shadcn/src/tailwind.css",
+      "local": "tests/reference/themes/upstream/shadcn-tailwind.css",
+      "bytes": 16340,
+      "sha256": "4c371f7a1ff5d219ae2f7ff28bd256b4346fd546fe46fbae22092e57db2f0fae",
+      "gitBlob": "067bfc56fc086420835582f469e2c78d3942c69a"
+    },
+    {
+      "upstream": "apps/v4/app/globals.css",
+      "local": "tests/reference/themes/upstream/globals.css",
+      "bytes": 13739,
+      "sha256": "cbae6d633c38be59fc036d1e5cf60203ae7619ea6af9b4cdd8d632a211ccffa9",
+      "gitBlob": "32582b53565093c693017d4528d2982642050bfe"
+    },
+    {
+      "upstream": "apps/v4/registry/bases/base/ui/separator.tsx",
+      "local": "tests/reference/shadcn-css-upstream/separator.tsx",
+      "bytes": 535,
+      "sha256": "9a80ff8c110e0c55489509f4f82ebcc929c0174b59544047147b7134f86a54e7",
+      "gitBlob": "d69c13426761105ab42e5a6bd364dc54bd70f78c"
+    }
+  ],
+  "published": {
+    "url": "https://registry.npmjs.org/shadcn/-/shadcn-4.21.1.tgz",
+    "integrity": "sha512-keQmMdKI1eLKTtYpwFwrFfFegsskOpUgt1l3aF359pbCFt0taq0TMuZ75yK+q/StcV2YvjmBMenrs0diWoezXQ==",
+    "sha1": "e054da730e6992f40899c45204f41f2529818188",
+    "sha256": "59538fbf55a74e3492d8b66595af0662878b9fa3b6f114564ebe325211cb7932",
+    "buildCommit": "3502dbcde11d1eaf967a47ac375744dc336641f3",
+    "provenanceBoundary": "Published artifact statement is bound to this release build, not the later immutable UI commit. Actual published CSS and full license are independently byte-exact at the immutable UI commit. Normal pnpm signature/integrity policy remains required; this record is not a cryptographic signature verifier.",
+    "files": [
+      {
+        "path": "LICENSE.md",
+        "bytes": 1063,
+        "sha256": "1564074e13439397221ffd522e2e504d56561994a23d371aa5e3ad43e4f5423f"
+      },
+      {
+        "path": "README.md",
+        "bytes": 1317,
+        "sha256": "13d1235d1690dad504c4dd423d4f237a9a74eb8f2e49e7ee39f9c995ba7c0856"
+      },
+      {
+        "path": "dist/chunk-3W6BGJGE.js",
+        "bytes": 1040,
+        "sha256": "b64691fc01ff0dbcba92c6f1ff50db9c82de832c77bd35b02975a2b7dd5ef452"
+      },
+      {
+        "path": "dist/chunk-SILUCKGE.js",
+        "bytes": 12646,
+        "sha256": "d8a61f18a35f8453a8fbc48e1c7bc34aee064830c7c63007f29a4adc0d20daf6"
+      },
+      {
+        "path": "dist/icons/index.d.ts",
+        "bytes": 595,
+        "sha256": "ae41ef3f6343bfeb4ba46720cc010e53274d6ffe31397e69e905f0c72a01d6c7"
+      },
+      {
+        "path": "dist/icons/index.js",
+        "bytes": 166,
+        "sha256": "bd8f528b9627035571dde501db966cdce4256bea3c3221431a5b90583f267a38"
+      },
+      {
+        "path": "dist/index.d.ts",
+        "bytes": 6674,
+        "sha256": "ae3b2340b37c4ea557d92423f0b40f112a1b1da97db732cbaa10078c32cb4a00"
+      },
+      {
+        "path": "dist/index.js",
+        "bytes": 160421,
+        "sha256": "57c4419fbbc338e18e309e2763323898a7f3cf0952d37e4641ce721b5755deaa"
+      },
+      {
+        "path": "dist/mcp/index.d.ts",
+        "bytes": 1038,
+        "sha256": "3c15d33a18597557fe9a09f146d80df0b67c860248736a00526a7bf723349b78"
+      },
+      {
+        "path": "dist/mcp/index.js",
+        "bytes": 46,
+        "sha256": "cbe0cdb802eb2b0fb1d32896e6fa087b7a38870db4025e8ad7e4a7fd3168f279"
+      },
+      {
+        "path": "dist/preset/index.d.ts",
+        "bytes": 463,
+        "sha256": "9e963bc914e000ee5e0fd763a20e5d5138c9cef4bae0452cf38f0484083863a7"
+      },
+      {
+        "path": "dist/preset/index.js",
+        "bytes": 410,
+        "sha256": "a2bb1a694f3e071734bfcb5280f12049379ece25b2cc9176e745a6b89a49b79f"
+      },
+      {
+        "path": "dist/registry/index.d.ts",
+        "bytes": 34,
+        "sha256": "5ba277e4e404cf03a06530df5191fe8ca261c075c4a8d2b0e0f48d1bdfe9924f"
+      },
+      {
+        "path": "dist/registry/index.js",
+        "bytes": 30,
+        "sha256": "8730e5ea7f49b841c130a3933285955052f09525b91c86c5e0e6c5160d3a4ebb"
+      },
+      {
+        "path": "dist/schema/index.d.ts",
+        "bytes": 41,
+        "sha256": "69ee83334374dce7de1c5909c5c9543cf6beaf221be30724661a1d9f9461ee61"
+      },
+      {
+        "path": "dist/schema/index.js",
+        "bytes": 37,
+        "sha256": "7902ad7dd12a37ab1a4fc4803e17fd12f420b5bd920dc31596853416c568c917"
+      },
+      {
+        "path": "dist/tailwind.css",
+        "bytes": 16340,
+        "sha256": "4c371f7a1ff5d219ae2f7ff28bd256b4346fd546fe46fbae22092e57db2f0fae"
+      },
+      {
+        "path": "dist/tailwind.d.ts",
+        "bytes": 111,
+        "sha256": "bf23c5559095e6d21867d360ac9e9f015b5d57e9f8f40f5c4cbdea41506791e1"
+      },
+      {
+        "path": "dist/utils/index.d.ts",
+        "bytes": 1125,
+        "sha256": "2ed0ab97eb141ee635c5b288519be24f0a70a8e13d8b2fe56ed2a3c9cbac9cf6"
+      },
+      {
+        "path": "dist/utils/index.js",
+        "bytes": 9030,
+        "sha256": "b0c8fb11734cfdc84943af4c85308246241d683c4b00d72e572692f397b42447"
+      },
+      {
+        "path": "package.json",
+        "bytes": 4242,
+        "sha256": "e194e45bd4ead13c2f65c18e470f41b6249dde0d71ca172bb8b07102f973ecca"
+      }
+    ],
+    "dependencies": {
+      "cn": "^0.2.4",
+      "ora": "^8.2.0",
+      "zod": "^3.24.1",
+      "diff": "^8.0.2",
+      "open": "^11.0.0",
+      "execa": "^9.6.0",
+      "kleur": "^4.1.5",
+      "socks": "^2.8.8",
+      "dedent": "^1.6.0",
+      "recast": "^0.23.11",
+      "undici": "^7.29.0",
+      "postcss": "^8.5.23",
+      "prompts": "^2.4.2",
+      "fs-extra": "^11.3.1",
+      "ts-morph": "^26.0.0",
+      "commander": "^14.0.0",
+      "deepmerge": "^4.3.1",
+      "fast-glob": "^3.3.3",
+      "fuzzysort": "^3.1.0",
+      "@babel/core": "^7.28.0",
+      "cosmiconfig": "^9.0.0",
+      "browserslist": "^4.26.2",
+      "@babel/parser": "^7.28.0",
+      "tsconfig-paths": "^4.2.0",
+      "@dotenvx/dotenvx": "^1.48.4",
+      "@shadcn/registry": "0.1.0",
+      "stringify-object": "^5.0.0",
+      "zod-to-json-schema": "^3.24.6",
+      "postcss-selector-parser": "^7.1.3",
+      "@babel/preset-typescript": "^7.27.1",
+      "@modelcontextprotocol/sdk": "^1.26.0",
+      "validate-npm-package-name": "^7.0.1",
+      "@types/validate-npm-package-name": "^4.0.2",
+      "@babel/plugin-transform-typescript": "^7.28.0"
+    }
+  },
+  "originalShadcnImporter": {
+    "source": "pnpm-lock.yaml",
+    "gitBlob": "c2d207452144b13eb294965c31e33849d7a57c4f",
+    "dependencies": {
+      "@babel/core": {
+        "specifier": "^7.28.0",
+        "version": "7.28.0"
+      },
+      "@babel/parser": {
+        "specifier": "^7.28.0",
+        "version": "7.28.0"
+      },
+      "@babel/plugin-transform-typescript": {
+        "specifier": "^7.28.0",
+        "version": "7.28.0(@babel/core@7.28.0)"
+      },
+      "@babel/preset-typescript": {
+        "specifier": "^7.27.1",
+        "version": "7.27.1(@babel/core@7.28.0)"
+      },
+      "@dotenvx/dotenvx": {
+        "specifier": "^1.48.4",
+        "version": "1.48.4"
+      },
+      "@modelcontextprotocol/sdk": {
+        "specifier": "^1.26.0",
+        "version": "1.26.0(zod@3.25.76)"
+      },
+      "@shadcn/registry": {
+        "specifier": "workspace:*",
+        "version": "link:../registry"
+      },
+      "@types/validate-npm-package-name": {
+        "specifier": "^4.0.2",
+        "version": "4.0.2"
+      },
+      "browserslist": {
+        "specifier": "^4.26.2",
+        "version": "4.26.2"
+      },
+      "cn": {
+        "specifier": "^0.2.4",
+        "version": "0.2.4"
+      },
+      "commander": {
+        "specifier": "^14.0.0",
+        "version": "14.0.0"
+      },
+      "cosmiconfig": {
+        "specifier": "^9.0.0",
+        "version": "9.0.0(typescript@5.9.2)"
+      },
+      "dedent": {
+        "specifier": "^1.6.0",
+        "version": "1.6.0"
+      },
+      "deepmerge": {
+        "specifier": "^4.3.1",
+        "version": "4.3.1"
+      },
+      "diff": {
+        "specifier": "^8.0.2",
+        "version": "8.0.2"
+      },
+      "execa": {
+        "specifier": "^9.6.0",
+        "version": "9.6.0"
+      },
+      "fast-glob": {
+        "specifier": "^3.3.3",
+        "version": "3.3.3"
+      },
+      "fs-extra": {
+        "specifier": "^11.3.1",
+        "version": "11.3.1"
+      },
+      "fuzzysort": {
+        "specifier": "^3.1.0",
+        "version": "3.1.0"
+      },
+      "kleur": {
+        "specifier": "^4.1.5",
+        "version": "4.1.5"
+      },
+      "open": {
+        "specifier": "^11.0.0",
+        "version": "11.0.0"
+      },
+      "ora": {
+        "specifier": "^8.2.0",
+        "version": "8.2.0"
+      },
+      "postcss": {
+        "specifier": "^8.5.23",
+        "version": "8.5.23"
+      },
+      "postcss-selector-parser": {
+        "specifier": "^7.1.3",
+        "version": "7.1.3"
+      },
+      "prompts": {
+        "specifier": "^2.4.2",
+        "version": "2.4.2"
+      },
+      "recast": {
+        "specifier": "^0.23.11",
+        "version": "0.23.11"
+      },
+      "socks": {
+        "specifier": "^2.8.8",
+        "version": "2.8.9"
+      },
+      "stringify-object": {
+        "specifier": "^5.0.0",
+        "version": "5.0.0"
+      },
+      "ts-morph": {
+        "specifier": "^26.0.0",
+        "version": "26.0.0"
+      },
+      "tsconfig-paths": {
+        "specifier": "^4.2.0",
+        "version": "4.2.0"
+      },
+      "undici": {
+        "specifier": "^7.29.0",
+        "version": "7.29.0"
+      },
+      "validate-npm-package-name": {
+        "specifier": "^7.0.1",
+        "version": "7.0.1"
+      },
+      "zod": {
+        "specifier": "^3.24.1",
+        "version": "3.25.76"
+      },
+      "zod-to-json-schema": {
+        "specifier": "^3.24.6",
+        "version": "3.24.6(zod@3.25.76)"
+      }
+    }
+  },
+  "credit": "Supplemental source, compiled CSS and secured browser environment witnesses only. No copied ordinary shadcn runtime tests, CLI behavior equivalence, new UI Separator wrapper or whole component parity credit."
+}

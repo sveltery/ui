@@ -19,7 +19,7 @@ This is a supplemental usage composition, not a port of an upstream gallery func
 
 ## Native contract and framework adaptations
 
-`EmptyMedia` alone accepts `variant`: omitted or explicitly undefined selects `default`, `icon` selects icon styling, and explicit null removes the variant class and `data-variant`. Its actual slot is **`empty-icon`**, despite the component's name. Caller props override or omit the default `data-slot` and media `data-variant`, following the pinned spread order. Class merging retains the exact source tokens and applies caller conflicts last through the existing CVA/clsx/tailwind-merge dependencies. No media variant utility is publicly exported by either implementation.
+`EmptyMedia` alone accepts `variant`: omitted or explicitly undefined selects `default`, `icon` selects icon styling, and explicit null removes the variant class and `data-variant`. Its actual slot is **`empty-icon`**, despite the component's name. Caller props override or omit the default `data-slot` and media `data-variant`, following the pinned spread order. Class merging retains the exact source tokens and applies caller conflicts last through the existing CVA and pinned `cn` 0.2.2 dependencies. No media variant utility is publicly exported by either implementation.
 
 `EmptyDescription` preserves the pinned **div host**, even though React annotates `React.ComponentProps<"p">`. Local attributes, event targets and refs use `HTMLDivElement` to describe that actual host. This is a framework typing adaptation, without changing the rendered element or claiming React paragraph-ref equivalence. Direct child links receive the pinned underline/hover rules; nested links do not acquire those direct-child styles. The Nova icon variant's nested SVG selectors remain styling rules; the wrapper supplies no icon.
 
@@ -27,7 +27,14 @@ React `className`, object CSS, children, refs and synthetic events become Svelte
 
 ## Deferred gallery scope
 
-All six functions in the [complete pinned gallery](../tests/reference/empty-example.tsx) remain deferred: Basic, With Muted Background and In Card require configurable icons; With Icon requires icons; With Border and With Muted Background Alt require InputGroup and icons. Existing Button, Kbd and Card do not remove those dependencies. No icon replacement, InputGroup stand-in or omitted-icon gallery is supplied. Supplemental native SVG and link witnesses exercise selectors only and earn no gallery composition coverage.
+All six functions in the [complete pinned gallery](../tests/reference/empty-example.tsx) remain unimplemented and receive no original gallery composition credit. Their historical icon blocker was removed by [public icon PR #33](https://github.com/sveltery/ui/pull/33), and the genuine [Example helpers](example.md) landed in [PR #28](https://github.com/sveltery/ui/pull/28).
+
+| Original function | Current prerequisite status |
+| --- | --- |
+| EmptyBasic, EmptyWithMutedBackground, EmptyWithIcon, EmptyInCard | Example, Empty parts, Button and IconPlaceholder are available for genuine composition migration. Despite its name, EmptyInCard uses no Card component. |
+| EmptyWithBorder, EmptyWithMutedBackgroundAlt | Still require missing styled InputGroup/InputGroupInput/InputGroupAddon. Kbd and icons are available; no stand-in is supplied. |
+
+Basic, With Muted Background and In Card render Button as a native anchor with `nativeButton={false}`. The consumed [Base pin](base-pin-upgrade.md) supports Button's render snippet, supplying merged props, state and children; styled Button forwards that API. A migration must preserve those props/children and symbol attachments on the actual anchor, rather than replace Button with an unstyled link. This existing native API is not Next Link and establishes no full React/Base API equivalence or acceptance of a new gallery adaptation. No icon replacement, omitted-icon gallery or completed example is supplied. Supplemental native SVG and link witnesses exercise selectors only and earn no gallery composition coverage.
 
 ## Evidence and gates
 
