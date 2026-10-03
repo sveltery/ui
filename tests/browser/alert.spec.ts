@@ -1,6 +1,7 @@
 // Supplemental source-derived comparisons executing actual immutable wrappers, not an upstream test-port inventory.
 import { expect, test, type Page } from '@playwright/test';
 import { alertLifecycleCases, alertNativeAssertions } from './alert-cases';
+import { alertGallery, alertHTMLHosts, alertLibraries, alertStyles, alertWidths, alertTheme, settledAlert, alertGalleryTree, alertGalleryMeasurements, alertLongTextMeasurements, assertAlertGallery, assertAlertNativeLinks } from './alert-gallery-cases';
 alertLifecycleCases();
 const selector = '[data-testid="composition"] *, [data-testid="selectors"] *';
 async function snapshot(page: Page) {
@@ -55,7 +56,8 @@ for (const width of [1280, 390]) for (const theme of ['light', 'dark']) test(`pa
   await testInfo.attach(`pinned-react-alert-${width}-${theme}`, { body: await reference.screenshot({ fullPage: true }), contentType: 'image/png' });
   await reference.close();
 });
-const galleryHosts = '[data-alert-gallery], [data-alert-gallery] *';
+const basicExample = '[data-alert-gallery] > [data-slot="example"]:first-child';
+const galleryHosts = `[data-alert-gallery], ${basicExample}, ${basicExample} *`;
 async function galleryTree(page: Page) {
   return page.locator(galleryHosts).evaluateAll(nodes => nodes.map(node => ({
     tag: node.tagName, attrs: Object.fromEntries([...node.attributes].map(attr => [attr.name, attr.value]).sort(([a], [b]) => a.localeCompare(b))),
@@ -111,9 +113,9 @@ test('bounded Basic preserves genuine paired responsive layout, text, roles and 
     await page.goto('/alert'); await reference.goto('/alert-reference');
     for (const current of [page, reference]) {
       await expect(current.locator('[data-alert-gallery]')).toHaveAttribute('data-hydrated', 'true');
-      await expect(current.locator('[data-alert-gallery] [role="alert"]')).toHaveCount(3);
-      await expect(current.locator('[data-alert-gallery] [data-slot="alert-title"]')).toHaveCount(2);
-      await expect(current.locator('[data-alert-gallery] [data-slot="alert-description"]')).toHaveCount(2);
+      await expect(current.locator(`${basicExample} [role="alert"]`)).toHaveCount(3);
+      await expect(current.locator(`${basicExample} [data-slot="alert-title"]`)).toHaveCount(2);
+      await expect(current.locator(`${basicExample} [data-slot="alert-description"]`)).toHaveCount(2);
       await expect(current.locator('[data-alert-gallery] section, [data-alert-gallery] h2')).toHaveCount(0);
     }
     expect(await galleryTree(page)).toEqual(await galleryTree(reference));
@@ -133,4 +135,89 @@ test('bounded Basic preserves genuine paired responsive layout, text, roles and 
     }
   }
   expect(errors).toEqual([]); await reference.close();
+});
+
+test('all three genuine Alert bodies preserve the 50 native SSR hosts while canonical glyphs settle through hydration', async ({ page, context }) => {
+  const reference = await context.newPage(); const pairs = [[page, '/alert'], [reference, '/alert-reference']] as const;
+  const errors: string[] = []; const gatedScripts = { native: [] as string[], reference: [] as string[] };
+  let release!: () => void; const gate = new Promise<void>(resolve => { release = resolve; });
+  for (const [current] of pairs) { current.on('pageerror', error => errors.push(error.message)); current.on('console', message => { if (message.type() === 'error') errors.push(message.text()); }); }
+  try {
+    for (const [current, route] of pairs) { await current.goto(route); await settledAlert(current); await current.waitForLoadState('networkidle'); }
+    for (const [index, [current]] of pairs.entries()) await current.route('**/*', async route => {
+      if (route.request().resourceType() === 'script') { gatedScripts[index === 0 ? 'native' : 'reference'].push(route.request().url()); await gate; }
+      await route.continue();
+    });
+    const captured = [];
+    for (const [current, route] of pairs) {
+      await current.goto(route, { waitUntil: 'commit' }); await expect(current.locator(alertGallery)).toHaveAttribute('data-hydrated', 'false');
+      const hosts = await current.locator(alertHTMLHosts).elementHandles(); expect(hosts).toHaveLength(50);
+      await expect(current.locator(`${alertGallery} svg`)).toHaveCount(8);
+      await expect(current.locator(`${alertGallery} svg.lucide-square`)).toHaveCount(0);
+      captured.push({ current, hosts });
+    }
+    const before = await alertGalleryTree(page); expect(before).toEqual(await alertGalleryTree(reference));
+    await expect.poll(() => gatedScripts.native.length).toBeGreaterThan(0); await expect.poll(() => gatedScripts.reference.length).toBeGreaterThan(0);
+    release();
+    for (const { current, hosts } of captured) {
+      await settledAlert(current);
+      for (const [index, host] of hosts.entries()) expect(await host.evaluate((node, args) => node.isConnected && node === document.querySelectorAll(args.selector)[args.index], { selector: alertHTMLHosts, index })).toBe(true);
+      expect(await alertGalleryTree(current)).toEqual(JSON.parse(JSON.stringify(before).replace('"data-hydrated":"false"', '"data-hydrated":"true"')));
+    }
+    expect(errors).toEqual([]);
+  } finally { release(); await reference.close(); }
+});
+
+for (const library of alertLibraries) test(`three original Alert bodies and canonical ${library} glyphs match full original CSS in all eight styles and modes`, async ({ page, context }) => {
+  test.setTimeout(180_000); // All 96 style/mode/breakpoint combinations use actual source and real library modules.
+  const original = await context.newPage(); const errors: string[] = [];
+  for (const current of [page, original]) { current.on('pageerror', error => errors.push(error.message)); current.on('console', message => { if (message.type() === 'error') errors.push(message.text()); }); }
+  try {
+    await page.goto(`/alert?library=${library}`); await original.goto(`http://127.0.0.1:5175/alert?library=${library}`);
+    await settledAlert(page); await settledAlert(original);
+    expect(await alertGalleryTree(page)).toEqual(await alertGalleryTree(original));
+    for (const style of alertStyles) for (const dark of [false, true]) for (const width of alertWidths) await test.step(`${style} ${dark ? 'dark' : 'light'} ${width}px`, async () => {
+      for (const current of [page, original]) { await current.setViewportSize({ width, height: 1800 }); await alertTheme(current, style, dark); await assertAlertGallery(current, width, style, library); }
+      expect(await alertGalleryTree(page)).toEqual(await alertGalleryTree(original));
+      expect(await alertGalleryMeasurements(page)).toEqual(await alertGalleryMeasurements(original));
+      expect(await alertLongTextMeasurements(page)).toEqual(await alertLongTextMeasurements(original));
+    });
+    for (const current of [page, original]) await assertAlertNativeLinks(current);
+    expect(errors).toEqual([]);
+  } finally { await original.close(); }
+});
+
+for (const library of alertLibraries) test(`both genuine Alert galleries show eight original Square glyphs while actual ${library} modules are held`, async ({ page, context }, testInfo) => {
+  const reference = await context.newPage(); const errors: string[] = [];
+  const intercepted = { native: [] as string[], reference: [] as string[] };
+  let release!: () => void; const gate = new Promise<void>(resolve => { release = resolve; });
+  for (const current of [page, reference]) { current.on('pageerror', error => errors.push(error.message)); current.on('console', message => { if (message.type() === 'error') errors.push(message.text()); }); }
+  await page.route(`**/icons/generated/${library}.js*`, async route => { intercepted.native.push(route.request().url()); await gate; await route.continue(); });
+  await reference.route(`**/reference/icons/__${library}__.ts*`, async route => { intercepted.reference.push(route.request().url()); await gate; await route.continue(); });
+  try {
+    // The ordinary React route deliberately serves settled all-ready SSR. The
+    // independent client document exposes the original Suspense loading branch.
+    await page.goto(`/alert?library=${library}`, { waitUntil: 'domcontentloaded' }); await reference.goto(`http://127.0.0.1:5175/alert?library=${library}`, { waitUntil: 'domcontentloaded' });
+    for (const current of [page, reference]) await expect(current.locator(alertGallery)).toHaveAttribute('data-hydrated', 'true');
+    await expect.poll(() => intercepted.native.length).toBeGreaterThan(0); await expect.poll(() => intercepted.reference.length).toBeGreaterThan(0);
+    for (const current of [page, reference]) {
+      await alertTheme(current, 'nova', false);
+      await expect(current.locator(`${alertGallery} svg`)).toHaveCount(8);
+      await expect(current.locator(`${alertGallery} [data-slot=alert] > svg.lucide-square`)).toHaveCount(8);
+      expect(await current.locator(`${alertGallery} svg.lucide-square rect`).evaluateAll(nodes => nodes.map(node => ({ width: node.getAttribute('width'), height: node.getAttribute('height'), x: node.getAttribute('x'), y: node.getAttribute('y'), rx: node.getAttribute('rx') })))).toEqual(Array(8).fill({ width: '18', height: '18', x: '3', y: '3', rx: '2' }));
+    }
+    expect(await alertGalleryTree(page)).toEqual(await alertGalleryTree(reference));
+    expect(await alertGalleryMeasurements(page)).toEqual(await alertGalleryMeasurements(reference));
+    const moduleURLs = { native: [...new Set(intercepted.native)], reference: [...new Set(intercepted.reference)] };
+    expect(moduleURLs.native).toHaveLength(1); expect(moduleURLs.reference).toHaveLength(1);
+    expect(moduleURLs.native[0]).toContain(`/icons/generated/${library}.js`); expect(moduleURLs.reference[0]).toContain(`/reference/icons/__${library}__.ts`);
+    const delayedRequests = structuredClone(intercepted);
+    release(); await settledAlert(page); await settledAlert(reference);
+    for (const current of [page, reference]) await assertAlertGallery(current, 1280, 'nova', library);
+    expect(await alertGalleryTree(page)).toEqual(await alertGalleryTree(reference));
+    expect(await alertGalleryMeasurements(page)).toEqual(await alertGalleryMeasurements(reference)); expect(errors).toEqual([]);
+    const diagnostics = { library, delayedRequests, allRequests: intercepted, moduleURLs, requestCountCacheTimingEquivalence: false };
+    console.info(`Alert delayed-module diagnostics: ${JSON.stringify(diagnostics)}`);
+    await testInfo.attach('delayed-genuine-alert-icon-modules', { body: JSON.stringify(diagnostics), contentType: 'application/json' });
+  } finally { release(); await reference.close(); }
 });

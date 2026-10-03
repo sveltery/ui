@@ -51,3 +51,19 @@ test('three selected Alert functions are byte-exact and compose genuine helpers;
   for (const deferred of ['AlertExample4', 'Badge', 'With Actions']) { assert(!gallery.includes(deferred)); assert(!local.includes(deferred)); }
   assert(source.includes('import { Badge }')); assert(source.includes('import { IconPlaceholder }'));
 });
+test('genuine Alert gallery reaches complete original CSS and actual source-copy icon delivery', () => {
+  const originalApp = readFileSync('tests/reference/themes/reference-app/main.tsx', 'utf8');
+  assert(originalApp.includes("import { AlertGallery } from '../../AlertGallery';"));
+  assert(originalApp.includes("const alertDiagnostic = window.location.pathname === '/alert';"));
+  assert(originalApp.includes("alertDiagnostic ? <AlertGallery library={library ?? 'lucide'} />"));
+  const css = readFileSync('tests/reference/themes/reference-app/reference.css', 'utf8');
+  assert(css.includes('../upstream/globals.reference.css'));
+  for (const style of ['vega', 'nova', 'maia', 'lyra', 'mira', 'luma', 'sera', 'rhea']) assert(css.includes(`../upstream/style-${style}.css`));
+  const installer = readFileSync('scripts/check-installation.mjs', 'utf8');
+  const delivery = installer.slice(installer.indexOf("for (const [route, source] of [['alert'"), installer.indexOf("src/routes/alert-types.ts"));
+  assert(delivery.includes(".replaceAll('@sveltery/ui/icons', '$lib/components/ui/icons')"));
+  assert(delivery.includes("apps/docs/src/routes/alert/+page.svelte"));
+  assert(delivery.includes("join(dirname(routePath), 'AlertExample.svelte')"));
+  const consumerBrowser = readFileSync('scripts/installation-playwright.config.ts', 'utf8');
+  assert(consumerBrowser.includes("'**/kbd.spec.ts', '**/alert.spec.ts'"), 'experimental consumer phases must also execute the genuine Alert gallery');
+});

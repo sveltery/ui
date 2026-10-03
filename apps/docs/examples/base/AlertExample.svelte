@@ -27,14 +27,14 @@
           hugeicons="AlertCircleIcon"
           phosphor="WarningCircleIcon"
           remixicon="RiErrorWarningLine"
-        /><AlertTitle>Let&apos;s try one with icon, title and a <!-- svelte-ignore a11y_invalid_attribute -- Preserve the exact immutable original placeholder link. --><a href="#">link</a>.</AlertTitle></Alert>
+        /><AlertTitle>Let&apos;s try one with icon, title and a <!-- svelte-ignore a11y_invalid_attribute (Preserve the exact immutable original placeholder link.) --><a href="#">link</a>.</AlertTitle></Alert>
       <Alert><IconPlaceholder
           lucide="CircleAlertIcon"
           tabler="IconExclamationCircle"
           hugeicons="AlertCircleIcon"
           phosphor="WarningCircleIcon"
           remixicon="RiErrorWarningLine"
-        /><AlertDescription>This one has an icon and a description only. No title. <!-- svelte-ignore a11y_invalid_attribute -- Preserve the exact immutable original placeholder link. --><a href="#">But it has a link</a> and a <!-- svelte-ignore a11y_invalid_attribute -- Preserve the exact immutable original placeholder link. --><a href="#">second link</a>.</AlertDescription></Alert>
+        /><AlertDescription>This one has an icon and a description only. No title. <!-- svelte-ignore a11y_invalid_attribute (Preserve the exact immutable original placeholder link.) --><a href="#">But it has a link</a> and a <!-- svelte-ignore a11y_invalid_attribute (Preserve the exact immutable original placeholder link.) --><a href="#">second link</a>.</AlertDescription></Alert>
       <Alert><IconPlaceholder
           lucide="CircleAlertIcon"
           tabler="IconExclamationCircle"
@@ -83,7 +83,7 @@
           hugeicons="AlertCircleIcon"
           phosphor="WarningCircleIcon"
           remixicon="RiErrorWarningLine"
-        /><AlertTitle>Unable to process your payment.</AlertTitle><AlertDescription><p>Please verify your <!-- svelte-ignore a11y_invalid_attribute -- Preserve the exact immutable original placeholder link. --><a href="#">billing information</a> and try again.</p><ul class="list-inside list-disc"><li>Check your card details</li><li>Ensure sufficient funds</li><li>Verify billing address</li></ul></AlertDescription></Alert>
+        /><AlertTitle>Unable to process your payment.</AlertTitle><AlertDescription><p>Please verify your <!-- svelte-ignore a11y_invalid_attribute (Preserve the exact immutable original placeholder link.) --><a href="#">billing information</a> and try again.</p><ul class="list-inside list-disc"><li>Check your card details</li><li>Ensure sufficient funds</li><li>Verify billing address</li></ul></AlertDescription></Alert>
     </div>
   </Example>
 {/snippet}
