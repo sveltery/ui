@@ -1,13 +1,13 @@
 import { expect, test } from '@playwright/test';
 import { separatorMeasurements, separatorAssertions } from './separator-cases';
-for (const width of [1280, 390]) for (const theme of ['light', 'dark']) test(`pinned Separator shared selector mismatch and native rendering at ${width}px ${theme}`, async ({ page, context }, testInfo) => {
+for (const width of [1280, 390]) for (const theme of ['light', 'dark']) test(`pinned Separator genuine orientation variants and native rendering at ${width}px ${theme}`, async ({ page, context }, testInfo) => {
  const reference = await context.newPage(); const errors: string[] = [];
  try {
   for (const current of [page, reference]) { current.on('pageerror', error => errors.push(error.message)); current.on('console', message => { if (message.type() === 'error') errors.push(message.text()); }); await current.setViewportSize({ width, height: 900 }); }
   await page.goto('/separator-probe'); await reference.goto('/separator-probe-reference');
   for (const current of [page, reference]) { await expect(current.locator('[data-separator-probe]')).toHaveAttribute('data-hydrated', 'true'); if (theme === 'dark') await current.evaluate(() => { document.documentElement.classList.add('dark'); document.documentElement.style.setProperty('--border', 'rgb(77, 88, 99)'); }); }
   const baseline = await separatorMeasurements(reference); expect(await separatorMeasurements(page)).toEqual(baseline);
-  await testInfo.attach('actual-react-selector-characterization', { body: JSON.stringify({ width, theme, baseline }, null, 2), contentType: 'application/json' });
+  await testInfo.attach('actual-react-complete-css-orientation', { body: JSON.stringify({ width, theme, baseline }, null, 2), contentType: 'application/json' });
   await separatorAssertions(page); await separatorAssertions(reference);
   expect(await separatorMeasurements(page)).toEqual(await separatorMeasurements(reference));
   const nativeState = page.getByTestId('separator-state'); await expect(nativeState).toContainText('"clicks":1'); await expect(nativeState).toContainText('"attaches":2'); await expect(nativeState).toContainText('"detaches":1');

@@ -6,6 +6,10 @@ export async function separatorAssertions(page: Page) {
  const horizontal = page.getByTestId('default-horizontal'), vertical = page.getByTestId('default-vertical');
  await expect(horizontal).toHaveAttribute('data-orientation', 'horizontal'); await expect(vertical).toHaveAttribute('data-orientation', 'vertical');
  await expect(horizontal).not.toHaveAttribute('data-horizontal'); await expect(vertical).not.toHaveAttribute('data-vertical');
+ // Original support CSS maps these utilities to data-orientation, without alias attributes.
+ expect(await horizontal.evaluate(node => ({ width: node.getBoundingClientRect().width, height: node.getBoundingClientRect().height }))).toEqual({ width: 240, height: 1 });
+ expect(await vertical.evaluate(node => ({ width: node.getBoundingClientRect().width, height: node.getBoundingClientRect().height }))).toEqual({ width: 1, height: 48 });
+ await expect(horizontal).toHaveCSS('flex-shrink', '0'); await expect(vertical).toHaveCSS('align-self', 'stretch');
  await expect(page.getByTestId('callback')).not.toHaveClass(/ignored-class/);
  expect(await page.getByTestId('explicit-horizontal').evaluate(node => node.getBoundingClientRect().height)).toBe(1);
  expect(await page.getByTestId('explicit-vertical').evaluate(node => node.getBoundingClientRect().width)).toBe(1);
