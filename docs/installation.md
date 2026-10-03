@@ -33,7 +33,7 @@ This current checkout rebuilds Base commit `d889e75bedfee9174c3b36d16fe8a9fb2d2a
 
 ### 2. Create the consumer
 
-Create the following files in `dialog-app`. The exact versions match the repository fixtures. This small scaffold avoids a changing `create` CLI default; existing SvelteKit apps can apply the same dependencies and configuration.
+Create the following files in `dialog-app`. The exact versions match the repository fixtures. This small scaffold avoids a changing `create` CLI default; existing SvelteKit apps can apply the same dependencies and configuration. Shared wrapper classes use genuine `cn` 0.2.2, selected by the pinned modern shadcn lock; [class-merging fidelity](class-merging.md) records the original dependency tests and source-copy requirements. Icons separately use `clsx` 2.1.1.
 
 #### `package.json`
 
@@ -54,7 +54,7 @@ Create the following files in `dialog-app`. The exact versions match the reposit
     "@sveltery/base": "file:vendor/sveltery-base-0.0.0.tgz",
     "@sveltery/ui": "file:vendor/sveltery-ui-0.0.0.tgz",
     "clsx": "2.1.1",
-    "tailwind-merge": "3.6.0",
+    "cn": "0.2.2",
     "svelte": "5.57.1"
   },
   "devDependencies": {
@@ -231,7 +231,7 @@ cp ../sveltery-ui/packages/ui/THIRD_PARTY_NOTICES.md src/lib/components/ui/THIRD
 
 Make these three edits:
 
-1. In `package.json`, remove the `@sveltery/ui` dependency. Keep the verified Base archive, Svelte, `clsx`, `tailwind-merge`, Tailwind and `tw-animate-css` dependencies.
+1. In `package.json`, remove the `@sveltery/ui` dependency. Keep the verified Base archive, Svelte, `cn` 0.2.2, `clsx` 2.1.1, Tailwind and `tw-animate-css` dependencies.
 2. In `src/app.css`, replace `@import "@sveltery/ui/nova.css";` with `@import "./lib/styles/nova.css";` replace `@import "@sveltery/ui/themes.css";` and `@import "@sveltery/ui/styles.css";` with imports from `./lib/styles/themes.css` and `./lib/styles/styles.css`, and replace the installed-package `@source` line with `@source "./lib/components/ui";`.
 3. In `src/routes/+page.svelte`, import the same names from `$lib/components/ui/dialog`. The broader Tailwind source path also scans `shared/classes.js`, which supplies native close-button utility classes.
 
@@ -247,7 +247,7 @@ For an app-owned Table copy, retain the `table` directory alongside the shared h
 cp -R ../sveltery-ui/apps/docs/registry/bases/base/ui/table src/lib/components/ui/
 ```
 
-Import the same names from `$lib/components/ui/table`, preserve `shared/classes.js`, `clsx` and `tailwind-merge`, and repeat the types, SSR/client build and browser gates. Table itself requires no Base primitive; this guide's Dialog scaffold still consumes the verified Base archive. Fresh consumer verification exercises Table's examples, native semantic tree, refs/attachments, reactive attributes, styles and scrolling in both archive and source-copy modes, before enabling the separate experimental remote-field fixture.
+Import the same names from `$lib/components/ui/table`, preserve `shared/classes.js`, `cn` 0.2.2, and repeat the types, SSR/client build and browser gates. Table itself requires no Base primitive; this guide's Dialog scaffold still consumes the verified Base archive. Fresh consumer verification exercises Table's examples, native semantic tree, refs/attachments, reactive attributes, styles and scrolling in both archive and source-copy modes, before enabling the separate experimental remote-field fixture.
 
 ### Native Skeleton
 
@@ -271,11 +271,11 @@ Import `AspectRatio` from `@sveltery/ui/aspect-ratio` or the root of the same re
 
 ### Native Alert
 
-This proposed integrated slice exports `Alert`, `AlertTitle`, `AlertDescription` and `AlertAction` from `@sveltery/ui/alert` or the root of the same reviewed archive. All parts render native divs. Root supports `default`, `destructive` and null variants; caller role/data-slot overrides remain observable. For source copies, copy `registry/bases/base/ui/alert` beside `shared/classes.js`, keep the notices, `clsx` and `tailwind-merge`, install `class-variance-authority` 0.7.1 for this source copy (`pnpm add class-variance-authority@0.7.1`), and scan both directories. Existing card, foreground, muted, destructive and radius tokens support Nova. [Alert scope](alert.md) records native APIs, Basic's bounded scaffold and deferred icon/Badge compositions. Fresh archive/source-copy gates exercise all four parts, SSR/client builds, reactive props, refs/attachments and secured browsers before experimental remote-field opt-ins.
+This proposed integrated slice exports `Alert`, `AlertTitle`, `AlertDescription` and `AlertAction` from `@sveltery/ui/alert` or the root of the same reviewed archive. All parts render native divs. Root supports `default`, `destructive` and null variants; caller role/data-slot overrides remain observable. For source copies, copy `registry/bases/base/ui/alert` beside `shared/classes.js`, keep the notices, `cn` 0.2.2, install `class-variance-authority` 0.7.1 for this source copy (`pnpm add class-variance-authority@0.7.1`), and scan both directories. Existing card, foreground, muted, destructive and radius tokens support Nova. [Alert scope](alert.md) records native APIs, Basic's bounded scaffold and deferred icon/Badge compositions. Fresh archive/source-copy gates exercise all four parts, SSR/client builds, reactive props, refs/attachments and secured browsers before experimental remote-field opt-ins.
 
 ### Native Empty
 
-Import the six [native Empty parts](empty.md) from `@sveltery/ui/empty` or the root of the same reviewed archive. For source copies, copy `registry/bases/base/ui/empty` beside `shared/classes.js`, retain the notices and scan both directories with Tailwind. Keep `class-variance-authority` 0.7.1, `clsx` 2.1.1 and `tailwind-merge` 3.6.0. Nova supplies the Empty rules using existing theme tokens. EmptyDescription renders a div; EmptyMedia uses `data-slot="empty-icon"` and default/icon/null variants. Both fresh consumer modes exercise supplemental native primitives, SSR/hydration, styles, props, refs and attachment cleanup. Actual gallery compositions remain deferred for missing icons and/or InputGroup.
+Import the six [native Empty parts](empty.md) from `@sveltery/ui/empty` or the root of the same reviewed archive. For source copies, copy `registry/bases/base/ui/empty` beside `shared/classes.js`, retain the notices and scan both directories with Tailwind. Keep `class-variance-authority` 0.7.1 and `cn` 0.2.2. Nova supplies the Empty rules using existing theme tokens. EmptyDescription renders a div; EmptyMedia uses `data-slot="empty-icon"` and default/icon/null variants. Both fresh consumer modes exercise supplemental native primitives, SSR/hydration, styles, props, refs and attachment cleanup. Actual gallery compositions remain deferred for missing icons and/or InputGroup.
 
 ### Configurable icons
 

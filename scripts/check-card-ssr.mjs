@@ -13,7 +13,7 @@ function moduleURL(path, imports) {
   for (const [name, url] of Object.entries(imports)) source = source.replaceAll(`"${name}"`, JSON.stringify(url)).replaceAll(`'${name}'`, JSON.stringify(url));
   return `data:text/javascript;base64,${Buffer.from(transpileModule(source, { compilerOptions: { module: ModuleKind.ESNext, target: ScriptTarget.ESNext, jsx: JsxEmit.React } }).outputText).toString('base64')}`;
 }
-const cn = moduleURL('tests/reference/cn.ts', { clsx: import.meta.resolve('clsx'), 'tailwind-merge': import.meta.resolve('tailwind-merge') });
+const cn = import.meta.resolve('cn');
 const References = await import(moduleURL('tests/reference/card.tsx', { react: import.meta.resolve('react'), cn }));
 for (const [name, Local] of Object.entries({ Card, CardHeader, CardTitle, CardDescription, CardAction, CardContent, CardFooter })) {
   const cases = [{}, { id: 'card', className: 'grid items-end row-start-3 px-6', title: 'Card & <draft>' }, { 'data-slot': 'custom', className: 'block', hidden: true }, ...(name === 'Card' ? [{ size: 'sm' }, { size: undefined }, { size: null }, { size: 'sm', 'data-size': 'custom' }, { size: 'sm', 'data-size': undefined }, { size: 'sm', 'data-size': null }] : [])];

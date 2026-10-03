@@ -13,7 +13,7 @@ function moduleURL(path, imports) {
   const js = transpileModule(source, { compilerOptions: { module: ModuleKind.ESNext, target: ScriptTarget.ESNext, jsx: JsxEmit.React } }).outputText;
   return `data:text/javascript;base64,${Buffer.from(js).toString('base64')}`;
 }
-const cn = moduleURL('tests/reference/cn.ts', { clsx: import.meta.resolve('clsx'), 'tailwind-merge': import.meta.resolve('tailwind-merge') });
+const cn = import.meta.resolve('cn');
 const { Textarea: Reference } = await import(moduleURL('tests/reference/textarea.tsx', { react: import.meta.resolve('react'), cn }));
 for (const props of [{}, { defaultValue: 'Draft & <message>' }, { defaultValue: '\nLeading draft' }, { value: 'Value & <message>', readOnly: true }, { value: '\nLeading value', readOnly: true }, { value: 0, readOnly: true }, { value: '', readOnly: true }]) {
   const expected = new JSDOM(renderToStaticMarkup(createElement(Reference, props))).window.document.querySelector('textarea');
