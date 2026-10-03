@@ -50,7 +50,7 @@ test('complete original AspectRatio gallery retains all 22 actual SSR HTML hosts
     await reference.goto('/aspect-ratio-reference'); await expect(reference.locator(aspectGalleryHosts)).toHaveCount(22);
     const original = await aspectGallerySnapshot(reference);
     let release!: () => void; const gate = new Promise<void>(resolve => { release = resolve; });
-    await page.route('**/*', async route => { if (route.request().resourceType() === 'script') await gate; await route.continue(); });
+    await page.route('**/*', async route => { if (route.request().resourceType() === 'script') await gate; await route.fallback(); });
     try {
       await page.goto('/aspect-ratio', { waitUntil: 'commit' }); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'false');
       const hosts = await page.locator(aspectGalleryHosts).elementHandles(); expect(hosts).toHaveLength(22);

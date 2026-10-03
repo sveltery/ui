@@ -58,8 +58,14 @@ export async function assertAspectGallery(page: Page, width: number, height: num
     // Real unequal intrinsic/rendered ratios exercise cover cropping, rather than
     // merely checking class strings or an unloaded-image box.
     const coverScale = Math.max(decoded.width / decoded.naturalWidth, decoded.height / decoded.naturalHeight);
-    expect(decoded.naturalWidth * coverScale).toBeGreaterThanOrEqual(decoded.width);
-    expect(decoded.naturalHeight * coverScale).toBeGreaterThanOrEqual(decoded.height);
+    // Division followed by multiplication can round down by one IEEE754 ULP
+    // (actual Firefox111.38333129882811 versus111.38333129882812). Bound
+    // only this derived arithmetic by two machine epsilons, not visual geometry.
+    for (const [intrinsic, dimension] of [[decoded.naturalWidth, decoded.width], [decoded.naturalHeight, decoded.height]]) {
+      const scaled = intrinsic * coverScale;
+      const roundingBound = 2 * Number.EPSILON * Math.max(Math.abs(scaled), Math.abs(dimension));
+      expect(scaled).toBeGreaterThanOrEqual(dimension - roundingBound);
+    }
     await image.scrollIntoViewIfNeeded();
     expect(await image.evaluate(node => { const r = node.getBoundingClientRect(); const x = Math.min(innerWidth - 1, Math.max(1, r.x + r.width / 2)); const y = Math.min(innerHeight - 1, Math.max(1, r.y + r.height / 2)); return document.elementFromPoint(x, y) === node; })).toBe(true);
   }

@@ -24,7 +24,7 @@ test('fresh actual four-function AspectRatio gallery delivers original SSR hosts
   await aspectImages(page); await page.goto('/aspect-ratio'); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true');
   // Warm actual development dependency discovery, then preserve every genuine SSR host.
   let release!: () => void; const gate = new Promise<void>(resolve => { release = resolve; });
-  await page.route('**/*', async route => { if (route.request().resourceType() === 'script') await gate; await route.continue(); });
+  await page.route('**/*', async route => { if (route.request().resourceType() === 'script') await gate; await route.fallback(); });
   try {
     await page.goto('/aspect-ratio', { waitUntil: 'commit' }); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'false');
     const hosts = await page.locator(aspectGalleryHosts).elementHandles(); expect(hosts).toHaveLength(22); const before = await aspectGallerySnapshot(page);
