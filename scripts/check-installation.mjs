@@ -128,7 +128,7 @@ try {
     writeFileSync(classMergeRoute, classMergeFixture);
     const cssEnvironmentRoute = join(consumer, 'src/routes/css-environment/+page.svelte');
     mkdirSync(dirname(cssEnvironmentRoute), { recursive: true });
-    writeFileSync(cssEnvironmentRoute, readFileSync(join(repo, 'apps/docs/examples/base/CssEnvironmentProbe.svelte'), 'utf8').replace('../../../../../tests/reference/css-state-witnesses', './css-state-witnesses'));
+    writeFileSync(cssEnvironmentRoute, readFileSync(join(repo, 'apps/docs/examples/base/CssEnvironmentProbe.svelte'), 'utf8').replace('../../../../tests/reference/css-state-witnesses', './css-state-witnesses'));
     cpSync(join(repo, 'tests/reference/css-state-witnesses.ts'), join(dirname(cssEnvironmentRoute), 'css-state-witnesses.ts'));
     const themeRoute = join(consumer, 'src/routes/themes/+page.svelte');
     mkdirSync(dirname(themeRoute), { recursive: true });

@@ -3,7 +3,7 @@
   // CSS environment diagnostic, not a published styled Separator wrapper.
   import { Separator } from '@sveltery/base/separator';
   import { onMount } from 'svelte';
-  import { stateClasses, stateWitnesses } from '../../../../../tests/reference/css-state-witnesses';
+  import { stateClasses, stateWitnesses } from '../../../../tests/reference/css-state-witnesses';
   let hydrated = $state(false);
   onMount(() => { hydrated = true; });
   const separatorClasses = 'shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch';
