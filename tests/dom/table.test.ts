@@ -159,7 +159,7 @@ it('four selected example bodies retain exact native trees and the six literal W
   const actualTables = host.querySelectorAll('table'); const referenceTables = expected.querySelectorAll('table');
   actualTables.forEach((table, index) => compare(table, referenceTables[index]));
   // Authored source-fidelity repair; four required genuine title divs prevent vacuous h2 equality.
-  const selector = '[data-gallery][data-slot="example-wrapper"]';
+  const selector = '[data-slot="example-wrapper"]';
   const wrapper = host.querySelector(selector)!;
   const referenceWrapper = expected.querySelector(selector)!;
   expect(wrapper).not.toBeNull(); expect(referenceWrapper).not.toBeNull();

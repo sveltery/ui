@@ -4,7 +4,7 @@ import { expect, type Page } from '@playwright/test';
 const tones = ['green', 'blue', 'yellow', 'gray', 'gray', 'gray'];
 const texts = ['Completed', 'High', 'In Progress', 'Medium', 'Pending', 'Low'];
 // Authored locator fidelity repair: actual Example -> content -> fixed Table container.
-export const tableGallerySelector = '[data-gallery][data-slot="example-wrapper"]';
+export const tableGallerySelector = '[data-slot="example-wrapper"]';
 export const tableBadgeSelector = `${tableGallerySelector} > [data-slot="example"]:nth-child(4) > [data-slot="example-content"] > [data-slot="table-container"] > table[data-slot="table"]`;
 export const tableBadgeHosts = `${tableBadgeSelector}, ${tableBadgeSelector} *`;
 export const tableGalleryHosts = `div:has(> ${tableGallerySelector}), ${tableGallerySelector}, ${tableGallerySelector} *`;
@@ -27,7 +27,7 @@ export async function tableBadgeMeasurements(page: Page) {
 }
 export async function assertTableBadges(page: Page, dark = false) {
   const table = page.locator(tableBadgeSelector);
-  await expect(page.locator('[data-gallery] table')).toHaveCount(4);
+  await expect(page.locator(`${tableGallerySelector} table`)).toHaveCount(4);
   expect(await table.locator('th').allTextContents()).toEqual(['Task', 'Status', 'Priority']);
   expect(await table.locator('tbody tr').evaluateAll(rows => rows.map(row => [...row.querySelectorAll('td')].map(cell => cell.textContent!.trim())))).toEqual([
     ['Design homepage', 'Completed', 'High'], ['Implement API', 'In Progress', 'Medium'], ['Write tests', 'Pending', 'Low'],
@@ -95,7 +95,7 @@ export async function assertTableGalleryScaffold(page: Page, width: number, heig
   const measured = await tableGalleryMeasurements(page);
   expect(measured.shellTag).toBe('DIV'); expect(measured.shellClass).toBe('w-full bg-muted dark:bg-background'); expect(measured.shellAttributes).toEqual(['class']);
   expect(measured.shellWidth).toBeCloseTo(measured.availableWidth, 4);
-  expect(measured.tag).toBe('DIV'); expect(measured.attributes).toEqual(['class', 'data-gallery', 'data-slot']); expect(measured.class).toBe(wrapperClass);
+  expect(measured.tag).toBe('DIV'); expect(measured.attributes).toEqual(['class', 'data-slot']); expect(measured.class).toBe(wrapperClass);
   expect(measured.width).toBeCloseTo(Math.min(measured.availableWidth, width >= 1536 ? 1152 : 1024), 4);
   expect(measured.maxWidth).toBe(width >= 1536 ? '1152px' : '1024px'); expect(measured.minHeight).toBe(`${height}px`);
   expect(measured.columns.split(' ')).toHaveLength(width >= 768 ? 2 : 1);

@@ -14,7 +14,7 @@
 </script>
 
 <!-- Four selected pinned bodies under the actual original Example scaffold. -->
-<ExampleWrapper data-gallery="">
+<ExampleWrapper>
   <Example title="Basic">
     <Table>
       <TableCaption>A list of your recent invoices.</TableCaption>

@@ -52,7 +52,7 @@ const invoices = [
 export function TableGallery() {
   const [hydrated, setHydrated] = useState(false);
   useEffect(() => { setHydrated(true); }, []);
-  return <div data-hydrated={hydrated}><ExampleWrapper data-gallery=""><TableBasic /><TableWithFooter /><TableSimple /><TableWithBadges /></ExampleWrapper></div>;
+  return <div data-hydrated={hydrated}><ExampleWrapper><TableBasic /><TableWithFooter /><TableSimple /><TableWithBadges /></ExampleWrapper></div>;
 }
 
 function TableBasic() {

@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { tableLifecycleCases, tableState } from './table-cases';
-import { assertTableBadges, setTableBadgeTheme, tableBadgeHosts, tableBadgeMeasurements, tableBadgeSnapshot, tableGalleryHydrated, tableGalleryHosts, tableGallerySnapshot, tableGalleryMeasurements, assertTableGalleryScaffold, assertTableGalleryVariants } from './table-badges-cases';
+import { assertTableBadges, setTableBadgeTheme, tableBadgeHosts, tableBadgeMeasurements, tableBadgeSnapshot, tableGalleryHydrated, tableGallerySelector, tableGalleryHosts, tableGallerySnapshot, tableGalleryMeasurements, assertTableGalleryScaffold, assertTableGalleryVariants } from './table-badges-cases';
 // Source-derived probes, not copied upstream assertions; see table-sources.json.
 tableLifecycleCases();
 async function tableSnapshot(page: Page) {
@@ -106,9 +106,9 @@ for (const width of [1280, 390]) for (const theme of ['light', 'dark']) test(`pa
   await reference.close();
 });
 test('bounded Basic, Footer, Simple and With Badges example content matches pinned React', async ({ page, context }) => {
-  await page.goto('/table'); await expect(page.locator('[data-gallery]')).toBeVisible();
+  await page.goto('/table'); await expect(page.locator(tableGallerySelector)).toBeVisible();
   const reference = await context.newPage(); await reference.goto('/table-reference'); await expect(reference.locator('[data-hydrated=true]')).toBeVisible();
-  const semantic = (current: Page) => current.locator('[data-gallery] table').evaluateAll(tables => tables.map(table => ({ caption: table.querySelector('caption')?.textContent?.trim(), headers: [...table.querySelectorAll('th')].map(node => node.textContent?.trim()), rows: [...table.querySelectorAll('tbody tr')].map(row => [...row.querySelectorAll('td')].map(node => node.textContent?.trim())), footers: [...table.querySelectorAll('tfoot td')].map(node => ({ text: node.textContent?.trim(), span: node.getAttribute('colspan') })) })));
+  const semantic = (current: Page) => current.locator(`${tableGallerySelector} table`).evaluateAll(tables => tables.map(table => ({ caption: table.querySelector('caption')?.textContent?.trim(), headers: [...table.querySelectorAll('th')].map(node => node.textContent?.trim()), rows: [...table.querySelectorAll('tbody tr')].map(row => [...row.querySelectorAll('td')].map(node => node.textContent?.trim())), footers: [...table.querySelectorAll('tfoot td')].map(node => ({ text: node.textContent?.trim(), span: node.getAttribute('colspan') })) })));
   expect(await semantic(page)).toEqual(await semantic(reference)); expect(await semantic(page)).toHaveLength(4);
   await expect(page.locator('tfoot')).toContainText('$2,500.00'); await reference.close();
 });

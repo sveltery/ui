@@ -57,7 +57,7 @@ assert.equal(actualGallery.querySelectorAll('table')[3].querySelector('[data-slo
 console.log('Pinned React/Svelte Table gallery SSR: four native example trees and six literal badge spans PASS');
 
 // Additive authored scaffold evidence: complete real helper tree, not two absent heading lists.
-const gallerySelector = '[data-gallery][data-slot="example-wrapper"]';
+const gallerySelector = '[data-slot="example-wrapper"]';
 const actualWrapper = actualGallery.querySelector(gallerySelector);
 const expectedWrapper = expectedGallery.querySelector(gallerySelector);
 assert(actualWrapper && expectedWrapper, 'both galleries must contain the genuine wrapper');

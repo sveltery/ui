@@ -42,9 +42,10 @@ test('selected Table galleries compose the genuine Example helpers without a rep
   const native = readFileSync('apps/docs/examples/base/TableExample.svelte', 'utf8');
   assert(reference.includes("import { Example, ExampleWrapper } from './example-scaffold';"), 'React gallery must use the actual immutable scaffold module');
   assert(!/function Example(?:Wrapper)?\s*\(/.test(reference), 'no local substitute helper');
-  assert(reference.includes('<ExampleWrapper data-gallery=""><TableBasic /><TableWithFooter /><TableSimple /><TableWithBadges /></ExampleWrapper>'));
+  assert(reference.includes('<ExampleWrapper><TableBasic /><TableWithFooter /><TableSimple /><TableWithBadges /></ExampleWrapper>'));
   assert(native.includes("import { Example, ExampleWrapper } from '@sveltery/ui/example';"));
-  assert(native.includes('<ExampleWrapper data-gallery="">'));
+  assert(native.includes('<ExampleWrapper>'));
+  assert(!native.includes('data-gallery') && !reference.includes('data-gallery'), 'original Table wrapper composition has no diagnostic data-gallery prop');
   for (const title of ['Basic', 'With Footer', 'Simple', 'With Badges']) {
     assert.equal((native.match(new RegExp(`<Example title="${title}">`, 'g')) ?? []).length, 1);
   }
