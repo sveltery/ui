@@ -33,3 +33,22 @@ test('With Badges is six literal spans without a missing Badge dependency', () =
   assert.equal((body.match(/<span className=/g) ?? []).length, 6);
   assert(!body.includes('<Badge'));
 });
+
+// Authored source-fidelity supplement; no ordinary upstream Table suite exists at this pin.
+test('selected Table galleries compose the genuine Example helpers without a replacement shell', () => {
+  const source = readFileSync('tests/reference/table-example.tsx', 'utf8');
+  assert(source.includes('<ExampleWrapper>\n      <TableBasic />\n      <TableWithFooter />\n      <TableSimple />\n      <TableWithBadges />'));
+  const reference = readFileSync('tests/reference/TableGallery.tsx', 'utf8');
+  const native = readFileSync('apps/docs/examples/base/TableExample.svelte', 'utf8');
+  assert(reference.includes("import { Example, ExampleWrapper } from './example-scaffold';"), 'React gallery must use the actual immutable scaffold module');
+  assert(!/function Example(?:Wrapper)?\s*\(/.test(reference), 'no local substitute helper');
+  assert(reference.includes('<ExampleWrapper><TableBasic /><TableWithFooter /><TableSimple /><TableWithBadges /></ExampleWrapper>'));
+  assert(native.includes("import { Example, ExampleWrapper } from '@sveltery/ui/example';"));
+  assert(native.includes('<ExampleWrapper>'));
+  assert(!native.includes('data-gallery') && !reference.includes('data-gallery'), 'original Table wrapper composition has no diagnostic data-gallery prop');
+  for (const title of ['Basic', 'With Footer', 'Simple', 'With Badges']) {
+    assert.equal((native.match(new RegExp(`<Example title="${title}">`, 'g')) ?? []).length, 1);
+  }
+  assert.equal((native.match(/<\/Example>/g) ?? []).length, 4);
+  assert(!/<section\b|<h2\b|lg:grid-cols-1/.test(native));
+});

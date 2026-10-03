@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { tableLifecycleCases, tableState } from '../browser/table-cases';
-import { assertTableBadges, setTableBadgeTheme, tableBadgeHosts, tableBadgeSnapshot, tableGalleryHydrated } from '../browser/table-badges-cases';
+import { assertTableBadges, setTableBadgeTheme, tableBadgeHosts, tableBadgeSnapshot, tableGalleryHydrated, tableGalleryHosts, tableGallerySnapshot, assertTableGalleryScaffold, assertTableGalleryVariants } from '../browser/table-badges-cases';
 tableLifecycleCases('/table-probe');
 test('fresh Table archive/source copy preserves native semantics, reactive props, Nova and horizontal overflow', async ({ page, request }) => {
   const html = await (await request.get('/table')).text(); expect(html).toContain('cn-table-container'); expect(html).toContain('A list of your recent invoices.');
@@ -33,13 +33,30 @@ test('fresh actual With Badges composition preserves native SSR hosts, hydration
   try {
     await page.goto('/table', { waitUntil: 'commit' }); await expect(tableGalleryHydrated(page)).toHaveAttribute('data-hydrated', 'false');
     const hosts = await page.locator(tableBadgeHosts).elementHandles(); expect(hosts).toHaveLength(25);
+    const galleryHosts = await page.locator(tableGalleryHosts).elementHandles(); expect(galleryHosts).toHaveLength(114);
+    const galleryBefore = await tableGallerySnapshot(page);
     const before = await tableBadgeSnapshot(page); release(); await expect(tableGalleryHydrated(page)).toHaveAttribute('data-hydrated', 'true');
-    for (const [index, host] of hosts.entries()) expect(await host.evaluate((node, i) => node.isConnected && node === document.querySelectorAll('[data-gallery] > section:nth-child(4) table, [data-gallery] > section:nth-child(4) table *')[i], index)).toBe(true);
+    for (const [index, host] of hosts.entries()) expect(await host.evaluate((node, args) => node.isConnected && node === document.querySelectorAll(args.selector)[args.index], { selector: tableBadgeHosts, index })).toBe(true);
     expect(await tableBadgeSnapshot(page)).toEqual(before);
+    expect(await page.locator(tableGalleryHosts).count()).toBe(114);
+    for (const [index, host] of galleryHosts.entries()) expect(await host.evaluate((node, args) => node.isConnected && node === document.querySelectorAll(args.selector)[args.index], { selector: tableGalleryHosts, index })).toBe(true);
+    expect(await tableGallerySnapshot(page)).toEqual(galleryBefore);
     for (const width of [1280, 390]) {
       await page.setViewportSize({ width, height: 1400 });
       for (const dark of [false, true]) { await setTableBadgeTheme(page, dark); await assertTableBadges(page, dark); }
     }
     expect(errors).toEqual([]);
   } finally { release(); }
+});
+
+// Additive authored delivery witness for genuine helpers; no ordinary upstream-test credit.
+test('fresh four-Table gallery delivers genuine responsive Example scaffolds and source variants', async ({ page, request }) => {
+  const html = await (await request.get('/table')).text();
+  for (const slot of ['example-wrapper', 'example', 'example-content']) expect(html).toContain(`data-slot="${slot}"`);
+  const errors: string[] = []; page.on('pageerror', error => errors.push(error.message)); page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+  await page.goto('/table'); await expect(tableGalleryHydrated(page)).toHaveAttribute('data-hydrated', 'true');
+  for (const width of [390, 640, 768, 1024, 1536]) {
+    await page.setViewportSize({ width, height: 1400 }); await assertTableGalleryScaffold(page, width, 1400);
+  }
+  await assertTableGalleryVariants(page); expect(errors).toEqual([]);
 });

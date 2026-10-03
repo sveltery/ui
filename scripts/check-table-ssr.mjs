@@ -46,7 +46,8 @@ assert.equal(actual.querySelector('[data-slot="table-container"]').className, 'c
 assert.equal(actual.querySelector('table').parentElement.getAttribute('id'), null, 'Table props belong to table, not its pinned scroll container');
 console.log('Pinned React/Svelte Table SSR: paired semantic tree and 24 native class/prop precedence cases PASS');
 
-const { TableGallery } = await import(moduleURL('tests/reference/TableGallery.tsx', { react: import.meta.resolve('react'), './table': tableURL }));
+const exampleURL = moduleURL('tests/reference/example-scaffold.tsx', { cn });
+const { TableGallery } = await import(moduleURL('tests/reference/TableGallery.tsx', { react: import.meta.resolve('react'), './table': tableURL, './example-scaffold': exampleURL }));
 const expectedGallery = new JSDOM(renderToStaticMarkup(createElement(TableGallery))).window.document;
 const actualGallery = new JSDOM(render(TableExample).body).window.document;
 assert.deepEqual([...actualGallery.querySelectorAll('table')].map(snapshot), [...expectedGallery.querySelectorAll('table')].map(snapshot), 'four selected actual example bodies, including With Badges literal spans');
@@ -54,3 +55,15 @@ assert.equal(actualGallery.querySelectorAll('table').length, 4);
 assert.equal(actualGallery.querySelectorAll('table')[3].querySelectorAll('span').length, 6);
 assert.equal(actualGallery.querySelectorAll('table')[3].querySelector('[data-slot="badge"], [role], button, input, select'), null);
 console.log('Pinned React/Svelte Table gallery SSR: four native example trees and six literal badge spans PASS');
+
+// Additive authored scaffold evidence: complete real helper tree, not two absent heading lists.
+const gallerySelector = '[data-slot="example-wrapper"]';
+const actualWrapper = actualGallery.querySelector(gallerySelector);
+const expectedWrapper = expectedGallery.querySelector(gallerySelector);
+assert(actualWrapper && expectedWrapper, 'both galleries must contain the genuine wrapper');
+assert.deepEqual(snapshot(actualWrapper.parentElement), snapshot(expectedWrapper.parentElement), 'complete genuine shell/grid/four Example/title/content/Table trees');
+assert.equal(actualWrapper.parentElement.className, 'w-full bg-muted dark:bg-background');
+assert.equal(actualWrapper.children.length, 4);
+assert.deepEqual([...actualWrapper.children].map(example => ({ tag: example.tagName, slot: example.getAttribute('data-slot'), count: example.children.length, titleTag: example.firstElementChild.tagName, title: example.firstElementChild.textContent, contentSlot: example.lastElementChild.getAttribute('data-slot') })), ['Basic', 'With Footer', 'Simple', 'With Badges'].map(title => ({ tag: 'DIV', slot: 'example', count: 2, titleTag: 'DIV', title, contentSlot: 'example-content' })));
+assert.equal(actualWrapper.querySelectorAll('section,h2').length, 0);
+console.log('Pinned React/Svelte Table gallery SSR: genuine shell/grid and four complete Example/title/content trees PASS (authored supplement)');

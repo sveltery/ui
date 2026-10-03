@@ -1,5 +1,6 @@
 <script lang="ts">
   // Derived from shadcn-ui/ui d75a96ab781f3d659be1ad287347d5887ce9f2fc; MIT notice in tests/reference/LICENSE.
+  import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@sveltery/ui/table';
   const invoices = [
     { invoice: 'INV001', paymentStatus: 'Paid', totalAmount: '$250.00', paymentMethod: 'Credit Card' },
@@ -12,10 +13,9 @@
   ];
 </script>
 
-<!-- Four pinned examples; native sections/headings substitute for out-of-scope Example/ExampleWrapper. -->
-<section data-gallery class="grid gap-6">
-  <section>
-    <h2>Basic</h2>
+<!-- Four selected pinned bodies under the actual original Example scaffold. -->
+<ExampleWrapper>
+  <Example title="Basic">
     <Table>
       <TableCaption>A list of your recent invoices.</TableCaption>
       <TableHeader>
@@ -37,9 +37,8 @@
         {/each}
       </TableBody>
     </Table>
-  </section>
-  <section>
-    <h2>With Footer</h2>
+  </Example>
+  <Example title="With Footer">
     <Table>
       <TableCaption>A list of your recent invoices.</TableCaption>
       <TableHeader>
@@ -67,9 +66,8 @@
         </TableRow>
       </TableFooter>
     </Table>
-  </section>
-  <section>
-    <h2>Simple</h2>
+  </Example>
+  <Example title="Simple">
     <Table>
       <TableHeader>
         <TableRow>
@@ -96,9 +94,8 @@
         </TableRow>
       </TableBody>
     </Table>
-  </section>
-  <section>
-    <h2>With Badges</h2>
+  </Example>
+  <Example title="With Badges">
       <Table>
         <TableHeader>
           <TableRow>
@@ -137,5 +134,5 @@
           </TableRow>
         </TableBody>
       </Table>
-  </section>
-</section>
+  </Example>
+</ExampleWrapper>
