@@ -64,6 +64,7 @@ Create the following files in `dialog-app`. The exact versions match the reposit
     "@tailwindcss/vite": "4.3.0",
     "tailwindcss": "4.3.0",
     "tw-animate-css": "1.4.0",
+    "shadcn": "4.21.1",
     "vite": "8.3.1",
     "svelte-check": "4.7.6",
     "typescript": "5.9.3"
@@ -79,6 +80,8 @@ engineStrict: true
 autoInstallPeers: false
 allowBuilds:
   esbuild: true
+overrides:
+  "shadcn@4.21.1>cn": "0.2.4"
 ```
 
 #### `svelte.config.js`
@@ -128,13 +131,15 @@ export default defineConfig({ plugins: [tailwindcss(), sveltekit()] });
 
 ### 3. Configure Nova
 
-Nova is Tailwind input CSS, not a precompiled standalone stylesheet. It imports `tw-animate-css` itself. Use the [Tailwind Vite plugin](https://tailwindcss.com/docs/installation/using-vite), and register the installed UI source explicitly: Tailwind [ignores node_modules by default](https://tailwindcss.com/docs/detecting-classes-in-source-files). The `@source` path below is relative to `src/app.css`; it supplies positioning and other utilities used inside the wrappers.
+Nova is Tailwind input CSS, not a precompiled standalone stylesheet. It imports `tw-animate-css` and the genuine `shadcn/tailwind.css` support stylesheet. Keep the same complete original CSS environment in your application: `shadcn` is pinned to 4.21.1; its CLI-only `cn` dependency is pinned separately to original 0.2.4 while the application uses genuine `cn` 0.2.2. The browser loads the CSS export, not the Node CLI. See the [shared CSS source contract](shadcn-css.md). Use the [Tailwind Vite plugin](https://tailwindcss.com/docs/installation/using-vite), and register the installed UI source explicitly: Tailwind [ignores node_modules by default](https://tailwindcss.com/docs/detecting-classes-in-source-files). The `@source` path below is relative to `src/app.css`; it supplies positioning and other utilities used inside the wrappers.
 
 #### `src/app.css`
 
 <!-- consumer-file: src/app.css -->
 ```css
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 @import "@sveltery/ui/themes.css";
 @import "@sveltery/ui/nova.css";
 @import "@sveltery/ui/styles.css";

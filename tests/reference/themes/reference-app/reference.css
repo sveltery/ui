@@ -1,4 +1,4 @@
-/* Isolated reference document: full byte-exact pinned styles in the component layer (caller utility precedence), original globals with one package-import path substitution. */
+/* Isolated reference document: full byte-exact pinned styles in the component layer (caller utility precedence), byte-exact original globals importing the genuine pinned shadcn support export. */
 @import "../upstream/globals.reference.css";
 @import "../upstream/style-vega.css" layer(components);
 @import "../upstream/style-nova.css" layer(components);

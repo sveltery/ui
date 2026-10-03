@@ -70,3 +70,5 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+The framework-independent support CSS is used through the genuine `shadcn` 4.21.1 `shadcn/tailwind.css` export, byte-exact to `packages/shadcn/src/tailwind.css` at immutable shadcn-ui/ui `d75a96ab781f3d659be1ad287347d5887ce9f2fc`. Its complete original MIT notice is the shadcn notice above. The published package retains that notice in `LICENSE.md`; publication provenance refers to release build `3502dbcde11d1eaf967a47ac375744dc336641f3`, while source correspondence of CSS and license is verified independently against the immutable UI pin. Source identities are recorded in `tests/reference/shadcn-css-sources.json`. Diagnostic orientation/state witnesses are supplemental local CSS environment evidence, not copied ordinary shadcn tests or a styled Separator implementation.
