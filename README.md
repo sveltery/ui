@@ -7,7 +7,7 @@ The original implementation was preserved at recovery checkpoint `9614e55530eebb
 ```sh
 bash scripts/bootstrap.sh
 bash scripts/verify.sh
-bash -c 'source scripts/toolchain.sh; pnpm exec playwright install chromium; pnpm test:browser'
+bash -c 'source scripts/toolchain.sh; pnpm exec playwright install --with-deps chromium firefox webkit; pnpm test:browser'
 ```
 
 Node >=24.15.0 <25 and pnpm 12.6.0 are required. Bootstrap rebuilds the private Base package from the exact Git SHA in [base.lock.json](scripts/base.lock.json), checks the tarball SHA-256, then installs the frozen workspace lockfile. No npm Base release is assumed. The package and local docs are private experiments; no publication or deployment is configured. The [Avatar/Accordion dependency integration](docs/base-pin-upgrade.md#avatar-and-accordion-prerequisite-upgrade) rebuilds immutable Base `f884f3bb265485ef8e422e43a75eb3055db11fab`; it adds no styled wrappers and does not fix the blocked native Input checked/reset cases.
@@ -16,24 +16,28 @@ Source organization follows upstream: `apps/docs/registry/bases/base/ui/dialog` 
 
 Try the [SvelteKit installation and source-copy guide](docs/installation.md) for verified local archives, Nova prerequisites and a minimal accessible Dialog. See the [local docs app README](apps/docs/README.md) for fixture routes, source organization and validation commands.
 
-The [complete pinned registry catalog](docs/catalog.md) records all 62 required entries, exact source/anatomy, locked dependency blockers and separate test provenance.
+The [complete pinned registry catalog](docs/catalog.md) records all 62 original source entries, exact source/anatomy, locked dependency blockers and separate test provenance. The [current target selection](docs/target-scope.md) uses Base Toast, Combobox and Drawer and excludes the separate Command/cmdk and Sonner entries. Scope exclusions do not count as completed components.
 
 The [upstream differences register](docs/upstream-differences.md) discloses inherited Base corrections, styled/API adaptations and the React 1.6.0 versus Base 1.8.0 evidence boundary. The [upstream test inventory](docs/upstream-tests.md) distinguishes actual shadcn suites, separately pinned Base UI conformance and local source-derived probes.
 
+The proposed [three-engine acceptance gates](docs/browser-engines.md) run the retained main and fresh-consumer suites in Chromium, Firefox and WebKit. Configured inventory does not establish successful execution or complete the deferred component/gallery scopes.
+
 The native `/textarea` and pinned `/textarea-reference` fixtures cover the bounded [Textarea slice](docs/textarea.md), owned by `registry/bases/base/ui/textarea` and exported through the current local archive.
 
-The native `/skeleton` and pinned `/skeleton-reference` fixtures cover [Skeleton scope and omissions](docs/skeleton.md); the landed [SkeletonCard continuation](https://github.com/sveltery/ui/pull/19) adds the actual pinned Card shape; native Example/ExampleWrapper layout and full-gallery parity remain incomplete.
+The native `/skeleton` and pinned `/skeleton-reference` fixtures cover [Skeleton scope and omissions](docs/skeleton.md); the landed [SkeletonCard continuation](https://github.com/sveltery/ui/pull/19) adds the actual pinned Card shape; the selected gallery now uses the genuine Example/ExampleWrapper helpers from [PR #28](https://github.com/sveltery/ui/pull/28), with broader theme/gallery parity still incomplete.
 
-The native `/kbd` and pinned `/kbd-reference` fixtures cover [Kbd/KbdGroup scope and omissions](docs/kbd.md). The pinned group host remains `kbd`; display keys introduce no shortcut behavior.
+The native `/kbd` and pinned `/kbd-reference` fixtures cover [Kbd/KbdGroup scope and omissions](docs/kbd.md). The pinned group host remains `kbd`; display keys introduce no shortcut behavior. Both icon functions remain unimplemented despite available helpers; InputGroup/Tooltip still require missing styled components.
 
 The native `/table` and pinned `/table-reference` fixtures cover the [eight Table exports and Basic/Footer/Simple/With Badges examples](docs/table.md). With Badges uses six native spans; DropdownMenu, Select and Input compositions remain deferred; `/table-probe` and its paired reference exercise native semantics, refs and overflow.
 
-The landed [native Card slice](docs/card.md) adds seven div parts, default/small sizes and seven actual dependency-available examples. It retains Table's actual landed main merge; five composition examples and full parity remain deferred. Card landed through [PR #17](https://github.com/sveltery/ui/pull/17); changed heads require fresh exact-head checks and independent/configured review.
+The landed [native Card slice](docs/card.md) adds seven div parts, default/small sizes and seven selected actual example bodies under an unmigrated Example scaffold. It retains Table's actual landed main merge; five compositions remain unimplemented. Both image functions now have available helpers; Custom Spacing/Login/Meeting Notes still need styled ToggleGroup/Field/Input/Avatar parts. Card landed through [PR #17](https://github.com/sveltery/ui/pull/17); changed heads require fresh exact-head checks and independent/configured review.
 
 The landed [native Label slice](docs/label.md) adds one native export and the bounded With Textarea example with documented native Field/Example substitutions; Checkbox/Input/Disabled compositions remain deferred.
 
-The proposed native `/aspect-ratio` and paired `/aspect-ratio-reference` fixtures cover [AspectRatio](docs/aspect-ratio.md): the required ratio, exact source classes and caller-style replacement, with four bounded example bodies. Next Image and Example/ExampleWrapper framework scaffolds remain unimplemented.
+The proposed native `/aspect-ratio` and paired `/aspect-ratio-reference` fixtures cover [AspectRatio](docs/aspect-ratio.md): the required ratio, exact source classes and caller-style replacement, with four bounded example bodies. The genuine Example/ExampleWrapper helpers are available but unmigrated in this gallery; Next Image remains a separate recorded framework substitution.
 
-The [native Empty slice](docs/empty.md) adds six div parts and supplemental `/empty-probe` and paired reference routes. All actual gallery functions remain deferred for missing configurable icons and/or InputGroup; source-derived native probes do not claim gallery parity.
+The [native Empty slice](docs/empty.md) adds six div parts and supplemental `/empty-probe` and paired reference routes. All six original gallery functions remain unimplemented. Basic/Muted Background/Icon/In Card now have available native helpers; Border/Muted Background Alt still require styled InputGroup parts. Source-derived native probes do not claim gallery parity.
 
-The landed [native Alert slice](docs/alert.md) adds Alert, AlertTitle, AlertDescription and AlertAction, with `/alert` and paired `/alert-reference` fixtures for the bounded Basic example. Configurable icon/Badge compositions and full scaffold/theme parity remain deferred; `/alert-probe` and its paired reference provide supplemental native selector and interaction evidence.
+The landed [native Alert slice](docs/alert.md) adds Alert, AlertTitle, AlertDescription and AlertAction, with `/alert` and paired `/alert-reference` fixtures for the bounded Basic example. With Icons/Destructive remain unimplemented despite available Example/icon helpers; With Actions still requires styled Badge, and Basic's scaffold is unmigrated. Full scaffold/theme parity remains incomplete; `/alert-probe` and its paired reference provide supplemental native selector and interaction evidence.
+
+The proposed [native styled Separator](docs/separator.md) delegates the actual Base primitive and preserves the original wrapper classes under the complete genuine support CSS. All four genuine dependency-available gallery functions use the original Example helpers. Primitive genuine test ports and styled source-derived evidence are counted separately.

@@ -14,7 +14,7 @@ function moduleURL(path, imports) {
   for (const [name, url] of Object.entries(imports)) source = source.replaceAll(`"${name}"`, JSON.stringify(url)).replaceAll(`'${name}'`, JSON.stringify(url));
   return `data:text/javascript;base64,${Buffer.from(transpileModule(source, { compilerOptions: { module: ModuleKind.ESNext, target: ScriptTarget.ESNext, jsx: JsxEmit.React } }).outputText).toString('base64')}`;
 }
-const cn = moduleURL('tests/reference/cn.ts', { clsx: import.meta.resolve('clsx'), 'tailwind-merge': import.meta.resolve('tailwind-merge') });
+const cn = import.meta.resolve('cn');
 const References = await import(moduleURL('tests/reference/kbd.tsx', { react: import.meta.resolve('react'), cn }));
 for (const [name, Local] of [['Kbd', Kbd], ['KbdGroup', KbdGroup]]) {
   for (const props of [{}, { id: 'keys', className: 'px-6 gap-3', title: 'Ctrl & <K>' }, { 'data-slot': 'custom', className: 'pointer-events-auto' }]) {

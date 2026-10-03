@@ -8,11 +8,14 @@ pnpm --filter @sveltery/ui pack --pack-destination "$consumer_directory"
 mkdir -p "$consumer_directory/node_modules/@sveltery/ui" "$consumer_directory/node_modules/@sveltery/base"
 tar -xzf "$consumer_directory/sveltery-ui-0.0.0.tgz" --strip-components=1 -C "$consumer_directory/node_modules/@sveltery/ui"
 tar -xzf .vendor/sveltery-base-0.0.0.tgz --strip-components=1 -C "$consumer_directory/node_modules/@sveltery/base"
-for dependency in svelte clsx tailwind-merge class-variance-authority jsdom; do
+for dependency in svelte cn clsx class-variance-authority jsdom shadcn; do
   ln -s "$sveltery_repo_root/node_modules/$dependency" "$consumer_directory/node_modules/$dependency"
 done
 cmp packages/ui/LICENSE "$consumer_directory/node_modules/@sveltery/ui/LICENSE"
 cmp packages/ui/THIRD_PARTY_NOTICES.md "$consumer_directory/node_modules/@sveltery/ui/THIRD_PARTY_NOTICES.md"
+cmp tests/reference/cn-upstream/LICENSE "$consumer_directory/node_modules/cn/LICENSE"
+cmp tests/reference/shadcn-css-upstream/LICENSE.md "$consumer_directory/node_modules/shadcn/LICENSE.md"
+cmp tests/reference/themes/upstream/shadcn-tailwind.css "$consumer_directory/node_modules/shadcn/dist/tailwind.css"
 for license in lucide-LICENSE tabler-LICENSE hugeicons-core-LICENSE.md phosphor-LICENSE remix-LICENSE; do
   cmp "tests/reference/icons/licenses/$license" "$consumer_directory/node_modules/@sveltery/ui/dist/icons/licenses/$license"
 done
@@ -33,6 +36,7 @@ cat > "$consumer_directory/Consumer.svelte" <<'SVELTE'
   import { Alert, AlertTitle, AlertDescription, AlertAction } from '@sveltery/ui/alert';
   import { AspectRatio } from '@sveltery/ui/aspect-ratio';
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
+  import { Separator } from '@sveltery/ui/separator';
   import { Empty, EmptyHeader, EmptyTitle, EmptyDescription, EmptyContent, EmptyMedia } from '@sveltery/ui/empty';
   import { Skeleton } from '@sveltery/ui/skeleton';
   import { Kbd, KbdGroup } from '@sveltery/ui/kbd';
@@ -43,6 +47,7 @@ cat > "$consumer_directory/Consumer.svelte" <<'SVELTE'
 {#snippet replacement(props: Record<string | symbol, unknown>, _state: { disabled: boolean }, children: Snippet | undefined)}
   <span {...props}>{#if children}{@render children()}{:else}SSR fallback label{/if}</span>
 {/snippet}
+<Separator data-probe="separator" orientation="vertical" /><Separator data-probe="separator-callback" class={() => 'ignored'} />
 <ExampleWrapper data-probe="example-wrapper"><Example data-probe="example" title="Example &amp; notes" class="p-4" containerClassName="max-w-none">Scaffold content</Example></ExampleWrapper>
 <Alert variant="destructive" data-probe="alert"><AlertTitle>Notice</AlertTitle><AlertDescription>Description</AlertDescription><AlertAction><button>Undo</button></AlertAction></Alert>
 <Empty data-probe="empty"><EmptyHeader><EmptyMedia variant="icon">Media</EmptyMedia><EmptyTitle>Empty title</EmptyTitle><EmptyDescription>Description &amp; notes</EmptyDescription></EmptyHeader><EmptyContent>Content</EmptyContent></Empty>
@@ -53,6 +58,8 @@ cat > "$consumer_directory/Consumer.svelte" <<'SVELTE'
 <AspectRatio data-probe="aspect-ratio" ratio={16 / 9}>Aspect &amp; ratio</AspectRatio>
 <AspectRatio data-probe="aspect-ratio-override" ratio={16 / 9} style="--ratio: 1; color: red" />
 <Skeleton data-probe="skeleton" class="h-4 w-32" />
+<Skeleton data-probe="cn-nonbreaking" class={'p-2\u00a0p-4'} />
+<Skeleton data-probe="cn-line-separator" class={'p-2\u2028p-4'} />
 <Table data-probe="native-table"><TableCaption>Consumer ledger</TableCaption><TableHeader><TableRow><TableHead scope="col">Invoice</TableHead><TableHead scope="col">Amount</TableHead></TableRow></TableHeader><TableBody><TableRow><TableCell rowspan={2}>INV001</TableCell><TableCell>$250.00</TableCell></TableRow><TableRow><TableCell>$150.00</TableCell></TableRow></TableBody><TableFooter><TableRow><TableCell colspan={2}>Total $400.00</TableCell></TableRow></TableFooter></Table>
 <Textarea name="notes" defaultValue="SSR & draft" rows={6} class="px-6" aria-invalid="true" />
 <Button nativeButton={false} render={replacement} />
@@ -87,6 +94,8 @@ assert.deepEqual(Object.keys(Ratios), ['AspectRatio']);
 assert.equal(Root.AspectRatio, Ratios.AspectRatio);
 import * as Skeletons from '@sveltery/ui/skeleton';
 import * as Keys from '@sveltery/ui/kbd';
+import * as Separators from '@sveltery/ui/separator';
+assert.deepEqual(Object.keys(Separators), ['Separator']); assert.equal(Root.Separator, Separators.Separator);
 import * as Icons from '@sveltery/ui/icons';
 const iconNames = ['IconPlaceholder', 'IconLibraryProvider', 'iconLibraries'];
 assert.deepEqual(Object.keys(Icons).sort(), iconNames.toSorted());
@@ -131,7 +140,7 @@ const tableNames = ['Table', 'TableHeader', 'TableBody', 'TableFooter', 'TableRo
 assert.deepEqual(Object.keys(Tables).sort(), tableNames.slice().sort());
 for (const name of tableNames) assert.equal(Root[name], Tables[name]);
 const names = ['Dialog', 'DialogClose', 'DialogContent', 'DialogDescription', 'DialogFooter', 'DialogHeader', 'DialogOverlay', 'DialogPortal', 'DialogTitle', 'DialogTrigger'];
-assert.deepEqual(Object.keys(Root).sort(), [...names, ...tableNames, ...cardNames, ...alertNames, ...emptyNames, ...iconNames, 'Example', 'ExampleWrapper', 'Button', 'buttonVariants', 'variants', 'sizes', 'Textarea', 'Label', 'AspectRatio', 'Skeleton', 'Kbd', 'KbdGroup'].sort());
+assert.deepEqual(Object.keys(Root).sort(), [...names, ...tableNames, ...cardNames, ...alertNames, ...emptyNames, ...iconNames, 'Separator', 'Example', 'ExampleWrapper', 'Button', 'buttonVariants', 'variants', 'sizes', 'Textarea', 'Label', 'AspectRatio', 'Skeleton', 'Kbd', 'KbdGroup'].sort());
 assert.deepEqual(Object.keys(Buttons).sort(), ['Button', 'buttonVariants', 'sizes', 'variants']);
 assert.deepEqual(Object.keys(Parts).sort(), names);
 assert.deepEqual(Object.keys(Labels), ['Label']);
@@ -142,7 +151,7 @@ assert.deepEqual(Object.keys(Skeletons), ['Skeleton']);
 assert.equal(Root.Skeleton, Skeletons.Skeleton);
 assert.deepEqual(Object.keys(Keys).sort(), ['Kbd', 'KbdGroup']);
 assert.equal(Root.Kbd, Keys.Kbd); assert.equal(Root.KbdGroup, Keys.KbdGroup);
-for (const path of ['example/index.d.ts', 'example/types.d.ts', 'example/Example.svelte.d.ts', 'example/ExampleWrapper.svelte.d.ts', 'icons/index.d.ts', 'icons/types.d.ts', 'icons/config.d.ts', 'icons/IconPlaceholder.svelte.d.ts', 'icons/IconLibraryProvider.svelte.d.ts', 'empty/index.d.ts', 'empty/types.d.ts', ...emptyNames.map(name => `empty/${name}.svelte.d.ts`), 'alert/index.d.ts', 'alert/types.d.ts', ...alertNames.map(name => `alert/${name}.svelte.d.ts`), 'table/index.d.ts', ...tableNames.map(name => `table/${name}.svelte.d.ts`), 'label/index.d.ts', 'label/Label.svelte.d.ts', 'index.d.ts', 'dialog/index.d.ts', 'button/index.d.ts', 'button/Button.svelte.d.ts', 'button/types.d.ts', 'textarea/index.d.ts', 'textarea/Textarea.svelte.d.ts', 'skeleton/index.d.ts', 'skeleton/Skeleton.svelte.d.ts', 'kbd/index.d.ts', 'kbd/Kbd.svelte.d.ts', 'kbd/KbdGroup.svelte.d.ts', 'kbd/types.d.ts', 'card/index.d.ts', 'card/types.d.ts', ...cardNames.map(name => `card/${name}.svelte.d.ts`), ...names.map(name => `dialog/${name}.svelte.d.ts`)]) {
+for (const path of ['separator/index.d.ts', 'separator/types.d.ts', 'separator/Separator.svelte.d.ts', 'example/index.d.ts', 'example/types.d.ts', 'example/Example.svelte.d.ts', 'example/ExampleWrapper.svelte.d.ts', 'icons/index.d.ts', 'icons/types.d.ts', 'icons/config.d.ts', 'icons/IconPlaceholder.svelte.d.ts', 'icons/IconLibraryProvider.svelte.d.ts', 'empty/index.d.ts', 'empty/types.d.ts', ...emptyNames.map(name => `empty/${name}.svelte.d.ts`), 'alert/index.d.ts', 'alert/types.d.ts', ...alertNames.map(name => `alert/${name}.svelte.d.ts`), 'table/index.d.ts', ...tableNames.map(name => `table/${name}.svelte.d.ts`), 'label/index.d.ts', 'label/Label.svelte.d.ts', 'index.d.ts', 'dialog/index.d.ts', 'button/index.d.ts', 'button/Button.svelte.d.ts', 'button/types.d.ts', 'textarea/index.d.ts', 'textarea/Textarea.svelte.d.ts', 'skeleton/index.d.ts', 'skeleton/Skeleton.svelte.d.ts', 'kbd/index.d.ts', 'kbd/Kbd.svelte.d.ts', 'kbd/KbdGroup.svelte.d.ts', 'kbd/types.d.ts', 'card/index.d.ts', 'card/types.d.ts', ...cardNames.map(name => `card/${name}.svelte.d.ts`), ...names.map(name => `dialog/${name}.svelte.d.ts`)]) {
   assert(readFileSync(new URL(`./node_modules/@sveltery/ui/dist/${path}`, import.meta.url), 'utf8').length > 0);
 }
 const first = render(Consumer).body;
@@ -163,6 +172,9 @@ for (const html of [first, second]) {
   assert(html.includes('SSR fallback label'));
   assert.match(html, /<textarea[^>]*data-slot="textarea"[^>]*name="notes"[^>]*>SSR &amp; draft<\/textarea>/);
   assert(html.includes('cn-textarea'));
+  const separator = new JSDOM(html).window.document.querySelector('[data-probe=separator]');
+  assert.equal(separator.tagName, 'DIV'); assert.equal(separator.getAttribute('role'), 'separator'); assert.equal(separator.getAttribute('aria-orientation'), 'vertical'); assert.equal(separator.getAttribute('data-orientation'), 'vertical'); assert.equal(separator.hasAttribute('data-vertical'), false); assert.equal(separator.getAttribute('data-slot'), 'separator');
+  assert.equal(new JSDOM(html).window.document.querySelector('[data-probe=separator-callback]').classList.contains('ignored'), false);
   const exampleWrapper = new JSDOM(html).window.document.querySelector('[data-probe=example-wrapper]');
   assert.equal(exampleWrapper.tagName, 'DIV'); assert.equal(exampleWrapper.getAttribute('data-slot'), 'example-wrapper');
   assert.equal(exampleWrapper.parentElement.className, 'w-full bg-muted dark:bg-background');
@@ -197,6 +209,9 @@ for (const html of [first, second]) {
   const nativeSkeleton = new JSDOM(html).window.document.querySelector('[data-probe=skeleton]');
   assert.equal(nativeSkeleton.tagName, 'DIV'); assert.equal(nativeSkeleton.getAttribute('data-slot'), 'skeleton'); assert.equal(nativeSkeleton.textContent, '');
   assert(html.includes('cn-skeleton'));
+  for (const [probe, expected] of [['cn-nonbreaking', 'cn-skeleton animate-pulse p-2\u00a0p-4'], ['cn-line-separator', 'cn-skeleton animate-pulse p-2\u2028p-4']]) {
+    assert.equal(new JSDOM(html).window.document.querySelector(`[data-probe=${probe}]`).getAttribute('class'), expected);
+  }
   const nativeGroup = new JSDOM(html).window.document.querySelector('[data-probe=kbd-group]');
   assert.equal(nativeGroup.tagName, 'KBD'); assert.equal(nativeGroup.getAttribute('data-slot'), 'kbd-group');
   assert.equal(nativeGroup.firstElementChild.tagName, 'KBD'); assert.equal(nativeGroup.firstElementChild.getAttribute('data-slot'), 'kbd'); assert.equal(nativeGroup.textContent, 'Ctrl & K');
@@ -292,5 +307,6 @@ sed 's#../apps/docs/registry/bases/base/ui/alert/index.js#@sveltery/ui/alert#' t
 sed 's#../apps/docs/registry/bases/base/ui/empty/index.js#@sveltery/ui/empty#' tests/empty-types.ts > "$consumer_directory/empty-types.ts"
 sed -e 's#../apps/docs/registry/bases/base/ui/icons/index.js#@sveltery/ui/icons#' -e 's#../apps/docs/registry/bases/base/ui/index.js#@sveltery/ui#' tests/icons-types.ts > "$consumer_directory/icons-types.ts"
 sed 's#../apps/docs/registry/bases/base/ui/example/index.js#@sveltery/ui/example#' tests/example-types.ts > "$consumer_directory/example-types.ts"
-node "$sveltery_repo_root/node_modules/typescript/bin/tsc" --noEmit --strict --skipLibCheck --moduleResolution Bundler --module ESNext --target ES2022 --lib ES2022,DOM,DOM.Iterable "$consumer_directory/types.ts" "$consumer_directory/table-types.ts" "$consumer_directory/label-types.ts" "$consumer_directory/card-types.ts" "$consumer_directory/aspect-ratio-types.ts" "$consumer_directory/alert-types.ts" "$consumer_directory/empty-types.ts" "$consumer_directory/icons-types.ts" "$consumer_directory/example-types.ts"
+sed 's#../apps/docs/registry/bases/base/ui/separator/index.js#@sveltery/ui/separator#' tests/separator-types.ts > "$consumer_directory/separator-types.ts"
+node "$sveltery_repo_root/node_modules/typescript/bin/tsc" --noEmit --strict --skipLibCheck --moduleResolution Bundler --module ESNext --target ES2022 --lib ES2022,DOM,DOM.Iterable "$consumer_directory/types.ts" "$consumer_directory/table-types.ts" "$consumer_directory/label-types.ts" "$consumer_directory/card-types.ts" "$consumer_directory/aspect-ratio-types.ts" "$consumer_directory/alert-types.ts" "$consumer_directory/empty-types.ts" "$consumer_directory/icons-types.ts" "$consumer_directory/example-types.ts" "$consumer_directory/separator-types.ts"
 echo 'Isolated packaged public type assertions: PASS'

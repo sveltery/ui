@@ -8,6 +8,8 @@ import { fileURLToPath } from 'node:url';
 const repo = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const browser = process.argv.includes('--browser');
 assert(process.argv.slice(2).every(arg => arg === '--browser'), 'Only --browser is supported');
+const browserProject = process.env.SVELTERY_BROWSER_PROJECT;
+assert(browserProject === undefined || ['chromium', 'firefox', 'webkit'].includes(browserProject), 'SVELTERY_BROWSER_PROJECT must name an actual configured engine');
 const guide = readFileSync(join(repo, 'docs/installation.md'), 'utf8');
 const files = [...guide.matchAll(/<!-- consumer-file: ([\w./+-]+) -->\n```[^\n]*\n([\s\S]*?)\n```/gu)];
 assert.equal(files.length, 9, 'Expected the nine documented scaffold files');
@@ -22,7 +24,7 @@ try {
   run('pnpm', ['--filter', '@sveltery/ui', 'build'], repo);
   run('pnpm', ['--filter', '@sveltery/ui', 'pack', '--pack-destination', artifacts], repo);
   cpSync(join(repo, '.vendor/sveltery-base-0.0.0.tgz'), join(artifacts, 'sveltery-base-0.0.0.tgz'));
-  for (const path of ['apps/docs/registry/bases/base/ui/dialog', 'apps/docs/registry/bases/base/ui/button', 'apps/docs/registry/bases/base/ui/textarea', 'apps/docs/registry/bases/base/ui/skeleton', 'apps/docs/registry/bases/base/ui/kbd', 'apps/docs/registry/bases/base/ui/table', 'apps/docs/registry/bases/base/ui/card', 'apps/docs/registry/bases/base/ui/label', 'apps/docs/registry/bases/base/ui/alert', 'apps/docs/registry/bases/base/ui/aspect-ratio', 'apps/docs/registry/bases/base/ui/empty', 'apps/docs/registry/bases/base/ui/icons', 'apps/docs/registry/bases/base/ui/example', 'apps/docs/registry/bases/base/ui/shared', 'apps/docs/registry/styles', 'packages/ui/LICENSE', 'packages/ui/THIRD_PARTY_NOTICES.md']) {
+  for (const path of ['apps/docs/registry/bases/base/ui/dialog', 'apps/docs/registry/bases/base/ui/button', 'apps/docs/registry/bases/base/ui/textarea', 'apps/docs/registry/bases/base/ui/skeleton', 'apps/docs/registry/bases/base/ui/kbd', 'apps/docs/registry/bases/base/ui/table', 'apps/docs/registry/bases/base/ui/card', 'apps/docs/registry/bases/base/ui/label', 'apps/docs/registry/bases/base/ui/alert', 'apps/docs/registry/bases/base/ui/aspect-ratio', 'apps/docs/registry/bases/base/ui/empty', 'apps/docs/registry/bases/base/ui/icons', 'apps/docs/registry/bases/base/ui/example', 'apps/docs/registry/bases/base/ui/separator', 'apps/docs/registry/bases/base/ui/shared', 'apps/docs/registry/styles', 'packages/ui/LICENSE', 'packages/ui/THIRD_PARTY_NOTICES.md']) {
     const destination = join(temporary, 'sveltery-ui', path);
     mkdirSync(dirname(destination), { recursive: true });
     cpSync(join(repo, path), destination, { recursive: true });
@@ -105,7 +107,7 @@ try {
       const routePath = join(consumer, `src/routes/${route}/+page.svelte`);
       mkdirSync(dirname(routePath), { recursive: true });
       let content = readFileSync(join(repo, source), 'utf8');
-      if (mode === 'copy') content = content.replaceAll('@sveltery/ui/alert', '$lib/components/ui/alert');
+      if (mode === 'copy') content = content.replaceAll('@sveltery/ui/alert', '$lib/components/ui/alert').replaceAll('@sveltery/ui/example', '$lib/components/ui/example');
       writeFileSync(routePath, content);
     }
     writeFileSync(join(consumer, 'src/routes/alert-types.ts'), readFileSync(join(repo, 'tests/alert-types.ts'), 'utf8').replace('../apps/docs/registry/bases/base/ui/alert/index.js', mode === 'copy' ? '$lib/components/ui/alert' : '@sveltery/ui/alert'));
@@ -121,6 +123,15 @@ try {
     if (mode === 'copy') iconsFixture = iconsFixture.replaceAll('@sveltery/ui/icons', '$lib/components/ui/icons');
     writeFileSync(iconsRoute, iconsFixture);
     writeFileSync(join(consumer, 'src/routes/icons-types.ts'), readFileSync(join(repo, 'tests/icons-types.ts'), 'utf8').replace('../apps/docs/registry/bases/base/ui/icons/index.js', mode === 'copy' ? '$lib/components/ui/icons' : '@sveltery/ui/icons').replace('../apps/docs/registry/bases/base/ui/index.js', mode === 'copy' ? '$lib/components/ui/icons' : '@sveltery/ui'));
+    const classMergeRoute = join(consumer, 'src/routes/class-merge/+page.svelte');
+    mkdirSync(dirname(classMergeRoute), { recursive: true });
+    let classMergeFixture = readFileSync(join(repo, 'apps/docs/examples/base/ClassMergeProbe.svelte'), 'utf8');
+    if (mode === 'copy') classMergeFixture = classMergeFixture.replaceAll('@sveltery/ui/skeleton', '$lib/components/ui/skeleton');
+    writeFileSync(classMergeRoute, classMergeFixture);
+    const cssEnvironmentRoute = join(consumer, 'src/routes/css-environment/+page.svelte');
+    mkdirSync(dirname(cssEnvironmentRoute), { recursive: true });
+    writeFileSync(cssEnvironmentRoute, readFileSync(join(repo, 'apps/docs/examples/base/CssEnvironmentProbe.svelte'), 'utf8').replace('../../../../tests/reference/css-state-witnesses', './css-state-witnesses'));
+    cpSync(join(repo, 'tests/reference/css-state-witnesses.ts'), join(dirname(cssEnvironmentRoute), 'css-state-witnesses.ts'));
     const themeRoute = join(consumer, 'src/routes/themes/+page.svelte');
     mkdirSync(dirname(themeRoute), { recursive: true });
     let themeFixture = readFileSync(join(repo, 'apps/docs/examples/base/ThemeExample.svelte'), 'utf8');
@@ -133,6 +144,14 @@ try {
     if (mode === 'copy') exampleFixture = exampleFixture.replaceAll('@sveltery/ui/example', '$lib/components/ui/example');
     writeFileSync(exampleRoute, exampleFixture);
     writeFileSync(join(consumer, 'src/routes/example-types.ts'), readFileSync(join(repo, 'tests/example-types.ts'), 'utf8').replace('../apps/docs/registry/bases/base/ui/example/index.js', mode === 'copy' ? '$lib/components/ui/example' : '@sveltery/ui/example'));
+    for (const [route, source] of [['separator', 'apps/docs/examples/base/SeparatorExample.svelte'], ['separator-probe', 'apps/docs/examples/base/SeparatorProbe.svelte']]) {
+      const routePath = join(consumer, `src/routes/${route}/+page.svelte`);
+      mkdirSync(dirname(routePath), { recursive: true });
+      let content = readFileSync(join(repo, source), 'utf8');
+      if (mode === 'copy') content = content.replaceAll('@sveltery/ui/separator', '$lib/components/ui/separator').replaceAll('@sveltery/ui/example', '$lib/components/ui/example');
+      writeFileSync(routePath, content);
+    }
+    writeFileSync(join(consumer, 'src/routes/separator-types.ts'), readFileSync(join(repo, 'tests/separator-types.ts'), 'utf8').replace('../apps/docs/registry/bases/base/ui/separator/index.js', mode === 'copy' ? '$lib/components/ui/separator' : '@sveltery/ui/separator'));
     const consumerManifestPath = join(consumer, 'package.json');
     const consumerManifest = JSON.parse(readFileSync(consumerManifestPath, 'utf8'));
     consumerManifest.dependencies['class-variance-authority'] = '0.7.1';
@@ -152,6 +171,7 @@ try {
       cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/aspect-ratio'), join(consumer, 'src/lib/components/ui/aspect-ratio'), { recursive: true });
       cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/alert'), join(consumer, 'src/lib/components/ui/alert'), { recursive: true });
       cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/empty'), join(consumer, 'src/lib/components/ui/empty'), { recursive: true });
+      cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/separator'), join(consumer, 'src/lib/components/ui/separator'), { recursive: true });
       cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/icons'), join(consumer, 'src/lib/components/ui/icons'), { recursive: true });
       cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/example'), join(consumer, 'src/lib/components/ui/example'), { recursive: true });
       run('bash', ['-euo', 'pipefail', '-c', copyCommands], consumer);
@@ -170,11 +190,13 @@ try {
       run('pnpm', ['check'], consumer);
       run('pnpm', ['build'], consumer);
       if (browser) {
-        execFileSync('pnpm', ['exec', 'playwright', 'test', '--config', 'scripts/installation-playwright.config.ts'], {
+        const args = ['exec', 'playwright', 'test', '--config', 'scripts/installation-playwright.config.ts'];
+        if (browserProject) args.push('--project', browserProject);
+        execFileSync('pnpm', args, {
           cwd: repo, stdio: 'inherit', env: { ...process.env, SVELTERY_INSTALLATION_CONSUMER: consumer, SVELTERY_INSTALLATION_REMOTE: remote ? '1' : '0' },
         });
       }
-      console.log(`Fresh ${mode} ${remote ? 'experimental remote-field fixture' : 'documented consumer'}: types, SSR/client build${browser ? ' and secured browser' : ''} PASS`);
+      console.log(`Fresh ${mode} ${remote ? 'experimental remote-field fixture' : 'documented consumer'}: types, SSR/client build${browser ? ` and ${browserProject ?? 'all configured engines'} browser` : ''} PASS`);
     };
     check(false);
     // Remote fields are a separate experimental test fixture, not part of the

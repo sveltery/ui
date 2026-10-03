@@ -1,0 +1,22 @@
+{
+  "repository": "https://github.com/shadcn-ui/ui",
+  "commit": "d75a96ab781f3d659be1ad287347d5887ce9f2fc",
+  "license": "MIT",
+  "dedicatedRuntimeTests": 0,
+  "files": [
+    {
+      "upstream": "apps/v4/registry/bases/base/ui/separator.tsx",
+      "local": "tests/reference/separator.tsx",
+      "bytes": 535,
+      "sha256": "9a80ff8c110e0c55489509f4f82ebcc929c0174b59544047147b7134f86a54e7",
+      "gitBlob": "d69c13426761105ab42e5a6bd364dc54bd70f78c"
+    },
+    {
+      "upstream": "apps/v4/registry/bases/base/examples/separator-example.tsx",
+      "local": "tests/reference/separator-example.tsx",
+      "bytes": 2976,
+      "sha256": "88f72bb831d292634125fd7ffa1839d68087295639b6f0f248f029488938973b",
+      "gitBlob": "c703724c973fd8e0989d0d4bda7ff69ef87c97b4"
+    }
+  ]
+}

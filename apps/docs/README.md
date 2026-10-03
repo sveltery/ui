@@ -40,25 +40,27 @@ From the repository root:
 bash scripts/verify.sh
 bash scripts/check-installation.sh
 source scripts/toolchain.sh
-pnpm exec playwright install chromium
+pnpm exec playwright install --with-deps chromium firefox webkit
 pnpm test:browser
 bash scripts/check-installation.sh --browser
 ```
 
-The installation check extracts the exact scaffold from the guide, installs two fresh consumers outside the workspace, and checks/builds both archive and source-copy modes. `--browser` also runs the documented keyboard, labeling, focus-return, hydration and Nova-style checks in secured Chromium against those consumers. Hosted CI runs these alongside the existing regression suite. Browser installation or secured launch failures are blockers, not passing evidence; use a supported environment without changing sandbox policy. Review and CI must cover the final PR head before maintainers decide readiness and merge. Nothing here publishes packages or hosts the app.
+The installation check extracts the exact scaffold from the guide, installs two fresh consumers outside the workspace, and checks/builds both archive and source-copy modes. `--browser` also runs the documented keyboard, labeling, focus-return, hydration and Nova-style checks in Chromium, Firefox and WebKit against those consumers. Chromium retains its sandbox; Firefox and WebKit use native launch defaults. Hosted CI runs these alongside the existing regression suite. Browser installation or secured launch failures are blockers, not passing evidence; use a supported environment without changing sandbox policy. Review and CI must cover the final PR head before maintainers decide readiness and merge. Nothing here publishes packages or hosts the app.
 
 `/textarea` previews five native Textarea states and form/binding probes; `/textarea-reference` executes the pinned React wrapper in the paired native scaffold. See [Textarea scope/provenance](../../docs/textarea.md).
 
-`/skeleton` and `/skeleton-reference` execute the [bounded Skeleton examples](../../docs/skeleton.md), with avatar, text, form and table-shaped selections plus the landed actual [SkeletonCard composition](https://github.com/sveltery/ui/pull/19). Example/ExampleWrapper layout remains a bounded native scaffold.
+`/skeleton` and `/skeleton-reference` execute the [bounded Skeleton examples](../../docs/skeleton.md), with avatar, text, form and table-shaped selections plus the landed actual [SkeletonCard composition](https://github.com/sveltery/ui/pull/19). The selected gallery uses the genuine Example/ExampleWrapper helpers; broader palette/gallery parity remains incomplete.
 
-`/kbd` and `/kbd-reference` execute the [bounded Kbd/KbdGroup examples](../../docs/kbd.md). InputGroup, Tooltip and icon compositions remain deferred.
+`/kbd` and `/kbd-reference` execute the [bounded Kbd/KbdGroup examples](../../docs/kbd.md). Both icon compositions remain unimplemented despite available native helpers; InputGroup and Tooltip still require missing styled components.
 
-`/table` and `/table-reference` execute the [bounded native Table examples](../../docs/table.md); `/table-probe` and `/table-probe-reference` exercise native structure, reactive props, refs/attachments and horizontal overflow. Badge, DropdownMenu, Select and Input compositions remain deferred.
+`/table` and `/table-reference` execute the [bounded native Table examples](../../docs/table.md); `/table-probe` and `/table-probe-reference` exercise native structure, reactive props, refs/attachments and horizontal overflow. With Badges has landed and uses six literal native spans, requiring no styled Badge component. DropdownMenu/Select/Input functions still need missing styled components, and the Example scaffold remains unmigrated.
 
-The landed `/card` and `/card-reference` routes compare seven actual dependency-available Card examples at the immutable shadcn pin, plus labeled supplemental probes. Seven native part lifecycle probes cover hydration/ref/attachment cleanup. Missing ToggleGroup, Field/Input, Avatar and icon compositions stay deferred; see [Card scope](../../docs/card.md).
+The landed `/card` and `/card-reference` routes compare seven actual dependency-available Card examples at the immutable shadcn pin, plus labeled supplemental probes. Seven native part lifecycle probes cover hydration/ref/attachment cleanup. Both image functions remain unimplemented despite available Example/icon helpers; Custom Spacing/Login/Meeting Notes still need styled ToggleGroup/Field/Input/Avatar parts. The selected bodies also retain an unmigrated Example scaffold; see [Card scope](../../docs/card.md).
 
 `/label` and `/label-reference` compare the bounded With Textarea example; `/label-probe` and `/label-probe-reference` exercise native association/focus, exact selectors, reactive props and paired SSR/hydration. See [Label scope](../../docs/label.md); full Field/Example and Checkbox/Input/Disabled compositions remain deferred.
 
 `/aspect-ratio` and `/aspect-ratio-reference` compare four bounded ratio examples; `/aspect-ratio-probe` and its reference test responsive geometry, caller overrides and native lifecycle behavior. See [AspectRatio scope](../../docs/aspect-ratio.md); native img and sections substitute Next Image and Example scaffolds without claiming their parity.
 
-`/empty-probe` and `/empty-probe-reference` exercise the [six native Empty parts](../../docs/empty.md), with supplemental variant/selector and SSR/hydration/lifecycle probes. All six pinned gallery functions remain deferred for missing icons and/or InputGroup.
+`/empty-probe` and `/empty-probe-reference` exercise the [six native Empty parts](../../docs/empty.md), with supplemental variant/selector and SSR/hydration/lifecycle probes. All six pinned gallery functions remain unimplemented. Basic/Muted Background/Icon/In Card now have available native helpers; Border/Muted Background Alt still require styled InputGroup parts.
+
+`/separator` and `/separator-reference` execute all four actual pinned Separator gallery functions. `/separator-probe` and its reference exercise genuine orientation variants under the complete original support CSS, native render snippets, style/events, refs/attachments and SSR/hydration. See [Separator scope and genuine tests](../../docs/separator.md).

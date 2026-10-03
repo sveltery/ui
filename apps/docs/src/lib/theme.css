@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 @import "@sveltery/ui/themes.css";
 @import "@sveltery/ui/nova.css";
 @import "@sveltery/ui/styles.css";

@@ -1,0 +1,120 @@
+{
+  "repository": "https://github.com/shadcn-ui/cn",
+  "commit": "788fe9bf71006c84e387c14b8d356f60f74956b6",
+  "tag": "cn@0.2.2",
+  "version": "0.2.2",
+  "shadcnCommit": "d75a96ab781f3d659be1ad287347d5887ce9f2fc",
+  "published": {
+    "url": "https://registry.npmjs.org/cn/-/cn-0.2.2.tgz",
+    "integrity": "sha512-1TjHp2yGdFzu5Td2bc2bnceh/WKPEvLYVtcg6czWSifHBy5oN/bK5/I0eFNIr839Hlh5cxrV93Yh2ByrpO5Stw==",
+    "sha1": "3b92aa48431af76d122c0ae3cb3d9e53f862c51a",
+    "sha256": "338cc0b23572fb432d83e56882b960030d5b89db40b966b1c88e3194840cf0ec",
+    "runtimeDependencies": {},
+    "files": 34,
+    "unpackedBytes": 319472
+  },
+  "oracle": {
+    "source": "pnpm-lock.yaml",
+    "gitBlob": "554b5fe04e1c90e93d21e52c2ef3fc267bdae8a8",
+    "clsx": "2.1.1",
+    "tailwind-merge": "3.6.0",
+    "fuzzIterations": 300000,
+    "nodeMatrix": [
+      20,
+      22,
+      24
+    ],
+    "localHarnessNode": 24
+  },
+  "classification": "Five byte-exact reusable dependency conformance programs. Zero additional shadcn/ui ordinary runtime tests. Unicode public-wrapper witnesses are separate supplemental regressions. No benchmark, size, generated-artifact freshness or Node 20/22 execution credit.",
+  "files": [
+    {
+      "upstream": "LICENSE",
+      "local": "tests/reference/cn-upstream/LICENSE",
+      "gitBlob": "af4976ce11ba2e6599d815154b165af3e00b83fd",
+      "bytes": 1063,
+      "sha256": "00ff8408e93e2ecc4d90c0edeabdf434100c3aff50acc5d330e17eccd4a3faa5",
+      "role": "immutable source/license provenance"
+    },
+    {
+      "upstream": "packages/cn/src/index.ts",
+      "local": "tests/reference/cn-upstream/packages/cn/src/index.ts",
+      "gitBlob": "88b1cdaf688b38987e5338f4b1718fa5f085be4b",
+      "bytes": 1252,
+      "sha256": "a5eba638f14e4a10948fa8359bee3a862dc082cad8a482fb0b2dbec6788e4aa4",
+      "role": "immutable source/license provenance"
+    },
+    {
+      "upstream": "packages/cn/src/types.ts",
+      "local": "tests/reference/cn-upstream/packages/cn/src/types.ts",
+      "gitBlob": "c3d07a63ec2fb9c8a115c3f5d1565fb7f004ac41",
+      "bytes": 3539,
+      "sha256": "88e2f4a75d6d3a71ff8fc056f7fd209e76a69999c7cdf9d416a23b18cf1777ee",
+      "role": "immutable source/license provenance"
+    },
+    {
+      "upstream": "packages/conformance/package.json",
+      "local": "tests/reference/cn-upstream/packages/conformance/package.json",
+      "gitBlob": "6d8771b2c049882304e9af610a65ef9263e504a3",
+      "bytes": 885,
+      "sha256": "32c2ff08e698427b7cc73acb0eaeb1837d6cdb88ef36644e388d9ceacaa4c0b4",
+      "role": "immutable source/license provenance"
+    },
+    {
+      "upstream": "packages/conformance/tests/cli.mjs",
+      "local": "tests/reference/cn-upstream/packages/conformance/tests/cli.mjs",
+      "gitBlob": "7a5156ed4271144583548f25b97e90aa6578414f",
+      "bytes": 5693,
+      "sha256": "9492b1f74ee9c7439d3984d3198c8fce6e7143804a22074f0b4c23d358b5dac4",
+      "role": "genuine dependency conformance program"
+    },
+    {
+      "upstream": "packages/conformance/tests/correctness.mjs",
+      "local": "tests/reference/cn-upstream/packages/conformance/tests/correctness.mjs",
+      "gitBlob": "145419a5f3963c8ed062cf268ded9b9f19ee2e40",
+      "bytes": 12991,
+      "sha256": "cb10bd674eb538ccadfc03d7a98270c836f3c887eadf8713d227c319feb65433",
+      "role": "genuine dependency conformance program"
+    },
+    {
+      "upstream": "packages/conformance/tests/custom-config.mjs",
+      "local": "tests/reference/cn-upstream/packages/conformance/tests/custom-config.mjs",
+      "gitBlob": "921e893c039412c540b0d486b3483135f5c32f19",
+      "bytes": 6419,
+      "sha256": "e607aea7cc1c1439f4a1954aac64f87edad9a8114720f442092fccc31f49f2e2",
+      "role": "genuine dependency conformance program"
+    },
+    {
+      "upstream": "packages/conformance/tests/fuzz.mjs",
+      "local": "tests/reference/cn-upstream/packages/conformance/tests/fuzz.mjs",
+      "gitBlob": "393724a60eeffde054921f8fafba96f54a8d6db7",
+      "bytes": 4198,
+      "sha256": "5ecc6f2670ad8d0edee7bd8af7d86425a12d3da16efc6f0903dbbbef1e79a3e9",
+      "role": "genuine dependency conformance program"
+    },
+    {
+      "upstream": "packages/conformance/tests/hardening.mjs",
+      "local": "tests/reference/cn-upstream/packages/conformance/tests/hardening.mjs",
+      "gitBlob": "2e07d56bf1bb8dbc87c4a1edfaa04efb9cc18aea",
+      "bytes": 4695,
+      "sha256": "977b87be50265e5387144d5ef46163380eadc202a3be3428f4c18bb21b2705e3",
+      "role": "genuine dependency conformance program"
+    },
+    {
+      "upstream": "packages/cn/package.json",
+      "local": "tests/reference/cn-upstream/packages/cn/package.json",
+      "gitBlob": "7ebb5f08342ca78cf5d2c80b4687840b30ce002f",
+      "bytes": 2608,
+      "sha256": "15521a33cf25f8fb3634bfb2e942c9d7e6c5fa4f2a853689b1edc8d1ed12276a",
+      "role": "immutable source/license provenance"
+    },
+    {
+      "upstream": ".github/workflows/ci.yml",
+      "local": "tests/reference/cn-upstream/.github/workflows/ci.yml",
+      "gitBlob": "0fd6cbd957cdf3f6f6a5a1169e2995a930631a14",
+      "bytes": 1649,
+      "sha256": "e88b9403d029ec28271d8d5771d4e768ee6bb0f4903299380a1a8d9861978f20",
+      "role": "immutable source/license provenance"
+    }
+  ]
+}

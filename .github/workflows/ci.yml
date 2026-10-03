@@ -61,10 +61,16 @@ jobs:
       - name: Fresh documented SvelteKit archive and source-copy consumers
         run: bash scripts/check-installation.sh
   dialog-browser:
-    name: Dialog browser
-    # Officially supported Playwright image; its default policy permits Chromium sandbox startup.
+    name: ${{ matrix.engine == 'chromium' && 'Dialog browser' || matrix.engine == 'firefox' && 'Firefox browser' || 'WebKit browser' }}
+    # Native Ubuntu runner supported by Playwright; retain Chromium sandbox startup.
     runs-on: ubuntu-22.04
-    timeout-minutes: 15
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, firefox, webkit]
+    env:
+      SVELTERY_BROWSER_PROJECT: ${{ matrix.engine }}
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
@@ -82,15 +88,28 @@ jobs:
         run: bash scripts/bootstrap.sh
       - name: Build actual Dialog library
         run: pnpm --filter @sveltery/ui build
-      - name: Install official Chromium and OS dependencies
-        run: bash -c 'source scripts/toolchain.sh; pnpm exec playwright install --with-deps chromium'
+      - name: Install selected official browser and OS dependencies
+        id: browser-install
+        run: bash -c 'source scripts/toolchain.sh; pnpm exec playwright install --with-deps "$SVELTERY_BROWSER_PROJECT"'
       - name: Styled Svelte and pinned React reference acceptance
-        run: bash -c 'source scripts/toolchain.sh; pnpm test:browser'
-      - name: Documented fresh consumers in secured Chromium
-        run: bash scripts/check-installation.sh --browser
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        if: failure()
+        id: main-browser
+        if: ${{ !cancelled() && steps.browser-install.outcome == 'success' }}
+        run: bash -c 'source scripts/toolchain.sh; pnpm test:browser --project "$SVELTERY_BROWSER_PROJECT"'
+      - name: Preserve main-suite results before fresh consumers
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: ${{ !cancelled() && (steps.main-browser.outcome == 'success' || steps.main-browser.outcome == 'failure') }}
         with:
-          name: dialog-browser-failures
+          name: browser-${{ matrix.engine }}-main-results
+          path: test-results/
+          retention-days: 7
+      - name: Documented fresh consumers in selected browser
+        id: fresh-browser
+        if: ${{ !cancelled() && steps.browser-install.outcome == 'success' }}
+        run: bash scripts/check-installation.sh --browser
+      - name: Upload fresh-consumer failure artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: ${{ !cancelled() && steps.fresh-browser.outcome == 'failure' }}
+        with:
+          name: browser-${{ matrix.engine }}-failures
           path: test-results/
           retention-days: 7

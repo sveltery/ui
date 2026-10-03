@@ -13,11 +13,24 @@ function moduleURL(path, imports) {
   for (const [name, url] of Object.entries(imports)) source = source.replaceAll(`"${name}"`, JSON.stringify(url)).replaceAll(`'${name}'`, JSON.stringify(url));
   return `data:text/javascript;base64,${Buffer.from(transpileModule(source, { compilerOptions: { module: ModuleKind.ESNext, target: ScriptTarget.ESNext, jsx: JsxEmit.React } }).outputText).toString('base64')}`;
 }
-const cn = moduleURL('tests/reference/cn.ts', { clsx: import.meta.resolve('clsx'), 'tailwind-merge': import.meta.resolve('tailwind-merge') });
+const cn = import.meta.resolve('cn');
 const { Skeleton: Reference } = await import(moduleURL('tests/reference/skeleton.tsx', { react: import.meta.resolve('react'), cn }));
 const skeletonURL = moduleURL('tests/reference/skeleton.tsx', { react: import.meta.resolve('react'), cn });
 const cardURL = moduleURL('tests/reference/card.tsx', { react: import.meta.resolve('react'), cn });
 const scaffoldURL = moduleURL('tests/reference/example-scaffold.tsx', { cn });
+// Supplemental Unicode witnesses use the genuine package independently in the
+// original React wrapper and public Svelte component; literal expectations stay fixed.
+for (const [className, expectedClass] of [
+  ['p-2\u00a0p-4', 'cn-skeleton animate-pulse p-2\u00a0p-4'],
+  ['p-2\u2028p-4', 'cn-skeleton animate-pulse p-2\u2028p-4'],
+  ['p-2 p-4', 'cn-skeleton animate-pulse p-4'],
+  ['p-2\tp-4', 'cn-skeleton animate-pulse p-4'],
+]) {
+  const original = new JSDOM(renderToStaticMarkup(createElement(Reference, { className }))).window.document.querySelector('div');
+  const native = new JSDOM(render(Skeleton, { props: { class: className } }).body).window.document.querySelector('div');
+  assert.equal(original.getAttribute('class'), expectedClass);
+  assert.equal(native.getAttribute('class'), expectedClass);
+}
 const selectedURL = moduleURL('tests/reference/skeleton-selected-examples.tsx', { './skeleton': skeletonURL, './card': cardURL, './example-scaffold': scaffoldURL });
 const { SkeletonGallery } = await import(moduleURL('tests/reference/SkeletonGallery.tsx', { react: import.meta.resolve('react'), './skeleton': skeletonURL, './skeleton-selected-examples': selectedURL, './example-scaffold': scaffoldURL }));
 for (const props of [{}, { id: 'load', className: 'h-4 w-32', title: 'Loading & <draft>' }, { 'data-slot': 'custom', className: 'rounded-none animate-none' }]) {

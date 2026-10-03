@@ -13,7 +13,7 @@ function moduleURL(path, imports) {
   const js = transpileModule(source, { compilerOptions: { module: ModuleKind.ESNext, target: ScriptTarget.ESNext, jsx: JsxEmit.ReactJSX } }).outputText.replaceAll('"react/jsx-runtime"', JSON.stringify(import.meta.resolve('react/jsx-runtime')));
   return `data:text/javascript;base64,${Buffer.from(js).toString('base64')}`;
 }
-const cn = moduleURL('tests/reference/cn.ts', { clsx: import.meta.resolve('clsx'), 'tailwind-merge': import.meta.resolve('tailwind-merge') });
+const cn = import.meta.resolve('cn');
 const Reference = await import(moduleURL('tests/reference/alert.tsx', { react: import.meta.resolve('react'), cn, 'class-variance-authority': import.meta.resolve('class-variance-authority') }));
 const Parts = await import('../apps/docs/registry/bases/base/ui/alert/index.js');
 const attributes = node => Object.fromEntries([...node.attributes].map(attr => [attr.name, attr.value]).sort(([a], [b]) => a.localeCompare(b)));
@@ -31,8 +31,8 @@ for (const name of ['Alert', 'AlertTitle', 'AlertDescription', 'AlertAction']) {
     count++;
   }
 }
-// Full child-tree SSR comparison executes the selected immutable Basic example body under the documented native scaffold.
-const galleryURL = moduleURL('tests/reference/AlertGallery.tsx', { react: import.meta.resolve('react'), './alert': moduleURL('tests/reference/alert.tsx', { react: import.meta.resolve('react'), cn, 'class-variance-authority': import.meta.resolve('class-variance-authority') }) });
+// Full child-tree SSR comparison executes the selected immutable Basic body under complete genuine Example helpers.
+const galleryURL = moduleURL('tests/reference/AlertGallery.tsx', { react: import.meta.resolve('react'), './alert': moduleURL('tests/reference/alert.tsx', { react: import.meta.resolve('react'), cn, 'class-variance-authority': import.meta.resolve('class-variance-authority') }), './example-scaffold': moduleURL('tests/reference/example-scaffold.tsx', { cn }) });
 const { AlertGallery } = await import(galleryURL);
 const { default: Example } = await import('../apps/docs/examples/base/AlertExample.svelte');
 function semantic(node) {
@@ -41,4 +41,23 @@ function semantic(node) {
 const expectedGallery = new JSDOM(renderToStaticMarkup(createElement(AlertGallery))).window.document.body.firstElementChild;
 const actualGallery = new JSDOM(render(Example).body).window.document.body.firstElementChild;
 assert.deepEqual(semantic(actualGallery), semantic(expectedGallery));
+// Authored source-derived shape witness: two wrapper divs, one Example/title/content tree, unchanged Basic body.
+assert.equal(actualGallery.tagName, 'DIV');
+assert.equal(actualGallery.className, 'w-full bg-muted dark:bg-background');
+const wrapper = actualGallery.firstElementChild;
+assert.equal(wrapper.tagName, 'DIV');
+assert.equal(wrapper.getAttribute('data-slot'), 'example-wrapper');
+assert(wrapper.classList.contains('lg:grid-cols-1'));
+assert.equal(wrapper.children.length, 1);
+const example = wrapper.firstElementChild;
+assert.equal(example.tagName, 'DIV');
+assert.equal(example.getAttribute('data-slot'), 'example');
+assert.equal(example.children.length, 2);
+assert.equal(example.firstElementChild.tagName, 'DIV');
+assert.equal(example.firstElementChild.textContent, 'Basic');
+assert.equal(example.lastElementChild.getAttribute('data-slot'), 'example-content');
+assert.equal(actualGallery.querySelectorAll('section, h2').length, 0);
+assert.equal(actualGallery.querySelectorAll('[role="alert"]').length, 3);
+assert.equal(actualGallery.querySelectorAll('[data-slot="alert-title"]').length, 2);
+assert.equal(actualGallery.querySelectorAll('[data-slot="alert-description"]').length, 2);
 console.log(`Pinned React/Svelte Alert SSR: ${count} native prop/class/variant cases and Basic semantic tree PASS`);

@@ -3,6 +3,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 source scripts/toolchain.sh
 node --test scripts/tests/*.test.mjs
+node scripts/check-cn-conformance.mjs
 node scripts/check-base.mjs --lockfile
 node scripts/generate-icons.mjs --check
 pnpm lint
@@ -20,6 +21,7 @@ node --import ./scripts/svelte-ssr-loader.mjs scripts/check-aspect-ratio-ssr.mjs
 node --import ./scripts/svelte-ssr-loader.mjs scripts/check-empty-ssr.mjs
 node --import ./scripts/svelte-ssr-loader.mjs scripts/check-example-ssr.mjs
 node --import ./scripts/svelte-ssr-loader.mjs scripts/check-icons-ssr.mjs
+node --import ./scripts/svelte-ssr-loader.mjs scripts/check-separator-ssr.mjs
 pnpm --filter @sveltery/docs build
 pnpm exec vite build --config tests/reference/themes/reference-app/vite.config.ts
 bash scripts/check-remote-fields.sh
