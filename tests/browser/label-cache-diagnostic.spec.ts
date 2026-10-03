@@ -89,10 +89,23 @@ for (const source of ['svelte', 'pinned-react', 'native-first-only', 'native-bot
         await nativeAssociationOperations(page, source === 'native-both-primed');
       }
     } catch (error) { failure = error; }
-    const evidence = { source, browser: testInfo.project.name, observed: await observations(page), errors, failure: failure instanceof Error ? failure.message : failure };
+    let observed: Awaited<ReturnType<typeof observations>> | undefined;
+    let observationFailure: unknown;
+    try { observed = await observations(page); } catch (error) { observationFailure = error; }
+    const evidence = {
+      source, browser: testInfo.project.name, observed, errors,
+      failure: failure instanceof Error ? failure.message : failure,
+      observationFailure: observationFailure instanceof Error ? observationFailure.message : observationFailure,
+    };
     console.log('LABEL_CACHE_DIAGNOSTIC', JSON.stringify(evidence));
-    await testInfo.attach(`label-cache-${source}`, { body: JSON.stringify(evidence, null, 2), contentType: 'application/json' });
+    let attachmentFailure: unknown;
+    try {
+      await testInfo.attach(`label-cache-${source}`, { body: JSON.stringify(evidence, null, 2), contentType: 'application/json' });
+    } catch (error) { attachmentFailure = error; }
+    // Evidence collection must never replace the original acceptance failure or turn any failure green.
     if (failure) throw failure;
+    if (observationFailure) throw observationFailure;
+    if (attachmentFailure) throw attachmentFailure;
     expect(errors).toEqual([]);
   });
 }
