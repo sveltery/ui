@@ -41,6 +41,7 @@ cat > "$consumer_directory/Consumer.svelte" <<'SVELTE'
   import { Skeleton } from '@sveltery/ui/skeleton';
   import { Kbd, KbdGroup } from '@sveltery/ui/kbd';
   import { Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption } from '@sveltery/ui/table';
+  import { Avatar, AvatarImage, AvatarFallback, AvatarBadge, AvatarGroup, AvatarGroupCount } from '@sveltery/ui/avatar';
   import { Card, CardHeader, CardTitle, CardDescription, CardAction, CardContent, CardFooter } from '@sveltery/ui/card';
   import type { Snippet } from 'svelte';
 </script>
@@ -53,6 +54,7 @@ cat > "$consumer_directory/Consumer.svelte" <<'SVELTE'
 <Empty data-probe="empty"><EmptyHeader><EmptyMedia variant="icon">Media</EmptyMedia><EmptyTitle>Empty title</EmptyTitle><EmptyDescription>Description &amp; notes</EmptyDescription></EmptyHeader><EmptyContent>Content</EmptyContent></Empty>
 <EmptyMedia data-probe="empty-media-null" variant={null} />
 <Card size="sm" data-probe="card"><CardHeader><CardTitle>Title</CardTitle><CardDescription>Description</CardDescription><CardAction>Action</CardAction></CardHeader><CardContent>Content</CardContent><CardFooter>Footer</CardFooter></Card>
+<AvatarGroup data-probe="avatar-group"><Avatar size="sm" data-probe="avatar"><AvatarImage src="/consumer-avatar.png" alt="Consumer portrait" /><AvatarFallback>CN</AvatarFallback><AvatarBadge data-probe="avatar-badge">Badge</AvatarBadge></Avatar><AvatarGroupCount data-probe="avatar-count">+3</AvatarGroupCount></AvatarGroup>
 <KbdGroup data-probe="kbd-group"><Kbd data-probe="kbd">Ctrl &amp; K</Kbd></KbdGroup>
 <Label data-probe="label" for="consumer-message">Message &amp; notes</Label>
 <AspectRatio data-probe="aspect-ratio" ratio={16 / 9}>Aspect &amp; ratio</AspectRatio>
@@ -135,12 +137,16 @@ for (const name of alertNames) assert.equal(Root[name], Alerts[name]);
 const cardNames = ['Card', 'CardHeader', 'CardTitle', 'CardDescription', 'CardAction', 'CardContent', 'CardFooter'];
 assert.deepEqual(Object.keys(Cards).sort(), cardNames.toSorted());
 for (const name of cardNames) assert.equal(Root[name], Cards[name]);
+import * as Avatars from '@sveltery/ui/avatar';
+const avatarNames = ['Avatar', 'AvatarImage', 'AvatarFallback', 'AvatarBadge', 'AvatarGroup', 'AvatarGroupCount'];
+assert.deepEqual(Object.keys(Avatars).sort(), avatarNames.toSorted());
+for (const name of avatarNames) assert.equal(Root[name], Avatars[name]);
 import * as Tables from '@sveltery/ui/table';
 const tableNames = ['Table', 'TableHeader', 'TableBody', 'TableFooter', 'TableRow', 'TableHead', 'TableCell', 'TableCaption'];
 assert.deepEqual(Object.keys(Tables).sort(), tableNames.slice().sort());
 for (const name of tableNames) assert.equal(Root[name], Tables[name]);
 const names = ['Dialog', 'DialogClose', 'DialogContent', 'DialogDescription', 'DialogFooter', 'DialogHeader', 'DialogOverlay', 'DialogPortal', 'DialogTitle', 'DialogTrigger'];
-assert.deepEqual(Object.keys(Root).sort(), [...names, ...tableNames, ...cardNames, ...alertNames, ...emptyNames, ...iconNames, 'Separator', 'Example', 'ExampleWrapper', 'Button', 'buttonVariants', 'variants', 'sizes', 'Textarea', 'Label', 'AspectRatio', 'Skeleton', 'Kbd', 'KbdGroup'].sort());
+assert.deepEqual(Object.keys(Root).sort(), [...names, ...tableNames, ...cardNames, ...avatarNames, ...alertNames, ...emptyNames, ...iconNames, 'Separator', 'Example', 'ExampleWrapper', 'Button', 'buttonVariants', 'variants', 'sizes', 'Textarea', 'Label', 'AspectRatio', 'Skeleton', 'Kbd', 'KbdGroup'].sort());
 assert.deepEqual(Object.keys(Buttons).sort(), ['Button', 'buttonVariants', 'sizes', 'variants']);
 assert.deepEqual(Object.keys(Parts).sort(), names);
 assert.deepEqual(Object.keys(Labels), ['Label']);
@@ -151,7 +157,7 @@ assert.deepEqual(Object.keys(Skeletons), ['Skeleton']);
 assert.equal(Root.Skeleton, Skeletons.Skeleton);
 assert.deepEqual(Object.keys(Keys).sort(), ['Kbd', 'KbdGroup']);
 assert.equal(Root.Kbd, Keys.Kbd); assert.equal(Root.KbdGroup, Keys.KbdGroup);
-for (const path of ['separator/index.d.ts', 'separator/types.d.ts', 'separator/Separator.svelte.d.ts', 'example/index.d.ts', 'example/types.d.ts', 'example/Example.svelte.d.ts', 'example/ExampleWrapper.svelte.d.ts', 'icons/index.d.ts', 'icons/types.d.ts', 'icons/config.d.ts', 'icons/IconPlaceholder.svelte.d.ts', 'icons/IconLibraryProvider.svelte.d.ts', 'empty/index.d.ts', 'empty/types.d.ts', ...emptyNames.map(name => `empty/${name}.svelte.d.ts`), 'alert/index.d.ts', 'alert/types.d.ts', ...alertNames.map(name => `alert/${name}.svelte.d.ts`), 'table/index.d.ts', ...tableNames.map(name => `table/${name}.svelte.d.ts`), 'label/index.d.ts', 'label/Label.svelte.d.ts', 'index.d.ts', 'dialog/index.d.ts', 'button/index.d.ts', 'button/Button.svelte.d.ts', 'button/types.d.ts', 'textarea/index.d.ts', 'textarea/Textarea.svelte.d.ts', 'skeleton/index.d.ts', 'skeleton/Skeleton.svelte.d.ts', 'kbd/index.d.ts', 'kbd/Kbd.svelte.d.ts', 'kbd/KbdGroup.svelte.d.ts', 'kbd/types.d.ts', 'card/index.d.ts', 'card/types.d.ts', ...cardNames.map(name => `card/${name}.svelte.d.ts`), ...names.map(name => `dialog/${name}.svelte.d.ts`)]) {
+for (const path of ['avatar/index.d.ts', 'avatar/types.d.ts', ...avatarNames.map(name => `avatar/${name}.svelte.d.ts`), 'separator/index.d.ts', 'separator/types.d.ts', 'separator/Separator.svelte.d.ts', 'example/index.d.ts', 'example/types.d.ts', 'example/Example.svelte.d.ts', 'example/ExampleWrapper.svelte.d.ts', 'icons/index.d.ts', 'icons/types.d.ts', 'icons/config.d.ts', 'icons/IconPlaceholder.svelte.d.ts', 'icons/IconLibraryProvider.svelte.d.ts', 'empty/index.d.ts', 'empty/types.d.ts', ...emptyNames.map(name => `empty/${name}.svelte.d.ts`), 'alert/index.d.ts', 'alert/types.d.ts', ...alertNames.map(name => `alert/${name}.svelte.d.ts`), 'table/index.d.ts', ...tableNames.map(name => `table/${name}.svelte.d.ts`), 'label/index.d.ts', 'label/Label.svelte.d.ts', 'index.d.ts', 'dialog/index.d.ts', 'button/index.d.ts', 'button/Button.svelte.d.ts', 'button/types.d.ts', 'textarea/index.d.ts', 'textarea/Textarea.svelte.d.ts', 'skeleton/index.d.ts', 'skeleton/Skeleton.svelte.d.ts', 'kbd/index.d.ts', 'kbd/Kbd.svelte.d.ts', 'kbd/KbdGroup.svelte.d.ts', 'kbd/types.d.ts', 'card/index.d.ts', 'card/types.d.ts', ...cardNames.map(name => `card/${name}.svelte.d.ts`), ...names.map(name => `dialog/${name}.svelte.d.ts`)]) {
   assert(readFileSync(new URL(`./node_modules/@sveltery/ui/dist/${path}`, import.meta.url), 'utf8').length > 0);
 }
 const first = render(Consumer).body;
@@ -212,6 +218,14 @@ for (const html of [first, second]) {
   for (const [probe, expected] of [['cn-nonbreaking', 'cn-skeleton animate-pulse p-2\u00a0p-4'], ['cn-line-separator', 'cn-skeleton animate-pulse p-2\u2028p-4']]) {
     assert.equal(new JSDOM(html).window.document.querySelector(`[data-probe=${probe}]`).getAttribute('class'), expected);
   }
+  const avatarGroup = new JSDOM(html).window.document.querySelector('[data-probe=avatar-group]');
+  assert.equal(avatarGroup.tagName, 'DIV');
+  const avatar = avatarGroup.querySelector('[data-probe=avatar]');
+  assert.equal(avatar.tagName, 'SPAN'); assert.equal(avatar.getAttribute('data-size'), 'sm');
+  assert.equal(avatar.querySelector('[data-slot=avatar-fallback]').textContent, 'CN');
+  assert.equal(avatar.querySelector('[data-slot=avatar-image]'), null);
+  assert.equal(avatar.querySelector('[data-probe=avatar-badge]').tagName, 'SPAN');
+  assert.equal(avatarGroup.querySelector('[data-probe=avatar-count]').textContent, '+3');
   const nativeGroup = new JSDOM(html).window.document.querySelector('[data-probe=kbd-group]');
   assert.equal(nativeGroup.tagName, 'KBD'); assert.equal(nativeGroup.getAttribute('data-slot'), 'kbd-group');
   assert.equal(nativeGroup.firstElementChild.tagName, 'KBD'); assert.equal(nativeGroup.firstElementChild.getAttribute('data-slot'), 'kbd'); assert.equal(nativeGroup.textContent, 'Ctrl & K');
@@ -256,7 +270,7 @@ const themes = readFileSync(import.meta.resolve('@sveltery/ui/themes.css').repla
 assert(themes.includes('@custom-variant dark (&:is(.dark *))'));
 assert(themes.includes('.theme-taupe')); assert(themes.includes('.theme-yellow'));
 assert(themes.includes('--background: oklch(0.145 0 0)'));
-console.log('Isolated Alert, Empty, AspectRatio, Label, Table plus Card and existing UI tarball: Dialog, Button, Textarea, Skeleton, Kbd and Card root/subpath exports, SSR, IDs, absent portals, CSS, declarations and notices PASS');
+console.log('Isolated Avatar, Alert, Empty, AspectRatio, Label, Table plus Card and existing UI tarball: Dialog, Button, Textarea, Skeleton, Kbd and Card root/subpath exports, SSR, IDs, absent portals, CSS, declarations and notices PASS');
 JS
 node --import "$sveltery_repo_root/scripts/svelte-ssr-loader.mjs" "$consumer_directory/check.mjs"
 cat > "$consumer_directory/types.ts" <<'TS'

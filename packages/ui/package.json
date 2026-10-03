@@ -88,6 +88,11 @@
       "types": "./dist/separator/index.d.ts",
       "svelte": "./dist/separator/index.js",
       "default": "./dist/separator/index.js"
+    },
+    "./avatar": {
+      "types": "./dist/avatar/index.d.ts",
+      "svelte": "./dist/avatar/index.js",
+      "default": "./dist/avatar/index.js"
     }
   },
   "svelte": "./dist/index.js",

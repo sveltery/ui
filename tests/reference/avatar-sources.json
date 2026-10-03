@@ -1,0 +1,33 @@
+{
+  "commit": "d75a96ab781f3d659be1ad287347d5887ce9f2fc",
+  "files": [
+    {
+      "upstream": "apps/v4/registry/bases/base/ui/avatar.tsx",
+      "local": "tests/reference/avatar.tsx",
+      "sha256": "d9850dc6f9aaccf9f7aab3c730c3aef62b42ef8cd9404b2d7133f771e14a6cbd",
+      "bytes": 2676,
+      "gitBlob": "d46f2e9392747cd065e6e760092a7a2b500b4634"
+    },
+    {
+      "upstream": "apps/v4/registry/bases/base/examples/avatar-example.tsx",
+      "local": "tests/reference/avatar-example.tsx",
+      "sha256": "78f6fb795d33ef90fa2c4790b5ee3db29ca2b4ff62110941c23807ba8e0eda62",
+      "bytes": 14648,
+      "gitBlob": "bbcacd149a86631aadd261f5756ad70b49a3fc5f"
+    },
+    {
+      "upstream": "apps/v4/registry/styles/style-nova.css",
+      "local": "tests/reference/avatar-nova.css",
+      "sha256": "1f7aa8d1f605897efb867481f406da19e23be0b5d556b5952bd6c2ed40b97ed1",
+      "upstreamSha256": "5d5751579c015b61e77cf0822862a43ac79f3e6fed236a17624be8e6d1ebea1d",
+      "scope": "complete MARK Avatar section, five original blocks",
+      "extractedSectionSha256": "feb7e0a08e8744555776061de9a961572b4e0b332ee28452d7bd401921a435ac",
+      "bytes": 676,
+      "transformation": "Preserve every byte of the complete MARK Avatar section except normalize its inter-section trailing blank separator to one final LF for text-file whitespace policy.",
+      "upstreamByteStart": 3186,
+      "upstreamByteEnd": 3863,
+      "upstreamBytes": 75461
+    }
+  ],
+  "testProvenance": "authored source-derived supplements; no dedicated ordinary pinned shadcn Avatar runtime suite"
+}
