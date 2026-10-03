@@ -24,7 +24,7 @@ for (const width of [1280, 390]) test(`Kbd Nova and five supported pinned exampl
   await testInfo.attach(`svelte-kbd-${width}`, { body: await page.screenshot({ fullPage: true }), contentType: 'image/png' }); await testInfo.attach(`pinned-react-kbd-${width}`, { body: await reference.screenshot({ fullPage: true }), contentType: 'image/png' }); await reference.close();
 });
 
-test('seven genuine Kbd bodies retain all 48 SSR HTML hosts while cold Square glyphs settle', async ({ page }) => {
+test('seven genuine Kbd bodies retain all 48 warm SSR HTML hosts while client glyphs settle', async ({ page }) => {
   const errors: string[] = []; page.on('pageerror', error => errors.push(error.message)); page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
   await page.goto('/kbd'); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true');
   let release!: () => void; const gate = new Promise<void>(resolve => { release = resolve; });
@@ -32,11 +32,31 @@ test('seven genuine Kbd bodies retain all 48 SSR HTML hosts while cold Square gl
   try {
     await page.goto('/kbd', { waitUntil: 'commit' }); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'false');
     const hosts = await page.locator(kbdHTMLHosts).elementHandles(); expect(hosts).toHaveLength(48);
-    const before = await kbdTree(page, false); await expect(page.locator(`${kbdWrapper} svg.lucide-square`)).toHaveCount(5);
+    const before = await kbdTree(page, false); await expect(page.locator(`${kbdWrapper} svg`)).toHaveCount(5); await expect(page.locator(`${kbdWrapper} svg.lucide-square`)).toHaveCount(0);
     release(); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true'); await settledKbd(page);
     for (const [index, host] of hosts.entries()) expect(await host.evaluate((node, args) => node.isConnected && node === document.querySelectorAll(args.selector)[args.index], { selector: kbdHTMLHosts, index })).toBe(true);
     expect(await kbdTree(page, false)).toEqual(before); expect(errors).toEqual([]);
   } finally { release(); }
+});
+test('both genuine Kbd icon galleries show five original Square glyphs while actual client modules are delayed', async ({ page, context }, testInfo) => {
+  const reference = await context.newPage(); const errors: string[] = []; let release!: () => void;
+  const gate = new Promise<void>(resolve => { release = resolve; }); const intercepted: string[] = [];
+  for (const current of [page, reference]) { current.on('pageerror', error => errors.push(error.message)); current.on('console', message => { if (message.type() === 'error') errors.push(message.text()); }); }
+  await page.route('**/icons/generated/lucide.js*', async route => { intercepted.push(route.request().url()); await gate; await route.continue(); });
+  await reference.route('**/reference/icons/__lucide__.ts*', async route => { intercepted.push(route.request().url()); await gate; await route.continue(); });
+  try {
+    await page.goto('/kbd', { waitUntil: 'domcontentloaded' }); await reference.goto('/kbd-reference', { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true');
+    for (const current of [page, reference]) {
+      await expect(current.locator(`${kbdWrapper} svg.lucide-square`)).toHaveCount(5);
+      await expect(current.locator(`${kbdWrapper} svg.lucide-square rect`)).toHaveCount(5);
+      expect(await current.locator(`${kbdWrapper} svg.lucide-square rect`).evaluateAll(nodes => nodes.map(node => ({ width: node.getAttribute('width'), height: node.getAttribute('height'), x: node.getAttribute('x'), y: node.getAttribute('y'), rx: node.getAttribute('rx') })))).toEqual(Array(5).fill({ width: '18', height: '18', x: '3', y: '3', rx: '2' }));
+    }
+    expect(await kbdTree(page)).toEqual(await kbdTree(reference)); expect(intercepted).toHaveLength(2);
+    await testInfo.attach('delayed-genuine-kbd-icon-modules', { body: JSON.stringify(intercepted), contentType: 'application/json' });
+    release(); await settledKbd(page); await settledKbd(reference);
+    expect(await kbdTree(page)).toEqual(await kbdTree(reference)); expect(errors).toEqual([]);
+  } finally { release(); await reference.close(); }
 });
 test('seven original Kbd galleries and five genuine icon libraries match complete original CSS in all eight styles', async ({ page, context }) => {
   test.setTimeout(180_000);
