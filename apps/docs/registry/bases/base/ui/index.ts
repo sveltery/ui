@@ -14,3 +14,4 @@ export * from './empty/index.js';
 export * from './icons/index.js';
 export * from './example/index.js';
 export * from './separator/index.js';
+export * from './avatar/index.js';

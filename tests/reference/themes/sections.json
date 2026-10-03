@@ -7,6 +7,12 @@
       "sha256": "43b440e659565b995daca062fc8f7575acdc49db3af7018ce472058e6b90acbd"
     },
     {
+      "component": "Avatar",
+      "startLine": 69,
+      "endLine": 89,
+      "sha256": "feb7e0a08e8744555776061de9a961572b4e0b332ee28452d7bd401921a435ac"
+    },
+    {
       "component": "Button",
       "startLine": 144,
       "endLine": 204,
@@ -67,6 +73,12 @@
       "startLine": 19,
       "endLine": 43,
       "sha256": "6eafd5e931224947323d65cc48212c410934432d560f9dfe2c8dac222deb1bc4"
+    },
+    {
+      "component": "Avatar",
+      "startLine": 73,
+      "endLine": 93,
+      "sha256": "feb7e0a08e8744555776061de9a961572b4e0b332ee28452d7bd401921a435ac"
     },
     {
       "component": "Button",
@@ -131,6 +143,12 @@
       "sha256": "43b440e659565b995daca062fc8f7575acdc49db3af7018ce472058e6b90acbd"
     },
     {
+      "component": "Avatar",
+      "startLine": 73,
+      "endLine": 93,
+      "sha256": "feb7e0a08e8744555776061de9a961572b4e0b332ee28452d7bd401921a435ac"
+    },
+    {
       "component": "Button",
       "startLine": 148,
       "endLine": 208,
@@ -193,6 +211,12 @@
       "sha256": "21655ea5db298612e5a35d1c907fe4e5757b23726ff6aa8d2e8fa213ffa5bd48"
     },
     {
+      "component": "Avatar",
+      "startLine": 69,
+      "endLine": 89,
+      "sha256": "3f373cb59b742146a4275d124c590a34dc3b1847f0091c789421aef4252fccb1"
+    },
+    {
       "component": "Button",
       "startLine": 144,
       "endLine": 204,
@@ -253,6 +277,12 @@
       "startLine": 48,
       "endLine": 72,
       "sha256": "4b537b883060ff12d6034df9efc0ce414ac35bc7c9fc8b701a1f1d47ce511f04"
+    },
+    {
+      "component": "Avatar",
+      "startLine": 73,
+      "endLine": 93,
+      "sha256": "e77d2857591fb496b1a05b57430f6f3289347383fb9e3b014ad68f8f2f1b9aab"
     },
     {
       "component": "Button",
@@ -335,6 +365,12 @@
       "sha256": "8c97efb907e3043ade3213bf1dc831e73d7a8b1b0ab6cd1c5870f849b5d9307b"
     },
     {
+      "component": "Avatar",
+      "startLine": 533,
+      "endLine": 553,
+      "sha256": "feb7e0a08e8744555776061de9a961572b4e0b332ee28452d7bd401921a435ac"
+    },
+    {
       "component": "Dialog",
       "startLine": 714,
       "endLine": 742,
@@ -377,6 +413,12 @@
       "startLine": 19,
       "endLine": 43,
       "sha256": "54e297aa70af2b56697b084d70db84ef707c8e402dfdcbe44318286766946a56"
+    },
+    {
+      "component": "Avatar",
+      "startLine": 69,
+      "endLine": 89,
+      "sha256": "feb7e0a08e8744555776061de9a961572b4e0b332ee28452d7bd401921a435ac"
     },
     {
       "component": "Button",
@@ -457,6 +499,12 @@
       "startLine": 508,
       "endLine": 532,
       "sha256": "8c97efb907e3043ade3213bf1dc831e73d7a8b1b0ab6cd1c5870f849b5d9307b"
+    },
+    {
+      "component": "Avatar",
+      "startLine": 533,
+      "endLine": 553,
+      "sha256": "feb7e0a08e8744555776061de9a961572b4e0b332ee28452d7bd401921a435ac"
     },
     {
       "component": "Dialog",

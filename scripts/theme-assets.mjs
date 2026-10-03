@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 
 export const styles = ['vega', 'nova', 'maia', 'lyra', 'mira', 'luma', 'sera', 'rhea'];
 export const baseColors = ['neutral', 'stone', 'zinc', 'mauve', 'olive', 'mist', 'taupe'];
-export const components = ['Alert', 'Button', 'Card', 'Dialog', 'Empty', 'Kbd', 'Label', 'Skeleton', 'Table', 'Textarea'];
+export const components = ['Alert', 'Avatar', 'Button', 'Card', 'Dialog', 'Empty', 'Kbd', 'Label', 'Skeleton', 'Table', 'Textarea'];
 const sourceRoot = 'tests/reference/themes/upstream/';
 const themeModule = stripTypeScriptTypes(readFileSync(`${sourceRoot}themes.ts.source`, 'utf8').replace(/^import[^\n]*\n/u, ''));
 export const { THEMES } = await import(`data:text/javascript;base64,${Buffer.from(themeModule).toString('base64')}`);
