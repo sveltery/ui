@@ -4,8 +4,9 @@ alertLifecycleCases();
 test('fresh archive/source-copy Alert parts retain native actions/variants/Nova rules and bounded Basic composition', async ({ page, request }, testInfo) => {
   const html = await (await request.get('/alert')).text(); expect(html).toContain('cn-alert'); expect(html).toContain('Success! Your changes have been saved.'); expect(html).toContain('Basic');
   const errors: string[] = []; const diagnostics: Array<Promise<unknown>> = []; const failedScripts: Array<unknown> = []; const stages: Array<unknown> = [];
-  const started = performance.now(); let stage = 'initial';
-  const stamp = () => ({ elapsedMs: performance.now() - started, url: page.url(), stage });
+  const started = performance.now(); let stage = 'initial'; let failed = false;
+  const path = (url: string) => url ? new URL(url, 'http://127.0.0.1').pathname : '';
+  const stamp = () => ({ elapsedMs: performance.now() - started, path: path(page.url()), stage });
   const markStage = (next: string) => { stage = next; stages.push(stamp()); };
   page.on('framenavigated', frame => { if (frame === page.mainFrame()) stages.push({ ...stamp(), event: 'navigation-commit' }); });
   page.on('pageerror', error => { errors.push(error.message); diagnostics.push(Promise.resolve({ ...stamp(), name: error.name, message: error.message, stack: error.stack })); });
@@ -13,11 +14,12 @@ test('fresh archive/source-copy Alert parts retain native actions/variants/Nova 
     if (message.type() === 'error') {
       errors.push(message.text());
       const event = stamp();
+      const location = { ...message.location(), url: path(message.location().url) };
       diagnostics.push(Promise.all(message.args().map(argument => argument.evaluate(value => value instanceof Error ? { name: value.name, message: value.message, stack: value.stack } : { type: typeof value })))
-        .then(args => ({ ...event, text: message.text(), location: message.location(), args })).catch(error => ({ ...event, diagnosticFailure: String(error) })));
+        .then(args => ({ ...event, text: message.text(), location, args })).catch(error => ({ ...event, diagnosticFailure: String(error) })));
     }
   });
-  page.on('requestfailed', request => { if (request.resourceType() === 'script') failedScripts.push({ ...stamp(), script: request.url(), error: request.failure()?.errorText }); });
+  page.on('requestfailed', request => { if (request.resourceType() === 'script') failedScripts.push({ ...stamp(), script: path(request.url()), error: request.failure()?.errorText }); });
   try {
     for (const width of [1280, 390]) {
       markStage(`native-probe-${width}`);
@@ -73,7 +75,9 @@ test('fresh archive/source-copy Alert parts retain native actions/variants/Nova 
       }
     }
     expect(errors).toEqual([]);
+  } catch (error) {
+    failed = true; throw error;
   } finally {
-    if (errors.length || failedScripts.length) await testInfo.attach('alert-console-and-script-failures', { body: JSON.stringify({ errors, diagnostics: await Promise.all(diagnostics), failedScripts, stages }, null, 2), contentType: 'application/json' });
+    if (failed || errors.length || failedScripts.length) await testInfo.attach('alert-console-and-script-failures', { body: JSON.stringify({ errors, diagnostics: await Promise.all(diagnostics), failedScripts, stages }, null, 2), contentType: 'application/json' });
   }
 });
