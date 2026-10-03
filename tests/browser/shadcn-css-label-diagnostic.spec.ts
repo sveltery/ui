@@ -1,9 +1,9 @@
 import { expect, test } from '@playwright/test';
 
-test('record actual Label selectors against the independent full original CSS document', async ({ page }, testInfo) => {
-  // Evidence-only diagnostic: every pre-existing Label assertion remains in
-  // place, including the historical false-opacity expectation that fails.
-  // A successfully captured measurement is not Label acceptance credit.
+test('actual Label selectors retain the proven false guard against independent full original CSS', async ({ page }, testInfo) => {
+  // Source-backed supplemental regression. Historical ee88 secured measurements
+  // independently established the complete original CSS behavior; no ordinary
+  // upstream test or unchanged historical expectation credit is claimed.
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
   page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
@@ -34,7 +34,24 @@ test('record actual Label selectors against the independent full original CSS do
     results.push({ environment, url, ...measurement });
   }
   expect(errors).toEqual([]);
-  const evidence = { sourceCommit: 'd75a96ab781f3d659be1ad287347d5887ce9f2fc', classification: 'Secured browser diagnostic measurements; no component acceptance or ordinary-test credit', results, errors };
+  const evidence = { sourceCommit: 'd75a96ab781f3d659be1ad287347d5887ce9f2fc', classification: 'Source-backed supplemental CSS regression; no ordinary-test or unchanged historical expectation credit', results, errors };
   await testInfo.attach('label-full-original-css-measurements', { body: JSON.stringify(evidence, null, 2), contentType: 'application/json' });
   console.log(JSON.stringify(evidence));
+  for (const result of results) {
+    expect(result.labels.length, result.environment).toBe(14);
+    expect(result.labels, result.environment).toEqual(results[0].labels);
+    for (const label of result.labels) {
+      expect(label.tag, `${result.environment}/${label.id}`).toBe('LABEL');
+      const expected = label.id === 'group-true'
+        ? { opacity: '0.5', pointerEvents: 'none', cursor: 'default' }
+        : label.id === 'peer-disabled'
+          ? { opacity: '0.5', pointerEvents: 'auto', cursor: 'not-allowed' }
+          : label.id === 'aria-data-empty'
+            ? { opacity: '0.5', pointerEvents: 'auto', cursor: 'default' }
+            : { opacity: '1', pointerEvents: 'auto', cursor: 'default' };
+      expect({ opacity: label.opacity, pointerEvents: label.pointerEvents, cursor: label.cursor }, `${result.environment}/${label.id}`).toEqual(expected);
+    }
+    expect(result.labels.find(label => label.id === 'aria-data-empty')?.peerMatchesOriginalDisabledVariant).toBe(true);
+    expect(result.labels.find(label => label.id === 'aria-data-false')?.peerMatchesOriginalDisabledVariant).toBe(false);
+  }
 });
