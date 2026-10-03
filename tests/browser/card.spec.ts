@@ -22,8 +22,9 @@ async function measurements(page: Page) {
 for (const width of [1280, 390]) test(`Card seven selected examples and supplemental Nova probes match pinned React at ${width}px`, async ({ page, context }, testInfo) => {
   const errors: string[] = []; page.on('pageerror', error => errors.push(error.message)); page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
   await page.setViewportSize({ width, height: 1600 }); await page.goto('/card'); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true');
-  const reference = await context.newPage(); await reference.setViewportSize({ width, height: 1600 }); await reference.goto('/card-reference'); await expect(reference.locator('main > div > div')).toHaveAttribute('data-hydrated', 'true');
+  const reference = await context.newPage();
   reference.on('pageerror', error => errors.push(error.message)); reference.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+  await reference.setViewportSize({ width, height: 1600 }); await reference.goto('/card-reference'); await expect(reference.locator('main > div > div')).toHaveAttribute('data-hydrated', 'true');
   const actual = await measurements(page); expect(actual).toEqual(await measurements(reference));
   expect(actual).toHaveLength(55);
   const cards = actual.filter(value => value.slot === 'card'); expect(cards).toHaveLength(8);
