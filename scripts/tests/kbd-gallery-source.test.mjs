@@ -7,7 +7,7 @@ const names = ['KbdBasic', 'KbdModifierKeys', 'KbdGroupExample', 'KbdArrowKeys',
 const original = readFileSync('tests/reference/kbd-example.tsx', 'utf8');
 const selected = readFileSync('tests/reference/kbd-selected-examples.tsx', 'utf8');
 const native = readFileSync('apps/docs/examples/base/KbdExample.svelte', 'utf8');
-const normalize = source => source.replace(/\s+/gu, ' ').trim();
+const normalize = source => source.replace(/>\s+</gu, '><').replace(/>([^<>]*?)</gu, (_match, text) => `>${text.trim()}<`).replace(/\s+/gu, ' ').trim();
 function body(name) {
   const start = original.indexOf(`function ${name}()`);
   const end = original.indexOf('\nfunction ', start + 1);
@@ -26,7 +26,7 @@ test('seven native named snippets preserve original bodies, all five names per g
   for (const name of names) {
     const match = native.match(new RegExp(`\\{#snippet ${name}\\(\\)\\}([\\s\\S]*?)\\{/snippet\\}`, 'u'));
     assert(match, `${name}: named original function translation missing`);
-    const jsx = body(name).match(/return \(\n([\s\S]*?)\n  \)/u)[1].replaceAll('className=', 'class=');
+    const jsx = body(name).match(/return \(\n([\s\S]*?)\n {2}\)/u)[1].replaceAll('className=', 'class=');
     assert.equal(normalize(match[1]), normalize(jsx), name);
   }
   assert(native.includes("import { Example, ExampleWrapper } from '@sveltery/ui/example'"));
