@@ -1,13 +1,20 @@
-// Actual pinned example functions below; Example and Next Image substitutes are supplemental.
+// Complete pinned gallery bodies/helper; native-img fill is an explicitly incomplete Next adaptation.
 import type { ComponentProps } from 'react';
+import { Example, ExampleWrapper } from './example-scaffold';
 import { AspectRatio } from './aspect-ratio';
-function Example({ title, className, children }: { title: string; className?: string; children: React.ReactNode }) {
-  return <section><h2>{title}</h2><div className={className}>{children}</div></section>;
-}
 function Image({ fill, style, ...props }: Omit<ComponentProps<'img'>, 'src'> & { src: string; fill?: boolean }) {
   return <img {...props} style={{ ...(fill ? { position: 'absolute', inset: 0 } as const : {}), ...style }} />;
 }
-export function AspectRatioGallery() { return <section data-aspect-ratio-gallery className="grid max-w-4xl gap-6 2xl:max-w-4xl"><AspectRatio16x9 /><AspectRatio21x9 /><AspectRatio1x1 /><AspectRatio9x16 /></section>; }
+export function AspectRatioGallery() {
+  return (
+    <ExampleWrapper className="max-w-4xl 2xl:max-w-4xl">
+      <AspectRatio16x9 />
+      <AspectRatio21x9 />
+      <AspectRatio1x1 />
+      <AspectRatio9x16 />
+    </ExampleWrapper>
+  )
+}
 
 function AspectRatio16x9() {
   return (
