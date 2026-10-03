@@ -79,7 +79,7 @@ export async function assertAvatarStaleCompletion(page: Page) {
     await page.getByRole('button', { name: 'Fail Avatar source', exact: true }).click();
     await expect.poll(async () => (await avatarState(page)).statuses.at(-1)).toBe('error');
     const before = await avatarState(page); const response = page.waitForResponse(value => value.url().endsWith('/avatar-second.png'));
-    release(); await (await response).finished();
+    release(); expect(await (await response).finished()).toBeNull();
     // Wait genuine rendering turns after the completed old network response, no timers/controller shim.
     await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
     expect((await avatarState(page)).statuses).toEqual(before.statuses); await expect(page.locator('#probe-avatar-1')).toHaveCount(0);
