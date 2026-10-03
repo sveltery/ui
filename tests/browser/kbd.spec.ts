@@ -64,7 +64,11 @@ test('both genuine Kbd icon galleries show five original Square glyphs while act
     const delayedRequests = structuredClone(intercepted);
     release(); await settledKbd(page); await settledKbd(reference);
     expect(await kbdTree(page)).toEqual(await kbdTree(reference)); expect(errors).toEqual([]);
-    await testInfo.attach('delayed-genuine-kbd-icon-modules', { body: JSON.stringify({ delayedRequests, allRequests: intercepted, counts: { native: intercepted.native.length, reference: intercepted.reference.length }, moduleURLs, requestCountCacheTimingEquivalence: false }), contentType: 'application/json' });
+    const diagnostics = { delayedRequests, allRequests: intercepted, counts: { native: intercepted.native.length, reference: intercepted.reference.length }, moduleURLs, requestCountCacheTimingEquivalence: false };
+    // The list reporter does not persist memory-body attachments to test-results.
+    // Keep the actual raw events reviewable in the lossless hosted job log.
+    console.info(`Kbd delayed-module diagnostics: ${JSON.stringify(diagnostics)}`);
+    await testInfo.attach('delayed-genuine-kbd-icon-modules', { body: JSON.stringify(diagnostics), contentType: 'application/json' });
   } finally { release(); await reference.close(); }
 });
 test('seven original Kbd galleries and five genuine icon libraries match complete original CSS in all eight styles', async ({ page, context }) => {
