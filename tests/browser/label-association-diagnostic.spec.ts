@@ -25,20 +25,21 @@ test('diagnose strict Label association in pinned React with complete original C
   expect(errors).toEqual([]);
 });
 
-async function installPlainNativeWitness(page: Page) {
+async function installPlainNativeWitness(sourcePage: Page, nativePage: Page) {
   // Read the actual compiled complete-original stylesheet from the independent
-  // reference document, then create a fresh plain-HTML document. No failed
+  // reference document, then use a separate newly created Page/Window for plain
+  // HTML. That native realm has never executed React/Vite scripts. No failed
   // document or label association is reset or invalidated by this setup.
-  await page.goto(originalCssLabel);
-  await expect(page.locator('[data-label-probe]')).toHaveAttribute('data-hydrated', 'true');
-  await expect(page.locator('html')).toHaveAttribute('class', 'style-nova');
-  const styles = await page.locator('style[data-vite-dev-id]').evaluateAll(nodes => nodes.map(node => ({
+  await sourcePage.goto(originalCssLabel);
+  await expect(sourcePage.locator('[data-label-probe]')).toHaveAttribute('data-hydrated', 'true');
+  await expect(sourcePage.locator('html')).toHaveAttribute('class', 'style-nova');
+  const styles = await sourcePage.locator('style[data-vite-dev-id]').evaluateAll(nodes => nodes.map(node => ({
     source: node.getAttribute('data-vite-dev-id'), css: node.textContent ?? '',
   })));
   expect(styles.some(style => style.source?.endsWith('/themes/reference-app/reference.css'))).toBe(true);
   expect(styles.every(style => style.css.length > 0)).toBe(true);
-  await page.setContent('<!doctype html><html class="style-nova"><head></head><body><main class="p-8"><section data-testid="association"><label id="probe-label" for="probe-first" data-slot="label" data-custom="initial" style="color: rgb(30, 40, 50)" class="cn-label flex items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed">Account name<span data-testid="label-child">optional</span></label><input id="probe-first" type="text"><input id="probe-second" type="text"></section><button type="button">Update label</button><output data-testid="probe-state">{"changed":false,"clicks":0}</output></main></body></html>');
-  await page.evaluate(styles => {
+  await nativePage.setContent('<!doctype html><html class="style-nova"><head></head><body><main class="p-8"><section data-testid="association"><label id="probe-label" for="probe-first" data-slot="label" data-custom="initial" style="color: rgb(30, 40, 50)" class="cn-label flex items-center select-none group-data-[disabled=true]:pointer-events-none peer-disabled:cursor-not-allowed">Account name<span data-testid="label-child">optional</span></label><input id="probe-first" type="text"><input id="probe-second" type="text"></section><button type="button">Update label</button><output data-testid="probe-state">{"changed":false,"clicks":0}</output></main></body></html>');
+  await nativePage.evaluate(styles => {
     for (const original of styles) {
       const style = document.createElement('style'); style.textContent = original.css;
       style.setAttribute('data-original-css-source', original.source ?? ''); document.head.append(style);
@@ -84,20 +85,24 @@ async function strictNativeAssociation(page: Page, primeSecond: boolean) {
   expect(JSON.parse(await page.getByTestId('probe-state').innerText()).clicks).toBe(2);
 }
 
-for (const primeSecond of [false, true]) test(`diagnose strict plain-native Label with full original CSS (${primeSecond ? 'both-targets-primed' : 'first-only-primed'})`, async ({ page }, testInfo) => {
+for (const primeSecond of [false, true]) test(`diagnose strict plain-native Label with full original CSS (${primeSecond ? 'both-targets-primed' : 'first-only-primed'})`, async ({ page, context }, testInfo) => {
   const environment = primeSecond ? 'plain-native-both-targets-primed' : 'plain-native-first-only-primed';
   const errors: string[] = [];
-  page.on('pageerror', error => errors.push(error.message));
-  page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
-  await page.setViewportSize({ width: 390, height: 1100 });
-  const css = await installPlainNativeWitness(page);
+  const nativePage = await context.newPage();
+  for (const current of [page, nativePage]) {
+    current.on('pageerror', error => errors.push(error.message));
+    current.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+    await current.setViewportSize({ width: 390, height: 1100 });
+  }
+  const css = await installPlainNativeWitness(page, nativePage);
   console.log('LABEL_NATIVE_DIAGNOSTIC_SOURCE', JSON.stringify({ environment, sourceCommit: 'd75a96ab781f3d659be1ad287347d5887ce9f2fc', css, classification: 'Authored plain HTML with genuine complete CSS; zero new implementation or ordinary-test credit' }));
   try {
-    await strictNativeAssociation(page, primeSecond);
+    await strictNativeAssociation(nativePage, primeSecond);
   } catch (failure) {
-    try { await captureLabelFailure(testInfo, environment, [{ environment, page }], failure, errors); }
+    try { await captureLabelFailure(testInfo, environment, [{ environment, page: nativePage }], failure, errors); }
     catch (diagnosticFailure) { console.log('LABEL_ASSOCIATION_DIAGNOSTIC_FAILURE', String(diagnosticFailure)); }
     throw failure;
   }
   expect(errors).toEqual([]);
+  await nativePage.close();
 });
