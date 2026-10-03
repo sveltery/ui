@@ -1,5 +1,9 @@
 # Dialog readiness
 
+## Proposed three-engine acceptance continuation
+
+The [Chromium/Firefox/WebKit gates](browser-engines.md) run retained cases, immutable source pins, zero retries and fresh archive/source-copy documented/experimental phases. [Executable source mapping](browser-source-map.md) distinguishes earlier authored Alert/Label expectation corrections and observational harness changes from unchanged genuine tests. Exact final-head hosted execution is required for each engine, alongside Standards, Verification, Documentation and independent source/environment review. Current discovery certifies inventory only; existing Chromium landing evidence does not certify Firefox or WebKit. Whole-library and production readiness remain blocked.
+
 The [complete pinned registry catalog](catalog.md) records all 62 raw source entries and distinguishes locked dependency availability, bounded UI delivery and genuine test-source status. The separate [current target selection](target-scope.md) uses Base Toast, Combobox and Drawer and excludes the optional Command/cmdk and Sonner ports; Vaul is unnecessary for Base Drawer. Exclusion is not completion. All other selected families and the gates below remain unchanged.
 
 ## Native Table and proposed With Badges continuation

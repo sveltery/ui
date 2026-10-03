@@ -47,13 +47,21 @@ test('fresh archive/source-copy icons hydrate and resolve all five libraries wit
   expect(errors).toEqual([]);
 });
 
-test('fresh public ESM chunks show real Square during loading and discard stale completion', async ({ page }) => {
+test('fresh public ESM chunks show real Square during loading and discard stale completion', async ({ page }, testInfo) => {
+  const errors: string[] = [];
+  page.on('pageerror', error => errors.push(error.message));
+  page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
   let release: (() => void) | undefined;
   const pending = new Promise<void>(resolve => { release = resolve; });
+  const intercepted: string[] = [];
   // Vite may serve the original module or an optimized chunk. Both names identify
   // the real Lucide geometry module; no mocked geometry or fs allowlist is used.
-  await page.route(/\/lucide(?:-[^/?]+)?\.js(?:\?.*)?$/, async route => { await pending; await route.continue(); });
-  await page.goto('/icons-consumer');
+  await page.route(/\/lucide(?:-[^/?]+)?\.js(?:\?.*)?$/, async route => { intercepted.push(route.request().url()); await pending; await route.continue(); });
+  // Firefox's load event waits for this intentionally pending dynamic import.
+  // Require the real hydrated fallback and intercepted module before releasing it.
+  await page.goto('/icons-consumer', { waitUntil: 'domcontentloaded' });
+  await expect.poll(() => intercepted.length).toBeGreaterThan(0);
+  await testInfo.attach('delayed-real-icon-modules', { body: JSON.stringify(intercepted), contentType: 'application/json' });
   const icon = page.getByTestId('consumer-icon');
   await expect(page.locator('[data-icons-consumer]')).toHaveAttribute('data-hydrated', 'true');
   await expect(icon).toHaveClass(/lucide-square/);
@@ -71,4 +79,5 @@ test('fresh public ESM chunks show real Square during loading and discard stale 
   await page.getByRole('button', { name: 'Change name', exact: true }).click();
   await expect(icon).toHaveClass(/lucide-arrow-right/);
   await expect(icon).toHaveCount(1);
+  expect(errors).toEqual([]);
 });

@@ -7,7 +7,7 @@ The original implementation was preserved at recovery checkpoint `9614e55530eebb
 ```sh
 bash scripts/bootstrap.sh
 bash scripts/verify.sh
-bash -c 'source scripts/toolchain.sh; pnpm exec playwright install chromium; pnpm test:browser'
+bash -c 'source scripts/toolchain.sh; pnpm exec playwright install --with-deps chromium firefox webkit; pnpm test:browser'
 ```
 
 Node >=24.15.0 <25 and pnpm 12.6.0 are required. Bootstrap rebuilds the private Base package from the exact Git SHA in [base.lock.json](scripts/base.lock.json), checks the tarball SHA-256, then installs the frozen workspace lockfile. No npm Base release is assumed. The package and local docs are private experiments; no publication or deployment is configured.
@@ -19,6 +19,8 @@ Try the [SvelteKit installation and source-copy guide](docs/installation.md) for
 The [complete pinned registry catalog](docs/catalog.md) records all 62 original source entries, exact source/anatomy, locked dependency blockers and separate test provenance. The [current target selection](docs/target-scope.md) uses Base Toast, Combobox and Drawer and excludes the separate Command/cmdk and Sonner entries. Scope exclusions do not count as completed components.
 
 The [upstream differences register](docs/upstream-differences.md) discloses inherited Base corrections, styled/API adaptations and the React 1.6.0 versus Base 1.8.0 evidence boundary. The [upstream test inventory](docs/upstream-tests.md) distinguishes actual shadcn suites, separately pinned Base UI conformance and local source-derived probes.
+
+The proposed [three-engine acceptance gates](docs/browser-engines.md) run the retained main and fresh-consumer suites in Chromium, Firefox and WebKit. Configured inventory does not establish successful execution or complete the deferred component/gallery scopes.
 
 The native `/textarea` and pinned `/textarea-reference` fixtures cover the bounded [Textarea slice](docs/textarea.md), owned by `registry/bases/base/ui/textarea` and exported through the current local archive.
 

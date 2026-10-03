@@ -19,18 +19,28 @@ test('genuine selected icon SVG, props and null behavior match React for every l
   await reference.close();
 });
 for (const path of ['/icons', '/icons-reference']) {
-  test(`${path} exposes actual Square while selected module is delayed, cancels stale display and resolves real geometry`, async ({ page }) => {
+  test(`${path} exposes actual Square while selected module is delayed, cancels stale display and resolves real geometry`, async ({ page }, testInfo) => {
+    const errors: string[] = [];
+    page.on('pageerror', error => errors.push(error.message));
+    page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
     // Delay genuine library data/export modules, not mocked glyphs or renderer expectations.
     let release: (() => void) | undefined;
     const pending = new Promise<void>(resolve => { release = resolve; });
+    const intercepted: string[] = [];
     const pattern = path === '/icons' ? '**/icons/generated/lucide.js*' : '**/reference/icons/__lucide__.ts*';
-    await page.route(pattern, async route => { await pending; await route.continue(); });
-    await page.goto(path); await expect(page.getByTestId('selected-icon')).toHaveClass(/lucide-square/);
+    await page.route(pattern, async route => { intercepted.push(route.request().url()); await pending; await route.continue(); });
+    // Observe the actual hydrated pending state without waiting for the held import's load event.
+    await page.goto(path, { waitUntil: 'domcontentloaded' });
+    await expect.poll(() => intercepted.length).toBeGreaterThan(0);
+    await testInfo.attach('delayed-real-icon-modules', { body: JSON.stringify(intercepted), contentType: 'application/json' });
+    await expect(page.locator('[data-icons-hydrated]')).toHaveAttribute('data-icons-hydrated', 'true');
+    await expect(page.getByTestId('selected-icon')).toHaveClass(/lucide-square/);
     await expect(page.getByTestId('selected-icon')).toHaveAttribute('stroke-width', '7');
     await expect(page.getByTestId('selected-icon').locator('rect')).toHaveAttribute('width', '18');
     await page.getByRole('button', { name: 'Absent', exact: true }).click(); await expect(page.getByTestId('selected-icon')).toHaveCount(0);
     release!(); await page.getByRole('button', { name: 'Restore', exact: true }).click();
     await expect(page.getByTestId('selected-icon')).toHaveClass(/lucide-arrow-left/); await expect(page.getByTestId('selected-icon')).toHaveAttribute('stroke-width', '2');
     await page.getByRole('button', { name: 'Change name', exact: true }).click(); await expect(page.locator('[data-testid=selected-icon]:visible')).toHaveClass(/lucide-arrow-right/); await expect(page.getByTestId('selected-icon')).toHaveCount(1);
+    expect(errors).toEqual([]);
   });
 }

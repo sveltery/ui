@@ -40,12 +40,12 @@ From the repository root:
 bash scripts/verify.sh
 bash scripts/check-installation.sh
 source scripts/toolchain.sh
-pnpm exec playwright install chromium
+pnpm exec playwright install --with-deps chromium firefox webkit
 pnpm test:browser
 bash scripts/check-installation.sh --browser
 ```
 
-The installation check extracts the exact scaffold from the guide, installs two fresh consumers outside the workspace, and checks/builds both archive and source-copy modes. `--browser` also runs the documented keyboard, labeling, focus-return, hydration and Nova-style checks in secured Chromium against those consumers. Hosted CI runs these alongside the existing regression suite. Browser installation or secured launch failures are blockers, not passing evidence; use a supported environment without changing sandbox policy. Review and CI must cover the final PR head before maintainers decide readiness and merge. Nothing here publishes packages or hosts the app.
+The installation check extracts the exact scaffold from the guide, installs two fresh consumers outside the workspace, and checks/builds both archive and source-copy modes. `--browser` also runs the documented keyboard, labeling, focus-return, hydration and Nova-style checks in Chromium, Firefox and WebKit against those consumers. Chromium retains its sandbox; Firefox and WebKit use native launch defaults. Hosted CI runs these alongside the existing regression suite. Browser installation or secured launch failures are blockers, not passing evidence; use a supported environment without changing sandbox policy. Review and CI must cover the final PR head before maintainers decide readiness and merge. Nothing here publishes packages or hosts the app.
 
 `/textarea` previews five native Textarea states and form/binding probes; `/textarea-reference` executes the pinned React wrapper in the paired native scaffold. See [Textarea scope/provenance](../../docs/textarea.md).
 

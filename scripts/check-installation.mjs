@@ -8,6 +8,8 @@ import { fileURLToPath } from 'node:url';
 const repo = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const browser = process.argv.includes('--browser');
 assert(process.argv.slice(2).every(arg => arg === '--browser'), 'Only --browser is supported');
+const browserProject = process.env.SVELTERY_BROWSER_PROJECT;
+assert(browserProject === undefined || ['chromium', 'firefox', 'webkit'].includes(browserProject), 'SVELTERY_BROWSER_PROJECT must name an actual configured engine');
 const guide = readFileSync(join(repo, 'docs/installation.md'), 'utf8');
 const files = [...guide.matchAll(/<!-- consumer-file: ([\w./+-]+) -->\n```[^\n]*\n([\s\S]*?)\n```/gu)];
 assert.equal(files.length, 9, 'Expected the nine documented scaffold files');
@@ -179,11 +181,13 @@ try {
       run('pnpm', ['check'], consumer);
       run('pnpm', ['build'], consumer);
       if (browser) {
-        execFileSync('pnpm', ['exec', 'playwright', 'test', '--config', 'scripts/installation-playwright.config.ts'], {
+        const args = ['exec', 'playwright', 'test', '--config', 'scripts/installation-playwright.config.ts'];
+        if (browserProject) args.push('--project', browserProject);
+        execFileSync('pnpm', args, {
           cwd: repo, stdio: 'inherit', env: { ...process.env, SVELTERY_INSTALLATION_CONSUMER: consumer, SVELTERY_INSTALLATION_REMOTE: remote ? '1' : '0' },
         });
       }
-      console.log(`Fresh ${mode} ${remote ? 'experimental remote-field fixture' : 'documented consumer'}: types, SSR/client build${browser ? ' and secured browser' : ''} PASS`);
+      console.log(`Fresh ${mode} ${remote ? 'experimental remote-field fixture' : 'documented consumer'}: types, SSR/client build${browser ? ` and ${browserProject ?? 'all configured engines'} browser` : ''} PASS`);
     };
     check(false);
     // Remote fields are a separate experimental test fixture, not part of the

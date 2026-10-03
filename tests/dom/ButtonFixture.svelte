@@ -58,5 +58,8 @@
   <output data-testid="calls">{JSON.stringify(calls)}</output>
   <output data-testid="clicks">{JSON.stringify(clicks)}</output>
   <output data-testid="ref">{ref?.id ?? ''}</output>
+  {#if ['native-focusable', 'custom-focusable'].includes(scenario)}
+    <button id="following-button" type="button">Following button</button>
+  {/if}
   <div id="target">Link target</div>
 </main>
