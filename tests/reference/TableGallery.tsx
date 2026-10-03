@@ -1,11 +1,8 @@
 // Source-derived scaffold for four exact pinned example functions; not an upstream test port.
 // Derived from shadcn-ui/ui d75a96ab781f3d659be1ad287347d5887ce9f2fc; MIT: ./LICENSE.
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useState } from 'react';
+import { Example, ExampleWrapper } from './example-scaffold';
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from './table';
-
-function Example({ title, children }: { title: string; children: ReactNode }) {
-  return <section><h2>{title}</h2>{children}</section>;
-}
 
 const invoices = [
   {
@@ -55,7 +52,7 @@ const invoices = [
 export function TableGallery() {
   const [hydrated, setHydrated] = useState(false);
   useEffect(() => { setHydrated(true); }, []);
-  return <div data-hydrated={hydrated}><section data-gallery className="grid gap-6"><TableBasic /><TableWithFooter /><TableSimple /><TableWithBadges /></section></div>;
+  return <div data-hydrated={hydrated}><ExampleWrapper data-gallery=""><TableBasic /><TableWithFooter /><TableSimple /><TableWithBadges /></ExampleWrapper></div>;
 }
 
 function TableBasic() {

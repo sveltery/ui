@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { tableLifecycleCases, tableState } from './table-cases';
-import { assertTableBadges, setTableBadgeTheme, tableBadgeHosts, tableBadgeMeasurements, tableBadgeSnapshot, tableGalleryHydrated } from './table-badges-cases';
+import { assertTableBadges, setTableBadgeTheme, tableBadgeHosts, tableBadgeMeasurements, tableBadgeSnapshot, tableGalleryHydrated, tableGalleryHosts, tableGallerySnapshot, tableGalleryMeasurements, assertTableGalleryScaffold, assertTableGalleryVariants } from './table-badges-cases';
 // Source-derived probes, not copied upstream assertions; see table-sources.json.
 tableLifecycleCases();
 async function tableSnapshot(page: Page) {
@@ -141,15 +141,37 @@ test('paired actual With Badges table and six spans preserve SSR identity throug
     const captured = [];
     for (const [current, route] of pairs) {
       await current.goto(route, { waitUntil: 'commit' }); await expect(tableGalleryHydrated(current)).toHaveAttribute('data-hydrated', 'false');
-      const hosts = await current.locator(tableBadgeHosts).elementHandles(); expect(hosts).toHaveLength(25); captured.push({ current, hosts });
+      const hosts = await current.locator(tableBadgeHosts).elementHandles(); expect(hosts).toHaveLength(25);
+      const galleryHosts = await current.locator(tableGalleryHosts).elementHandles(); expect(galleryHosts).toHaveLength(114); captured.push({ current, hosts, galleryHosts });
     }
     const before = await tableBadgeSnapshot(page); expect(before).toEqual(await tableBadgeSnapshot(reference));
+    const galleryBefore = await tableGallerySnapshot(page); expect(galleryBefore).toEqual(await tableGallerySnapshot(reference));
     release();
-    for (const { current, hosts } of captured) {
+    for (const { current, hosts, galleryHosts } of captured) {
       await expect(tableGalleryHydrated(current)).toHaveAttribute('data-hydrated', 'true');
-      for (const [index, host] of hosts.entries()) expect(await host.evaluate((node, i) => node.isConnected && node === document.querySelectorAll('[data-gallery] > section:nth-child(4) table, [data-gallery] > section:nth-child(4) table *')[i], index)).toBe(true);
+      for (const [index, host] of hosts.entries()) expect(await host.evaluate((node, args) => node.isConnected && node === document.querySelectorAll(args.selector)[args.index], { selector: tableBadgeHosts, index })).toBe(true);
       expect(await tableBadgeSnapshot(current)).toEqual(before); await assertTableBadges(current);
+      expect(await current.locator(tableGalleryHosts).count()).toBe(114);
+      for (const [index, host] of galleryHosts.entries()) expect(await host.evaluate((node, args) => node.isConnected && node === document.querySelectorAll(args.selector)[args.index], { selector: tableGalleryHosts, index })).toBe(true);
+      expect(await tableGallerySnapshot(current)).toEqual(galleryBefore);
     }
     expect(errors).toEqual([]);
   } finally { release(); await reference.close(); }
+});
+
+// Source-derived authored helper/layout witnesses, not a copied ordinary shadcn runtime suite.
+for (const width of [390, 640, 768, 1024, 1536]) test(`genuine four-Table scaffold tree, responsive layout and source variants at ${width}px`, async ({ page, context }) => {
+  const reference = await context.newPage(); const errors: string[] = [];
+  try {
+    for (const [current, route] of [[page, '/table'], [reference, '/table-reference']] as const) {
+      current.on('pageerror', error => errors.push(error.message)); current.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+      await current.setViewportSize({ width, height: 1400 }); await current.goto(route); await expect(tableGalleryHydrated(current)).toHaveAttribute('data-hydrated', 'true');
+      await assertTableGalleryScaffold(current, width, 1400);
+    }
+    expect(await tableGallerySnapshot(page)).toEqual(await tableGallerySnapshot(reference));
+    expect(await tableGalleryMeasurements(page)).toEqual(await tableGalleryMeasurements(reference));
+    for (const current of [page, reference]) await assertTableGalleryVariants(current);
+    expect(await tableGalleryMeasurements(page)).toEqual(await tableGalleryMeasurements(reference));
+    expect(errors).toEqual([]);
+  } finally { await reference.close(); }
 });

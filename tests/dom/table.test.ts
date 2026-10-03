@@ -158,7 +158,16 @@ it('four selected example bodies retain exact native trees and the six literal W
   const expected = document.createElement('section'); expected.innerHTML = renderToStaticMarkup(createElement(TableGallery));
   const actualTables = host.querySelectorAll('table'); const referenceTables = expected.querySelectorAll('table');
   actualTables.forEach((table, index) => compare(table, referenceTables[index]));
-  expect([...host.querySelectorAll('h2')].map(node => node.textContent)).toEqual([...expected.querySelectorAll('h2')].map(node => node.textContent));
+  // Authored source-fidelity repair; four required genuine title divs prevent vacuous h2 equality.
+  const selector = '[data-gallery][data-slot="example-wrapper"]';
+  const wrapper = host.querySelector(selector)!;
+  const referenceWrapper = expected.querySelector(selector)!;
+  expect(wrapper).not.toBeNull(); expect(referenceWrapper).not.toBeNull();
+  compare(wrapper.parentElement!, referenceWrapper.parentElement!);
+  expect(wrapper.parentElement!.className).toBe('w-full bg-muted dark:bg-background');
+  expect(wrapper.children).toHaveLength(4);
+  expect([...wrapper.children].map(example => ({ tag: example.tagName, slot: example.getAttribute('data-slot'), count: example.children.length, titleTag: example.firstElementChild!.tagName, title: example.firstElementChild!.textContent, titleClass: example.firstElementChild!.className, contentSlot: example.lastElementChild!.getAttribute('data-slot') }))).toEqual(['Basic', 'With Footer', 'Simple', 'With Badges'].map(title => ({ tag: 'DIV', slot: 'example', count: 2, titleTag: 'DIV', title, titleClass: 'px-1.5 py-2 text-xs font-medium text-muted-foreground', contentSlot: 'example-content' })));
+  expect(wrapper.querySelectorAll('section,h2')).toHaveLength(0);
   expect(host.querySelectorAll('table')).toHaveLength(4);
   const badges = host.querySelectorAll('table')[3];
   expect([...badges.querySelectorAll('tbody tr')].map(row => [...row.querySelectorAll('td')].map(cell => cell.textContent!.trim()))).toEqual([
