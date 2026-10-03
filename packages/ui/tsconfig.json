@@ -21,6 +21,7 @@
     "../../tests/alert-types.ts",
     "../../tests/empty-types.ts",
     "../../tests/icons-types.ts",
-    "../../tests/example-types.ts"
+    "../../tests/example-types.ts",
+    "../../tests/separator-types.ts"
   ]
 }
