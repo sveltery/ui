@@ -236,7 +236,7 @@ cp ../sveltery-ui/packages/ui/THIRD_PARTY_NOTICES.md src/lib/components/ui/THIRD
 
 Make these three edits:
 
-1. In `package.json`, remove the `@sveltery/ui` dependency. Keep the verified Base archive, Svelte, `cn` 0.2.2, `clsx` 2.1.1, Tailwind and `tw-animate-css` dependencies.
+1. In `package.json`, remove the `@sveltery/ui` dependency. Keep the verified Base archive, Svelte, `cn` 0.2.2, `clsx` 2.1.1, Tailwind, `tw-animate-css` and `shadcn` 4.21.1 dependencies. Retain the scaffold's `pnpm-workspace.yaml` override `"shadcn@4.21.1>cn": "0.2.4"`; it pins the original CLI dependency separately from the application's `cn` 0.2.2. The copied Nova and scoped CSS still import the genuine `shadcn/tailwind.css` export.
 2. In `src/app.css`, replace `@import "@sveltery/ui/nova.css";` with `@import "./lib/styles/nova.css";` replace `@import "@sveltery/ui/themes.css";` and `@import "@sveltery/ui/styles.css";` with imports from `./lib/styles/themes.css` and `./lib/styles/styles.css`, and replace the installed-package `@source` line with `@source "./lib/components/ui";`.
 3. In `src/routes/+page.svelte`, import the same names from `$lib/components/ui/dialog`. The broader Tailwind source path also scans `shared/classes.js`, which supplies native close-button utility classes.
 
