@@ -141,8 +141,14 @@ try {
       const routePath = join(consumer, `src/routes/${route}/+page.svelte`);
       mkdirSync(dirname(routePath), { recursive: true });
       let content = readFileSync(join(repo, source), 'utf8');
-      if (mode === 'copy') content = content.replaceAll('@sveltery/ui/alert', '$lib/components/ui/alert').replaceAll('@sveltery/ui/example', '$lib/components/ui/example');
+      if (mode === 'copy') content = content.replaceAll('@sveltery/ui/alert', '$lib/components/ui/alert').replaceAll('@sveltery/ui/example', '$lib/components/ui/example').replaceAll('@sveltery/ui/icons', '$lib/components/ui/icons');
       writeFileSync(routePath, content);
+      if (route === 'alert') {
+        writeFileSync(join(dirname(routePath), 'AlertExample.svelte'), content);
+        let page = readFileSync(join(repo, 'apps/docs/src/routes/alert/+page.svelte'), 'utf8').replace('../../../examples/base/AlertExample.svelte', './AlertExample.svelte');
+        if (mode === 'copy') page = page.replaceAll('@sveltery/ui/icons', '$lib/components/ui/icons');
+        writeFileSync(routePath, page);
+      }
     }
     writeFileSync(join(consumer, 'src/routes/alert-types.ts'), readFileSync(join(repo, 'tests/alert-types.ts'), 'utf8').replace('../apps/docs/registry/bases/base/ui/alert/index.js', mode === 'copy' ? '$lib/components/ui/alert' : '@sveltery/ui/alert'));
     const emptyRoute = join(consumer, 'src/routes/empty-probe/+page.svelte');

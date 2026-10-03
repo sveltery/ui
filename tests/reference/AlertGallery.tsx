@@ -1,7 +1,10 @@
-// One selected immutable Basic function, genuine original helpers and a supplemental hydration marker. MIT: ./LICENSE.
+// Three selected immutable functions, genuine original helpers and a supplemental hydration marker. MIT: ./LICENSE.
 import { useEffect, useState } from 'react';
 import { Alert, AlertTitle, AlertDescription } from './alert';
 import { Example, ExampleWrapper } from './example-scaffold';
+import { IconPlaceholder } from './icon';
+import { IconLibraryProvider } from './icons/search-params';
+import type { IconLibraryName } from './icons/config';
 function AlertExample1() {
   return (
     <Example title="Basic">
@@ -24,8 +27,149 @@ function AlertExample1() {
     </Example>
   )
 }
-export function AlertGallery() {
+
+function AlertExample2() {
+  return (
+    <Example title="With Icons">
+      <div className="mx-auto flex w-full max-w-lg flex-col gap-4">
+        <Alert>
+          <IconPlaceholder
+            lucide="CircleAlertIcon"
+            tabler="IconExclamationCircle"
+            hugeicons="AlertCircleIcon"
+            phosphor="WarningCircleIcon"
+            remixicon="RiErrorWarningLine"
+          />
+          <AlertTitle>
+            Let&apos;s try one with icon, title and a <a href="#">link</a>.
+          </AlertTitle>
+        </Alert>
+        <Alert>
+          <IconPlaceholder
+            lucide="CircleAlertIcon"
+            tabler="IconExclamationCircle"
+            hugeicons="AlertCircleIcon"
+            phosphor="WarningCircleIcon"
+            remixicon="RiErrorWarningLine"
+          />
+          <AlertDescription>
+            This one has an icon and a description only. No title.{" "}
+            <a href="#">But it has a link</a> and a <a href="#">second link</a>.
+          </AlertDescription>
+        </Alert>
+
+        <Alert>
+          <IconPlaceholder
+            lucide="CircleAlertIcon"
+            tabler="IconExclamationCircle"
+            hugeicons="AlertCircleIcon"
+            phosphor="WarningCircleIcon"
+            remixicon="RiErrorWarningLine"
+          />
+          <AlertTitle>Success! Your changes have been saved</AlertTitle>
+          <AlertDescription>
+            This is an alert with icon, title and description.
+          </AlertDescription>
+        </Alert>
+        <Alert>
+          <IconPlaceholder
+            lucide="CircleAlertIcon"
+            tabler="IconExclamationCircle"
+            hugeicons="AlertCircleIcon"
+            phosphor="WarningCircleIcon"
+            remixicon="RiErrorWarningLine"
+          />
+          <AlertTitle>
+            This is a very long alert title that demonstrates how the component
+            handles extended text content and potentially wraps across multiple
+            lines
+          </AlertTitle>
+        </Alert>
+        <Alert>
+          <IconPlaceholder
+            lucide="CircleAlertIcon"
+            tabler="IconExclamationCircle"
+            hugeicons="AlertCircleIcon"
+            phosphor="WarningCircleIcon"
+            remixicon="RiErrorWarningLine"
+          />
+          <AlertDescription>
+            This is a very long alert description that demonstrates how the
+            component handles extended text content and potentially wraps across
+            multiple lines
+          </AlertDescription>
+        </Alert>
+        <Alert>
+          <IconPlaceholder
+            lucide="CircleAlertIcon"
+            tabler="IconExclamationCircle"
+            hugeicons="AlertCircleIcon"
+            phosphor="WarningCircleIcon"
+            remixicon="RiErrorWarningLine"
+          />
+          <AlertTitle>
+            This is an extremely long alert title that spans multiple lines to
+            demonstrate how the component handles very lengthy headings while
+            maintaining readability and proper text wrapping behavior
+          </AlertTitle>
+          <AlertDescription>
+            This is an equally long description that contains detailed
+            information about the alert. It shows how the component can
+            accommodate extensive content while preserving proper spacing,
+            alignment, and readability across different screen sizes and
+            viewport widths. This helps ensure the user experience remains
+            consistent regardless of the content length.
+          </AlertDescription>
+        </Alert>
+      </div>
+    </Example>
+  )
+}
+
+function AlertExample3() {
+  return (
+    <Example title="Destructive">
+      <div className="mx-auto flex w-full max-w-lg flex-col gap-4">
+        <Alert variant="destructive">
+          <IconPlaceholder
+            lucide="CircleAlertIcon"
+            tabler="IconExclamationCircle"
+            hugeicons="AlertCircleIcon"
+            phosphor="WarningCircleIcon"
+            remixicon="RiErrorWarningLine"
+          />
+          <AlertTitle>Something went wrong!</AlertTitle>
+          <AlertDescription>
+            Your session has expired. Please log in again.
+          </AlertDescription>
+        </Alert>
+        <Alert variant="destructive">
+          <IconPlaceholder
+            lucide="CircleAlertIcon"
+            tabler="IconExclamationCircle"
+            hugeicons="AlertCircleIcon"
+            phosphor="WarningCircleIcon"
+            remixicon="RiErrorWarningLine"
+          />
+          <AlertTitle>Unable to process your payment.</AlertTitle>
+          <AlertDescription>
+            <p>
+              Please verify your <a href="#">billing information</a> and try
+              again.
+            </p>
+            <ul className="list-inside list-disc">
+              <li>Check your card details</li>
+              <li>Ensure sufficient funds</li>
+              <li>Verify billing address</li>
+            </ul>
+          </AlertDescription>
+        </Alert>
+      </div>
+    </Example>
+  )
+}
+export function AlertGallery({ library = 'lucide' }: { library?: IconLibraryName }) {
   const [hydrated, setHydrated] = useState(false);
   useEffect(() => setHydrated(true), []);
-  return <ExampleWrapper className="lg:grid-cols-1" data-alert-gallery data-hydrated={hydrated}><AlertExample1 /></ExampleWrapper>;
+  return <IconLibraryProvider library={library}><ExampleWrapper className="lg:grid-cols-1" data-alert-gallery data-hydrated={hydrated}><AlertExample1 /><AlertExample2 /><AlertExample3 /></ExampleWrapper></IconLibraryProvider>;
 }
