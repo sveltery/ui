@@ -29,15 +29,26 @@ test('seven genuine Avatar galleries match independently complete original CSS, 
   } finally { await original.close(); }
 });
 
-test('Avatar complete initial HTML hosts preserve SSR hydration identity while genuine image requests remain pending', async ({ page, context }) => {
+test('Avatar complete initial HTML hosts preserve SSR hydration identity while genuine image requests remain pending', async ({ page, context }, testInfo) => {
   let releaseImages!: () => void; const imageGate = new Promise<void>(resolve => { releaseImages = resolve; });
   await context.route('https://github.com/*.png', async route => { await imageGate; await route.fulfill({ status: 200, contentType: 'image/png', body: portraitPNG }); });
   const original = await context.newPage(); const errors: string[] = [];
+  const activeScripts = new Set<string>();
+  const scriptEvents: { page: string; event: string; url: string; error?: string | null }[] = [];
   try {
-    for (const current of [page, original]) current.on('pageerror', error => errors.push(error.message));
+    for (const [current, label] of [[page, 'native'], [original, 'original']] as const) {
+      current.on('pageerror', error => errors.push(error.message));
+      current.on('request', request => { if (request.resourceType() === 'script') { activeScripts.add(`${label}:${request.url()}`); scriptEvents.push({ page: label, event: 'request', url: request.url() }); } });
+      current.on('requestfinished', request => { if (request.resourceType() === 'script') { activeScripts.delete(`${label}:${request.url()}`); scriptEvents.push({ page: label, event: 'finished', url: request.url() }); } });
+      current.on('requestfailed', request => { if (request.resourceType() === 'script') { activeScripts.delete(`${label}:${request.url()}`); scriptEvents.push({ page: label, event: 'failed', url: request.url(), error: request.failure()?.errorText }); } });
+    }
     await original.goto('http://127.0.0.1:5175/avatar', { waitUntil: 'domcontentloaded' });
     await expect(original.locator('[data-hydrated="true"]')).toHaveCount(1); await expect(original.locator(`${avatarGallery} svg.lucide-square`)).toHaveCount(0);
     await page.goto('/avatar', { waitUntil: 'domcontentloaded' }); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true');
+    // Finish actual canonical lazy glyph modules before navigating away from the warm document.
+    // Images stay pending; source/import failure records and the zero-pageerror gate stay strict.
+    await expect(page.locator(`${avatarGallery} svg.lucide-square`)).toHaveCount(0);
+    await expect.poll(() => activeScripts.size).toBe(0);
     let releaseScripts!: () => void; const scriptGate = new Promise<void>(resolve => { releaseScripts = resolve; });
     await page.route('**/*', async route => { if (route.request().resourceType() === 'script') await scriptGate; await route.fallback(); });
     try {
@@ -50,7 +61,10 @@ test('Avatar complete initial HTML hosts preserve SSR hydration identity while g
       releaseImages(); await expect(page.locator(`${avatarGallery} img`)).toHaveCount(39); await expect(original.locator(`${avatarGallery} img`)).toHaveCount(39);
       await expect(page.locator(`${avatarGallery} [data-slot="avatar-fallback"]`)).toHaveCount(9); expect(errors).toEqual([]);
     } finally { releaseScripts(); }
-  } finally { releaseImages(); await original.close(); }
+  } finally {
+    if (errors.length || testInfo.status !== testInfo.expectedStatus) await testInfo.attach('avatar-hydration-module-requests', { body: JSON.stringify({ errors, activeScripts: [...activeScripts], scriptEvents }), contentType: 'application/json' });
+    releaseImages(); await original.close();
+  }
 });
 
 test('six-part Avatar preserves native decode/source/error/cache, refs, attachments, overrides and disposal', async ({ page }) => {
