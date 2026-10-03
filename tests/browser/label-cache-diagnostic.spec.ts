@@ -1,6 +1,7 @@
 // Temporary supplemental diagnosis only: no copied upstream tests or new UI acceptance credit.
 // The original label.spec.ts and label-cases.ts assertions remain unchanged and still run.
 import { expect, test, type Page } from '@playwright/test';
+import { writeFile } from 'node:fs/promises';
 import { labelNativeAssertions } from './label-cases';
 
 async function observeLabelReads(page: Page) {
@@ -100,7 +101,9 @@ for (const source of ['svelte', 'pinned-react', 'native-first-only', 'native-bot
     console.log('LABEL_CACHE_DIAGNOSTIC', JSON.stringify(evidence));
     let attachmentFailure: unknown;
     try {
-      await testInfo.attach(`label-cache-${source}`, { body: JSON.stringify(evidence, null, 2), contentType: 'application/json' });
+      const evidencePath = testInfo.outputPath(`label-cache-${source}.json`);
+      await writeFile(evidencePath, JSON.stringify(evidence, null, 2), 'utf8');
+      await testInfo.attach(`label-cache-${source}`, { path: evidencePath, contentType: 'application/json' });
     } catch (error) { attachmentFailure = error; }
     // Evidence collection must never replace the original acceptance failure or turn any failure green.
     if (failure) throw failure;
