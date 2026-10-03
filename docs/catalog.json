@@ -13,11 +13,13 @@
   },
   "locked_base": {
     "repository": "https://github.com/sveltery/base.git",
-    "commit": "d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3",
+    "commit": "f884f3bb265485ef8e422e43a75eb3055db11fab",
     "package": "@sveltery/base",
     "version": "0.0.0",
-    "sha256": "cc6bcbdf39f661f49f098c6126620e9ac8c755adbf83ff6231c56501da6d4234",
+    "sha256": "915dd6aebd304a7a9c384b0dd5eecd589722686897079fb6dec2961608c564fd",
     "actual_public_subpaths": [
+      "accordion",
+      "avatar",
       "button",
       "collapsible",
       "dialog",
@@ -30,6 +32,18 @@
       "toggle"
     ],
     "supplied_contracts": [
+      {
+        "upstreamModule": "accordion",
+        "status": "bounded",
+        "localExport": "Accordion",
+        "evidence": "parity/accordion/README.md"
+      },
+      {
+        "upstreamModule": "avatar",
+        "status": "bounded",
+        "localExport": "Avatar",
+        "evidence": "parity/avatar/README.md"
+      },
       {
         "upstreamModule": "button",
         "status": "bounded",
@@ -94,27 +108,29 @@
     "source_records": [
       {
         "path": "packages/base/package.json",
-        "git_blob": "83fa83a4b154e3a64961f42ce1923a80cdf1f398",
-        "sha256": "0304d141d90e92514bccbddb0b1fbed328fadbcde1dcca03a24958b2c8d7c5b6",
-        "bytes": 2414
+        "git_blob": "0ff34b8c838aa0dcb8b6e88705e9879f62806e3b",
+        "sha256": "c8263ed0f5ca3dedeca07f6f61c00e1353f12845955f22e5aacdea0bec4382d7",
+        "bytes": 2730
       },
       {
         "path": "packages/base/src/lib/index.ts",
-        "git_blob": "2cb744cf4024e1eacedb4bf54ee72bd15a740058",
-        "sha256": "b657c4d5326ecaf6a5da4709a2fac82116172ef5d9fe7a8a1b2596e478c5ec38",
-        "bytes": 1860
+        "git_blob": "5b59fcc809b64e431305a6beff2bb5d4a2367063",
+        "sha256": "67eba6b7d85fe52f019fe57a8185b388c92350a4ec809043856d1148b6c2f002",
+        "bytes": 2529
       },
       {
         "path": "parity/catalog.json",
-        "git_blob": "59de6c7d89792e59c1a68ba6ef790b85fab15456",
-        "sha256": "299a0e4259b61494cd391a5e87fcf0595c8c4e99486ee2b37a34ae088bc1a19f",
-        "bytes": 6225
+        "git_blob": "c97e260b417e29fb9401097c007df0b676b0771d",
+        "sha256": "ba83e61e5338f646af270ef9ae74e583e3dc9378a74ba4bd2730f40c96b814c2",
+        "bytes": 6269
       }
     ],
     "upstream_behavior_commit": "47b40521eab921c2756bf9bdb0b0f07fbfdb8c8c",
     "react_fixture_version": "1.6.0",
     "react_fixture_commit": "b34551d644f2e58ebf8fc1050d949f6654ceca6c",
-    "limitation": "Package export existence and bounded contracts are distinct from complete API/behavior and React 1.6 versus 1.8 parity."
+    "limitation": "Package export existence and bounded contracts are distinct from complete API/behavior and React 1.6 versus 1.8 parity.",
+    "git_tree": "e6138c3f2f8f0732dba9b413f0c1618c9d230c77",
+    "projection": "Current scripts/base.lock.json consumption in proposed UI PR37; historical d889 consumption and source records are preserved in historical_dependency_snapshot. This adds no styled-wrapper implementation or test credit."
   },
   "ui_snapshot": {
     "observed_at": "2026-10-02T21:09:46Z",
@@ -191,6 +207,8 @@
       "textarea"
     ],
     "only_exported_bounded_base": [
+      "accordion",
+      "avatar",
       "button",
       "collapsible",
       "dialog",
@@ -202,10 +220,8 @@
       "toggle"
     ],
     "missing_base_export": [
-      "accordion",
       "alert-dialog",
       "attachment",
-      "avatar",
       "badge",
       "breadcrumb",
       "bubble",
@@ -233,9 +249,7 @@
       "tooltip"
     ],
     "missing_base_modules": [
-      "accordion",
       "alert-dialog",
-      "avatar",
       "checkbox",
       "combobox",
       "context-menu",
@@ -459,10 +473,10 @@
         "base": [
           {
             "module": "accordion",
-            "locked_package_export": false,
-            "locked_contract": "unimplemented",
-            "local_export": null,
-            "evidence": null
+            "locked_package_export": true,
+            "locked_contract": "bounded",
+            "local_export": "Accordion",
+            "evidence": "https://github.com/sveltery/base/blob/f884f3bb265485ef8e422e43a75eb3055db11fab/parity/accordion/README.md"
           }
         ],
         "ui_local": [],
@@ -477,7 +491,6 @@
         "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
         "blockers": [
           "styled-wrapper-unimplemented",
-          "missing-base:accordion",
           "public-icon-distribution-pending-pr33; app-helper-landed-pr29"
         ]
       },
@@ -1049,10 +1062,10 @@
         "base": [
           {
             "module": "avatar",
-            "locked_package_export": false,
-            "locked_contract": "unimplemented",
-            "local_export": null,
-            "evidence": null
+            "locked_package_export": true,
+            "locked_contract": "bounded",
+            "local_export": "Avatar",
+            "evidence": "https://github.com/sveltery/base/blob/f884f3bb265485ef8e422e43a75eb3055db11fab/parity/avatar/README.md"
           }
         ],
         "ui_local": [],
@@ -1066,8 +1079,7 @@
         "evidence": null,
         "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
         "blockers": [
-          "styled-wrapper-unimplemented",
-          "missing-base:avatar"
+          "styled-wrapper-unimplemented"
         ]
       },
       "tests": {
@@ -8072,5 +8084,277 @@
         "local_assertions": "unimplemented or separately proposed; no new execution credit from this catalog"
       }
     }
-  ]
+  ],
+  "historical_dependency_snapshot": {
+    "observed_at": "2026-10-02T21:09:46Z",
+    "ui_main_commit": "19e0ca58765458037ea74f0e04dfd2667a1aeab3",
+    "locked_base": {
+      "repository": "https://github.com/sveltery/base.git",
+      "commit": "d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3",
+      "package": "@sveltery/base",
+      "version": "0.0.0",
+      "sha256": "cc6bcbdf39f661f49f098c6126620e9ac8c755adbf83ff6231c56501da6d4234",
+      "actual_public_subpaths": [
+        "button",
+        "collapsible",
+        "dialog",
+        "input",
+        "merge-props",
+        "meter",
+        "progress",
+        "separator",
+        "toast",
+        "toggle"
+      ],
+      "supplied_contracts": [
+        {
+          "upstreamModule": "button",
+          "status": "bounded",
+          "localExport": "Button",
+          "evidence": "parity/button/README.md"
+        },
+        {
+          "upstreamModule": "collapsible",
+          "status": "bounded",
+          "localExport": "Collapsible",
+          "evidence": "parity/collapsible/README.md"
+        },
+        {
+          "upstreamModule": "dialog",
+          "status": "bounded",
+          "localExport": "Dialog",
+          "evidence": "docs/dialog-first-slice.md"
+        },
+        {
+          "upstreamModule": "input",
+          "status": "bounded",
+          "localExport": "Input",
+          "evidence": "docs/input.md"
+        },
+        {
+          "upstreamModule": "merge-props",
+          "status": "bounded",
+          "localExport": "mergeProps / mergePropsN",
+          "evidence": "docs/upstream-contracts.md"
+        },
+        {
+          "upstreamModule": "meter",
+          "status": "bounded",
+          "localExport": "Meter",
+          "evidence": "parity/meter/README.md"
+        },
+        {
+          "upstreamModule": "progress",
+          "status": "bounded",
+          "localExport": "Progress",
+          "evidence": "parity/progress/README.md"
+        },
+        {
+          "upstreamModule": "separator",
+          "status": "bounded",
+          "localExport": "Separator",
+          "evidence": "parity/separator/README.md"
+        },
+        {
+          "upstreamModule": "toast",
+          "status": "bounded",
+          "localExport": "Toast",
+          "evidence": "parity/toast/rendering-interface.md"
+        },
+        {
+          "upstreamModule": "toggle",
+          "status": "bounded",
+          "localExport": "Toggle",
+          "evidence": "parity/toggle/README.md"
+        }
+      ],
+      "source_records": [
+        {
+          "path": "packages/base/package.json",
+          "git_blob": "83fa83a4b154e3a64961f42ce1923a80cdf1f398",
+          "sha256": "0304d141d90e92514bccbddb0b1fbed328fadbcde1dcca03a24958b2c8d7c5b6",
+          "bytes": 2414
+        },
+        {
+          "path": "packages/base/src/lib/index.ts",
+          "git_blob": "2cb744cf4024e1eacedb4bf54ee72bd15a740058",
+          "sha256": "b657c4d5326ecaf6a5da4709a2fac82116172ef5d9fe7a8a1b2596e478c5ec38",
+          "bytes": 1860
+        },
+        {
+          "path": "parity/catalog.json",
+          "git_blob": "59de6c7d89792e59c1a68ba6ef790b85fab15456",
+          "sha256": "299a0e4259b61494cd391a5e87fcf0595c8c4e99486ee2b37a34ae088bc1a19f",
+          "bytes": 6225
+        }
+      ],
+      "upstream_behavior_commit": "47b40521eab921c2756bf9bdb0b0f07fbfdb8c8c",
+      "react_fixture_version": "1.6.0",
+      "react_fixture_commit": "b34551d644f2e58ebf8fc1050d949f6654ceca6c",
+      "limitation": "Package export existence and bounded contracts are distinct from complete API/behavior and React 1.6 versus 1.8 parity."
+    },
+    "dependency_groups": {
+      "no_base_import": [
+        "alert",
+        "aspect-ratio",
+        "calendar",
+        "card",
+        "carousel",
+        "chart",
+        "command",
+        "empty",
+        "field",
+        "input-group",
+        "input-otp",
+        "kbd",
+        "label",
+        "message-scroller",
+        "message",
+        "native-select",
+        "pagination",
+        "questionnaire",
+        "resizable",
+        "skeleton",
+        "sonner",
+        "spinner",
+        "table",
+        "textarea"
+      ],
+      "only_exported_bounded_base": [
+        "button",
+        "collapsible",
+        "dialog",
+        "input",
+        "progress",
+        "separator",
+        "sheet",
+        "toast",
+        "toggle"
+      ],
+      "missing_base_export": [
+        "accordion",
+        "alert-dialog",
+        "attachment",
+        "avatar",
+        "badge",
+        "breadcrumb",
+        "bubble",
+        "button-group",
+        "checkbox",
+        "combobox",
+        "context-menu",
+        "direction",
+        "drawer",
+        "dropdown-menu",
+        "hover-card",
+        "item",
+        "marker",
+        "menubar",
+        "navigation-menu",
+        "popover",
+        "radio-group",
+        "scroll-area",
+        "select",
+        "sidebar",
+        "slider",
+        "switch",
+        "tabs",
+        "toggle-group",
+        "tooltip"
+      ],
+      "missing_base_modules": [
+        "accordion",
+        "alert-dialog",
+        "avatar",
+        "checkbox",
+        "combobox",
+        "context-menu",
+        "direction-provider",
+        "drawer",
+        "menu",
+        "menubar",
+        "navigation-menu",
+        "popover",
+        "preview-card",
+        "radio",
+        "radio-group",
+        "scroll-area",
+        "select",
+        "slider",
+        "switch",
+        "tabs",
+        "toggle-group",
+        "tooltip",
+        "use-render"
+      ],
+      "use_render_consumers": [
+        "attachment",
+        "badge",
+        "breadcrumb",
+        "bubble",
+        "button-group",
+        "item",
+        "marker",
+        "sidebar"
+      ]
+    },
+    "entry_dependencies": {
+      "accordion": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "accordion",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": true,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:accordion",
+            "public-icon-distribution-pending-pr33; app-helper-landed-pr29"
+          ]
+        }
+      },
+      "avatar": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "avatar",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:avatar"
+          ]
+        }
+      }
+    }
+  },
+  "dependency_projection_scope": "Only locked_base, dependency_groups, and Avatar/Accordion Base availability and dependency blockers project the current locked checkout. Source/anatomy/import/test identities, ui_snapshot and observed_work remain the original dated observations."
 }

@@ -41,4 +41,4 @@ Base's corrected native focus discovery retains two pinned upstream limits: its 
 
 See the [upstream differences register](upstream-differences.md) for inherited canceled-close deferral and nonmodal ShadowRoot exit corrections, with Base 1.8.0 evidence kept separate from UI’s React 1.6.0 fixture.
 
-The current checkout separately proposes Base `d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3`; [the upgrade contract](base-pin-upgrade.md) retains the exact unchanged Dialog/Button runtime and all original regressions. This pin change does not port the new Base modules into UI or establish cross-version parity.
+The current checkout separately proposes Base `f884f3bb265485ef8e422e43a75eb3055db11fab`; [the Avatar/Accordion upgrade contract](base-pin-upgrade.md#avatar-and-accordion-prerequisite-upgrade) retains the exact unchanged Dialog/Button runtime and all original regressions. This pin change does not port the new Base modules into UI or establish cross-version parity.
