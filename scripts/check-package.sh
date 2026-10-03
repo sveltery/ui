@@ -270,7 +270,7 @@ const themes = readFileSync(import.meta.resolve('@sveltery/ui/themes.css').repla
 assert(themes.includes('@custom-variant dark (&:is(.dark *))'));
 assert(themes.includes('.theme-taupe')); assert(themes.includes('.theme-yellow'));
 assert(themes.includes('--background: oklch(0.145 0 0)'));
-console.log('Isolated Alert, Empty, AspectRatio, Label, Table plus Card and existing UI tarball: Dialog, Button, Textarea, Skeleton, Kbd and Card root/subpath exports, SSR, IDs, absent portals, CSS, declarations and notices PASS');
+console.log('Isolated Avatar, Alert, Empty, AspectRatio, Label, Table plus Card and existing UI tarball: Dialog, Button, Textarea, Skeleton, Kbd and Card root/subpath exports, SSR, IDs, absent portals, CSS, declarations and notices PASS');
 JS
 node --import "$sveltery_repo_root/scripts/svelte-ssr-loader.mjs" "$consumer_directory/check.mjs"
 cat > "$consumer_directory/types.ts" <<'TS'

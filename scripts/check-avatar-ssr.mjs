@@ -42,6 +42,8 @@ const slotCounts = slot => native.querySelectorAll(`[data-slot="${slot}"]`).leng
 assert.equal(slotCounts('avatar'), 48); assert.equal(slotCounts('avatar-fallback'), 48); assert.equal(slotCounts('avatar-image'), 0);
 assert.equal(slotCounts('avatar-badge'), 12); assert.equal(slotCounts('avatar-group'), 10); assert.equal(slotCounts('avatar-group-count'), 7);
 assert.equal(slotCounts('example'), 7); assert.equal(slotCounts('example-content'), 7);
+const htmlHosts = [...original.querySelectorAll('*')].filter(node => node.namespaceURI === 'http://www.w3.org/1999/xhtml').length + 1;
+assert.equal(htmlHosts, 161, 'independently derived original initial-fallback HTML host inventory');
 const hosts = original.querySelectorAll('*').length + 1;
 assert.equal(native.querySelectorAll('*').length + 1, hosts);
-console.log(`Pinned Avatar SSR: ${count} wrapper/default/spread/static-cn cases; seven genuine complete fallback-state gallery trees, ${hosts} actual original hosts, 48 Avatar/48 fallback/0 image, 12 badges/10 groups/7 counts PASS (authored supplements)`);
+console.log(`Pinned Avatar SSR: ${count} wrapper/default/spread/static-cn cases; seven genuine complete fallback-state gallery trees, ${hosts} actual original hosts (${htmlHosts} HTML), 48 Avatar/48 fallback/0 image, 12 badges/10 groups/7 counts PASS (authored supplements)`);

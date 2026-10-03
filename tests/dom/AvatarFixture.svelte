@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createAttachmentKey } from 'svelte/attachments';
   import { Avatar, AvatarImage, AvatarFallback, AvatarBadge, AvatarGroup, AvatarGroupCount } from '../../apps/docs/registry/bases/base/ui/avatar/index.js';
-  let refs = $state<(HTMLElement | null | undefined)[]>([undefined, null, undefined, null, undefined, null]);
+  let refs = $state<[HTMLElement | null | undefined, HTMLImageElement | null | undefined, HTMLElement | null | undefined, HTMLSpanElement | null | undefined, HTMLDivElement | null | undefined, HTMLDivElement | null | undefined]>([undefined, null, undefined, null, undefined, null]);
   let shown = $state(true);
   let changed = $state(false);
   let replaced = $state(false);

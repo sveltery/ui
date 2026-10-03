@@ -24,7 +24,7 @@ try {
   run('pnpm', ['--filter', '@sveltery/ui', 'build'], repo);
   run('pnpm', ['--filter', '@sveltery/ui', 'pack', '--pack-destination', artifacts], repo);
   cpSync(join(repo, '.vendor/sveltery-base-0.0.0.tgz'), join(artifacts, 'sveltery-base-0.0.0.tgz'));
-  for (const path of ['apps/docs/registry/bases/base/ui/dialog', 'apps/docs/registry/bases/base/ui/button', 'apps/docs/registry/bases/base/ui/textarea', 'apps/docs/registry/bases/base/ui/skeleton', 'apps/docs/registry/bases/base/ui/kbd', 'apps/docs/registry/bases/base/ui/table', 'apps/docs/registry/bases/base/ui/card', 'apps/docs/registry/bases/base/ui/label', 'apps/docs/registry/bases/base/ui/alert', 'apps/docs/registry/bases/base/ui/aspect-ratio', 'apps/docs/registry/bases/base/ui/empty', 'apps/docs/registry/bases/base/ui/icons', 'apps/docs/registry/bases/base/ui/example', 'apps/docs/registry/bases/base/ui/separator', 'apps/docs/registry/bases/base/ui/shared', 'apps/docs/registry/styles', 'packages/ui/LICENSE', 'packages/ui/THIRD_PARTY_NOTICES.md']) {
+  for (const path of ['apps/docs/registry/bases/base/ui/dialog', 'apps/docs/registry/bases/base/ui/button', 'apps/docs/registry/bases/base/ui/textarea', 'apps/docs/registry/bases/base/ui/skeleton', 'apps/docs/registry/bases/base/ui/kbd', 'apps/docs/registry/bases/base/ui/table', 'apps/docs/registry/bases/base/ui/card', 'apps/docs/registry/bases/base/ui/avatar', 'apps/docs/registry/bases/base/ui/label', 'apps/docs/registry/bases/base/ui/alert', 'apps/docs/registry/bases/base/ui/aspect-ratio', 'apps/docs/registry/bases/base/ui/empty', 'apps/docs/registry/bases/base/ui/icons', 'apps/docs/registry/bases/base/ui/example', 'apps/docs/registry/bases/base/ui/separator', 'apps/docs/registry/bases/base/ui/shared', 'apps/docs/registry/styles', 'packages/ui/LICENSE', 'packages/ui/THIRD_PARTY_NOTICES.md']) {
     const destination = join(temporary, 'sveltery-ui', path);
     mkdirSync(dirname(destination), { recursive: true });
     cpSync(join(repo, path), destination, { recursive: true });
@@ -84,6 +84,23 @@ try {
     const tableTypesPath = join(consumer, 'src/routes/table-types.ts');
     const tableTypes = readFileSync(join(repo, 'tests/types-table.ts'), 'utf8').replace('../apps/docs/registry/bases/base/ui/table/index.js', mode === 'copy' ? '$lib/components/ui/table' : '@sveltery/ui/table');
     writeFileSync(tableTypesPath, tableTypes);
+    for (const [route, file] of [['avatar', 'AvatarExample.svelte'], ['avatar-probe', 'AvatarProbe.svelte']]) {
+      const directory = join(consumer, `src/routes/${route}`); mkdirSync(directory, { recursive: true });
+      let source = readFileSync(join(repo, `apps/docs/examples/base/${file}`), 'utf8');
+      if (mode === 'copy') source = source.replaceAll('@sveltery/ui/', '$lib/components/ui/');
+      writeFileSync(join(directory, file), source);
+      let extraImport = ''; let extraBody = '';
+      if (route === 'avatar-probe') {
+        let renderProbe = readFileSync(join(repo, 'apps/docs/examples/base/AvatarRenderProbe.svelte'), 'utf8');
+        if (mode === 'copy') renderProbe = renderProbe.replaceAll('@sveltery/ui/avatar', '$lib/components/ui/avatar');
+        writeFileSync(join(directory, 'AvatarRenderProbe.svelte'), renderProbe);
+        extraImport = "import AvatarRenderProbe from './AvatarRenderProbe.svelte';"; extraBody = '<AvatarRenderProbe />';
+      }
+      writeFileSync(join(directory, '+page.svelte'), `<script lang="ts">import { onMount } from 'svelte'; import Example from './${file}'; ${extraImport} let hydrated = $state(false); onMount(() => { hydrated = true; });</script><main class="p-8" data-hydrated={hydrated}><Example />${extraBody}</main>\n`);
+    }
+    mkdirSync(join(consumer, 'static'), { recursive: true });
+    for (const file of ['avatar-probe.png', 'avatar-second.png', 'avatar-error.png']) cpSync(join(repo, 'apps/docs/static', file), join(consumer, 'static', file));
+    writeFileSync(join(consumer, 'src/routes/avatar-types.ts'), readFileSync(join(repo, 'tests/avatar-types.ts'), 'utf8').replace('../apps/docs/registry/bases/base/ui/avatar/index.js', mode === 'copy' ? '$lib/components/ui/avatar' : '@sveltery/ui/avatar'));
     const cardRoute = join(consumer, 'src/routes/card/+page.svelte');
     mkdirSync(dirname(cardRoute), { recursive: true });
     writeFileSync(cardRoute, readFileSync(join(repo, 'scripts/card-consumer.svelte'), 'utf8'));
@@ -173,6 +190,7 @@ try {
       writeFileSync(skeletonRoute, readFileSync(skeletonRoute, 'utf8').replaceAll('@sveltery/ui/skeleton', '$lib/components/ui/skeleton').replaceAll('@sveltery/ui/card', '$lib/components/ui/card'));
       cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/kbd'), join(consumer, 'src/lib/components/ui/kbd'), { recursive: true });
       cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/table'), join(consumer, 'src/lib/components/ui/table'), { recursive: true });
+      cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/avatar'), join(consumer, 'src/lib/components/ui/avatar'), { recursive: true });
       cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/card'), join(consumer, 'src/lib/components/ui/card'), { recursive: true });
       writeFileSync(cardRoute, readFileSync(cardRoute, 'utf8').replaceAll('@sveltery/ui/card', '$lib/components/ui/card'));
       cpSync(join(temporary, 'sveltery-ui/apps/docs/registry/bases/base/ui/label'), join(consumer, 'src/lib/components/ui/label'), { recursive: true });
