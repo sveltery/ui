@@ -9,6 +9,7 @@ for (const width of [1280, 390]) for (const theme of ['light', 'dark']) test(`pi
   const baseline = await separatorMeasurements(reference); expect(await separatorMeasurements(page)).toEqual(baseline);
   await testInfo.attach('actual-react-complete-css-orientation', { body: JSON.stringify({ width, theme, baseline }, null, 2), contentType: 'application/json' });
   await separatorAssertions(page); await separatorAssertions(reference);
+  await expect(reference.getByTestId('reference-clicks')).toHaveText('1');
   expect(await separatorMeasurements(page)).toEqual(await separatorMeasurements(reference));
   const nativeState = page.getByTestId('separator-state'); await expect(nativeState).toContainText('"clicks":1'); await expect(nativeState).toContainText('"attaches":2'); await expect(nativeState).toContainText('"detaches":1');
   expect(errors).toEqual([]);
