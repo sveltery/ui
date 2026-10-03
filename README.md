@@ -7,7 +7,7 @@ The original implementation was preserved at recovery checkpoint `9614e55530eebb
 ```sh
 bash scripts/bootstrap.sh
 bash scripts/verify.sh
-bash -c 'source scripts/toolchain.sh; pnpm exec playwright install chromium firefox webkit; pnpm test:browser'
+bash -c 'source scripts/toolchain.sh; pnpm exec playwright install --with-deps chromium firefox webkit; pnpm test:browser'
 ```
 
 Node >=24.15.0 <25 and pnpm 12.6.0 are required. Bootstrap rebuilds the private Base package from the exact Git SHA in [base.lock.json](scripts/base.lock.json), checks the tarball SHA-256, then installs the frozen workspace lockfile. No npm Base release is assumed. The package and local docs are private experiments; no publication or deployment is configured.
