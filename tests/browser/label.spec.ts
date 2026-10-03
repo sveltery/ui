@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { labelLifecycleCases, labelNativeAssertions } from './label-cases';
+import { captureLabelFailure } from './label-failure-diagnostics';
 // Source-derived probes, not copied upstream assertions; see label-sources.json.
 labelLifecycleCases();
 async function labelSnapshot(page: Page) {
@@ -64,7 +65,20 @@ for (const width of [1280, 390]) for (const theme of ['light', 'dark']) test(`pa
   }
   expect(await labelSnapshot(page)).toEqual(await labelSnapshot(reference));
   expect(await measurements(page)).toEqual(await measurements(reference));
-  await labelNativeAssertions(page); await labelNativeAssertions(reference);
+  const observedPages = [
+    { environment: 'svelte-production', page },
+    { environment: 'pinned-react-production', page: reference },
+  ];
+  for (const { environment, page: current } of observedPages) {
+    try {
+      await labelNativeAssertions(current);
+    } catch (failure) {
+      try { await captureLabelFailure(testInfo, environment, observedPages, failure, errors); }
+      catch (diagnosticFailure) { console.log('LABEL_ASSOCIATION_DIAGNOSTIC_FAILURE', String(diagnosticFailure)); }
+      // Diagnostics must preserve the original strict assertion failure.
+      throw failure;
+    }
+  }
   expect(await labelSnapshot(page)).toEqual(await labelSnapshot(reference));
   expect(await measurements(page)).toEqual(await measurements(reference));
   expect(errors).toEqual([]);
