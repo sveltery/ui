@@ -54,7 +54,7 @@ export async function assertAspectGallery(page: Page, width: number, height: num
     const image = ratio.locator(':scope > img'); await expect(image).toHaveAttribute('src', 'https://avatar.vercel.sh/shadcn1'); await expect(image).toHaveAttribute('alt', 'Photo'); await expect(image).toHaveClass('h-full w-full rounded-lg object-cover grayscale dark:brightness-20 style-luma:rounded-3xl');
     const decoded = await image.evaluate(async node => { const img = node as HTMLImageElement; await img.decode(); const box = img.getBoundingClientRect(); const css = getComputedStyle(img); return { width: box.width, height: box.height, complete: img.complete, naturalWidth: img.naturalWidth, naturalHeight: img.naturalHeight, position: css.position, fit: css.objectFit, radius: css.borderRadius, filter: css.filter, left: css.left, top: css.top, role: img.getAttribute('role'), tab: img.tabIndex }; });
     expect(decoded).toMatchObject({ width: geometry.width, height: geometry.height, complete: true, naturalWidth: 200, naturalHeight: 100, position: 'absolute', fit: 'cover', radius: geometry.radius, left: '0px', top: '0px', role: null, tab: -1 });
-    expect(decoded.filter).toBe(await page.evaluate(() => document.documentElement.classList.contains('dark')) ? 'grayscale(1) brightness(0.2)' : 'grayscale(1)');
+    expect(decoded.filter).toBe(await page.evaluate(() => document.documentElement.classList.contains('dark')) ? 'brightness(0.2) grayscale(1)' : 'grayscale(1)');
     // Real unequal intrinsic/rendered ratios exercise cover cropping, rather than
     // merely checking class strings or an unloaded-image box.
     const coverScale = Math.max(decoded.width / decoded.naturalWidth, decoded.height / decoded.naturalHeight);

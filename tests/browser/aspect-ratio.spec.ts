@@ -78,7 +78,7 @@ test('four original AspectRatio galleries preserve responsive scaffolds, decoded
         // All explicit scoped styles retain genuine radius factors; historical
         // unscoped Nova geometry is a separate unchanged environment.
         expect(actual).toEqual(original);
-        expect(actual.filter(node => node.tag === 'IMG').map(node => node.filter)).toEqual(Array(4).fill(dark ? 'grayscale(1) brightness(0.2)' : 'grayscale(1)'));
+        expect(actual.filter(node => node.tag === 'IMG').map(node => node.filter)).toEqual(Array(4).fill(dark ? 'brightness(0.2) grayscale(1)' : 'grayscale(1)'));
       }
     }
     expect(await page.locator(`${aspectGallery} img`).count()).toBe(4); expect(errors).toEqual([]);
