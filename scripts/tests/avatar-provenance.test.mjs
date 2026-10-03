@@ -8,6 +8,13 @@ import { components, styles, selectStyleSections } from '../theme-assets.mjs';
 test('complete immutable Avatar source and gallery retain authenticated bytes', () => {
   const pin = JSON.parse(readFileSync('tests/reference/avatar-sources.json', 'utf8'));
   assert.equal(pin.commit, 'd75a96ab781f3d659be1ad287347d5887ce9f2fc');
+  const excerpt = pin.files[2];
+  const whole = readFileSync('tests/reference/themes/upstream/style-nova.css');
+  assert.equal(createHash('sha256').update(whole).digest('hex'), excerpt.upstreamSha256);
+  assert.equal(whole.length, excerpt.upstreamBytes);
+  const section = whole.subarray(excerpt.upstreamByteStart, excerpt.upstreamByteEnd);
+  assert.equal(createHash('sha256').update(section).digest('hex'), excerpt.extractedSectionSha256);
+  assert.equal(readFileSync(excerpt.local, 'utf8'), section.toString('utf8').replace(/\n+$/u, '\n'));
   for (const file of pin.files) assert.equal(createHash('sha256').update(readFileSync(file.local)).digest('hex'), file.sha256);
 });
 

@@ -45,7 +45,3 @@ assert.equal(slotCounts('example'), 7); assert.equal(slotCounts('example-content
 const hosts = original.querySelectorAll('*').length + 1;
 assert.equal(native.querySelectorAll('*').length + 1, hosts);
 console.log(`Pinned Avatar SSR: ${count} wrapper/default/spread/static-cn cases; seven genuine complete fallback-state gallery trees, ${hosts} actual original hosts, 48 Avatar/48 fallback/0 image, 12 badges/10 groups/7 counts PASS (authored supplements)`);
-
-// Separate negative version characterization, never original parity credit.
-const nativeRoot = new URL('../node_modules/@sveltery/base/dist/avatar/Root.svelte', import.meta.url);
-void nativeRoot;

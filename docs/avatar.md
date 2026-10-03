@@ -19,6 +19,8 @@ All six wrappers use genuine `cn` 0.2.2 directly. The source-advertised primitiv
 
 The actual seven gallery bodies translate to Svelte snippets in the original order: Sizes, Badge, Badge with Icon, Group, Group with Count, Group with Icon Count, In Empty. They retain the plain ExampleWrapper, canonical Example, all six genuine Empty leaves, genuine Button and canonical IconPlaceholder with actual five-library Plus/Check mappings. Original GitHub image URLs, alt text, grayscale classes, literal +3 and text remain unchanged. The runnable React reference changes module import paths only; every function body remains byte-exact. Original Next/nuqs resolved-configuration lifecycle is still outside this helper adaptation.
 
+The derived Nova excerpt normalizes only the original inter-section trailing blank separator to one final LF. Its source mapping records the complete immutable Nova hash, exact 3186–3863 byte region, raw 677-byte section hash and normalized 676-byte excerpt hash. The five block bodies are unchanged; the complete raw original and all eight full sections stay intact. This resolves the initial Standards blank-EOF failure without bypassing whitespace or provenance checks.
+
 Five exact original Avatar CSS blocks are added to the historical unscoped Nova input and all eight generated scoped current-family projections. Prior sections, full original globals, genuine shadcn 4.21.1 support CSS and complete eight original styles remain authenticated. The independent React document executes that full original environment; production retains its separately recorded scope/reset/radius adaptation. This addition does not establish whole-library or full-theme parity.
 
 ## Required checks and provenance
