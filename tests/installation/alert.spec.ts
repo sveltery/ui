@@ -1,14 +1,24 @@
 import { expect, test } from '@playwright/test';
 import { alertLifecycleCases, alertNativeAssertions, alertState } from '../browser/alert-cases';
 alertLifecycleCases();
-test('fresh archive/source-copy Alert parts retain native actions/variants/Nova rules and bounded Basic composition', async ({ page, request }) => {
+test('fresh archive/source-copy Alert parts retain native actions/variants/Nova rules and bounded Basic composition', async ({ page, request }, testInfo) => {
   const html = await (await request.get('/alert')).text(); expect(html).toContain('cn-alert'); expect(html).toContain('Success! Your changes have been saved.'); expect(html).toContain('Basic');
-  const errors: string[] = []; page.on('pageerror', error => errors.push(error.message)); page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+  const errors: string[] = []; const diagnostics: Array<Promise<unknown>> = []; const failedScripts: Array<{ url: string; error: string | undefined }> = [];
+  page.on('pageerror', error => { errors.push(error.message); diagnostics.push(Promise.resolve({ name: error.name, message: error.message, stack: error.stack })); });
+  page.on('console', message => {
+    if (message.type() === 'error') {
+      errors.push(message.text());
+      diagnostics.push(Promise.all(message.args().map(argument => argument.evaluate(value => value instanceof Error ? { name: value.name, message: value.message, stack: value.stack } : { type: typeof value })))
+        .then(args => ({ text: message.text(), location: message.location(), args })).catch(error => ({ diagnosticFailure: String(error) })));
+    }
+  });
+  page.on('requestfailed', request => { if (request.resourceType() === 'script') failedScripts.push({ url: request.url(), error: request.failure()?.errorText }); });
   for (const width of [1280, 390]) {
     await page.setViewportSize({ width, height: 1400 }); await page.goto('/alert-probe');
     await expect(page.locator('[data-alert-probe]')).toHaveAttribute('data-hydrated', 'true'); await alertNativeAssertions(page);
     expect((await alertState(page)).refs).toEqual(['probe-alert', 'probe-title', 'probe-description', 'probe-action']);
-    await page.goto('/alert'); await expect(page.locator('[data-alert-gallery] [role="alert"]')).toHaveCount(3);
+    await page.goto('/alert'); await expect(page.locator('[data-alert-gallery]')).toHaveAttribute('data-hydrated', 'true');
+    await expect(page.locator('[data-alert-gallery] [role="alert"]')).toHaveCount(3);
     await expect(page.locator('[data-alert-gallery] [data-slot="alert-title"]')).toHaveCount(2); await expect(page.locator('[data-alert-gallery] [data-slot="alert-description"]')).toHaveCount(2);
   }
   // Authored source-derived composition witnesses run against each actual fresh consumer mode.
@@ -51,5 +61,6 @@ test('fresh archive/source-copy Alert parts retain native actions/variants/Nova 
       expect((await geometry()).radius).toBe('0px');
     }
   }
+  if (errors.length) await testInfo.attach('alert-console-and-script-failures', { body: JSON.stringify({ errors, diagnostics: await Promise.all(diagnostics), failedScripts }, null, 2), contentType: 'application/json' });
   expect(errors).toEqual([]);
 });
