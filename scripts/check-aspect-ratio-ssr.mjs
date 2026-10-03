@@ -7,6 +7,7 @@ import { render } from 'svelte/server';
 import { JSDOM } from 'jsdom';
 import { transpileModule, ModuleKind, ScriptTarget, JsxEmit } from 'typescript';
 import { AspectRatio } from '../apps/docs/registry/bases/base/ui/aspect-ratio/index.js';
+import AspectRatioExample from '../apps/docs/examples/base/AspectRatioExample.svelte';
 function moduleURL(path, imports) {
   let source = readFileSync(path, 'utf8');
   for (const [name, url] of Object.entries(imports)) source = source.replaceAll(`"${name}"`, JSON.stringify(url)).replaceAll(`'${name}'`, JSON.stringify(url));
@@ -33,3 +34,32 @@ for (const { css, ...props } of cases) {
   assert.equal(actual.hasAttribute('style'), expected.hasAttribute('style')); assert.equal(actual.hasAttribute('ratio'), false);
 }
 console.log(`Pinned React/Svelte AspectRatio SSR: ${cases.length} host/class/prop/style precedence cases PASS`);
+
+// Independently execute the complete immutable gallery and helper. Only the
+// already recorded Next Image -> native img fill model is substituted here.
+const imageSource = `import { createElement } from ${JSON.stringify(import.meta.resolve('react'))}; export default function Image({ fill, style, ...props }) { return createElement('img', { ...props, style: { ...(fill ? { position: 'absolute', inset: 0 } : {}), ...style } }); }`;
+const imageURL = `data:text/javascript;base64,${Buffer.from(imageSource).toString('base64')}`;
+const exampleURL = moduleURL('tests/reference/example-scaffold.tsx', { cn });
+const referenceGalleryURL = moduleURL('tests/reference/aspect-ratio-example.tsx', {
+  'next/image': imageURL,
+  '@/registry/bases/base/components/example': exampleURL,
+  '@/registry/bases/base/ui/aspect-ratio': moduleURL('tests/reference/aspect-ratio.tsx', { cn }),
+});
+const { default: OriginalGallery } = await import(referenceGalleryURL);
+const originalDOM = new JSDOM(renderToStaticMarkup(createElement(OriginalGallery))).window.document;
+const nativeDOM = new JSDOM(render(AspectRatioExample).body).window.document;
+const originalShell = originalDOM.querySelector('[data-slot="example-wrapper"]')?.parentElement;
+const nativeShell = nativeDOM.querySelector('[data-slot="example-wrapper"]')?.parentElement;
+assert(originalShell); assert(nativeShell, 'gallery must render genuine ExampleWrapper, not a section/grid substitute');
+const tree = node => ({
+  tag: node.tagName,
+  attributes: attributes(node),
+  style: node.style.cssText,
+  text: [...node.childNodes].filter(child => child.nodeType === 3).map(child => child.textContent.trim()).filter(Boolean),
+  children: [...node.children].map(tree),
+});
+assert.deepEqual(tree(nativeShell), tree(originalShell));
+assert.equal(1 + originalShell.querySelectorAll('*').length, 22);
+assert.equal(1 + nativeShell.querySelectorAll('*').length, 22);
+assert.deepEqual([...nativeShell.querySelectorAll('[data-slot="example"]')].map(node => node.firstElementChild.textContent), ['16:9', '21:9', '1:1', '9:16']);
+console.log('Complete immutable original AspectRatio gallery/Example SSR: all 22 native HTML hosts, literal attributes/classes/text/ratio/style/order PASS (native-img fill model; Next API remains incomplete)');

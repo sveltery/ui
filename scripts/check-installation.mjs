@@ -127,6 +127,13 @@ try {
     let aspectRatioFixture = readFileSync(join(repo, 'scripts/aspect-ratio-consumer.svelte'), 'utf8');
     if (mode === 'copy') aspectRatioFixture = aspectRatioFixture.replaceAll('@sveltery/ui/aspect-ratio', '$lib/components/ui/aspect-ratio');
     writeFileSync(aspectRatioRoute, aspectRatioFixture);
+    // The actual four-function gallery is separate from the unchanged wrapper/lifecycle probe.
+    const aspectRatioGallery = join(consumer, 'src/routes/aspect-ratio');
+    mkdirSync(aspectRatioGallery, { recursive: true });
+    let aspectRatioExample = readFileSync(join(repo, 'apps/docs/examples/base/AspectRatioExample.svelte'), 'utf8');
+    if (mode === 'copy') aspectRatioExample = aspectRatioExample.replaceAll('@sveltery/ui/aspect-ratio', '$lib/components/ui/aspect-ratio').replaceAll('@sveltery/ui/example', '$lib/components/ui/example');
+    writeFileSync(join(aspectRatioGallery, 'AspectRatioExample.svelte'), aspectRatioExample);
+    writeFileSync(join(aspectRatioGallery, '+page.svelte'), readFileSync(join(repo, 'apps/docs/src/routes/aspect-ratio/+page.svelte'), 'utf8').replace('../../../examples/base/AspectRatioExample.svelte', './AspectRatioExample.svelte'));
     writeFileSync(join(consumer, 'src/routes/aspect-ratio-types.ts'), readFileSync(join(repo, 'tests/aspect-ratio-types.ts'), 'utf8').replace('../apps/docs/registry/bases/base/ui/aspect-ratio/index.js', mode === 'copy' ? '$lib/components/ui/aspect-ratio' : '@sveltery/ui/aspect-ratio'));
     for (const [route, source] of [['alert', 'apps/docs/examples/base/AlertExample.svelte'], ['alert-probe', 'apps/docs/examples/base/AlertProbe.svelte']]) {
       const routePath = join(consumer, `src/routes/${route}/+page.svelte`);
