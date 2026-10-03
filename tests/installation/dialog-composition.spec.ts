@@ -3,7 +3,8 @@ import { expect, test } from '@playwright/test';
 
 test('fresh Dialog loads its canonical Button/icon closure and preserves close focus', async ({ page }) => {
   const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
-  await page.goto('/');
+  // The guide's SSR-visible trigger must hydrate before trusted activation.
+  await page.goto('/', { waitUntil: 'networkidle' });
   const trigger = page.getByRole('button', { name: 'Open welcome dialog' }); await trigger.click();
   const popup = page.getByRole('dialog', { name: 'Welcome', exact: true });
   const close = popup.getByRole('button', { name: 'Close', exact: true });
