@@ -8,12 +8,14 @@ pnpm --filter @sveltery/ui pack --pack-destination "$consumer_directory"
 mkdir -p "$consumer_directory/node_modules/@sveltery/ui" "$consumer_directory/node_modules/@sveltery/base"
 tar -xzf "$consumer_directory/sveltery-ui-0.0.0.tgz" --strip-components=1 -C "$consumer_directory/node_modules/@sveltery/ui"
 tar -xzf .vendor/sveltery-base-0.0.0.tgz --strip-components=1 -C "$consumer_directory/node_modules/@sveltery/base"
-for dependency in svelte cn clsx class-variance-authority jsdom; do
+for dependency in svelte cn clsx class-variance-authority jsdom shadcn; do
   ln -s "$sveltery_repo_root/node_modules/$dependency" "$consumer_directory/node_modules/$dependency"
 done
 cmp packages/ui/LICENSE "$consumer_directory/node_modules/@sveltery/ui/LICENSE"
 cmp packages/ui/THIRD_PARTY_NOTICES.md "$consumer_directory/node_modules/@sveltery/ui/THIRD_PARTY_NOTICES.md"
 cmp tests/reference/cn-upstream/LICENSE "$consumer_directory/node_modules/cn/LICENSE"
+cmp tests/reference/shadcn-css-upstream/LICENSE.md "$consumer_directory/node_modules/shadcn/LICENSE.md"
+cmp tests/reference/themes/upstream/shadcn-tailwind.css "$consumer_directory/node_modules/shadcn/dist/tailwind.css"
 for license in lucide-LICENSE tabler-LICENSE hugeicons-core-LICENSE.md phosphor-LICENSE remix-LICENSE; do
   cmp "tests/reference/icons/licenses/$license" "$consumer_directory/node_modules/@sveltery/ui/dist/icons/licenses/$license"
 done

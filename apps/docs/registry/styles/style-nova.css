@@ -1,5 +1,6 @@
 /* Derived from shadcn-ui/ui d75a96ab; see packages/ui/THIRD_PARTY_NOTICES.md. */
 @import "tw-animate-css";
+@import "shadcn/tailwind.css";
 @layer components {
   /* MARK: Alert */
   .cn-alert {
