@@ -13,7 +13,7 @@ function moduleURL(path, imports) {
   const js = transpileModule(source, { compilerOptions: { module: ModuleKind.ESNext, target: ScriptTarget.ESNext, jsx: JsxEmit.ReactJSX } }).outputText.replaceAll('"react/jsx-runtime"', JSON.stringify(import.meta.resolve('react/jsx-runtime')));
   return `data:text/javascript;base64,${Buffer.from(js).toString('base64')}`;
 }
-const cn = moduleURL('tests/reference/cn.ts', { clsx: import.meta.resolve('clsx'), 'tailwind-merge': import.meta.resolve('tailwind-merge') });
+const cn = import.meta.resolve('cn');
 const Reference = await import(moduleURL('tests/reference/alert.tsx', { react: import.meta.resolve('react'), cn, 'class-variance-authority': import.meta.resolve('class-variance-authority') }));
 const Parts = await import('../apps/docs/registry/bases/base/ui/alert/index.js');
 const attributes = node => Object.fromEntries([...node.attributes].map(attr => [attr.name, attr.value]).sort(([a], [b]) => a.localeCompare(b)));

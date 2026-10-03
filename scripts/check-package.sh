@@ -8,11 +8,12 @@ pnpm --filter @sveltery/ui pack --pack-destination "$consumer_directory"
 mkdir -p "$consumer_directory/node_modules/@sveltery/ui" "$consumer_directory/node_modules/@sveltery/base"
 tar -xzf "$consumer_directory/sveltery-ui-0.0.0.tgz" --strip-components=1 -C "$consumer_directory/node_modules/@sveltery/ui"
 tar -xzf .vendor/sveltery-base-0.0.0.tgz --strip-components=1 -C "$consumer_directory/node_modules/@sveltery/base"
-for dependency in svelte clsx tailwind-merge class-variance-authority jsdom; do
+for dependency in svelte cn clsx class-variance-authority jsdom; do
   ln -s "$sveltery_repo_root/node_modules/$dependency" "$consumer_directory/node_modules/$dependency"
 done
 cmp packages/ui/LICENSE "$consumer_directory/node_modules/@sveltery/ui/LICENSE"
 cmp packages/ui/THIRD_PARTY_NOTICES.md "$consumer_directory/node_modules/@sveltery/ui/THIRD_PARTY_NOTICES.md"
+cmp tests/reference/cn-upstream/LICENSE "$consumer_directory/node_modules/cn/LICENSE"
 for license in lucide-LICENSE tabler-LICENSE hugeicons-core-LICENSE.md phosphor-LICENSE remix-LICENSE; do
   cmp "tests/reference/icons/licenses/$license" "$consumer_directory/node_modules/@sveltery/ui/dist/icons/licenses/$license"
 done
@@ -53,6 +54,8 @@ cat > "$consumer_directory/Consumer.svelte" <<'SVELTE'
 <AspectRatio data-probe="aspect-ratio" ratio={16 / 9}>Aspect &amp; ratio</AspectRatio>
 <AspectRatio data-probe="aspect-ratio-override" ratio={16 / 9} style="--ratio: 1; color: red" />
 <Skeleton data-probe="skeleton" class="h-4 w-32" />
+<Skeleton data-probe="cn-nonbreaking" class={'p-2\u00a0p-4'} />
+<Skeleton data-probe="cn-line-separator" class={'p-2\u2028p-4'} />
 <Table data-probe="native-table"><TableCaption>Consumer ledger</TableCaption><TableHeader><TableRow><TableHead scope="col">Invoice</TableHead><TableHead scope="col">Amount</TableHead></TableRow></TableHeader><TableBody><TableRow><TableCell rowspan={2}>INV001</TableCell><TableCell>$250.00</TableCell></TableRow><TableRow><TableCell>$150.00</TableCell></TableRow></TableBody><TableFooter><TableRow><TableCell colspan={2}>Total $400.00</TableCell></TableRow></TableFooter></Table>
 <Textarea name="notes" defaultValue="SSR & draft" rows={6} class="px-6" aria-invalid="true" />
 <Button nativeButton={false} render={replacement} />
@@ -197,6 +200,9 @@ for (const html of [first, second]) {
   const nativeSkeleton = new JSDOM(html).window.document.querySelector('[data-probe=skeleton]');
   assert.equal(nativeSkeleton.tagName, 'DIV'); assert.equal(nativeSkeleton.getAttribute('data-slot'), 'skeleton'); assert.equal(nativeSkeleton.textContent, '');
   assert(html.includes('cn-skeleton'));
+  for (const [probe, expected] of [['cn-nonbreaking', 'cn-skeleton animate-pulse p-2\u00a0p-4'], ['cn-line-separator', 'cn-skeleton animate-pulse p-2\u2028p-4']]) {
+    assert.equal(new JSDOM(html).window.document.querySelector(`[data-probe=${probe}]`).getAttribute('class'), expected);
+  }
   const nativeGroup = new JSDOM(html).window.document.querySelector('[data-probe=kbd-group]');
   assert.equal(nativeGroup.tagName, 'KBD'); assert.equal(nativeGroup.getAttribute('data-slot'), 'kbd-group');
   assert.equal(nativeGroup.firstElementChild.tagName, 'KBD'); assert.equal(nativeGroup.firstElementChild.getAttribute('data-slot'), 'kbd'); assert.equal(nativeGroup.textContent, 'Ctrl & K');

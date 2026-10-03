@@ -3,6 +3,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 source scripts/toolchain.sh
 node --test scripts/tests/*.test.mjs
+node scripts/check-cn-conformance.mjs
 node scripts/check-base.mjs --lockfile
 node scripts/generate-icons.mjs --check
 pnpm lint

@@ -8,7 +8,8 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@sveltery/ui": "workspace:*"
+    "@sveltery/ui": "workspace:*",
+    "cn": "0.2.2"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "7.0.1",

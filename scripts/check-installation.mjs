@@ -123,6 +123,11 @@ try {
     if (mode === 'copy') iconsFixture = iconsFixture.replaceAll('@sveltery/ui/icons', '$lib/components/ui/icons');
     writeFileSync(iconsRoute, iconsFixture);
     writeFileSync(join(consumer, 'src/routes/icons-types.ts'), readFileSync(join(repo, 'tests/icons-types.ts'), 'utf8').replace('../apps/docs/registry/bases/base/ui/icons/index.js', mode === 'copy' ? '$lib/components/ui/icons' : '@sveltery/ui/icons').replace('../apps/docs/registry/bases/base/ui/index.js', mode === 'copy' ? '$lib/components/ui/icons' : '@sveltery/ui'));
+    const classMergeRoute = join(consumer, 'src/routes/class-merge/+page.svelte');
+    mkdirSync(dirname(classMergeRoute), { recursive: true });
+    let classMergeFixture = readFileSync(join(repo, 'apps/docs/examples/base/ClassMergeProbe.svelte'), 'utf8');
+    if (mode === 'copy') classMergeFixture = classMergeFixture.replaceAll('@sveltery/ui/skeleton', '$lib/components/ui/skeleton');
+    writeFileSync(classMergeRoute, classMergeFixture);
     const themeRoute = join(consumer, 'src/routes/themes/+page.svelte');
     mkdirSync(dirname(themeRoute), { recursive: true });
     let themeFixture = readFileSync(join(repo, 'apps/docs/examples/base/ThemeExample.svelte'), 'utf8');

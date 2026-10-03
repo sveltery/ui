@@ -21,7 +21,7 @@ Import `Button`, `buttonVariants`, `variants` and `sizes` from `@sveltery/ui/but
 | `disabled` | Native disabled for an ordinary button; suppresses Base activation handlers |
 | `focusableWhenDisabled` | Keeps a disabled host in the Tab order, exposes `aria-disabled`, suppresses activation and form submission/reset |
 | `nativeButton` | Default `true`; set `false` when a render snippet uses an anchor or custom host |
-| `class`, `style` | Svelte class/CSS string or state callback; UI merges classes with `clsx` and `tailwind-merge` before Base evaluates them |
+| `class`, `style` | Svelte class/CSS string or state callback; UI merges classes with pinned `cn` 0.2.2 before Base evaluates them |
 | `render`, `children`, `ref` | Base Svelte snippets, forwarded attachments and bindable DOM ref |
 | `type`, `name`, `value`, `form`, native handlers | Forwarded to Base; omitted `type` becomes `button`; explicitly supplied `undefined`/`null` removes the attribute and restores the browser's submit default |
 

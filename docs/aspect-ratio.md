@@ -12,7 +12,7 @@ Proposed in [PR #20](https://github.com/sveltery/ui/pull/20). The immutable refe
 </AspectRatio>
 ```
 
-`AspectRatio` and the additional named `AspectRatioProps` type are available through the package root and `/aspect-ratio` subpath. The source-copy installation is the `aspect-ratio` directory plus existing `shared` helpers and styles. Ratio is a required number with no default, validation, clamping or extra wrapper. The div receives native attributes, events, caller `data-slot` precedence and children snippets. Consumer classes merge after the pinned classes with the existing `clsx`/`tailwind-merge` helper.
+`AspectRatio` and the additional named `AspectRatioProps` type are available through the package root and `/aspect-ratio` subpath. The source-copy installation is the `aspect-ratio` directory plus existing `shared` helpers and styles. Ratio is a required number with no default, validation, clamping or extra wrapper. The div receives native attributes, events, caller `data-slot` precedence and children snippets. Consumer classes merge after the pinned classes with pinned `cn` 0.2.2.
 
 The source sets `--ratio` and then spreads caller props. Any supplied caller style replaces that entire generated style: `style="color: red;"` removes `--ratio`, leaving an automatic aspect ratio; `style="--ratio: 3;"` replaces it with 3; a native `aspect-ratio` style or aspect utility can override it. An omitted style retains the required ratio. Explicit undefined/null/empty caller styles remove the generated ratio. This precedence is preserved, including the unusual unrelated-style case; the port does not silently repair it.
 
