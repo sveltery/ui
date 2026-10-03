@@ -40,22 +40,31 @@ test('seven genuine Kbd bodies retain all 48 warm SSR HTML hosts while client gl
 });
 test('both genuine Kbd icon galleries show five original Square glyphs while actual client modules are delayed', async ({ page, context }, testInfo) => {
   const reference = await context.newPage(); const errors: string[] = []; let release!: () => void;
-  const gate = new Promise<void>(resolve => { release = resolve; }); const intercepted: string[] = [];
+  const gate = new Promise<void>(resolve => { release = resolve; }); const intercepted = { native: [] as string[], reference: [] as string[] };
   for (const current of [page, reference]) { current.on('pageerror', error => errors.push(error.message)); current.on('console', message => { if (message.type() === 'error') errors.push(message.text()); }); }
-  await page.route('**/icons/generated/lucide.js*', async route => { intercepted.push(route.request().url()); await gate; await route.continue(); });
-  await reference.route('**/reference/icons/__lucide__.ts*', async route => { intercepted.push(route.request().url()); await gate; await route.continue(); });
+  await page.route('**/icons/generated/lucide.js*', async route => { intercepted.native.push(route.request().url()); await gate; await route.continue(); });
+  await reference.route('**/reference/icons/__lucide__.ts*', async route => { intercepted.reference.push(route.request().url()); await gate; await route.continue(); });
   try {
     await page.goto('/kbd', { waitUntil: 'domcontentloaded' }); await reference.goto('/kbd-reference', { waitUntil: 'domcontentloaded' });
     await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true');
+    await expect.poll(() => intercepted.native.length).toBeGreaterThan(0);
+    await expect.poll(() => intercepted.reference.length).toBeGreaterThan(0);
     for (const current of [page, reference]) {
       await expect(current.locator(`${kbdWrapper} svg.lucide-square`)).toHaveCount(5);
       await expect(current.locator(`${kbdWrapper} svg.lucide-square rect`)).toHaveCount(5);
       expect(await current.locator(`${kbdWrapper} svg.lucide-square rect`).evaluateAll(nodes => nodes.map(node => ({ width: node.getAttribute('width'), height: node.getAttribute('height'), x: node.getAttribute('x'), y: node.getAttribute('y'), rx: node.getAttribute('rx') })))).toEqual(Array(5).fill({ width: '18', height: '18', x: '3', y: '3', rx: '2' }));
     }
-    expect(await kbdTree(page)).toEqual(await kbdTree(reference)); expect(intercepted).toHaveLength(2);
-    await testInfo.attach('delayed-genuine-kbd-icon-modules', { body: JSON.stringify(intercepted), contentType: 'application/json' });
+    expect(await kbdTree(page)).toEqual(await kbdTree(reference));
+    // Original promises are cached by icon name, native imports by library.
+    // Require both actual modules without inventing network-event equivalence.
+    const moduleURLs = { native: [...new Set(intercepted.native)], reference: [...new Set(intercepted.reference)] };
+    expect(moduleURLs.native).toHaveLength(1); expect(moduleURLs.reference).toHaveLength(1);
+    expect(moduleURLs.native[0]).toMatch(/\/icons\/generated\/lucide\.js(?:\?|$)/);
+    expect(moduleURLs.reference[0]).toMatch(/\/reference\/icons\/__lucide__\.ts(?:\?|$)/);
+    const delayedRequests = structuredClone(intercepted);
     release(); await settledKbd(page); await settledKbd(reference);
     expect(await kbdTree(page)).toEqual(await kbdTree(reference)); expect(errors).toEqual([]);
+    await testInfo.attach('delayed-genuine-kbd-icon-modules', { body: JSON.stringify({ delayedRequests, allRequests: intercepted, counts: { native: intercepted.native.length, reference: intercepted.reference.length }, moduleURLs, requestCountCacheTimingEquivalence: false }), contentType: 'application/json' });
   } finally { release(); await reference.close(); }
 });
 test('seven original Kbd galleries and five genuine icon libraries match complete original CSS in all eight styles', async ({ page, context }) => {
