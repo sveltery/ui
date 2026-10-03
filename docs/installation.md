@@ -64,6 +64,7 @@ Create the following files in `dialog-app`. The exact versions match the reposit
     "@tailwindcss/vite": "4.3.0",
     "tailwindcss": "4.3.0",
     "tw-animate-css": "1.4.0",
+    "shadcn": "4.21.1",
     "vite": "8.3.1",
     "svelte-check": "4.7.6",
     "typescript": "5.9.3"
@@ -79,6 +80,8 @@ engineStrict: true
 autoInstallPeers: false
 allowBuilds:
   esbuild: true
+overrides:
+  "shadcn@4.21.1>cn": "0.2.4"
 ```
 
 #### `svelte.config.js`
@@ -128,13 +131,15 @@ export default defineConfig({ plugins: [tailwindcss(), sveltekit()] });
 
 ### 3. Configure Nova
 
-Nova is Tailwind input CSS, not a precompiled standalone stylesheet. It imports `tw-animate-css` itself. Use the [Tailwind Vite plugin](https://tailwindcss.com/docs/installation/using-vite), and register the installed UI source explicitly: Tailwind [ignores node_modules by default](https://tailwindcss.com/docs/detecting-classes-in-source-files). The `@source` path below is relative to `src/app.css`; it supplies positioning and other utilities used inside the wrappers.
+Nova is Tailwind input CSS, not a precompiled standalone stylesheet. It imports `tw-animate-css` and the genuine `shadcn/tailwind.css` support stylesheet. Keep the same complete original CSS environment in your application: `shadcn` is pinned to 4.21.1; its CLI-only `cn` dependency is pinned separately to original 0.2.4 while the application uses genuine `cn` 0.2.2. The browser loads the CSS export, not the Node CLI. See the [shared CSS source contract](shadcn-css.md). Use the [Tailwind Vite plugin](https://tailwindcss.com/docs/installation/using-vite), and register the installed UI source explicitly: Tailwind [ignores node_modules by default](https://tailwindcss.com/docs/detecting-classes-in-source-files). The `@source` path below is relative to `src/app.css`; it supplies positioning and other utilities used inside the wrappers.
 
 #### `src/app.css`
 
 <!-- consumer-file: src/app.css -->
 ```css
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 @import "@sveltery/ui/themes.css";
 @import "@sveltery/ui/nova.css";
 @import "@sveltery/ui/styles.css";
@@ -231,7 +236,7 @@ cp ../sveltery-ui/packages/ui/THIRD_PARTY_NOTICES.md src/lib/components/ui/THIRD
 
 Make these three edits:
 
-1. In `package.json`, remove the `@sveltery/ui` dependency. Keep the verified Base archive, Svelte, `cn` 0.2.2, `clsx` 2.1.1, Tailwind and `tw-animate-css` dependencies.
+1. In `package.json`, remove the `@sveltery/ui` dependency. Keep the verified Base archive, Svelte, `cn` 0.2.2, `clsx` 2.1.1, Tailwind, `tw-animate-css` and `shadcn` 4.21.1 dependencies. Retain the scaffold's `pnpm-workspace.yaml` override `"shadcn@4.21.1>cn": "0.2.4"`; it pins the original CLI dependency separately from the application's `cn` 0.2.2. The copied Nova and scoped CSS still import the genuine `shadcn/tailwind.css` export.
 2. In `src/app.css`, replace `@import "@sveltery/ui/nova.css";` with `@import "./lib/styles/nova.css";` replace `@import "@sveltery/ui/themes.css";` and `@import "@sveltery/ui/styles.css";` with imports from `./lib/styles/themes.css` and `./lib/styles/styles.css`, and replace the installed-package `@source` line with `@source "./lib/components/ui";`.
 3. In `src/routes/+page.svelte`, import the same names from `$lib/components/ui/dialog`. The broader Tailwind source path also scans `shared/classes.js`, which supplies native close-button utility classes.
 
@@ -241,7 +246,7 @@ Run `pnpm install` to update the consumer lockfile, then repeat the frozen insta
 
 The proposed [three-engine gate](browser-engines.md) runs both fresh consumer modes and documented/experimental phases in Chromium, Firefox and WebKit. `bash scripts/check-installation.sh --browser` selects all configured engines; set `SVELTERY_BROWSER_PROJECT` to `chromium`, `firefox` or `webkit` for an individual engine. Pin selection, types, build and source-copy checks remain unchanged; engine discovery alone is not execution evidence.
 
-The same reviewed archive exports the eight [native Table components](table.md) at `@sveltery/ui/table` and the root. Their fixed container provides horizontal scrolling; attributes, native events and `bind:ref` belong to the inner table. Keep Nova and Tailwind scanning configured as above. Basic, Footer, Simple and the dependency-free With Badges body are implemented; its six badge-shaped elements are literal native spans. DropdownMenu, Select and Input compositions remain deferred. Native Example/ExampleWrapper scaffold is still a bounded substitution.
+The same reviewed archive exports the eight [native Table components](table.md) at `@sveltery/ui/table` and the root. Their fixed container provides horizontal scrolling; attributes, native events and `bind:ref` belong to the inner table. Keep Nova and Tailwind scanning configured as above. Basic, Footer, Simple and the dependency-free With Badges body are implemented; its six badge-shaped elements are literal native spans. DropdownMenu, Select and Input compositions remain deferred. The gallery still uses a bounded Example/ExampleWrapper substitute, although the genuine helpers below are available for migration.
 
 For an app-owned Table copy, retain the `table` directory alongside the shared helper and notices from the same selected checkout:
 
@@ -253,31 +258,31 @@ Import the same names from `$lib/components/ui/table`, preserve `shared/classes.
 
 ### Native Skeleton
 
-Import `Skeleton` from `@sveltery/ui/skeleton` (also exported at the root) using the same reviewed archive. For source copies, copy `registry/bases/base/ui/skeleton` beside `shared/classes.js`, retain the MIT notices and scan both directories with Tailwind. The shared Nova CSS includes `.cn-skeleton`; consumer theme tokens must include the scaffold's existing `--color-muted` mapping and radius tokens. The [feature contract](skeleton.md) documents native div props, snippets, bindable refs and attachments, plus the landed actual [SkeletonCard composition](https://github.com/sveltery/ui/pull/19). That example also requires the sibling `card` directory and a matching Card import remap to `$lib/components/ui/card`; the fresh source-copy gate now supplies both. Full Example/ExampleWrapper layout remains outside this bounded scaffold. The fresh consumer gate adds a native Skeleton route to both archive and source-copy modes before experimental remote-field configuration.
+Import `Skeleton` from `@sveltery/ui/skeleton` (also exported at the root) using the same reviewed archive. For source copies, copy `registry/bases/base/ui/skeleton` beside `shared/classes.js`, retain the MIT notices and scan both directories with Tailwind. The shared Nova CSS includes `.cn-skeleton`; consumer theme tokens must include the scaffold's existing `--color-muted` mapping and radius tokens. The [feature contract](skeleton.md) documents native div props, snippets, bindable refs and attachments, plus the landed actual [SkeletonCard composition](https://github.com/sveltery/ui/pull/19). That example also requires the sibling `card` directory and a matching Card import remap to `$lib/components/ui/card`; the fresh source-copy gate now supplies both. The original selected Skeleton gallery now uses the genuine Example/ExampleWrapper helpers; copying that gallery additionally needs the sibling `example` directory and its import remap. This installation route remains a supplemental native Skeleton consumer. The fresh consumer gate adds a native Skeleton route to both archive and source-copy modes before experimental remote-field configuration.
 
 ### Native Kbd and KbdGroup
 
-Import `Kbd` and `KbdGroup` from `@sveltery/ui/kbd` or the root of the same reviewed archive. For source copies, copy `registry/bases/base/ui/kbd` beside `shared/classes.js`, retain the notices and scan both directories. The existing Nova/theme scaffold supplies the muted/background/radius tokens. Both leaves render `kbd`, including KbdGroup despite the React source's div prop annotation. They display keys without adding keyboard listeners or shortcut execution. See [Kbd scope](kbd.md); InputGroup/Tooltip/icon composition is deferred. Fresh archive/source-copy gates execute the route's SSR/hydration, reactive declarations and ref/attachment cleanup before remote-field opt-ins.
+Import `Kbd` and `KbdGroup` from `@sveltery/ui/kbd` or the root of the same reviewed archive. For source copies, copy `registry/bases/base/ui/kbd` beside `shared/classes.js`, retain the notices and scan both directories. The existing Nova/theme scaffold supplies the muted/background/radius tokens. Both leaves render `kbd`, including KbdGroup despite the React source's div prop annotation. They display keys without adding keyboard listeners or shortcut execution. See [Kbd scope](kbd.md): both icon functions remain unimplemented despite available public icon/Example helpers; InputGroup/Tooltip still need missing styled components. Fresh archive/source-copy gates execute the route's SSR/hydration, reactive declarations and ref/attachment cleanup before remote-field opt-ins.
 
 ### Native Card parts
 
-Import the seven native div parts from `@sveltery/ui/card` or the root of the same reviewed archive. For source copies, copy `registry/bases/base/ui/card` beside `shared/classes.js`, keep the notices and scan both directories. The scaffold now maps `--color-card` and `--color-card-foreground` to light consumer theme tokens. [Card scope](card.md) records `default`/`sm` sizes, native refs and attachments, seven actual examples and five deferred compositions. Archive/source-copy gates exercise all seven parts, SSR/hydration, reactive updates and cleanup.
+Import the seven native div parts from `@sveltery/ui/card` or the root of the same reviewed archive. For source copies, copy `registry/bases/base/ui/card` beside `shared/classes.js`, keep the notices and scan both directories. The scaffold now maps `--color-card` and `--color-card-foreground` to light consumer theme tokens. [Card scope](card.md) records `default`/`sm` sizes, native refs and attachments, seven selected inner example bodies and five unimplemented compositions. Both image functions now have available native helpers; Custom Spacing/Login/Meeting Notes still need their missing styled components. The seven bodies also retain an unmigrated Example scaffold. Archive/source-copy gates exercise all seven parts, SSR/hydration, reactive updates and cleanup.
 
 ### Native Label
 
-Import the single `Label` export from `@sveltery/ui/label` or the root of the same reviewed archive. Use Svelte `for` with a matching native control `id`; `bind:ref` exposes the native label. For source copies, copy `registry/bases/base/ui/label` beside `shared/classes.js`, retain the notices and scan both directories. Nova includes `.cn-label` and the separate opt-in `.cn-label-aria` rule. The [Label contract](label.md) records exact disabled styling selectors and the bounded With Textarea example's native Field/Example scaffold substitution; Checkbox/Input/Disabled compositions remain deferred. Both consumer modes exercise actual Label code/CSS, SSR/hydration, trusted association/focus, reactive props and refs/attachments before remote-field opt-ins.
+Import the single `Label` export from `@sveltery/ui/label` or the root of the same reviewed archive. Use Svelte `for` with a matching native control `id`; `bind:ref` exposes the native label. For source copies, copy `registry/bases/base/ui/label` beside `shared/classes.js`, retain the notices and scan both directories. Nova includes `.cn-label` and the separate opt-in `.cn-label-aria` rule. The [Label contract](label.md) records exact disabled styling selectors and the bounded With Textarea example's native Field/Example scaffold substitution. Example is now available but unmigrated; Field remains missing, and Checkbox/Input/Disabled compositions remain deferred. Both consumer modes exercise actual Label code/CSS, SSR/hydration, trusted association/focus, reactive props and refs/attachments before remote-field opt-ins.
 
 ### Native AspectRatio
 
-Import `AspectRatio` from `@sveltery/ui/aspect-ratio` or the root of the same reviewed archive. For source copies, copy `registry/bases/base/ui/aspect-ratio` beside `shared/classes.js`, retain the notices and scan both directories with Tailwind. The required `ratio` sets `--ratio` only when `style` is absent; caller `style` replaces that generated declaration, including an explicitly undefined/null/empty style. Supply `--ratio` yourself when combining caller styles with the ratio utility. No Base primitive or new Nova rule is needed. The [feature contract](aspect-ratio.md) records native div/snippet/ref/attachment adaptations and deferred Next Image/Example scaffolds. Fresh archive/source-copy checks exercise actual SSR/hydration, responsive ratios and caller overrides.
+Import `AspectRatio` from `@sveltery/ui/aspect-ratio` or the root of the same reviewed archive. For source copies, copy `registry/bases/base/ui/aspect-ratio` beside `shared/classes.js`, retain the notices and scan both directories with Tailwind. The required `ratio` sets `--ratio` only when `style` is absent; caller `style` replaces that generated declaration, including an explicitly undefined/null/empty style. Supply `--ratio` yourself when combining caller styles with the ratio utility. No Base primitive or new Nova rule is needed. The [feature contract](aspect-ratio.md) records native div/snippet/ref/attachment adaptations and the unmigrated gallery scaffold using now-available Example helpers. Next Image remains a separate recorded framework substitution. Fresh archive/source-copy checks exercise actual SSR/hydration, responsive ratios and caller overrides.
 
 ### Native Alert
 
-This proposed integrated slice exports `Alert`, `AlertTitle`, `AlertDescription` and `AlertAction` from `@sveltery/ui/alert` or the root of the same reviewed archive. All parts render native divs. Root supports `default`, `destructive` and null variants; caller role/data-slot overrides remain observable. For source copies, copy `registry/bases/base/ui/alert` beside `shared/classes.js`, keep the notices, `cn` 0.2.2, install `class-variance-authority` 0.7.1 for this source copy (`pnpm add class-variance-authority@0.7.1`), and scan both directories. Existing card, foreground, muted, destructive and radius tokens support Nova. [Alert scope](alert.md) records native APIs, Basic's bounded scaffold and deferred icon/Badge compositions. Fresh archive/source-copy gates exercise all four parts, SSR/client builds, reactive props, refs/attachments and secured browsers before experimental remote-field opt-ins.
+The landed bounded slice exports `Alert`, `AlertTitle`, `AlertDescription` and `AlertAction` from `@sveltery/ui/alert` or the root of the same reviewed archive. All parts render native divs. Root supports `default`, `destructive` and null variants; caller role/data-slot overrides remain observable. For source copies, copy `registry/bases/base/ui/alert` beside `shared/classes.js`, keep the notices, `cn` 0.2.2, install `class-variance-authority` 0.7.1 for this source copy (`pnpm add class-variance-authority@0.7.1`), and scan both directories. Existing card, foreground, muted, destructive and radius tokens support Nova. [Alert scope](alert.md) records native APIs, Basic's unmigrated scaffold and three omitted functions. With Icons/Destructive now have available Example/icon helpers but remain unimplemented; With Actions still needs styled Badge. Fresh archive/source-copy gates exercise all four parts, SSR/client builds, reactive props, refs/attachments and secured browsers before experimental remote-field opt-ins.
 
 ### Native Empty
 
-Import the six [native Empty parts](empty.md) from `@sveltery/ui/empty` or the root of the same reviewed archive. For source copies, copy `registry/bases/base/ui/empty` beside `shared/classes.js`, retain the notices and scan both directories with Tailwind. Keep `class-variance-authority` 0.7.1 and `cn` 0.2.2. Nova supplies the Empty rules using existing theme tokens. EmptyDescription renders a div; EmptyMedia uses `data-slot="empty-icon"` and default/icon/null variants. Both fresh consumer modes exercise supplemental native primitives, SSR/hydration, styles, props, refs and attachment cleanup. Actual gallery compositions remain deferred for missing icons and/or InputGroup.
+Import the six [native Empty parts](empty.md) from `@sveltery/ui/empty` or the root of the same reviewed archive. For source copies, copy `registry/bases/base/ui/empty` beside `shared/classes.js`, retain the notices and scan both directories with Tailwind. Keep `class-variance-authority` 0.7.1 and `cn` 0.2.2. Nova supplies the Empty rules using existing theme tokens. EmptyDescription renders a div; EmptyMedia uses `data-slot="empty-icon"` and default/icon/null variants. Both fresh consumer modes exercise supplemental native primitives, SSR/hydration, styles, props, refs and attachment cleanup. All six original gallery functions remain unimplemented. Basic/Muted Background/Icon/In Card now have available helpers; Border/Muted Background Alt still need styled InputGroup parts. Preserve the original Button render/nativeButton anchor composition when migrating the three link examples; see [current Empty prerequisites](empty.md#deferred-gallery-scope).
 
 ### Configurable icons
 

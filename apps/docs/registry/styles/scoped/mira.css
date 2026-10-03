@@ -1,5 +1,6 @@
 /* Derived from shadcn-ui/ui d75a96ab781f3d659be1ad287347d5887ce9f2fc; MIT: packages/ui/THIRD_PARTY_NOTICES.md. */
 @import "tw-animate-css";
+@import "shadcn/tailwind.css";
 @custom-variant style-mira (&:where(.style-mira *));
 @layer base {
   .style-mira * { @apply border-border outline-ring/50; }
