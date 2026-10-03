@@ -129,7 +129,7 @@ Genuine [Example/ExampleWrapper](example.md) landed in [PR #28](https://github.c
 
 - CardWithImage/CardWithImageSmall, KbdWithIcons/KbdWithIconsAndText and AlertExample2/AlertExample3 have available native component/helper dependencies. All six original functions remain unimplemented.
 - EmptyBasic/EmptyWithMutedBackground/EmptyWithIcon/EmptyInCard have available native dependencies. All four remain unimplemented; three require the existing Button render/nativeButton anchor composition, not a plain-link substitute.
-- Card/Table/Alert/AspectRatio outer Example scaffold migrations have no missing helper prerequisite. Textarea/Label also have Example available, while their genuine Field compositions remain missing. AspectRatio's Next Image adaptation and recorded Next Link limitations elsewhere remain separate framework scope.
+- Card/Table/Alert/AspectRatio outer Example scaffold migrations have no missing helper prerequisite. Textarea/Label also have Example available, while their genuine Field compositions remain missing. AspectRatio's Next Image adaptation and the icon helper's Next/nuqs configuration limits remain separate framework scope.
 - Styled ToggleGroup, Field/Input, Avatar, InputGroup, Tooltip and Badge still block their specific Card/Kbd/Alert/Empty functions; Table's DropdownMenu/Select/Input and Label's Checkbox/Input functions retain their existing blockers.
 
 Preserve original source/test inventories, historical check receipts and explicit adaptation decisions. These documentation corrections earn no new implementation, original-gallery, copied-test, full API or live assistive-technology credit. The [current Base-only selection](target-scope.md) and exact-head review/delivery gates remain unchanged.
