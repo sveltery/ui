@@ -62,7 +62,9 @@ test('complete original AspectRatio gallery retains all 22 actual SSR HTML hosts
   } finally { await reference.close(); }
 });
 test('four original AspectRatio galleries preserve responsive scaffolds, decoded cover layers and all eight source styles against complete original CSS', async ({ page, context }) => {
-  test.setTimeout(120_000);
+  // The paired 160-document-state witness takes twice the finite 80-state
+  // fresh witness (64.8–64.9s in actual WebKit f948). Keep all assertions.
+  test.setTimeout(180_000);
   const reference = await context.newPage(); const errors: string[] = [];
   for (const current of [page, reference]) { current.on('pageerror', error => errors.push(error.message)); current.on('console', message => { if (message.type() === 'error') errors.push(message.text()); }); await aspectImages(current); }
   try {
@@ -72,13 +74,15 @@ test('four original AspectRatio galleries preserve responsive scaffolds, decoded
     for (const style of aspectStyles) for (const dark of [false, true]) {
       for (const current of [page, reference]) await aspectTheme(current, style, dark);
       for (const width of [390, 640, 768, 1024, 1536]) {
-        for (const current of [page, reference]) await current.setViewportSize({ width, height: 1600 });
-        await assertAspectGallery(page, width, 1600, style); await assertAspectGallery(reference, width, 1600, style);
-        const actual = await aspectGalleryMeasurements(page); const original = await aspectGalleryMeasurements(reference);
-        // All explicit scoped styles retain genuine radius factors; historical
-        // unscoped Nova geometry is a separate unchanged environment.
-        expect(actual).toEqual(original);
-        expect(actual.filter(node => node.tag === 'IMG').map(node => node.filter)).toEqual(Array(4).fill(dark ? 'brightness(0.2) grayscale(1)' : 'grayscale(1)'));
+        await test.step(`${style} ${dark ? 'dark' : 'light'} ${width}px: both complete four-body galleries`, async () => {
+          for (const current of [page, reference]) await current.setViewportSize({ width, height: 1600 });
+          await assertAspectGallery(page, width, 1600, style); await assertAspectGallery(reference, width, 1600, style);
+          const actual = await aspectGalleryMeasurements(page); const original = await aspectGalleryMeasurements(reference);
+          // All explicit scoped styles retain genuine radius factors; historical
+          // unscoped Nova geometry is a separate unchanged environment.
+          expect(actual).toEqual(original);
+          expect(actual.filter(node => node.tag === 'IMG').map(node => node.filter)).toEqual(Array(4).fill(dark ? 'brightness(0.2) grayscale(1)' : 'grayscale(1)'));
+        });
       }
     }
     expect(await page.locator(`${aspectGallery} img`).count()).toBe(4); expect(errors).toEqual([]);
