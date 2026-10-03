@@ -1,11 +1,12 @@
 <script lang="ts">
   import { Button } from '@sveltery/ui/button';
+  import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, CardAction } from '../../registry/bases/base/ui/card/index.js';
 </script>
-<!-- Selected actual pinned example bodies translated to Svelte; native Example scaffold substitutes layout only.
-     CustomSpacing (ToggleGroup), Login (Field/Input), MeetingNotes (Avatar/icons), Image and ImageSmall (icons) remain deferred. -->
-<section data-gallery class="grid gap-6">
-<section><h2>Default Size</h2>
+<!-- Seven selected pinned example bodies with genuine original helpers.
+     Five remaining originals are unimplemented; action/override probes stay separate. -->
+<ExampleWrapper>
+<Example title="Default Size">
       <Card size="default" class="mx-auto w-full max-w-sm">
         <CardHeader>
           <CardTitle>Default Card</CardTitle>
@@ -25,8 +26,8 @@
           </Button>
         </CardFooter>
       </Card>
-</section>
-<section><h2>Small Size</h2>
+</Example>
+<Example title="Small Size">
       <Card size="sm" class="mx-auto w-full max-w-sm">
         <CardHeader>
           <CardTitle>Small Card</CardTitle>
@@ -46,8 +47,8 @@
           </Button>
         </CardFooter>
       </Card>
-</section>
-<section><h2>Content Edge to Edge</h2>
+</Example>
+<Example title="Content Edge to Edge">
       <Card class="mx-auto w-full max-w-sm">
         <CardHeader>
           <CardTitle>Terms of Service</CardTitle>
@@ -81,8 +82,8 @@
           <Button>Accept</Button>
         </CardFooter>
       </Card>
-</section>
-<section><h2>Header with Border</h2>
+</Example>
+<Example title="Header with Border">
       <Card class="mx-auto w-full max-w-sm">
         <CardHeader class="border-b">
           <CardTitle>Header with Border</CardTitle>
@@ -97,8 +98,8 @@
           </p>
         </CardContent>
       </Card>
-</section>
-<section><h2>Footer with Border</h2>
+</Example>
+<Example title="Footer with Border">
       <Card class="mx-auto w-full max-w-sm">
         <CardContent>
           <p>
@@ -112,8 +113,8 @@
           </Button>
         </CardFooter>
       </Card>
-</section>
-<section><h2>Header with Border (Small)</h2>
+</Example>
+<Example title="Header with Border (Small)">
       <Card size="sm" class="mx-auto w-full max-w-sm">
         <CardHeader class="border-b">
           <CardTitle>Header with Border</CardTitle>
@@ -128,8 +129,8 @@
           </p>
         </CardContent>
       </Card>
-</section>
-<section><h2>Footer with Border (Small)</h2>
+</Example>
+<Example title="Footer with Border (Small)">
       <Card size="sm" class="mx-auto w-full max-w-sm">
         <CardContent>
           <p>
@@ -143,7 +144,9 @@
           </Button>
         </CardFooter>
       </Card>
-</section>
+</Example>
+</ExampleWrapper>
+<section class="grid gap-6">
   <!-- Supplemental probes; these are not selected upstream examples. -->
   <section data-supplemental="action"><h2>Supplemental action grid</h2>
     <Card class="mx-auto w-full max-w-sm"><CardHeader><CardTitle>Action grid</CardTitle><CardDescription>Description occupies the second row.</CardDescription><CardAction><Button variant="outline" size="sm">Options</Button></CardAction></CardHeader><CardContent>Supplemental content</CardContent><CardFooter>Supplemental footer</CardFooter></Card>
