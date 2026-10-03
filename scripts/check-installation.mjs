@@ -59,6 +59,8 @@ try {
     let kbdFixture = readFileSync(join(repo, 'apps/docs/src/routes/kbd/+page.svelte'), 'utf8').replace('../../../examples/base/KbdExample.svelte', './KbdExample.svelte');
     let kbdExample = readFileSync(join(repo, 'apps/docs/examples/base/KbdExample.svelte'), 'utf8');
     if (mode === 'copy') {
+      kbdFixture = kbdFixture.replaceAll('@sveltery/ui/icons', '$lib/components/ui/icons');
+      kbdExample = kbdExample.replaceAll('@sveltery/ui/icons', '$lib/components/ui/icons');
       kbdFixture = kbdFixture.replaceAll('@sveltery/ui/kbd', '$lib/components/ui/kbd');
       kbdExample = kbdExample.replaceAll('@sveltery/ui/kbd', '$lib/components/ui/kbd').replaceAll('@sveltery/ui/example', '$lib/components/ui/example');
     }

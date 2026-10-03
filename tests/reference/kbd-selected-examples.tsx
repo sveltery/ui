@@ -1,7 +1,8 @@
-// Selected source functions unchanged; execute the actual pinned native Example scaffold.
+// Complete selected original function bodies, with import/export remaps only. MIT attribution: LICENSE.
 import { Example } from './example-scaffold';
-// Byte-exact selected function bodies from kbd-example.tsx; MIT attribution: LICENSE.
-import { Kbd, KbdGroup } from "./kbd"
+import { Kbd, KbdGroup } from './kbd';
+import { IconPlaceholder } from './icon';
+
 function KbdBasic() {
   return (
     <Example title="Basic">
@@ -50,6 +51,71 @@ function KbdArrowKeys() {
   )
 }
 
+function KbdWithIcons() {
+  return (
+    <Example title="With Icons">
+      <KbdGroup>
+        <Kbd>
+          <IconPlaceholder
+            lucide="CircleDashedIcon"
+            tabler="IconCircleDashed"
+            hugeicons="DashedLineCircleIcon"
+            phosphor="CircleDashedIcon"
+            remixicon="RiLoaderLine"
+          />
+        </Kbd>
+        <Kbd>
+          <IconPlaceholder
+            lucide="ArrowLeftIcon"
+            tabler="IconArrowLeft"
+            hugeicons="ArrowLeft01Icon"
+            phosphor="ArrowLeftIcon"
+            remixicon="RiArrowLeftLine"
+          />
+        </Kbd>
+        <Kbd>
+          <IconPlaceholder
+            lucide="ArrowRightIcon"
+            tabler="IconArrowRight"
+            hugeicons="ArrowRight01Icon"
+            phosphor="ArrowRightIcon"
+            remixicon="RiArrowRightLine"
+          />
+        </Kbd>
+      </KbdGroup>
+    </Example>
+  )
+}
+
+function KbdWithIconsAndText() {
+  return (
+    <Example title="With Icons and Text">
+      <KbdGroup>
+        <Kbd>
+          <IconPlaceholder
+            lucide="ArrowLeftIcon"
+            tabler="IconArrowLeft"
+            hugeicons="ArrowLeft01Icon"
+            phosphor="ArrowLeftIcon"
+            remixicon="RiArrowLeftLine"
+          />
+          Left
+        </Kbd>
+        <Kbd>
+          <IconPlaceholder
+            lucide="CircleDashedIcon"
+            tabler="IconCircleDashed"
+            hugeicons="DashedLineCircleIcon"
+            phosphor="CircleDashedIcon"
+            remixicon="RiLoaderLine"
+          />
+          Voice Enabled
+        </Kbd>
+      </KbdGroup>
+    </Example>
+  )
+}
+
 function KbdWithSamp() {
   return (
     <Example title="With samp">
@@ -60,4 +126,4 @@ function KbdWithSamp() {
   )
 }
 
-export { KbdBasic, KbdModifierKeys, KbdGroupExample, KbdArrowKeys, KbdWithSamp }
+export { KbdBasic, KbdModifierKeys, KbdGroupExample, KbdArrowKeys, KbdWithIcons, KbdWithIconsAndText, KbdWithSamp }

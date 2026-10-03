@@ -265,7 +265,7 @@ Import `Skeleton` from `@sveltery/ui/skeleton` (also exported at the root) using
 
 ### Native Kbd and KbdGroup
 
-Import `Kbd` and `KbdGroup` from `@sveltery/ui/kbd` or the root of the same reviewed archive. For source copies, copy `registry/bases/base/ui/kbd` beside `shared/classes.js`, retain the notices and scan both directories. The existing Nova/theme scaffold supplies the muted/background/radius tokens. Both leaves render `kbd`, including KbdGroup despite the React source's div prop annotation. They display keys without adding keyboard listeners or shortcut execution. See [Kbd scope](kbd.md): both icon functions remain unimplemented despite available public icon/Example helpers; InputGroup/Tooltip still need missing styled components. Fresh archive/source-copy gates execute the route's SSR/hydration, reactive declarations and ref/attachment cleanup before remote-field opt-ins.
+Import `Kbd` and `KbdGroup` from `@sveltery/ui/kbd` or the root of the same reviewed archive. For source copies, copy `registry/bases/base/ui/kbd` beside `shared/classes.js`, retain the notices and scan both directories. The existing Nova/theme scaffold supplies the muted/background/radius tokens. Both leaves render `kbd`, including KbdGroup despite the React source's div prop annotation. They display keys without adding keyboard listeners or shortcut execution. See [Kbd scope](kbd.md): the current genuine icon pair continuation proposes seven original bodies using public icon/Example helpers and awaits final exact-head gates; InputGroup/Tooltip still need missing styled components. Fresh archive/source-copy gates execute the route's SSR/hydration, reactive declarations and ref/attachment cleanup before remote-field opt-ins.
 
 ### Native Card parts
 
