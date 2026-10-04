@@ -186,3 +186,25 @@ export async function assertAlertNativeLinks(page: Page) {
   }
   await links.last().blur();
 }
+
+// Source-derived actual pointer states from globals.css:220–223, separate from width parity.
+export async function alertLinkPointerMeasurements(page: Page, width: number) {
+  const links = page.locator(`${alertGallery} a`);
+  await expect(links).toHaveCount(4);
+  const records = [];
+  for (const [index, link] of (await links.all()).entries()) {
+    await link.hover();
+    const read = () => link.evaluate(node => ({ active: node.matches(':active'), opacity: getComputedStyle(node).opacity }));
+    await expect.poll(read).toEqual({ active: false, opacity: '1' });
+    const initial = await read();
+    let held: Awaited<ReturnType<typeof read>>;
+    try {
+      await page.mouse.down();
+      await expect.poll(read).toEqual({ active: true, opacity: width < 768 ? '0.6' : '1' });
+      held = await read();
+    } finally { await page.mouse.up(); }
+    await expect.poll(read).toEqual({ active: false, opacity: '1' });
+    records.push({ index, text: await link.textContent(), href: await link.getAttribute('href'), initial, held, released: await read() });
+  }
+  return records;
+}

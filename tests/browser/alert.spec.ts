@@ -1,7 +1,8 @@
 // Supplemental source-derived comparisons executing actual immutable wrappers, not an upstream test-port inventory.
 import { expect, test, type Page } from '@playwright/test';
+import { writeFile } from 'node:fs/promises';
 import { alertLifecycleCases, alertNativeAssertions } from './alert-cases';
-import { alertGallery, alertHTMLHosts, alertLibraries, alertStyles, alertWidths, alertTheme, settledAlert, alertGalleryTree, alertGalleryMeasurements, alertInlineTypographyDiagnostics, alertLongTextMeasurements, assertAlertGallery, assertAlertNativeLinks } from './alert-gallery-cases';
+import { alertGallery, alertHTMLHosts, alertLibraries, alertStyles, alertWidths, alertTheme, settledAlert, alertGalleryTree, alertGalleryMeasurements, alertInlineTypographyDiagnostics, alertLongTextMeasurements, alertLinkPointerMeasurements, assertAlertGallery, assertAlertNativeLinks } from './alert-gallery-cases';
 alertLifecycleCases();
 const selector = '[data-testid="composition"] *, [data-testid="selectors"] *';
 async function snapshot(page: Page) {
@@ -187,7 +188,9 @@ for (const library of alertLibraries) test(`three original Alert bodies and cano
           const trace = { library, style, dark, width, differingMeasurements: nativeMeasurements.flatMap((native, index) => JSON.stringify(native) === JSON.stringify(originalMeasurements[index]) ? [] : [{ index, native, original: originalMeasurements[index] }]), native: await alertInlineTypographyDiagnostics(page), original: await alertInlineTypographyDiagnostics(original) };
           const body = JSON.stringify(trace, null, 2);
           console.log(`Authored Alert strict geometry failure observations: ${body}`);
-          await testInfo.attach('alert-strict-geometry-failure-observations', { body, contentType: 'application/json' });
+          const path = testInfo.outputPath('alert-strict-geometry-failure-observations.json');
+          await writeFile(path, body);
+          await testInfo.attach('alert-strict-geometry-failure-observations', { path, contentType: 'application/json' });
         } catch (diagnosticError) { console.log(`Authored Alert diagnostic capture failed: ${String(diagnosticError)}`); }
         throw assertionError;
       }
@@ -195,6 +198,18 @@ for (const library of alertLibraries) test(`three original Alert bodies and cano
     });
     for (const current of [page, original]) await assertAlertNativeLinks(current);
     expect(errors).toEqual([]);
+  } finally { await original.close(); }
+});
+
+test('all four original Alert anchors preserve paired held and released pointer opacity below, at and above md', async ({ page, context }) => {
+  const original = await context.newPage();
+  try {
+    await page.goto('/alert'); await original.goto('http://127.0.0.1:5175/alert');
+    await settledAlert(page); await settledAlert(original);
+    for (const width of [390, 767, 768, 1280]) await test.step(`${width}px actual native and original pointers`, async () => {
+      for (const current of [page, original]) { await current.setViewportSize({ width, height: 1800 }); await alertTheme(current, 'nova', false); }
+      expect(await alertLinkPointerMeasurements(page, width)).toEqual(await alertLinkPointerMeasurements(original, width));
+    });
   } finally { await original.close(); }
 });
 

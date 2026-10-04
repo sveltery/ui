@@ -148,12 +148,16 @@ Nova is Tailwind input CSS, not a precompiled standalone stylesheet. It imports 
 @custom-variant style-sera (&:where(.style-sera *));
 @custom-variant dark (&:is(.dark *));
 @source "../node_modules/@sveltery/ui/dist";
-/* Original app/globals.css body environment at shadcn d75a96ab781f3d659be1ad287347d5887ce9f2fc; MIT attribution in THIRD_PARTY_NOTICES.md. */
+/* Original app/globals.css body and active-pointer environment at shadcn d75a96ab781f3d659be1ad287347d5887ce9f2fc; MIT attribution in THIRD_PARTY_NOTICES.md. */
 @layer base {
   body {
     position: relative;
     font-synthesis-weight: none;
     text-rendering: optimizeLegibility;
+  }
+  a:active,
+  button:active {
+    @apply opacity-60 md:opacity-100;
   }
 }
 body { margin: 0; background: var(--background); color: var(--foreground); font-family: Arial, sans-serif; }
