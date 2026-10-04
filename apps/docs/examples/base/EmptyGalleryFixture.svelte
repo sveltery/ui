@@ -1,0 +1,7 @@
+<!-- Supplemental external provider; genuine selected composition remains EmptyExample. -->
+<script lang="ts">
+  import { IconLibraryProvider, type IconLibraryName } from '@sveltery/ui/icons';
+  import Gallery from './EmptyExample.svelte';
+  let { library = 'lucide' }: { library?: IconLibraryName } = $props();
+</script>
+<IconLibraryProvider {library}><Gallery /></IconLibraryProvider>

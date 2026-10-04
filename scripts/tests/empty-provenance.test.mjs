@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
+import { execFileSync } from 'node:child_process';
+import ts from 'typescript';
 
 test('immutable Empty wrapper, complete deferred examples and scoped Nova retain byte-exact provenance', () => {
   const pin = JSON.parse(readFileSync('tests/reference/empty-sources.json', 'utf8'));
@@ -20,4 +22,96 @@ test('supplemental primitive probe does not claim or substitute any deferred gal
   assert(source.includes('InputGroup'));
   for (const name of [...source.matchAll(/function (Empty\w+)\(/g)].map(match => match[1])) assert(!probe.includes(`function ${name}(`));
   assert(probe.includes('Supplemental Empty primitive probe'));
+});
+
+// New source-derived supplements; retain both original primitive/probe assertions above.
+test('four selected Empty declarations retain complete immutable bodies and truthful dependency scope', () => {
+  const manifest = JSON.parse(readFileSync('tests/reference/empty-gallery-sources.json', 'utf8'));
+  const raw = readFileSync('tests/reference/empty-example.tsx', 'utf8');
+  const selected = readFileSync('tests/reference/empty-selected-examples.tsx', 'utf8');
+  assert.equal(manifest.commit, 'd75a96ab781f3d659be1ad287347d5887ce9f2fc');
+  assert.deepEqual(manifest.selected, ['EmptyBasic', 'EmptyWithMutedBackground', 'EmptyWithIcon', 'EmptyInCard']);
+  for (const record of manifest.selectedDeclarations) {
+    const declaration = text => text.slice(text.indexOf(`function ${record.name}()`)).split(/\nfunction |\nexport \{/u)[0].trimEnd();
+    assert.equal(declaration(selected), declaration(raw));
+    assert.equal(Buffer.byteLength(declaration(selected)), record.bytes);
+    assert.equal(createHash('sha256').update(declaration(selected)).digest('hex'), record.sha256);
+  }
+  for (const name of Object.keys(manifest.omitted)) assert(!selected.includes(`function ${name}(`));
+  for (const dependency of ['InputGroup', 'Kbd', './card']) assert(!selected.includes(dependency));
+  assert(selected.includes("import { Button } from './button'"));
+  assert(selected.includes("import { IconPlaceholder } from './icon'"));
+  const gallery = readFileSync('tests/reference/SelectedEmptyGallery.tsx', 'utf8');
+  assert(gallery.includes('<ExampleWrapper><EmptyBasic /><EmptyWithMutedBackground /><EmptyWithIcon /><EmptyInCard /></ExampleWrapper>'));
+  assert(!gallery.includes('function EmptyExample('));
+});
+
+test('complete original Empty environment and metadata retain independent byte and Git-blob identities', () => {
+  const manifest = JSON.parse(readFileSync('tests/reference/empty-gallery-sources.json', 'utf8'));
+  assert.equal(manifest.originalFiles.length, 24);
+  for (const record of manifest.originalFiles.filter(record => record.byteExactFixture)) {
+    const bytes = readFileSync(record.byteExactFixture);
+    assert.equal(bytes.length, record.bytes);
+    assert.equal(createHash('sha256').update(bytes).digest('hex'), record.sha256);
+    assert.equal(createHash('sha1').update(`blob ${bytes.length}\0`).update(bytes).digest('hex'), record.gitBlob);
+  }
+  assert.equal(manifest.genuineTestInventory.trackedRecords, 139);
+  assert.equal(manifest.genuineTestInventory.testSources, 133);
+  assert.equal(manifest.genuineTestInventory.snapshots, 6);
+  assert(manifest.genuineTestInventory.wrapperAbsenceList.includes('Empty'));
+  const native = readFileSync('apps/docs/examples/base/EmptyExample.svelte', 'utf8');
+  for (const dependency of ['@sveltery/ui/example', '@sveltery/ui/empty', '@sveltery/ui/button', '@sveltery/ui/icons']) assert(native.includes(dependency));
+  assert(native.includes('<a {...props} href="#">{@render children?.()}</a>'));
+  assert(native.includes('{#snippet learnMoreText()}Learn more{/snippet}'));
+  assert(native.includes('{@render learnMoreText()} <IconPlaceholder'));
+  assert(native.includes('{@render postDescriptionText()} '));
+  assert(!native.includes('@sveltery/ui/card'));
+  assert(!native.includes('InputGroup'));
+});
+
+test('finite source integration preserves full historical proof and exactly binds every current changed path', () => {
+  const path = 'diagnostics/alert-child-segmentation/source-authentication.json';
+  const bytes = readFileSync(path); const manifest = JSON.parse(bytes);
+  const sha = value => createHash('sha256').update(value).digest('hex');
+  const blob = value => createHash('sha1').update(`blob ${value.length}\0`).update(value).digest('hex');
+  const canonical = rows => JSON.stringify([...rows].sort((a, b) => a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0));
+  assert.equal(sha(canonical(manifest.baseline.rows)), 'c26e4c75341710d442aa5cdbdb9a3a482cc1f72892cdf05badc21a2df0e56941');
+  assert.equal(manifest.baseline.rows.length, 655);
+  for (const [index, expected] of ['bb7f58e273634768867c7ae794b7dd3b1bffa0d06a6e934e418336813de3a443', 'bbfb69daca1d641d5a51ed323de3de7b261d16896b8f3cbcefd4893e7ddc1952'].entries()) {
+    const restored = new Map(manifest.baseline.rows.map(row => [row[0], row]));
+    for (const change of manifest.historical[index].replacements) { if (change.row === null) restored.delete(change.path); else restored.set(change.path, change.row); }
+    assert.equal(sha(canonical([...restored.values()])), expected);
+  }
+  const configPath = 'diagnostics/alert-child-segmentation/vite.config.ts';
+  const configBytes = readFileSync(configPath); const config = configBytes.toString('utf8');
+  assert.deepEqual(Buffer.from(config), configBytes);
+  const ast = ts.createSourceFile(configPath, config, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+  assert.equal(ast.parseDiagnostics.length, 0);
+  const slots = ast.statements.filter(ts.isVariableStatement).flatMap(statement => statement.declarationList.flags === ts.NodeFlags.Const ? [...statement.declarationList.declarations] : []).filter(declaration => ts.isIdentifier(declaration.name) && declaration.name.text === 'sourceAuthenticationManifestSha256');
+  assert.equal(slots.length, 1);
+  const literal = slots[0].initializer; assert(ts.isStringLiteral(literal));
+  assert.match(literal.getText(ast), /^'[a-f0-9]{64}'$/u);
+  assert.equal(literal.text, sha(bytes));
+  const start = Buffer.byteLength(config.slice(0, literal.getStart(ast) + 1)); const end = Buffer.byteLength(config.slice(0, literal.end - 1));
+  assert.equal(end - start, 64);
+  const normalized = Buffer.concat([configBytes.subarray(0, start), Buffer.from('0'.repeat(64)), configBytes.subarray(end)]);
+  const configEntry = manifest.changes.find(change => change.path === configPath);
+  assert.equal(configEntry.after.kind, 'normalized-config');
+  assert.deepEqual(configEntry.after.row, [configPath, '100644', normalized.length, sha(normalized), blob(normalized)]);
+  const root = manifest.changes.find(change => change.path === path);
+  assert.deepEqual(root.after, { kind: 'manifest-root', mode: '100644', binding: 'full-manifest-sha256-via-config-slot' });
+  const baseline = new Map(manifest.baseline.rows.map(row => [row[0], row]));
+  const currentPaths = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard', '-z'], { encoding: 'utf8' }).split('\0').filter(Boolean).sort();
+  const changed = [];
+  for (const sourcePath of currentPaths) {
+    const data = readFileSync(sourcePath); const entry = manifest.changes.find(change => change.path === sourcePath);
+    const original = baseline.get(sourcePath);
+    if (!original || original[2] !== data.length || original[3] !== sha(data)) changed.push(sourcePath);
+    if (entry && sourcePath !== path && sourcePath !== configPath) assert.deepEqual(entry.after.row, [sourcePath, '100644', data.length, sha(data), blob(data)]);
+    if (entry) { assert.deepEqual(entry.before, original ?? null); assert.equal(entry.operation, original ? 'modify' : 'add'); }
+    else { assert(original, sourcePath); assert.equal(sha(data), original[3], sourcePath); }
+  }
+  assert.deepEqual(changed, manifest.changes.map(change => change.path));
+  assert.equal(currentPaths.length, 665);
+  assert.equal(manifest.changes.length, 21);
 });

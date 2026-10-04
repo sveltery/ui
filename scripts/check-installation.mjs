@@ -151,6 +151,16 @@ try {
       }
     }
     writeFileSync(join(consumer, 'src/routes/alert-types.ts'), readFileSync(join(repo, 'tests/alert-types.ts'), 'utf8').replace('../apps/docs/registry/bases/base/ui/alert/index.js', mode === 'copy' ? '$lib/components/ui/alert' : '@sveltery/ui/alert'));
+    const emptyGalleryDirectory = join(consumer, 'src/routes/empty');
+    mkdirSync(emptyGalleryDirectory, { recursive: true });
+    let emptyGallery = readFileSync(join(repo, 'apps/docs/examples/base/EmptyExample.svelte'), 'utf8');
+    let emptyPage = readFileSync(join(repo, 'apps/docs/src/routes/empty/+page.svelte'), 'utf8').replace('../../../examples/base/EmptyExample.svelte', './EmptyExample.svelte');
+    if (mode === 'copy') {
+      emptyGallery = emptyGallery.replaceAll('@sveltery/ui/empty', '$lib/components/ui/empty').replaceAll('@sveltery/ui/example', '$lib/components/ui/example').replaceAll('@sveltery/ui/button', '$lib/components/ui/button').replaceAll('@sveltery/ui/icons', '$lib/components/ui/icons');
+      emptyPage = emptyPage.replaceAll('@sveltery/ui/icons', '$lib/components/ui/icons');
+    }
+    writeFileSync(join(emptyGalleryDirectory, 'EmptyExample.svelte'), emptyGallery);
+    writeFileSync(join(emptyGalleryDirectory, '+page.svelte'), emptyPage);
     const emptyRoute = join(consumer, 'src/routes/empty-probe/+page.svelte');
     mkdirSync(dirname(emptyRoute), { recursive: true });
     let emptyFixture = readFileSync(join(repo, 'apps/docs/examples/base/EmptyProbe.svelte'), 'utf8');
