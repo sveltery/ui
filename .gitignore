@@ -1,5 +1,7 @@
 node_modules/
 .checks/
+.vendor/
+!/.vendor/
 /.vendor/*
 !/.vendor/sveltery-base-0.0.0.tgz
 **/dist/
