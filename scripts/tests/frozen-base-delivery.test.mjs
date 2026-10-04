@@ -18,7 +18,7 @@ for (const scenario of ['missing archive', 'tampered archive', 'mismatched lock'
       mkdirSync(join(fixture, 'scripts'));
       mkdirSync(join(fixture, '.vendor'));
       mkdirSync(join(fixture, 'bin'));
-      for (const name of ['bootstrap.sh', 'toolchain.sh', 'check-node.mjs', 'check-base.mjs', 'base.lock.json', 'prepare-base.sh']) {
+      for (const name of ['bootstrap.sh', 'toolchain.sh', 'check-node.mjs', 'node-version.mjs', 'check-base.mjs', 'base.lock.json', 'prepare-base.sh']) {
         cpSync(join(repo, 'scripts', name), join(fixture, 'scripts', name));
       }
       for (const name of ['package.json', 'pnpm-lock.yaml']) cpSync(join(repo, name), join(fixture, name));
