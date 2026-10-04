@@ -4,7 +4,8 @@
 import { expect, type Page } from '@playwright/test';
 import { cn } from 'cn';
 import { THEMES } from '../../scripts/theme-assets.mjs';
-
+/* alert-observation:start */export type GalleryAwaitObserver = (stage: string, completed: boolean, raw?: unknown) => void;
+/* alert-observation:end */
 export const aspectGallery = '[data-slot="example-wrapper"]';
 export const aspectGalleryHosts = `div:has(> ${aspectGallery}), ${aspectGallery}, ${aspectGallery} *`;
 export const aspectTitles = ['16:9', '21:9', '1:1', '9:16'];
@@ -22,14 +23,16 @@ export async function aspectGallerySnapshot(page: Page) {
     return snapshot(wrapper.parentElement!);
   });
 }
-export async function aspectTheme(page: Page, style: string, dark: boolean) {
+export async function aspectTheme(page: Page, style: string, dark: boolean/* alert-observation:start */, observe?: GalleryAwaitObserver/* alert-observation:end */) {
   // Direct complete immutable Neutral consumer input, not the production theme builder.
   const tokens = { ...THEMES.find(record => record.name === 'neutral')!.cssVars[dark ? 'dark' : 'light'] };
-  await page.evaluate(({ style, dark, tokens }) => {
+/* alert-observation:start */  observe?.('theme-neutral-evaluation', false);
+/* alert-observation:end */  await page.evaluate(({ style, dark, tokens }) => {
     document.documentElement.className = `style-${style}${dark ? ' dark' : ''}`;
     for (const [name, value] of Object.entries(tokens)) document.documentElement.style.setProperty(`--${name}`, value as string);
   }, { style, dark, tokens });
-}
+/* alert-observation:start */  observe?.('theme-neutral-evaluation', true);
+/* alert-observation:end */}
 export async function aspectGalleryMeasurements(page: Page) {
   return page.locator(aspectGalleryHosts).evaluateAll(nodes => nodes.map(node => {
     const css = getComputedStyle(node); const rect = node.getBoundingClientRect();

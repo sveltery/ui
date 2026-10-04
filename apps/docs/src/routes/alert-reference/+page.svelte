@@ -3,9 +3,10 @@
   import { hydrateRoot } from 'react-dom/client';
   import { createElement } from 'react';
   import { AlertGallery } from '../../../../../tests/reference/AlertGallery';
-  let { data }: { data: { html: string } } = $props();
+  import type { IconLibraryName } from '../../../../../tests/reference/icons/config';
+  let { data }: { data: { html: string; library: IconLibraryName } } = $props();
   let node: HTMLDivElement;
-  onMount(() => { const root = hydrateRoot(node, createElement(AlertGallery)); return () => root.unmount(); });
+  onMount(() => { const root = hydrateRoot(node, createElement(AlertGallery, { library: data.library })); return () => root.unmount(); });
 </script>
 <main class="p-8"><!-- eslint-disable-next-line svelte/no-at-html-tags -- Trusted immutable source-derived React SSR markup; no user content. -->
 <div bind:this={node}>

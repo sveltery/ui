@@ -64,7 +64,7 @@ jobs:
     name: ${{ matrix.engine == 'chromium' && 'Dialog browser' || matrix.engine == 'firefox' && 'Firefox browser' || 'WebKit browser' }}
     # Native Ubuntu runner supported by Playwright; retain Chromium sandbox startup.
     runs-on: ubuntu-22.04
-    timeout-minutes: 45
+    timeout-minutes: 75
     strategy:
       fail-fast: false
       matrix:
@@ -112,4 +112,16 @@ jobs:
         with:
           name: browser-${{ matrix.engine }}-failures
           path: test-results/
+          retention-days: 7
+      - name: Isolated original React child-segmentation diagnostic
+        id: alert-segmentation-diagnostic
+        if: ${{ !cancelled() && matrix.engine == 'chromium' && steps.browser-install.outcome == 'success' && (steps.fresh-browser.outcome == 'success' || steps.fresh-browser.outcome == 'failure') }}
+        run: bash -c 'source scripts/toolchain.sh; pnpm exec playwright test --config diagnostics/alert-child-segmentation/playwright.config.ts --project chromium'
+      - name: Preserve isolated original React diagnostic
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: ${{ !cancelled() && matrix.engine == 'chromium' && (steps.alert-segmentation-diagnostic.outcome == 'success' || steps.alert-segmentation-diagnostic.outcome == 'failure') }}
+        with:
+          name: alert-child-segmentation-chromium-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .checks/alert-child-segmentation-results/
+          if-no-files-found: error
           retention-days: 7
