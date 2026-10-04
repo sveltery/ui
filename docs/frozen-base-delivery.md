@@ -14,7 +14,7 @@ Ordinary UI bootstrap consumes the committed `.vendor/sveltery-base-0.0.0.tgz` a
 
 This is a byte copy of the existing UI-owned archive retained with accepted UI main `b6d7251f85200b3ff82db98bb942387f56327b18`. No new Base source checkout, build, repack or dependency update produces it. Its 225 unique regular files have safe `package/` paths and retain their original 0644 member modes. The archive includes the original MIT license and complete third-party notice, including the Material-UI copyright and permission notice. Its package manifest retains `esm-env` 1.2.2, the original Svelte peer, and no install or prepare lifecycle script.
 
-The filesystem/Git mode of the containing archive is 0644/100644; this does not change its bytes or the modes inside it. Only this named archive is permitted by the `.vendor` ignore exception. Other generated vendor contents remain ignored.
+The archive is tracked with Git mode 100644. Its checkout filesystem permissions depend on the local umask; the clean verification checkout has mode 0600. These containing-file permissions do not change its bytes or the 0644 modes inside it. Only this named root archive is permitted by the `.vendor` ignore exception. Other generated vendor contents, including nested vendor directories, remain ignored.
 
 ## Current delivery and historical reconstruction
 
