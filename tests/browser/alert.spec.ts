@@ -1,6 +1,7 @@
 // Supplemental source-derived comparisons executing actual immutable wrappers, not an upstream test-port inventory.
 import { expect, test, type Page } from '@playwright/test';
-import { writeFile } from 'node:fs/promises';
+import { writeFile } from 'node:fs/promises';/* alert-observation:start */
+import { writeFileSync } from 'node:fs';/* alert-observation:end */
 import { alertLifecycleCases, alertNativeAssertions } from './alert-cases';
 import { alertGallery, alertHTMLHosts, alertLibraries, alertStyles, alertWidths, alertTheme, settledAlert, alertGalleryTree, alertGalleryMeasurements, alertInlineTypographyDiagnostics, alertLongTextMeasurements, alertLinkPointerMeasurements, alertSelectionMeasurements/* alert-observation:start */, alertSelectionWitness/* alert-observation:end */, assertAlertGallery, assertAlertNativeLinks } from './alert-gallery-cases';
 alertLifecycleCases();
@@ -216,6 +217,7 @@ test('all four original Alert anchors preserve paired held and released pointer 
 
 test('actual Alert text selection and document overscroll preserve original light/dark globals', async ({ page, context }/* alert-observation:start */, testInfo/* alert-observation:end */) => {
 /* alert-observation:start */  const witness = alertSelectionWitness(testInfo, 'main');
+  let viewportFailure: unknown = null;
   const observePage = (current: Page) => (stage: string, completed: boolean, raw?: unknown) => witness.observe(`${current === page ? 'native' : 'original'}:${stage}`, completed, raw);
   try {
   witness.observe('original-page-creation', false);
@@ -228,12 +230,30 @@ test('actual Alert text selection and document overscroll preserve original ligh
     await settledAlert(page/* alert-observation:start */, observePage(page)/* alert-observation:end */); await settledAlert(original/* alert-observation:start */, observePage(original)/* alert-observation:end */);
     for (const style of alertStyles) for (const dark of [false, true]) for (const width of [390, 1280]) await test.step(`${style} ${dark ? 'dark' : 'light'} ${width}px actual selection and root`, async () => {
 /* alert-observation:start */      witness.scene(style, dark, width);
-/* alert-observation:end */      for (const current of [page, original]) { /* alert-observation:start */observePage(current)('viewport', false); /* alert-observation:end */await current.setViewportSize({ width, height: 900 }); /* alert-observation:start */observePage(current)('viewport', true); /* alert-observation:end */await alertTheme(current, style, dark/* alert-observation:start */, observePage(current)/* alert-observation:end */); }
+/* alert-observation:end */      const viewportResults = await Promise.allSettled([page, original].map(async current => { /* alert-observation:start */observePage(current)('viewport', false); /* alert-observation:end */await current.setViewportSize({ width, height: 900 }); /* alert-observation:start */observePage(current)('viewport', true); /* alert-observation:end */ }));
+      const firstViewportFailure = viewportResults.find(result => result.status === 'rejected');
+      if (firstViewportFailure) {/* alert-observation:start */
+        try {
+          viewportFailure = { style, dark, width, outcomes: viewportResults.map((result, index) => ({ page: index === 0 ? 'native' : 'original', status: result.status, ...(result.status === 'rejected' ? { reason: result.reason instanceof Error ? { name: result.reason.name, message: result.reason.message, stack: result.reason.stack } : { type: typeof result.reason, message: String(result.reason) } } : { valueWasUndefined: result.value === undefined }) })) };
+        } catch (captureError) { console.error('Viewport settled failure observation unavailable', captureError); }
+/* alert-observation:end */        throw firstViewportFailure.reason;
+      }
+      for (const current of [page, original]) { await alertTheme(current, style, dark/* alert-observation:start */, observePage(current)/* alert-observation:end */); }
       expect(await alertSelectionMeasurements(page, dark/* alert-observation:start */, observePage(page)/* alert-observation:end */)).toEqual(await alertSelectionMeasurements(original, dark/* alert-observation:start */, observePage(original)/* alert-observation:end */));/* alert-observation:start */
       witness.completedPair();/* alert-observation:end */
     });
   } finally { /* alert-observation:start */witness.observe('original-page-close', false); /* alert-observation:end */await original.close(); /* alert-observation:start */witness.observe('original-page-close', true); /* alert-observation:end */}/* alert-observation:start */
-  } catch (error) { await witness.capture(error); throw error; }/* alert-observation:end */
+  } catch (error) {
+    await witness.capture(error);
+    if (viewportFailure) {
+      try {
+        const path = testInfo.outputPath('alert-viewport-settled-failures.json');
+        writeFileSync(path, JSON.stringify({ classification: 'authored-failure-only-both-settled-viewport-outcomes', phase: 'main', project: testInfo.project.name, title: testInfo.title, viewportFailure, limits: 'Both actual Page promises settled before cleanup; rejected viewport is not completed. Actual first rejected reason is rethrown in native/original order. No raw Selection or acceptance data.' }, null, 2) + '\n', { flag: 'wx', mode: 0o600 });
+        await testInfo.attach('alert-viewport-settled-failures', { path, contentType: 'application/json' });
+      } catch (captureError) { console.error('Viewport settled failure physical capture unavailable', captureError); }
+    }
+    throw error;
+  }/* alert-observation:end */
 });
 
 for (const library of alertLibraries) test(`both genuine Alert galleries show eight original Square glyphs while actual ${library} modules are held`, async ({ page, context }, testInfo) => {

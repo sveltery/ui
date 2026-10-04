@@ -74,7 +74,47 @@ const observationBaselines: Record<string, [number, string]> = {
   'tests/browser/aspect-ratio-gallery-cases.ts': [10136, '11ccbca8644cf0c7023197e358776552f3515da884f0cf5153e1e8b4c03034ef'],
 };
 const authoredFiles = ['diagnostics/alert-child-segmentation/vite.config.ts', 'diagnostics/alert-child-segmentation/playwright.config.ts', 'diagnostics/alert-child-segmentation/segmentation.spec.ts'];
-const allowedChanges = new Set([...observationFiles, ...authoredFiles, '.github/workflows/ci.yml', 'docs/alert.md', 'docs/upstream-differences.md']);
+const nativeGalleryPath = 'apps/docs/examples/base/AlertExample.svelte';
+const nativeDeclaration = `  {#snippet alertDescriptionPrefix()}${prefix}{/snippet}\n`;
+const nativeExpression = "{@render alertDescriptionPrefix()}{' '}";
+const viewportCallers: Record<string, [number, string]> = {
+  'tests/browser/alert.spec.ts': [27851, 'a9b4f11a2de284d6fa3b06fd504c5cf50fae1bfbab40de309e5226ddea3f651a'],
+  'tests/installation/alert.spec.ts': [19862, '476e9ffeaf4fce5b2c1d688fc2a19820ec8eeaed020a0172f427e4868e6eefe1'],
+};
+const parallelViewportSetup = "      const viewportResults = await Promise.allSettled([page, original].map(async current => { await current.setViewportSize({ width, height: 900 });  }));\n      const firstViewportFailure = viewportResults.find(result => result.status === 'rejected');\n      if (firstViewportFailure) {        throw firstViewportFailure.reason;\n      }\n      for (const current of [page, original]) { await alertTheme(current, style, dark); }\n";
+const sequentialViewportSetup = '      for (const current of [page, original]) { await current.setViewportSize({ width, height: 900 }); await alertTheme(current, style, dark); }\n';
+const historicalProtectedDigest = { rowCount: 644, canonicalBytes: 81015, sha256: '15623068bcc8e670ff9185ba3009d7f07957bdb5148b7c7315cdce0f8a89f14d' };
+const allowedChanges = new Set([...observationFiles, ...authoredFiles, nativeGalleryPath, '.github/workflows/ci.yml', 'docs/alert.md', 'docs/upstream-differences.md']);
+
+export function authenticatedNativeGallery(code: string) {
+  const declarationCount = code.split(nativeDeclaration).length - 1;
+  const expressionCount = code.split(nativeExpression).length - 1;
+  const candidate = { bytes: Buffer.byteLength(code), sha256: sha256(code) };
+  const candidateMatches = candidate.bytes === 5735 && candidate.sha256 === 'b167d8a81c6c8169deba0acfda1d6bcfe8de6c8b6dd824308d983ca0c2ee8953';
+  const ownerMatches = code.includes(`{#snippet AlertExample2()}\n${nativeDeclaration}`);
+  const inverse = code.replace(nativeDeclaration, '').replace(nativeExpression, `${prefix} `);
+  const baseline = { head: '38e3c8ef3a7f92073d5bb18c82c017d697e5ef58', bytes: 5649, sha256: 'bd9246b1f64fd3f64b795d972c3b243bf7edc050af7f1f344689ab69bd1aea41' };
+  const inverseIdentity = { bytes: Buffer.byteLength(inverse), sha256: sha256(inverse) };
+  const matchesBaseline = candidateMatches && ownerMatches && declarationCount === 1 && expressionCount === 1 && inverseIdentity.bytes === baseline.bytes && inverseIdentity.sha256 === baseline.sha256;
+  return { matchesBaseline, candidate, candidateMatches, ownerMatches, declarationCount, expressionCount, declarationSha256: sha256(nativeDeclaration), expressionSha256: sha256(nativeExpression), inverse: inverseIdentity, baseline, limit: 'One private prefix snippet/render plus explicit U+0020; compiler comments are a framework translation, not serialization/timing parity.' };
+}
+
+export function authenticatedObservationSource(path: string, text: string) {
+  const starts = text.split('/* alert-observation:start */').length - 1;
+  const ends = text.split('/* alert-observation:end */').length - 1;
+  let stripped = text.replace(/\/\* alert-observation:start \*\/[\s\S]*?\/\* alert-observation:end \*\//g, '');
+  const caller = viewportCallers[path];
+  let viewportSetup: { occurrenceCount: number; candidate: { bytes: number; sha256: string }; candidateMatches: boolean; parallelBytes: number; parallelSha256: string; sequentialBytes: number; sequentialSha256: string } | null = null;
+  if (caller) {
+    const candidate = { bytes: Buffer.byteLength(text), sha256: sha256(text) };
+    const occurrenceCount = stripped.split(parallelViewportSetup).length - 1;
+    viewportSetup = { occurrenceCount, candidate, candidateMatches: candidate.bytes === caller[0] && candidate.sha256 === caller[1], parallelBytes: Buffer.byteLength(parallelViewportSetup), parallelSha256: sha256(parallelViewportSetup), sequentialBytes: Buffer.byteLength(sequentialViewportSetup), sequentialSha256: sha256(sequentialViewportSetup) };
+    if (occurrenceCount === 1) stripped = stripped.replace(parallelViewportSetup, sequentialViewportSetup);
+  }
+  const baseline = observationBaselines[path];
+  const matchesBaseline = starts === ends && (!viewportSetup || viewportSetup.candidateMatches && viewportSetup.occurrenceCount === 1) && Buffer.byteLength(stripped) === baseline[0] && sha256(stripped) === baseline[1];
+  return { markerCount: starts, bytes: Buffer.byteLength(stripped), sha256: sha256(stripped), matchesBaseline, viewportSetup };
+}
 function git(root: string, args: string[]) { return execFileSync('git', args, { cwd: root, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024, env: { ...process.env, GIT_OPTIONAL_LOCKS: '0' } }); }
 function tree(root: string, ref: string) {
   return new Map(git(root, ['ls-tree', '-r', '-z', ref]).split('\0').filter(Boolean).map(row => {
@@ -111,24 +151,23 @@ export function protectedSourceSnapshot(root = repositoryRoot()) {
     if (entry.mode !== '120000' && (!stat.isFile() || stat.isSymbolicLink())) failures.push(`Nonregular tracked source: ${path}`);
     if (gitBlob(bytes) !== entry.blob) failures.push(`Working bytes differ from actual head: ${path}`);
     if (allowedChanges.has(path) && entry.mode !== '100644') failures.push(`Changed authored/observation/document/workflow source mode: ${path}`);
-    let reconstruction: { markerCount: number; bytes: number; sha256: string; matchesBaseline: boolean } | null = null;
+    let reconstruction: ReturnType<typeof authenticatedObservationSource> | null = null;
+    let nativeReconstruction: ReturnType<typeof authenticatedNativeGallery> | null = null;
     if (observationFiles.has(path)) {
-      const text = bytes.toString('utf8');
-      const starts = text.split('/* alert-observation:start */').length - 1;
-      const ends = text.split('/* alert-observation:end */').length - 1;
-      const stripped = text.replace(/\/\* alert-observation:start \*\/[\s\S]*?\/\* alert-observation:end \*\//g, '');
-      const baseline = observationBaselines[path];
-      reconstruction = { markerCount: starts, bytes: Buffer.byteLength(stripped), sha256: sha256(stripped), matchesBaseline: starts === ends && Buffer.byteLength(stripped) === baseline[0] && sha256(stripped) === baseline[1] };
-      if (!reconstruction.matchesBaseline) failures.push(`Observation stripping does not reconstruct baseline: ${path}`);
+      reconstruction = authenticatedObservationSource(path, bytes.toString('utf8'));
+      if (!reconstruction.matchesBaseline) failures.push(`Narrow observation/setup inverse does not reconstruct baseline: ${path}`);
+    } else if (path === nativeGalleryPath) {
+      nativeReconstruction = authenticatedNativeGallery(bytes.toString('utf8'));
+      if (!nativeReconstruction.matchesBaseline) failures.push('Native gallery is not the exact approved child-boundary translation/inverse');
     } else if (path === '.github/workflows/ci.yml') {
       const addition = bytes.subarray(4618);
       if (sha256(bytes.subarray(0, 4618)) !== '883939bcc5dc9ac15e0683efd6b2d3d9fe7958179a8bd80b255ab82642a72fe5' || addition.length !== 1036 || sha256(addition) !== 'c82a6a45e728be6832b537aa8af10de2da977fc33bf1a83f7d28f98b11b55666') failures.push('CI is not the exact authenticated 4618-byte baseline plus the exact 1036-byte two-step append');
     }
-    return { path, mode: entry.mode, bytes: bytes.byteLength, sha256: sha256(bytes), headBlob: entry.blob, reconstruction };
+    return { path, mode: entry.mode, bytes: bytes.byteLength, sha256: sha256(bytes), headBlob: entry.blob, reconstruction, nativeReconstruction };
   });
   const protectedRows = rows.filter(row => !allowedChanges.has(row.path)).map(row => [row.path, row.mode, row.sha256, row.bytes] as const).sort((a, b) => a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0);
   const protectedJSON = JSON.stringify(protectedRows);
-  const protectedDigest = { rowCount: protectedRows.length, canonicalBytes: Buffer.byteLength(protectedJSON), sha256: sha256(protectedJSON), expected: { rowCount: 644, canonicalBytes: 81015, sha256: '15623068bcc8e670ff9185ba3009d7f07957bdb5148b7c7315cdce0f8a89f14d' } };
+  const protectedDigest = { rowCount: protectedRows.length, canonicalBytes: Buffer.byteLength(protectedJSON), sha256: sha256(protectedJSON), expected: { rowCount: 643, canonicalBytes: 80886, sha256: '37f43888ce646b768081acfa425156a8197f92ed587740574cb3138c87dcc257' } };
   if (protectedDigest.rowCount !== protectedDigest.expected.rowCount || protectedDigest.canonicalBytes !== protectedDigest.expected.canonicalBytes || protectedDigest.sha256 !== protectedDigest.expected.sha256) failures.push('Protected baseline file-set/path/mode/full-byte aggregate mismatch');
   const frozenArchive = rows.find(row => row.path === '.vendor/sveltery-base-0.0.0.tgz');
   if (frozenArchive?.sha256 !== '915dd6aebd304a7a9c384b0dd5eecd589722686897079fb6dec2961608c564fd') failures.push('Frozen Base archive identity mismatch');
@@ -142,7 +181,7 @@ export function protectedSourceSnapshot(root = repositoryRoot()) {
   catch (error) { baseLockError = errorRecord(error); failures.push('Frozen Base lock unavailable'); }
   if (baseLock?.commit !== 'f884f3bb265485ef8e422e43a75eb3055db11fab' || baseLock?.sha256 !== frozenArchive?.sha256) failures.push('Frozen Base lock mismatch');
   const actualParents = git(root, ['cat-file', '-p', 'HEAD']).split('\n\n')[0].split('\n').filter(line => line.startsWith('parent ')).map(line => line.slice(7));
-  return { ok: failures.length === 0, failures, actualHead: head, actualTree: git(root, ['rev-parse', 'HEAD^{tree}']).trim(), actualParents, baselineHead, allowedChangedPaths: [...allowedChanges], newTrackedPaths: authoredFiles, intendedHead, eventName, eventError, eventSHA: process.env.GITHUB_SHA ?? null, dirty, untracked, protectedDigest, rows, licenseRows: rows.filter(row => /license/i.test(row.path)), frozenArchive, baseLock, baseLockError, transform, transformError };
+  return { ok: failures.length === 0, failures, actualHead: head, actualTree: git(root, ['rev-parse', 'HEAD^{tree}']).trim(), actualParents, baselineHead, allowedChangedPaths: [...allowedChanges], newTrackedPaths: authoredFiles, intendedHead, eventName, eventError, eventSHA: process.env.GITHUB_SHA ?? null, dirty, untracked, historicalProtectedDigest, protectedDigest, rows, licenseRows: rows.filter(row => /license/i.test(row.path)), frozenArchive, baseLock, baseLockError, transform, transformError };
 }
 
 export function installedRuntime(root = repositoryRoot()) {

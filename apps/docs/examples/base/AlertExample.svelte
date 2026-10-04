@@ -19,6 +19,7 @@
 {/snippet}
 
 {#snippet AlertExample2()}
+  {#snippet alertDescriptionPrefix()}This one has an icon and a description only. No title.{/snippet}
   <Example title="With Icons">
     <div class="mx-auto flex w-full max-w-lg flex-col gap-4">
       <Alert><IconPlaceholder
@@ -34,7 +35,7 @@
           hugeicons="AlertCircleIcon"
           phosphor="WarningCircleIcon"
           remixicon="RiErrorWarningLine"
-        /><AlertDescription>This one has an icon and a description only. No title. <!-- svelte-ignore a11y_invalid_attribute (Preserve the exact immutable original placeholder link.) --><a href="#">But it has a link</a> and a <!-- svelte-ignore a11y_invalid_attribute (Preserve the exact immutable original placeholder link.) --><a href="#">second link</a>.</AlertDescription></Alert>
+        /><AlertDescription>{@render alertDescriptionPrefix()}{' '}<!-- svelte-ignore a11y_invalid_attribute (Preserve the exact immutable original placeholder link.) --><a href="#">But it has a link</a> and a <!-- svelte-ignore a11y_invalid_attribute (Preserve the exact immutable original placeholder link.) --><a href="#">second link</a>.</AlertDescription></Alert>
       <Alert><IconPlaceholder
           lucide="CircleAlertIcon"
           tabler="IconExclamationCircle"
