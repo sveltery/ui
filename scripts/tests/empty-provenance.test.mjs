@@ -113,5 +113,17 @@ test('finite source integration preserves full historical proof and exactly bind
   }
   assert.deepEqual(changed, manifest.changes.map(change => change.path));
   assert.equal(currentPaths.length, 665);
-  assert.equal(manifest.changes.length, 21);
+  assert.equal(manifest.changes.length, 22);
+});
+
+test('source faithful shared Example gap repair removes formatting only and preserves every original input', () => {
+  const manifest = JSON.parse(readFileSync('diagnostics/alert-child-segmentation/source-authentication.json', 'utf8'));
+  const path = 'apps/docs/registry/bases/base/ui/example/Example.svelte';
+  const entry = manifest.changes.find(change => change.path === path);
+  const repaired = readFileSync(path, 'utf8');
+  const before = repaired.replace('{/if}<div data-slot="example-content"', '{/if}\n  <div data-slot="example-content"');
+  assert.equal(repaired.split('{/if}<div data-slot="example-content"').length, 2);
+  assert.equal(Buffer.byteLength(before), entry.before[2]);
+  assert.equal(createHash('sha256').update(before).digest('hex'), entry.before[3]);
+  assert.equal(createHash('sha1').update(`blob ${Buffer.byteLength(before)}\0`).update(before).digest('hex'), entry.before[4]);
 });

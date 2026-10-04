@@ -128,11 +128,12 @@ function tree(root: string, ref: string) {
 // Finite current-source integration. Historical rows are genuine immutable Git
 // inventories; this pair establishes consistency only within actual HEAD and
 // independently reviewed external baseline/final-source authority.
-const sourceAuthenticationManifestSha256 = '1260b2ed1a424c862ae2096536b136acb98d065769cdd05f9ebbc309d7d98a6b';
+const sourceAuthenticationManifestSha256 = 'c326caa1a8fbf6b1e2f2561d73f8ca5d0d9df4807a70a0345e8f661e8813d78c';
 const sourceAuthenticationPath = 'diagnostics/alert-child-segmentation/source-authentication.json';
 const sourceConfigPath = 'diagnostics/alert-child-segmentation/vite.config.ts';
 const sourceLedgerPaths = [
   'apps/docs/examples/base/EmptyExample.svelte', 'apps/docs/examples/base/EmptyGalleryFixture.svelte',
+  'apps/docs/registry/bases/base/ui/example/Example.svelte',
   'apps/docs/src/routes/empty/+page.svelte', 'apps/docs/src/routes/empty-reference/+page.server.ts', 'apps/docs/src/routes/empty-reference/+page.svelte',
   sourceAuthenticationPath, sourceConfigPath, 'docs/empty.md', 'docs/readiness.md', 'docs/upstream-differences.md',
   'scripts/check-empty-ssr.mjs', 'scripts/check-installation.mjs', 'scripts/installation-playwright.config.ts', 'scripts/tests/empty-provenance.test.mjs',

@@ -61,5 +61,10 @@ export async function emptyTrustedActions(page: Page) {
   });
   for (const button of await page.locator(`${emptyWrapper} button`).all()) { await button.focus(); await page.keyboard.press('Enter'); await page.keyboard.press('Space'); }
   for (const anchor of await page.locator(`${emptyWrapper} a`).all()) { await anchor.focus(); await page.keyboard.press('Enter'); }
-  return page.evaluate(() => (window as unknown as { emptyClicks: unknown[] }).emptyClicks);
+  const records = await page.evaluate(() => (window as unknown as { emptyClicks: unknown[] }).emptyClicks);
+  const expectedButtons = ['Import project', 'Try again', 'New Post', 'Import project'].flatMap(text => Array(2).fill({ tag: 'BUTTON', text, trusted: true, key: 0 }));
+  const expectedAnchors = ['Create project', 'Learn more ', 'Learn more ', 'creating your first post', 'Create project', 'Learn more '].map(text => ({ tag: 'A', text, trusted: true, key: 0 }));
+  expect(records).toHaveLength(14);
+  expect(records).toEqual([...expectedButtons, ...expectedAnchors]);
+  return records;
 }
