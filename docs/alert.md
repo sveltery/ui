@@ -14,7 +14,7 @@ The [Nova source subset](../tests/reference/alert-nova.css) is pinned lines 19â€
 
 At the historical Basic scaffold checkpoint, only **Basic** was selected from the [complete pinned examples](../tests/reference/alert-example.tsx). Its three Alert compositions preserve exact text, classes and title/description combinations. The [Svelte example](../apps/docs/examples/base/AlertExample.svelte) now composes the genuine [Example/ExampleWrapper helpers](example.md) with the original `lg:grid-cols-1` wrapper class. The [React gallery](../tests/reference/AlertGallery.tsx) imports the complete immutable helpers and retains the selected `AlertExample1` function byte for byte (653 bytes, SHA-256 `06232817198d3f9553279ec9fda846b7b35eeacaf1d72db3fb3af81292b370b1`). The earlier PR21 native section/heading substitution remains historical evidence; this bounded repair completes no omitted function or full four-function gallery. Final-head review and delivery gates remain required before landing.
 
-## Historical Basic scaffold source mapping
+## Basic scaffold source mapping
 
 All original paths below are under `apps/v4/registry/bases/base/` at immutable shadcn commit `d75a96ab781f3d659be1ad287347d5887ce9f2fc`. Complete examples, Alert, Example helpers, original globals/support CSS and MIT notice remain authenticated and unchanged. No dedicated upstream Alert runtime suite exists; the following checks are authored source-derived supplements, with zero copied ordinary upstream Alert test credit.
 
