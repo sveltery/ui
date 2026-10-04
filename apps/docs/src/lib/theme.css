@@ -9,8 +9,26 @@
 @custom-variant dark (&:is(.dark *));
 @source "../../../../packages/ui/dist";
 @source "../../../../tests/reference";
-/* Original app/globals.css body and active-pointer environment at shadcn d75a96ab781f3d659be1ad287347d5887ce9f2fc; MIT attribution in THIRD_PARTY_NOTICES.md. */
+/* Original app/globals.css reachable selection/document/body/active-pointer environment at shadcn d75a96ab781f3d659be1ad287347d5887ce9f2fc; MIT attribution in THIRD_PARTY_NOTICES.md. */
+@theme inline {
+  --color-selection: var(--selection);
+  --color-selection-foreground: var(--selection-foreground);
+}
+:root {
+  --selection: oklch(0% 0 0);
+  --selection-foreground: oklch(1 0 0);
+}
+.dark {
+  --selection: oklch(0.922 0 0);
+  --selection-foreground: oklch(0.205 0 0);
+}
 @layer base {
+  ::selection {
+    @apply bg-selection text-selection-foreground;
+  }
+  html {
+    @apply overscroll-y-none;
+  }
   body {
     position: relative;
     font-synthesis-weight: none;

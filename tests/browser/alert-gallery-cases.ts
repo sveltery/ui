@@ -208,3 +208,37 @@ export async function alertLinkPointerMeasurements(page: Page, width: number) {
   }
   return records;
 }
+
+// Original globals.css:95–96/139–140/182–183/195–200; genuine selected text, no substitute document.
+export async function alertSelectionMeasurements(page: Page, dark: boolean) {
+  try {
+    const actual = await page.locator(`${alertGallery} [data-slot=alert-title]`).first().evaluate(node => {
+      const text = document.createTreeWalker(node, NodeFilter.SHOW_TEXT).nextNode();
+      if (!text || text.nodeType !== Node.TEXT_NODE) throw new Error('Actual first Alert title text node missing');
+      const selection = window.getSelection();
+      if (!selection) throw new Error('Actual native document Selection missing');
+      const range = document.createRange(); range.selectNodeContents(text);
+      selection.removeAllRanges(); selection.addRange(range);
+      const selected = selection.getRangeAt(0); const pseudo = getComputedStyle(node, '::selection');
+      const html = document.documentElement; const root = getComputedStyle(html);
+      return {
+        host: { tag: node.localName, slot: node.getAttribute('data-slot'), text: node.textContent },
+        textNode: { type: text.nodeType, value: text.nodeValue, parentIsHost: text.parentNode === node },
+        selection: { text: selection.toString(), count: selection.rangeCount, type: selection.type, collapsed: selection.isCollapsed, anchorIsText: selection.anchorNode === text, anchorOffset: selection.anchorOffset, focusIsText: selection.focusNode === text, focusOffset: selection.focusOffset },
+        range: { text: selected.toString(), startIsText: selected.startContainer === text, startOffset: selected.startOffset, endIsText: selected.endContainer === text, endOffset: selected.endOffset, commonAncestorIsText: selected.commonAncestorContainer === text, selectedIsCreatedRange: selected === range },
+        pseudo: { foreground: pseudo.color, background: pseudo.backgroundColor },
+        tokens: { foreground: root.getPropertyValue('--selection-foreground'), background: root.getPropertyValue('--selection') },
+        root: { tag: html.localName, belongsToActualDocument: html.ownerDocument === document, overscrollY: root.getPropertyValue('overscroll-behavior-y'), overscrollX: root.getPropertyValue('overscroll-behavior-x'), overscroll: root.getPropertyValue('overscroll-behavior') },
+      };
+    });
+    const text = titleTexts[0];
+    expect(actual).toMatchObject({
+      host: { tag: 'div', slot: 'alert-title', text }, textNode: { type: 3, value: text, parentIsHost: true },
+      selection: { text, count: 1, type: 'Range', collapsed: false, anchorIsText: true, anchorOffset: 0, focusIsText: true, focusOffset: text.length },
+      range: { text, startIsText: true, startOffset: 0, endIsText: true, endOffset: text.length, commonAncestorIsText: true },
+      pseudo: { foreground: dark ? 'oklch(0.205 0 0)' : 'oklch(1 0 0)', background: dark ? 'oklch(0.922 0 0)' : 'oklch(0 0 0)' },
+      root: { tag: 'html', belongsToActualDocument: true, overscrollY: 'none' },
+    });
+    return actual;
+  } finally { await page.evaluate(() => window.getSelection()?.removeAllRanges()); }
+}

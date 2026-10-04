@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { alertLifecycleCases, alertNativeAssertions, alertState } from '../browser/alert-cases';
-import { alertGallery, alertHTMLHosts, alertLibraries, alertStyles, alertWidths, alertTheme, settledAlert, alertGalleryTree, alertLinkPointerMeasurements, assertAlertGallery, assertAlertNativeLinks } from '../browser/alert-gallery-cases';
+import { alertGallery, alertHTMLHosts, alertLibraries, alertStyles, alertWidths, alertTheme, settledAlert, alertGalleryTree, alertLinkPointerMeasurements, alertSelectionMeasurements, assertAlertGallery, assertAlertNativeLinks } from '../browser/alert-gallery-cases';
 alertLifecycleCases();
 const basicExample = '[data-alert-gallery] > [data-slot="example"]:first-child';
 test('fresh archive/source-copy Alert parts retain native actions/variants/Nova rules and bounded Basic composition', async ({ page, request }, testInfo) => {
@@ -120,6 +120,19 @@ test('fresh archive/source-copy all four Alert anchors retain paired original he
     for (const width of [390, 767, 768, 1280]) await test.step(`${width}px actual fresh consumer and original pointers`, async () => {
       for (const current of [page, original]) { await current.setViewportSize({ width, height: 1800 }); await alertTheme(current, 'nova', false); }
       expect(await alertLinkPointerMeasurements(page, width)).toEqual(await alertLinkPointerMeasurements(original, width));
+    });
+  } finally { await original.close(); }
+});
+
+
+test('fresh archive/source-copy actual Alert selection and root overscroll retain original light/dark globals', async ({ page, context }) => {
+  const original = await context.newPage();
+  try {
+    await page.goto('/alert'); await original.goto('http://127.0.0.1:5175/alert');
+    await settledAlert(page); await settledAlert(original);
+    for (const style of alertStyles) for (const dark of [false, true]) for (const width of [390, 1280]) await test.step(`${style} ${dark ? 'dark' : 'light'} ${width}px actual fresh selection and root`, async () => {
+      for (const current of [page, original]) { await current.setViewportSize({ width, height: 900 }); await alertTheme(current, style, dark); }
+      expect(await alertSelectionMeasurements(page, dark)).toEqual(await alertSelectionMeasurements(original, dark));
     });
   } finally { await original.close(); }
 });

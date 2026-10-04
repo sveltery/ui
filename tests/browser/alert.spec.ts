@@ -2,7 +2,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { writeFile } from 'node:fs/promises';
 import { alertLifecycleCases, alertNativeAssertions } from './alert-cases';
-import { alertGallery, alertHTMLHosts, alertLibraries, alertStyles, alertWidths, alertTheme, settledAlert, alertGalleryTree, alertGalleryMeasurements, alertInlineTypographyDiagnostics, alertLongTextMeasurements, alertLinkPointerMeasurements, assertAlertGallery, assertAlertNativeLinks } from './alert-gallery-cases';
+import { alertGallery, alertHTMLHosts, alertLibraries, alertStyles, alertWidths, alertTheme, settledAlert, alertGalleryTree, alertGalleryMeasurements, alertInlineTypographyDiagnostics, alertLongTextMeasurements, alertLinkPointerMeasurements, alertSelectionMeasurements, assertAlertGallery, assertAlertNativeLinks } from './alert-gallery-cases';
 alertLifecycleCases();
 const selector = '[data-testid="composition"] *, [data-testid="selectors"] *';
 async function snapshot(page: Page) {
@@ -209,6 +209,19 @@ test('all four original Alert anchors preserve paired held and released pointer 
     for (const width of [390, 767, 768, 1280]) await test.step(`${width}px actual native and original pointers`, async () => {
       for (const current of [page, original]) { await current.setViewportSize({ width, height: 1800 }); await alertTheme(current, 'nova', false); }
       expect(await alertLinkPointerMeasurements(page, width)).toEqual(await alertLinkPointerMeasurements(original, width));
+    });
+  } finally { await original.close(); }
+});
+
+
+test('actual Alert text selection and document overscroll preserve original light/dark globals', async ({ page, context }) => {
+  const original = await context.newPage();
+  try {
+    await page.goto('/alert'); await original.goto('http://127.0.0.1:5175/alert');
+    await settledAlert(page); await settledAlert(original);
+    for (const style of alertStyles) for (const dark of [false, true]) for (const width of [390, 1280]) await test.step(`${style} ${dark ? 'dark' : 'light'} ${width}px actual selection and root`, async () => {
+      for (const current of [page, original]) { await current.setViewportSize({ width, height: 900 }); await alertTheme(current, style, dark); }
+      expect(await alertSelectionMeasurements(page, dark)).toEqual(await alertSelectionMeasurements(original, dark));
     });
   } finally { await original.close(); }
 });
