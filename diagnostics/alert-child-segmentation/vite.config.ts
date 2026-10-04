@@ -76,7 +76,7 @@ const observationBaselines: Record<string, [number, string]> = {
 const authoredFiles = ['diagnostics/alert-child-segmentation/vite.config.ts', 'diagnostics/alert-child-segmentation/playwright.config.ts', 'diagnostics/alert-child-segmentation/segmentation.spec.ts'];
 const nativeGalleryPath = 'apps/docs/examples/base/AlertExample.svelte';
 const nativeDeclaration = `  {#snippet alertDescriptionPrefix()}${prefix}{/snippet}\n`;
-const nativeExpression = "{@render alertDescriptionPrefix()}{' '}";
+const nativeExpression = "{@render alertDescriptionPrefix()} ";
 const viewportCallers: Record<string, [number, string]> = {
   'tests/browser/alert.spec.ts': [27851, 'a9b4f11a2de284d6fa3b06fd504c5cf50fae1bfbab40de309e5226ddea3f651a'],
   'tests/installation/alert.spec.ts': [19862, '476e9ffeaf4fce5b2c1d688fc2a19820ec8eeaed020a0172f427e4868e6eefe1'],
@@ -90,7 +90,7 @@ export function authenticatedNativeGallery(code: string) {
   const declarationCount = code.split(nativeDeclaration).length - 1;
   const expressionCount = code.split(nativeExpression).length - 1;
   const candidate = { bytes: Buffer.byteLength(code), sha256: sha256(code) };
-  const candidateMatches = candidate.bytes === 5735 && candidate.sha256 === 'b167d8a81c6c8169deba0acfda1d6bcfe8de6c8b6dd824308d983ca0c2ee8953';
+  const candidateMatches = candidate.bytes === 5731 && candidate.sha256 === 'a904f98a492a26129f97716ef701056fef6e36946fa28a41c5642e48b58aaf9c';
   const ownerMatches = code.includes(`{#snippet AlertExample2()}\n${nativeDeclaration}`);
   const inverse = code.replace(nativeDeclaration, '').replace(nativeExpression, `${prefix} `);
   const baseline = { head: '38e3c8ef3a7f92073d5bb18c82c017d697e5ef58', bytes: 5649, sha256: 'bd9246b1f64fd3f64b795d972c3b243bf7edc050af7f1f344689ab69bd1aea41' };
