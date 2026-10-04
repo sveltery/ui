@@ -119,7 +119,7 @@ export async function assertAlertGallery(page: Page, width: number, style = 'nov
       links: [...wrapper.querySelectorAll('a')].map(node => ({ ...record(node), href: node.getAttribute('href'), text: node.textContent, tab: node.tabIndex, role: node.getAttribute('role'), decoration: getComputedStyle(node).textDecorationLine, offset: getComputedStyle(node).textUnderlineOffset })),
       payment: [...alerts.at(-1)!.querySelector('[data-slot=alert-description]')!.children].map(node => ({ ...record(node), text: node.localName === 'p' ? node.textContent : null, children: [...node.children].map(record) })),
       list: [...wrapper.querySelectorAll('li')].map(node => ({ ...record(node), text: node.textContent, display: getComputedStyle(node).display })),
-      svg: [...wrapper.querySelectorAll('svg')].map(node => ({ direct: node.parentElement!.getAttribute('data-slot'), first: node === node.parentElement!.firstElementChild, width: node.getBoundingClientRect().width, height: node.getBoundingClientRect().height, row: getComputedStyle(node).gridRow, children: node.children.length })),
+      svg: [...wrapper.querySelectorAll('svg')].map(node => ({ direct: node.parentElement!.getAttribute('data-slot'), first: node === node.parentElement!.firstElementChild, width: node.getBoundingClientRect().width, height: node.getBoundingClientRect().height, row: getComputedStyle(node).gridRow, gridRowStart: getComputedStyle(node).gridRowStart, gridRowEnd: getComputedStyle(node).gridRowEnd, children: node.children.length })),
       selectors: { title: [...wrapper.querySelectorAll('[data-slot=alert-title]')].map(node => ({ weight: getComputedStyle(node).fontWeight, column: getComputedStyle(node).gridColumnStart })), paragraphMargin: getComputedStyle(wrapper.querySelector('p')!).marginBottom, listType: getComputedStyle(wrapper.querySelector('ul')!).listStyleType, listPosition: getComputedStyle(wrapper.querySelector('ul')!).listStylePosition },
     };
   });
@@ -139,7 +139,7 @@ export async function assertAlertGallery(page: Page, width: number, style = 'nov
   expect(actual.payment).toEqual([{ tag: 'P', attrs: [], class: null, text: 'Please verify your billing information and try again.', children: [{ tag: 'A', attrs: ['href'], class: null }] }, { tag: 'UL', attrs: ['class'], class: 'list-inside list-disc', text: null, children: Array(3).fill({ tag: 'LI', attrs: [], class: null }) }]);
   expect(actual.list).toEqual(['Check your card details', 'Ensure sufficient funds', 'Verify billing address'].map(text => ({ tag: 'LI', attrs: [], class: null, text, display: 'list-item' })));
   const iconSize = style === 'mira' ? 14 : 16; // Immutable Mira size-3.5; all seven other Alert scopes use size-4.
-  for (const svg of actual.svg) { expect(svg).toMatchObject({ direct: 'alert', first: true, width: iconSize, height: iconSize, row: 'span 2' }); expect(svg.children).toBeGreaterThan(0); }
+  for (const svg of actual.svg) { expect(svg).toMatchObject({ direct: 'alert', first: true, width: iconSize, height: iconSize, gridRowStart: 'span 2', gridRowEnd: 'span 2' }); expect(svg.children).toBeGreaterThan(0); }
   const glyphs = await page.locator(`${alertGallery} svg`).evaluateAll(nodes => {
     const tree = (node: Element): unknown => ({ tag: node.localName, attrs: Object.fromEntries([...node.attributes].map(attr => [attr.name, attr.value]).sort(([a], [b]) => a.localeCompare(b))), text: [], children: [...node.children].map(tree) });
     return nodes.map(tree);
