@@ -1,7 +1,7 @@
 node_modules/
 .checks/
-.vendor/*
-!.vendor/sveltery-base-0.0.0.tgz
+/.vendor/*
+!/.vendor/sveltery-base-0.0.0.tgz
 **/dist/
 **/.svelte-kit/
 **/build/
