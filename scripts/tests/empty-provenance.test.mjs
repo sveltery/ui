@@ -175,3 +175,19 @@ test('eight inert icon control and HMR-body encodings preserve the complete help
   assert.equal(createHash('sha256').update(before).digest('hex'), entry.before[3]);
   assert.equal(createHash('sha1').update(`blob ${Buffer.byteLength(before)}\0`).update(before).digest('hex'), entry.before[4]);
 });
+
+test('Empty theme readiness preserves the complete prior helper and all strict tree/measurement/action functions', () => {
+  const source = readFileSync('tests/browser/empty-gallery-cases.ts', 'utf8');
+  const region = /\/\* empty-theme-readiness:start \*\/[\s\S]*?\/\* empty-theme-readiness:end \*\//gu;
+  assert.equal([...source.matchAll(region)].length, 1);
+  const restored = source.replace(region, 'export const emptyTheme = kbdTheme;');
+  assert.equal(Buffer.byteLength(restored), 7528);
+  assert.equal(createHash('sha256').update(restored).digest('hex'), '4fbe065430e8ef213ca5f3bea11439b22abda29b2d20ab45fa86e6a689101a65');
+  const ast = ts.createSourceFile('empty-gallery-cases.ts', source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+  const expected = {"settledEmpty":"13ed9df08db6dd1b7da031ce51d5104ababa56c9ec63b012ab1ca03ee1548f2e","emptyTree":"65487a4e19622a09e657d74453c79fd15ed8eefa83b585919448762f4bb3ee2d","emptyMeasurements":"75257ba17d0ef8c29421bc2f5cb3639ea7226582b4c4d30fd6a8b2aef5206dec","assertEmptyGallery":"4e46772c9f2f3227a9c45fe13e91f8663b5d93c802bb6c35f31386d8d90f1ce7","emptyTrustedActions":"fcc07c9582269bb2e48a21ce45a63974c5e1af16858026547357407549d15f3d"};
+  for (const [name, digest] of Object.entries(expected)) {
+    const nodes = ast.statements.filter(node => ts.isFunctionDeclaration(node) && node.name?.text === name);
+    assert.equal(nodes.length, 1, name);
+    assert.equal(createHash('sha256').update(nodes[0].getText(ast)).digest('hex'), digest, name);
+  }
+});

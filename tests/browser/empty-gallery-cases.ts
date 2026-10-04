@@ -5,7 +5,63 @@ export const emptyWrapper = '[data-slot="example-wrapper"]';
 export const emptyHTMLHosts = `div:has(> ${emptyWrapper}), ${emptyWrapper}, ${emptyWrapper} *:not(svg):not(svg *)`;
 export const emptyLibraries = ['lucide', 'tabler', 'hugeicons', 'phosphor', 'remixicon'] as const;
 export const emptyStyles = ['nova', 'vega', 'maia', 'lyra', 'mira', 'luma', 'sera', 'rhea'];
-export const emptyTheme = kbdTheme;
+/* empty-theme-readiness:start */
+import { THEMES } from '../../scripts/theme-assets.mjs';
+const emptyReadinessObserved = new WeakSet<Page>();
+export async function emptyTheme(page: Page, style: string, dark: boolean) {
+  await kbdTheme(page, style, dark);
+  const tokens = { ...THEMES.find(record => record.name === 'neutral')!.cssVars[dark ? 'dark' : 'light'] };
+  const witness = await page.locator(`${emptyHTMLHosts}, ${emptyWrapper} svg`).evaluateAll(async (nodes, input) => {
+    if (nodes.length !== 54) throw new Error('Empty theme readiness requires all 48 HTML and six SVG hosts');
+    if (typeof CSSTransition !== 'function') throw new Error('CSS transition observation is unavailable');
+    const flush = () => { for (const node of nodes) { getComputedStyle(node); node.getBoundingClientRect(); } };
+    const active = () => [...new Set(nodes.flatMap(node => node.getAnimations()))].filter(animation => animation instanceof CSSTransition && (animation.pending || !['finished', 'idle'].includes(animation.playState))) as CSSTransition[];
+    const sample = () => {
+      const wrapper = document.querySelector('[data-slot="example-wrapper"]')!;
+      const primary = getComputedStyle(wrapper.querySelector('.cn-button-variant-default')!);
+      const outline = getComputedStyle(wrapper.querySelector('.cn-button-variant-outline')!);
+      const plus = getComputedStyle(wrapper.querySelector('svg[data-icon="inline-start"]')!);
+      return { primaryBackground: primary.backgroundColor, outlineColor: outline.color, plusColor: plus.color, plusFill: plus.fill, plusStroke: plus.stroke };
+    };
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const fontsBefore = document.fonts.status;
+    try {
+      return await Promise.race([
+        (async () => {
+          await document.fonts.ready;
+          flush();
+          const transitions = active();
+          const before = sample();
+          const properties = [...new Set(transitions.map(transition => transition.transitionProperty))].sort();
+          const durations = transitions.map(transition => transition.effect!.getComputedTiming().endTime);
+          const states = [...new Set(transitions.map(transition => transition.playState))].sort();
+          await Promise.all(transitions.map(transition => transition.finished));
+          flush();
+          const remaining = active();
+          if (remaining.length) throw new Error(`Empty theme has ${remaining.length} unfinished CSS transitions`);
+          const root = document.documentElement;
+          return { style: input.style, dark: input.dark, className: root.className, tokens: Object.fromEntries(Object.keys(input.tokens).map(name => [name, root.style.getPropertyValue(`--${name}`)])), fontSans: root.style.getPropertyValue('--font-sans'), fontHeading: root.style.getPropertyValue('--font-heading'), fontsBefore, fontsAfter: document.fonts.status, transitionCount: transitions.length, transitionProperties: properties, transitionStates: states, transitionEndTimes: [...new Set(durations)], remainingTransitions: remaining.length, before, after: sample() };
+        })(),
+        new Promise<never>((_, reject) => { timer = setTimeout(() => reject(new Error('Empty fonts/CSS transitions did not settle within 5000ms')), 5000); }),
+      ]);
+    } finally {
+      if (timer !== undefined) clearTimeout(timer);
+    }
+  }, { style, dark, tokens });
+  expect(witness.className).toBe(`style-${style}${dark ? ' dark' : ''}`);
+  expect(witness.tokens).toEqual(tokens);
+  expect(witness.fontSans).toBe('ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"');
+  expect(witness.fontHeading).toBe('inherit');
+  expect(witness.fontsAfter).toBe('loaded');
+  expect(witness.remainingTransitions).toBe(0);
+  if (!emptyReadinessObserved.has(page)) {
+    const observation = JSON.stringify(witness);
+    expect(Buffer.byteLength(observation)).toBeLessThanOrEqual(4096);
+    console.log('Empty theme readiness:', observation);
+    emptyReadinessObserved.add(page);
+  }
+}
+/* empty-theme-readiness:end */
 export async function settledEmpty(page: Page) {
   await expect(page.locator(`${emptyWrapper} svg`)).toHaveCount(6);
   await expect(page.locator(`${emptyWrapper} svg.lucide-square`)).toHaveCount(0);
