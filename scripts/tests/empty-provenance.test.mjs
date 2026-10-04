@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { execFileSync } from 'node:child_process';
 import ts from 'typescript';
+import { parse as parseSvelte } from 'svelte/compiler';
 
 test('immutable Empty wrapper, complete deferred examples and scoped Nova retain byte-exact provenance', () => {
   const pin = JSON.parse(readFileSync('tests/reference/empty-sources.json', 'utf8'));
@@ -113,7 +114,7 @@ test('finite source integration preserves full historical proof and exactly bind
   }
   assert.deepEqual(changed, manifest.changes.map(change => change.path));
   assert.equal(currentPaths.length, 665);
-  assert.equal(manifest.changes.length, 22);
+  assert.equal(manifest.changes.length, 23);
 });
 
 test('source faithful shared Example gap repair removes formatting only and preserves every original input', () => {
@@ -123,6 +124,35 @@ test('source faithful shared Example gap repair removes formatting only and pres
   const repaired = readFileSync(path, 'utf8');
   const before = repaired.replace('{/if}<div data-slot="example-content"', '{/if}\n  <div data-slot="example-content"');
   assert.equal(repaired.split('{/if}<div data-slot="example-content"').length, 2);
+  assert.equal(Buffer.byteLength(before), entry.before[2]);
+  assert.equal(createHash('sha256').update(before).digest('hex'), entry.before[3]);
+  assert.equal(createHash('sha1').update(`blob ${Buffer.byteLength(before)}\0`).update(before).digest('hex'), entry.before[4]);
+});
+
+test('five inert icon control encodings preserve the complete helper and allow only literal-empty single-directive lint exceptions', () => {
+  const manifest = JSON.parse(readFileSync('diagnostics/alert-child-segmentation/source-authentication.json', 'utf8'));
+  const path = 'apps/docs/registry/bases/base/ui/icons/IconPlaceholder.svelte';
+  const source = readFileSync(path, 'utf8');
+  const ast = parseSvelte(source, { modern: true });
+  const directives = [];
+  const walk = node => { if (!node || typeof node !== 'object') return; if (node.type === 'HtmlTag') directives.push(node); for (const value of Object.values(node)) { if (Array.isArray(value)) value.forEach(walk); else if (value && typeof value === 'object') walk(value); } };
+  walk(ast.fragment);
+  assert.equal(directives.length, 5);
+  for (const node of directives) {
+    assert.equal(node.expression.type, 'Literal'); assert.equal(node.expression.value, ''); assert.equal(node.expression.raw, "''");
+    assert.equal(source.slice(node.start, node.end), "{@html ''}");
+  }
+  const exception = '<!-- eslint-disable-next-line svelte/no-at-html-tags -->';
+  assert.equal(source.split('eslint-disable').length - 1, 5);
+  assert.equal(source.split(exception).length - 1, 5);
+  let before = source;
+  for (const [control, indent] of [['{#if name}', ''], ['{#if available !== undefined}', '  '], ['{#if available}', '    '], ['{#await pending}', '    '], ['{#if data}', '      ']]) {
+    const encoding = `${indent}${exception}\n${indent}{@html ''}${control}`;
+    assert.equal(source.split(encoding).length, 2);
+    before = before.replace(encoding, `${indent}${control}`);
+  }
+  before = before.replace('  // Pinned original d75a96ab icon children have no empty HTML text siblings.\n  // Svelte 5.57.1 standalone branch fragments create empty Text ownership anchors.\n  // Five constant-empty HTML encodings retain comment-only template ownership,\n  // preserving every original condition/await and all loader/cache behavior.\n', '');
+  const entry = manifest.changes.find(change => change.path === path);
   assert.equal(Buffer.byteLength(before), entry.before[2]);
   assert.equal(createHash('sha256').update(before).digest('hex'), entry.before[3]);
   assert.equal(createHash('sha1').update(`blob ${Buffer.byteLength(before)}\0`).update(before).digest('hex'), entry.before[4]);
