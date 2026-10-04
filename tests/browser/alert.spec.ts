@@ -1,7 +1,7 @@
 // Supplemental source-derived comparisons executing actual immutable wrappers, not an upstream test-port inventory.
 import { expect, test, type Page } from '@playwright/test';
 import { alertLifecycleCases, alertNativeAssertions } from './alert-cases';
-import { alertGallery, alertHTMLHosts, alertLibraries, alertStyles, alertWidths, alertTheme, settledAlert, alertGalleryTree, alertGalleryMeasurements, alertLongTextMeasurements, assertAlertGallery, assertAlertNativeLinks } from './alert-gallery-cases';
+import { alertGallery, alertHTMLHosts, alertLibraries, alertStyles, alertWidths, alertTheme, settledAlert, alertGalleryTree, alertGalleryMeasurements, alertInlineTypographyDiagnostics, alertLongTextMeasurements, assertAlertGallery, assertAlertNativeLinks } from './alert-gallery-cases';
 alertLifecycleCases();
 const selector = '[data-testid="composition"] *, [data-testid="selectors"] *';
 async function snapshot(page: Page) {
@@ -168,7 +168,7 @@ test('all three genuine Alert bodies preserve the 50 native SSR hosts while cano
   } finally { release(); await reference.close(); }
 });
 
-for (const library of alertLibraries) test(`three original Alert bodies and canonical ${library} glyphs match full original CSS in all eight styles and modes`, async ({ page, context }) => {
+for (const library of alertLibraries) test(`three original Alert bodies and canonical ${library} glyphs match full original CSS in all eight styles and modes`, async ({ page, context }, testInfo) => {
   test.setTimeout(180_000); // All 96 style/mode/breakpoint combinations use actual source and real library modules.
   const original = await context.newPage(); const errors: string[] = [];
   for (const current of [page, original]) { current.on('pageerror', error => errors.push(error.message)); current.on('console', message => { if (message.type() === 'error') errors.push(message.text()); }); }
@@ -179,7 +179,18 @@ for (const library of alertLibraries) test(`three original Alert bodies and cano
     for (const style of alertStyles) for (const dark of [false, true]) for (const width of alertWidths) await test.step(`${style} ${dark ? 'dark' : 'light'} ${width}px`, async () => {
       for (const current of [page, original]) { await current.setViewportSize({ width, height: 1800 }); await alertTheme(current, style, dark); await assertAlertGallery(current, width, style, library); }
       expect(await alertGalleryTree(page)).toEqual(await alertGalleryTree(original));
-      expect(await alertGalleryMeasurements(page)).toEqual(await alertGalleryMeasurements(original));
+      const nativeMeasurements = await alertGalleryMeasurements(page);
+      const originalMeasurements = await alertGalleryMeasurements(original);
+      try { expect(nativeMeasurements).toEqual(originalMeasurements); }
+      catch (assertionError) {
+        try {
+          const trace = { library, style, dark, width, differingMeasurements: nativeMeasurements.flatMap((native, index) => JSON.stringify(native) === JSON.stringify(originalMeasurements[index]) ? [] : [{ index, native, original: originalMeasurements[index] }]), native: await alertInlineTypographyDiagnostics(page), original: await alertInlineTypographyDiagnostics(original) };
+          const body = JSON.stringify(trace, null, 2);
+          console.log(`Authored Alert strict geometry failure observations: ${body}`);
+          await testInfo.attach('alert-strict-geometry-failure-observations', { body, contentType: 'application/json' });
+        } catch (diagnosticError) { console.log(`Authored Alert diagnostic capture failed: ${String(diagnosticError)}`); }
+        throw assertionError;
+      }
       expect(await alertLongTextMeasurements(page)).toEqual(await alertLongTextMeasurements(original));
     });
     for (const current of [page, original]) await assertAlertNativeLinks(current);

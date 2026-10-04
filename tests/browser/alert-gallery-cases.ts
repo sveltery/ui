@@ -89,8 +89,28 @@ export async function alertGalleryMeasurements(page: Page) {
     return nodes.map(node => {
       const s = getComputedStyle(node); const r = node.getBoundingClientRect();
       const after = node.getAttribute('data-slot') === 'alert' ? getComputedStyle(node, '::after') : null;
-      return { tag: node.localName, slot: node.getAttribute('data-slot'), class: node.getAttribute('class'), x: r.x - shell.x, y: r.y - shell.y, width: r.width, height: r.height, display: s.display, position: s.position, minWidth: s.minWidth, maxWidth: s.maxWidth, minHeight: s.minHeight, columns: s.gridTemplateColumns, rows: s.gridTemplateRows, gridColumn: s.gridColumn, gridRow: s.gridRow, gap: s.gap, padding: s.padding, margin: s.margin, border: s.border, radius: s.borderRadius, fontSize: s.fontSize, fontWeight: s.fontWeight, fontFamily: s.fontFamily, lineHeight: s.lineHeight, background: s.backgroundColor, color: s.color, align: s.alignItems, justify: s.justifyContent, textAlign: s.textAlign, textWrap: s.textWrap, overflow: s.overflow, transform: s.transform, translate: s.translate, fill: s.fill, stroke: s.stroke, strokeWidth: s.strokeWidth, decoration: s.textDecoration, underlineOffset: s.textUnderlineOffset, listType: s.listStyleType, listPosition: s.listStylePosition, after: after ? { content: after.content, width: after.width, position: after.position, background: after.backgroundColor, top: after.top, right: after.right, bottom: after.bottom, left: after.left } : null, tab: (node as HTMLElement).tabIndex, role: node.getAttribute('role') };
+      return { tag: node.localName, slot: node.getAttribute('data-slot'), class: node.getAttribute('class'), x: r.x - shell.x, y: r.y - shell.y, width: r.width, height: r.height, display: s.display, position: s.position, minWidth: s.minWidth, maxWidth: s.maxWidth, minHeight: s.minHeight, columns: s.gridTemplateColumns, rows: s.gridTemplateRows, gridColumn: s.gridColumn, gridRow: s.gridRow, gap: s.gap, padding: s.padding, margin: s.margin, border: s.border, radius: s.borderRadius, fontSize: s.fontSize, fontWeight: s.fontWeight, fontFamily: s.fontFamily, fontSynthesisWeight: s.getPropertyValue('font-synthesis-weight'), textRendering: s.textRendering, fontKerning: s.fontKerning, fontFeatureSettings: s.fontFeatureSettings, fontVariationSettings: s.fontVariationSettings, letterSpacing: s.letterSpacing, wordSpacing: s.wordSpacing, lineHeight: s.lineHeight, background: s.backgroundColor, color: s.color, align: s.alignItems, justify: s.justifyContent, textAlign: s.textAlign, textWrap: s.textWrap, overflow: s.overflow, transform: s.transform, translate: s.translate, fill: s.fill, stroke: s.stroke, strokeWidth: s.strokeWidth, decoration: s.textDecoration, underlineOffset: s.textUnderlineOffset, listType: s.listStyleType, listPosition: s.listStylePosition, after: after ? { content: after.content, width: after.width, position: after.position, background: after.backgroundColor, top: after.top, right: after.right, bottom: after.bottom, left: after.left } : null, tab: (node as HTMLElement).tabIndex, role: node.getAttribute('role') };
     });
+  });
+}
+// Authored failure-only observations. Reads actual DOM/style/ranges without changing them.
+export async function alertInlineTypographyDiagnostics(page: Page) {
+  return page.locator(alertGallery).evaluate(wrapper => {
+    const fields = ['position', 'font-family', 'font-size', 'font-weight', 'font-style', 'font-stretch', 'font-kerning', 'font-feature-settings', 'font-variation-settings', 'font-synthesis', 'font-synthesis-weight', 'font-optical-sizing', 'font-variant-ligatures', 'letter-spacing', 'word-spacing', 'line-height', 'text-rendering', 'text-wrap', 'text-wrap-mode', 'text-wrap-style', 'white-space', 'direction', 'writing-mode'];
+    const rect = (value: DOMRect) => ({ x: value.x, y: value.y, width: value.width, height: value.height, top: value.top, right: value.right, bottom: value.bottom, left: value.left });
+    const styles = (node: Element) => { const css = getComputedStyle(node); return Object.fromEntries(fields.map(name => [name, css.getPropertyValue(name)])); };
+    const record = (node: Element) => ({ tag: node.localName, attrs: Object.fromEntries([...node.attributes].map(attr => [attr.name, attr.value])), text: node.textContent, rect: rect(node.getBoundingClientRect()), clientRects: [...node.getClientRects()].map(rect), css: styles(node) });
+    const rangeRects = (node: Node) => { const range = document.createRange(); range.selectNodeContents(node); return [...range.getClientRects()].map(rect); };
+    const description = wrapper.querySelectorAll('[data-slot=alert-description]')[2]!;
+    const ancestors: ReturnType<typeof record>[] = [];
+    for (let node: Element | null = description.parentElement; node; node = node.parentElement) ancestors.push(record(node));
+    return {
+      url: location.href, monotonicTime: performance.now(), fontStatus: document.fonts.status,
+      body: record(document.body), description: { ...record(description), rawHTML: description.innerHTML, rangeRects: rangeRects(description) },
+      childNodes: [...description.childNodes].map(node => ({ type: node.nodeType, name: node.nodeName, value: node.nodeValue, text: node.textContent, rangeRects: rangeRects(node), element: node instanceof Element ? record(node) : null })),
+      links: [...wrapper.querySelectorAll('a')].map(node => ({ ...record(node), rangeRects: rangeRects(node), childNodes: [...node.childNodes].map(child => ({ type: child.nodeType, name: child.nodeName, value: child.nodeValue, rangeRects: rangeRects(child) })) })),
+      ancestors,
+    };
   });
 }
 export async function alertLongTextMeasurements(page: Page) {
