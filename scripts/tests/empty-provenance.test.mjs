@@ -129,7 +129,7 @@ test('source faithful shared Example gap repair removes formatting only and pres
   assert.equal(createHash('sha1').update(`blob ${Buffer.byteLength(before)}\0`).update(before).digest('hex'), entry.before[4]);
 });
 
-test('five inert icon control encodings preserve the complete helper and allow only literal-empty single-directive lint exceptions', () => {
+test('eight inert icon control and HMR-body encodings preserve the complete helper and allow only literal-empty single-directive lint exceptions', () => {
   const manifest = JSON.parse(readFileSync('diagnostics/alert-child-segmentation/source-authentication.json', 'utf8'));
   const path = 'apps/docs/registry/bases/base/ui/icons/IconPlaceholder.svelte';
   const source = readFileSync(path, 'utf8');
@@ -137,21 +137,39 @@ test('five inert icon control encodings preserve the complete helper and allow o
   const directives = [];
   const walk = node => { if (!node || typeof node !== 'object') return; if (node.type === 'HtmlTag') directives.push(node); for (const value of Object.values(node)) { if (Array.isArray(value)) value.forEach(walk); else if (value && typeof value === 'object') walk(value); } };
   walk(ast.fragment);
-  assert.equal(directives.length, 5);
+  assert.equal(directives.length, 8);
   for (const node of directives) {
     assert.equal(node.expression.type, 'Literal'); assert.equal(node.expression.value, ''); assert.equal(node.expression.raw, "''");
     assert.equal(source.slice(node.start, node.end), "{@html ''}");
   }
   const exception = '<!-- eslint-disable-next-line svelte/no-at-html-tags -->';
-  assert.equal(source.split('eslint-disable').length - 1, 5);
-  assert.equal(source.split(exception).length - 1, 5);
+  assert.equal(source.split('eslint-disable').length - 1, 8);
+  assert.equal(source.split(exception).length - 1, 8);
   let before = source;
+  {
+    const encoded = "    {@html ''}{#if available}\n      <!-- eslint-disable-next-line svelte/no-at-html-tags -->\n      {@html ''}<IconSvg data={available} {library} attributes={props} {children} bind:ref />\n    {/if}";
+    assert.equal(before.split(encoded).length, 2);
+    before = before.replace(encoded, "    {@html ''}{#if available}<IconSvg data={available} {library} attributes={props} {children} bind:ref />{/if}");
+  }
+  {
+    const encoded = "      <!-- eslint-disable-next-line svelte/no-at-html-tags -->\n      {@html ''}<IconSvg data={fallback} library=\"fallback\" attributes={props} {children} bind:ref />";
+    assert.equal(before.split(encoded).length, 2);
+    before = before.replace(encoded, "      <IconSvg data={fallback} library=\"fallback\" attributes={props} {children} bind:ref />");
+  }
+  {
+    const encoded = "      {@html ''}{#if data}\n        <!-- eslint-disable-next-line svelte/no-at-html-tags -->\n        {@html ''}<IconSvg {data} {library} attributes={props} {children} bind:ref />\n      {/if}";
+    assert.equal(before.split(encoded).length, 2);
+    before = before.replace(encoded, "      {@html ''}{#if data}<IconSvg {data} {library} attributes={props} {children} bind:ref />{/if}");
+  }
+  const historicalFive = before.replace("  // Pinned original d75a96ab icon children have no empty HTML text siblings.\n  // Svelte 5.57.1 standalone controls and HMR component bodies create Text anchors.\n  // Eight constant-empty HTML encodings retain comment-only template ownership,\n  // preserving every original condition/await and all loader/cache behavior.\n", "  // Pinned original d75a96ab icon children have no empty HTML text siblings.\n  // Svelte 5.57.1 standalone branch fragments create empty Text ownership anchors.\n  // Five constant-empty HTML encodings retain comment-only template ownership,\n  // preserving every original condition/await and all loader/cache behavior.\n");
+  assert.equal(Buffer.byteLength(historicalFive), 1734);
+  assert.equal(createHash('sha256').update(historicalFive).digest('hex'), 'b7e439d9bb4cdc2de5aab21d15a800723907b8562786b47d14deeca2c0ce0c5c');
   for (const [control, indent] of [['{#if name}', ''], ['{#if available !== undefined}', '  '], ['{#if available}', '    '], ['{#await pending}', '    '], ['{#if data}', '      ']]) {
     const encoding = `${indent}${exception}\n${indent}{@html ''}${control}`;
     assert.equal(source.split(encoding).length, 2);
     before = before.replace(encoding, `${indent}${control}`);
   }
-  before = before.replace('  // Pinned original d75a96ab icon children have no empty HTML text siblings.\n  // Svelte 5.57.1 standalone branch fragments create empty Text ownership anchors.\n  // Five constant-empty HTML encodings retain comment-only template ownership,\n  // preserving every original condition/await and all loader/cache behavior.\n', '');
+  before = before.replace('  // Pinned original d75a96ab icon children have no empty HTML text siblings.\n  // Svelte 5.57.1 standalone controls and HMR component bodies create Text anchors.\n  // Eight constant-empty HTML encodings retain comment-only template ownership,\n  // preserving every original condition/await and all loader/cache behavior.\n', '');
   const entry = manifest.changes.find(change => change.path === path);
   assert.equal(Buffer.byteLength(before), entry.before[2]);
   assert.equal(createHash('sha256').update(before).digest('hex'), entry.before[3]);
