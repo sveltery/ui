@@ -1,5 +1,7 @@
 // Authored immutable-source composition witnesses; zero copied ordinary upstream Alert test credit.
-import { expect, type Page } from '@playwright/test';
+import { expect, type Page/* alert-observation:start */, type TestInfo/* alert-observation:end */ } from '@playwright/test';/* alert-observation:start */
+import { writeFileSync } from 'node:fs';
+import type { GalleryAwaitObserver } from './aspect-ratio-gallery-cases';/* alert-observation:end */
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { HugeiconsIcon } from '@hugeicons/react';
@@ -61,11 +63,17 @@ async function originalGlyphTree(library: typeof alertLibraries[number]) {
   }
   return promise;
 }
-export async function settledAlert(page: Page) {
-  await expect(page.locator(alertGallery)).toHaveAttribute('data-hydrated', 'true');
-  await expect(page.locator(`${alertGallery} [data-slot=alert] > svg`)).toHaveCount(8);
-  await expect(page.locator(`${alertGallery} svg.lucide-square`)).toHaveCount(0);
-}
+export async function settledAlert(page: Page/* alert-observation:start */, observe?: GalleryAwaitObserver/* alert-observation:end */) {
+/* alert-observation:start */  observe?.('settled-hydration', false);
+/* alert-observation:end */  await expect(page.locator(alertGallery)).toHaveAttribute('data-hydrated', 'true');
+/* alert-observation:start */  observe?.('settled-hydration', true);
+/* alert-observation:end *//* alert-observation:start */  observe?.('settled-svg-count', false);
+/* alert-observation:end */  await expect(page.locator(`${alertGallery} [data-slot=alert] > svg`)).toHaveCount(8);
+/* alert-observation:start */  observe?.('settled-svg-count', true);
+/* alert-observation:end *//* alert-observation:start */  observe?.('settled-fallback-count', false);
+/* alert-observation:end */  await expect(page.locator(`${alertGallery} svg.lucide-square`)).toHaveCount(0);
+/* alert-observation:start */  observe?.('settled-fallback-count', true);
+/* alert-observation:end */}
 export async function alertGalleryTree(page: Page, glyphs = true) {
   return page.locator(alertGallery).evaluate((wrapper, glyphs) => {
     const tree = (node: Element): unknown => {
@@ -210,9 +218,10 @@ export async function alertLinkPointerMeasurements(page: Page, width: number) {
 }
 
 // Original globals.css:95–96/139–140/182–183/195–200; genuine selected text, no substitute document.
-export async function alertSelectionMeasurements(page: Page, dark: boolean) {
+export async function alertSelectionMeasurements(page: Page, dark: boolean/* alert-observation:start */, observe?: GalleryAwaitObserver/* alert-observation:end */) {
   try {
-    const actual = await page.locator(`${alertGallery} [data-slot=alert-title]`).first().evaluate(node => {
+/* alert-observation:start */    observe?.('selection-evaluation', false);
+/* alert-observation:end */    const actual = await page.locator(`${alertGallery} [data-slot=alert-title]`).first().evaluate(node => {
       const text = document.createTreeWalker(node, NodeFilter.SHOW_TEXT).nextNode();
       if (!text || text.nodeType !== Node.TEXT_NODE) throw new Error('Actual first Alert title text node missing');
       const selection = window.getSelection();
@@ -231,7 +240,9 @@ export async function alertSelectionMeasurements(page: Page, dark: boolean) {
         root: { tag: html.localName, belongsToActualDocument: html.ownerDocument === document, overscrollY: root.getPropertyValue('overscroll-behavior-y'), overscrollX: root.getPropertyValue('overscroll-behavior-x'), overscroll: root.getPropertyValue('overscroll-behavior') },
       };
     });
-    const text = titleTexts[0];
+/* alert-observation:start */    observe?.('selection-evaluation', true, actual);
+    observe?.('selection-literal-assertion', false);
+/* alert-observation:end */    const text = titleTexts[0];
     expect(actual).toMatchObject({
       host: { tag: 'div', slot: 'alert-title', text }, textNode: { type: 3, value: text, parentIsHost: true },
       selection: { text, count: 1, type: 'Range', collapsed: false, anchorIsText: true, anchorOffset: 0, focusIsText: true, focusOffset: text.length },
@@ -239,6 +250,47 @@ export async function alertSelectionMeasurements(page: Page, dark: boolean) {
       pseudo: { foreground: dark ? 'oklch(0.205 0 0)' : 'oklch(1 0 0)', background: dark ? 'oklch(0.922 0 0)' : 'oklch(0 0 0)' },
       root: { tag: 'html', belongsToActualDocument: true, overscrollY: 'none' },
     });
-    return actual;
-  } finally { await page.evaluate(() => window.getSelection()?.removeAllRanges()); }
+/* alert-observation:start */    observe?.('selection-literal-assertion', true);
+/* alert-observation:end */    return actual;
+  } finally { /* alert-observation:start */observe?.('selection-finally-clearing', false); /* alert-observation:end */await page.evaluate(() => window.getSelection()?.removeAllRanges()); /* alert-observation:start */observe?.('selection-finally-clearing', true); /* alert-observation:end */}
+}/* alert-observation:start */
+// Failure-only host observations; no new browser query or timing-equivalence credit.
+export function alertSelectionWitness(testInfo: TestInfo, phase: string) {
+  const started = performance.now();
+  let scene: { ordinal: number; style: string; dark: boolean; width: number } | null = null;
+  let ordinal = 0; let completedPairs = 0; let lastCompletedStage: string | null = null;
+  const pendingStages: string[] = []; const events: unknown[] = []; const rawSelections: unknown[] = [];
+  const observe: GalleryAwaitObserver = (stage, completed, raw) => {
+    const event = { elapsedMs: performance.now() - started, scene, stage, completed };
+    events.push(event);
+    if (completed) {
+      lastCompletedStage = stage;
+      const index = pendingStages.lastIndexOf(stage); if (index >= 0) pendingStages.splice(index, 1);
+    } else pendingStages.push(stage);
+    if (raw !== undefined) rawSelections.push({ ...event, raw });
+  };
+  return {
+    observe,
+    scene(style: string, dark: boolean, width: number) { scene = { ordinal: ++ordinal, style, dark, width }; },
+    completedPair() { completedPairs++; },
+    async capture(error: unknown) {
+      const data = {
+        classification: 'authored-failure-only-host-selection-observation', copiedOrdinaryUpstreamAlertCredit: 0,
+        phase, project: testInfo.project.name, title: testInfo.title, timeoutMs: testInfo.timeout,
+        consumer: process.env.SVELTERY_INSTALLATION_CONSUMER ?? null, experimentalRemote: process.env.SVELTERY_INSTALLATION_REMOTE ?? null,
+        ci: { run: process.env.GITHUB_RUN_ID ?? null, attempt: process.env.GITHUB_RUN_ATTEMPT ?? null, eventSHA: process.env.GITHUB_SHA ?? null },
+        scene, completedPairs, pendingStages, lastCompletedStage, elapsedMs: performance.now() - started,
+        events, rawSelections, failure: error instanceof Error ? { name: error.name, message: error.message, stack: error.stack } : String(error),
+        limits: 'Original error/cleanup, default30s,32pairedscenes and all browsercalls/strict predicates retained; observation overhead has no timing-equivalence credit. Artifactdelivery must be verified from actual ZIP.',
+      };
+      let path: string;
+      try {
+        path = testInfo.outputPath('alert-selection-failure-observations.json');
+        writeFileSync(path, JSON.stringify(data, null, 2) + '\n', { flag: 'wx', mode: 0o600 });
+      } catch (captureError) { console.error('Selection failure file capture unavailable', captureError); return; }
+      try { await testInfo.attach('alert-selection-failure-observations', { path, contentType: 'application/json' }); }
+      catch (captureError) { console.error('Selection failure path attachment unavailable', captureError); }
+    },
+  };
 }
+/* alert-observation:end */

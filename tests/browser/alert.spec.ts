@@ -2,7 +2,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { writeFile } from 'node:fs/promises';
 import { alertLifecycleCases, alertNativeAssertions } from './alert-cases';
-import { alertGallery, alertHTMLHosts, alertLibraries, alertStyles, alertWidths, alertTheme, settledAlert, alertGalleryTree, alertGalleryMeasurements, alertInlineTypographyDiagnostics, alertLongTextMeasurements, alertLinkPointerMeasurements, alertSelectionMeasurements, assertAlertGallery, assertAlertNativeLinks } from './alert-gallery-cases';
+import { alertGallery, alertHTMLHosts, alertLibraries, alertStyles, alertWidths, alertTheme, settledAlert, alertGalleryTree, alertGalleryMeasurements, alertInlineTypographyDiagnostics, alertLongTextMeasurements, alertLinkPointerMeasurements, alertSelectionMeasurements/* alert-observation:start */, alertSelectionWitness/* alert-observation:end */, assertAlertGallery, assertAlertNativeLinks } from './alert-gallery-cases';
 alertLifecycleCases();
 const selector = '[data-testid="composition"] *, [data-testid="selectors"] *';
 async function snapshot(page: Page) {
@@ -214,16 +214,26 @@ test('all four original Alert anchors preserve paired held and released pointer 
 });
 
 
-test('actual Alert text selection and document overscroll preserve original light/dark globals', async ({ page, context }) => {
-  const original = await context.newPage();
+test('actual Alert text selection and document overscroll preserve original light/dark globals', async ({ page, context }/* alert-observation:start */, testInfo/* alert-observation:end */) => {
+/* alert-observation:start */  const witness = alertSelectionWitness(testInfo, 'main');
+  const observePage = (current: Page) => (stage: string, completed: boolean, raw?: unknown) => witness.observe(`${current === page ? 'native' : 'original'}:${stage}`, completed, raw);
   try {
-    await page.goto('/alert'); await original.goto('http://127.0.0.1:5175/alert');
-    await settledAlert(page); await settledAlert(original);
+  witness.observe('original-page-creation', false);
+/* alert-observation:end */  const original = await context.newPage();
+/* alert-observation:start */  witness.observe('original-page-creation', true);
+/* alert-observation:end */  try {
+/* alert-observation:start */    witness.observe('native:navigation', false);
+/* alert-observation:end */    await page.goto('/alert'); /* alert-observation:start */witness.observe('native:navigation', true); witness.observe('original:navigation', false); /* alert-observation:end */await original.goto('http://127.0.0.1:5175/alert');/* alert-observation:start */
+    witness.observe('original:navigation', true);/* alert-observation:end */
+    await settledAlert(page/* alert-observation:start */, observePage(page)/* alert-observation:end */); await settledAlert(original/* alert-observation:start */, observePage(original)/* alert-observation:end */);
     for (const style of alertStyles) for (const dark of [false, true]) for (const width of [390, 1280]) await test.step(`${style} ${dark ? 'dark' : 'light'} ${width}px actual selection and root`, async () => {
-      for (const current of [page, original]) { await current.setViewportSize({ width, height: 900 }); await alertTheme(current, style, dark); }
-      expect(await alertSelectionMeasurements(page, dark)).toEqual(await alertSelectionMeasurements(original, dark));
+/* alert-observation:start */      witness.scene(style, dark, width);
+/* alert-observation:end */      for (const current of [page, original]) { /* alert-observation:start */observePage(current)('viewport', false); /* alert-observation:end */await current.setViewportSize({ width, height: 900 }); /* alert-observation:start */observePage(current)('viewport', true); /* alert-observation:end */await alertTheme(current, style, dark/* alert-observation:start */, observePage(current)/* alert-observation:end */); }
+      expect(await alertSelectionMeasurements(page, dark/* alert-observation:start */, observePage(page)/* alert-observation:end */)).toEqual(await alertSelectionMeasurements(original, dark/* alert-observation:start */, observePage(original)/* alert-observation:end */));/* alert-observation:start */
+      witness.completedPair();/* alert-observation:end */
     });
-  } finally { await original.close(); }
+  } finally { /* alert-observation:start */witness.observe('original-page-close', false); /* alert-observation:end */await original.close(); /* alert-observation:start */witness.observe('original-page-close', true); /* alert-observation:end */}/* alert-observation:start */
+  } catch (error) { await witness.capture(error); throw error; }/* alert-observation:end */
 });
 
 for (const library of alertLibraries) test(`both genuine Alert galleries show eight original Square glyphs while actual ${library} modules are held`, async ({ page, context }, testInfo) => {

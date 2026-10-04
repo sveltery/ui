@@ -6,20 +6,23 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { JSDOM } from 'jsdom';
 import { loadLibrary } from '../reference/icons/load-library';
 import { aspectTheme } from './aspect-ratio-gallery-cases';
-export const kbdWrapper = '[data-slot="example-wrapper"]';
+/* alert-observation:start */import type { GalleryAwaitObserver } from './aspect-ratio-gallery-cases';
+/* alert-observation:end */export const kbdWrapper = '[data-slot="example-wrapper"]';
 export const kbdHTMLHosts = `div:has(> ${kbdWrapper}), ${kbdWrapper}, ${kbdWrapper} *:not(svg):not(svg *)`;
 export const kbdTitles = ['Basic', 'Modifier Keys', 'KbdGroup', 'Arrow Keys', 'With Icons', 'With Icons and Text', 'With samp'];
 export const kbdStyles = ['nova', 'vega', 'maia', 'lyra', 'mira', 'sera', 'luma', 'rhea'];
 export const kbdLibraries = ['lucide', 'tabler', 'hugeicons', 'phosphor', 'remixicon'] as const;
-export async function kbdTheme(page: Page, style: string, dark: boolean) {
-  await aspectTheme(page, style, dark);
+export async function kbdTheme(page: Page, style: string, dark: boolean/* alert-observation:start */, observe?: GalleryAwaitObserver/* alert-observation:end */) {
+  await aspectTheme(page, style, dark/* alert-observation:start */, observe/* alert-observation:end */);
   // The complete original globals consume a caller-supplied font variable.
   // Use the same explicit Tailwind consumer font as the existing theme witness.
-  await page.evaluate(() => {
+/* alert-observation:start */  observe?.('theme-font-evaluation', false);
+/* alert-observation:end */  await page.evaluate(() => {
     document.documentElement.style.setProperty('--font-sans', 'ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"');
     document.documentElement.style.setProperty('--font-heading', 'inherit');
   });
-}
+/* alert-observation:start */  observe?.('theme-font-evaluation', true);
+/* alert-observation:end */}
 const names = {
   lucide: ['CircleDashedIcon', 'ArrowLeftIcon', 'ArrowRightIcon'], tabler: ['IconCircleDashed', 'IconArrowLeft', 'IconArrowRight'], hugeicons: ['DashedLineCircleIcon', 'ArrowLeft01Icon', 'ArrowRight01Icon'], phosphor: ['CircleDashedIcon', 'ArrowLeftIcon', 'ArrowRightIcon'], remixicon: ['RiLoaderLine', 'RiArrowLeftLine', 'RiArrowRightLine'],
 };
