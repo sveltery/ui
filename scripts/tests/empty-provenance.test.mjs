@@ -177,7 +177,10 @@ test('eight inert icon control and HMR-body encodings preserve the complete help
 });
 
 test('Empty theme readiness preserves the complete prior helper and all strict tree/measurement/action functions', () => {
-  const source = readFileSync('tests/browser/empty-gallery-cases.ts', 'utf8');
+  const witnessed = readFileSync('tests/browser/empty-gallery-cases.ts', 'utf8');
+  const actionWitness = "  /* empty-action-witness:start */\n  const witness = JSON.stringify({ url: page.url(), records });\n  if (Buffer.byteLength(witness) > 4096) throw new Error('Empty trusted action witness exceeds 4096 bytes');\n  console.log('Empty trusted action witness:', witness);\n  /* empty-action-witness:end */\n";
+  assert.equal(witnessed.split(actionWitness).length, 2);
+  const source = witnessed.replace(actionWitness, '');
   const region = /\/\* empty-theme-readiness:start \*\/[\s\S]*?\/\* empty-theme-readiness:end \*\//gu;
   assert.equal([...source.matchAll(region)].length, 1);
   const restored = source.replace(region, 'export const emptyTheme = kbdTheme;');
@@ -189,5 +192,20 @@ test('Empty theme readiness preserves the complete prior helper and all strict t
     const nodes = ast.statements.filter(node => ts.isFunctionDeclaration(node) && node.name?.text === name);
     assert.equal(nodes.length, 1, name);
     assert.equal(createHash('sha256').update(nodes[0].getText(ast)).digest('hex'), digest, name);
+  }
+});
+
+test('Empty paired action observation preserves both complete prior browser callers without weakening any expectation', () => {
+  const observation = "/* empty-action-pair-witness:start */\n    const [actual] = await Promise.allSettled([emptyTrustedActions(page)]);\n    const [original] = await Promise.allSettled([emptyTrustedActions(reference)]);\n    if (actual.status === 'rejected') throw actual.reason;\n    if (original.status === 'rejected') throw original.reason;\n    expect(actual.value).toEqual(original.value);\n    /* empty-action-pair-witness:end */";
+  const original = "expect(await emptyTrustedActions(page)).toEqual(await emptyTrustedActions(reference));";
+  for (const [path, bytes, digest] of [
+    ['tests/browser/empty.spec.ts', 9332, '7423079c682e3ef6bd0ac8784bf32bc35847ca616f5d684742d798d8498d5f17'],
+    ['tests/installation/empty.spec.ts', 3409, '5cdb3bedffcf07921e55b76f7d809048fe69afe2c96f699ad7a79aea8efaa724'],
+  ]) {
+    const source = readFileSync(path, 'utf8');
+    assert.equal(source.split(observation).length, 2, path);
+    const restored = source.replace(observation, original);
+    assert.equal(Buffer.byteLength(restored), bytes, path);
+    assert.equal(createHash('sha256').update(restored).digest('hex'), digest, path);
   }
 });

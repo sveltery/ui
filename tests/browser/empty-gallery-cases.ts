@@ -118,6 +118,11 @@ export async function emptyTrustedActions(page: Page) {
   for (const button of await page.locator(`${emptyWrapper} button`).all()) { await button.focus(); await page.keyboard.press('Enter'); await page.keyboard.press('Space'); }
   for (const anchor of await page.locator(`${emptyWrapper} a`).all()) { await anchor.focus(); await page.keyboard.press('Enter'); }
   const records = await page.evaluate(() => (window as unknown as { emptyClicks: unknown[] }).emptyClicks);
+  /* empty-action-witness:start */
+  const witness = JSON.stringify({ url: page.url(), records });
+  if (Buffer.byteLength(witness) > 4096) throw new Error('Empty trusted action witness exceeds 4096 bytes');
+  console.log('Empty trusted action witness:', witness);
+  /* empty-action-witness:end */
   const expectedButtons = ['Import project', 'Try again', 'New Post', 'Import project'].flatMap(text => Array(2).fill({ tag: 'BUTTON', text, trusted: true, key: 0 }));
   const expectedAnchors = ['Create project', 'Learn more ', 'Learn more ', 'creating your first post', 'Create project', 'Learn more '].map(text => ({ tag: 'A', text, trusted: true, key: 0 }));
   expect(records).toHaveLength(14);

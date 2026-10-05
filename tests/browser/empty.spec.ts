@@ -88,7 +88,13 @@ for (const library of emptyLibraries) test(`selected original Empty full composi
       for (const current of [page, reference]) { await current.setViewportSize({ width, height: 1600 }); await emptyTheme(current, 'nova', false); }
       expect(await emptyMeasurements(page)).toEqual(await emptyMeasurements(reference));
     }
-    expect(await emptyTrustedActions(page)).toEqual(await emptyTrustedActions(reference));
+    /* empty-action-pair-witness:start */
+    const [actual] = await Promise.allSettled([emptyTrustedActions(page)]);
+    const [original] = await Promise.allSettled([emptyTrustedActions(reference)]);
+    if (actual.status === 'rejected') throw actual.reason;
+    if (original.status === 'rejected') throw original.reason;
+    expect(actual.value).toEqual(original.value);
+    /* empty-action-pair-witness:end */
     expect(errors).toEqual([]);
   } finally { await reference.close(); }
 });
