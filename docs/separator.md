@@ -1,5 +1,7 @@
 # Styled native Separator
 
+The proposed current dependency is frozen Base `c1600456d3b4e72910d42823b9df69280c74a262`, archive SHA-256 `e6b9b94b7184c492a09881cd8f3fa798bdb973f3db0a5f7b3c69b9160f4e068a`; read [the c160 dependency-only contract](base-pin-upgrade.md#proposed-c160-frozen-dependency-adoption). Its transitive render/merge/ref/event closure changes, so retained behavior and all four fresh consumer modes require new exact-head gates. The disabled Button chorded-mousedown source conflict blocks adoption. Earlier f884 current-consumption statements below describe historical checkpoints; no previous passing check certifies this proposal. UI wrapper/helper/CSS source and original expectations are unchanged; inherited Base types and behavior change; Avatar explicit-zero-delay, Input34 and full-library limits remain.
+
 The proposed `Separator` is exported from `@sveltery/ui` and `@sveltery/ui/separator`, with named `SeparatorProps` and `SeparatorState` native type conveniences. One canonical source directory is packaged and copied: [separator](../apps/docs/registry/bases/base/ui/separator/index.ts). All primitive orientation, ARIA, host/render composition, style callback, ref, attachment and event behavior comes from the actual locked `@sveltery/base/separator`; UI adds no behavior controller or placeholder.
 
 ```svelte

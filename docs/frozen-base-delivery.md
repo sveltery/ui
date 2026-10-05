@@ -2,6 +2,14 @@
 
 Ordinary UI bootstrap consumes the committed `.vendor/sveltery-base-0.0.0.tgz` archive. It does not clone, install, build, test or package the separately managed Base project. The existing checker authenticates the archive and its frozen lockfile resolution before `pnpm install --frozen-lockfile`; a missing archive, changed archive or mismatched lockfile stops bootstrap before installation.
 
+## Proposed current c160 delivery
+
+The current Draft dependency proposal consumes Base `c1600456d3b4e72910d42823b9df69280c74a262` from its authenticated existing hosted package. Read [source, archive and compatibility gates](base-pin-upgrade.md#proposed-c160-frozen-dependency-adoption). The candidate is213537 bytes/676 regular members, SHA-256 `e6b9b94b7184c492a09881cd8f3fa798bdb973f3db0a5f7b3c69b9160f4e068a` and frozen integrity `sha512-CHhArdachwDhitl3kNYO7PLIOImIAtHOFMq09bfVMdOOXQ3v6X3xYx5uQ19qEKawp2xT3SrrqM2S8BuajL1ydg==`. Its complete inventory, raw source and export targets are authenticated; all579 generated member bytes also independently reproduce in memory. UI compatibility gates remain pending. All bootstrap/checker negatives remain strict. The optional Kit patch is shipped but unapplied. Candidate disabled chorded-mousedown conflicts with retained UI assertions, and this Draft remains blocked.
+
+## Historical f884 delivery record
+
+The following exact-byte delivery statements describe the prior frozen f884 checkpoint. Its225-member archive/hash, notices, reconstruction limits and checks are retained as historical evidence; they do not describe the new current archive or certify this changed dependency head.
+
 ## Preserved dependency provenance
 
 | Item | Immutable identity |

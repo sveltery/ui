@@ -1,5 +1,13 @@
 # Upstream differences
 
+## Proposed c160 dependency-only selection, 5 October2026 UTC
+
+The current proposal consumes authenticated Base c160 archive bytes; [the complete contract](base-pin-upgrade.md#proposed-c160-frozen-dependency-adoption) records source/package provenance and pending final-head runtime/review gates. All earlier f884 consumption and passing evidence below remain historical. This change is not a version-only or byte-identical runtime update: existing Button/Dialog/Avatar/Separator inherit changed render/merge/ref/event helpers. No UI wrapper, shared package, CSS, original gallery, test expectation or accepted exception is changed.
+
+A concrete unaccepted conflict blocks adoption: candidate disabled custom/focusable Button mousedown omits the previous default cancellation, while the two unchanged chorded-mousedown assertions require it. The historical inherited correction remains recorded below; no source conforming or compatible verdict is claimed for the candidate. Avatar explicit delay=0 SSR, Input34's strict controlled/reset failures, incomplete callback integration and Base1.8 versus original1.6 remain unresolved. Availability of new Base modules establishes no styled wrapper or copied-suite completion.
+
+The package's opt-in Kit patch is not applied. Compiled-output equality and actual final-head normal/four-consumer type/SSR/client/three-engine acceptance, independent source/API review, configured review and PM approval remain required. The user-selected Base Toast/Combobox/Drawer and historical excluded Command/cmdk/Sonner scope are unchanged; release/deployment and Base project mutations remain outside this proposal.
+
 ## Modern class-merging fidelity
 
 The current port uses genuine pinned `cn` 0.2.2 from `shadcn-ui/cn` commit `788fe9bf71006c84e387c14b8d356f60f74956b6`, selected by the immutable shadcn UI lock at `d75a96ab781f3d659be1ad287347d5887ce9f2fc`. It replaces the historical handwritten `clsx`/`tailwind-merge` substitution in production and React reference tooling. Observable nonbreaking-space and Unicode-line-separator class input now preserves the exact pinned output; ASCII conflict merging and the existing Svelte state callback adaptation remain. This is a fidelity repair, with no new framework substitution or newer-engine upgrade. [Class-merging contract and evidence](class-merging.md) records exact artifact/test provenance and supplemental public integration tests separately from five genuine reusable dependency conformance programs. Proposed [PR #38](https://github.com/sveltery/ui/pull/38) awaits final-head review, passing gates and merge; historical entries below describe their original checkpoints.

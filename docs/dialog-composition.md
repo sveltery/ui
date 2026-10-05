@@ -1,5 +1,7 @@
 # Canonical Dialog composition repair
 
+The proposed current dependency is frozen Base `c1600456d3b4e72910d42823b9df69280c74a262`, archive SHA-256 `e6b9b94b7184c492a09881cd8f3fa798bdb973f3db0a5f7b3c69b9160f4e068a`; read [the c160 dependency-only contract](base-pin-upgrade.md#proposed-c160-frozen-dependency-adoption). Its transitive render/merge/ref/event closure changes, so retained behavior and all four fresh consumer modes require new exact-head gates. The disabled Button chorded-mousedown source conflict blocks adoption. Earlier f884 current-consumption statements below describe historical checkpoints; no previous passing check certifies this proposal. UI wrapper/helper/CSS source and original expectations are unchanged; inherited Base types and behavior change; Avatar explicit-zero-delay, Input34 and full-library limits remain.
+
 This repair, proposed in [PR #43](https://github.com/sveltery/ui/pull/43), restores the original shadcn Dialog helper graph in the two existing production wrappers. It does not add a Dialog state machine, change the consumed Base pin, migrate a gallery or establish full-library parity. The [historical audit](source-fidelity-audit.md) remains anchored to UI `db25cb86dd2d8ebbbb78f83b5f6c20cc36cea946`; its original findings and evidence are unchanged.
 
 ## Immutable source and dependency environment

@@ -13,23 +13,37 @@
   },
   "locked_base": {
     "repository": "https://github.com/sveltery/base.git",
-    "commit": "f884f3bb265485ef8e422e43a75eb3055db11fab",
+    "commit": "c1600456d3b4e72910d42823b9df69280c74a262",
     "package": "@sveltery/base",
     "version": "0.0.0",
-    "sha256": "915dd6aebd304a7a9c384b0dd5eecd589722686897079fb6dec2961608c564fd",
+    "sha256": "e6b9b94b7184c492a09881cd8f3fa798bdb973f3db0a5f7b3c69b9160f4e068a",
     "actual_public_subpaths": [
       "accordion",
       "avatar",
       "button",
+      "checkbox",
+      "checkbox-group",
       "collapsible",
+      "csp-provider",
       "dialog",
+      "direction-provider",
+      "field",
+      "fieldset",
+      "form",
       "input",
       "merge-props",
       "meter",
       "progress",
+      "radio",
+      "radio-group",
+      "scroll-area",
       "separator",
+      "switch",
       "toast",
-      "toggle"
+      "toggle",
+      "toggle-group",
+      "toolbar",
+      "use-render"
     ],
     "supplied_contracts": [
       {
@@ -51,16 +65,58 @@
         "evidence": "parity/button/README.md"
       },
       {
+        "upstreamModule": "checkbox",
+        "status": "bounded",
+        "localExport": "Checkbox",
+        "evidence": "parity/boolean-controls/README.md"
+      },
+      {
+        "upstreamModule": "checkbox-group",
+        "status": "bounded",
+        "localExport": "CheckboxGroup",
+        "evidence": "parity/boolean-controls/README.md"
+      },
+      {
         "upstreamModule": "collapsible",
         "status": "bounded",
         "localExport": "Collapsible",
         "evidence": "parity/collapsible/README.md"
       },
       {
+        "upstreamModule": "csp-provider",
+        "status": "bounded",
+        "localExport": "CSPProvider",
+        "evidence": "parity/csp-provider/README.md"
+      },
+      {
         "upstreamModule": "dialog",
         "status": "bounded",
         "localExport": "Dialog",
         "evidence": "docs/dialog-first-slice.md"
+      },
+      {
+        "upstreamModule": "direction-provider",
+        "status": "bounded",
+        "localExport": "DirectionProvider / useDirection",
+        "evidence": "parity/direction-provider/README.md"
+      },
+      {
+        "upstreamModule": "field",
+        "status": "bounded",
+        "localExport": "Field",
+        "evidence": "parity/field-form/source-correspondence.md"
+      },
+      {
+        "upstreamModule": "fieldset",
+        "status": "bounded",
+        "localExport": "Fieldset",
+        "evidence": "parity/field-form/source-correspondence.md"
+      },
+      {
+        "upstreamModule": "form",
+        "status": "bounded",
+        "localExport": "Form",
+        "evidence": "parity/field-form/source-correspondence.md"
       },
       {
         "upstreamModule": "input",
@@ -87,10 +143,34 @@
         "evidence": "parity/progress/README.md"
       },
       {
+        "upstreamModule": "radio",
+        "status": "bounded",
+        "localExport": "Radio",
+        "evidence": "parity/radio/README.md"
+      },
+      {
+        "upstreamModule": "radio-group",
+        "status": "bounded",
+        "localExport": "RadioGroup",
+        "evidence": "parity/radio/README.md"
+      },
+      {
+        "upstreamModule": "scroll-area",
+        "status": "bounded",
+        "localExport": "ScrollArea",
+        "evidence": "parity/scroll-area/README.md"
+      },
+      {
         "upstreamModule": "separator",
         "status": "bounded",
         "localExport": "Separator",
         "evidence": "parity/separator/README.md"
+      },
+      {
+        "upstreamModule": "switch",
+        "status": "bounded",
+        "localExport": "Switch",
+        "evidence": "parity/boolean-controls/README.md"
       },
       {
         "upstreamModule": "toast",
@@ -102,35 +182,53 @@
         "upstreamModule": "toggle",
         "status": "bounded",
         "localExport": "Toggle",
-        "evidence": "parity/toggle/README.md"
+        "evidence": "parity/toggle-toolbar/source-correspondence.md"
+      },
+      {
+        "upstreamModule": "toggle-group",
+        "status": "bounded",
+        "localExport": "ToggleGroup",
+        "evidence": "parity/toggle-toolbar/source-correspondence.md"
+      },
+      {
+        "upstreamModule": "toolbar",
+        "status": "bounded",
+        "localExport": "Toolbar",
+        "evidence": "parity/toggle-toolbar/source-correspondence.md"
+      },
+      {
+        "upstreamModule": "use-render",
+        "status": "bounded",
+        "localExport": "UseRender",
+        "evidence": "parity/use-render/README.md"
       }
     ],
     "source_records": [
       {
         "path": "packages/base/package.json",
-        "git_blob": "0ff34b8c838aa0dcb8b6e88705e9879f62806e3b",
-        "sha256": "c8263ed0f5ca3dedeca07f6f61c00e1353f12845955f22e5aacdea0bec4382d7",
-        "bytes": 2730
+        "git_blob": "c476e388fef35315d6e96d21eeb06625165532d7",
+        "sha256": "35a63fa5e0503a6483a66e335d8e33a17179226fe333674702154bb00df341ae",
+        "bytes": 5130
       },
       {
         "path": "packages/base/src/lib/index.ts",
-        "git_blob": "5b59fcc809b64e431305a6beff2bb5d4a2367063",
-        "sha256": "67eba6b7d85fe52f019fe57a8185b388c92350a4ec809043856d1148b6c2f002",
-        "bytes": 2529
+        "git_blob": "6a655c1ab92cc6cd917dbf5c6ab81b93e5914fd3",
+        "sha256": "a0f6dfb0a09301d1c8e4388292e5d33e8515627cd32e5df28f206c5ab0655a56",
+        "bytes": 4554
       },
       {
         "path": "parity/catalog.json",
-        "git_blob": "c97e260b417e29fb9401097c007df0b676b0771d",
-        "sha256": "ba83e61e5338f646af270ef9ae74e583e3dc9378a74ba4bd2730f40c96b814c2",
-        "bytes": 6269
+        "git_blob": "eb1064761d5450a44ad961e5c847d32adc6e60c2",
+        "sha256": "1f92077521bf50f511996cfad628821a64a9cdc47199ed963da44fb74c8bed7a",
+        "bytes": 6771
       }
     ],
     "upstream_behavior_commit": "47b40521eab921c2756bf9bdb0b0f07fbfdb8c8c",
     "react_fixture_version": "1.6.0",
     "react_fixture_commit": "b34551d644f2e58ebf8fc1050d949f6654ceca6c",
-    "limitation": "Package export existence and bounded contracts are distinct from complete API/behavior and React 1.6 versus 1.8 parity.",
-    "git_tree": "e6138c3f2f8f0732dba9b413f0c1618c9d230c77",
-    "projection": "Current scripts/base.lock.json consumption in proposed UI PR37; historical d889 consumption and source records are preserved in historical_dependency_snapshot. This adds no styled-wrapper implementation or test credit."
+    "limitation": "Authenticated package/source provenance and bounded Base contracts are distinct from compiled-output reproducibility, unchanged UI compatibility and complete API/behavior or React1.6 versus Base1.8 parity. Candidate disabled Button chorded-mousedown contract conflicts with retained UI assertions; adoption is blocked.",
+    "git_tree": "1ab7d9cec3683dbf1a0f5e2902d157b9600864c5",
+    "projection": "Proposed dependency-only c160 archive adoption. Complete previous f884 dependency and implementation projections for all62 entries remain in historical_f884_dependency_snapshot; original d889 snapshot remains in historical_dependency_snapshot. No new styled-wrapper, gallery, behavior-acceptance or copied-test credit."
   },
   "ui_snapshot": {
     "observed_at": "2026-10-02T21:09:46Z",
@@ -208,68 +306,60 @@
     ],
     "only_exported_bounded_base": [
       "accordion",
-      "avatar",
-      "button",
-      "collapsible",
-      "dialog",
-      "input",
-      "progress",
-      "separator",
-      "sheet",
-      "toast",
-      "toggle"
-    ],
-    "missing_base_export": [
-      "alert-dialog",
       "attachment",
+      "avatar",
       "badge",
       "breadcrumb",
       "bubble",
       "button-group",
+      "button",
       "checkbox",
+      "collapsible",
+      "dialog",
+      "direction",
+      "input",
+      "item",
+      "marker",
+      "progress",
+      "radio-group",
+      "scroll-area",
+      "separator",
+      "sheet",
+      "sidebar",
+      "switch",
+      "toast",
+      "toggle-group",
+      "toggle"
+    ],
+    "missing_base_export": [
+      "alert-dialog",
       "combobox",
       "context-menu",
-      "direction",
       "drawer",
       "dropdown-menu",
       "hover-card",
-      "item",
-      "marker",
       "menubar",
       "navigation-menu",
       "popover",
-      "radio-group",
-      "scroll-area",
       "select",
-      "sidebar",
       "slider",
-      "switch",
       "tabs",
-      "toggle-group",
       "tooltip"
     ],
     "missing_base_modules": [
       "alert-dialog",
-      "checkbox",
       "combobox",
       "context-menu",
-      "direction-provider",
       "drawer",
       "menu",
       "menubar",
       "navigation-menu",
       "popover",
       "preview-card",
-      "radio",
-      "radio-group",
-      "scroll-area",
       "select",
       "slider",
-      "switch",
       "tabs",
-      "toggle-group",
-      "tooltip",
-      "use-render"
+      "tooltip"
     ],
     "use_render_consumers": [
       "attachment",
@@ -476,7 +566,7 @@
             "locked_package_export": true,
             "locked_contract": "bounded",
             "local_export": "Accordion",
-            "evidence": "https://github.com/sveltery/base/blob/f884f3bb265485ef8e422e43a75eb3055db11fab/parity/accordion/README.md"
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/parity/accordion/README.md"
           }
         ],
         "ui_local": [],
@@ -943,14 +1033,14 @@
             "locked_package_export": true,
             "locked_contract": "bounded",
             "local_export": "mergeProps / mergePropsN",
-            "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/docs/upstream-contracts.md"
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/docs/upstream-contracts.md"
           },
           {
             "module": "use-render",
-            "locked_package_export": false,
-            "locked_contract": "unimplemented",
-            "local_export": null,
-            "evidence": null
+            "locked_package_export": true,
+            "locked_contract": "bounded",
+            "local_export": "UseRender",
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/parity/use-render/README.md"
           }
         ],
         "ui_local": [
@@ -969,8 +1059,7 @@
         "evidence": null,
         "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
         "blockers": [
-          "styled-wrapper-unimplemented",
-          "missing-base:use-render"
+          "styled-wrapper-unimplemented"
         ]
       },
       "tests": {
@@ -1065,7 +1154,7 @@
             "locked_package_export": true,
             "locked_contract": "bounded",
             "local_export": "Avatar",
-            "evidence": "https://github.com/sveltery/base/blob/f884f3bb265485ef8e422e43a75eb3055db11fab/parity/avatar/README.md"
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/parity/avatar/README.md"
           }
         ],
         "ui_local": [],
@@ -1171,14 +1260,14 @@
             "locked_package_export": true,
             "locked_contract": "bounded",
             "local_export": "mergeProps / mergePropsN",
-            "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/docs/upstream-contracts.md"
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/docs/upstream-contracts.md"
           },
           {
             "module": "use-render",
-            "locked_package_export": false,
-            "locked_contract": "unimplemented",
-            "local_export": null,
-            "evidence": null
+            "locked_package_export": true,
+            "locked_contract": "bounded",
+            "local_export": "UseRender",
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/parity/use-render/README.md"
           }
         ],
         "ui_local": [],
@@ -1192,8 +1281,7 @@
         "evidence": null,
         "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
         "blockers": [
-          "styled-wrapper-unimplemented",
-          "missing-base:use-render"
+          "styled-wrapper-unimplemented"
         ]
       },
       "tests": {
@@ -1317,14 +1405,14 @@
             "locked_package_export": true,
             "locked_contract": "bounded",
             "local_export": "mergeProps / mergePropsN",
-            "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/docs/upstream-contracts.md"
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/docs/upstream-contracts.md"
           },
           {
             "module": "use-render",
-            "locked_package_export": false,
-            "locked_contract": "unimplemented",
-            "local_export": null,
-            "evidence": null
+            "locked_package_export": true,
+            "locked_contract": "bounded",
+            "local_export": "UseRender",
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/parity/use-render/README.md"
           }
         ],
         "ui_local": [],
@@ -1339,7 +1427,6 @@
         "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
         "blockers": [
           "styled-wrapper-unimplemented",
-          "missing-base:use-render",
           "public-icon-distribution-pending-pr33; app-helper-landed-pr29"
         ]
       },
@@ -1454,14 +1541,14 @@
             "locked_package_export": true,
             "locked_contract": "bounded",
             "local_export": "mergeProps / mergePropsN",
-            "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/docs/upstream-contracts.md"
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/docs/upstream-contracts.md"
           },
           {
             "module": "use-render",
-            "locked_package_export": false,
-            "locked_contract": "unimplemented",
-            "local_export": null,
-            "evidence": null
+            "locked_package_export": true,
+            "locked_contract": "bounded",
+            "local_export": "UseRender",
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/parity/use-render/README.md"
           }
         ],
         "ui_local": [],
@@ -1475,8 +1562,7 @@
         "evidence": null,
         "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
         "blockers": [
-          "styled-wrapper-unimplemented",
-          "missing-base:use-render"
+          "styled-wrapper-unimplemented"
         ]
       },
       "tests": {
@@ -1590,14 +1676,14 @@
             "locked_package_export": true,
             "locked_contract": "bounded",
             "local_export": "mergeProps / mergePropsN",
-            "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/docs/upstream-contracts.md"
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/docs/upstream-contracts.md"
           },
           {
             "module": "use-render",
-            "locked_package_export": false,
-            "locked_contract": "unimplemented",
-            "local_export": null,
-            "evidence": null
+            "locked_package_export": true,
+            "locked_contract": "bounded",
+            "local_export": "UseRender",
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/parity/use-render/README.md"
           }
         ],
         "ui_local": [
@@ -1617,7 +1703,6 @@
         "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
         "blockers": [
           "styled-wrapper-unimplemented",
-          "missing-base:use-render",
           "missing-ui:separator"
         ]
       },
@@ -1698,7 +1783,7 @@
             "locked_package_export": true,
             "locked_contract": "bounded",
             "local_export": "Button",
-            "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/parity/button/README.md"
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/parity/button/README.md"
           }
         ],
         "ui_local": [],
@@ -2279,10 +2364,10 @@
         "base": [
           {
             "module": "checkbox",
-            "locked_package_export": false,
-            "locked_contract": "unimplemented",
-            "local_export": null,
-            "evidence": null
+            "locked_package_export": true,
+            "locked_contract": "bounded",
+            "local_export": "Checkbox",
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/parity/boolean-controls/README.md"
           }
         ],
         "ui_local": [],
@@ -2297,7 +2382,6 @@
         "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
         "blockers": [
           "styled-wrapper-unimplemented",
-          "missing-base:checkbox",
           "public-icon-distribution-pending-pr33; app-helper-landed-pr29"
         ]
       },
@@ -2354,7 +2438,7 @@
             "locked_package_export": true,
             "locked_contract": "bounded",
             "local_export": "Collapsible",
-            "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/parity/collapsible/README.md"
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/parity/collapsible/README.md"
           }
         ],
         "ui_local": [],
@@ -3088,7 +3172,7 @@
             "locked_package_export": true,
             "locked_contract": "bounded",
             "local_export": "Dialog",
-            "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/docs/dialog-first-slice.md"
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/docs/dialog-first-slice.md"
           }
         ],
         "ui_local": [
@@ -3160,10 +3244,10 @@
         "base": [
           {
             "module": "direction-provider",
-            "locked_package_export": false,
-            "locked_contract": "unimplemented",
-            "local_export": null,
-            "evidence": null
+            "locked_package_export": true,
+            "locked_contract": "bounded",
+            "local_export": "DirectionProvider / useDirection",
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/parity/direction-provider/README.md"
           }
         ],
         "ui_local": [],
@@ -3177,8 +3261,7 @@
         "evidence": null,
         "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
         "blockers": [
-          "styled-wrapper-unimplemented",
-          "missing-base:direction-provider"
+          "styled-wrapper-unimplemented"
         ]
       },
       "tests": {
@@ -4154,7 +4237,7 @@
             "locked_package_export": true,
             "locked_contract": "bounded",
             "local_export": "Input",
-            "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/docs/input.md"
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/docs/input.md"
           }
         ],
         "ui_local": [],
@@ -4325,14 +4408,14 @@
             "locked_package_export": true,
             "locked_contract": "bounded",
             "local_export": "mergeProps / mergePropsN",
-            "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/docs/upstream-contracts.md"
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/docs/upstream-contracts.md"
           },
           {
             "module": "use-render",
-            "locked_package_export": false,
-            "locked_contract": "unimplemented",
-            "local_export": null,
-            "evidence": null
+            "locked_package_export": true,
+            "locked_contract": "bounded",
+            "local_export": "UseRender",
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/parity/use-render/README.md"
           }
         ],
         "ui_local": [
@@ -4352,7 +4435,6 @@
         "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
         "blockers": [
           "styled-wrapper-unimplemented",
-          "missing-base:use-render",
           "missing-ui:separator"
         ]
       },
@@ -4584,14 +4666,14 @@
             "locked_package_export": true,
             "locked_contract": "bounded",
             "local_export": "mergeProps / mergePropsN",
-            "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/docs/upstream-contracts.md"
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/docs/upstream-contracts.md"
           },
           {
             "module": "use-render",
-            "locked_package_export": false,
-            "locked_contract": "unimplemented",
-            "local_export": null,
-            "evidence": null
+            "locked_package_export": true,
+            "locked_contract": "bounded",
+            "local_export": "UseRender",
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/parity/use-render/README.md"
           }
         ],
         "ui_local": [],
@@ -4605,8 +4687,7 @@
         "evidence": null,
         "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
         "blockers": [
-          "styled-wrapper-unimplemented",
-          "missing-base:use-render"
+          "styled-wrapper-unimplemented"
         ]
       },
       "tests": {
@@ -5708,7 +5789,7 @@
             "locked_package_export": true,
             "locked_contract": "bounded",
             "local_export": "Progress",
-            "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/parity/progress/README.md"
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/parity/progress/README.md"
           }
         ],
         "ui_local": [],
@@ -6009,17 +6090,17 @@
         "base": [
           {
             "module": "radio",
-            "locked_package_export": false,
-            "locked_contract": "unimplemented",
-            "local_export": null,
-            "evidence": null
+            "locked_package_export": true,
+            "locked_contract": "bounded",
+            "local_export": "Radio",
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/parity/radio/README.md"
           },
           {
             "module": "radio-group",
-            "locked_package_export": false,
-            "locked_contract": "unimplemented",
-            "local_export": null,
-            "evidence": null
+            "locked_package_export": true,
+            "locked_contract": "bounded",
+            "local_export": "RadioGroup",
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/parity/radio/README.md"
           }
         ],
         "ui_local": [],
@@ -6033,9 +6114,7 @@
         "evidence": null,
         "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
         "blockers": [
-          "styled-wrapper-unimplemented",
-          "missing-base:radio",
-          "missing-base:radio-group"
+          "styled-wrapper-unimplemented"
         ]
       },
       "tests": {
@@ -6184,10 +6263,10 @@
         "base": [
           {
             "module": "scroll-area",
-            "locked_package_export": false,
-            "locked_contract": "unimplemented",
-            "local_export": null,
-            "evidence": null
+            "locked_package_export": true,
+            "locked_contract": "bounded",
+            "local_export": "ScrollArea",
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/parity/scroll-area/README.md"
           }
         ],
         "ui_local": [],
@@ -6201,8 +6280,7 @@
         "evidence": null,
         "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
         "blockers": [
-          "styled-wrapper-unimplemented",
-          "missing-base:scroll-area"
+          "styled-wrapper-unimplemented"
         ]
       },
       "tests": {
@@ -6403,7 +6481,7 @@
             "locked_package_export": true,
             "locked_contract": "bounded",
             "local_export": "Separator",
-            "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/parity/separator/README.md"
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/parity/separator/README.md"
           }
         ],
         "ui_local": [],
@@ -6547,7 +6625,7 @@
             "locked_package_export": true,
             "locked_contract": "bounded",
             "local_export": "Dialog",
-            "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/docs/dialog-first-slice.md"
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/docs/dialog-first-slice.md"
           }
         ],
         "ui_local": [
@@ -6907,14 +6985,14 @@
             "locked_package_export": true,
             "locked_contract": "bounded",
             "local_export": "mergeProps / mergePropsN",
-            "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/docs/upstream-contracts.md"
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/docs/upstream-contracts.md"
           },
           {
             "module": "use-render",
-            "locked_package_export": false,
-            "locked_contract": "unimplemented",
-            "local_export": null,
-            "evidence": null
+            "locked_package_export": true,
+            "locked_contract": "bounded",
+            "local_export": "UseRender",
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/parity/use-render/README.md"
           }
         ],
         "ui_local": [
@@ -6956,7 +7034,6 @@
         "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
         "blockers": [
           "styled-wrapper-unimplemented",
-          "missing-base:use-render",
           "missing-ui:input",
           "missing-ui:separator",
           "missing-ui:sheet",
@@ -7292,10 +7369,10 @@
         "base": [
           {
             "module": "switch",
-            "locked_package_export": false,
-            "locked_contract": "unimplemented",
-            "local_export": null,
-            "evidence": null
+            "locked_package_export": true,
+            "locked_contract": "bounded",
+            "local_export": "Switch",
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/parity/boolean-controls/README.md"
           }
         ],
         "ui_local": [],
@@ -7309,8 +7386,7 @@
         "evidence": null,
         "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
         "blockers": [
-          "styled-wrapper-unimplemented",
-          "missing-base:switch"
+          "styled-wrapper-unimplemented"
         ]
       },
       "tests": {
@@ -7733,7 +7809,7 @@
             "locked_package_export": true,
             "locked_contract": "bounded",
             "local_export": "Toast",
-            "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/parity/toast/rendering-interface.md"
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/parity/toast/rendering-interface.md"
           }
         ],
         "ui_local": [
@@ -7865,14 +7941,14 @@
             "locked_package_export": true,
             "locked_contract": "bounded",
             "local_export": "Toggle",
-            "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/parity/toggle/README.md"
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/parity/toggle-toolbar/source-correspondence.md"
           },
           {
             "module": "toggle-group",
-            "locked_package_export": false,
-            "locked_contract": "unimplemented",
-            "local_export": null,
-            "evidence": null
+            "locked_package_export": true,
+            "locked_contract": "bounded",
+            "local_export": "ToggleGroup",
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/parity/toggle-toolbar/source-correspondence.md"
           }
         ],
         "ui_local": [
@@ -7892,7 +7968,6 @@
         "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
         "blockers": [
           "styled-wrapper-unimplemented",
-          "missing-base:toggle-group",
           "missing-ui:toggle"
         ]
       },
@@ -7973,7 +8048,7 @@
             "locked_package_export": true,
             "locked_contract": "bounded",
             "local_export": "Toggle",
-            "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/parity/toggle/README.md"
+            "evidence": "https://github.com/sveltery/base/blob/c1600456d3b4e72910d42823b9df69280c74a262/parity/toggle-toolbar/source-correspondence.md"
           }
         ],
         "ui_local": [],
@@ -8356,5 +8431,1943 @@
       }
     }
   },
-  "dependency_projection_scope": "Only locked_base, dependency_groups, and Avatar/Accordion Base availability and dependency blockers project the current locked checkout. Source/anatomy/import/test identities, ui_snapshot and observed_work remain the original dated observations."
+  "dependency_projection_scope": "Only current locked_base, dependency_groups, per-entry Base availability/evidence and corresponding missing-base blockers project c160. Every original source/anatomy/import/test identity and dated UI snapshot/work observation remains unchanged. All62 f884 dependency+implementation preimages are preserved. Package availability grants zero new styled implementation, gallery, acceptance or test credit.",
+  "historical_f884_dependency_snapshot": {
+    "locked_base": {
+      "repository": "https://github.com/sveltery/base.git",
+      "commit": "f884f3bb265485ef8e422e43a75eb3055db11fab",
+      "package": "@sveltery/base",
+      "version": "0.0.0",
+      "sha256": "915dd6aebd304a7a9c384b0dd5eecd589722686897079fb6dec2961608c564fd",
+      "actual_public_subpaths": [
+        "accordion",
+        "avatar",
+        "button",
+        "collapsible",
+        "dialog",
+        "input",
+        "merge-props",
+        "meter",
+        "progress",
+        "separator",
+        "toast",
+        "toggle"
+      ],
+      "supplied_contracts": [
+        {
+          "upstreamModule": "accordion",
+          "status": "bounded",
+          "localExport": "Accordion",
+          "evidence": "parity/accordion/README.md"
+        },
+        {
+          "upstreamModule": "avatar",
+          "status": "bounded",
+          "localExport": "Avatar",
+          "evidence": "parity/avatar/README.md"
+        },
+        {
+          "upstreamModule": "button",
+          "status": "bounded",
+          "localExport": "Button",
+          "evidence": "parity/button/README.md"
+        },
+        {
+          "upstreamModule": "collapsible",
+          "status": "bounded",
+          "localExport": "Collapsible",
+          "evidence": "parity/collapsible/README.md"
+        },
+        {
+          "upstreamModule": "dialog",
+          "status": "bounded",
+          "localExport": "Dialog",
+          "evidence": "docs/dialog-first-slice.md"
+        },
+        {
+          "upstreamModule": "input",
+          "status": "bounded",
+          "localExport": "Input",
+          "evidence": "docs/input.md"
+        },
+        {
+          "upstreamModule": "merge-props",
+          "status": "bounded",
+          "localExport": "mergeProps / mergePropsN",
+          "evidence": "docs/upstream-contracts.md"
+        },
+        {
+          "upstreamModule": "meter",
+          "status": "bounded",
+          "localExport": "Meter",
+          "evidence": "parity/meter/README.md"
+        },
+        {
+          "upstreamModule": "progress",
+          "status": "bounded",
+          "localExport": "Progress",
+          "evidence": "parity/progress/README.md"
+        },
+        {
+          "upstreamModule": "separator",
+          "status": "bounded",
+          "localExport": "Separator",
+          "evidence": "parity/separator/README.md"
+        },
+        {
+          "upstreamModule": "toast",
+          "status": "bounded",
+          "localExport": "Toast",
+          "evidence": "parity/toast/rendering-interface.md"
+        },
+        {
+          "upstreamModule": "toggle",
+          "status": "bounded",
+          "localExport": "Toggle",
+          "evidence": "parity/toggle/README.md"
+        }
+      ],
+      "source_records": [
+        {
+          "path": "packages/base/package.json",
+          "git_blob": "0ff34b8c838aa0dcb8b6e88705e9879f62806e3b",
+          "sha256": "c8263ed0f5ca3dedeca07f6f61c00e1353f12845955f22e5aacdea0bec4382d7",
+          "bytes": 2730
+        },
+        {
+          "path": "packages/base/src/lib/index.ts",
+          "git_blob": "5b59fcc809b64e431305a6beff2bb5d4a2367063",
+          "sha256": "67eba6b7d85fe52f019fe57a8185b388c92350a4ec809043856d1148b6c2f002",
+          "bytes": 2529
+        },
+        {
+          "path": "parity/catalog.json",
+          "git_blob": "c97e260b417e29fb9401097c007df0b676b0771d",
+          "sha256": "ba83e61e5338f646af270ef9ae74e583e3dc9378a74ba4bd2730f40c96b814c2",
+          "bytes": 6269
+        }
+      ],
+      "upstream_behavior_commit": "47b40521eab921c2756bf9bdb0b0f07fbfdb8c8c",
+      "react_fixture_version": "1.6.0",
+      "react_fixture_commit": "b34551d644f2e58ebf8fc1050d949f6654ceca6c",
+      "limitation": "Package export existence and bounded contracts are distinct from complete API/behavior and React 1.6 versus 1.8 parity.",
+      "git_tree": "e6138c3f2f8f0732dba9b413f0c1618c9d230c77",
+      "projection": "Current scripts/base.lock.json consumption in proposed UI PR37; historical d889 consumption and source records are preserved in historical_dependency_snapshot. This adds no styled-wrapper implementation or test credit."
+    },
+    "dependency_groups": {
+      "no_base_import": [
+        "alert",
+        "aspect-ratio",
+        "calendar",
+        "card",
+        "carousel",
+        "chart",
+        "command",
+        "empty",
+        "field",
+        "input-group",
+        "input-otp",
+        "kbd",
+        "label",
+        "message-scroller",
+        "message",
+        "native-select",
+        "pagination",
+        "questionnaire",
+        "resizable",
+        "skeleton",
+        "sonner",
+        "spinner",
+        "table",
+        "textarea"
+      ],
+      "only_exported_bounded_base": [
+        "accordion",
+        "avatar",
+        "button",
+        "collapsible",
+        "dialog",
+        "input",
+        "progress",
+        "separator",
+        "sheet",
+        "toast",
+        "toggle"
+      ],
+      "missing_base_export": [
+        "alert-dialog",
+        "attachment",
+        "badge",
+        "breadcrumb",
+        "bubble",
+        "button-group",
+        "checkbox",
+        "combobox",
+        "context-menu",
+        "direction",
+        "drawer",
+        "dropdown-menu",
+        "hover-card",
+        "item",
+        "marker",
+        "menubar",
+        "navigation-menu",
+        "popover",
+        "radio-group",
+        "scroll-area",
+        "select",
+        "sidebar",
+        "slider",
+        "switch",
+        "tabs",
+        "toggle-group",
+        "tooltip"
+      ],
+      "missing_base_modules": [
+        "alert-dialog",
+        "checkbox",
+        "combobox",
+        "context-menu",
+        "direction-provider",
+        "drawer",
+        "menu",
+        "menubar",
+        "navigation-menu",
+        "popover",
+        "preview-card",
+        "radio",
+        "radio-group",
+        "scroll-area",
+        "select",
+        "slider",
+        "switch",
+        "tabs",
+        "toggle-group",
+        "tooltip",
+        "use-render"
+      ],
+      "use_render_consumers": [
+        "attachment",
+        "badge",
+        "breadcrumb",
+        "bubble",
+        "button-group",
+        "item",
+        "marker",
+        "sidebar"
+      ]
+    },
+    "entry_dependencies": {
+      "accordion": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "accordion",
+              "locked_package_export": true,
+              "locked_contract": "bounded",
+              "local_export": "Accordion",
+              "evidence": "https://github.com/sveltery/base/blob/f884f3bb265485ef8e422e43a75eb3055db11fab/parity/accordion/README.md"
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": true,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "public-icon-distribution-pending-pr33; app-helper-landed-pr29"
+          ]
+        }
+      },
+      "alert-dialog": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "alert-dialog",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [
+            {
+              "module": "button",
+              "shipped_at_ui_snapshot": true
+            }
+          ],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:alert-dialog"
+          ]
+        }
+      },
+      "alert": {
+        "dependencies": {
+          "base": [],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "shipped-bounded",
+          "public_subpath": "@sveltery/ui/alert",
+          "evidence": "docs/alert.md",
+          "limits": "Four native div parts and selected Basic example; icon/Badge compositions remain deferred.",
+          "blockers": []
+        }
+      },
+      "aspect-ratio": {
+        "dependencies": {
+          "base": [],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "shipped-bounded",
+          "public_subpath": "@sveltery/ui/aspect-ratio",
+          "evidence": "docs/aspect-ratio.md",
+          "limits": "Native ratio host and four bounded example bodies; Next Image and full gallery/framework integration remain deferred.",
+          "blockers": []
+        }
+      },
+      "attachment": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "merge-props",
+              "locked_package_export": true,
+              "locked_contract": "bounded",
+              "local_export": "mergeProps / mergePropsN",
+              "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/docs/upstream-contracts.md"
+            },
+            {
+              "module": "use-render",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [
+            {
+              "module": "button",
+              "shipped_at_ui_snapshot": true
+            }
+          ],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:use-render"
+          ]
+        }
+      },
+      "avatar": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "avatar",
+              "locked_package_export": true,
+              "locked_contract": "bounded",
+              "local_export": "Avatar",
+              "evidence": "https://github.com/sveltery/base/blob/f884f3bb265485ef8e422e43a75eb3055db11fab/parity/avatar/README.md"
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented"
+          ]
+        }
+      },
+      "badge": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "merge-props",
+              "locked_package_export": true,
+              "locked_contract": "bounded",
+              "local_export": "mergeProps / mergePropsN",
+              "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/docs/upstream-contracts.md"
+            },
+            {
+              "module": "use-render",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:use-render"
+          ]
+        }
+      },
+      "breadcrumb": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "merge-props",
+              "locked_package_export": true,
+              "locked_contract": "bounded",
+              "local_export": "mergeProps / mergePropsN",
+              "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/docs/upstream-contracts.md"
+            },
+            {
+              "module": "use-render",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": true,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:use-render",
+            "public-icon-distribution-pending-pr33; app-helper-landed-pr29"
+          ]
+        }
+      },
+      "bubble": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "merge-props",
+              "locked_package_export": true,
+              "locked_contract": "bounded",
+              "local_export": "mergeProps / mergePropsN",
+              "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/docs/upstream-contracts.md"
+            },
+            {
+              "module": "use-render",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:use-render"
+          ]
+        }
+      },
+      "button-group": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "merge-props",
+              "locked_package_export": true,
+              "locked_contract": "bounded",
+              "local_export": "mergeProps / mergePropsN",
+              "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/docs/upstream-contracts.md"
+            },
+            {
+              "module": "use-render",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [
+            {
+              "module": "separator",
+              "shipped_at_ui_snapshot": false
+            }
+          ],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:use-render",
+            "missing-ui:separator"
+          ]
+        }
+      },
+      "button": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "button",
+              "locked_package_export": true,
+              "locked_contract": "bounded",
+              "local_export": "Button",
+              "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/parity/button/README.md"
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "shipped-bounded",
+          "public_subpath": "@sveltery/ui/button",
+          "evidence": "docs/button.md",
+          "limits": "Styled standalone Base Button, bounded variants/sizes; generic class callback and convenience exports are documented adaptations.",
+          "blockers": []
+        }
+      },
+      "calendar": {
+        "dependencies": {
+          "base": [],
+          "ui_local": [
+            {
+              "module": "button",
+              "shipped_at_ui_snapshot": true
+            }
+          ],
+          "icon_helper": true,
+          "native_engine_ports": [
+            "react-day-picker"
+          ],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "public-icon-distribution-pending-pr33; app-helper-landed-pr29",
+            "native-engine-port:react-day-picker"
+          ]
+        }
+      },
+      "card": {
+        "dependencies": {
+          "base": [],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "shipped-bounded",
+          "public_subpath": "@sveltery/ui/card",
+          "evidence": "docs/card.md",
+          "limits": "Seven native parts and seven selected examples; five composition examples remain deferred.",
+          "blockers": []
+        }
+      },
+      "carousel": {
+        "dependencies": {
+          "base": [],
+          "ui_local": [
+            {
+              "module": "button",
+              "shipped_at_ui_snapshot": true
+            }
+          ],
+          "icon_helper": true,
+          "native_engine_ports": [
+            "embla-carousel-react"
+          ],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "public-icon-distribution-pending-pr33; app-helper-landed-pr29",
+            "native-engine-port:embla-carousel-react"
+          ]
+        }
+      },
+      "chart": {
+        "dependencies": {
+          "base": [],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [
+            "recharts"
+          ],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "native-engine-port:recharts"
+          ]
+        }
+      },
+      "checkbox": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "checkbox",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": true,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:checkbox",
+            "public-icon-distribution-pending-pr33; app-helper-landed-pr29"
+          ]
+        }
+      },
+      "collapsible": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "collapsible",
+              "locked_package_export": true,
+              "locked_contract": "bounded",
+              "local_export": "Collapsible",
+              "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/parity/collapsible/README.md"
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented"
+          ]
+        }
+      },
+      "combobox": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "combobox",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [
+            {
+              "module": "button",
+              "shipped_at_ui_snapshot": true
+            },
+            {
+              "module": "input-group",
+              "shipped_at_ui_snapshot": false
+            }
+          ],
+          "icon_helper": true,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:combobox",
+            "missing-ui:input-group",
+            "public-icon-distribution-pending-pr33; app-helper-landed-pr29"
+          ]
+        }
+      },
+      "command": {
+        "dependencies": {
+          "base": [],
+          "ui_local": [
+            {
+              "module": "dialog",
+              "shipped_at_ui_snapshot": true
+            },
+            {
+              "module": "input-group",
+              "shipped_at_ui_snapshot": false
+            }
+          ],
+          "icon_helper": true,
+          "native_engine_ports": [
+            "cmdk"
+          ],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-ui:input-group",
+            "public-icon-distribution-pending-pr33; app-helper-landed-pr29",
+            "native-engine-port:cmdk"
+          ]
+        }
+      },
+      "context-menu": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "context-menu",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": true,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:context-menu",
+            "public-icon-distribution-pending-pr33; app-helper-landed-pr29"
+          ]
+        }
+      },
+      "dialog": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "dialog",
+              "locked_package_export": true,
+              "locked_contract": "bounded",
+              "local_export": "Dialog",
+              "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/docs/dialog-first-slice.md"
+            }
+          ],
+          "ui_local": [
+            {
+              "module": "button",
+              "shipped_at_ui_snapshot": true
+            }
+          ],
+          "icon_helper": true,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "shipped-bounded",
+          "public_subpath": "@sveltery/ui/dialog",
+          "evidence": "docs/dialog.md",
+          "limits": "Ten styled exports; fixed close icons and direct Base Close composition remain documented adaptations. Complete configurable-icon/render and inherited cross-version parity are not established.",
+          "blockers": [
+            "public-icon-distribution-pending-pr33; app-helper-landed-pr29"
+          ]
+        }
+      },
+      "direction": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "direction-provider",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:direction-provider"
+          ]
+        }
+      },
+      "drawer": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "drawer",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:drawer"
+          ]
+        }
+      },
+      "dropdown-menu": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "menu",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": true,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:menu",
+            "public-icon-distribution-pending-pr33; app-helper-landed-pr29"
+          ]
+        }
+      },
+      "empty": {
+        "dependencies": {
+          "base": [],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "shipped-bounded",
+          "public_subpath": "@sveltery/ui/empty",
+          "evidence": "docs/empty.md",
+          "limits": "Six native parts and supplemental probes; actual upstream gallery functions remain deferred.",
+          "blockers": []
+        }
+      },
+      "field": {
+        "dependencies": {
+          "base": [],
+          "ui_local": [
+            {
+              "module": "label",
+              "shipped_at_ui_snapshot": true
+            },
+            {
+              "module": "separator",
+              "shipped_at_ui_snapshot": false
+            }
+          ],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-ui:separator"
+          ]
+        }
+      },
+      "hover-card": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "preview-card",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:preview-card"
+          ]
+        }
+      },
+      "input-group": {
+        "dependencies": {
+          "base": [],
+          "ui_local": [
+            {
+              "module": "button",
+              "shipped_at_ui_snapshot": true
+            },
+            {
+              "module": "input",
+              "shipped_at_ui_snapshot": false
+            },
+            {
+              "module": "textarea",
+              "shipped_at_ui_snapshot": true
+            }
+          ],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-ui:input"
+          ]
+        }
+      },
+      "input-otp": {
+        "dependencies": {
+          "base": [],
+          "ui_local": [],
+          "icon_helper": true,
+          "native_engine_ports": [
+            "input-otp"
+          ],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "public-icon-distribution-pending-pr33; app-helper-landed-pr29",
+            "native-engine-port:input-otp"
+          ]
+        }
+      },
+      "input": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "input",
+              "locked_package_export": true,
+              "locked_contract": "bounded",
+              "local_export": "Input",
+              "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/docs/input.md"
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "draft-merge-blocked-pr34",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "draft-pr34-retains-failing-source-derived-expectations; dependency-fidelity-blocked"
+          ]
+        }
+      },
+      "item": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "merge-props",
+              "locked_package_export": true,
+              "locked_contract": "bounded",
+              "local_export": "mergeProps / mergePropsN",
+              "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/docs/upstream-contracts.md"
+            },
+            {
+              "module": "use-render",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [
+            {
+              "module": "separator",
+              "shipped_at_ui_snapshot": false
+            }
+          ],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:use-render",
+            "missing-ui:separator"
+          ]
+        }
+      },
+      "kbd": {
+        "dependencies": {
+          "base": [],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "shipped-bounded",
+          "public_subpath": "@sveltery/ui/kbd",
+          "evidence": "docs/kbd.md",
+          "limits": "Native kbd parts; selected gallery bodies use landed Example scaffold. No shortcut controller is introduced.",
+          "blockers": []
+        }
+      },
+      "label": {
+        "dependencies": {
+          "base": [],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "shipped-bounded",
+          "public_subpath": "@sveltery/ui/label",
+          "evidence": "docs/label.md",
+          "limits": "Native label; selected With Textarea composition retains documented native Field/example substitutions.",
+          "blockers": []
+        }
+      },
+      "marker": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "merge-props",
+              "locked_package_export": true,
+              "locked_contract": "bounded",
+              "local_export": "mergeProps / mergePropsN",
+              "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/docs/upstream-contracts.md"
+            },
+            {
+              "module": "use-render",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:use-render"
+          ]
+        }
+      },
+      "menubar": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "menu",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            },
+            {
+              "module": "menubar",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [
+            {
+              "module": "dropdown-menu",
+              "shipped_at_ui_snapshot": false
+            }
+          ],
+          "icon_helper": true,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:menu",
+            "missing-base:menubar",
+            "missing-ui:dropdown-menu",
+            "public-icon-distribution-pending-pr33; app-helper-landed-pr29"
+          ]
+        }
+      },
+      "message-scroller": {
+        "dependencies": {
+          "base": [],
+          "ui_local": [
+            {
+              "module": "button",
+              "shipped_at_ui_snapshot": true
+            }
+          ],
+          "icon_helper": true,
+          "native_engine_ports": [
+            "@shadcn/react/message-scroller"
+          ],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "public-icon-distribution-pending-pr33; app-helper-landed-pr29",
+            "native-engine-port:@shadcn/react/message-scroller"
+          ]
+        }
+      },
+      "message": {
+        "dependencies": {
+          "base": [],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented"
+          ]
+        }
+      },
+      "native-select": {
+        "dependencies": {
+          "base": [],
+          "ui_local": [],
+          "icon_helper": true,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "public-icon-distribution-pending-pr33; app-helper-landed-pr29"
+          ]
+        }
+      },
+      "navigation-menu": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "navigation-menu",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": true,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:navigation-menu",
+            "public-icon-distribution-pending-pr33; app-helper-landed-pr29"
+          ]
+        }
+      },
+      "pagination": {
+        "dependencies": {
+          "base": [],
+          "ui_local": [
+            {
+              "module": "button",
+              "shipped_at_ui_snapshot": true
+            }
+          ],
+          "icon_helper": true,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "public-icon-distribution-pending-pr33; app-helper-landed-pr29"
+          ]
+        }
+      },
+      "popover": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "popover",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:popover"
+          ]
+        }
+      },
+      "progress": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "progress",
+              "locked_package_export": true,
+              "locked_contract": "bounded",
+              "local_export": "Progress",
+              "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/parity/progress/README.md"
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented"
+          ]
+        }
+      },
+      "questionnaire": {
+        "dependencies": {
+          "base": [],
+          "ui_local": [
+            {
+              "module": "button",
+              "shipped_at_ui_snapshot": true
+            }
+          ],
+          "icon_helper": true,
+          "native_engine_ports": [
+            "@shadcn/react/questionnaire"
+          ],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "public-icon-distribution-pending-pr33; app-helper-landed-pr29",
+            "native-engine-port:@shadcn/react/questionnaire"
+          ]
+        }
+      },
+      "radio-group": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "radio",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            },
+            {
+              "module": "radio-group",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:radio",
+            "missing-base:radio-group"
+          ]
+        }
+      },
+      "resizable": {
+        "dependencies": {
+          "base": [],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [
+            "react-resizable-panels"
+          ],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "native-engine-port:react-resizable-panels"
+          ]
+        }
+      },
+      "scroll-area": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "scroll-area",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:scroll-area"
+          ]
+        }
+      },
+      "select": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "select",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": true,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:select",
+            "public-icon-distribution-pending-pr33; app-helper-landed-pr29"
+          ]
+        }
+      },
+      "separator": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "separator",
+              "locked_package_export": true,
+              "locked_contract": "bounded",
+              "local_export": "Separator",
+              "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/parity/separator/README.md"
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "restore-genuine-original-support-css"
+          ]
+        }
+      },
+      "sheet": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "dialog",
+              "locked_package_export": true,
+              "locked_contract": "bounded",
+              "local_export": "Dialog",
+              "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/docs/dialog-first-slice.md"
+            }
+          ],
+          "ui_local": [
+            {
+              "module": "button",
+              "shipped_at_ui_snapshot": true
+            }
+          ],
+          "icon_helper": true,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "public-icon-distribution-pending-pr33; app-helper-landed-pr29"
+          ]
+        }
+      },
+      "sidebar": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "merge-props",
+              "locked_package_export": true,
+              "locked_contract": "bounded",
+              "local_export": "mergeProps / mergePropsN",
+              "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/docs/upstream-contracts.md"
+            },
+            {
+              "module": "use-render",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [
+            {
+              "module": "button",
+              "shipped_at_ui_snapshot": true
+            },
+            {
+              "module": "input",
+              "shipped_at_ui_snapshot": false
+            },
+            {
+              "module": "separator",
+              "shipped_at_ui_snapshot": false
+            },
+            {
+              "module": "sheet",
+              "shipped_at_ui_snapshot": false
+            },
+            {
+              "module": "skeleton",
+              "shipped_at_ui_snapshot": true
+            },
+            {
+              "module": "tooltip",
+              "shipped_at_ui_snapshot": false
+            }
+          ],
+          "icon_helper": true,
+          "native_engine_ports": [],
+          "native_hook_ports": [
+            "@/registry/bases/base/hooks/use-mobile"
+          ]
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:use-render",
+            "missing-ui:input",
+            "missing-ui:separator",
+            "missing-ui:sheet",
+            "missing-ui:tooltip",
+            "public-icon-distribution-pending-pr33; app-helper-landed-pr29",
+            "native-hook-port:@/registry/bases/base/hooks/use-mobile"
+          ]
+        }
+      },
+      "skeleton": {
+        "dependencies": {
+          "base": [],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "shipped-bounded",
+          "public_subpath": "@sveltery/ui/skeleton",
+          "evidence": "docs/skeleton.md",
+          "limits": "Native div; selected full gallery bodies use landed Example scaffold, with complete style/theme acceptance still separate.",
+          "blockers": []
+        }
+      },
+      "slider": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "slider",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:slider"
+          ]
+        }
+      },
+      "sonner": {
+        "dependencies": {
+          "base": [],
+          "ui_local": [],
+          "icon_helper": true,
+          "native_engine_ports": [
+            "next-themes",
+            "sonner"
+          ],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "public-icon-distribution-pending-pr33; app-helper-landed-pr29",
+            "native-engine-port:next-themes",
+            "native-engine-port:sonner"
+          ]
+        }
+      },
+      "spinner": {
+        "dependencies": {
+          "base": [],
+          "ui_local": [],
+          "icon_helper": true,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "public-icon-distribution-pending-pr33; app-helper-landed-pr29"
+          ]
+        }
+      },
+      "switch": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "switch",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:switch"
+          ]
+        }
+      },
+      "table": {
+        "dependencies": {
+          "base": [],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "shipped-bounded",
+          "public_subpath": "@sveltery/ui/table",
+          "evidence": "docs/table.md",
+          "limits": "Eight native parts; Basic/Footer/Simple/With Badges are selected. With Badges uses six literal native spans, not a Badge dependency.",
+          "blockers": []
+        }
+      },
+      "tabs": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "tabs",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:tabs"
+          ]
+        }
+      },
+      "textarea": {
+        "dependencies": {
+          "base": [],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "shipped-bounded",
+          "public_subpath": "@sveltery/ui/textarea",
+          "evidence": "docs/textarea.md",
+          "limits": "Native textarea; accepted Svelte value-binding/reset difference is recorded separately from ordinary source parity.",
+          "blockers": []
+        }
+      },
+      "toast": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "toast",
+              "locked_package_export": true,
+              "locked_contract": "bounded",
+              "local_export": "Toast",
+              "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/parity/toast/rendering-interface.md"
+            }
+          ],
+          "ui_local": [
+            {
+              "module": "button",
+              "shipped_at_ui_snapshot": true
+            }
+          ],
+          "icon_helper": true,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "public-icon-distribution-pending-pr33; app-helper-landed-pr29",
+            "bounded-base-toast-manager-api-and-lifecycle-adaptation-requires-review"
+          ]
+        }
+      },
+      "toggle-group": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "toggle",
+              "locked_package_export": true,
+              "locked_contract": "bounded",
+              "local_export": "Toggle",
+              "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/parity/toggle/README.md"
+            },
+            {
+              "module": "toggle-group",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [
+            {
+              "module": "toggle",
+              "shipped_at_ui_snapshot": false
+            }
+          ],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:toggle-group",
+            "missing-ui:toggle"
+          ]
+        }
+      },
+      "toggle": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "toggle",
+              "locked_package_export": true,
+              "locked_contract": "bounded",
+              "local_export": "Toggle",
+              "evidence": "https://github.com/sveltery/base/blob/d889e75bedfee9174c3b36d16fe8a9fb2d2a66d3/parity/toggle/README.md"
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented"
+          ]
+        }
+      },
+      "tooltip": {
+        "dependencies": {
+          "base": [
+            {
+              "module": "tooltip",
+              "locked_package_export": false,
+              "locked_contract": "unimplemented",
+              "local_export": null,
+              "evidence": null
+            }
+          ],
+          "ui_local": [],
+          "icon_helper": false,
+          "native_engine_ports": [],
+          "native_hook_ports": []
+        },
+        "implementation": {
+          "status": "unimplemented",
+          "public_subpath": null,
+          "evidence": null,
+          "limits": "No complete styled wrapper, gallery, or implementation test credit at this snapshot.",
+          "blockers": [
+            "styled-wrapper-unimplemented",
+            "missing-base:tooltip"
+          ]
+        }
+      }
+    }
+  }
 }
