@@ -1,0 +1,297 @@
+{
+  "commit": "d75a96ab781f3d659be1ad287347d5887ce9f2fc",
+  "category": "authored source-derived gallery supplements; zero copied ordinary Empty runtime-suite credit",
+  "selected": [
+    "EmptyBasic",
+    "EmptyWithMutedBackground",
+    "EmptyWithIcon",
+    "EmptyInCard"
+  ],
+  "omitted": {
+    "EmptyWithBorder": "missing actual styled InputGroup/InputGroupInput/InputGroupAddon",
+    "EmptyWithMutedBackgroundAlt": "missing actual styled InputGroup/InputGroupInput/InputGroupAddon"
+  },
+  "originalFiles": [
+    {
+      "original": "apps/v4/registry/bases/base/ui/empty.tsx",
+      "bytes": 2276,
+      "sha256": "05c419160ac0226973f6f00d7d8865dc46645a75ea0697138992cdbc736efec4",
+      "gitBlob": "6a49a9813c02e2ce2548402e1a63b05de550bace",
+      "byteExactFixture": "tests/reference/empty.tsx"
+    },
+    {
+      "original": "apps/v4/registry/bases/base/examples/empty-example.tsx",
+      "bytes": 7725,
+      "sha256": "c40ecdb43cbc685ab147ff603953b508c57d2abd47b8cca44e886fbc5530dc36",
+      "gitBlob": "6ad303e26c9c5f5044d7f11fff19e264d9c49213",
+      "byteExactFixture": "tests/reference/empty-example.tsx"
+    },
+    {
+      "original": "apps/v4/registry/bases/base/components/example.tsx",
+      "bytes": 1395,
+      "sha256": "4e8265534863b7291158a5341f305a3cac582cf762054bd2387adf20959e06bf",
+      "gitBlob": "48c3077aa534396568003a659bb9b428b9d2f89f",
+      "byteExactFixture": "tests/reference/example-scaffold.tsx"
+    },
+    {
+      "original": "apps/v4/app/(app)/(create)/components/icon-placeholder.tsx",
+      "bytes": 2101,
+      "sha256": "85ce07b817cdb006db9c9f580ade10fafa6e9e87c5a61c57a289c412ccae66b2",
+      "gitBlob": "a383c7ac12a5a1870de23a092cc5d13f7a88fcd4",
+      "byteExactFixture": "tests/reference/icons/upstream/icon-placeholder.tsx"
+    },
+    {
+      "original": "apps/v4/registry/icons/create-icon-loader.tsx",
+      "bytes": 1256,
+      "sha256": "189b2bad09c384d32532732683048ae12b12904eba50b51b90ea768e99e81aa8",
+      "gitBlob": "ad605cfdb50e5bd8b6e4a8f2ad0ef9232b5b3e5b",
+      "byteExactFixture": "tests/reference/icons/upstream/create-icon-loader.tsx"
+    },
+    {
+      "original": "apps/v4/app/globals.css",
+      "bytes": 13739,
+      "sha256": "cbae6d633c38be59fc036d1e5cf60203ae7619ea6af9b4cdd8d632a211ccffa9",
+      "gitBlob": "32582b53565093c693017d4528d2982642050bfe",
+      "byteExactFixture": "tests/reference/themes/upstream/globals.css"
+    },
+    {
+      "original": "packages/shadcn/src/tailwind.css",
+      "bytes": 16340,
+      "sha256": "4c371f7a1ff5d219ae2f7ff28bd256b4346fd546fe46fbae22092e57db2f0fae",
+      "gitBlob": "067bfc56fc086420835582f469e2c78d3942c69a",
+      "byteExactFixture": "tests/reference/themes/upstream/shadcn-tailwind.css"
+    },
+    {
+      "original": "apps/v4/registry/bases/base/ui/button.tsx",
+      "bytes": 1508,
+      "sha256": "74f982d7ad7a764e3c95a519fc063a671e66ad758ea31dc89d747838e20c2487",
+      "gitBlob": "2007374034d564bb926915baa057e500cab631a4",
+      "byteExactFixture": "tests/reference/button.tsx"
+    },
+    {
+      "original": "apps/v4/registry/styles/style-vega.css",
+      "bytes": 74972,
+      "sha256": "7b0dc3a9d2245ab6ce3d17653fa74a07f0ce2541e480bef36d2600fe38f1281b",
+      "gitBlob": "7b07854ab490e32c7de468756642b4016b2379c2",
+      "byteExactFixture": "tests/reference/themes/upstream/style-vega.css"
+    },
+    {
+      "original": "apps/v4/registry/styles/style-nova.css",
+      "bytes": 75461,
+      "sha256": "5d5751579c015b61e77cf0822862a43ac79f3e6fed236a17624be8e6d1ebea1d",
+      "gitBlob": "514a3e8e00deac2ef59fee04c57cb10fd277ef39",
+      "byteExactFixture": "tests/reference/themes/upstream/style-nova.css"
+    },
+    {
+      "original": "apps/v4/registry/styles/style-maia.css",
+      "bytes": 73982,
+      "sha256": "0a1e5a658ea601ee7a9427b91ea567c6fc915a385d7466bea19f42ec726added",
+      "gitBlob": "fb1827393a94b9b2d4aac54f3a79f37a06095734",
+      "byteExactFixture": "tests/reference/themes/upstream/style-maia.css"
+    },
+    {
+      "original": "apps/v4/registry/styles/style-lyra.css",
+      "bytes": 74205,
+      "sha256": "7d75035683a22e61f5dace0b115e97f9e9b643500c1f4bfe2b31ad4dcdaa0c4a",
+      "gitBlob": "21de71c1ccff0e501b143390e11d171c9f4f96f1",
+      "byteExactFixture": "tests/reference/themes/upstream/style-lyra.css"
+    },
+    {
+      "original": "apps/v4/registry/styles/style-mira.css",
+      "bytes": 75304,
+      "sha256": "025f54a060adeb60489d17eb3eb935e1118ee091ba5c618d5463eb27f2b1d003",
+      "gitBlob": "7707d4b3ed67b3a5a57008b51b624c44de2baf95",
+      "byteExactFixture": "tests/reference/themes/upstream/style-mira.css"
+    },
+    {
+      "original": "apps/v4/registry/styles/style-luma.css",
+      "bytes": 75176,
+      "sha256": "a698210162ca2d3385142a47334f22985831b1e91716c2d3175828d928a59707",
+      "gitBlob": "739e8f9260ef9e82f31bb42f5d579df13ada2787",
+      "byteExactFixture": "tests/reference/themes/upstream/style-luma.css"
+    },
+    {
+      "original": "apps/v4/registry/styles/style-sera.css",
+      "bytes": 75728,
+      "sha256": "eda71a39ba86625eb81b25f2e5824579952ced0cf0451be16be3f4dd70bf9876",
+      "gitBlob": "c210a75f1a396560cb474ec98377f188fbee6a64",
+      "byteExactFixture": "tests/reference/themes/upstream/style-sera.css"
+    },
+    {
+      "original": "apps/v4/registry/styles/style-rhea.css",
+      "bytes": 75351,
+      "sha256": "bcb242a7845316f93b0562345dd5c32a46a2988b506a8e8d7df1c836a1637b49",
+      "gitBlob": "dd15e5f37548f63fc694601448efe0bb63462013",
+      "byteExactFixture": "tests/reference/themes/upstream/style-rhea.css"
+    },
+    {
+      "original": "apps/v4/registry/icons/__lucide__.ts",
+      "bytes": 8253,
+      "sha256": "69458ef49b7de83a44bbb5501fdfea168ba2d0f21ad33ac0857c2419a4a4d291",
+      "gitBlob": "9525b0e37328bcbc48b0551c99b4de1c814cf706",
+      "byteExactFixture": "tests/reference/icons/upstream/__lucide__.ts"
+    },
+    {
+      "original": "apps/v4/registry/icons/__tabler__.ts",
+      "bytes": 9352,
+      "sha256": "fd8c854f86bb118364c52434e1d09233d9c86ab8ab79e3036cfe39323497d515",
+      "gitBlob": "83a333cbcc9eea6c532f28fa1b6431175934ecd3",
+      "byteExactFixture": "tests/reference/icons/upstream/__tabler__.ts"
+    },
+    {
+      "original": "apps/v4/registry/icons/__hugeicons__.ts",
+      "bytes": 11355,
+      "sha256": "609f702c46376b9ea01d2dd0996198473cd56fa6e333e2cb181f0949a074741e",
+      "gitBlob": "a185aa0bdced78aa3d880ac03e8a984999b836a9",
+      "byteExactFixture": "tests/reference/icons/upstream/__hugeicons__.ts"
+    },
+    {
+      "original": "apps/v4/registry/icons/__phosphor__.ts",
+      "bytes": 8406,
+      "sha256": "338cdc4e3fd40ebaaa8855fd6921d341a70fbc4ff3f147a28f5b3c552add9bdb",
+      "gitBlob": "29386b417db005fb9930c8d951bc4cb3cf3f8a0e",
+      "byteExactFixture": "tests/reference/icons/upstream/__phosphor__.ts"
+    },
+    {
+      "original": "apps/v4/registry/icons/__remixicon__.ts",
+      "bytes": 7753,
+      "sha256": "6d5d5db309f7fa8931f60b7b1e0ecfd87401514afd91234bc366d7cb2c524cfe",
+      "gitBlob": "d2bd5bdaabbac8ec78eac52ef0ea9861df25b09e",
+      "byteExactFixture": "tests/reference/icons/upstream/__remixicon__.ts"
+    },
+    {
+      "original": "apps/v4/registry/bases/base/ui/_registry.ts",
+      "bytes": 26720,
+      "sha256": "78f8292de058466f7e2e1fb132d0e0ec87c5999638b411324aa6ae83a0ae475e",
+      "gitBlob": "80a3a705187e8c7c2cc0c7f6c0423d6b85d973df",
+      "byteExactFixture": null
+    },
+    {
+      "original": "apps/v4/registry/bases/base/examples/_registry.ts",
+      "bytes": 20991,
+      "sha256": "5d483b8f9f8c41796f991a07b1891c28d031a0569c73cb7a20c3538bdd09e9af",
+      "gitBlob": "2335c413daaf256ab8b76d3682bb40a8925bf249",
+      "byteExactFixture": null
+    },
+    {
+      "original": "apps/v4/package.json",
+      "bytes": 5899,
+      "sha256": "fabd6e072864ec11960114fffa64faa8947f47443512a327bb7240fc52a0454d",
+      "gitBlob": "1ec668797bd29b2c35bba53ea2e07db41ced016e",
+      "byteExactFixture": null
+    }
+  ],
+  "selectedDeclarations": [
+    {
+      "name": "EmptyBasic",
+      "startLine": 35,
+      "endLine": 72,
+      "bytes": 1136,
+      "sha256": "406174733e75a3f0d50a17aeba00240f301b2cce5f8e43ae308f0e5bd282ecb0",
+      "git_blob": "ddc22da49a3c18145bd7eae02a52c340057168e7",
+      "importsUsed": [
+        "Button",
+        "Empty",
+        "EmptyContent",
+        "EmptyDescription",
+        "EmptyHeader",
+        "EmptyTitle",
+        "Example",
+        "IconPlaceholder"
+      ]
+    },
+    {
+      "name": "EmptyWithMutedBackground",
+      "startLine": 74,
+      "endLine": 105,
+      "bytes": 958,
+      "sha256": "9464b9448be1408e5e46fc6661016d31ed83fad91e75d36be7d72b3499585488",
+      "git_blob": "18fcd57394c5396f313449d459d38582dc5e74b9",
+      "importsUsed": [
+        "Button",
+        "Empty",
+        "EmptyContent",
+        "EmptyDescription",
+        "EmptyHeader",
+        "EmptyTitle",
+        "Example",
+        "IconPlaceholder"
+      ]
+    },
+    {
+      "name": "EmptyWithIcon",
+      "startLine": 143,
+      "endLine": 179,
+      "bytes": 1084,
+      "sha256": "fa5323076967d0c47ca4165c34d99b092f09b0896263884ef3fdfbb64515a652",
+      "git_blob": "189feef0eddb6c0eac2c6d543623cdd0b2ab442b",
+      "importsUsed": [
+        "Button",
+        "Empty",
+        "EmptyContent",
+        "EmptyDescription",
+        "EmptyHeader",
+        "EmptyMedia",
+        "EmptyTitle",
+        "Example",
+        "IconPlaceholder"
+      ]
+    },
+    {
+      "name": "EmptyInCard",
+      "startLine": 217,
+      "endLine": 263,
+      "bytes": 1427,
+      "sha256": "9b155d5b534c6a220c7b93d9a25ec69e054214638d633ba3de4d36ce263132c9",
+      "git_blob": "3eb1e73141fe68d5b4ed4d65f6500887fa846205",
+      "importsUsed": [
+        "Button",
+        "Empty",
+        "EmptyContent",
+        "EmptyDescription",
+        "EmptyHeader",
+        "EmptyMedia",
+        "EmptyTitle",
+        "Example",
+        "IconPlaceholder"
+      ]
+    }
+  ],
+  "genuineTestInventory": {
+    "inventory": {
+      "bytes": 45540,
+      "sha256": "3728ce6c200f640c56a585ae51187730476bdfc8b217836df6650b400ea735aa",
+      "git_blob": "fba5c70fa0cc612d7b58de683874341a4f13620f"
+    },
+    "trackedRecords": 139,
+    "testSources": 133,
+    "snapshots": 6,
+    "failures": [],
+    "wrapperAbsenceList": [
+      "Dialog",
+      "Button",
+      "Textarea",
+      "Skeleton",
+      "Kbd",
+      "Table",
+      "Card",
+      "Label",
+      "AspectRatio",
+      "Alert",
+      "Empty",
+      "Input",
+      "InputGroup",
+      "Field",
+      "Badge",
+      "Separator",
+      "Progress",
+      "Spinner"
+    ]
+  },
+  "baseArchive": {
+    "bytes": 67626,
+    "sha256": "915dd6aebd304a7a9c384b0dd5eecd589722686897079fb6dec2961608c564fd",
+    "members": 225,
+    "commit": "f884f3bb265485ef8e422e43a75eb3055db11fab"
+  }
+}

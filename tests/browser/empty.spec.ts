@@ -58,3 +58,56 @@ for (const width of [1280, 390]) for (const theme of ['light', 'dark']) test(`pa
   await testInfo.attach(`svelte-empty-${width}-${theme}`, { body: await page.screenshot({ fullPage: true }), contentType: 'image/png' });
   await testInfo.attach(`pinned-react-empty-${width}-${theme}`, { body: await reference.screenshot({ fullPage: true }), contentType: 'image/png' }); await reference.close();
 });
+
+import { assertEmptyGallery, emptyHTMLHosts, emptyTree, emptyMeasurements, emptyLibraries, emptyStyles, emptyTheme, settledEmpty, emptyTrustedActions } from './empty-gallery-cases';
+
+test('four selected Empty galleries preserve all 48 warm SSR HTML hosts through hydration', async ({ page }) => {
+  const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
+  page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+  await page.goto('/empty'); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true'); await settledEmpty(page);
+  let release!: () => void; const gate = new Promise<void>(resolve => { release = resolve; });
+  await page.route('**/*', async route => { if (route.request().resourceType() === 'script') await gate; await route.fallback(); });
+  try {
+    await page.goto('/empty', { waitUntil: 'commit' }); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'false');
+    const hosts = await page.locator(emptyHTMLHosts).elementHandles(); expect(hosts).toHaveLength(48);
+    const before = await emptyTree(page, false); release();
+    await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true'); await settledEmpty(page);
+    for (const [index, host] of hosts.entries()) expect(await host.evaluate((node, args) => node.isConnected && node === document.querySelectorAll(args.selector)[args.index], { selector: emptyHTMLHosts, index })).toBe(true);
+    expect(await emptyTree(page, false)).toEqual(before); expect(errors).toEqual([]);
+  } finally { release(); }
+});
+for (const library of emptyLibraries) test(`selected original Empty full composition and genuine ${library} glyphs match complete original CSS`, async ({ page, context, browserName }) => {
+  const reference = await context.newPage(); const errors: string[] = [];
+  for (const current of [page, reference]) { current.on('pageerror', error => errors.push(error.message)); current.on('console', message => { if (message.type() === 'error') errors.push(message.text()); }); }
+  try {
+    await page.goto(`/empty?library=${library}`); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true');
+    await reference.goto(`http://127.0.0.1:5175/empty?library=${library}`);
+    await assertEmptyGallery(page, library); await assertEmptyGallery(reference, library);
+    expect(await emptyTree(page)).toEqual(await emptyTree(reference));
+    for (const width of [390, 1280]) {
+      for (const current of [page, reference]) { await current.setViewportSize({ width, height: 1600 }); await emptyTheme(current, 'nova', false); }
+      expect(await emptyMeasurements(page)).toEqual(await emptyMeasurements(reference));
+    }
+    /* empty-action-pair-witness:start */
+    const [actual] = await Promise.allSettled([emptyTrustedActions(page, browserName)]);
+    const [original] = await Promise.allSettled([emptyTrustedActions(reference, browserName)]);
+    if (actual.status === 'rejected') throw actual.reason;
+    if (original.status === 'rejected') throw original.reason;
+    expect(actual.value).toEqual(original.value);
+    /* empty-action-pair-witness:end */
+    expect(errors).toEqual([]);
+  } finally { await reference.close(); }
+});
+for (const style of emptyStyles) test(`four selected Empty bodies match full original ${style} light/dark responsive classes and geometry`, async ({ page, context }) => {
+  const reference = await context.newPage(); const errors: string[] = [];
+  for (const current of [page, reference]) { current.on('pageerror', error => errors.push(error.message)); current.on('console', message => { if (message.type() === 'error') errors.push(message.text()); }); }
+  try {
+    await page.goto('/empty'); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true'); await reference.goto('http://127.0.0.1:5175/empty');
+    await assertEmptyGallery(page); await assertEmptyGallery(reference);
+    for (const dark of [false, true]) for (const width of [390, 640, 768, 1024, 1536]) {
+      for (const current of [page, reference]) { await current.setViewportSize({ width, height: 1600 }); await emptyTheme(current, style, dark); }
+      expect(await emptyMeasurements(page)).toEqual(await emptyMeasurements(reference));
+    }
+    expect(errors).toEqual([]);
+  } finally { await reference.close(); }
+});

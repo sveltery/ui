@@ -125,13 +125,138 @@ function tree(root: string, ref: string) {
   }));
 }
 
+// Finite current-source integration. Historical rows are genuine immutable Git
+// inventories; this pair establishes consistency only within actual HEAD and
+// independently reviewed external baseline/final-source authority.
+const sourceAuthenticationManifestSha256 = '4f498a69413cbbf8d0962909c199348bcdaff6cde05d76d89f8ece9b45728ba8';
+const sourceAuthenticationPath = 'diagnostics/alert-child-segmentation/source-authentication.json';
+const sourceConfigPath = 'diagnostics/alert-child-segmentation/vite.config.ts';
+const sourceLedgerPaths = [
+  'apps/docs/examples/base/EmptyExample.svelte', 'apps/docs/examples/base/EmptyGalleryFixture.svelte',
+  'apps/docs/registry/bases/base/ui/example/Example.svelte',
+  'apps/docs/registry/bases/base/ui/icons/IconPlaceholder.svelte',
+  'apps/docs/src/routes/empty/+page.svelte', 'apps/docs/src/routes/empty-reference/+page.server.ts', 'apps/docs/src/routes/empty-reference/+page.svelte',
+  sourceAuthenticationPath, sourceConfigPath, 'docs/empty.md', 'docs/readiness.md', 'docs/upstream-differences.md',
+  'scripts/check-empty-ssr.mjs', 'scripts/check-installation.mjs', 'scripts/installation-playwright.config.ts', 'scripts/tests/empty-provenance.test.mjs',
+  'tests/browser/empty-gallery-cases.ts', 'tests/browser/empty.spec.ts', 'tests/installation/empty.spec.ts',
+  'tests/reference/SelectedEmptyGallery.tsx', 'tests/reference/empty-gallery-sources.json', 'tests/reference/empty-selected-examples.tsx', 'tests/reference/themes/reference-app/main.tsx',
+].sort();
+type SourceRow = [path: string, mode: string, bytes: number, sha256: string, blob: string];
+type SourceChange = { path: string; operation: 'add' | 'modify'; before: SourceRow | null; purpose: string; after: { kind: 'exact' | 'normalized-config'; row: SourceRow } | { kind: 'manifest-root'; mode: '100644'; binding: 'full-manifest-sha256-via-config-slot' } };
+type HistoricalSource = { head: string; tree: string; rowCount: number; canonicalBytes: number; sha256: string; replacements: { path: string; row: SourceRow | null }[] };
+type SourceManifest = { schemaVersion: number; baseline: { head: string; tree: string; rowCount: number; canonicalBytes: number; sha256: string; rows: SourceRow[] }; historical: HistoricalSource[]; changes: SourceChange[] };
+const sourceHistory = [
+  { head: '028c5ec0c409440a46d61ad8b4a69f0665a0b810', tree: '4064cfd67b7d37bac66f784fe13a20a3b50d03c7', rowCount: 652, canonicalBytes: 109983, sha256: 'bb7f58e273634768867c7ae794b7dd3b1bffa0d06a6e934e418336813de3a443' },
+  { head: '38e3c8ef3a7f92073d5bb18c82c017d697e5ef58', tree: 'aceb19860d531a715903770b9080546760b1b229', rowCount: 655, canonicalBytes: 110538, sha256: 'bbfb69daca1d641d5a51ed323de3de7b261d16896b8f3cbcefd4893e7ddc1952' },
+];
+function sortedSourceRows(rows: SourceRow[]) { return [...rows].sort((a, b) => a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0); }
+function validSourcePath(path: string) { return typeof path === 'string' && !path.startsWith('/') && !path.includes('\\') && path.split('/').every(part => part !== '' && part !== '.' && part !== '..'); }
+function sourceRowsMap(rows: SourceRow[]) {
+  const map = new Map<string, SourceRow>();
+  for (const row of rows) {
+    if (!Array.isArray(row) || row.length !== 5 || !validSourcePath(row[0]) || !['100644', '100755', '120000'].includes(row[1]) || !Number.isSafeInteger(row[2]) || row[2] < 0 || !/^[a-f0-9]{64}$/.test(row[3]) || !/^[a-f0-9]{40}$/.test(row[4]) || map.has(row[0])) throw new Error('Invalid or duplicate complete source row');
+    map.set(row[0], row);
+  }
+  if (JSON.stringify(rows) !== JSON.stringify(sortedSourceRows(rows))) throw new Error('Source rows are not in canonical path order');
+  return map;
+}
+function sourceRowsIdentity(rows: SourceRow[]) { const bytes = JSON.stringify(sortedSourceRows(rows)); return { rowCount: rows.length, canonicalBytes: Buffer.byteLength(bytes), sha256: sha256(bytes) }; }
+function historicalProjection(rows: SourceRow[], exclude: Set<string>) {
+  const projected = sortedSourceRows(rows).filter(row => !exclude.has(row[0])).map(row => [row[0], row[1], row[3], row[2]]);
+  const bytes = JSON.stringify(projected); return { rowCount: projected.length, canonicalBytes: Buffer.byteLength(bytes), sha256: sha256(bytes) };
+}
+export function normalizedSourceConfig(bytes: Uint8Array) {
+  const code = Buffer.from(bytes).toString('utf8');
+  if (!Buffer.from(code, 'utf8').equals(Buffer.from(bytes))) throw new Error('Source config is not exact valid UTF-8');
+  const source = ts.createSourceFile(sourceConfigPath, code, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+  const diagnostics = (source as ts.SourceFile & { parseDiagnostics: readonly ts.Diagnostic[] }).parseDiagnostics;
+  if (diagnostics.length) throw new Error('Source config has parse errors');
+  const slots: ts.VariableDeclaration[] = [];
+  const allSlots: ts.VariableDeclaration[] = [];
+  const visit = (node: ts.Node) => { if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.name.text === 'sourceAuthenticationManifestSha256') allSlots.push(node); ts.forEachChild(node, visit); };
+  visit(source);
+  for (const statement of source.statements) if (ts.isVariableStatement(statement) && statement.declarationList.flags === ts.NodeFlags.Const && statement.declarationList.declarations.length === 1 && !statement.modifiers?.length) {
+    for (const declaration of statement.declarationList.declarations) if (ts.isIdentifier(declaration.name) && declaration.name.text === 'sourceAuthenticationManifestSha256') slots.push(declaration);
+  }
+  if (slots.length !== 1 || allSlots.length !== 1) throw new Error('Expected one AST-owned top-level const manifest digest slot');
+  const initializer = slots[0].initializer;
+  if (!initializer || !ts.isStringLiteral(initializer)) throw new Error('Manifest digest slot is not a plain string literal');
+  const raw = initializer.getText(source);
+  if (!/^'[a-f0-9]{64}'$/.test(raw) || initializer.text !== sourceAuthenticationManifestSha256) throw new Error('Manifest digest slot is not one plain unescaped lowercase64hex token');
+  if (code.split(raw).length !== 2) throw new Error('Duplicate manifest digest literal token');
+  const start = initializer.getStart(source) + 1; const end = initializer.end - 1;
+  // AST offsets are UTF-16 character offsets; independently translate the
+  // prefix to its UTF-8 byte position and prove the exact64 ASCII byte span.
+  const byteStart = Buffer.byteLength(code.slice(0, start), 'utf8'); const byteEnd = Buffer.byteLength(code.slice(0, end), 'utf8');
+  if (end - start !== 64 || byteEnd - byteStart !== 64 || Buffer.from(bytes).subarray(byteStart, byteEnd).toString('ascii') !== initializer.text) throw new Error('Manifest digest AST/UTF-8 span mismatch');
+  const normalized = Buffer.concat([Buffer.from(bytes).subarray(0, byteStart), Buffer.from('0'.repeat(64)), Buffer.from(bytes).subarray(byteEnd)]);
+  if (normalized.length !== bytes.byteLength || !normalized.subarray(0, byteStart).equals(Buffer.from(bytes).subarray(0, byteStart)) || !normalized.subarray(byteEnd).equals(Buffer.from(bytes).subarray(byteEnd))) throw new Error('Normalization changed bytes outside the sole digest interior');
+  return { normalized, physicalDigestLiteral: initializer.text, byteStart, byteEnd, normalizedBytes: normalized.length, normalizedSha256: sha256(normalized), normalizedGitBlob: gitBlob(normalized) };
+}
+function authenticatedCurrentSourceClosure(root: string, current: Map<string, { mode: string; blob: string }>, physicalRows: { path: string; mode: string; bytes: number; sha256: string; headBlob: string }[]) {
+  const manifestBytes = readFileSync(join(root, sourceAuthenticationPath));
+  if (sha256(manifestBytes) !== sourceAuthenticationManifestSha256) throw new Error('Physical source-authentication manifest digest mismatch');
+  const manifest = JSON.parse(manifestBytes.toString('utf8')) as SourceManifest;
+  if (manifest.schemaVersion !== 1) throw new Error('Unsupported source-authentication schema');
+  const baseline = sourceRowsMap(manifest.baseline.rows);
+  const expectedBaseline = { head: 'a4479987172bbda3a660e82f1a94b2f00f7e4df5', tree: '40494decf79fdd6b1dc22ae2eb5cbc043bb34cd5', rowCount: 655, canonicalBytes: 110538, sha256: 'c26e4c75341710d442aa5cdbdb9a3a482cc1f72892cdf05badc21a2df0e56941' };
+  const declaredBaseline = { head: manifest.baseline.head, tree: manifest.baseline.tree, rowCount: manifest.baseline.rowCount, canonicalBytes: manifest.baseline.canonicalBytes, sha256: manifest.baseline.sha256 };
+  if (JSON.stringify(declaredBaseline) !== JSON.stringify(expectedBaseline) || JSON.stringify(sourceRowsIdentity(manifest.baseline.rows)) !== JSON.stringify({ rowCount: expectedBaseline.rowCount, canonicalBytes: expectedBaseline.canonicalBytes, sha256: expectedBaseline.sha256 })) throw new Error('Complete immutable a447 baseline source identity mismatch');
+  if (manifest.historical.length !== sourceHistory.length) throw new Error('Missing immutable historical source closure');
+  const historicalClosures = manifest.historical.map((record, index) => {
+    const { replacements, ...identity } = record;
+    if (JSON.stringify(identity) !== JSON.stringify(sourceHistory[index])) throw new Error('Unexpected historical source authority');
+    const restored = new Map(baseline); const seen = new Set<string>();
+    for (const replacement of replacements) {
+      if (!validSourcePath(replacement.path) || seen.has(replacement.path) || !baseline.has(replacement.path) || JSON.stringify(baseline.get(replacement.path)) === JSON.stringify(replacement.row)) throw new Error('Invalid, duplicate or unchanged historical replacement');
+      seen.add(replacement.path);
+      if (replacement.row === null) restored.delete(replacement.path);
+      else { sourceRowsMap([replacement.row]); if (replacement.row[0] !== replacement.path) throw new Error('Historical replacement path mismatch'); restored.set(replacement.path, replacement.row); }
+    }
+    const rows = sortedSourceRows([...restored.values()]);
+    if (JSON.stringify(sourceRowsIdentity(rows)) !== JSON.stringify({ rowCount: identity.rowCount, canonicalBytes: identity.canonicalBytes, sha256: identity.sha256 })) throw new Error('Complete reconstructed historical source mismatch');
+    const exclusions = new Set([...observationFiles, '.github/workflows/ci.yml', 'docs/alert.md', 'docs/upstream-differences.md', ...(index === 1 ? authoredFiles : [])]);
+    const projection = historicalProjection(rows, exclusions);
+    if (JSON.stringify(projection) !== JSON.stringify(historicalProtectedDigest)) throw new Error('Immutable historical644 aggregate mismatch');
+    return { ...identity, replacements, protectedDigest: projection, scope: 'historical complete reconstruction; not current source' };
+  });
+  const oldProtected = historicalProjection(manifest.baseline.rows, allowedChanges);
+  const expectedProtected = { rowCount: 643, canonicalBytes: 80886, sha256: '37f43888ce646b768081acfa425156a8197f92ed587740574cb3138c87dcc257' };
+  if (JSON.stringify(oldProtected) !== JSON.stringify(expectedProtected)) throw new Error('Immutable a447 historical643 aggregate mismatch');
+  if (JSON.stringify(manifest.changes.map(change => change.path)) !== JSON.stringify(sourceLedgerPaths)) throw new Error('Explicit source ledger path domain mismatch');
+  const normalized = normalizedSourceConfig(readFileSync(join(root, sourceConfigPath)));
+  const physical = new Map(physicalRows.map(row => [row.path, [row.path, row.mode, row.bytes, row.sha256, row.headBlob] as SourceRow]));
+  const expected = new Map(baseline);
+  for (const change of manifest.changes) {
+    if (!validSourcePath(change.path) || typeof change.purpose !== 'string' || !change.purpose || JSON.stringify(change.before) !== JSON.stringify(baseline.get(change.path) ?? null) || change.operation !== (baseline.has(change.path) ? 'modify' : 'add')) throw new Error('Explicit source ledger preimage/operation mismatch');
+    const row = physical.get(change.path); if (!row || row[1] !== '100644') throw new Error('Missing or nonregular current ledger source');
+    if (change.path === sourceAuthenticationPath) {
+      if (JSON.stringify(change.after) !== JSON.stringify({ kind: 'manifest-root', mode: '100644', binding: 'full-manifest-sha256-via-config-slot' }) || row[2] !== manifestBytes.length || row[3] !== sourceAuthenticationManifestSha256) throw new Error('Full physical manifest root binding mismatch');
+    } else if (change.path === sourceConfigPath) {
+      const normalizedRow: SourceRow = [sourceConfigPath, '100644', normalized.normalizedBytes, normalized.normalizedSha256, normalized.normalizedGitBlob];
+      if (change.after.kind !== 'normalized-config' || JSON.stringify(change.after.row) !== JSON.stringify(normalizedRow)) throw new Error('Complete normalized config ledger binding mismatch');
+    } else {
+      if (change.after.kind !== 'exact') throw new Error('Ordinary source must have exact physical after-row');
+      sourceRowsMap([change.after.row]);
+      if (JSON.stringify(row) !== JSON.stringify(change.after.row)) throw new Error(`Exact new-head ledger source mismatch: ${change.path}`);
+    }
+    if (JSON.stringify(row) === JSON.stringify(change.before)) throw new Error('Stale unchanged source ledger entry');
+    expected.set(change.path, row);
+  }
+  const expectedRows = sortedSourceRows([...expected.values()]); const actualRows = sortedSourceRows([...physical.values()]);
+  if (current.size !== 665 || JSON.stringify(actualRows) !== JSON.stringify(expectedRows) || current.size !== expected.size || authoredFiles.some(path => !current.has(path))) throw new Error('Complete bidirectional new-head source domain/byte/mode/blob closure mismatch');
+  const exactChanges = actualRows.filter(row => JSON.stringify(row) !== JSON.stringify(baseline.get(row[0]))).map(row => row[0]);
+  if (JSON.stringify(exactChanges) !== JSON.stringify(sourceLedgerPaths)) throw new Error('Actual baseline-to-current delta does not equal explicit ledger');
+  return { ok: true, baseline: expectedBaseline, historicalClosures, historicalA447ProtectedDigest: { ...oldProtected, expected: expectedProtected, scope: 'historical a447 reconstruction; not current source' }, currentCompleteIdentity: sourceRowsIdentity(actualRows), ledger: manifest.changes, exactChangedPaths: exactChanges, actualPhysicalManifest: { path: sourceAuthenticationPath, bytes: manifestBytes.length, sha256: sha256(manifestBytes), gitBlob: gitBlob(manifestBytes) }, configBinding: { path: sourceConfigPath, physicalGitBlob: current.get(sourceConfigPath)!.blob, normalizedBytes: normalized.normalizedBytes, normalizedSha256: normalized.normalizedSha256, normalizedGitBlob: normalized.normalizedGitBlob, physicalDigestLiteral: normalized.physicalDigestLiteral, byteStart: normalized.byteStart, byteEnd: normalized.byteEnd }, limit: 'Finite consistency within actual Git/event HEAD; independently authenticated external historical/final source review remains mandatory.' };
+}
+
 // Full-tree authentication runs only when explicitly called by a test.
 export function protectedSourceSnapshot(root = repositoryRoot()) {
   const head = git(root, ['rev-parse', 'HEAD']).trim();
   const current = tree(root, head);
   const failures: string[] = [];
   // actions/checkout may be shallow: no runtime access to old Git objects.
-  if (current.size !== 655 || authoredFiles.some(path => !current.has(path))) failures.push('Expected the 652 baseline paths plus exactly three authored diagnostic files');
+  if (authoredFiles.some(path => !current.has(path))) failures.push('Missing original authored diagnostic sources');
   const dirty = git(root, ['status', '--porcelain=v1', '-z', '--untracked-files=no']);
   if (dirty) failures.push('Tracked checkout is not clean');
   const untracked = git(root, ['ls-files', '--others', '--exclude-standard', '-z']).split('\0').filter(Boolean);
@@ -165,10 +290,11 @@ export function protectedSourceSnapshot(root = repositoryRoot()) {
     }
     return { path, mode: entry.mode, bytes: bytes.byteLength, sha256: sha256(bytes), headBlob: entry.blob, reconstruction, nativeReconstruction };
   });
-  const protectedRows = rows.filter(row => !allowedChanges.has(row.path)).map(row => [row.path, row.mode, row.sha256, row.bytes] as const).sort((a, b) => a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0);
-  const protectedJSON = JSON.stringify(protectedRows);
-  const protectedDigest = { rowCount: protectedRows.length, canonicalBytes: Buffer.byteLength(protectedJSON), sha256: sha256(protectedJSON), expected: { rowCount: 643, canonicalBytes: 80886, sha256: '37f43888ce646b768081acfa425156a8197f92ed587740574cb3138c87dcc257' } };
-  if (protectedDigest.rowCount !== protectedDigest.expected.rowCount || protectedDigest.canonicalBytes !== protectedDigest.expected.canonicalBytes || protectedDigest.sha256 !== protectedDigest.expected.sha256) failures.push('Protected baseline file-set/path/mode/full-byte aggregate mismatch');
+  let currentSourceClosure: ReturnType<typeof authenticatedCurrentSourceClosure> | null = null;
+  let currentSourceClosureError: ReturnType<typeof errorRecord> | null = null;
+  try { currentSourceClosure = authenticatedCurrentSourceClosure(root, current, rows); }
+  catch (error) { currentSourceClosureError = errorRecord(error); failures.push('Finite complete historical/current source closure failed'); }
+  const protectedDigest = currentSourceClosure?.historicalA447ProtectedDigest ?? null;
   const frozenArchive = rows.find(row => row.path === '.vendor/sveltery-base-0.0.0.tgz');
   if (frozenArchive?.sha256 !== '915dd6aebd304a7a9c384b0dd5eecd589722686897079fb6dec2961608c564fd') failures.push('Frozen Base archive identity mismatch');
   let transform: ReturnType<typeof authenticatedEdit>['record'] | null = null;
@@ -181,7 +307,7 @@ export function protectedSourceSnapshot(root = repositoryRoot()) {
   catch (error) { baseLockError = errorRecord(error); failures.push('Frozen Base lock unavailable'); }
   if (baseLock?.commit !== 'f884f3bb265485ef8e422e43a75eb3055db11fab' || baseLock?.sha256 !== frozenArchive?.sha256) failures.push('Frozen Base lock mismatch');
   const actualParents = git(root, ['cat-file', '-p', 'HEAD']).split('\n\n')[0].split('\n').filter(line => line.startsWith('parent ')).map(line => line.slice(7));
-  return { ok: failures.length === 0, failures, actualHead: head, actualTree: git(root, ['rev-parse', 'HEAD^{tree}']).trim(), actualParents, baselineHead, allowedChangedPaths: [...allowedChanges], newTrackedPaths: authoredFiles, intendedHead, eventName, eventError, eventSHA: process.env.GITHUB_SHA ?? null, dirty, untracked, historicalProtectedDigest, protectedDigest, rows, licenseRows: rows.filter(row => /license/i.test(row.path)), frozenArchive, baseLock, baseLockError, transform, transformError };
+  return { ok: failures.length === 0, failures, actualHead: head, actualTree: git(root, ['rev-parse', 'HEAD^{tree}']).trim(), actualParents, baselineHead, allowedChangedPaths: [...allowedChanges], newTrackedPaths: authoredFiles, intendedHead, eventName, eventError, eventSHA: process.env.GITHUB_SHA ?? null, dirty, untracked, historicalProtectedDigest, protectedDigest, currentSourceClosure, currentSourceClosureError, rows, licenseRows: rows.filter(row => /license/i.test(row.path)), frozenArchive, baseLock, baseLockError, transform, transformError };
 }
 
 export function installedRuntime(root = repositoryRoot()) {

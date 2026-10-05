@@ -2,7 +2,13 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createElement } from 'react';
-import { renderToStaticMarkup, renderToString } from 'react-dom/server';
+import { renderToStaticMarkup, renderToString, renderToPipeableStream } from 'react-dom/server';
+import { PassThrough } from 'node:stream';
+import { pathToFileURL } from 'node:url';
+import { resolve } from 'node:path';
+import { createRequire } from 'node:module';
+import { prepareIconReference } from './prepare-icon-reference.mjs';
+import GalleryFixture from '../apps/docs/examples/base/EmptyGalleryFixture.svelte';
 import { render } from 'svelte/server';
 import { JSDOM } from 'jsdom';
 import { transpileModule, ModuleKind, ScriptTarget, JsxEmit } from 'typescript';
@@ -48,3 +54,61 @@ for (const document of [actualProbe, expectedProbe]) {
 }
 assert.equal(actualProbe.querySelector('[data-empty-probe]').getAttribute('data-hydrated'), 'false');
 console.log(`Pinned React/Svelte six Empty SSR div hosts: ${count} source-derived class/prop/variant cases, escaped fixture children and 11 paired supplemental probe hosts PASS`);
+
+// Authored full-composition supplements; all original wrapper/probe assertions remain above.
+await prepareIconReference();
+const scaffoldURL = moduleURL('tests/reference/example-scaffold.tsx', { cn });
+const buttonURL = moduleURL('tests/reference/button.tsx', { cn, '@base-ui/react/button': import.meta.resolve('@base-ui/react/button'), 'class-variance-authority': import.meta.resolve('class-variance-authority') });
+const iconURL = pathToFileURL(resolve('.checks/icons-reference/icon.mjs')).href;
+const providerURL = pathToFileURL(resolve('.checks/icons-reference/icons/search-params.mjs')).href;
+const selectedURL = moduleURL('tests/reference/empty-selected-examples.tsx', { './button': buttonURL, './empty': referenceURL, './example-scaffold': scaffoldURL, './icon': iconURL });
+const { SelectedEmptyGallery } = await import(moduleURL('tests/reference/SelectedEmptyGallery.tsx', { './example-scaffold': scaffoldURL, './empty-selected-examples': selectedURL, './icons/search-params': providerURL }));
+function selectedWrapper(document) { return document.querySelector('[data-slot=example-wrapper]'); }
+function galleryTree(node) {
+  // Existing helper indentation is separate from meaningful child topology;
+  // no meaningful text is trimmed, concatenated, or otherwise normalized.
+  const exactText = node.matches('a, button, [data-slot=empty-title], [data-slot=empty-description]');
+  return { tag: node.localName, attrs: attributes(node), text: [...node.childNodes].filter(child => child.nodeType === 3).map(child => child.textContent).filter(text => /\S/u.test(text) || text === ' ' || exactText), children: [...node.children].map(galleryTree) };
+}
+const coldOriginal = new JSDOM(renderToString(createElement(SelectedEmptyGallery))).window.document;
+const coldNative = new JSDOM(render(GalleryFixture).body).window.document;
+assert.equal(selectedWrapper(coldOriginal).querySelectorAll('template').length, 6);
+assert.equal(selectedWrapper(coldOriginal).querySelectorAll('svg.lucide-square').length, 6);
+assert.equal(selectedWrapper(coldNative).querySelectorAll('template').length, 0);
+assert.equal(selectedWrapper(coldNative).querySelectorAll('svg.lucide-square').length, 6);
+const { loadIcon } = await import(new URL('./data.js', pathToFileURL(createRequire(new URL('../apps/docs/package.json', import.meta.url)).resolve('@sveltery/ui/icons'))));
+const glyphs = {
+  lucide: ['ArrowUpRightIcon', 'FolderIcon', 'PlusIcon'], tabler: ['IconArrowUpRight', 'IconFolder', 'IconPlus'], hugeicons: ['ArrowUpRight01Icon', 'Folder01Icon', 'PlusSignIcon'], phosphor: ['ArrowUpRightIcon', 'FolderIcon', 'PlusIcon'], remixicon: ['RiArrowRightUpLine', 'RiFolderLine', 'RiAddLine'],
+};
+async function allReady(element) {
+  return new Promise((resolve, reject) => {
+    const output = new PassThrough(); let html = '';
+    output.on('data', chunk => { html += chunk; }); output.on('end', () => resolve(html)); output.on('error', reject);
+    const stream = renderToPipeableStream(element, { progressiveChunkSize: Number.MAX_SAFE_INTEGER, onAllReady() { stream.pipe(output); }, onError: reject });
+  });
+}
+for (const [library, names] of Object.entries(glyphs)) {
+  const original = new JSDOM(await allReady(createElement(SelectedEmptyGallery, { library }))).window.document;
+  await Promise.all(names.map(name => loadIcon(library, name)));
+  const native = new JSDOM(render(GalleryFixture, { props: { library } }).body).window.document;
+  const originalWrapper = selectedWrapper(original); const nativeWrapper = selectedWrapper(native);
+  assert.equal(originalWrapper.querySelectorAll('template').length, 0, 'actual all-ready stream contains settled source glyphs, never stripped fallback markup');
+  assert.deepEqual(galleryTree(nativeWrapper.parentElement), galleryTree(originalWrapper.parentElement), library);
+  const hosts = wrapper => [wrapper.parentElement, wrapper, ...wrapper.querySelectorAll('*')].filter(node => node.namespaceURI === 'http://www.w3.org/1999/xhtml');
+  assert.equal(hosts(nativeWrapper).length, 48); assert.equal(hosts(originalWrapper).length, 48);
+  assert.equal(nativeWrapper.querySelectorAll('[data-slot=empty]').length, 4);
+  assert.equal(nativeWrapper.querySelectorAll('[data-slot=empty-icon][data-variant=icon]').length, 2);
+  assert.equal(nativeWrapper.querySelectorAll('svg').length, 6);
+  assert.equal(nativeWrapper.querySelectorAll('a[data-slot=button]').length, 5);
+  assert.equal(nativeWrapper.querySelectorAll('button[data-slot=button]').length, 4);
+  assert.equal(nativeWrapper.querySelectorAll('a[href="#"]').length, 6);
+  assert.deepEqual([...nativeWrapper.children].map(node => node.firstElementChild.textContent), ['Basic', 'With Muted Background', 'With Icon', 'In Card']);
+  const explicitTexts = document => [...document.querySelectorAll('a[data-slot=button].cn-button-variant-link')].map(node => [...node.childNodes].filter(child => child.nodeType === 3).map(child => child.textContent));
+  assert.deepEqual(explicitTexts(original), [['Learn more', ' '], ['Learn more', ' '], ['Learn more', ' ']]);
+  assert.deepEqual(explicitTexts(native), explicitTexts(original));
+  const inline = wrapper => [...wrapper.querySelectorAll('[data-slot=empty-description]')][2];
+  const directText = node => [...node.childNodes].filter(child => child.nodeType === 3).map(child => child.textContent);
+  assert.deepEqual(directText(inline(originalWrapper)), ['No posts have been created yet. Get started by', ' ', '.']);
+  assert.deepEqual(directText(inline(nativeWrapper)), directText(inline(originalWrapper)));
+}
+console.log('Four genuine selected Empty galleries: all-five-library settled full HTML/SVG/meaningful-text trees, 48 HTML hosts, genuine rendered anchors and exact explicit U+0020 topology PASS; cold boundary/serialization/timing equivalence remains unaccepted');
