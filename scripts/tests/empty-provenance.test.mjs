@@ -83,6 +83,24 @@ test('finite source integration preserves full historical proof and exactly bind
     for (const change of manifest.historical[index].replacements) { if (change.row === null) restored.delete(change.path); else restored.set(change.path, change.row); }
     assert.equal(sha(canonical([...restored.values()])), expected);
   }
+  const previous = manifest.previousCurrent;
+  const { changes: previousChanges, physicalChangedRows, ...identity } = previous;
+  assert.deepEqual(identity, { head: '0f4f421ad317c5bf85431a21c7c871bf1243200d', tree: 'a60b42e3d564568615f823e12629681165330f61', rowCount: 665, canonicalBytes: 112288, sha256: '8ae645b8dead7838f1033fac392d23c3daaa1aa2ca96f7f9c468b05ed98b10da' });
+  assert.equal(previousChanges.length, 23);
+  assert.equal(sha(JSON.stringify(previousChanges)), 'bb72daba24d9ed6e04367c6edc4881f02cd48b29655b0be4995f44926503c96a');
+  assert.deepEqual(physicalChangedRows.map(row => row[0]), previousChanges.map(change => change.path));
+  const reconstructed = new Map(manifest.baseline.rows.map(row => [row[0], row]));
+  for (const originalRow of physicalChangedRows) reconstructed.set(originalRow[0], originalRow);
+  const originalComplete = canonical([...reconstructed.values()]);
+  assert.equal(reconstructed.size, 665);
+  assert.equal(Buffer.byteLength(originalComplete), 112288);
+  assert.equal(sha(originalComplete), identity.sha256);
+  const historicalArchive = JSON.parse(readFileSync('tests/reference/empty-gallery-sources.json', 'utf8')).baseArchive;
+  assert.deepEqual(historicalArchive, { bytes: 67626, sha256: '915dd6aebd304a7a9c384b0dd5eecd589722686897079fb6dec2961608c564fd', members: 225, commit: 'f884f3bb265485ef8e422e43a75eb3055db11fab' });
+  assert.deepEqual(reconstructed.get('.vendor/sveltery-base-0.0.0.tgz').slice(2, 4), [historicalArchive.bytes, historicalArchive.sha256]);
+  const currentArchive = readFileSync('.vendor/sveltery-base-0.0.0.tgz');
+  assert.equal(currentArchive.length, 213537);
+  assert.equal(sha(currentArchive), 'e6b9b94b7184c492a09881cd8f3fa798bdb973f3db0a5f7b3c69b9160f4e068a');
   const configPath = 'diagnostics/alert-child-segmentation/vite.config.ts';
   const configBytes = readFileSync(configPath); const config = configBytes.toString('utf8');
   assert.deepEqual(Buffer.from(config), configBytes);
@@ -114,7 +132,7 @@ test('finite source integration preserves full historical proof and exactly bind
   }
   assert.deepEqual(changed, manifest.changes.map(change => change.path));
   assert.equal(currentPaths.length, 665);
-  assert.equal(manifest.changes.length, 23);
+  assert.equal(manifest.changes.length, 40);
 });
 
 test('source faithful shared Example gap repair removes formatting only and preserves every original input', () => {

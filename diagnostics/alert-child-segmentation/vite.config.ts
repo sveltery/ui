@@ -128,23 +128,56 @@ function tree(root: string, ref: string) {
 // Finite current-source integration. Historical rows are genuine immutable Git
 // inventories; this pair establishes consistency only within actual HEAD and
 // independently reviewed external baseline/final-source authority.
-const sourceAuthenticationManifestSha256 = '4f498a69413cbbf8d0962909c199348bcdaff6cde05d76d89f8ece9b45728ba8';
+const sourceAuthenticationManifestSha256 = 'a0f55b90a2b961e395b9f30878e3e69466ca0cccd38ba2a04e3a9a453c5228ac';
 const sourceAuthenticationPath = 'diagnostics/alert-child-segmentation/source-authentication.json';
 const sourceConfigPath = 'diagnostics/alert-child-segmentation/vite.config.ts';
 const sourceLedgerPaths = [
-  'apps/docs/examples/base/EmptyExample.svelte', 'apps/docs/examples/base/EmptyGalleryFixture.svelte',
-  'apps/docs/registry/bases/base/ui/example/Example.svelte',
-  'apps/docs/registry/bases/base/ui/icons/IconPlaceholder.svelte',
-  'apps/docs/src/routes/empty/+page.svelte', 'apps/docs/src/routes/empty-reference/+page.server.ts', 'apps/docs/src/routes/empty-reference/+page.svelte',
-  sourceAuthenticationPath, sourceConfigPath, 'docs/empty.md', 'docs/readiness.md', 'docs/upstream-differences.md',
-  'scripts/check-empty-ssr.mjs', 'scripts/check-installation.mjs', 'scripts/installation-playwright.config.ts', 'scripts/tests/empty-provenance.test.mjs',
-  'tests/browser/empty-gallery-cases.ts', 'tests/browser/empty.spec.ts', 'tests/installation/empty.spec.ts',
-  'tests/reference/SelectedEmptyGallery.tsx', 'tests/reference/empty-gallery-sources.json', 'tests/reference/empty-selected-examples.tsx', 'tests/reference/themes/reference-app/main.tsx',
-].sort();
+  ".vendor/sveltery-base-0.0.0.tgz",
+  "README.md",
+  "apps/docs/examples/base/EmptyExample.svelte",
+  "apps/docs/examples/base/EmptyGalleryFixture.svelte",
+  "apps/docs/registry/bases/base/ui/example/Example.svelte",
+  "apps/docs/registry/bases/base/ui/icons/IconPlaceholder.svelte",
+  "apps/docs/src/routes/empty-reference/+page.server.ts",
+  "apps/docs/src/routes/empty-reference/+page.svelte",
+  "apps/docs/src/routes/empty/+page.svelte",
+  "diagnostics/alert-child-segmentation/source-authentication.json",
+  "diagnostics/alert-child-segmentation/vite.config.ts",
+  "docs/alert.md",
+  "docs/avatar.md",
+  "docs/base-pin-upgrade.md",
+  "docs/browser-source-map.md",
+  "docs/button.md",
+  "docs/card.md",
+  "docs/catalog.json",
+  "docs/catalog.md",
+  "docs/dialog-composition.md",
+  "docs/dialog.md",
+  "docs/empty.md",
+  "docs/frozen-base-delivery.md",
+  "docs/installation.md",
+  "docs/readiness.md",
+  "docs/separator.md",
+  "docs/upstream-differences.md",
+  "pnpm-lock.yaml",
+  "scripts/base.lock.json",
+  "scripts/check-empty-ssr.mjs",
+  "scripts/check-installation.mjs",
+  "scripts/installation-playwright.config.ts",
+  "scripts/tests/empty-provenance.test.mjs",
+  "tests/browser/empty-gallery-cases.ts",
+  "tests/browser/empty.spec.ts",
+  "tests/installation/empty.spec.ts",
+  "tests/reference/SelectedEmptyGallery.tsx",
+  "tests/reference/empty-gallery-sources.json",
+  "tests/reference/empty-selected-examples.tsx",
+  "tests/reference/themes/reference-app/main.tsx"
+];
 type SourceRow = [path: string, mode: string, bytes: number, sha256: string, blob: string];
 type SourceChange = { path: string; operation: 'add' | 'modify'; before: SourceRow | null; purpose: string; after: { kind: 'exact' | 'normalized-config'; row: SourceRow } | { kind: 'manifest-root'; mode: '100644'; binding: 'full-manifest-sha256-via-config-slot' } };
 type HistoricalSource = { head: string; tree: string; rowCount: number; canonicalBytes: number; sha256: string; replacements: { path: string; row: SourceRow | null }[] };
-type SourceManifest = { schemaVersion: number; baseline: { head: string; tree: string; rowCount: number; canonicalBytes: number; sha256: string; rows: SourceRow[] }; historical: HistoricalSource[]; changes: SourceChange[] };
+type PreviousCurrentSource = { head: string; tree: string; rowCount: number; canonicalBytes: number; sha256: string; changes: SourceChange[]; physicalChangedRows: SourceRow[] };
+type SourceManifest = { schemaVersion: number; baseline: { head: string; tree: string; rowCount: number; canonicalBytes: number; sha256: string; rows: SourceRow[] }; historical: HistoricalSource[]; previousCurrent: PreviousCurrentSource; changes: SourceChange[] };
 const sourceHistory = [
   { head: '028c5ec0c409440a46d61ad8b4a69f0665a0b810', tree: '4064cfd67b7d37bac66f784fe13a20a3b50d03c7', rowCount: 652, canonicalBytes: 109983, sha256: 'bb7f58e273634768867c7ae794b7dd3b1bffa0d06a6e934e418336813de3a443' },
   { head: '38e3c8ef3a7f92073d5bb18c82c017d697e5ef58', tree: 'aceb19860d531a715903770b9080546760b1b229', rowCount: 655, canonicalBytes: 110538, sha256: 'bbfb69daca1d641d5a51ed323de3de7b261d16896b8f3cbcefd4893e7ddc1952' },
@@ -220,6 +253,29 @@ function authenticatedCurrentSourceClosure(root: string, current: Map<string, { 
     if (JSON.stringify(projection) !== JSON.stringify(historicalProtectedDigest)) throw new Error('Immutable historical644 aggregate mismatch');
     return { ...identity, replacements, protectedDigest: projection, scope: 'historical complete reconstruction; not current source' };
   });
+  // Reconstruct every physical byte/mode/blob in the previous merged665 tree.
+  // The old23-change ledger is retained verbatim, including normalized/root
+  // bindings and every preimage; it is not rewritten as current evidence.
+  const previous = manifest.previousCurrent;
+  const { changes: previousChanges, physicalChangedRows, ...previousIdentity } = previous;
+  const expectedPrevious = { head: '0f4f421ad317c5bf85431a21c7c871bf1243200d', tree: 'a60b42e3d564568615f823e12629681165330f61', rowCount: 665, canonicalBytes: 112288, sha256: '8ae645b8dead7838f1033fac392d23c3daaa1aa2ca96f7f9c468b05ed98b10da' };
+  if (JSON.stringify(previousIdentity) !== JSON.stringify(expectedPrevious) || sha256(JSON.stringify(previousChanges)) !== 'bb72daba24d9ed6e04367c6edc4881f02cd48b29655b0be4995f44926503c96a' || previousChanges.length !== 23) throw new Error('Previous complete source authority or original ledger changed');
+  const previousPhysical = sourceRowsMap(physicalChangedRows);
+  if (JSON.stringify([...previousPhysical.keys()]) !== JSON.stringify(previousChanges.map(change => change.path))) throw new Error('Previous physical source domain does not match original23 ledger');
+  const previousRows = new Map(baseline);
+  for (const change of previousChanges) {
+    if (JSON.stringify(change.before) !== JSON.stringify(baseline.get(change.path) ?? null) || change.operation !== (baseline.has(change.path) ? 'modify' : 'add')) throw new Error('Previous original source preimage/operation mismatch');
+    const previousRow = previousPhysical.get(change.path)!;
+    if (previousRow[1] !== '100644' || JSON.stringify(previousRow) === JSON.stringify(change.before)) throw new Error('Previous changed physical source is stale or nonregular');
+    if (change.after.kind === 'exact' && JSON.stringify(change.after.row) !== JSON.stringify(previousRow)) throw new Error('Previous exact ledger source differs from physical preimage');
+    if (change.path === sourceAuthenticationPath && (previousRow[2] !== 125589 || previousRow[3] !== '4f498a69413cbbf8d0962909c199348bcdaff6cde05d76d89f8ece9b45728ba8')) throw new Error('Previous physical manifest root identity mismatch');
+    previousRows.set(change.path, previousRow);
+  }
+  const previousCompleteIdentity = sourceRowsIdentity([...previousRows.values()]);
+  if (JSON.stringify(previousCompleteIdentity) !== JSON.stringify({ rowCount: expectedPrevious.rowCount, canonicalBytes: expectedPrevious.canonicalBytes, sha256: expectedPrevious.sha256 })) throw new Error('Complete previous665 source reconstruction mismatch');
+  const historicalArchiveRow = previousRows.get('.vendor/sveltery-base-0.0.0.tgz');
+  const historicalEmptyArchive = JSON.parse(readFileSync(join(root, 'tests/reference/empty-gallery-sources.json'), 'utf8')).baseArchive;
+  if (!historicalArchiveRow || historicalArchiveRow[2] !== 67626 || historicalArchiveRow[3] !== '915dd6aebd304a7a9c384b0dd5eecd589722686897079fb6dec2961608c564fd' || JSON.stringify(historicalEmptyArchive) !== JSON.stringify({ bytes: 67626, sha256: historicalArchiveRow[3], members: 225, commit: 'f884f3bb265485ef8e422e43a75eb3055db11fab' })) throw new Error('Historical225-member Base archive/source evidence changed');
   const oldProtected = historicalProjection(manifest.baseline.rows, allowedChanges);
   const expectedProtected = { rowCount: 643, canonicalBytes: 80886, sha256: '37f43888ce646b768081acfa425156a8197f92ed587740574cb3138c87dcc257' };
   if (JSON.stringify(oldProtected) !== JSON.stringify(expectedProtected)) throw new Error('Immutable a447 historical643 aggregate mismatch');
@@ -247,7 +303,7 @@ function authenticatedCurrentSourceClosure(root: string, current: Map<string, { 
   if (current.size !== 665 || JSON.stringify(actualRows) !== JSON.stringify(expectedRows) || current.size !== expected.size || authoredFiles.some(path => !current.has(path))) throw new Error('Complete bidirectional new-head source domain/byte/mode/blob closure mismatch');
   const exactChanges = actualRows.filter(row => JSON.stringify(row) !== JSON.stringify(baseline.get(row[0]))).map(row => row[0]);
   if (JSON.stringify(exactChanges) !== JSON.stringify(sourceLedgerPaths)) throw new Error('Actual baseline-to-current delta does not equal explicit ledger');
-  return { ok: true, baseline: expectedBaseline, historicalClosures, historicalA447ProtectedDigest: { ...oldProtected, expected: expectedProtected, scope: 'historical a447 reconstruction; not current source' }, currentCompleteIdentity: sourceRowsIdentity(actualRows), ledger: manifest.changes, exactChangedPaths: exactChanges, actualPhysicalManifest: { path: sourceAuthenticationPath, bytes: manifestBytes.length, sha256: sha256(manifestBytes), gitBlob: gitBlob(manifestBytes) }, configBinding: { path: sourceConfigPath, physicalGitBlob: current.get(sourceConfigPath)!.blob, normalizedBytes: normalized.normalizedBytes, normalizedSha256: normalized.normalizedSha256, normalizedGitBlob: normalized.normalizedGitBlob, physicalDigestLiteral: normalized.physicalDigestLiteral, byteStart: normalized.byteStart, byteEnd: normalized.byteEnd }, limit: 'Finite consistency within actual Git/event HEAD; independently authenticated external historical/final source review remains mandatory.' };
+  return { ok: true, baseline: expectedBaseline, historicalClosures, previousCurrentSource: { ...previousIdentity, changes: previousChanges, physicalChangedRows, completeIdentity: previousCompleteIdentity, archive: historicalEmptyArchive, scope: 'historical complete665 reconstruction; not current dependency/runtime acceptance' }, historicalA447ProtectedDigest: { ...oldProtected, expected: expectedProtected, scope: 'historical a447 reconstruction; not current source' }, currentCompleteIdentity: sourceRowsIdentity(actualRows), ledger: manifest.changes, exactChangedPaths: exactChanges, actualPhysicalManifest: { path: sourceAuthenticationPath, bytes: manifestBytes.length, sha256: sha256(manifestBytes), gitBlob: gitBlob(manifestBytes) }, configBinding: { path: sourceConfigPath, physicalGitBlob: current.get(sourceConfigPath)!.blob, normalizedBytes: normalized.normalizedBytes, normalizedSha256: normalized.normalizedSha256, normalizedGitBlob: normalized.normalizedGitBlob, physicalDigestLiteral: normalized.physicalDigestLiteral, byteStart: normalized.byteStart, byteEnd: normalized.byteEnd }, limit: 'Finite consistency within actual Git/event HEAD; independently authenticated external historical/final source review remains mandatory.' };
 }
 
 // Full-tree authentication runs only when explicitly called by a test.
@@ -296,7 +352,8 @@ export function protectedSourceSnapshot(root = repositoryRoot()) {
   catch (error) { currentSourceClosureError = errorRecord(error); failures.push('Finite complete historical/current source closure failed'); }
   const protectedDigest = currentSourceClosure?.historicalA447ProtectedDigest ?? null;
   const frozenArchive = rows.find(row => row.path === '.vendor/sveltery-base-0.0.0.tgz');
-  if (frozenArchive?.sha256 !== '915dd6aebd304a7a9c384b0dd5eecd589722686897079fb6dec2961608c564fd') failures.push('Frozen Base archive identity mismatch');
+  if (frozenArchive?.sha256 !== 'e6b9b94b7184c492a09881cd8f3fa798bdb973f3db0a5f7b3c69b9160f4e068a' || frozenArchive?.bytes !== 213537) failures.push('Current c160 frozen Base archive identity mismatch');
+  if (currentSourceClosure?.previousCurrentSource.archive.members !== 225 || currentSourceClosure.previousCurrentSource.archive.sha256 !== '915dd6aebd304a7a9c384b0dd5eecd589722686897079fb6dec2961608c564fd') failures.push('Historical f884 archive identity mismatch');
   let transform: ReturnType<typeof authenticatedEdit>['record'] | null = null;
   let transformError: ReturnType<typeof errorRecord> | null = null;
   try { transform = authenticatedEdit(readFileSync(join(root, 'tests/reference/AlertGallery.tsx'), 'utf8')).record; }
@@ -305,7 +362,7 @@ export function protectedSourceSnapshot(root = repositoryRoot()) {
   let baseLockError: ReturnType<typeof errorRecord> | null = null;
   try { baseLock = JSON.parse(readFileSync(join(root, 'scripts/base.lock.json'), 'utf8')); }
   catch (error) { baseLockError = errorRecord(error); failures.push('Frozen Base lock unavailable'); }
-  if (baseLock?.commit !== 'f884f3bb265485ef8e422e43a75eb3055db11fab' || baseLock?.sha256 !== frozenArchive?.sha256) failures.push('Frozen Base lock mismatch');
+  if (baseLock?.commit !== 'c1600456d3b4e72910d42823b9df69280c74a262' || baseLock?.sha256 !== frozenArchive?.sha256) failures.push('Frozen Base lock mismatch');
   const actualParents = git(root, ['cat-file', '-p', 'HEAD']).split('\n\n')[0].split('\n').filter(line => line.startsWith('parent ')).map(line => line.slice(7));
   return { ok: failures.length === 0, failures, actualHead: head, actualTree: git(root, ['rev-parse', 'HEAD^{tree}']).trim(), actualParents, baselineHead, allowedChangedPaths: [...allowedChanges], newTrackedPaths: authoredFiles, intendedHead, eventName, eventError, eventSHA: process.env.GITHUB_SHA ?? null, dirty, untracked, historicalProtectedDigest, protectedDigest, currentSourceClosure, currentSourceClosureError, rows, licenseRows: rows.filter(row => /license/i.test(row.path)), frozenArchive, baseLock, baseLockError, transform, transformError };
 }
