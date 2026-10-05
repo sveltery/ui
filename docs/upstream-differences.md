@@ -6,6 +6,8 @@ The current proposal consumes authenticated Base c160 archive bytes; [the comple
 
 A concrete unaccepted conflict blocks adoption: candidate disabled custom/focusable Button mousedown omits the previous default cancellation, while the two unchanged chorded-mousedown assertions require it. The historical inherited correction remains recorded below; no source conforming or compatible verdict is claimed for the candidate. Avatar explicit delay=0 SSR, Input34's strict controlled/reset failures, incomplete callback integration and Base1.8 versus original1.6 remain unresolved. Availability of new Base modules establishes no styled wrapper or copied-suite completion.
 
+Hosted intermediate head `9a7454c` actually fails the retained Separator negative object-style type assertion before DOM/Button execution. Candidate inherited NativeStyle admits objects; the unchanged original-facing Svelte contract expects rejection. This is a second unresolved type-contract adoption blocker. No type assertion is removed or weakened, no UI adapter is introduced, and source-proven mousedown conflict remains distinct from this actual hosted type failure. The intermediate Standards trailing-blank-line failure is repaired in the successor, with fresh exact-head checks required.
+
 The package's opt-in Kit patch is not applied. Compiled-output equality and actual final-head normal/four-consumer type/SSR/client/three-engine acceptance, independent source/API review, configured review and PM approval remain required. The user-selected Base Toast/Combobox/Drawer and historical excluded Command/cmdk/Sonner scope are unchanged; release/deployment and Base project mutations remain outside this proposal.
 
 ## Modern class-merging fidelity
