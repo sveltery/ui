@@ -18,7 +18,7 @@ test('fresh archive/source-copy Empty native variants, selectors and reactive pr
 import { assertEmptyGallery, emptyTree, emptyMeasurements, emptyLibraries, emptyStyles, emptyTheme, emptyTrustedActions } from '../browser/empty-gallery-cases';
 
 // Every case also runs in the retained experimental remote-field archive/copy phases.
-for (const library of emptyLibraries) test(`fresh selected Empty gallery retains genuine ${library} glyphs, full tree and trusted actions`, async ({ page, context }) => {
+for (const library of emptyLibraries) test(`fresh selected Empty gallery retains genuine ${library} glyphs, full tree and trusted actions`, async ({ page, context, browserName }) => {
   const reference = await context.newPage(); const errors: string[] = [];
   for (const current of [page, reference]) { current.on('pageerror', error => errors.push(error.message)); current.on('console', message => { if (message.type() === 'error') errors.push(message.text()); }); }
   try {
@@ -31,8 +31,8 @@ for (const library of emptyLibraries) test(`fresh selected Empty gallery retains
       expect(await emptyMeasurements(page)).toEqual(await emptyMeasurements(reference));
     }
     /* empty-action-pair-witness:start */
-    const [actual] = await Promise.allSettled([emptyTrustedActions(page)]);
-    const [original] = await Promise.allSettled([emptyTrustedActions(reference)]);
+    const [actual] = await Promise.allSettled([emptyTrustedActions(page, browserName)]);
+    const [original] = await Promise.allSettled([emptyTrustedActions(reference, browserName)]);
     if (actual.status === 'rejected') throw actual.reason;
     if (original.status === 'rejected') throw original.reason;
     expect(actual.value).toEqual(original.value);

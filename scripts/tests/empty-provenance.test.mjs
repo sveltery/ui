@@ -177,7 +177,7 @@ test('eight inert icon control and HMR-body encodings preserve the complete help
 });
 
 test('Empty theme readiness preserves the complete prior helper and all strict tree/measurement/action functions', () => {
-  const witnessed = readFileSync('tests/browser/empty-gallery-cases.ts', 'utf8');
+  const witnessed = restoreEmptyBrowserContract('tests/browser/empty-gallery-cases.ts', readFileSync('tests/browser/empty-gallery-cases.ts', 'utf8'));
   const actionWitness = "  /* empty-action-witness:start */\n  const witness = JSON.stringify({ url: page.url(), records });\n  if (Buffer.byteLength(witness) > 4096) throw new Error('Empty trusted action witness exceeds 4096 bytes');\n  console.log('Empty trusted action witness:', witness);\n  /* empty-action-witness:end */\n";
   assert.equal(witnessed.split(actionWitness).length, 2);
   const source = witnessed.replace(actionWitness, '');
@@ -202,10 +202,26 @@ test('Empty paired action observation preserves both complete prior browser call
     ['tests/browser/empty.spec.ts', 9332, '7423079c682e3ef6bd0ac8784bf32bc35847ca616f5d684742d798d8498d5f17'],
     ['tests/installation/empty.spec.ts', 3409, '5cdb3bedffcf07921e55b76f7d809048fe69afe2c96f699ad7a79aea8efaa724'],
   ]) {
-    const source = readFileSync(path, 'utf8');
+    const source = restoreEmptyBrowserContract(path, readFileSync(path, 'utf8'));
     assert.equal(source.split(observation).length, 2, path);
     const restored = source.replace(observation, original);
     assert.equal(Buffer.byteLength(restored), bytes, path);
     assert.equal(createHash('sha256').update(restored).digest('hex'), digest, path);
   }
+});
+
+function restoreEmptyBrowserContract(path, source) {
+  const contracts = {"tests/browser/empty-gallery-cases.ts":{"bytes":11879,"sha256":"beb3c4399a2922df6690d6722a6f9278fdc3b56287fe56014c00e91acff60d60","edits":[["export async function emptyTrustedActions(page: Page) {\n","export async function emptyTrustedActions(page: Page, browserName: 'chromium' | 'firefox' | 'webkit') {\n  if (!['chromium', 'firefox', 'webkit'].includes(browserName)) throw new Error('Empty trusted actions require an actual chromium/firefox/webkit browserName');\n  const anchorDetail = { chromium: 0, firefox: 1, webkit: 0 }[browserName];\n"],["  const expectedAnchors = ['Create project', 'Learn more ', 'Learn more ', 'creating your first post', 'Create project', 'Learn more '].map(text => ({ tag: 'A', text, trusted: true, key: 0 }));\n","  const expectedAnchors = ['Create project', 'Learn more ', 'Learn more ', 'creating your first post', 'Create project', 'Learn more '].map(text => ({ tag: 'A', text, trusted: true, key: anchorDetail }));\n"]]},"tests/browser/empty.spec.ts":{"bytes":9654,"sha256":"aeb772ad36535f0f2b674f3ae7cbae1176cd5e9affa4fb5c5bb62140fe684134","edits":[["for (const library of emptyLibraries) test(`selected original Empty full composition and genuine ${library} glyphs match complete original CSS`, async ({ page, context }) => {\n","for (const library of emptyLibraries) test(`selected original Empty full composition and genuine ${library} glyphs match complete original CSS`, async ({ page, context, browserName }) => {\n"],["emptyTrustedActions(page)","emptyTrustedActions(page, browserName)"],["emptyTrustedActions(reference)","emptyTrustedActions(reference, browserName)"]]},"tests/installation/empty.spec.ts":{"bytes":3731,"sha256":"0d902b8a1b719297df7f86f5c08cd61ca3343f6acf3dd552e162e7a73e79185d","edits":[["for (const library of emptyLibraries) test(`fresh selected Empty gallery retains genuine ${library} glyphs, full tree and trusted actions`, async ({ page, context }) => {\n","for (const library of emptyLibraries) test(`fresh selected Empty gallery retains genuine ${library} glyphs, full tree and trusted actions`, async ({ page, context, browserName }) => {\n"],["emptyTrustedActions(page)","emptyTrustedActions(page, browserName)"],["emptyTrustedActions(reference)","emptyTrustedActions(reference, browserName)"]]}};
+  const contract = contracts[path]; assert(contract, path);
+  for (const [previous, current] of contract.edits) {
+    assert.equal(source.split(current).length, 2, path);
+    source = source.replace(current, previous);
+  }
+  assert.equal(Buffer.byteLength(source), contract.bytes, path);
+  assert.equal(createHash('sha256').update(source).digest('hex'), contract.sha256, path);
+  return source;
+}
+
+test('Empty strict browser action correction restores the complete df4a helper and both callers', () => {
+  for (const path of ["tests/browser/empty-gallery-cases.ts","tests/browser/empty.spec.ts","tests/installation/empty.spec.ts"]) restoreEmptyBrowserContract(path, readFileSync(path, 'utf8'));
 });

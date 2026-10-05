@@ -76,7 +76,7 @@ test('four selected Empty galleries preserve all 48 warm SSR HTML hosts through 
     expect(await emptyTree(page, false)).toEqual(before); expect(errors).toEqual([]);
   } finally { release(); }
 });
-for (const library of emptyLibraries) test(`selected original Empty full composition and genuine ${library} glyphs match complete original CSS`, async ({ page, context }) => {
+for (const library of emptyLibraries) test(`selected original Empty full composition and genuine ${library} glyphs match complete original CSS`, async ({ page, context, browserName }) => {
   const reference = await context.newPage(); const errors: string[] = [];
   for (const current of [page, reference]) { current.on('pageerror', error => errors.push(error.message)); current.on('console', message => { if (message.type() === 'error') errors.push(message.text()); }); }
   try {
@@ -89,8 +89,8 @@ for (const library of emptyLibraries) test(`selected original Empty full composi
       expect(await emptyMeasurements(page)).toEqual(await emptyMeasurements(reference));
     }
     /* empty-action-pair-witness:start */
-    const [actual] = await Promise.allSettled([emptyTrustedActions(page)]);
-    const [original] = await Promise.allSettled([emptyTrustedActions(reference)]);
+    const [actual] = await Promise.allSettled([emptyTrustedActions(page, browserName)]);
+    const [original] = await Promise.allSettled([emptyTrustedActions(reference, browserName)]);
     if (actual.status === 'rejected') throw actual.reason;
     if (original.status === 'rejected') throw original.reason;
     expect(actual.value).toEqual(original.value);

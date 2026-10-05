@@ -106,7 +106,9 @@ export async function assertEmptyGallery(page: Page, library: typeof emptyLibrar
   await expect(wrapper.locator('svg[data-icon="inline-start"]')).toHaveCount(1);
   expect(await wrapper.locator('section, h2, [data-gallery], [data-testid], [data-slot=card], input').count()).toBe(0);
 }
-export async function emptyTrustedActions(page: Page) {
+export async function emptyTrustedActions(page: Page, browserName: 'chromium' | 'firefox' | 'webkit') {
+  if (!['chromium', 'firefox', 'webkit'].includes(browserName)) throw new Error('Empty trusted actions require an actual chromium/firefox/webkit browserName');
+  const anchorDetail = { chromium: 0, firefox: 1, webkit: 0 }[browserName];
   await page.evaluate(() => {
     const record: { tag: string; text: string | null; trusted: boolean; key: number }[] = [];
     Object.assign(window, { emptyClicks: record });
@@ -124,7 +126,7 @@ export async function emptyTrustedActions(page: Page) {
   console.log('Empty trusted action witness:', witness);
   /* empty-action-witness:end */
   const expectedButtons = ['Import project', 'Try again', 'New Post', 'Import project'].flatMap(text => Array(2).fill({ tag: 'BUTTON', text, trusted: true, key: 0 }));
-  const expectedAnchors = ['Create project', 'Learn more ', 'Learn more ', 'creating your first post', 'Create project', 'Learn more '].map(text => ({ tag: 'A', text, trusted: true, key: 0 }));
+  const expectedAnchors = ['Create project', 'Learn more ', 'Learn more ', 'creating your first post', 'Create project', 'Learn more '].map(text => ({ tag: 'A', text, trusted: true, key: anchorDetail }));
   expect(records).toHaveLength(14);
   expect(records).toEqual([...expectedButtons, ...expectedAnchors]);
   return records;
