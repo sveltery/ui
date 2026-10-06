@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import TextareaExample from '../../../examples/base/TextareaExample.svelte';
+  import TextareaExample from '../../../examples/base/TextareaProbe.svelte';
   import { Textarea } from '@sveltery/ui/textarea';
   import { createAttachmentKey } from 'svelte/attachments';
   let hydrated = $state(false);

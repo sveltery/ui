@@ -165,3 +165,10 @@ That PR #33 gate description is a historical implementation record: its public c
 ## Proposed original Kbd icon pair gate
 
 The [original pair mapping](kbd.md#original-icon-pair-source-mapping) requires genuine canonical composition, all seven available original bodies and unchanged five-body/primitive assertions; InputGroup/Tooltip remain blocked. New authored failure-first/source, explicit cold fallback/boundary, actual settled server-stream/48-host/raw-meaningful-text, five-library real glyph and independent full-original-CSS all8style/light-dark/responsive checks earn zero ordinary copied upstream-test or unchanged-fixture credit. Four fresh package/copy documented/experimental phases deliver the actual gallery and preserve all old remote/Avatar/AspectRatio selections. Exact-head independent review, all six secured hosted gates and configured review or authenticated current-head service-only quota exhaustion precede PM approval/owner expected-head merge; newly authenticated merge-tree/parents/post checks precede checklist completion. No whole-library/API/configuration/live-AT/release or new difference acceptance is supplied by this proposed continuation.
+
+## Proposed source-available Textarea scaffold repair
+
+- [ ] Basic and Invalid genuinely compose original ExampleWrapper/Example/Textarea. The [two-gallery contract](textarea.md#two-source-available-genuine-galleries) keeps immutable source bodies and full support CSS; final-head hosted verification, both fresh consumer modes/configurations, three secured browsers, independent/configured review and post-merge checks remain pending.
+- [ ] With Label, With Description and Disabled require actual styled Field parts. Their unchanged historical native probes grant no original-composition credit.
+
+The immutable raw catalog/test inventories, Base-only product selection, existing native Textarea reset exception and blocked Input/dependency candidates remain unchanged.

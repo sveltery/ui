@@ -1,0 +1,107 @@
+{
+  "commit": "d75a96ab781f3d659be1ad287347d5887ce9f2fc",
+  "uiBase": "0f4f421ad317c5bf85431a21c7c871bf1243200d",
+  "consumedBase": "f884f3bb265485ef8e422e43a75eb3055db11fab",
+  "selected": [
+    "TextareaBasic",
+    "TextareaInvalid"
+  ],
+  "selectedDeclarations": [
+    {
+      "name": "TextareaBasic",
+      "bytes": 143,
+      "sha256": "883fde690e6deebd350907cb1b0f8aaaf8ffde0aa7931f754c86be8144ab60c3"
+    },
+    {
+      "name": "TextareaInvalid",
+      "bytes": 167,
+      "sha256": "ab162d77933be8544ad5573f73993c3610abc6428934eb5db44952405e68e443"
+    }
+  ],
+  "originalFiles": [
+    {
+      "local": "tests/reference/textarea.tsx",
+      "bytes": 446,
+      "sha256": "8f527c89dec40a9b372376dc93d2ebb149bfd82f209856d110ead1aabec19c6a",
+      "gitBlob": "8b8d3f1c6cc7c66c2fab2e050164f355a655b6c9"
+    },
+    {
+      "local": "tests/reference/textarea-example.tsx",
+      "bytes": 1918,
+      "sha256": "3199a0816889450768a891d9c3c97ca7618d7d03eca0867cf359bb2d3c9b30d9",
+      "gitBlob": "f20ba0050f3eab9b66a15bc5bf0b902834e07fcb"
+    },
+    {
+      "local": "tests/reference/example-scaffold.tsx",
+      "bytes": 1395,
+      "sha256": "4e8265534863b7291158a5341f305a3cac582cf762054bd2387adf20959e06bf",
+      "gitBlob": "48c3077aa534396568003a659bb9b428b9d2f89f"
+    },
+    {
+      "local": "tests/reference/themes/upstream/globals.css",
+      "bytes": 13739,
+      "sha256": "cbae6d633c38be59fc036d1e5cf60203ae7619ea6af9b4cdd8d632a211ccffa9",
+      "gitBlob": "32582b53565093c693017d4528d2982642050bfe"
+    },
+    {
+      "local": "tests/reference/themes/upstream/style-vega.css",
+      "bytes": 74972,
+      "sha256": "7b0dc3a9d2245ab6ce3d17653fa74a07f0ce2541e480bef36d2600fe38f1281b",
+      "gitBlob": "7b07854ab490e32c7de468756642b4016b2379c2"
+    },
+    {
+      "local": "tests/reference/themes/upstream/style-nova.css",
+      "bytes": 75461,
+      "sha256": "5d5751579c015b61e77cf0822862a43ac79f3e6fed236a17624be8e6d1ebea1d",
+      "gitBlob": "514a3e8e00deac2ef59fee04c57cb10fd277ef39"
+    },
+    {
+      "local": "tests/reference/themes/upstream/style-maia.css",
+      "bytes": 73982,
+      "sha256": "0a1e5a658ea601ee7a9427b91ea567c6fc915a385d7466bea19f42ec726added",
+      "gitBlob": "fb1827393a94b9b2d4aac54f3a79f37a06095734"
+    },
+    {
+      "local": "tests/reference/themes/upstream/style-lyra.css",
+      "bytes": 74205,
+      "sha256": "7d75035683a22e61f5dace0b115e97f9e9b643500c1f4bfe2b31ad4dcdaa0c4a",
+      "gitBlob": "21de71c1ccff0e501b143390e11d171c9f4f96f1"
+    },
+    {
+      "local": "tests/reference/themes/upstream/style-mira.css",
+      "bytes": 75304,
+      "sha256": "025f54a060adeb60489d17eb3eb935e1118ee091ba5c618d5463eb27f2b1d003",
+      "gitBlob": "7707d4b3ed67b3a5a57008b51b624c44de2baf95"
+    },
+    {
+      "local": "tests/reference/themes/upstream/style-luma.css",
+      "bytes": 75176,
+      "sha256": "a698210162ca2d3385142a47334f22985831b1e91716c2d3175828d928a59707",
+      "gitBlob": "739e8f9260ef9e82f31bb42f5d579df13ada2787"
+    },
+    {
+      "local": "tests/reference/themes/upstream/style-sera.css",
+      "bytes": 75728,
+      "sha256": "eda71a39ba86625eb81b25f2e5824579952ced0cf0451be16be3f4dd70bf9876",
+      "gitBlob": "c210a75f1a396560cb474ec98377f188fbee6a64"
+    },
+    {
+      "local": "tests/reference/themes/upstream/style-rhea.css",
+      "bytes": 75351,
+      "sha256": "bcb242a7845316f93b0562345dd5c32a46a2988b506a8e8d7df1c836a1637b49",
+      "gitBlob": "dd15e5f37548f63fc694601448efe0bb63462013"
+    }
+  ],
+  "omitted": {
+    "TextareaWithLabel": "Requires genuine styled Field/FieldLabel",
+    "TextareaWithDescription": "Requires genuine styled Field/FieldLabel/FieldDescription",
+    "TextareaDisabled": "Requires genuine styled Field/FieldLabel"
+  },
+  "legacyProbe": {
+    "path": "apps/docs/examples/base/TextareaProbe.svelte",
+    "originalPath": "apps/docs/examples/base/TextareaExample.svelte",
+    "bytes": 1262,
+    "sha256": "7a0dbfd4c8d9fe226c4dce50ccdbe09418387bc9e19567f4996f0918f2f4ea3e"
+  },
+  "testProvenance": "No dedicated upstream Textarea runtime suite identified; new checks are authored source-derived supplements, zero ordinary copied-test credit."
+}

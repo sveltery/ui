@@ -151,6 +151,12 @@ try {
       }
     }
     writeFileSync(join(consumer, 'src/routes/alert-types.ts'), readFileSync(join(repo, 'tests/alert-types.ts'), 'utf8').replace('../apps/docs/registry/bases/base/ui/alert/index.js', mode === 'copy' ? '$lib/components/ui/alert' : '@sveltery/ui/alert'));
+    const textareaGalleryDirectory = join(consumer, 'src/routes/textarea-gallery');
+    mkdirSync(textareaGalleryDirectory, { recursive: true });
+    let textareaGallery = readFileSync(join(repo, 'apps/docs/examples/base/TextareaExample.svelte'), 'utf8');
+    if (mode === 'copy') textareaGallery = textareaGallery.replaceAll('@sveltery/ui/textarea', '$lib/components/ui/textarea').replaceAll('@sveltery/ui/example', '$lib/components/ui/example');
+    writeFileSync(join(textareaGalleryDirectory, 'TextareaExample.svelte'), textareaGallery);
+    writeFileSync(join(textareaGalleryDirectory, '+page.svelte'), readFileSync(join(repo, 'apps/docs/src/routes/textarea-gallery/+page.svelte'), 'utf8').replace('../../../examples/base/TextareaExample.svelte', './TextareaExample.svelte'));
     const emptyGalleryDirectory = join(consumer, 'src/routes/empty');
     mkdirSync(emptyGalleryDirectory, { recursive: true });
     let emptyGallery = readFileSync(join(repo, 'apps/docs/examples/base/EmptyExample.svelte'), 'utf8');
