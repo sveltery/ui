@@ -38,7 +38,8 @@ function directText(node) {
 }
 const tree = node => ({ tag: node.localName, attrs: Object.fromEntries([...node.attributes].map(a => [a.name, a.value]).sort(([a], [b]) => a.localeCompare(b))), text: directText(node), children: [...node.children].map(tree) });
 const wrapperOf = doc => doc.querySelector('[data-slot=example-wrapper]');
-function assertGallery(doc) {
+function assertGallery(doc, phase = 'settled') {
+  assert(['cold-original', 'settled'].includes(phase), 'Unknown Card image SSR phase');
   const w = wrapperOf(doc); assert(w); assert.equal(w.children.length, 2);
   assert.deepEqual([...w.children].map(n => n.firstElementChild.textContent), ['With Image', 'With Image (Small)']);
   const cards = [...w.querySelectorAll('[data-slot=card]')]; assert.equal(cards.length, 2);
@@ -49,7 +50,8 @@ function assertGallery(doc) {
     assert.equal(card.children[1].matches(':first-child,:last-child'), false);
     const button = card.querySelector('button'); assert(button);
     assert.equal(button.getAttribute('type'), 'button'); assert.equal(button.getAttribute('tabindex'), '0'); assert.equal(button.disabled, false);
-    assert.deepEqual(directText(button), [[1, 'Button']]);
+    assert.deepEqual([...button.children].map(node => node.localName), phase === 'cold-original' ? ['template', 'svg'] : ['svg']);
+    assert.deepEqual(directText(button), [[phase === 'cold-original' ? 2 : 1, 'Button']]);
     assert.equal(button.querySelector('svg').getAttribute('data-icon'), 'inline-start');
   }
   assert.equal(w.querySelectorAll('img').length, 2); assert.equal(w.querySelectorAll('button').length, 2); assert.equal(w.querySelectorAll('svg').length, 2);
@@ -57,7 +59,7 @@ function assertGallery(doc) {
 }
 const coldReactDOM = new JSDOM(renderToString(original('lucide')));
 const coldNativeDOM = new JSDOM(render(Gallery).body);
-assertGallery(coldReactDOM.window.document); assertGallery(coldNativeDOM.window.document);
+assertGallery(coldReactDOM.window.document, 'cold-original'); assertGallery(coldNativeDOM.window.document);
 assert.equal(coldReactDOM.window.document.querySelectorAll('template').length, 2); assert.equal(coldNativeDOM.window.document.querySelectorAll('template').length, 0);
 console.log('Card images cold React2 templates/native0: inherited Suspense/await API limit remains unaccepted');
 coldReactDOM.window.close(); coldNativeDOM.window.close();

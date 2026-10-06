@@ -128,7 +128,7 @@ function tree(root: string, ref: string) {
 // Finite current-source integration. Historical rows are genuine immutable Git
 // inventories; this pair establishes consistency only within actual HEAD and
 // independently reviewed external baseline/final-source authority.
-const sourceAuthenticationManifestSha256 = '75d5c3ccab22ec04387c91d1a75f7a8864ab6e9bbfc7c8d54bbc4fef72e0b3e6';
+const sourceAuthenticationManifestSha256 = '1a13e6e383e906b42d53ab4c59929bb4b43d64e5830f328c1e2b04c8fad25eac';
 const sourceAuthenticationPath = 'diagnostics/alert-child-segmentation/source-authentication.json';
 const sourceConfigPath = 'diagnostics/alert-child-segmentation/vite.config.ts';
 const sourceLedgerPaths = [
