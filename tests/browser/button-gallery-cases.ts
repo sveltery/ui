@@ -106,3 +106,71 @@ export async function buttonGalleryQueryDefaults(page: Page, original: Page) {
     expect(await buttonGalleryTree(page)).toEqual(validReference);
   }
 }
+
+// Diagnostic only: capture genuine browser state/cascade without changing inputs or acceptance.
+export async function buttonGalleryFocusReceipt(page: Page) {
+  return page.locator(buttonWrapper + ' button').first().evaluate(node => {
+    const pseudo = (selector: string) => { try { return node.matches(selector); } catch { return null; } };
+    const matched: unknown[] = []; let overflow = 0; let unreadable = 0;
+    const walk = (rules: CSSRuleList, context: string[]) => {
+      for (const entry of rules) {
+        if (entry instanceof CSSMediaRule && !matchMedia(entry.conditionText).matches) continue;
+        if (entry instanceof CSSSupportsRule && !CSS.supports(entry.conditionText)) continue;
+        const rule = entry as CSSRule & { selectorText?: string; style?: CSSStyleDeclaration; cssRules?: CSSRuleList };
+        if (rule.selectorText && rule.style) {
+          const outline = [...rule.style].filter(property => property.startsWith('outline')).map(property => [property, rule.style!.getPropertyValue(property), rule.style!.getPropertyPriority(property)]);
+          if (outline.length && pseudo(rule.selectorText)) {
+            if (matched.length < 32) matched.push({ selector: rule.selectorText, outline, context });
+            else overflow++;
+          }
+        }
+        if (rule.cssRules) walk(rule.cssRules, [...context, rule.cssText.slice(0, rule.cssText.indexOf('{')).trim().slice(0, 200)]);
+      }
+    };
+    for (const sheet of document.styleSheets) { try { walk(sheet.cssRules, []); } catch { unreadable++; } }
+    const style = getComputedStyle(node);
+    return { url: location.pathname + location.search, documentFocus: document.hasFocus(), active: document.activeElement === node, activeTag: document.activeElement?.tagName, focus: pseudo(':focus'), focusVisible: pseudo(':focus-visible'), mozFocusring: pseudo(':-moz-focusring'), class: node.className, attrs: Object.fromEntries([...node.attributes].map(a => [a.name, a.value])), inline: node.getAttribute('style'), outline: { color: style.outlineColor, style: style.outlineStyle, width: style.outlineWidth, offset: style.outlineOffset }, color: style.color, ring: style.getPropertyValue('--ring'), colorRing: style.getPropertyValue('--color-ring'), matched, overflow, unreadable };
+  });
+}
+
+// Diagnostic only: report selected unchanged native hosts and real text/font/layout state.
+export async function buttonGalleryLayoutReceipt(page: Page, indices: number[]) {
+  return page.locator(hosts).evaluateAll((nodes, indices) => {
+    const rect = (r: DOMRect) => ({ x: r.x, y: r.y, left: r.left, right: r.right, top: r.top, bottom: r.bottom, width: r.width, height: r.height });
+    const sourceRules: { selector: string; declarations: string[][]; context: string[] }[] = []; let unreadable = 0;
+    const relevant = /^(?:all|font.*|letter-spacing|word-spacing|line-height|text-rendering|text-transform|white-space|(?:min-|max-)?width|padding.*|border.*width|gap|box-sizing|display)$/u;
+    const walk = (rules: CSSRuleList, context: string[]) => {
+      for (const entry of rules) {
+        if (entry instanceof CSSMediaRule && !matchMedia(entry.conditionText).matches) continue;
+        if (entry instanceof CSSSupportsRule && !CSS.supports(entry.conditionText)) continue;
+        const rule = entry as CSSRule & { selectorText?: string; style?: CSSStyleDeclaration; cssRules?: CSSRuleList };
+        if (rule.selectorText && rule.style) {
+          const declarations = [...rule.style].filter(property => relevant.test(property)).map(property => [property, rule.style!.getPropertyValue(property), rule.style!.getPropertyPriority(property)]);
+          if (declarations.length) sourceRules.push({ selector: rule.selectorText, declarations, context });
+        }
+        if (rule.cssRules) walk(rule.cssRules, [...context, rule.cssText.slice(0, rule.cssText.indexOf('{')).trim().slice(0, 200)]);
+      }
+    };
+    for (const sheet of document.styleSheets) { try { walk(sheet.cssRules, []); } catch { unreadable++; } }
+    const selected = indices.slice(0, 12).map(index => {
+      const node = nodes[index] as HTMLElement; const style = getComputedStyle(node);
+      const matched = sourceRules.filter(rule => { try { return node.matches(rule.selector); } catch { return false; } });
+      const font = style.font || [style.fontStyle, style.fontWeight, style.fontSize, style.fontFamily].join(' ');
+      let fontCheck: boolean | string;
+      try { fontCheck = document.fonts.check(font, node.textContent ?? ''); } catch (error) { fontCheck = String(error); }
+      return {
+        index, tag: node.localName, attrs: Object.fromEntries([...node.attributes].map(a => [a.name, a.value])), text: node.textContent, lang: node.closest('[lang]')?.getAttribute('lang'), bounds: rect(node.getBoundingClientRect()),
+        children: [...node.childNodes].map(child => {
+          const range = document.createRange(); range.selectNodeContents(child);
+          const result = { type: child.nodeType, text: child.nodeValue, element: child.nodeType === 1 ? (child as Element).outerHTML : null, bounds: rect(range.getBoundingClientRect()), rects: [...range.getClientRects()].map(rect) };
+          range.detach(); return result;
+        }),
+        font, fontCheck, computed: { family: style.fontFamily, size: style.fontSize, weight: style.fontWeight, stretch: style.fontStretch, style: style.fontStyle, variant: style.fontVariant, ligatures: style.fontVariantLigatures, features: style.fontFeatureSettings, variation: style.fontVariationSettings, kerning: style.fontKerning, optical: style.fontOpticalSizing, letter: style.letterSpacing, word: style.wordSpacing, line: style.lineHeight, rendering: style.textRendering, transform: style.textTransform, whiteSpace: style.whiteSpace, display: style.display, gap: style.gap, box: style.boxSizing, paddingLeft: style.paddingLeft, paddingRight: style.paddingRight, borderLeft: style.borderLeftWidth, borderRight: style.borderRightWidth },
+        variables: { sans: style.getPropertyValue('--font-sans'), mono: style.getPropertyValue('--font-mono'), heading: style.getPropertyValue('--font-heading') },
+        animations: node.getAnimations().map(a => ({ kind: a.constructor.name, state: a.playState, time: a.currentTime })),
+        matched: matched.slice(0, 24), matchedOverflow: Math.max(0, matched.length - 24),
+      };
+    });
+    return { url: location.pathname + location.search, documentFocus: document.hasFocus(), activeTag: document.activeElement?.tagName, fontsStatus: document.fonts.status, dpr: devicePixelRatio, viewportScale: visualViewport?.scale, selected, overflow: Math.max(0, indices.length - 12), unreadable };
+  }, indices);
+}

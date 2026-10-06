@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { buttonGalleryLibraries, buttonGalleryStyles, buttonWrapper, assertButtonGallery, buttonGalleryTree, buttonGalleryMeasurements, buttonGalleryTheme, settleButtonTransitions, buttonGalleryNativeActions, buttonGalleryQueryDefaults } from './button-gallery-cases';
+import { buttonGalleryLibraries, buttonGalleryStyles, buttonWrapper, assertButtonGallery, buttonGalleryTree, buttonGalleryMeasurements, buttonGalleryTheme, settleButtonTransitions, buttonGalleryNativeActions, buttonGalleryQueryDefaults, buttonGalleryFocusReceipt, buttonGalleryLayoutReceipt } from './button-gallery-cases';
 test('genuine Button server hosts survive hydration with strict native attributes and original child bytes', async ({ page }) => {
   let release!: () => void; const gate = new Promise<void>(resolve => { release = resolve; });
   await page.route('**/*', async route => { if (route.request().resourceType() === 'script') await gate; await route.continue(); });
@@ -37,9 +37,16 @@ for (const style of buttonGalleryStyles) test('six genuine Button bodies match o
     await assertButtonGallery(page); await assertButtonGallery(original);
     for (const dark of [false, true]) for (const width of [390, 640, 768, 1024, 1536]) {
       for (const current of [page, original]) { await current.setViewportSize({ width, height: 1400 }); await buttonGalleryTheme(current, style, dark); }
+      if (style === 'sera') {
+        const ui = await buttonGalleryMeasurements(page); const reference = await buttonGalleryMeasurements(original);
+        const differing = ui.flatMap((node, i) => node.tag === 'button' && node.width !== reference[i].width ? [i] : []);
+        const indices = [...new Set([ui.findIndex(node => node.tag === 'button'), ...differing])];
+        console.log('BUTTON_LAYOUT_RECEIPT ' + JSON.stringify({ style, dark, width, differing, ui: await buttonGalleryLayoutReceipt(page, indices), original: await buttonGalleryLayoutReceipt(original, indices) }));
+      }
       expect(await buttonGalleryMeasurements(page)).toEqual(await buttonGalleryMeasurements(original));
       // Programmatic focus followed by trusted keyboard input supplies a shared focus-visible modality.
       for (const current of [page, original]) { const button = current.locator(buttonWrapper + ' button').first(); await button.focus(); await button.press('ArrowRight'); await expect(button).toBeFocused(); await settleButtonTransitions(current); }
+      console.log('BUTTON_FOCUS_RECEIPT ' + JSON.stringify({ style, dark, width, ui: await buttonGalleryFocusReceipt(page), original: await buttonGalleryFocusReceipt(original) }));
       expect(await buttonGalleryMeasurements(page)).toEqual(await buttonGalleryMeasurements(original));
       for (const current of [page, original]) await current.locator(buttonWrapper + ' button').first().evaluate(n => n.blur());
       for (const current of [page, original]) await settleButtonTransitions(current);
