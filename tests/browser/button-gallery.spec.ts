@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { buttonGalleryLibraries, buttonGalleryStyles, buttonWrapper, assertButtonGallery, buttonGalleryTree, buttonGalleryMeasurements, buttonGalleryTheme, settleButtonTransitions, buttonGalleryNativeActions } from './button-gallery-cases';
+import { buttonGalleryLibraries, buttonGalleryStyles, buttonWrapper, assertButtonGallery, buttonGalleryTree, buttonGalleryMeasurements, buttonGalleryTheme, settleButtonTransitions, buttonGalleryNativeActions, buttonGalleryQueryDefaults } from './button-gallery-cases';
 test('genuine Button server hosts survive hydration with strict native attributes and original child bytes', async ({ page }) => {
   let release!: () => void; const gate = new Promise<void>(resolve => { release = resolve; });
   await page.route('**/*', async route => { if (route.request().resourceType() === 'script') await gate; await route.continue(); });
@@ -45,4 +45,10 @@ for (const style of buttonGalleryStyles) test('six genuine Button bodies match o
       for (const current of [page, original]) await settleButtonTransitions(current);
     }
   } finally { await original.close(); }
+});
+
+test('genuine literal parser preserves defaults, invalid inputs and first repeated library value', async ({ page, context }) => {
+  const original = await context.newPage();
+  try { await buttonGalleryQueryDefaults(page, original); }
+  finally { await original.close(); }
 });

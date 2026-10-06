@@ -1,6 +1,6 @@
 // Actual four fresh package/source-copy documented/experimental phases; authored supplement.
 import { expect, test } from '@playwright/test';
-import { buttonGalleryLibraries, assertButtonGallery, buttonGalleryTree, buttonGalleryMeasurements, buttonGalleryTheme, buttonGalleryNativeActions } from '../browser/button-gallery-cases';
+import { buttonGalleryLibraries, assertButtonGallery, buttonGalleryTree, buttonGalleryMeasurements, buttonGalleryTheme, buttonGalleryNativeActions, buttonGalleryQueryDefaults } from '../browser/button-gallery-cases';
 for (const library of buttonGalleryLibraries) test('fresh genuine Button gallery preserves ' + library + ' source tree, attrs and native interaction', async ({ page, context }) => {
   const original = await context.newPage();
   try {
@@ -14,4 +14,10 @@ for (const library of buttonGalleryLibraries) test('fresh genuine Button gallery
     }
     await buttonGalleryNativeActions(page); await buttonGalleryNativeActions(original);
   } finally { await original.close(); }
+});
+
+test('genuine literal parser preserves defaults, invalid inputs and first repeated library value', async ({ page, context }) => {
+  const original = await context.newPage();
+  try { await buttonGalleryQueryDefaults(page, original); }
+  finally { await original.close(); }
 });

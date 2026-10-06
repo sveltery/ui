@@ -79,3 +79,30 @@ export async function buttonGalleryNativeActions(page: Page) {
     { tag: 'A', text: 'Link', trusted: true },
   ]);
 }
+
+// Grounded in pinned parseAsStringLiteral(...).withDefault(DEFAULT_CONFIG.iconLibrary), not the port.
+export const buttonGalleryQueryCases = [
+  ['', 'lucide'], ['?library=', 'lucide'], ['?library=bogus', 'lucide'],
+  ['?library=Lucide', 'lucide'], ['?library=%20lucide%20', 'lucide'],
+  ['?library=bogus&library=tabler', 'lucide'], ['?library=tabler&library=bogus', 'tabler'],
+] as const;
+export async function buttonGalleryQueryDefaults(page: Page, original: Page) {
+  for (const [query, library] of buttonGalleryQueryCases) {
+    const response = await page.request.get('/button-gallery' + query);
+    expect(response.status()).toBe(200);
+    const html = await response.text();
+    expect((html.match(/<button\b/gu) ?? []).length).toBe(124);
+    expect((html.match(/<svg\b/gu) ?? []).length).toBe(74);
+    await page.goto('/button-gallery' + query);
+    await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true');
+    await original.goto('http://127.0.0.1:5175/button-gallery' + query);
+    await assertButtonGallery(page, library); await assertButtonGallery(original, library);
+    const selectedReference = await buttonGalleryTree(original);
+    // Independently compare to a valid original library URL, never two equally invalid trees.
+    await original.goto('http://127.0.0.1:5175/button-gallery?library=' + library);
+    await assertButtonGallery(original, library);
+    const validReference = await buttonGalleryTree(original);
+    expect(selectedReference).toEqual(validReference);
+    expect(await buttonGalleryTree(page)).toEqual(validReference);
+  }
+}

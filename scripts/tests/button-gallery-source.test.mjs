@@ -105,3 +105,52 @@ test('six-body integration preserves complete pre-task UI676 tree, manifest and 
   const former = JSON.stringify({ schemaVersion: m.schemaVersion, baseline: m.baseline, historical: m.historical, changes: p.ledger, previousCurrent: m.previousCurrent }) + '\n';
   assert.equal(Buffer.byteLength(former), 150488); assert.equal(hash(former), '2ae74d98e7ebfb0280d664a39827d5250eb58ae952ead33d9c2304a6cbf9cd35');
 });
+
+test('gallery query boundary preserves genuine literal membership, default and first-value semantics', () => {
+  const original = ts.createSourceFile(rawPath, readFileSync(rawPath, 'utf8'), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+  const choices = new Set();
+  const visit = node => {
+    if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
+      if (node.tagName.getText() === 'IconPlaceholder') for (const attr of node.attributes.properties) {
+        if (ts.isJsxAttribute(attr) && !['className', 'data-icon'].includes(attr.name.getText())) choices.add(attr.name.getText());
+      }
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(original);
+  const defaults = ts.createSourceFile('config.ts', readFileSync('tests/reference/icons/upstream/config.ts', 'utf8'), ts.ScriptTarget.Latest, true);
+  const config = defaults.statements.flatMap(n => ts.isVariableStatement(n) ? [...n.declarationList.declarations] : []).find(n => n.name.getText() === 'DEFAULT_CONFIG').initializer;
+  const fallback = config.properties.find(n => n.name.getText() === 'iconLibrary').initializer.text;
+  assert.equal(fallback, 'lucide');
+  const upstream = readFileSync('tests/reference/icons/upstream/search-params.ts', 'utf8');
+  assert(upstream.includes('iconLibrary: parseAsStringLiteral<IconLibraryName>('));
+  assert(upstream.includes('Object.values(iconLibraries).map((i) => i.name)\n  ).withDefault(DEFAULT_CONFIG.iconLibrary)'));
+  const localConfig = ts.createSourceFile('config.ts', readFileSync('apps/docs/registry/bases/base/ui/icons/config.ts', 'utf8'), ts.ScriptTarget.Latest, true);
+  const localChoices = localConfig.statements.flatMap(n => ts.isVariableStatement(n) ? [...n.declarationList.declarations] : []).find(n => n.name.getText() === 'iconLibraries').initializer.expression.elements.map(n => n.text);
+  assert.deepEqual([...localChoices].sort(), [...choices].sort());
+  const route = parse(readFileSync('apps/docs/src/routes/button-gallery/+page.svelte', 'utf8'), { modern: true });
+  const selected = route.instance.content.body.flatMap(n => n.type === 'VariableDeclaration' ? n.declarations : []).find(n => n.id.name === 'library').init.arguments[0];
+  const evaluate = (node, value) => {
+    if (node.type === 'TSAsExpression') return evaluate(node.expression, value);
+    if (node.type === 'Literal') return node.value;
+    if (node.type === 'ConditionalExpression') return evaluate(node.test, value) ? evaluate(node.consequent, value) : evaluate(node.alternate, value);
+    assert.equal(node.type, 'CallExpression');
+    assert.equal(node.callee.type, 'MemberExpression');
+    if (node.callee.property.name === 'get') {
+      assert.equal(node.arguments[0].value, 'library');
+      assert.equal(node.callee.object.property.name, 'searchParams');
+      assert.equal(node.callee.object.object.property.name, 'url');
+      assert.equal(node.callee.object.object.object.name, 'page');
+      return value;
+    }
+    assert.equal(node.callee.property.name, 'includes'); assert.equal(node.callee.object.name, 'iconLibraries');
+    return localChoices.includes(evaluate(node.arguments[0], value));
+  };
+  for (const value of [...choices, null, '', 'bogus', 'Lucide', ' lucide ']) {
+    assert.equal(evaluate(selected, value), choices.has(value) ? value : fallback);
+  }
+  // URLSearchParams.get is the original loader's first-value boundary; browser/consumer cases exercise both orders.
+  for (const [query, expected] of [['?library=bogus&library=tabler', fallback], ['?library=tabler&library=bogus', 'tabler']]) {
+    assert.equal(evaluate(selected, new URL('https://original.test/' + query).searchParams.get('library')), expected);
+  }
+});
