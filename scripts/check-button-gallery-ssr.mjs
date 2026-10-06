@@ -1,6 +1,7 @@
 // Authored source-derived checks; zero ordinary copied upstream-suite credit.
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { createElement } from 'react';
 import { renderToString, renderToPipeableStream } from 'react-dom/server';
 import { PassThrough } from 'node:stream';
@@ -51,17 +52,50 @@ assertGallery(coldReact); assertGallery(coldNative);
 assert.equal(coldReact.querySelectorAll('template').length, 74);
 assert.equal(coldNative.querySelectorAll('template').length, 0);
 assert.deepEqual([...coldNative.querySelectorAll('svg')].map(tree), [...coldReact.querySelectorAll('svg')].map(tree));
-async function settled(element) {
+async function settled(element, library) {
+  const receipt = { library, lifecycle: [], chunks: 0, bytes: 0, errors: [] };
   return new Promise((resolve, reject) => {
     const output = new PassThrough(); let html = '';
-    output.on('data', c => { html += c; }); output.on('end', () => resolve(html)); output.on('error', reject);
-    const stream = renderToPipeableStream(element, { onAllReady() { stream.pipe(output); }, onError: reject });
+    const failed = error => {
+      receipt.errors.push({ name: error?.name, message: String(error?.message ?? error).slice(0, 600) });
+      console.error('Button original stream error', JSON.stringify(receipt));
+      reject(error);
+    };
+    output.on('data', chunk => { html += chunk; receipt.chunks++; receipt.bytes += chunk.length; });
+    output.on('finish', () => receipt.lifecycle.push('writable-finish'));
+    output.on('end', () => {
+      receipt.lifecycle.push('readable-end');
+      receipt.sha256 = createHash('sha256').update(html).digest('hex');
+      resolve({ html, receipt });
+    });
+    output.on('error', failed);
+    const stream = renderToPipeableStream(element, {
+      onShellReady() { receipt.lifecycle.push('shell-ready'); },
+      onAllReady() { receipt.lifecycle.push('all-ready'); stream.pipe(output); },
+      onShellError(error) { receipt.lifecycle.push('shell-error'); failed(error); },
+      onError(error) { receipt.lifecycle.push('render-error'); failed(error); },
+    });
   });
+}
+function unresolvedReceipt(doc, receipt) {
+  const templates = [...doc.querySelectorAll('template')];
+  if (!templates.length) return;
+  console.error('Button original unresolved templates', JSON.stringify({
+    ...receipt, templates: templates.length,
+    examples: templates.slice(0, 2).map(node => ({
+      attrs: [...node.attributes].map(attr => [attr.name, attr.value.slice(0, 300)]),
+      parent: { tag: node.parentElement.localName, class: node.parentElement.getAttribute('class'), text: node.parentElement.textContent.slice(0, 120) },
+      next: node.nextElementSibling?.outerHTML.slice(0, 600),
+    })),
+    glyphClasses: [...new Set([...doc.querySelectorAll('svg')].map(node => node.getAttribute('class')))],
+  }));
 }
 const { loadIcon } = await import(new URL('./data.js', pathToFileURL(createRequire(new URL('../apps/docs/package.json', import.meta.url)).resolve('@sveltery/ui/icons'))));
 const names = { lucide: ['ArrowRightIcon', 'ArrowLeftCircleIcon'], tabler: ['IconArrowRight', 'IconCircleArrowLeft'], hugeicons: ['ArrowRight02Icon', 'CircleArrowLeft02Icon'], phosphor: ['ArrowRightIcon', 'ArrowCircleLeftIcon'], remixicon: ['RiArrowRightLine', 'RiArrowLeftCircleLine'] };
 for (const [library, glyphs] of Object.entries(names)) {
-  const expected = new JSDOM(await settled(original(library))).window.document;
+  const reference = await settled(original(library), library);
+  const expected = new JSDOM(reference.html).window.document;
+  unresolvedReceipt(expected, reference.receipt);
   await Promise.all(glyphs.map(name => loadIcon(library, name)));
   const actual = new JSDOM(render(Gallery, { props: { library } }).body).window.document;
   assertGallery(expected); assertGallery(actual);
