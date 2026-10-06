@@ -4,7 +4,7 @@ import { browserProjects } from './browser-projects';
 const consumer = process.env.SVELTERY_INSTALLATION_CONSUMER;
 if (!consumer) throw new Error('Run bash scripts/check-installation.sh --browser');
 export default defineConfig({
-  testMatch: process.env.SVELTERY_INSTALLATION_REMOTE === '1' ? ['**/remote-fields.spec.ts', '**/avatar.spec.ts', '**/aspect-ratio.spec.ts', '**/kbd.spec.ts', '**/alert.spec.ts', '**/empty.spec.ts', '**/textarea-gallery.spec.ts'] : undefined,
+  testMatch: process.env.SVELTERY_INSTALLATION_REMOTE === '1' ? ['**/remote-fields.spec.ts', '**/avatar.spec.ts', '**/aspect-ratio.spec.ts', '**/kbd.spec.ts', '**/alert.spec.ts', '**/empty.spec.ts', '**/textarea-gallery.spec.ts', '**/button-gallery.spec.ts'] : undefined,
   testIgnore: process.env.SVELTERY_INSTALLATION_REMOTE === '1' ? undefined : '**/remote-fields.spec.ts',
   testDir: '../tests/installation', workers: 1, fullyParallel: false, retries: 0, reporter: [['list']],
   projects: browserProjects,

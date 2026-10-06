@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { Button, variants, sizes } from '@sveltery/ui/button';
-  import ButtonExample from '../../../examples/base/ButtonExample.svelte';
+  import ButtonExample from '../../../examples/base/ButtonProbe.svelte';
   import Fixture from '../../../../../tests/dom/ButtonFixture.svelte';
   let { data }: { data: { scenario: string } } = $props();
   let hydrated = $state(false);

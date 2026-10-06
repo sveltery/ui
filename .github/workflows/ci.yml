@@ -64,7 +64,7 @@ jobs:
     name: ${{ matrix.engine == 'chromium' && 'Dialog browser' || matrix.engine == 'firefox' && 'Firefox browser' || 'WebKit browser' }}
     # Native Ubuntu runner supported by Playwright; retain Chromium sandbox startup.
     runs-on: ubuntu-22.04
-    timeout-minutes: 75
+    timeout-minutes: ${{ matrix.engine == 'webkit' && 90 || 75 }}
     strategy:
       fail-fast: false
       matrix:

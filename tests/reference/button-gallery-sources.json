@@ -1,0 +1,188 @@
+{
+  "commit": "d75a96ab781f3d659be1ad287347d5887ce9f2fc",
+  "uiBase": "da66869098ee7fd26318431ab36251bbb6fc8d73",
+  "consumedBase": "f884f3bb265485ef8e422e43a75eb3055db11fab",
+  "selected": [
+    "ButtonVariantsAndSizes",
+    "ButtonIconRight",
+    "ButtonIconLeft",
+    "ButtonIconOnly",
+    "ButtonInvalidStates",
+    "ButtonExamples"
+  ],
+  "original": [
+    "tests/reference/button-example.tsx",
+    "100644",
+    31971,
+    "18eb30f758a5f64d918014952bce3f867a4ba06f79fa36f92f83ac331ef82f8a",
+    "61424d7903ced07c1dfe3abf522883426694bccd"
+  ],
+  "declarations": [
+    {
+      "name": "ButtonVariantsAndSizes",
+      "bytes": 2030,
+      "sha256": "62545717d45e849bfdb57517186539e351fe5a45dd5ae0336bc03ad5c4a11fa8"
+    },
+    {
+      "name": "ButtonIconRight",
+      "bytes": 8685,
+      "sha256": "2fd5624db4f974093b918104eab2f406a2696664a2ac995ebf3f83bf13a87cd6"
+    },
+    {
+      "name": "ButtonIconLeft",
+      "bytes": 9371,
+      "sha256": "41f5c65d777f509e0728bbbea2382ba6379923f6a40568bf6475bfc3dec935e3"
+    },
+    {
+      "name": "ButtonIconOnly",
+      "bytes": 7489,
+      "sha256": "b12e4e5896bd28b597f5fa206e24dc7e347e7719c8d2ea4d6de9e295b7ce11be"
+    },
+    {
+      "name": "ButtonInvalidStates",
+      "bytes": 2665,
+      "sha256": "4697977e8a8229f6ff7696cbf739906e16e80b441191e837d67421ed569b683d"
+    },
+    {
+      "name": "ButtonExamples",
+      "bytes": 1157,
+      "sha256": "5fbd6e4fb1dbd0c061979a8a89714a392fdc5a8caf459098f71632324848c9e9"
+    }
+  ],
+  "originalFiles": [
+    [
+      "tests/reference/button.tsx",
+      "100644",
+      1508,
+      "74f982d7ad7a764e3c95a519fc063a671e66ad758ea31dc89d747838e20c2487",
+      "2007374034d564bb926915baa057e500cab631a4"
+    ],
+    [
+      "tests/reference/example-scaffold.tsx",
+      "100644",
+      1395,
+      "4e8265534863b7291158a5341f305a3cac582cf762054bd2387adf20959e06bf",
+      "48c3077aa534396568003a659bb9b428b9d2f89f"
+    ],
+    [
+      "tests/reference/icon.tsx",
+      "100644",
+      2027,
+      "0e99288cb14d37c77758b5e2702484da0b698ad45ce1b1f5a0a465eccfad9db2",
+      "eff87e186085e093fc6ef314f6a28677c843898b"
+    ],
+    [
+      "tests/reference/icons/search-params.tsx",
+      "100644",
+      584,
+      "1b9544f7f3980bca10341f3d2cd4749aa46831c0757c1fd0d2f0db962ef5b082",
+      "1875e9d6c855d7483e06958a28df9d6c8a442113"
+    ],
+    [
+      "tests/reference/themes/upstream/globals.css",
+      "100644",
+      13739,
+      "cbae6d633c38be59fc036d1e5cf60203ae7619ea6af9b4cdd8d632a211ccffa9",
+      "32582b53565093c693017d4528d2982642050bfe"
+    ],
+    [
+      "tests/reference/themes/upstream/legacy-themes.css",
+      "100644",
+      21457,
+      "b53f086328b730f0330d1d0eee6301564811511fa38cdbd3832db55ee3e32f85",
+      "4e450a7911a4be94b04db5c68274e5d9fd2b0e17"
+    ],
+    [
+      "tests/reference/themes/upstream/shadcn-tailwind.css",
+      "100644",
+      16340,
+      "4c371f7a1ff5d219ae2f7ff28bd256b4346fd546fe46fbae22092e57db2f0fae",
+      "067bfc56fc086420835582f469e2c78d3942c69a"
+    ],
+    [
+      "tests/reference/themes/upstream/style-vega.css",
+      "100644",
+      74972,
+      "7b0dc3a9d2245ab6ce3d17653fa74a07f0ce2541e480bef36d2600fe38f1281b",
+      "7b07854ab490e32c7de468756642b4016b2379c2"
+    ],
+    [
+      "tests/reference/themes/upstream/style-nova.css",
+      "100644",
+      75461,
+      "5d5751579c015b61e77cf0822862a43ac79f3e6fed236a17624be8e6d1ebea1d",
+      "514a3e8e00deac2ef59fee04c57cb10fd277ef39"
+    ],
+    [
+      "tests/reference/themes/upstream/style-maia.css",
+      "100644",
+      73982,
+      "0a1e5a658ea601ee7a9427b91ea567c6fc915a385d7466bea19f42ec726added",
+      "fb1827393a94b9b2d4aac54f3a79f37a06095734"
+    ],
+    [
+      "tests/reference/themes/upstream/style-lyra.css",
+      "100644",
+      74205,
+      "7d75035683a22e61f5dace0b115e97f9e9b643500c1f4bfe2b31ad4dcdaa0c4a",
+      "21de71c1ccff0e501b143390e11d171c9f4f96f1"
+    ],
+    [
+      "tests/reference/themes/upstream/style-mira.css",
+      "100644",
+      75304,
+      "025f54a060adeb60489d17eb3eb935e1118ee091ba5c618d5463eb27f2b1d003",
+      "7707d4b3ed67b3a5a57008b51b624c44de2baf95"
+    ],
+    [
+      "tests/reference/themes/upstream/style-luma.css",
+      "100644",
+      75176,
+      "a698210162ca2d3385142a47334f22985831b1e91716c2d3175828d928a59707",
+      "739e8f9260ef9e82f31bb42f5d579df13ada2787"
+    ],
+    [
+      "tests/reference/themes/upstream/style-sera.css",
+      "100644",
+      75728,
+      "eda71a39ba86625eb81b25f2e5824579952ced0cf0451be16be3f4dd70bf9876",
+      "c210a75f1a396560cb474ec98377f188fbee6a64"
+    ],
+    [
+      "tests/reference/themes/upstream/style-rhea.css",
+      "100644",
+      75351,
+      "bcb242a7845316f93b0562345dd5c32a46a2988b506a8e8d7df1c836a1637b49",
+      "dd15e5f37548f63fc694601448efe0bb63462013"
+    ],
+    [
+      "tests/reference/shadcn-test-inventory.json",
+      "100644",
+      45540,
+      "3728ce6c200f640c56a585ae51187730476bdfc8b217836df6650b400ea735aa",
+      "fba5c70fa0cc612d7b58de683874341a4f13620f"
+    ]
+  ],
+  "legacyProbe": [
+    "apps/docs/examples/base/ButtonProbe.svelte",
+    "100644",
+    389,
+    "7fa6501b8860d959436f704092eb8e6247568cbaf9ce4fc4a5de8b3023027f78",
+    "4b94b3cf33f9d0417aa162171e741de03ced9ec0"
+  ],
+  "inventory": {
+    "records": 139,
+    "executable": 133,
+    "snapshots": 6,
+    "dedicatedButtonSuiteIdentified": false
+  },
+  "testProvenance": "Authored source-derived supplemental checks; zero ordinary copied assertion credit. Immutable inventory retained.",
+  "scope": "Six enabled native-button bodies and native anchor helper composition; no whole Button/API/Base1.6 equivalence.",
+  "quirks": [
+    "small/default IconRight has no explicit space expression",
+    "small/outline IconRight lacks data-icon inline-end",
+    "IconOnly bodies author no accessible labels"
+  ],
+  "translation": "Six original ordered bodies remain Svelte snippets with className/class translation. All48 original explicit JSX space expressions render an internal element-neutral LiteralSpace snippet whose sole value is one literal space, preserving React's direct Text node boundaries for native tracking/kerning. One exact-line lint directive is confined to that constant. Provider stays outside canonical bodies; no new public API/callback/render acceptance.",
+  "translationPrevious": "Named function bodies become Svelte snippets; className becomes class; plain text preserves JSX normalization and all48 authored space expressions stay explicit under three exact-line lint directives. Provider remains outside canonical bodies."
+}

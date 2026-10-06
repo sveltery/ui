@@ -128,17 +128,31 @@ function tree(root: string, ref: string) {
 // Finite current-source integration. Historical rows are genuine immutable Git
 // inventories; this pair establishes consistency only within actual HEAD and
 // independently reviewed external baseline/final-source authority.
-const sourceAuthenticationManifestSha256 = '2ae74d98e7ebfb0280d664a39827d5250eb58ae952ead33d9c2304a6cbf9cd35';
+const sourceAuthenticationManifestSha256 = '6cbbc7dc0ccd695602d5b07145403da2c15f90b1a8f27f9dbd263ad2dc304475';
 const sourceAuthenticationPath = 'diagnostics/alert-child-segmentation/source-authentication.json';
 const sourceConfigPath = 'diagnostics/alert-child-segmentation/vite.config.ts';
 const sourceLedgerPaths = [
+  '.github/workflows/ci.yml',
+  'apps/docs/examples/base/ButtonExample.svelte',
+  'apps/docs/examples/base/ButtonGalleryFixture.svelte',
+  'apps/docs/examples/base/ButtonProbe.svelte',
   'apps/docs/examples/base/EmptyExample.svelte',
   'apps/docs/examples/base/EmptyGalleryFixture.svelte',
   'apps/docs/examples/base/TextareaExample.svelte',
   'apps/docs/examples/base/TextareaProbe.svelte',
   'apps/docs/registry/bases/base/ui/example/Example.svelte',
   'apps/docs/registry/bases/base/ui/icons/IconPlaceholder.svelte',
+  'apps/docs/registry/styles/scoped/luma.css',
+  'apps/docs/registry/styles/scoped/lyra.css',
+  'apps/docs/registry/styles/scoped/maia.css',
+  'apps/docs/registry/styles/scoped/mira.css',
+  'apps/docs/registry/styles/scoped/nova.css',
+  'apps/docs/registry/styles/scoped/rhea.css',
+  'apps/docs/registry/styles/scoped/sera.css',
+  'apps/docs/registry/styles/scoped/vega.css',
   'apps/docs/src/routes/+page.svelte',
+  'apps/docs/src/routes/button-gallery/+page.svelte',
+  'apps/docs/src/routes/button/+page.svelte',
   'apps/docs/src/routes/empty-reference/+page.server.ts',
   'apps/docs/src/routes/empty-reference/+page.svelte',
   'apps/docs/src/routes/empty/+page.svelte',
@@ -148,25 +162,39 @@ const sourceLedgerPaths = [
   'apps/docs/src/routes/textarea/+page.svelte',
   'diagnostics/alert-child-segmentation/source-authentication.json',
   'diagnostics/alert-child-segmentation/vite.config.ts',
+  'docs/button.md',
   'docs/empty.md',
   'docs/readiness.md',
+  'docs/shadcn-css.md',
   'docs/textarea.md',
+  'docs/themes.md',
   'docs/upstream-differences.md',
+  'scripts/check-button-gallery-ssr.mjs',
   'scripts/check-empty-ssr.mjs',
   'scripts/check-installation.mjs',
   'scripts/check-textarea-gallery-ssr.mjs',
   'scripts/installation-playwright.config.ts',
+  'scripts/tests/button-gallery-source.test.mjs',
   'scripts/tests/empty-provenance.test.mjs',
+  'scripts/tests/shadcn-css.test.mjs',
   'scripts/tests/textarea-provenance.test.mjs',
+  'scripts/tests/themes-provenance.test.mjs',
+  'scripts/theme-assets.mjs',
   'scripts/verify.sh',
+  'tests/browser/button-gallery-cases.ts',
+  'tests/browser/button-gallery.spec.ts',
   'tests/browser/empty-gallery-cases.ts',
   'tests/browser/empty.spec.ts',
   'tests/browser/textarea-gallery-cases.ts',
   'tests/browser/textarea-gallery.spec.ts',
+  'tests/installation/button-gallery.spec.ts',
   'tests/installation/empty.spec.ts',
   'tests/installation/textarea-gallery.spec.ts',
+  'tests/reference/OriginalButtonExample.tsx',
   'tests/reference/SelectedEmptyGallery.tsx',
   'tests/reference/SelectedTextareaGallery.tsx',
+  'tests/reference/button-example.tsx',
+  'tests/reference/button-gallery-sources.json',
   'tests/reference/empty-gallery-sources.json',
   'tests/reference/empty-selected-examples.tsx',
   'tests/reference/textarea-gallery-sources.json',
@@ -176,7 +204,7 @@ const sourceLedgerPaths = [
 type SourceRow = [path: string, mode: string, bytes: number, sha256: string, blob: string];
 type SourceChange = { path: string; operation: 'add' | 'modify'; before: SourceRow | null; purpose: string; after: { kind: 'exact' | 'normalized-config'; row: SourceRow } | { kind: 'manifest-root'; mode: '100644'; binding: 'full-manifest-sha256-via-config-slot' } };
 type HistoricalSource = { head: string; tree: string; rowCount: number; canonicalBytes: number; sha256: string; replacements: { path: string; row: SourceRow | null }[] };
-type SourceManifest = { schemaVersion: number; baseline: { head: string; tree: string; rowCount: number; canonicalBytes: number; sha256: string; rows: SourceRow[] }; historical: HistoricalSource[]; changes: SourceChange[]; previousCurrent: { head: string; tree: string; rowCount: number; canonicalBytes: number; sha256: string; replacements: { path: string; row: SourceRow | null }[]; ledger: SourceChange[]; manifestBytes: number; manifestSha256: string } };
+type SourceManifest = { schemaVersion: number; baseline: { head: string; tree: string; rowCount: number; canonicalBytes: number; sha256: string; rows: SourceRow[] }; historical: HistoricalSource[]; changes: SourceChange[]; previousGallery: HistoricalSource & { ledger: SourceChange[]; manifestBytes: number; manifestSha256: string }; previousCurrent: { head: string; tree: string; rowCount: number; canonicalBytes: number; sha256: string; replacements: { path: string; row: SourceRow | null }[]; ledger: SourceChange[]; manifestBytes: number; manifestSha256: string } };
 const sourceHistory = [
   { head: '028c5ec0c409440a46d61ad8b4a69f0665a0b810', tree: '4064cfd67b7d37bac66f784fe13a20a3b50d03c7', rowCount: 652, canonicalBytes: 109983, sha256: 'bb7f58e273634768867c7ae794b7dd3b1bffa0d06a6e934e418336813de3a443' },
   { head: '38e3c8ef3a7f92073d5bb18c82c017d697e5ef58', tree: 'aceb19860d531a715903770b9080546760b1b229', rowCount: 655, canonicalBytes: 110538, sha256: 'bbfb69daca1d641d5a51ed323de3de7b261d16896b8f3cbcefd4893e7ddc1952' },
@@ -262,6 +290,15 @@ function authenticatedCurrentSourceClosure(root: string, current: Map<string, { 
   if (JSON.stringify(sourceRowsIdentity([...prior.values()])) !== JSON.stringify({ rowCount: manifest.previousCurrent.rowCount, canonicalBytes: manifest.previousCurrent.canonicalBytes, sha256: manifest.previousCurrent.sha256 })) throw new Error('Previous complete UI0f4 source reconstruction failed');
   const previousManifest = JSON.stringify({ schemaVersion: manifest.schemaVersion, baseline: manifest.baseline, historical: manifest.historical, changes: manifest.previousCurrent.ledger }) + '\n';
   if (Buffer.byteLength(previousManifest) !== manifest.previousCurrent.manifestBytes || sha256(previousManifest) !== manifest.previousCurrent.manifestSha256) throw new Error('Previous byte-exact full source manifest/ledger reconstruction failed');
+  // Byte-exact previous UI676 source, forty-change ledger and manifest authority.
+  const previousGallery = new Map(baseline);
+  for (const replacement of manifest.previousGallery.replacements) {
+    if (!replacement.row || replacement.path !== replacement.row[0]) throw new Error('Invalid previous UI676 replacement');
+    sourceRowsMap([replacement.row]); previousGallery.set(replacement.path, replacement.row);
+  }
+  if (JSON.stringify(sourceRowsIdentity([...previousGallery.values()])) !== JSON.stringify({ rowCount: 676, canonicalBytes: 114212, sha256: '0b76fddba983249d970723ed0c858acf46ad130e1c1fd8db82770a476509c241' })) throw new Error('Previous UI676 full source reconstruction failed');
+  const previousGalleryManifest = JSON.stringify({ schemaVersion: manifest.schemaVersion, baseline: manifest.baseline, historical: manifest.historical, changes: manifest.previousGallery.ledger, previousCurrent: manifest.previousCurrent }) + '\n';
+  if (manifest.previousGallery.head !== 'da66869098ee7fd26318431ab36251bbb6fc8d73' || manifest.previousGallery.tree !== 'af3328f70ca47d7a77934682881cccf66057a5f3' || manifest.previousGallery.rowCount !== 676 || manifest.previousGallery.canonicalBytes !== 114212 || manifest.previousGallery.sha256 !== '0b76fddba983249d970723ed0c858acf46ad130e1c1fd8db82770a476509c241' || manifest.previousGallery.ledger.length !== 40 || manifest.previousGallery.manifestBytes !== 150488 || manifest.previousGallery.manifestSha256 !== '2ae74d98e7ebfb0280d664a39827d5250eb58ae952ead33d9c2304a6cbf9cd35' || Buffer.byteLength(previousGalleryManifest) !== 150488 || sha256(previousGalleryManifest) !== '2ae74d98e7ebfb0280d664a39827d5250eb58ae952ead33d9c2304a6cbf9cd35') throw new Error('Previous byte-exact UI676 manifest/ledger authority changed');
   const oldProtected = historicalProjection(manifest.baseline.rows, allowedChanges);
   const expectedProtected = { rowCount: 643, canonicalBytes: 80886, sha256: '37f43888ce646b768081acfa425156a8197f92ed587740574cb3138c87dcc257' };
   if (JSON.stringify(oldProtected) !== JSON.stringify(expectedProtected)) throw new Error('Immutable a447 historical643 aggregate mismatch');
@@ -286,13 +323,30 @@ function authenticatedCurrentSourceClosure(root: string, current: Map<string, { 
     expected.set(change.path, row);
   }
   const expectedRows = sortedSourceRows([...expected.values()]); const actualRows = sortedSourceRows([...physical.values()]);
-  if (current.size !== 676 || JSON.stringify(actualRows) !== JSON.stringify(expectedRows) || current.size !== expected.size || authoredFiles.some(path => !current.has(path))) throw new Error('Complete bidirectional new-head source domain/byte/mode/blob closure mismatch');
+  if (current.size !== 687 || JSON.stringify(actualRows) !== JSON.stringify(expectedRows) || current.size !== expected.size || authoredFiles.some(path => !current.has(path))) throw new Error('Complete bidirectional new-head source domain/byte/mode/blob closure mismatch');
   const exactChanges = actualRows.filter(row => JSON.stringify(row) !== JSON.stringify(baseline.get(row[0]))).map(row => row[0]);
   if (JSON.stringify(exactChanges) !== JSON.stringify(sourceLedgerPaths)) throw new Error('Actual baseline-to-current delta does not equal explicit ledger');
   return { ok: true, baseline: expectedBaseline, historicalClosures, historicalA447ProtectedDigest: { ...oldProtected, expected: expectedProtected, scope: 'historical a447 reconstruction; not current source' }, currentCompleteIdentity: sourceRowsIdentity(actualRows), ledger: manifest.changes, exactChangedPaths: exactChanges, actualPhysicalManifest: { path: sourceAuthenticationPath, bytes: manifestBytes.length, sha256: sha256(manifestBytes), gitBlob: gitBlob(manifestBytes) }, configBinding: { path: sourceConfigPath, physicalGitBlob: current.get(sourceConfigPath)!.blob, normalizedBytes: normalized.normalizedBytes, normalizedSha256: normalized.normalizedSha256, normalizedGitBlob: normalized.normalizedGitBlob, physicalDigestLiteral: normalized.physicalDigestLiteral, byteStart: normalized.byteStart, byteEnd: normalized.byteEnd }, limit: 'Finite consistency within actual Git/event HEAD; independently authenticated external historical/final source review remains mandatory.' };
 }
 
 // Full-tree authentication runs only when explicitly called by a test.
+function authenticatedWorkflowSource(bytes: Uint8Array) {
+  const candidate = Buffer.from(bytes);
+  const text = candidate.toString('utf8');
+  const before = '    timeout-minutes: 75\n';
+  const after = "    timeout-minutes: ${{ matrix.engine == 'webkit' && 90 || 75 }}\n";
+  const occurrenceCount = text.split(after).length - 1;
+  const inverse = Buffer.from(text.replace(after, before));
+  const baseline = inverse.subarray(0, 4618);
+  const addition = inverse.subarray(4618);
+  const candidateMatches = candidate.length === 5696 && sha256(candidate) === 'fdcf098808e6572ac95ad46955d0159d33310bceaa72078b401d82a8642c2f15';
+  const matchesBaseline = candidateMatches && occurrenceCount === 1 &&
+    inverse.length === 5654 && sha256(inverse) === '28eaa4a2c7565bba9e1b09164d2087b70ccde436215d1258967eab9cb87c90b2' &&
+    baseline.length === 4618 && sha256(baseline) === '883939bcc5dc9ac15e0683efd6b2d3d9fe7958179a8bd80b255ab82642a72fe5' &&
+    addition.length === 1036 && sha256(addition) === 'c82a6a45e728be6832b537aa8af10de2da977fc33bf1a83f7d28f98b11b55666';
+  return { candidateBytes: candidate.length, candidateSha256: sha256(candidate), occurrenceCount, inverseBytes: inverse.length, inverseSha256: sha256(inverse), candidateMatches, matchesBaseline };
+}
+
 export function protectedSourceSnapshot(root = repositoryRoot()) {
   const head = git(root, ['rev-parse', 'HEAD']).trim();
   const current = tree(root, head);
@@ -327,8 +381,8 @@ export function protectedSourceSnapshot(root = repositoryRoot()) {
       nativeReconstruction = authenticatedNativeGallery(bytes.toString('utf8'));
       if (!nativeReconstruction.matchesBaseline) failures.push('Native gallery is not the exact approved child-boundary translation/inverse');
     } else if (path === '.github/workflows/ci.yml') {
-      const addition = bytes.subarray(4618);
-      if (sha256(bytes.subarray(0, 4618)) !== '883939bcc5dc9ac15e0683efd6b2d3d9fe7958179a8bd80b255ab82642a72fe5' || addition.length !== 1036 || sha256(addition) !== 'c82a6a45e728be6832b537aa8af10de2da977fc33bf1a83f7d28f98b11b55666') failures.push('CI is not the exact authenticated 4618-byte baseline plus the exact 1036-byte two-step append');
+      const workflowReconstruction = authenticatedWorkflowSource(bytes);
+      if (!workflowReconstruction.matchesBaseline) failures.push('CI is not the exact authenticated 4618-byte baseline plus the exact 1036-byte two-step append');
     }
     return { path, mode: entry.mode, bytes: bytes.byteLength, sha256: sha256(bytes), headBlob: entry.blob, reconstruction, nativeReconstruction };
   });
