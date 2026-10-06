@@ -10,7 +10,7 @@ import { pathToFileURL } from 'node:url';
 import { createRequire } from 'node:module';
 import { prepareIconReference } from './prepare-icon-reference.mjs';
 import { render } from 'svelte/server';
-import { JSDOM } from 'jsdom';
+import { JSDOM, VirtualConsole } from 'jsdom';
 import { transpileModule, ModuleKind, ScriptTarget, JsxEmit } from 'typescript';
 import Gallery from '../apps/docs/examples/base/ButtonGalleryFixture.svelte';
 function moduleURL(path, imports) {
@@ -90,17 +90,40 @@ function unresolvedReceipt(doc, receipt) {
     glyphClasses: [...new Set([...doc.querySelectorAll('svg')].map(node => node.getAttribute('class')))],
   }));
 }
+async function completedReference(reference) {
+  // Execute the renderer's own inline completion scripts; never remove templates or manufacture glyphs.
+  const errors = [];
+  const virtualConsole = new VirtualConsole();
+  virtualConsole.on('jsdomError', error => errors.push({ name: error.name, message: error.message }));
+  const dom = new JSDOM(reference.html, { runScripts: 'dangerously', pretendToBeVisual: true, virtualConsole });
+  const doc = dom.window.document;
+  const deadline = Date.now() + 5000;
+  while (doc.querySelector('template') && !errors.length && Date.now() < deadline) {
+    await new Promise(resolve => dom.window.setTimeout(resolve, 10));
+  }
+  const receipt = { ...reference.receipt, rawTemplates: (reference.html.match(/<template\b/gu) ?? []).length,
+    completionScripts: [...doc.scripts].length, settledTemplates: doc.querySelectorAll('template').length, completionErrors: errors };
+  console.log('Button original completed stream', JSON.stringify(receipt));
+  unresolvedReceipt(doc, receipt);
+  assert.deepEqual(errors, [], reference.receipt.library + ': genuine React completion scripts');
+  return dom;
+}
+
 const { loadIcon } = await import(new URL('./data.js', pathToFileURL(createRequire(new URL('../apps/docs/package.json', import.meta.url)).resolve('@sveltery/ui/icons'))));
 const names = { lucide: ['ArrowRightIcon', 'ArrowLeftCircleIcon'], tabler: ['IconArrowRight', 'IconCircleArrowLeft'], hugeicons: ['ArrowRight02Icon', 'CircleArrowLeft02Icon'], phosphor: ['ArrowRightIcon', 'ArrowCircleLeftIcon'], remixicon: ['RiArrowRightLine', 'RiArrowLeftCircleLine'] };
 for (const [library, glyphs] of Object.entries(names)) {
   const reference = await settled(original(library), library);
-  const expected = new JSDOM(reference.html).window.document;
-  unresolvedReceipt(expected, reference.receipt);
+  const raw = new JSDOM(reference.html);
+  unresolvedReceipt(raw.window.document, reference.receipt);
+  raw.window.close();
+  const referenceDOM = await completedReference(reference);
+  const expected = referenceDOM.window.document;
   await Promise.all(glyphs.map(name => loadIcon(library, name)));
   const actual = new JSDOM(render(Gallery, { props: { library } }).body).window.document;
   assertGallery(expected); assertGallery(actual);
   assert.equal(expected.querySelectorAll('template').length, 0);
   assert.deepEqual(tree(actual.querySelector('[data-slot=example-wrapper]').parentElement), tree(expected.querySelector('[data-slot=example-wrapper]').parentElement), library);
   assert.deepEqual([...actual.querySelectorAll('button')].map(n => n.textContent), [...expected.querySelectorAll('button')].map(n => n.textContent), library + ': literal child bytes');
+  referenceDOM.window.close();
 }
 console.log('Six genuine Button bodies: 168 HTML hosts/124 enabled buttons/74 glyphs/native anchor, exact attrs/text/tree all5 libraries PASS; React74 cold Suspense templates versus native await remain unaccepted, zero copied-suite credit');
