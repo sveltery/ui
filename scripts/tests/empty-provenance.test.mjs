@@ -241,3 +241,32 @@ test('two-gallery integration reconstructs the full immutable UI0f4 source inven
   assert.equal(Buffer.byteLength(old), p.manifestBytes);
   assert.equal(createHash('sha256').update(old).digest('hex'), '4f498a69413cbbf8d0962909c199348bcdaff6cde05d76d89f8ece9b45728ba8');
 });
+
+test('approved WebKit-only CI timeout reconstructs the exact historical workflow and rejects unauthorized inputs', () => {
+  const path = 'diagnostics/alert-child-segmentation/vite.config.ts';
+  const source = readFileSync(path, 'utf8');
+  const ast = ts.createSourceFile(path, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+  const declaration = ast.statements.find(n => ts.isFunctionDeclaration(n) && n.name?.text === 'authenticatedWorkflowSource');
+  assert(declaration); assert.equal(declaration.parameters.length, 1);
+  const authenticate = new Function('bytes', 'sha256', 'Buffer', source.slice(declaration.body.getStart(ast) + 1, declaration.body.end - 1));
+  const hash = bytes => createHash('sha256').update(bytes).digest('hex');
+  const validate = bytes => authenticate(bytes, hash, Buffer);
+  const candidate = readFileSync('.github/workflows/ci.yml');
+  const before = '    timeout-minutes: 75\n';
+  const after = "    timeout-minutes: ${{ matrix.engine == 'webkit' && 90 || 75 }}\n";
+  const result = validate(candidate);
+  assert.equal(result.candidateMatches, true); assert.equal(result.matchesBaseline, true);
+  assert.equal(result.occurrenceCount, 1); assert.equal(result.inverseBytes, 5654);
+  const original = Buffer.from(candidate.toString('utf8').replace(after, before));
+  assert.equal(hash(original), '28eaa4a2c7565bba9e1b09164d2087b70ccde436215d1258967eab9cb87c90b2');
+  assert.equal(hash(original.subarray(0, 4618)), '883939bcc5dc9ac15e0683efd6b2d3d9fe7958179a8bd80b255ab82642a72fe5');
+  assert.equal(original.subarray(4618).length, 1036);
+  assert.equal(hash(original.subarray(4618)), 'c82a6a45e728be6832b537aa8af10de2da977fc33bf1a83f7d28f98b11b55666');
+  for (const input of [original, Buffer.concat([candidate, Buffer.from('\n')]),
+    Buffer.from(candidate.toString().replace("matrix.engine == 'webkit' && 90", "matrix.engine == 'firefox' && 90")),
+    Buffer.from(candidate.toString().replace('&& 90', '&& 91')),
+    Buffer.from(candidate.toString().replace('|| 75', '|| 90')),
+    Buffer.from(candidate.toString().replace('fail-fast: false', 'fail-fast: true')),
+    Buffer.from(candidate.toString().replace('d23441a48e516b6c34aea4fa41551a30e30af803', 'd23441a48e516b6c34aea4fa41551a30e30af804')),
+    Buffer.from(candidate.toString().replace(after, after + after))]) assert.equal(validate(input).matchesBaseline, false);
+});

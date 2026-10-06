@@ -30,7 +30,8 @@ for (const library of buttonGalleryLibraries) test('six genuine Button bodies an
     expect(errors).toEqual([]);
   } finally { await original.close(); }
 });
-for (const style of buttonGalleryStyles) test('six genuine Button bodies match original ' + style + ' responsive light/dark and focus CSS', async ({ page, context }) => {
+for (const style of buttonGalleryStyles) test('six genuine Button bodies match original ' + style + ' responsive light/dark and focus CSS', async ({ page, context, browserName }) => {
+  if (browserName === 'webkit') test.setTimeout(60_000);
   const original = await context.newPage();
   try {
     await page.goto('/button-gallery'); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true');

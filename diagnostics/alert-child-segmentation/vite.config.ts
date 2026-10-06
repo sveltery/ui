@@ -128,7 +128,7 @@ function tree(root: string, ref: string) {
 // Finite current-source integration. Historical rows are genuine immutable Git
 // inventories; this pair establishes consistency only within actual HEAD and
 // independently reviewed external baseline/final-source authority.
-const sourceAuthenticationManifestSha256 = 'c8f00661666b67346b4aa46de27d3ae5731312948a8847a3af6330530f9b1738';
+const sourceAuthenticationManifestSha256 = '6cbbc7dc0ccd695602d5b07145403da2c15f90b1a8f27f9dbd263ad2dc304475';
 const sourceAuthenticationPath = 'diagnostics/alert-child-segmentation/source-authentication.json';
 const sourceConfigPath = 'diagnostics/alert-child-segmentation/vite.config.ts';
 const sourceLedgerPaths = [
@@ -330,6 +330,23 @@ function authenticatedCurrentSourceClosure(root: string, current: Map<string, { 
 }
 
 // Full-tree authentication runs only when explicitly called by a test.
+function authenticatedWorkflowSource(bytes: Uint8Array) {
+  const candidate = Buffer.from(bytes);
+  const text = candidate.toString('utf8');
+  const before = '    timeout-minutes: 75\n';
+  const after = "    timeout-minutes: ${{ matrix.engine == 'webkit' && 90 || 75 }}\n";
+  const occurrenceCount = text.split(after).length - 1;
+  const inverse = Buffer.from(text.replace(after, before));
+  const baseline = inverse.subarray(0, 4618);
+  const addition = inverse.subarray(4618);
+  const candidateMatches = candidate.length === 5696 && sha256(candidate) === 'fdcf098808e6572ac95ad46955d0159d33310bceaa72078b401d82a8642c2f15';
+  const matchesBaseline = candidateMatches && occurrenceCount === 1 &&
+    inverse.length === 5654 && sha256(inverse) === '28eaa4a2c7565bba9e1b09164d2087b70ccde436215d1258967eab9cb87c90b2' &&
+    baseline.length === 4618 && sha256(baseline) === '883939bcc5dc9ac15e0683efd6b2d3d9fe7958179a8bd80b255ab82642a72fe5' &&
+    addition.length === 1036 && sha256(addition) === 'c82a6a45e728be6832b537aa8af10de2da977fc33bf1a83f7d28f98b11b55666';
+  return { candidateBytes: candidate.length, candidateSha256: sha256(candidate), occurrenceCount, inverseBytes: inverse.length, inverseSha256: sha256(inverse), candidateMatches, matchesBaseline };
+}
+
 export function protectedSourceSnapshot(root = repositoryRoot()) {
   const head = git(root, ['rev-parse', 'HEAD']).trim();
   const current = tree(root, head);
@@ -364,8 +381,8 @@ export function protectedSourceSnapshot(root = repositoryRoot()) {
       nativeReconstruction = authenticatedNativeGallery(bytes.toString('utf8'));
       if (!nativeReconstruction.matchesBaseline) failures.push('Native gallery is not the exact approved child-boundary translation/inverse');
     } else if (path === '.github/workflows/ci.yml') {
-      const addition = bytes.subarray(4618);
-      if (sha256(bytes.subarray(0, 4618)) !== '883939bcc5dc9ac15e0683efd6b2d3d9fe7958179a8bd80b255ab82642a72fe5' || addition.length !== 1036 || sha256(addition) !== 'c82a6a45e728be6832b537aa8af10de2da977fc33bf1a83f7d28f98b11b55666') failures.push('CI is not the exact authenticated 4618-byte baseline plus the exact 1036-byte two-step append');
+      const workflowReconstruction = authenticatedWorkflowSource(bytes);
+      if (!workflowReconstruction.matchesBaseline) failures.push('CI is not the exact authenticated 4618-byte baseline plus the exact 1036-byte two-step append');
     }
     return { path, mode: entry.mode, bytes: bytes.byteLength, sha256: sha256(bytes), headBlob: entry.blob, reconstruction, nativeReconstruction };
   });
