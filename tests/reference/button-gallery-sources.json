@@ -183,5 +183,5 @@
     "small/outline IconRight lacks data-icon inline-end",
     "IconOnly bodies author no accessible labels"
   ],
-  "translation": "Named function bodies become Svelte snippets; className becomes class; exact JSX text normalization encoded as literal expressions. Provider stays outside canonical bodies."
+  "translation": "Named function bodies become Svelte snippets; className becomes class; plain text preserves JSX normalization and all48 authored space expressions stay explicit under three exact-line lint directives. Provider remains outside canonical bodies."
 }

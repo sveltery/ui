@@ -36,11 +36,12 @@ function originalNode(n) {
   }), children: ts.isJsxElement(n) ? n.children.map(originalNode).filter(n => n !== '') : [] };
 }
 function localExpression(e) {
-  if (e.type === 'Literal') return e.value;
+  if (e.type === 'Literal') { assert.equal(e.value, ' '); return e.value; }
   if (e.type === 'CallExpression') return { call: e.callee.name, args: e.arguments.map(localExpression) };
   throw new Error('Unexpected local expression ' + e.type);
 }
 function localNode(n) {
+  if (n.type === 'Comment') { assert.equal(n.data.trim(), 'eslint-disable-next-line svelte/no-useless-mustaches -- Preserve the original explicit JSX space.'); return ''; }
   if (n.type === 'Text') return /^\s*$/u.test(n.data) ? '' : n.data;
   if (n.type === 'ExpressionTag') return localExpression(n.expression);
   assert(['Component', 'RegularElement'].includes(n.type), n.type);
@@ -67,7 +68,11 @@ test('six production snippet bodies preserve every original host/helper, ordered
   assert.equal(wrapper.name, 'ExampleWrapper');
   assert.deepEqual(wrapper.attributes.map(a => [a.name, a.value[0].data]), [['class', 'lg:grid-cols-1 2xl:grid-cols-1']]);
   assert.deepEqual(wrapper.fragment.nodes.filter(n => n.type !== 'Text').map(n => { assert.equal(n.type, 'RenderTag'); return n.expression.callee.name; }), names);
-  assert(!readFileSync(canonicalPath, 'utf8').includes('data-testid'));
+  const canonical = readFileSync(canonicalPath, 'utf8');
+  assert(!canonical.includes('data-testid'));
+  assert.equal(canonical.match(/\{" "\}/gu).length, 48);
+  assert.equal(canonical.match(/eslint-disable-next-line svelte\/no-useless-mustaches/gu).length, 3);
+  assert(!canonical.includes('eslint-disable '));
 });
 test('full immutable gallery, all original declarations, helpers, complete CSS, raw test inventory and supplemental probe retain provenance', () => {
   const m = JSON.parse(readFileSync(manifestPath, 'utf8')); assert.equal(m.commit, 'd75a96ab781f3d659be1ad287347d5887ce9f2fc'); assert.deepEqual(m.selected, names);
