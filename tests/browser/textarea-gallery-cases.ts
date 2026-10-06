@@ -3,7 +3,16 @@ import { kbdTheme } from './kbd-gallery-cases';
 export const textareaGalleryHostSelector = '[data-slot=example-wrapper]';
 export const textareaGalleryHosts = `${textareaGalleryHostSelector}, ${textareaGalleryHostSelector} *, div:has(> ${textareaGalleryHostSelector})`;
 export const textareaGalleryStyles = ['vega', 'nova', 'maia', 'lyra', 'mira', 'luma', 'sera', 'rhea'];
-export const textareaGalleryTheme = kbdTheme;
+export async function textareaGalleryTheme(page: Page, style: string, dark: boolean) {
+  await kbdTheme(page, style, dark);
+  // Genuine transition-colors continues after palette inputs change. Flush the
+  // scoped native controls, then await their actual CSS transitions unchanged.
+  await page.locator(`${textareaGalleryHostSelector} textarea`).evaluateAll(async nodes => {
+    for (const node of nodes) void getComputedStyle(node).color;
+    const transitions = nodes.flatMap(node => node.getAnimations()).filter(animation => animation instanceof CSSTransition);
+    await Promise.all(transitions.map(transition => transition.finished));
+  });
+}
 export async function textareaGalleryTree(page: Page) {
   return page.locator(textareaGalleryHostSelector).evaluate(wrapper => {
     const tree = (node: Element): unknown => ({ tag: node.localName, attrs: Object.fromEntries([...node.attributes].map(a => [a.name, a.value]).sort(([a], [b]) => a.localeCompare(b))), text: [...node.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).filter(t => /\S/u.test(t!)), children: [...node.children].map(tree) });

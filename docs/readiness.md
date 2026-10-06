@@ -172,3 +172,5 @@ The [original pair mapping](kbd.md#original-icon-pair-source-mapping) requires g
 - [ ] With Label, With Description and Disabled require actual styled Field parts. Their unchanged historical native probes grant no original-composition credit.
 
 The immutable raw catalog/test inventories, Base-only product selection, existing native Textarea reset exception and blocked Input/dependency candidates remain unchanged.
+
+PR #55's initial `06186d8` hosted browser candidate failed new gallery comparisons during genuine color transitions. A scoped actual CSS-transition completion boundary is proposed without weakening equality or changing originals; new final-head browser/fresh-consumer gates and independent/configured review remain mandatory. Initial passing Verification/source review does not clear the repair head.

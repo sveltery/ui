@@ -103,5 +103,10 @@
     "bytes": 1262,
     "sha256": "7a0dbfd4c8d9fe226c4dce50ccdbe09418387bc9e19567f4996f0918f2f4ea3e"
   },
-  "testProvenance": "No dedicated upstream Textarea runtime suite identified; new checks are authored source-derived supplements, zero ordinary copied-test credit."
+  "testProvenance": "No dedicated upstream Textarea runtime suite identified; new checks are authored source-derived supplements, zero ordinary copied-test credit.",
+  "measurementReadiness": {
+    "kind": "authored CSS transition completion boundary",
+    "scope": "Only two canonical textarea hosts after shared palette/style/font input; flush computed styles and await actual CSSTransition.finished; no original CSS, expected measurement or old assertion changes.",
+    "evidence": "06186d8 hosted Chromium112084128337: foreground old/new palette mismatch and Mira intermediate background alpha; transient-readiness candidate pending new exact-head hosted results."
+  }
 }
