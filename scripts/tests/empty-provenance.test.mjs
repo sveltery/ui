@@ -113,8 +113,8 @@ test('finite source integration preserves full historical proof and exactly bind
     else { assert(original, sourcePath); assert.equal(sha(data), original[3], sourcePath); }
   }
   assert.deepEqual(changed, manifest.changes.map(change => change.path));
-  assert.equal(currentPaths.length, 665);
-  assert.equal(manifest.changes.length, 23);
+  assert.equal(currentPaths.length, 676);
+  assert.equal(manifest.changes.length, 40);
 });
 
 test('source faithful shared Example gap repair removes formatting only and preserves every original input', () => {
@@ -224,4 +224,20 @@ function restoreEmptyBrowserContract(path, source) {
 
 test('Empty strict browser action correction restores the complete df4a helper and both callers', () => {
   for (const path of ["tests/browser/empty-gallery-cases.ts","tests/browser/empty.spec.ts","tests/installation/empty.spec.ts"]) restoreEmptyBrowserContract(path, readFileSync(path, 'utf8'));
+});
+
+test('two-gallery integration reconstructs the full immutable UI0f4 source inventory and manifest', () => {
+  const m = JSON.parse(readFileSync('diagnostics/alert-child-segmentation/source-authentication.json', 'utf8'));
+  const p = m.previousCurrent;
+  assert.equal(p.head, '0f4f421ad317c5bf85431a21c7c871bf1243200d');
+  assert.equal(p.tree, 'a60b42e3d564568615f823e12629681165330f61');
+  assert.equal(p.rowCount, 665); assert.equal(p.ledger.length, 23);
+  const restored = new Map(m.baseline.rows.map(row => [row[0], row]));
+  for (const r of p.replacements) restored.set(r.path, r.row);
+  const bytes = JSON.stringify([...restored.values()].sort((a, b) => a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0));
+  assert.equal(Buffer.byteLength(bytes), p.canonicalBytes);
+  assert.equal(createHash('sha256').update(bytes).digest('hex'), p.sha256);
+  const old = JSON.stringify({ schemaVersion: m.schemaVersion, baseline: m.baseline, historical: m.historical, changes: p.ledger }) + '\n';
+  assert.equal(Buffer.byteLength(old), p.manifestBytes);
+  assert.equal(createHash('sha256').update(old).digest('hex'), '4f498a69413cbbf8d0962909c199348bcdaff6cde05d76d89f8ece9b45728ba8');
 });
