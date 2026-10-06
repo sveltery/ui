@@ -128,10 +128,11 @@ function tree(root: string, ref: string) {
 // Finite current-source integration. Historical rows are genuine immutable Git
 // inventories; this pair establishes consistency only within actual HEAD and
 // independently reviewed external baseline/final-source authority.
-const sourceAuthenticationManifestSha256 = '20ee487251a12e60fb03f413b6dbb2ac1dd21a8254be3bf37fc1b436ff5dd061';
+const sourceAuthenticationManifestSha256 = 'c8f00661666b67346b4aa46de27d3ae5731312948a8847a3af6330530f9b1738';
 const sourceAuthenticationPath = 'diagnostics/alert-child-segmentation/source-authentication.json';
 const sourceConfigPath = 'diagnostics/alert-child-segmentation/vite.config.ts';
 const sourceLedgerPaths = [
+  '.github/workflows/ci.yml',
   'apps/docs/examples/base/ButtonExample.svelte',
   'apps/docs/examples/base/ButtonGalleryFixture.svelte',
   'apps/docs/examples/base/ButtonProbe.svelte',
@@ -141,6 +142,14 @@ const sourceLedgerPaths = [
   'apps/docs/examples/base/TextareaProbe.svelte',
   'apps/docs/registry/bases/base/ui/example/Example.svelte',
   'apps/docs/registry/bases/base/ui/icons/IconPlaceholder.svelte',
+  'apps/docs/registry/styles/scoped/luma.css',
+  'apps/docs/registry/styles/scoped/lyra.css',
+  'apps/docs/registry/styles/scoped/maia.css',
+  'apps/docs/registry/styles/scoped/mira.css',
+  'apps/docs/registry/styles/scoped/nova.css',
+  'apps/docs/registry/styles/scoped/rhea.css',
+  'apps/docs/registry/styles/scoped/sera.css',
+  'apps/docs/registry/styles/scoped/vega.css',
   'apps/docs/src/routes/+page.svelte',
   'apps/docs/src/routes/button-gallery/+page.svelte',
   'apps/docs/src/routes/button/+page.svelte',
@@ -156,7 +165,9 @@ const sourceLedgerPaths = [
   'docs/button.md',
   'docs/empty.md',
   'docs/readiness.md',
+  'docs/shadcn-css.md',
   'docs/textarea.md',
+  'docs/themes.md',
   'docs/upstream-differences.md',
   'scripts/check-button-gallery-ssr.mjs',
   'scripts/check-empty-ssr.mjs',
@@ -165,7 +176,10 @@ const sourceLedgerPaths = [
   'scripts/installation-playwright.config.ts',
   'scripts/tests/button-gallery-source.test.mjs',
   'scripts/tests/empty-provenance.test.mjs',
+  'scripts/tests/shadcn-css.test.mjs',
   'scripts/tests/textarea-provenance.test.mjs',
+  'scripts/tests/themes-provenance.test.mjs',
+  'scripts/theme-assets.mjs',
   'scripts/verify.sh',
   'tests/browser/button-gallery-cases.ts',
   'tests/browser/button-gallery.spec.ts',

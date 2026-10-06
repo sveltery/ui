@@ -183,5 +183,6 @@
     "small/outline IconRight lacks data-icon inline-end",
     "IconOnly bodies author no accessible labels"
   ],
-  "translation": "Named function bodies become Svelte snippets; className becomes class; plain text preserves JSX normalization and all48 authored space expressions stay explicit under three exact-line lint directives. Provider remains outside canonical bodies."
+  "translation": "Six original ordered bodies remain Svelte snippets with className/class translation. All48 original explicit JSX space expressions render an internal element-neutral LiteralSpace snippet whose sole value is one literal space, preserving React's direct Text node boundaries for native tracking/kerning. One exact-line lint directive is confined to that constant. Provider stays outside canonical bodies; no new public API/callback/render acceptance.",
+  "translationPrevious": "Named function bodies become Svelte snippets; className becomes class; plain text preserves JSX normalization and all48 authored space expressions stay explicit under three exact-line lint directives. Provider remains outside canonical bodies."
 }

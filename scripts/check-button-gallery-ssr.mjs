@@ -86,6 +86,18 @@ async function settled(element, library) {
     });
   });
 }
+
+function literalTextBoundaries(doc) {
+  return [...doc.querySelectorAll('[data-slot=example-wrapper] button, [data-slot=example-wrapper] a')].map(node => {
+    let slot = 0; const text = [];
+    for (const child of node.childNodes) {
+      if (child.nodeType === 1) slot++;
+      else if (child.nodeType === 3) text.push([slot, child.nodeValue]);
+    }
+    return { tag: node.localName, text };
+  });
+}
+
 function unresolvedReceipt(doc, receipt) {
   const templates = [...doc.querySelectorAll('template')];
   if (!templates.length) return;
@@ -134,6 +146,7 @@ for (const [library, glyphs] of Object.entries(names)) {
     actualDOM = new JSDOM(render(Gallery, { props: { library } }).body);
     const actual = actualDOM.window.document;
     assertGallery(expected); assertGallery(actual);
+    assert.deepEqual(literalTextBoundaries(actual), literalTextBoundaries(expected), library + ': exact native literal Text node boundaries');
     assert.equal(expected.querySelectorAll('template').length, 0);
     assert.deepEqual(tree(actual.querySelector('[data-slot=example-wrapper]').parentElement), tree(expected.querySelector('[data-slot=example-wrapper]').parentElement), library);
     assert.deepEqual([...actual.querySelectorAll('button')].map(n => n.textContent), [...expected.querySelectorAll('button')].map(n => n.textContent), library + ': literal child bytes');

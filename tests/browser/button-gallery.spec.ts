@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { buttonGalleryLibraries, buttonGalleryStyles, buttonWrapper, assertButtonGallery, buttonGalleryTree, buttonGalleryMeasurements, buttonGalleryTheme, settleButtonTransitions, buttonGalleryNativeActions, buttonGalleryQueryDefaults, buttonGalleryFocusReceipt, buttonGalleryLayoutReceipt } from './button-gallery-cases';
+import { buttonGalleryLibraries, buttonGalleryStyles, buttonWrapper, assertButtonGallery, buttonGalleryTextBoundaries, buttonGalleryTree, buttonGalleryMeasurements, buttonGalleryTheme, settleButtonTransitions, buttonGalleryNativeActions, buttonGalleryQueryDefaults, buttonGalleryFocusReceipt, buttonGalleryLayoutReceipt } from './button-gallery-cases';
 test('genuine Button server hosts survive hydration with strict native attributes and original child bytes', async ({ page }) => {
   let release!: () => void; const gate = new Promise<void>(resolve => { release = resolve; });
   await page.route('**/*', async route => { if (route.request().resourceType() === 'script') await gate; await route.continue(); });
@@ -24,6 +24,7 @@ for (const library of buttonGalleryLibraries) test('six genuine Button bodies an
     await page.goto('/button-gallery?library=' + library); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true');
     await original.goto('http://127.0.0.1:5175/button-gallery?library=' + library);
     await assertButtonGallery(page, library); await assertButtonGallery(original, library);
+    expect(await buttonGalleryTextBoundaries(page)).toEqual(await buttonGalleryTextBoundaries(original));
     expect(await buttonGalleryTree(page)).toEqual(await buttonGalleryTree(original));
     await buttonGalleryNativeActions(page); await buttonGalleryNativeActions(original);
     expect(errors).toEqual([]);

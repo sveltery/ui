@@ -174,3 +174,15 @@ export async function buttonGalleryLayoutReceipt(page: Page, indices: number[]) 
     return { url: location.pathname + location.search, documentFocus: document.hasFocus(), activeTag: document.activeElement?.tagName, fontsStatus: document.fonts.status, dpr: devicePixelRatio, viewportScale: visualViewport?.scale, selected, overflow: Math.max(0, indices.length - 12), unreadable };
   }, indices);
 }
+
+// Preserve each original direct literal Text node, including standalone JSX spaces.
+export async function buttonGalleryTextBoundaries(page: Page) {
+  return page.locator(buttonWrapper + ' :is(button, a)').evaluateAll(nodes => nodes.map(node => {
+    let slot = 0; const text: [number, string | null][] = [];
+    for (const child of node.childNodes) {
+      if (child.nodeType === 1) slot++;
+      else if (child.nodeType === 3) text.push([slot, child.nodeValue]);
+    }
+    return { tag: node.localName, text };
+  }));
+}

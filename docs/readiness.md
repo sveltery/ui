@@ -181,3 +181,5 @@ PR #55's initial `06186d8` hosted browser candidate failed new gallery compariso
 - [ ] Final-head six hosted checks, independent source/API review, configured review or actual current-head service-only quota exception, all four fresh package/source-copy type/SSR/client/browser phases and actual post-merge gates remain required.
 
 This bounded enabled-native-body work supplies no whole Button/API/React1.6 equivalence or new exception acceptance. Historical inventories, Base-only Toast/Combobox/Drawer selection, incomplete dependencies and blocked Input34/Base54 remain unchanged; no cmdk/Sonner/Vaul work is introduced.
+
+The proposed Button continuation additionally preserves all 48 authored space-node boundaries through an official element-neutral Svelte snippet. Authored SSR/main/fresh checks compare individual direct Text nodes with the genuine React reference alongside unchanged strict tree/text/geometry checks. WebKit alone receives a90-minute CI bound, with Chromium/Firefox75, all six gates/three engines/four consumers retained. Prior9e9 WebKit cancellation leaves its fourth fresh consumer incomplete; no old-head result clears the final source.

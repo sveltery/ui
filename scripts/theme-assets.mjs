@@ -93,7 +93,7 @@ export function generatedAssets() {
     const selectors = [...new Set([...fallbackClasses, ...[...body.matchAll(/\.cn-[a-z0-9-]+/gu)].map(match => match[0])])].join(', ');
     // Match the strongest existing dark/state fallback without changing activation or source sections.
     const reset = scope => `.${scope}.${scope} :is(${selectors}) { all: revert-layer; --tw-leading: initial; }\n`;
-    assets.set(`apps/docs/registry/styles/scoped/${name}.css`, `${notice}@import "tw-animate-css";\n@import "shadcn/tailwind.css";\n@custom-variant style-${name} (&:where(.style-${name} *));\n@layer base {\n  .style-${name} * { @apply border-border outline-ring/50; }\n}\n@layer components {\n${reset(`style-${name}`)}.style-${name}.style-${name} {\n${geometry}${body}}\n}\n`);
+    assets.set(`apps/docs/registry/styles/scoped/${name}.css`, `${notice}@import "tw-animate-css";\n@import "shadcn/tailwind.css";\n@custom-variant style-${name} (&:where(.style-${name} *));\n@layer base {\n  :where(.style-${name}) * { @apply border-border outline-ring/50; }\n}\n@layer components {\n${reset(`style-${name}`)}.style-${name}.style-${name} {\n${geometry}${body}}\n}\n`);
 
   }
   assets.set('apps/docs/registry/styles/styles.css', `${notice}${styles.map(name => `@import "./scoped/${name}.css";\n`).join('')}${styles.map(name => `@custom-variant style-${name} (&:where(.style-${name} *));\n`).join('')}`);

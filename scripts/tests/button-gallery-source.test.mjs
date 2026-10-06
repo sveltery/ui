@@ -44,6 +44,7 @@ function localNode(n) {
   if (n.type === 'Comment') { assert.equal(n.data.trim(), 'eslint-disable-next-line svelte/no-useless-mustaches -- Preserve the original explicit JSX space.'); return ''; }
   if (n.type === 'Text') return /^\s*$/u.test(n.data) ? '' : n.data;
   if (n.type === 'ExpressionTag') return localExpression(n.expression);
+  if (n.type === 'RenderTag') { assert.equal(n.expression.type, 'CallExpression'); assert.equal(n.expression.callee.name, 'LiteralSpace'); assert.deepEqual(n.expression.arguments, []); return ' '; }
   assert(['Component', 'RegularElement'].includes(n.type), n.type);
   return { tag: n.name, attrs: n.attributes.map(a => {
     assert.equal(a.type, 'Attribute');
@@ -57,7 +58,10 @@ test('six production snippet bodies preserve every original host/helper, ordered
   assert.equal(original.parseDiagnostics.length, 0);
   const local = parse(readFileSync(canonicalPath, 'utf8'), { modern: true });
   const snippets = local.fragment.nodes.filter(n => n.type === 'SnippetBlock');
-  assert.deepEqual(snippets.map(n => n.expression.name), [...names.slice(0, 4), 'ButtonExamples', 'ButtonInvalidStates']);
+  assert.deepEqual(snippets.map(n => n.expression.name), [...names.slice(0, 4), 'ButtonExamples', 'ButtonInvalidStates', 'LiteralSpace']);
+  const space = snippets.find(n => n.expression.name === 'LiteralSpace');
+  assert.deepEqual(space.parameters, []);
+  assert.deepEqual(space.body.nodes.map(localNode).filter(n => n !== ''), [' ']);
   for (const name of names) {
     const declaration = original.statements.find(n => ts.isFunctionDeclaration(n) && n.name?.text === name);
     const returned = declaration.body.statements.find(ts.isReturnStatement).expression;
@@ -70,8 +74,13 @@ test('six production snippet bodies preserve every original host/helper, ordered
   assert.deepEqual(wrapper.fragment.nodes.filter(n => n.type !== 'Text').map(n => { assert.equal(n.type, 'RenderTag'); return n.expression.callee.name; }), names);
   const canonical = readFileSync(canonicalPath, 'utf8');
   assert(!canonical.includes('data-testid'));
-  assert.equal(canonical.match(/\{" "\}/gu).length, 48);
-  assert.equal(canonical.match(/eslint-disable-next-line svelte\/no-useless-mustaches/gu).length, 3);
+  let originalSpaces = 0;
+  const countSpaces = node => { if (ts.isJsxExpression(node) && node.expression && ts.isStringLiteral(node.expression) && node.expression.text === ' ') originalSpaces++; ts.forEachChild(node, countSpaces); };
+  for (const declaration of original.statements.filter(n => ts.isFunctionDeclaration(n) && names.includes(n.name?.text))) countSpaces(declaration);
+  assert.equal(originalSpaces, 48);
+  assert.equal(canonical.match(/\{@render LiteralSpace\(\)\}/gu).length, originalSpaces);
+  assert.equal(canonical.match(/\{" "\}/gu).length, 1);
+  assert.equal(canonical.match(/eslint-disable-next-line svelte\/no-useless-mustaches/gu).length, 1);
   assert(!canonical.includes('eslint-disable '));
 });
 test('full immutable gallery, all original declarations, helpers, complete CSS, raw test inventory and supplemental probe retain provenance', () => {

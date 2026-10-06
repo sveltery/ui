@@ -34,3 +34,60 @@ test('the complete original shadcn support CSS maps unchanged Separator utilitie
 test('the actual production CSS entry supplies that same original orientation mapping', async () => {
   expectOrientationMapping(await build('@import "./apps/docs/src/lib/theme.css";'));
 });
+
+test('compiled scoped resets preserve the original universal specificity and genuine preflight order', async () => {
+  const { default: postcss } = await import(createRequire(import.meta.resolve('vite')).resolve('postcss'));
+  const { parse } = postcss;
+  const original = parse(await build('@import "./tests/reference/themes/reference-app/reference.css";'));
+  const production = parse(await build('@import "./apps/docs/src/lib/theme.css";'));
+  // Compare actual compiled nodes, including conditional fallback declarations.
+  const shape = node => {
+    if (node.type === 'comment') return null;
+    if (node.type === 'decl') return { type: node.type, prop: node.prop, value: node.value, important: Boolean(node.important) };
+    return {
+      type: node.type,
+      ...(node.type === 'atrule' ? { name: node.name, params: node.params } : { selector: node.selector }),
+      nodes: (node.nodes ?? []).map(shape).filter(Boolean),
+    };
+  };
+  const baseRules = root => {
+    const result = [];
+    let order = 0;
+    root.walkAtRules('apply', () => assert.fail('Only real completed Tailwind compilation is evidence'));
+    root.walkRules(rule => {
+      const index = order++;
+      let layer = rule.parent;
+      while (layer && !(layer.type === 'atrule' && layer.name === 'layer')) layer = layer.parent;
+      if (layer?.params === 'base') result.push({ rule, index });
+    });
+    return result;
+  };
+  const originalRules = baseRules(original);
+  const productionRules = baseRules(production);
+  const resets = originalRules.filter(({ rule }) => rule.selector === '*' && rule.nodes.some(node => node.type === 'decl' && node.prop === 'outline-color'));
+  assert.equal(resets.length, 1, 'The complete immutable reference must compile its genuine universal reset');
+  const originalReset = resets[0].rule.nodes.map(shape).filter(Boolean);
+  assert(originalReset.some(node => node.type === 'decl' && node.prop === 'border-color'), 'Universal border reset must be present');
+  assert(originalReset.some(node => node.type === 'decl' && node.prop === 'outline-color' && node.value.includes('var(--ring)')), 'Universal original ring reset must be present');
+  const preflight = parse(readFileSync(createRequire(import.meta.url).resolve('tailwindcss/preflight.css'), 'utf8'));
+  const genuineFocus = [];
+  preflight.walkRules(':-moz-focusring', rule => genuineFocus.push(rule.nodes.map(shape).filter(Boolean)));
+  assert.deepEqual(genuineFocus, [[{ type: 'decl', prop: 'outline', value: 'auto', important: false }]], 'Retain the actual package preflight shorthand');
+  const referenceFocus = originalRules.filter(({ rule }) => rule.selector === ':-moz-focusring');
+  const productionFocus = productionRules.filter(({ rule }) => rule.selector === ':-moz-focusring');
+  assert.equal(referenceFocus.length, 1);
+  assert.equal(productionFocus.length, 1);
+  assert.deepEqual(referenceFocus[0].rule.nodes.map(shape).filter(Boolean), genuineFocus[0]);
+  assert.deepEqual(productionFocus[0].rule.nodes.map(shape).filter(Boolean), genuineFocus[0]);
+  assert(referenceFocus[0].index < resets[0].index, 'Original preflight precedes its later universal reset');
+  const names = [...readFileSync('tests/reference/themes/upstream/styles.tsx.source', 'utf8').matchAll(/^ {4}name: "([^"]+)",$/gmu)].map(match => match[1]);
+  assert.equal(names.length, 8);
+  for (const name of names) {
+    const selector = `:where(.style-${name}) *`; // The carrier and universal both have specificity zero.
+    const scoped = productionRules.filter(({ rule }) => rule.selector === selector);
+    assert.equal(scoped.length, 1, `${name}: require the actual compiled scoped reset`);
+    assert.deepEqual(scoped[0].rule.nodes.map(shape).filter(Boolean), originalReset, `${name}: all original reset declarations remain exact`);
+    assert(productionFocus[0].index < scoped[0].index, `${name}: genuine preflight remains before the reset`);
+    assert(!productionRules.some(({ rule }) => rule.selector === `.style-${name} *`), `${name}: do not raise original universal specificity`);
+  }
+});
