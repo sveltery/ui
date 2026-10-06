@@ -114,6 +114,17 @@ try {
     if (mode === 'copy') cardGallery = cardGallery.replaceAll('@sveltery/ui/card', '$lib/components/ui/card').replaceAll('@sveltery/ui/button', '$lib/components/ui/button').replaceAll('@sveltery/ui/example', '$lib/components/ui/example');
     writeFileSync(join(cardGalleryDirectory, 'CardExample.svelte'), cardGallery);
     writeFileSync(join(cardGalleryDirectory, '+page.svelte'), `<script lang="ts">import { onMount } from 'svelte'; import CardExample from './CardExample.svelte'; let hydrated = $state(false); onMount(() => { hydrated = true; });</script><main class="p-8" data-hydrated={hydrated}><CardExample /></main>\n`);
+    // New canonical two-image gallery beside the unchanged seven-body gallery/probes.
+    const cardImageDirectory = join(consumer, 'src/routes/card-images');
+    mkdirSync(cardImageDirectory, { recursive: true });
+    for (const file of ['CardImageExample.svelte', 'CardImageGalleryFixture.svelte']) {
+      let content = readFileSync(join(repo, 'apps/docs/examples/base', file), 'utf8');
+      if (mode === 'copy') for (const family of ['card', 'button', 'example', 'icons']) content = content.replaceAll('@sveltery/ui/' + family, '$lib/components/ui/' + family);
+      writeFileSync(join(cardImageDirectory, file), content);
+    }
+    let cardImagePage = readFileSync(join(repo, 'apps/docs/src/routes/card-images/+page.svelte'), 'utf8').replace('../../../examples/base/CardImageGalleryFixture.svelte', './CardImageGalleryFixture.svelte');
+    if (mode === 'copy') cardImagePage = cardImagePage.replaceAll('@sveltery/ui/icons', '$lib/components/ui/icons');
+    writeFileSync(join(cardImageDirectory, '+page.svelte'), cardImagePage);
     const cardTypes = readFileSync(join(repo, 'tests/card-types.ts'), 'utf8').replace('../apps/docs/registry/bases/base/ui/card/index.js', mode === 'copy' ? '$lib/components/ui/card' : '@sveltery/ui/card');
     writeFileSync(join(consumer, 'src/routes/card-types.ts'), cardTypes);
     for (const [route, source] of [['label', 'apps/docs/examples/base/LabelExample.svelte'], ['label-probe', 'apps/docs/examples/base/LabelProbe.svelte']]) {

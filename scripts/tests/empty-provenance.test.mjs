@@ -113,8 +113,8 @@ test('finite source integration preserves full historical proof and exactly bind
     else { assert(original, sourcePath); assert.equal(sha(data), original[3], sourcePath); }
   }
   assert.deepEqual(changed, manifest.changes.map(change => change.path));
-  assert.equal(currentPaths.length, 687);
-  assert.equal(manifest.changes.length, 68);
+  assert.equal(currentPaths.length, 699);
+  assert.equal(manifest.changes.length, 81);
 });
 
 test('source faithful shared Example gap repair removes formatting only and preserves every original input', () => {
@@ -270,3 +270,24 @@ test('approved WebKit-only CI timeout reconstructs the exact historical workflow
     Buffer.from(candidate.toString().replace('d23441a48e516b6c34aea4fa41551a30e30af803', 'd23441a48e516b6c34aea4fa41551a30e30af804')),
     Buffer.from(candidate.toString().replace(after, after + after))]) assert.equal(validate(input).matchesBaseline, false);
 });
+
+/* card-image-complete-predecessor:start */
+test('Card image continuation preserves all 687 predecessor files, the full 68-entry manifest and every prior Empty predicate', () => {
+  const m = JSON.parse(readFileSync('diagnostics/alert-child-segmentation/source-authentication.json', 'utf8'));
+  const p = m.previousCard; const sha = value => createHash('sha256').update(value).digest('hex');
+  assert.equal(p.head, 'ca3ae03dd1379513657a7040d3fe407f9c04a891'); assert.equal(p.tree, '250a7fdc80f638cece7f424a1e4a807f5cb43aec');
+  assert.equal(p.rowCount, 687); assert.equal(p.ledger.length, 68);
+  const rows = new Map(m.baseline.rows.map(row => [row[0], row]));
+  const seen = new Set();
+  for (const r of p.replacements) { assert(r.row); assert.equal(r.path, r.row[0]); assert(!seen.has(r.path)); seen.add(r.path); rows.set(r.path, r.row); }
+  const canonical = JSON.stringify([...rows.values()].sort((a, b) => a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0));
+  assert.equal(Buffer.byteLength(canonical), 116088); assert.equal(sha(canonical), '33fa19f662044a38189f731828dbeaab079480c234d528efaa4fe3cee472e737');
+  const old = JSON.stringify({ schemaVersion: m.schemaVersion, baseline: m.baseline, historical: m.historical, changes: p.ledger, previousCurrent: m.previousCurrent, previousGallery: m.previousGallery }) + '\n';
+  assert.equal(Buffer.byteLength(old), 194109); assert.equal(sha(old), '6cbbc7dc0ccd695602d5b07145403da2c15f90b1a8f27f9dbd263ad2dc304475');
+  const source = readFileSync('scripts/tests/empty-provenance.test.mjs', 'utf8');
+  const prior = source.slice(0, source.indexOf('\n/* card-image-complete-predecessor:start */'))
+    .replace('assert.equal(currentPaths.length, 699);', 'assert.equal(currentPaths.length, 687);')
+    .replace('assert.equal(manifest.changes.length, 81);', 'assert.equal(manifest.changes.length, 68);');
+  assert.equal(Buffer.byteLength(prior), 24225); assert.equal(sha(prior), 'c60e161f4cf1bcd9212dc3ec633592e46ee2808cb6a0f147ceb3d53d271d19f2');
+});
+/* card-image-complete-predecessor:end */

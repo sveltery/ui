@@ -128,83 +128,96 @@ function tree(root: string, ref: string) {
 // Finite current-source integration. Historical rows are genuine immutable Git
 // inventories; this pair establishes consistency only within actual HEAD and
 // independently reviewed external baseline/final-source authority.
-const sourceAuthenticationManifestSha256 = '6cbbc7dc0ccd695602d5b07145403da2c15f90b1a8f27f9dbd263ad2dc304475';
+const sourceAuthenticationManifestSha256 = '75d5c3ccab22ec04387c91d1a75f7a8864ab6e9bbfc7c8d54bbc4fef72e0b3e6';
 const sourceAuthenticationPath = 'diagnostics/alert-child-segmentation/source-authentication.json';
 const sourceConfigPath = 'diagnostics/alert-child-segmentation/vite.config.ts';
 const sourceLedgerPaths = [
-  '.github/workflows/ci.yml',
-  'apps/docs/examples/base/ButtonExample.svelte',
-  'apps/docs/examples/base/ButtonGalleryFixture.svelte',
-  'apps/docs/examples/base/ButtonProbe.svelte',
-  'apps/docs/examples/base/EmptyExample.svelte',
-  'apps/docs/examples/base/EmptyGalleryFixture.svelte',
-  'apps/docs/examples/base/TextareaExample.svelte',
-  'apps/docs/examples/base/TextareaProbe.svelte',
-  'apps/docs/registry/bases/base/ui/example/Example.svelte',
-  'apps/docs/registry/bases/base/ui/icons/IconPlaceholder.svelte',
-  'apps/docs/registry/styles/scoped/luma.css',
-  'apps/docs/registry/styles/scoped/lyra.css',
-  'apps/docs/registry/styles/scoped/maia.css',
-  'apps/docs/registry/styles/scoped/mira.css',
-  'apps/docs/registry/styles/scoped/nova.css',
-  'apps/docs/registry/styles/scoped/rhea.css',
-  'apps/docs/registry/styles/scoped/sera.css',
-  'apps/docs/registry/styles/scoped/vega.css',
-  'apps/docs/src/routes/+page.svelte',
-  'apps/docs/src/routes/button-gallery/+page.svelte',
-  'apps/docs/src/routes/button/+page.svelte',
-  'apps/docs/src/routes/empty-reference/+page.server.ts',
-  'apps/docs/src/routes/empty-reference/+page.svelte',
-  'apps/docs/src/routes/empty/+page.svelte',
-  'apps/docs/src/routes/textarea-gallery-reference/+page.server.ts',
-  'apps/docs/src/routes/textarea-gallery-reference/+page.svelte',
-  'apps/docs/src/routes/textarea-gallery/+page.svelte',
-  'apps/docs/src/routes/textarea/+page.svelte',
-  'diagnostics/alert-child-segmentation/source-authentication.json',
-  'diagnostics/alert-child-segmentation/vite.config.ts',
-  'docs/button.md',
-  'docs/empty.md',
-  'docs/readiness.md',
-  'docs/shadcn-css.md',
-  'docs/textarea.md',
-  'docs/themes.md',
-  'docs/upstream-differences.md',
-  'scripts/check-button-gallery-ssr.mjs',
-  'scripts/check-empty-ssr.mjs',
-  'scripts/check-installation.mjs',
-  'scripts/check-textarea-gallery-ssr.mjs',
-  'scripts/installation-playwright.config.ts',
-  'scripts/tests/button-gallery-source.test.mjs',
-  'scripts/tests/empty-provenance.test.mjs',
-  'scripts/tests/shadcn-css.test.mjs',
-  'scripts/tests/textarea-provenance.test.mjs',
-  'scripts/tests/themes-provenance.test.mjs',
-  'scripts/theme-assets.mjs',
-  'scripts/verify.sh',
-  'tests/browser/button-gallery-cases.ts',
-  'tests/browser/button-gallery.spec.ts',
-  'tests/browser/empty-gallery-cases.ts',
-  'tests/browser/empty.spec.ts',
-  'tests/browser/textarea-gallery-cases.ts',
-  'tests/browser/textarea-gallery.spec.ts',
-  'tests/installation/button-gallery.spec.ts',
-  'tests/installation/empty.spec.ts',
-  'tests/installation/textarea-gallery.spec.ts',
-  'tests/reference/OriginalButtonExample.tsx',
-  'tests/reference/SelectedEmptyGallery.tsx',
-  'tests/reference/SelectedTextareaGallery.tsx',
-  'tests/reference/button-example.tsx',
-  'tests/reference/button-gallery-sources.json',
-  'tests/reference/empty-gallery-sources.json',
-  'tests/reference/empty-selected-examples.tsx',
-  'tests/reference/textarea-gallery-sources.json',
-  'tests/reference/textarea-selected-examples.tsx',
-  'tests/reference/themes/reference-app/main.tsx'
+  ".github/workflows/ci.yml",
+  "apps/docs/examples/base/ButtonExample.svelte",
+  "apps/docs/examples/base/ButtonGalleryFixture.svelte",
+  "apps/docs/examples/base/ButtonProbe.svelte",
+  "apps/docs/examples/base/CardImageExample.svelte",
+  "apps/docs/examples/base/CardImageGalleryFixture.svelte",
+  "apps/docs/examples/base/EmptyExample.svelte",
+  "apps/docs/examples/base/EmptyGalleryFixture.svelte",
+  "apps/docs/examples/base/TextareaExample.svelte",
+  "apps/docs/examples/base/TextareaProbe.svelte",
+  "apps/docs/registry/bases/base/ui/example/Example.svelte",
+  "apps/docs/registry/bases/base/ui/icons/IconPlaceholder.svelte",
+  "apps/docs/registry/styles/scoped/luma.css",
+  "apps/docs/registry/styles/scoped/lyra.css",
+  "apps/docs/registry/styles/scoped/maia.css",
+  "apps/docs/registry/styles/scoped/mira.css",
+  "apps/docs/registry/styles/scoped/nova.css",
+  "apps/docs/registry/styles/scoped/rhea.css",
+  "apps/docs/registry/styles/scoped/sera.css",
+  "apps/docs/registry/styles/scoped/vega.css",
+  "apps/docs/src/routes/+page.svelte",
+  "apps/docs/src/routes/button-gallery/+page.svelte",
+  "apps/docs/src/routes/button/+page.svelte",
+  "apps/docs/src/routes/card-images-reference/+page.svelte",
+  "apps/docs/src/routes/card-images/+page.svelte",
+  "apps/docs/src/routes/empty-reference/+page.server.ts",
+  "apps/docs/src/routes/empty-reference/+page.svelte",
+  "apps/docs/src/routes/empty/+page.svelte",
+  "apps/docs/src/routes/textarea-gallery-reference/+page.server.ts",
+  "apps/docs/src/routes/textarea-gallery-reference/+page.svelte",
+  "apps/docs/src/routes/textarea-gallery/+page.svelte",
+  "apps/docs/src/routes/textarea/+page.svelte",
+  "diagnostics/alert-child-segmentation/source-authentication.json",
+  "diagnostics/alert-child-segmentation/vite.config.ts",
+  "docs/button.md",
+  "docs/card.md",
+  "docs/empty.md",
+  "docs/readiness.md",
+  "docs/shadcn-css.md",
+  "docs/textarea.md",
+  "docs/themes.md",
+  "docs/upstream-differences.md",
+  "scripts/check-button-gallery-ssr.mjs",
+  "scripts/check-card-image-gallery-ssr.mjs",
+  "scripts/check-empty-ssr.mjs",
+  "scripts/check-installation.mjs",
+  "scripts/check-textarea-gallery-ssr.mjs",
+  "scripts/installation-playwright.config.ts",
+  "scripts/tests/button-gallery-source.test.mjs",
+  "scripts/tests/card-image-provenance.test.mjs",
+  "scripts/tests/empty-provenance.test.mjs",
+  "scripts/tests/shadcn-css.test.mjs",
+  "scripts/tests/textarea-provenance.test.mjs",
+  "scripts/tests/themes-provenance.test.mjs",
+  "scripts/theme-assets.mjs",
+  "scripts/verify.sh",
+  "tests/browser/button-gallery-cases.ts",
+  "tests/browser/button-gallery.spec.ts",
+  "tests/browser/card-image-gallery-cases.ts",
+  "tests/browser/card-image-gallery.spec.ts",
+  "tests/browser/empty-gallery-cases.ts",
+  "tests/browser/empty.spec.ts",
+  "tests/browser/textarea-gallery-cases.ts",
+  "tests/browser/textarea-gallery.spec.ts",
+  "tests/installation/button-gallery.spec.ts",
+  "tests/installation/card-image-gallery.spec.ts",
+  "tests/installation/empty.spec.ts",
+  "tests/installation/textarea-gallery.spec.ts",
+  "tests/reference/CardImageGallery.tsx",
+  "tests/reference/OriginalButtonExample.tsx",
+  "tests/reference/SelectedEmptyGallery.tsx",
+  "tests/reference/SelectedTextareaGallery.tsx",
+  "tests/reference/button-example.tsx",
+  "tests/reference/button-gallery-sources.json",
+  "tests/reference/card-image-gallery-sources.json",
+  "tests/reference/card-image-selected-examples.tsx",
+  "tests/reference/empty-gallery-sources.json",
+  "tests/reference/empty-selected-examples.tsx",
+  "tests/reference/textarea-gallery-sources.json",
+  "tests/reference/textarea-selected-examples.tsx",
+  "tests/reference/themes/reference-app/main.tsx"
 ].sort();
 type SourceRow = [path: string, mode: string, bytes: number, sha256: string, blob: string];
 type SourceChange = { path: string; operation: 'add' | 'modify'; before: SourceRow | null; purpose: string; after: { kind: 'exact' | 'normalized-config'; row: SourceRow } | { kind: 'manifest-root'; mode: '100644'; binding: 'full-manifest-sha256-via-config-slot' } };
 type HistoricalSource = { head: string; tree: string; rowCount: number; canonicalBytes: number; sha256: string; replacements: { path: string; row: SourceRow | null }[] };
-type SourceManifest = { schemaVersion: number; baseline: { head: string; tree: string; rowCount: number; canonicalBytes: number; sha256: string; rows: SourceRow[] }; historical: HistoricalSource[]; changes: SourceChange[]; previousGallery: HistoricalSource & { ledger: SourceChange[]; manifestBytes: number; manifestSha256: string }; previousCurrent: { head: string; tree: string; rowCount: number; canonicalBytes: number; sha256: string; replacements: { path: string; row: SourceRow | null }[]; ledger: SourceChange[]; manifestBytes: number; manifestSha256: string } };
+type SourceManifest = { schemaVersion: number; baseline: { head: string; tree: string; rowCount: number; canonicalBytes: number; sha256: string; rows: SourceRow[] }; historical: HistoricalSource[]; changes: SourceChange[]; previousCard: HistoricalSource & { ledger: SourceChange[]; manifestBytes: number; manifestSha256: string }; previousGallery: HistoricalSource & { ledger: SourceChange[]; manifestBytes: number; manifestSha256: string }; previousCurrent: { head: string; tree: string; rowCount: number; canonicalBytes: number; sha256: string; replacements: { path: string; row: SourceRow | null }[]; ledger: SourceChange[]; manifestBytes: number; manifestSha256: string } };
 const sourceHistory = [
   { head: '028c5ec0c409440a46d61ad8b4a69f0665a0b810', tree: '4064cfd67b7d37bac66f784fe13a20a3b50d03c7', rowCount: 652, canonicalBytes: 109983, sha256: 'bb7f58e273634768867c7ae794b7dd3b1bffa0d06a6e934e418336813de3a443' },
   { head: '38e3c8ef3a7f92073d5bb18c82c017d697e5ef58', tree: 'aceb19860d531a715903770b9080546760b1b229', rowCount: 655, canonicalBytes: 110538, sha256: 'bbfb69daca1d641d5a51ed323de3de7b261d16896b8f3cbcefd4893e7ddc1952' },
@@ -299,6 +312,15 @@ function authenticatedCurrentSourceClosure(root: string, current: Map<string, { 
   if (JSON.stringify(sourceRowsIdentity([...previousGallery.values()])) !== JSON.stringify({ rowCount: 676, canonicalBytes: 114212, sha256: '0b76fddba983249d970723ed0c858acf46ad130e1c1fd8db82770a476509c241' })) throw new Error('Previous UI676 full source reconstruction failed');
   const previousGalleryManifest = JSON.stringify({ schemaVersion: manifest.schemaVersion, baseline: manifest.baseline, historical: manifest.historical, changes: manifest.previousGallery.ledger, previousCurrent: manifest.previousCurrent }) + '\n';
   if (manifest.previousGallery.head !== 'da66869098ee7fd26318431ab36251bbb6fc8d73' || manifest.previousGallery.tree !== 'af3328f70ca47d7a77934682881cccf66057a5f3' || manifest.previousGallery.rowCount !== 676 || manifest.previousGallery.canonicalBytes !== 114212 || manifest.previousGallery.sha256 !== '0b76fddba983249d970723ed0c858acf46ad130e1c1fd8db82770a476509c241' || manifest.previousGallery.ledger.length !== 40 || manifest.previousGallery.manifestBytes !== 150488 || manifest.previousGallery.manifestSha256 !== '2ae74d98e7ebfb0280d664a39827d5250eb58ae952ead33d9c2304a6cbf9cd35' || Buffer.byteLength(previousGalleryManifest) !== 150488 || sha256(previousGalleryManifest) !== '2ae74d98e7ebfb0280d664a39827d5250eb58ae952ead33d9c2304a6cbf9cd35') throw new Error('Previous byte-exact UI676 manifest/ledger authority changed');
+  // Full immutable ca3 Card predecessor: all 687 physical rows and 68 ledger entries.
+  const previousCard = new Map(baseline); const previousCardSeen = new Set<string>();
+  for (const replacement of manifest.previousCard.replacements) {
+    if (!replacement.row || replacement.path !== replacement.row[0] || previousCardSeen.has(replacement.path) || JSON.stringify(baseline.get(replacement.path)) === JSON.stringify(replacement.row)) throw new Error('Invalid previous UI687 complete replacement');
+    previousCardSeen.add(replacement.path); sourceRowsMap([replacement.row]); previousCard.set(replacement.path, replacement.row);
+  }
+  if (JSON.stringify(sourceRowsIdentity([...previousCard.values()])) !== JSON.stringify({ rowCount: 687, canonicalBytes: 116088, sha256: '33fa19f662044a38189f731828dbeaab079480c234d528efaa4fe3cee472e737' })) throw new Error('Previous UI687 full physical source reconstruction failed');
+  const previousCardManifest = JSON.stringify({ schemaVersion: manifest.schemaVersion, baseline: manifest.baseline, historical: manifest.historical, changes: manifest.previousCard.ledger, previousCurrent: manifest.previousCurrent, previousGallery: manifest.previousGallery }) + '\n';
+  if (manifest.previousCard.head !== 'ca3ae03dd1379513657a7040d3fe407f9c04a891' || manifest.previousCard.tree !== '250a7fdc80f638cece7f424a1e4a807f5cb43aec' || manifest.previousCard.rowCount !== 687 || manifest.previousCard.canonicalBytes !== 116088 || manifest.previousCard.sha256 !== '33fa19f662044a38189f731828dbeaab079480c234d528efaa4fe3cee472e737' || manifest.previousCard.ledger.length !== 68 || manifest.previousCard.manifestBytes !== 194109 || manifest.previousCard.manifestSha256 !== '6cbbc7dc0ccd695602d5b07145403da2c15f90b1a8f27f9dbd263ad2dc304475' || Buffer.byteLength(previousCardManifest) !== 194109 || sha256(previousCardManifest) !== '6cbbc7dc0ccd695602d5b07145403da2c15f90b1a8f27f9dbd263ad2dc304475') throw new Error('Previous byte-exact UI687 manifest and whole ledger authority changed');
   const oldProtected = historicalProjection(manifest.baseline.rows, allowedChanges);
   const expectedProtected = { rowCount: 643, canonicalBytes: 80886, sha256: '37f43888ce646b768081acfa425156a8197f92ed587740574cb3138c87dcc257' };
   if (JSON.stringify(oldProtected) !== JSON.stringify(expectedProtected)) throw new Error('Immutable a447 historical643 aggregate mismatch');
@@ -323,7 +345,7 @@ function authenticatedCurrentSourceClosure(root: string, current: Map<string, { 
     expected.set(change.path, row);
   }
   const expectedRows = sortedSourceRows([...expected.values()]); const actualRows = sortedSourceRows([...physical.values()]);
-  if (current.size !== 687 || JSON.stringify(actualRows) !== JSON.stringify(expectedRows) || current.size !== expected.size || authoredFiles.some(path => !current.has(path))) throw new Error('Complete bidirectional new-head source domain/byte/mode/blob closure mismatch');
+  if (current.size !== 699 || JSON.stringify(actualRows) !== JSON.stringify(expectedRows) || current.size !== expected.size || authoredFiles.some(path => !current.has(path))) throw new Error('Complete bidirectional new-head source domain/byte/mode/blob closure mismatch');
   const exactChanges = actualRows.filter(row => JSON.stringify(row) !== JSON.stringify(baseline.get(row[0]))).map(row => row[0]);
   if (JSON.stringify(exactChanges) !== JSON.stringify(sourceLedgerPaths)) throw new Error('Actual baseline-to-current delta does not equal explicit ledger');
   return { ok: true, baseline: expectedBaseline, historicalClosures, historicalA447ProtectedDigest: { ...oldProtected, expected: expectedProtected, scope: 'historical a447 reconstruction; not current source' }, currentCompleteIdentity: sourceRowsIdentity(actualRows), ledger: manifest.changes, exactChangedPaths: exactChanges, actualPhysicalManifest: { path: sourceAuthenticationPath, bytes: manifestBytes.length, sha256: sha256(manifestBytes), gitBlob: gitBlob(manifestBytes) }, configBinding: { path: sourceConfigPath, physicalGitBlob: current.get(sourceConfigPath)!.blob, normalizedBytes: normalized.normalizedBytes, normalizedSha256: normalized.normalizedSha256, normalizedGitBlob: normalized.normalizedGitBlob, physicalDigestLiteral: normalized.physicalDigestLiteral, byteStart: normalized.byteStart, byteEnd: normalized.byteEnd }, limit: 'Finite consistency within actual Git/event HEAD; independently authenticated external historical/final source review remains mandatory.' };

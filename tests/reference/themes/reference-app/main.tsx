@@ -5,6 +5,7 @@ import { AvatarGallery } from '../../AvatarGallery';
 import { AvatarSupplementalProbe } from '../../AvatarSupplementalProbe';
 import type { IconLibraryName } from '../../icons/config';
 import { CardGallery } from '../../CardGallery';
+import { CardImageGallery } from '../../CardImageGallery';
 import { AspectRatioGallery } from '../../AspectRatioGallery';
 import { KbdGallery } from '../../KbdGallery';
 import { AlertGallery } from '../../AlertGallery';
@@ -17,6 +18,7 @@ import './reference.css';
 // original CSS, without production subsets or compatibility reset rules.
 const labelDiagnostic = window.location.pathname === '/label';
 const cardDiagnostic = window.location.pathname === '/card';
+const cardImageDiagnostic = window.location.pathname === '/card-images';
 const avatarDiagnostic = window.location.pathname === '/avatar';
 const avatarProbeDiagnostic = window.location.pathname === '/avatar-probe';
 const aspectRatioDiagnostic = window.location.pathname === '/aspect-ratio';
@@ -27,5 +29,5 @@ const textareaGalleryDiagnostic = window.location.pathname === '/textarea-galler
 const buttonGalleryDiagnostic = window.location.pathname === '/button-gallery';
 const library = new URLSearchParams(window.location.search).get('library') as IconLibraryName | null;
 const buttonLibrary = ['lucide', 'tabler', 'hugeicons', 'phosphor', 'remixicon'].includes(library ?? '') ? library! : 'lucide';
-if (labelDiagnostic || cardDiagnostic || avatarDiagnostic || avatarProbeDiagnostic || aspectRatioDiagnostic || kbdDiagnostic || alertDiagnostic || emptyDiagnostic || textareaGalleryDiagnostic || buttonGalleryDiagnostic) document.documentElement.className = 'style-nova';
-createRoot(document.getElementById('root')!).render(<main className="p-8">{labelDiagnostic ? <LabelProbe /> : cardDiagnostic ? <CardGallery /> : avatarDiagnostic ? <AvatarGallery library={library ?? 'lucide'} /> : avatarProbeDiagnostic ? <AvatarSupplementalProbe /> : aspectRatioDiagnostic ? <AspectRatioGallery /> : kbdDiagnostic ? <KbdGallery library={library ?? 'lucide'} /> : alertDiagnostic ? <AlertGallery library={library ?? 'lucide'} /> : emptyDiagnostic ? <SelectedEmptyGallery library={library ?? 'lucide'} /> : textareaGalleryDiagnostic ? <SelectedTextareaGallery /> : buttonGalleryDiagnostic ? <IconLibraryProvider library={buttonLibrary}><OriginalButtonExample /></IconLibraryProvider> : <ThemeProbe />}</main>);
+if (labelDiagnostic || cardDiagnostic || cardImageDiagnostic || avatarDiagnostic || avatarProbeDiagnostic || aspectRatioDiagnostic || kbdDiagnostic || alertDiagnostic || emptyDiagnostic || textareaGalleryDiagnostic || buttonGalleryDiagnostic) document.documentElement.className = 'style-nova';
+createRoot(document.getElementById('root')!).render(<main className="p-8">{labelDiagnostic ? <LabelProbe /> : cardDiagnostic ? <CardGallery /> : cardImageDiagnostic ? <CardImageGallery library={buttonLibrary} /> : avatarDiagnostic ? <AvatarGallery library={library ?? 'lucide'} /> : avatarProbeDiagnostic ? <AvatarSupplementalProbe /> : aspectRatioDiagnostic ? <AspectRatioGallery /> : kbdDiagnostic ? <KbdGallery library={library ?? 'lucide'} /> : alertDiagnostic ? <AlertGallery library={library ?? 'lucide'} /> : emptyDiagnostic ? <SelectedEmptyGallery library={library ?? 'lucide'} /> : textareaGalleryDiagnostic ? <SelectedTextareaGallery /> : buttonGalleryDiagnostic ? <IconLibraryProvider library={buttonLibrary}><OriginalButtonExample /></IconLibraryProvider> : <ThemeProbe />}</main>);
