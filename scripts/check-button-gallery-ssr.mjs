@@ -26,7 +26,16 @@ const button = moduleURL('tests/reference/button.tsx', { '@base-ui/react/button'
 const scaffold = moduleURL('tests/reference/example-scaffold.tsx', { cn });
 const { OriginalButtonExample } = await import(moduleURL('tests/reference/OriginalButtonExample.tsx', { './button': button, './example-scaffold': scaffold, './icon': icon }));
 const original = library => createElement(provider.IconLibraryProvider, { library }, createElement(OriginalButtonExample));
-const tree = node => ({ tag: node.localName, attrs: Object.fromEntries([...node.attributes].map(a => [a.name, a.value]).sort(([a], [b]) => a.localeCompare(b))), text: [...node.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).filter(t => /\S/u.test(t)), children: [...node.children].map(tree) });
+function directText(node) {
+  // React separates literal spaces with comments; Svelte coalesces adjacent text. Retain bytes and element positions.
+  const slots = new Map(); let index = 0;
+  for (const child of node.childNodes) {
+    if (child.nodeType === 1) index++;
+    else if (child.nodeType === 3) slots.set(index, (slots.get(index) ?? '') + child.textContent);
+  }
+  return [...slots].filter(([, text]) => /\S/u.test(text) || node.localName === 'button' || node.localName === 'a');
+}
+const tree = node => ({ tag: node.localName, attrs: Object.fromEntries([...node.attributes].map(a => [a.name, a.value]).sort(([a], [b]) => a.localeCompare(b))), text: directText(node), children: [...node.children].map(tree) });
 function assertGallery(doc) {
   const wrapper = doc.querySelector('[data-slot=example-wrapper]');
   assert.equal(wrapper.parentElement.querySelectorAll('div,button,a').length + 1, 168);
@@ -105,6 +114,7 @@ async function completedReference(reference) {
     completionScripts: [...doc.scripts].length, settledTemplates: doc.querySelectorAll('template').length, completionErrors: errors };
   console.log('Button original completed stream', JSON.stringify(receipt));
   unresolvedReceipt(doc, receipt);
+  if (errors.length) dom.window.close();
   assert.deepEqual(errors, [], reference.receipt.library + ': genuine React completion scripts');
   return dom;
 }
@@ -118,12 +128,15 @@ for (const [library, glyphs] of Object.entries(names)) {
   raw.window.close();
   const referenceDOM = await completedReference(reference);
   const expected = referenceDOM.window.document;
-  await Promise.all(glyphs.map(name => loadIcon(library, name)));
-  const actual = new JSDOM(render(Gallery, { props: { library } }).body).window.document;
-  assertGallery(expected); assertGallery(actual);
-  assert.equal(expected.querySelectorAll('template').length, 0);
-  assert.deepEqual(tree(actual.querySelector('[data-slot=example-wrapper]').parentElement), tree(expected.querySelector('[data-slot=example-wrapper]').parentElement), library);
-  assert.deepEqual([...actual.querySelectorAll('button')].map(n => n.textContent), [...expected.querySelectorAll('button')].map(n => n.textContent), library + ': literal child bytes');
-  referenceDOM.window.close();
+  let actualDOM;
+  try {
+    await Promise.all(glyphs.map(name => loadIcon(library, name)));
+    actualDOM = new JSDOM(render(Gallery, { props: { library } }).body);
+    const actual = actualDOM.window.document;
+    assertGallery(expected); assertGallery(actual);
+    assert.equal(expected.querySelectorAll('template').length, 0);
+    assert.deepEqual(tree(actual.querySelector('[data-slot=example-wrapper]').parentElement), tree(expected.querySelector('[data-slot=example-wrapper]').parentElement), library);
+    assert.deepEqual([...actual.querySelectorAll('button')].map(n => n.textContent), [...expected.querySelectorAll('button')].map(n => n.textContent), library + ': literal child bytes');
+  } finally { actualDOM?.window.close(); referenceDOM.window.close(); }
 }
 console.log('Six genuine Button bodies: 168 HTML hosts/124 enabled buttons/74 glyphs/native anchor, exact attrs/text/tree all5 libraries PASS; React74 cold Suspense templates versus native await remain unaccepted, zero copied-suite credit');

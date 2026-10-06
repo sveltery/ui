@@ -20,7 +20,16 @@ export async function buttonGalleryTheme(page: Page, style: string, dark: boolea
 }
 export async function buttonGalleryTree(page: Page) {
   return page.locator(buttonWrapper).evaluate(wrapper => {
-    const tree = (node: Element): unknown => ({ tag: node.localName, attrs: Object.fromEntries([...node.attributes].map(a => [a.name, a.value]).sort(([a], [b]) => a.localeCompare(b))), text: [...node.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).filter(t => /\S/u.test(t!)), children: [...node.children].map(tree) });
+    const directText = (node: Element) => {
+      // Preserve literal bytes and positions across native text-node coalescing; comments are not source children.
+      const slots = new Map<number, string>(); let index = 0;
+      for (const child of node.childNodes) {
+        if (child.nodeType === 1) index++;
+        else if (child.nodeType === 3) slots.set(index, (slots.get(index) ?? '') + child.textContent);
+      }
+      return [...slots].filter(([, text]) => /\S/u.test(text) || node.localName === 'button' || node.localName === 'a');
+    };
+    const tree = (node: Element): unknown => ({ tag: node.localName, attrs: Object.fromEntries([...node.attributes].map(a => [a.name, a.value]).sort(([a], [b]) => a.localeCompare(b))), text: directText(node), children: [...node.children].map(tree) });
     return tree(wrapper.parentElement!);
   });
 }
