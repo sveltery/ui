@@ -5,7 +5,7 @@ export const textareaGalleryHosts = `${textareaGalleryHostSelector}, ${textareaG
 export const textareaGalleryStyles = ['vega', 'nova', 'maia', 'lyra', 'mira', 'luma', 'sera', 'rhea'];
 export async function textareaGalleryTheme(page: Page, style: string, dark: boolean) {
   await kbdTheme(page, style, dark);
-  // Genuine transition-colors continues after palette inputs change. Flush the
+  // Genuine CSS transitions continue after palette inputs change. Flush the
   // scoped native controls, then await their actual CSS transitions unchanged.
   await page.locator(`${textareaGalleryHostSelector} textarea`).evaluateAll(async nodes => {
     for (const node of nodes) void getComputedStyle(node).color;
