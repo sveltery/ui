@@ -151,6 +151,16 @@ try {
       }
     }
     writeFileSync(join(consumer, 'src/routes/alert-types.ts'), readFileSync(join(repo, 'tests/alert-types.ts'), 'utf8').replace('../apps/docs/registry/bases/base/ui/alert/index.js', mode === 'copy' ? '$lib/components/ui/alert' : '@sveltery/ui/alert'));
+    const buttonGalleryDirectory = join(consumer, 'src/routes/button-gallery');
+    mkdirSync(buttonGalleryDirectory, { recursive: true });
+    for (const file of ['ButtonExample.svelte', 'ButtonGalleryFixture.svelte']) {
+      let content = readFileSync(join(repo, 'apps/docs/examples/base', file), 'utf8');
+      if (mode === 'copy') for (const family of ['button', 'example', 'icons']) content = content.replaceAll('@sveltery/ui/' + family, '$lib/components/ui/' + family);
+      writeFileSync(join(buttonGalleryDirectory, file), content);
+    }
+    let buttonGalleryPage = readFileSync(join(repo, 'apps/docs/src/routes/button-gallery/+page.svelte'), 'utf8').replace('../../../examples/base/ButtonGalleryFixture.svelte', './ButtonGalleryFixture.svelte');
+    if (mode === 'copy') buttonGalleryPage = buttonGalleryPage.replaceAll('@sveltery/ui/icons', '$lib/components/ui/icons');
+    writeFileSync(join(buttonGalleryDirectory, '+page.svelte'), buttonGalleryPage);
     const textareaGalleryDirectory = join(consumer, 'src/routes/textarea-gallery');
     mkdirSync(textareaGalleryDirectory, { recursive: true });
     let textareaGallery = readFileSync(join(repo, 'apps/docs/examples/base/TextareaExample.svelte'), 'utf8');

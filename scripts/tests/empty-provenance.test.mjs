@@ -113,8 +113,8 @@ test('finite source integration preserves full historical proof and exactly bind
     else { assert(original, sourcePath); assert.equal(sha(data), original[3], sourcePath); }
   }
   assert.deepEqual(changed, manifest.changes.map(change => change.path));
-  assert.equal(currentPaths.length, 676);
-  assert.equal(manifest.changes.length, 40);
+  assert.equal(currentPaths.length, 687);
+  assert.equal(manifest.changes.length, 54);
 });
 
 test('source faithful shared Example gap repair removes formatting only and preserves every original input', () => {

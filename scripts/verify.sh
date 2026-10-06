@@ -12,6 +12,7 @@ pnpm check
 pnpm test
 node --import ./scripts/svelte-ssr-loader.mjs scripts/check-textarea-ssr.mjs
 node --import ./scripts/svelte-ssr-loader.mjs scripts/check-textarea-gallery-ssr.mjs
+node --import ./scripts/svelte-ssr-loader.mjs scripts/check-button-gallery-ssr.mjs
 node --import ./scripts/svelte-ssr-loader.mjs scripts/check-skeleton-ssr.mjs
 node --import ./scripts/svelte-ssr-loader.mjs scripts/check-kbd-ssr.mjs
 node --import ./scripts/svelte-ssr-loader.mjs scripts/check-table-ssr.mjs

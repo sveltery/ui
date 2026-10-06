@@ -174,3 +174,10 @@ The [original pair mapping](kbd.md#original-icon-pair-source-mapping) requires g
 The immutable raw catalog/test inventories, Base-only product selection, existing native Textarea reset exception and blocked Input/dependency candidates remain unchanged.
 
 PR #55's initial `06186d8` hosted browser candidate failed new gallery comparisons during genuine color transitions. A scoped actual CSS-transition completion boundary is proposed without weakening equality or changing originals; new final-head browser/fresh-consumer gates and independent/configured review remain mandatory. Initial passing Verification/source review does not clear the repair head.
+
+## Proposed six-body Button source restoration
+
+- [ ] The [six genuine Button body/helper mapping](button.md#six-genuine-original-gallery-bodies) restores all source-available original compositions, preserving the supplemental submitter probe and old assertions.
+- [ ] Final-head six hosted checks, independent source/API review, configured review or actual current-head service-only quota exception, all four fresh package/source-copy type/SSR/client/browser phases and actual post-merge gates remain required.
+
+This bounded enabled-native-body work supplies no whole Button/API/React1.6 equivalence or new exception acceptance. Historical inventories, Base-only Toast/Combobox/Drawer selection, incomplete dependencies and blocked Input34/Base54 remain unchanged; no cmdk/Sonner/Vaul work is introduced.
