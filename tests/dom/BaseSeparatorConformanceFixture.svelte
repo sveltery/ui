@@ -6,7 +6,7 @@
   const props = $derived.by(() => {
     const { render: _render, ref: _ref, className, style, ...rest } = referenceProps;
     void [_render, _ref];
-    // Base c2b87f31 takes native class values only. The harness resolves a React className callback
+    // Base 44846f6d takes native class values only. The harness resolves a React className callback
     // with the Separator state, as Base UI does, so the original assertion still runs.
     const state = { orientation: (rest.orientation as string | undefined) ?? 'horizontal' };
     return { ...rest, class: typeof className === 'function' ? (className as (value: typeof state) => string)(state) : className, style: style && typeof style === 'object' ? Object.entries(style).map(([key, value]) => `${key}: ${value}`).join('; ') : style };
@@ -16,7 +16,7 @@
     if (typeof original === 'function') original(node ?? null);
     else if (original) original.current = node ?? null;
   }
-  // Base c2b87f31 does not export mergeProps. This translation helper follows Base UI's rules for the
+  // Base 44846f6d does not export mergeProps. This translation helper follows Base UI's rules for the
   // props these helpers pass: later plain props win, classes and styles concatenate, handlers chain right to left.
   function mergeProps(left: Record<string | symbol, unknown>, right: Record<string | symbol, unknown>) {
     const merged: Record<string | symbol, unknown> = { ...left };

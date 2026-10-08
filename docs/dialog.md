@@ -1,17 +1,17 @@
 # Experimental Dialog API
 
-Import `Dialog`, `DialogTrigger`, `DialogPortal`, `DialogClose`, `DialogOverlay`, `DialogContent`, `DialogHeader`, `DialogFooter`, `DialogTitle`, and `DialogDescription` from `@sveltery/ui` or `@sveltery/ui/dialog`. Components forward native props, symbol attachments and supported Base props to the `Dialog` namespace of Base `c2b87f319d2f70ed613c3b2e4280a4953d9923dc`. Base parts have no refs: pass `{@attach}` to reach a host. Root relays `bind:open`, `bind:triggerId` and the `close()`/`unmount()` methods through `bind:this`. See the [Base restart adoption](upstream-differences.md#proposed-base-restart-adoption).
+Import `Dialog`, `DialogTrigger`, `DialogPortal`, `DialogClose`, `DialogOverlay`, `DialogContent`, `DialogHeader`, `DialogFooter`, `DialogTitle`, and `DialogDescription` from `@sveltery/ui` or `@sveltery/ui/dialog`. Components forward native props, symbol attachments and supported Base props to the `Dialog` namespace of Base `44846f6d416225c6b6cc0dfd4465a2f7d8a3f277`. Base parts have no refs: pass `{@attach}` to reach a host. Root relays `bind:open`, `bind:triggerId` and the `close()`/`unmount()` methods through `bind:this`. See the [Base restart adoption](upstream-differences.md#proposed-base-restart-adoption).
 
 `DialogContent` owns its Portal, Overlay and Popup; its `showCloseButton` defaults to true. `DialogFooter` defaults to false. Built-in closes render Base Close through the canonical [Button](button.md): ghost/icon-sm with `cn-dialog-close` for Content, outline/default for Footer. Content uses the canonical [IconPlaceholder](icons.md) with the original five X names and the original screen-reader Close span. Both compositions produce one native button, retaining Content's `dialog-close` slot and Footer's default `button` slot. The [composition source map](dialog-composition.md) records the proposed fidelity repair, required checks and unchanged historical limits.
 
-The built-in closes spread Base Close's render props onto the canonical Button. Base c2b87f31 supplies `tabindex: 0` itself, so the earlier undefined-`tabindex` omission is gone.
+The built-in closes spread Base Close's render props onto the canonical Button. Base 44846f6d supplies `tabindex: 0` itself, so the earlier undefined-`tabindex` omission is gone.
 
 | React source API | Bounded Svelte adaptation |
 | --- | --- |
 | children | Svelte snippet |
-| className | `class` (native class values; Base c2b87f31 has no state callbacks) |
+| className | `class` (native class values; Base 44846f6d has no state callbacks) |
 | render element or function | Base `render(props, state, children)` snippet; spread all props, including attachment symbols, and render the supplied children |
-| DOM ref | `{@attach}` on the part; Base c2b87f31 has no `ref` prop |
+| DOM ref | `{@attach}` on the part; Base 44846f6d has no `ref` prop |
 | actionsRef | Root `bind:this` methods `close()` and `unmount()` |
 | synthetic events | Native lowercase Svelte event props; a consumer handler skips the part's handler with `event.preventDefault()` |
 | CSS style object | CSS string; object styles remain unsupported |
@@ -19,13 +19,13 @@ The built-in closes spread Base Close's render props onto the canonical Button. 
 | Root data-slot | No Root DOM element; no new wrapper element is inserted |
 | generated IDs | Base's Svelte `$props.id()` values; relationships rather than React ID bytes are preserved |
 
-Replacement snippets must retain the supplied child snippet to preserve Content/Footer built-in closes. Base c2b87f31 does not export `mergeProps`; when a replacement adds its own handler, call the supplied handler from it. Portal produces no server DOM and mounts its content after hydration (Base #165). Base c2b87f31 Portal takes host attributes, `{@attach}` (run after the host moves, Base #162) and a `render` snippet (Base #163), so `DialogPortal` passes the pinned `data-slot="dialog-portal"`.
+Replacement snippets must retain the supplied child snippet to preserve Content/Footer built-in closes. Base 44846f6d does not export `mergeProps`; when a replacement adds its own handler, call the supplied handler from it. Portal produces no server DOM and mounts its content after hydration (Base #165). Base 44846f6d Portal takes host attributes, `{@attach}` (run after the host moves, Base #162) and a `render` snippet (Base #163), so `DialogPortal` passes the pinned `data-slot="dialog-portal"`.
 
-Trigger, Close, Title, Description and Overlay forward the original child snippet directly. Base c2b87f31 always hands Dialog render snippets a children snippet, so a render snippet can no longer tell omitted children from supplied ones; the forwarding tests assert that UI matches Base.
+Trigger, Close, Title, Description and Overlay forward the original child snippet directly. Base 44846f6d always hands Dialog render snippets a children snippet, so a render snippet can no longer tell omitted children from supplied ones; the forwarding tests assert that UI matches Base.
 
 Historical PR #13 advanced Base to [`400ab42408f276824be7fe17250ed44bd01fd260`](https://github.com/sveltery/base/tree/400ab42408f276824be7fe17250ed44bd01fd260), incorporating the separately reviewed core ref/Portal repairs. UI Trigger, Portal, Content, Overlay, Title, Description and Close also remove their `$bindable(null)` DOM-ref fallbacks consistently with Base. Initially undefined refs remain undefined until attachment, then receive the actual host and clear to null on cleanup. Header/Footer and native Textarea already support this contract. Root's imperative `actions` fallback and `close()`/`unmount()` behavior are retained. This is an approved intentional Svelte API relaxation; the [compatibility decision](upstream-differences.md#landed-base-pin-and-native-ref-adaptation) distinguishes it from the Portal fidelity repair and records landed status.
 
-Standalone `DialogPortal` forwards Base's `container` unchanged. Base c2b87f31 takes an element or nothing (no ref objects); undefined uses the parent portal or document body. An explicit `null` waits without a host, as upstream does (Base #163).
+Standalone `DialogPortal` forwards Base's `container` unchanged. Base 44846f6d takes an element or nothing (no ref objects); undefined uses the parent portal or document body. An explicit `null` waits without a host, as upstream does (Base #163).
 
 The [SvelteKit installation guide](installation.md) covers local archives, source copying, Tailwind 4.3 source scanning, `tw-animate-css` 1.4.0 and Nova theme tokens. The [fixture theme](../apps/docs/src/lib/theme.css) is the workspace integration. Styles are the scoped Nova Dialog and native close subset; screenshots compare the exercised example only.
 
@@ -41,4 +41,4 @@ Base's corrected native focus discovery retains two pinned upstream limits: its 
 
 The Base restart dropped the earlier inherited canceled-close deferral correction: a canceled close that called `preventUnmountOnClose()` now keeps the next close mounted until `unmount()`, as Base UI 1.8 does. See the [restart adoption](upstream-differences.md#proposed-base-restart-adoption).
 
-Base `f884f3bb265485ef8e422e43a75eb3055db11fab` and its [Avatar/Accordion upgrade contract](base-pin-upgrade.md#avatar-and-accordion-prerequisite-upgrade) are historical; the current pin is Base `c2b87f319d2f70ed613c3b2e4280a4953d9923dc`.
+Base `f884f3bb265485ef8e422e43a75eb3055db11fab` and its [Avatar/Accordion upgrade contract](base-pin-upgrade.md#avatar-and-accordion-prerequisite-upgrade) are historical; the current pin is Base `44846f6d416225c6b6cc0dfd4465a2f7d8a3f277`.

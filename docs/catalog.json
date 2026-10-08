@@ -13,10 +13,10 @@
   },
   "locked_base": {
     "repository": "https://github.com/sveltery/base.git",
-    "commit": "c2b87f319d2f70ed613c3b2e4280a4953d9923dc",
+    "commit": "44846f6d416225c6b6cc0dfd4465a2f7d8a3f277",
     "package": "@sveltery/base",
     "version": "0.0.0",
-    "sha256": "5b25e776c5bd4be67afb3241a80f8abdb5e5dbe77a92b9e35a10b3b9d5d31fc5",
+    "sha256": "55c402730dd10e739bf1d61418b3fae2573bc5c0dabd4c2d0e98e669c91d891c",
     "actual_public_subpaths": [
       "accordion",
       "avatar",
