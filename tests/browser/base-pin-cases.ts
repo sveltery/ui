@@ -1,13 +1,15 @@
 import { expect, test, type Page } from '@playwright/test';
-const expectedTags = { button: 'BUTTON', trigger: 'BUTTON', portal: 'DIV', overlay: 'DIV', content: 'DIV', title: 'H2', description: 'P', close: 'BUTTON' };
+const expectedTags = { button: 'BUTTON', trigger: 'BUTTON', overlay: 'DIV', content: 'DIV', title: 'H2', description: 'P', close: 'BUTTON' };
 async function state(page: Page) { return JSON.parse(await page.getByTestId('base-pin-state').innerText()); }
 async function open(page: Page) {
   await page.goto('/base-pin'); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true');
   await page.getByTestId('base-pin-trigger').click();
   await expect.poll(async () => (await state(page)).tags).toEqual(expectedTags);
 }
+// The outer Portal host: DialogContent nests its own Portal inside it.
+const outerPortal = '[data-base-ui-portal]:not([data-base-ui-portal] [data-base-ui-portal])';
 export function basePinCases() {
-  test('public initial-undefined refs preserve SSR/hydration host identity and attachment cleanup', async ({ page, request }) => {
+  test('public part attachments preserve SSR/hydration host identity and cleanup', async ({ page, request }) => {
     const response = await request.get('/base-pin'); expect(response.ok()).toBe(true);
     const html = await response.text(); expect(html).toContain('Open ref probe'); expect(html).not.toContain('data-base-ui-portal');
     const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
@@ -39,19 +41,15 @@ export function basePinCases() {
       expect(errors).toEqual([]);
     } finally { release(); }
   });
-  test('public Portal retargeting distinguishes empty refs, explicit null and native node precedence', async ({ page }) => {
-    await open(page); const outer = page.getByTestId('base-pin-portal');
-    await expect.poll(() => outer.evaluate(node => node.parentElement?.id || node.parentElement?.tagName.toLowerCase())).toBe('body');
-    expect(await page.getByTestId('base-pin-nested').evaluate(node => node.parentElement?.getAttribute('data-testid'))).toBe('base-pin-portal');
-    const node = await outer.elementHandle(); expect(node).not.toBeNull();
-    await page.getByRole('dialog').getByTestId('base-pin-element-current').click(); await expect.poll(() => outer.evaluate(node => node.parentElement?.id || node.parentElement?.tagName.toLowerCase())).toBe('base-pin-first');
-    expect(await node!.evaluate(element => element === document.querySelector('[data-testid=base-pin-portal]'))).toBe(true);
-    await page.getByRole('dialog').getByTestId('base-pin-ref-owner-document').click(); await expect.poll(() => outer.evaluate(node => node.parentElement?.id || node.parentElement?.tagName.toLowerCase())).toBe('base-pin-second');
-    await page.getByRole('dialog').getByTestId('base-pin-undefined').click(); await expect.poll(() => outer.evaluate(node => node.parentElement?.id || node.parentElement?.tagName.toLowerCase())).toBe('body');
+  test('public Portal retargets native and default containers, and waits on explicit null like upstream', async ({ page }) => {
+    await open(page); const outer = page.locator(outerPortal);
+    const parent = () => outer.evaluate(node => node.parentElement?.id || node.parentElement?.tagName.toLowerCase());
+    await expect.poll(parent).toBe('body');
+    await page.getByRole('dialog').getByTestId('base-pin-element').click(); await expect.poll(parent).toBe('base-pin-first');
+    await page.getByRole('dialog').getByTestId('base-pin-undefined').click(); await expect.poll(parent).toBe('body');
+    // Base UI 1.8 FloatingPortal renders no portal while `container` is explicitly null.
     await page.getByRole('dialog').getByTestId('base-pin-null').click(); await expect(page.locator('[data-base-ui-portal]')).toHaveCount(0);
-    expect(await node!.evaluate(element => element.isConnected)).toBe(false);
-    await page.getByTestId('base-pin-null-ref').click(); await expect.poll(() => outer.evaluate(node => node.parentElement?.id || node.parentElement?.tagName.toLowerCase())).toBe('body');
-    expect(await node!.evaluate(element => element === document.querySelector('[data-testid=base-pin-portal]'))).toBe(false);
+    await page.getByTestId('base-pin-undefined').click(); await expect.poll(parent).toBe('body');
     await page.getByRole('dialog').getByTestId('base-pin-remove').click(); await expect(page.locator('[data-base-ui-portal]')).toHaveCount(0);
     expect((await state(page)).cleanups).toEqual((await state(page)).attachments);
   });

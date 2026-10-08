@@ -881,8 +881,9 @@ packages:
       vite: ^8.0.0-beta.7 || ^8.0.0
 
   '@sveltery/base@file:.vendor/sveltery-base-0.0.0.tgz':
-    resolution: {integrity: sha512-ZkJimKxdfu+92S3kZNL6m3WS9Pob65l0xIeTlI6OYFHM+Sw1S8U8qdYlJcD0kFLljLD+E/la+0n5aCZTdEprsQ==, tarball: file:.vendor/sveltery-base-0.0.0.tgz}
+    resolution: {integrity: sha512-VuoDNZSl/jJHHKK2XpHIptHejwsIN/4O1lDbJTeXMVIWDNKAD8N40lavQ9mboF7Bg7E2u71QF85hvP9To0UlFw==, tarball: file:.vendor/sveltery-base-0.0.0.tgz}
     version: 0.0.0
+    engines: {node: '>=24 <25'}
     peerDependencies:
       svelte: ^5.57.1
 
@@ -3569,6 +3570,8 @@ snapshots:
 
   '@sveltery/base@file:.vendor/sveltery-base-0.0.0.tgz(svelte@5.57.1(@typescript-eslint/types@8.71.0))':
     dependencies:
+      '@floating-ui/dom': 1.8.0
+      '@floating-ui/utils': 0.2.12
       esm-env: 1.2.2
       svelte: 5.57.1(@typescript-eslint/types@8.71.0)
 

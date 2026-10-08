@@ -1,11 +1,12 @@
 <script lang="ts">
   import { onMount, type Snippet } from 'svelte';
+  import type { DialogCloseState, DialogTriggerHostProps } from '@sveltery/base/dialog';
   import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogClose } from '@sveltery/ui/dialog';
   let { disabled = true }: { disabled?: boolean } = $props();
   let hydrated = $state(false);
   onMount(() => { hydrated = true; });
 </script>
-{#snippet anchor(props: Record<string | symbol, unknown>, _state: unknown, children: Snippet | undefined)}
+{#snippet anchor(props: DialogTriggerHostProps, _state: DialogCloseState, children: Snippet | undefined)}
   <a {...props} href="#activated">{@render children?.()}</a>
 {/snippet}
 <main data-hydrated={hydrated}>

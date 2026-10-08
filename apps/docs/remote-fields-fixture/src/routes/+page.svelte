@@ -41,7 +41,7 @@
       <Textarea id="empty-text" {...current.fields.emptyText.as('text')} />
       <button id="native-submit" {...current.fields.action.as('submit', 'native')}>Submit native</button>
       <BaseButton id="base-submit" {...current.fields.baseAction.as('submit', 'base')}>Submit base</BaseButton>
-      <Button id="ui-submit" {...current.fields.uiAction.as('submit', 'ui')} bind:ref={submitButton} {@attach attachment}>Submit UI</Button>
+      <Button id="ui-submit" {...current.fields.uiAction.as('submit', 'ui')} {@attach attachment} {@attach node => { submitButton = node as HTMLButtonElement; return () => { submitButton = null; }; }}>Submit UI</Button>
       <button id="reset" type="reset">Reset</button>
     </form>
   {/if}

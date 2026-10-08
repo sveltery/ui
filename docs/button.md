@@ -1,5 +1,7 @@
 # Experimental Button
 
+> **Base restart (44846f6d).** Button now wraps Base `44846f6d416225c6b6cc0dfd4465a2f7d8a3f277`. The `ref` prop is gone: pass `{@attach}` to reach the host. `class` and `style` take native values only, with no state callbacks. `render` snippets receive `(props, state, children)`, so a replacement renders the part's children as upstream does (Base #161). A disabled mousedown now keeps its default, as Base UI 1.8 does. See the [restart adoption](upstream-differences.md#proposed-base-restart-adoption) for the full list. Older pin details below are historical.
+
 ## Landed direct remote submitter gates
 
 The isolated [remote-field fixture](../apps/docs/remote-fields-fixture/src/routes/+page.svelte) spreads actual Kit 2.70.3 `fields.*.as('submit', value)` attributes directly onto native, public Base and public UI Buttons. Typed assignments use the published component props, not casts or consumer field adapters. The [HTTP/SSR check](../scripts/check-remote-fields.mjs) submits all three through genuine remote-form actions; [secured main browser cases](../tests/browser/remote-fields.spec.ts) and [fresh archive/source-copy cases](../tests/installation/remote-fields.spec.ts) assert trusted activation, exact FormData/server submitter values, switching submitters, defaults/reset, validation and progressive enhancement.

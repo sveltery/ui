@@ -15,13 +15,15 @@
     node.dataset.attached = 'true'; untrack(() => { attached++; });
     return () => { untrack(() => { cleaned++; }); };
   } };
+  // Base parts have no refs; capture their hosts with an attachment, as consumers do.
+  function capture(index: 0 | 1 | 2) { return (node: HTMLElement) => { refs[index] = node as HTMLImageElement; return () => { if (refs[index] === node) refs[index] = null; }; }; }
 </script>
 <section data-avatar-probe>
   {#if visible}
     <AvatarGroup id="probe-avatar-4" bind:ref={refs[4]} {...attachment}>
-      <Avatar id="probe-avatar-0" size={small ? 'sm' : 'default'} class={small ? 'size-12 rounded-none' : undefined} bind:ref={refs[0]} {...attachment} onclick={event => clicks.push(event.currentTarget.id)}>
-        <AvatarImage id="probe-avatar-1" {src} alt="Actual decoded portrait" bind:ref={refs[1]} {...attachment} onLoadingStatusChange={status => statuses.push(status)} />
-        <AvatarFallback id="probe-avatar-2" bind:ref={refs[2]} {...attachment}>CN &lt;portrait&gt;</AvatarFallback>
+      <Avatar id="probe-avatar-0" size={small ? 'sm' : 'default'} class={small ? 'size-12 rounded-none' : undefined} {@attach capture(0)} {...attachment} onclick={event => clicks.push(event.currentTarget.id)}>
+        <AvatarImage id="probe-avatar-1" {src} alt="Actual decoded portrait" {@attach capture(1)} {...attachment} onLoadingStatusChange={status => statuses.push(status)} />
+        <AvatarFallback id="probe-avatar-2" {@attach capture(2)} {...attachment}>CN &lt;portrait&gt;</AvatarFallback>
         <AvatarBadge id="probe-avatar-3" bind:ref={refs[3]} {...attachment}>Badge</AvatarBadge>
       </Avatar>
       <AvatarGroupCount id="probe-avatar-5" bind:ref={refs[5]} {...attachment}>+3</AvatarGroupCount>

@@ -12,35 +12,34 @@ async function setup() {
   const click = async (id: string) => { host.querySelector<HTMLElement>(`[data-testid=base-pin-${id}]`)!.click(); await settle(); };
   return { host, example, state, click };
 }
-it('all eight public refs accept initial undefined, expose actual attached hosts and clear on removal', async () => {
+it('all seven public part attachments reach actual hosts, follow close/reopen and clean up on removal', async () => {
   const { example, state, click } = await setup();
-  expect(example.refs().actions).not.toBeNull();
-  expect(state().tags).toMatchObject({ button: 'BUTTON', trigger: 'BUTTON', portal: 'undefined' });
+  expect(example.actions()).toBeDefined();
+  expect(state().tags).toMatchObject({ button: 'BUTTON', trigger: 'BUTTON', overlay: 'undefined' });
   await click('trigger');
-  expect(state().tags).toEqual({ button: 'BUTTON', trigger: 'BUTTON', portal: 'DIV', overlay: 'DIV', content: 'DIV', title: 'H2', description: 'P', close: 'BUTTON' });
+  expect(state().tags).toEqual({ button: 'BUTTON', trigger: 'BUTTON', overlay: 'DIV', content: 'DIV', title: 'H2', description: 'P', close: 'BUTTON' });
   for (const [part, node] of Object.entries(example.refs())) {
-    if (part === 'actions') continue;
-    expect(node).toBeInstanceOf(HTMLElement); expect((node as HTMLElement).isConnected).toBe(true); expect((node as HTMLElement).dataset.probed).toBe(part);
+    expect(node).toBeInstanceOf(HTMLElement); expect((node as HTMLElement).isConnected).toBe(true);
+    if (part !== 'portal') expect((node as HTMLElement).dataset.probed).toBe(part);
   }
   expect(state().bindingLog).toEqual(['BUTTON']);
   expect(state().attachments).toEqual(Object.fromEntries(Object.keys(state().tags).map(part => [part, 1])));
   await click('action-close');
-  expect(state().tags).toMatchObject({ button: 'BUTTON', trigger: 'BUTTON', portal: null, overlay: null, content: null, title: null, description: null, close: null });
+  expect(state().tags).toMatchObject({ button: 'BUTTON', trigger: 'BUTTON', overlay: null, content: null, title: null, description: null, close: null });
+  expect(example.refs().portal).toBeNull();
   await click('trigger'); await click('remove');
   expect(state().tags).toEqual(Object.fromEntries(Object.keys(state().tags).map(part => [part, null])));
   expect(state().cleanups).toEqual(state().attachments); expect(state().bindingLog).toEqual(['BUTTON', null]);
   expect(document.querySelector('[data-base-ui-portal]')).toBeNull();
 });
-it('Portal resolves empty refs, explicit null, native targets and misleading ref properties while cleaning old hosts', async () => {
+it('Portal follows native and default targets, and an explicit null container waits like upstream', async () => {
   const { host, example, click } = await setup(); await click('trigger');
   const portal = example.refs().portal!;
   expect(portal.parentNode).toBe(document.body);
-  expect(portal.querySelector('[data-testid=base-pin-nested]')?.parentNode).toBe(portal);
-  example.setContainer('element-current'); await settle(); expect(example.refs().portal).toBe(portal); expect(portal.parentNode).toBe(host.querySelector('#base-pin-first'));
-  example.setContainer('ref-owner-document'); await settle(); expect(portal.parentNode).toBe(host.querySelector('#base-pin-second'));
-  example.setContainer('undefined'); await settle(); expect(portal.parentNode).toBe(document.body);
-  example.setContainer('null'); await settle(); expect(portal.isConnected).toBe(false); expect(example.refs().portal).toBeNull();
-  expect(document.querySelector('[data-base-ui-portal]')).toBeNull();
-  example.setContainer('null-ref'); await settle(); const restored = example.refs().portal!; expect(restored).not.toBe(portal); expect(restored.parentNode).toBe(document.body);
-  example.remove(); await settle(); expect(restored.isConnected).toBe(false);
+  example.setContainer('element'); await settle(); expect(example.refs().portal!.parentNode).toBe(host.querySelector('#base-pin-first'));
+  example.setContainer('undefined'); await settle(); expect(example.refs().portal!.parentNode).toBe(document.body);
+  // Base UI 1.8 FloatingPortal waits while `container` is explicitly null and renders no portal.
+  example.setContainer('null'); await settle(); expect(document.querySelector('[data-base-ui-portal]')).toBeNull();
+  example.setContainer('undefined'); await settle(); expect(example.refs().portal!.parentNode).toBe(document.body);
+  example.remove(); await settle(); expect(document.querySelector('[data-base-ui-portal]')).toBeNull();
 });

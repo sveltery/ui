@@ -2,8 +2,8 @@
   // Adapted from Sveltery Base 4dd04e49 test fixture, MIT (c) 2026 Sveltery contributors; derived Base UI assertions: tests/reference/BASE_BUTTON_LICENSE.
   // UI integration probes; no additional upstream parity credit.
   import { onMount, untrack, type Snippet } from 'svelte';
+  import type { ButtonHostProps, ButtonState } from '@sveltery/base/button';
   import { Button, type ButtonProps } from '../../apps/docs/registry/bases/base/ui/button/index.js';
-  import { mergeProps } from '@sveltery/base/merge-props';
   let { scenario = 'custom' }: { scenario?: string } = $props();
   let hydrated = $state(false);
   let becameDisabled = $state(false);
@@ -26,13 +26,16 @@
     untrack(() => count('attached')); node.dataset.consumerAttached = '';
     return () => untrack(() => count('detached'));
   }
+  // Base parts have no refs; an attachment records the actual host and clears it on removal.
+  function capture(node: HTMLElement) { ref = node; return () => { ref = null; }; }
   onMount(() => { hydrated = true; });
 </script>
-{#snippet replacement(props: Record<string | symbol, unknown>, state: { disabled: boolean }, children: Snippet | undefined)}
+{#snippet replacement(props: ButtonHostProps, state: ButtonState, children: Snippet | undefined)}
   {#if scenario === 'link'}
     <a {...props} href="#target">{@render children?.()}</a>
   {:else}
-    <span {...mergeProps(props, { onclick: (event: MouseEvent & { preventBaseUIHandler(): void }) => { count('render'); if (scenario === 'render-cancel') event.preventBaseUIHandler(); } })} onclickcapture={() => count('capture')} data-state-disabled={state.disabled}>
+    <!-- The replacement handler runs first; skipping the Base handler replaces preventBaseUIHandler(). -->
+    <span {...props} onclick={event => { count('render'); if (scenario !== 'render-cancel') props.onclick?.(event); }} onclickcapture={() => count('capture')} data-state-disabled={state.disabled}>
       {@render children?.()}
       {#if scenario === 'descendant'}<input aria-label="Inner input" />{/if}
     </span>
@@ -44,12 +47,12 @@
   <div onclick={() => count('ancestor')}>
     <form onsubmit={event => { event.preventDefault(); count('submit'); }} onreset={() => count('reset')}>
       {#if scenario.startsWith('reset')}<input aria-label="Reset field" value="initial" />{/if}
-      <Button id="tested-button" {disabled} focusableWhenDisabled={focusable} nativeButton={!custom} render={custom ? replacement : undefined} {...typeProps} bind:ref
+      <Button id="tested-button" {disabled} focusableWhenDisabled={focusable} nativeButton={!custom} render={custom ? replacement : undefined} {...typeProps} {@attach capture}
         {@attach scenario === 'attachment' ? attached : () => {}}
-        class={state => state.disabled ? 'disabled-class px-6' : 'enabled-class px-4'} style={state => `opacity:${state.disabled ? 0.5 : 1}`}
+        class={disabled ? 'disabled-class px-6' : 'enabled-class px-4'} style={`opacity:${disabled ? 0.5 : 1}`}
         onclick={clicked} onmousedown={() => count('mouse')} onpointerdown={() => count('pointer')}
-        onkeydown={event => { count('keydown'); if (scenario === 'cancel-base') event.preventBaseUIHandler(); if (scenario === 'cancel-enter') event.preventDefault(); }}
-        onkeyup={event => { count('keyup'); if (scenario === 'cancel-base') event.preventBaseUIHandler(); if (scenario === 'cancel-space') event.preventDefault(); }}
+        onkeydown={event => { count('keydown'); if (scenario === 'cancel-base' || scenario === 'cancel-enter') event.preventDefault(); }}
+        onkeyup={event => { count('keyup'); if (scenario === 'cancel-base' || scenario === 'cancel-space') event.preventDefault(); }}
         onmousemove={() => count('hover')} onfocus={() => count('focus')} onblur={() => count('blur')}>
         {scenario === 'link' ? 'Go' : 'Save'}
       </Button>

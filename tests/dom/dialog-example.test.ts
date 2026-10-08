@@ -32,12 +32,14 @@ it('scenario changes replace attached hosts without changing owner state or canc
   await click('cancel-next'); await click('action-close');
   expect(state()).toMatchObject({ open: true, attachments: 2, cleanups: 1, completions: [true, true, true] });
   expect(state().log.map((entry: { open: boolean }) => entry.open)).toEqual([true, false]);
+  // Base UI 1.8 keeps preventUnmountOnClose from the canceled close (its synced value only resets when open changes),
+  // so the next close leaves the popup mounted. Base 44846f6d inherits this; old Base reset it.
   await click('action-close');
-  expect(state()).toMatchObject({ open: false, popup: false, attachments: 2, cleanups: 2, completions: [true, true, true, false] });
+  expect(state()).toMatchObject({ open: false, popup: 'content', attachments: 2, cleanups: 1, completions: [true, true, true] });
   await click('trigger');
-  expect(state()).toMatchObject({ open: true, attachments: 3, cleanups: 2, completions: [true, true, true, false, true] });
+  expect(state()).toMatchObject({ open: true, popup: 'content', attachments: 2, cleanups: 1, completions: [true, true, true, true] });
   await click('remove');
-  expect(state()).toMatchObject({ open: true, trigger: false, popup: false, title: null, attachments: 3, cleanups: 3 });
+  expect(state()).toMatchObject({ open: true, trigger: false, popup: false, title: null, attachments: 2, cleanups: 2 });
   expect(document.querySelector('[data-base-ui-portal]')).toBeNull();
   expect(document.documentElement.style.overflow).toBe('');
 });

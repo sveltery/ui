@@ -8,7 +8,7 @@ it('five styled wrappers preserve absent, supplied and explicitly empty children
   try {
     for (const part of ['trigger', 'close', 'title', 'description', 'overlay']) {
       for (const kind of ['base', 'ui']) {
-        const content = (mode: string) => target.querySelector(`[data-testid="${kind}-${part}-${mode}"]`)!.textContent;
+        const content = (mode: string) => document.querySelector(`[data-testid="${kind}-${part}-${mode}"]`)!.textContent;
         expect(content('omitted'), `${kind} ${part}`).toBe('Fallback label');
         expect(content('present'), `${kind} ${part}`).toBe('Explicit label');
         expect(content('empty'), `${kind} ${part}`).toBe('');

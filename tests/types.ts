@@ -1,8 +1,10 @@
 import type { ComponentProps } from 'svelte';
 import { Dialog, DialogTrigger, DialogContent, DialogFooter, DialogOverlay } from '../apps/docs/registry/bases/base/ui/dialog/index.js';
 const root: ComponentProps<typeof Dialog> = { modal: 'trap-focus', open: false, onOpenChange(_open, details) { details.cancel(); details.preventUnmountOnClose(); } };
-const trigger: ComponentProps<typeof DialogTrigger> = { name: 'open', form: 'profile', disabled: true, nativeButton: false, onclick(event) { event.preventBaseUIHandler(); event.preventDefault(); const button: HTMLButtonElement = event.currentTarget; void button; } };
-const content: ComponentProps<typeof DialogContent> = { showCloseButton: false, initialFocus: false, finalFocus: { current: null }, class: state => state.open ? 'p-8' : 'p-4', style: state => `--open:${Number(state.open)}` };
+const trigger: ComponentProps<typeof DialogTrigger> = { name: 'open', form: 'profile', disabled: true, nativeButton: false, onclick(event) { event.preventDefault(); const button: HTMLButtonElement = event.currentTarget; void button; } };
+const content: ComponentProps<typeof DialogContent> = { showCloseButton: false, initialFocus: false, finalFocus: interaction => interaction === 'keyboard' ? null : false, class: ['p-8', { 'p-4': false }], style: '--open:1' };
+// @ts-expect-error Base has no ref objects; pass an element or a function.
+const finalFocusRef: ComponentProps<typeof DialogContent> = { finalFocus: { current: null } };
 const footer: ComponentProps<typeof DialogFooter> = { showCloseButton: true, class: ['p-4', { 'border-t': true }] };
 const overlay: ComponentProps<typeof DialogOverlay> = { forceRender: true, style: 'opacity:0.5', onpointerdown(event) { const pointer: PointerEvent = event; void pointer; } };
 // @ts-expect-error The existing Base API rejects CSS objects.
@@ -13,18 +15,20 @@ const closeOption: ComponentProps<typeof DialogFooter> = { showCloseButton: 'out
 const keyboardAsPointer: ComponentProps<typeof DialogTrigger> = { onpointerdown(_event: KeyboardEvent) {} };
 // @ts-expect-error No new detached handle API is invented.
 const detached: ComponentProps<typeof Dialog> = { handle: {} };
-void [root, trigger, content, footer, overlay, styleObject, closeOption, keyboardAsPointer, detached];
+void [root, trigger, content, finalFocusRef, footer, overlay, styleObject, closeOption, keyboardAsPointer, detached];
 
 import { Button, type ButtonProps } from '../apps/docs/registry/bases/base/ui/button/index.js';
-const styled: ComponentProps<typeof Button> = { variant: 'link', size: 'icon-lg', focusableWhenDisabled: true, class: state => state.disabled ? 'px-6' : 'px-4', style: state => `--disabled:${Number(state.disabled)}`, onclick: event => event.preventBaseUIHandler() };
-const nullable: ButtonProps = { variant: null, size: null, ref: null };
+const styled: ComponentProps<typeof Button> = { variant: 'link', size: 'icon-lg', focusableWhenDisabled: true, class: ['px-6', { 'px-4': false }], style: '--disabled:1', onclick: event => event.preventDefault() };
+const nullable: ButtonProps = { variant: null, size: null };
+// @ts-expect-error Base has no refs; consumers pass {@attach} through the props spread.
+const buttonRef: ButtonProps = { ref: null };
 // @ts-expect-error no asChild React API
 const reactSlot: ButtonProps = { asChild: true };
 // @ts-expect-error sizes stay bounded to the pinned Nova API
 const huge: ButtonProps = { size: 'xl' };
 // @ts-expect-error classes are Svelte class props
 const reactClass: ButtonProps = { className: 'px-6' };
-void [styled, nullable, reactSlot, huge, reactClass];
+void [styled, nullable, buttonRef, reactSlot, huge, reactClass];
 
 import { Textarea } from '../apps/docs/registry/bases/base/ui/textarea/index.js';
 const textarea: ComponentProps<typeof Textarea> = { ref: null, value: 'Message', defaultValue: 'Draft', class: ['px-6'], style: 'resize: none', required: true, readonly: true, rows: 6, minlength: 2, maxlength: 40, form: 'message', oninput: event => { const node: HTMLTextAreaElement = event.currentTarget; void node; }, onchange: event => { const node: HTMLTextAreaElement = event.currentTarget; void node; } };
