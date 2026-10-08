@@ -1,6 +1,7 @@
 <script lang="ts">
   // Four selected immutable Empty bodies; helpers, controls and icon geometry remain canonical. MIT: tests/reference/LICENSE.
   import type { Snippet } from 'svelte';
+  import type { ButtonHostProps, ButtonState } from '@sveltery/base/button';
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@sveltery/ui/empty';
   import { Button } from '@sveltery/ui/button';
@@ -8,7 +9,8 @@
 </script>
 
 <!-- Render element href follows all merged string/symbol props, as in the genuine source render anchor. -->
-{#snippet anchor(props: Record<string | symbol, unknown>, _state: { disabled: boolean }, children: Snippet | undefined)}
+<!-- Base 2984bb24 calls Button render snippets with (props, state) only, so children stay absent until Base passes them. -->
+{#snippet anchor(props: ButtonHostProps, _state: ButtonState, children?: Snippet)}
   <!-- svelte-ignore a11y_invalid_attribute (Exact immutable source placeholder anchor.) -->
   <a {...props} href="#">{@render children?.()}</a>
 {/snippet}

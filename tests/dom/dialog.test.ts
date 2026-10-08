@@ -26,9 +26,10 @@ for (const custom of [false, true]) it(`every wrapper relays actual refs, attach
   for (const text of ['Title', 'Description', 'Dismiss']) expect(refs.popup!.textContent).toContain(text);
   expect(refs.popup!.style.getPropertyValue('--is-open')).toBe('1');
   expect(refs.popup!.classList.contains('p-8')).toBe(true); expect(refs.popup!.classList.contains('p-4')).toBe(false);
+  expect(fixture.portal()!.isConnected).toBe(true);
   fixture.remove(); await settle();
   const removed = fixture.refs(); expect(removed.cleanups).toBe(removed.attachments);
-  for (const part of ['trigger', 'portal', 'overlay', 'popup', 'title', 'description', 'close', 'header', 'footer'] as const) expect(removed[part]).toBeNull();
+  for (const part of ['trigger', 'overlay', 'popup', 'title', 'description', 'close', 'header', 'footer'] as const) expect(removed[part]).toBeNull();
   expect(document.querySelector('[data-base-ui-portal]')).toBeNull(); expect(document.documentElement.style.overflow).toBe('');
 });
 it('replacement and consumer handlers compose before activation, and prevention cancels activation', async () => {
@@ -40,15 +41,16 @@ it('custom disabled trigger preserves keyboard and click prevention', async () =
   trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true })); click(trigger); await settle();
   expect(trigger.getAttribute('aria-disabled')).toBe('true'); expect(fixture.refs().popup).toBeNull();
 });
-it('bind:actions forwards imperative close, with cancellation preserving open content', async () => {
+it('bind:this forwards imperative close, with cancellation preserving open content', async () => {
   const fixture = setup(); await settle(); click(fixture.refs().trigger!); await settle();
-  fixture.setCancel('close'); fixture.refs().actions!.close(); await settle(); expect(fixture.refs().popup).not.toBeNull();
-  fixture.setCancel(''); fixture.refs().actions!.close(); await settle(); expect(fixture.refs().popup).toBeNull();
+  fixture.setCancel('close'); fixture.actions()!.close(); await settle(); expect(fixture.refs().popup).not.toBeNull();
+  fixture.setCancel(''); fixture.actions()!.close(); await settle(); expect(fixture.refs().popup).toBeNull();
 });
-it('canceled preventUnmountOnClose does not retain a later accepted close (Base fix gate)', async () => {
+it('canceled preventUnmountOnClose retains a later accepted close until unmount (Base UI 1.8)', async () => {
   const fixture = setup(); await settle(); click(fixture.refs().trigger!); await settle();
-  fixture.setCancel('defer-close'); await tick(); fixture.refs().actions!.close(); await settle(); expect(fixture.refs().popup).not.toBeNull();
-  fixture.setCancel(''); await tick(); fixture.refs().actions!.close(); await settle(); expect(fixture.refs().popup).toBeNull();
+  fixture.setCancel('defer-close'); await tick(); fixture.actions()!.close(); await settle(); expect(fixture.refs().popup).not.toBeNull();
+  fixture.setCancel(''); await tick(); fixture.actions()!.close(); await settle(); expect(fixture.refs().popup).not.toBeNull();
+  fixture.actions()!.unmount(); await settle(); expect(fixture.refs().popup).toBeNull();
 });
 it('disabled replacement Close anchor suppresses native navigation (Base fix gate)', async () => {
   const fixture = setup({ disabledAnchor: true }); await settle(); click(fixture.refs().trigger!); await settle();

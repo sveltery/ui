@@ -15,14 +15,15 @@
   let trace = $state<{ status: string; rootDOMStatus: string | null }[]>([]);
   const attachment = { [createAttachmentKey()]: () => { untrack(() => { attached++; }); return () => { untrack(() => { cleaned++; }); }; } };
 </script>
-{#snippet rootRender(props: Record<string | symbol, unknown>, _state: AvatarRootState, children: Snippet | undefined)}
-  <span {...(props as HTMLAttributes<HTMLSpanElement>)} data-root-status={_state.imageLoadingStatus} bind:this={root}>{@render children?.()}</span>
+<!-- Base 2984bb24 calls Avatar render snippets with (props, state) only, so children stay absent until Base passes them. -->
+{#snippet rootRender(props: HTMLAttributes<HTMLSpanElement>, _state: AvatarRootState, children?: Snippet)}
+  <span {...props} data-root-status={_state.imageLoadingStatus} bind:this={root}>{@render children?.()}</span>
 {/snippet}
-{#snippet imageRender(props: Record<string | symbol, unknown>, _state: AvatarImageState, children: Snippet | undefined)}
-  <img {...(props as HTMLImgAttributes)} bind:this={image} />{@render children?.()}
+{#snippet imageRender(props: HTMLImgAttributes, _state: AvatarImageState, children?: Snippet)}
+  <img {...props} bind:this={image} />{@render children?.()}
 {/snippet}
-{#snippet fallbackRender(props: Record<string | symbol, unknown>, _state: AvatarFallbackState, children: Snippet | undefined)}
-  <span {...(props as HTMLAttributes<HTMLSpanElement>)} bind:this={fallback}>{@render children?.()}</span>
+{#snippet fallbackRender(props: HTMLAttributes<HTMLSpanElement>, _state: AvatarFallbackState, children?: Snippet)}
+  <span {...props} bind:this={fallback}>{@render children?.()}</span>
 {/snippet}
 <section data-avatar-render-probe>
   {#if shown}

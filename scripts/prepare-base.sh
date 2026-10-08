@@ -13,5 +13,6 @@ git -C "$base_source" fetch --quiet origin "$base_commit"
 git -C "$base_source" checkout --quiet --detach "$base_commit"
 test "$(git -C "$base_source" rev-parse HEAD)" = "$base_commit"
 test -z "$(git -C "$base_source" status --porcelain)"
-(cd "$base_source" && bash scripts/bootstrap.sh && pnpm --filter @sveltery/base build && pnpm --filter @sveltery/base pack --pack-destination "$sveltery_repo_root/.vendor")
+# Base is a single sv-scaffolded package at its repository root since its restart (sveltery/base#93).
+(cd "$base_source" && pnpm install --frozen-lockfile && pnpm build && pnpm pack --pack-destination "$sveltery_repo_root/.vendor")
 node scripts/check-base.mjs

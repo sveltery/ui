@@ -49,7 +49,7 @@ it('supplement: replacement retains consumer attachment and DOM ref', async () =
   const snapshot = (component as unknown as { snapshot(): { calls: Record<string, number>; ref: HTMLElement | null } }).snapshot;
   await unmount(component); await tick(); expect(snapshot().calls.detached).toBe(1); expect(snapshot().ref).toBeNull();
 });
-it('supplement: class/style callbacks track state without replacing a focused DOM host', async () => {
+it('supplement: reactive class/style track disabled state without replacing a focused DOM host', async () => {
   const button = await setup('becomes-disabled'); button.focus(); expect(button.classList.contains('enabled-class')).toBe(true); expect(button.classList.contains('cn-button')).toBe(true); expect(button.classList.contains('px-4')).toBe(true); expect(button.style.opacity).toBe('1');
   button.click(); await tick(); expect(document.getElementById('tested-button')).toBe(button); expect(button.classList.contains('disabled-class')).toBe(true); expect(button.classList.contains('cn-button')).toBe(true); expect(button.classList.contains('px-6')).toBe(true); expect(button.classList.contains('px-4')).toBe(false); expect(button.style.opacity).toBe('0.5'); expect(document.activeElement).toBe(button);
 });
@@ -58,10 +58,11 @@ for (const scenario of ['undefined-type', 'null-type']) it(`supplement: omitted 
   await unmount(mounted.pop()!);
   const explicit = await setup(scenario); expect(explicit.hasAttribute('type')).toBe(false); expect((explicit as HTMLButtonElement).type).toBe('submit');
 });
-for (const scenario of ['custom-disabled', 'native-focusable']) it(`supplement: disabled mousedown cancels default without preceding pointerdown (${scenario})`, async () => {
+// Base UI 1.8 leaves a disabled mousedown's default alone (sveltery/base#66); Base 2984bb24 keeps that, old Base cancelled it.
+for (const scenario of ['custom-disabled', 'native-focusable']) it(`supplement: disabled mousedown keeps its default and skips the consumer without preceding pointerdown (${scenario})`, async () => {
   const button = await setup(scenario);
   const event = new MouseEvent('mousedown', { bubbles: true, cancelable: true, button: 0, buttons: 3 });
-  expect(button.dispatchEvent(event)).toBe(false); expect(event.defaultPrevented).toBe(true); await tick(); expect(calls().mouse).toBe(0);
+  expect(button.dispatchEvent(event)).toBe(true); expect(event.defaultPrevented).toBe(false); await tick(); expect(calls().mouse).toBe(0);
 });
 it('supplement: enabled mousedown retains browser default and invokes the consumer', async () => {
   const button = await setup('custom'); const event = new MouseEvent('mousedown', { bubbles: true, cancelable: true });
