@@ -128,7 +128,7 @@ function tree(root: string, ref: string) {
 // Finite current-source integration. Historical rows are genuine immutable Git
 // inventories; this pair establishes consistency only within actual HEAD and
 // independently reviewed external baseline/final-source authority.
-const sourceAuthenticationManifestSha256 = 'fc1392604d951390060c5d292b834f8b050cee8b284807db47e767c77eaedd75';
+const sourceAuthenticationManifestSha256 = '2fe4386e9f7db98894b83482f10e97cc7cc11f194c77c5579696b8bb5a49bd4b';
 const sourceAuthenticationPath = 'diagnostics/alert-child-segmentation/source-authentication.json';
 const sourceConfigPath = 'diagnostics/alert-child-segmentation/vite.config.ts';
 const sourceLedgerPaths = [
@@ -392,7 +392,7 @@ export function protectedSourceSnapshot(root = repositoryRoot()) {
   catch (error) { currentSourceClosureError = errorRecord(error); failures.push('Finite complete historical/current source closure failed'); }
   const protectedDigest = currentSourceClosure?.historicalA447ProtectedDigest ?? null;
   const frozenArchive = rows.find(row => row.path === '.vendor/sveltery-base-0.0.0.tgz');
-  if (frozenArchive?.sha256 !== '711d5104294d71c9cc7fcbb38d36ac549c17cf37f8bdba02072396b50642f766') failures.push('Frozen Base archive identity mismatch');
+  if (frozenArchive?.sha256 !== '2c551dc935ed2c778471bffe91dc90e714f5317cc36f1b3254f7a31a277ae01c') failures.push('Frozen Base archive identity mismatch');
   let transform: ReturnType<typeof authenticatedEdit>['record'] | null = null;
   let transformError: ReturnType<typeof errorRecord> | null = null;
   try { transform = authenticatedEdit(readFileSync(join(root, 'tests/reference/AlertGallery.tsx'), 'utf8')).record; }
@@ -401,7 +401,7 @@ export function protectedSourceSnapshot(root = repositoryRoot()) {
   let baseLockError: ReturnType<typeof errorRecord> | null = null;
   try { baseLock = JSON.parse(readFileSync(join(root, 'scripts/base.lock.json'), 'utf8')); }
   catch (error) { baseLockError = errorRecord(error); failures.push('Frozen Base lock unavailable'); }
-  if (baseLock?.commit !== 'cbe46682b84b6bdb9c260bc3da0b613b66243ca4' || baseLock?.sha256 !== frozenArchive?.sha256) failures.push('Frozen Base lock mismatch');
+  if (baseLock?.commit !== '5cf487acbbe5a84ac1104e9e8ff1a7cfd6781089' || baseLock?.sha256 !== frozenArchive?.sha256) failures.push('Frozen Base lock mismatch');
   const actualParents = git(root, ['cat-file', '-p', 'HEAD']).split('\n\n')[0].split('\n').filter(line => line.startsWith('parent ')).map(line => line.slice(7));
   return { ok: failures.length === 0, failures, actualHead: head, actualTree: git(root, ['rev-parse', 'HEAD^{tree}']).trim(), actualParents, baselineHead, allowedChangedPaths: [...allowedChanges], newTrackedPaths: authoredFiles, intendedHead, eventName, eventError, eventSHA: process.env.GITHUB_SHA ?? null, dirty, untracked, historicalProtectedDigest, protectedDigest, currentSourceClosure, currentSourceClosureError, rows, licenseRows: rows.filter(row => /license/i.test(row.path)), frozenArchive, baseLock, baseLockError, transform, transformError };
 }

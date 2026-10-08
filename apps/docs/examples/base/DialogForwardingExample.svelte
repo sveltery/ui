@@ -21,7 +21,7 @@
   export function refs() { return { header, footer }; }
 </script>
 
-{#snippet replacement(props: Record<string | symbol, unknown>, _state: unknown, children?: Snippet)}
+{#snippet replacement(props: Record<string | symbol, unknown>, _state: unknown, children: Snippet | undefined)}
   <div {...(props as HTMLAttributes<HTMLDivElement>)}>{#if children}{@render children()}{:else}Fallback label{/if}</div>
 {/snippet}
 {#snippet empty()}{/snippet}

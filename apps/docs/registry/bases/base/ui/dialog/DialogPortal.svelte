@@ -1,10 +1,7 @@
 <script lang="ts">
-  import { Dialog as Primitive, type DialogPortalProps } from '@sveltery/base/dialog';
-  // Base cbe46682 aliases DialogPortalProps to an unexported internal interface; a local interface
-  // keeps the packaged declaration portable without changing the props.
-  // eslint-disable-next-line @typescript-eslint/no-empty-object-type -- the named local interface is the point.
-  interface Props extends DialogPortalProps {}
-  let { children, ...props }: Props = $props();
+  import type { ComponentProps } from 'svelte';
+  import { Dialog as Primitive } from '@sveltery/base/dialog';
+  let { children, ...props }: ComponentProps<typeof Primitive.Portal> = $props();
 </script>
 <Primitive.Portal data-slot="dialog-portal" {...props}>
   {@render children?.()}

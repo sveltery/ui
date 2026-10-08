@@ -1,7 +1,7 @@
 <script lang="ts">
   // Adapted from Sveltery Base 4dd04e49 test fixture, MIT (c) 2026 Sveltery contributors; derived Base UI assertions: tests/reference/BASE_BUTTON_LICENSE.
   // UI integration probes; no additional upstream parity credit.
-  import { onMount, untrack } from 'svelte';
+  import { onMount, untrack, type Snippet } from 'svelte';
   import type { ButtonHostProps, ButtonState } from '@sveltery/base/button';
   import { Button, type ButtonProps } from '../../apps/docs/registry/bases/base/ui/button/index.js';
   let { scenario = 'custom' }: { scenario?: string } = $props();
@@ -30,14 +30,13 @@
   function capture(node: HTMLElement) { ref = node; return () => { ref = null; }; }
   onMount(() => { hydrated = true; });
 </script>
-<!-- Base cbe46682 passes Button render snippets (props, state) only, so the label comes from this scope. -->
-{#snippet replacement(props: ButtonHostProps, state: ButtonState)}
+{#snippet replacement(props: ButtonHostProps, state: ButtonState, children: Snippet | undefined)}
   {#if scenario === 'link'}
-    <a {...props} href="#target">Go</a>
+    <a {...props} href="#target">{@render children?.()}</a>
   {:else}
     <!-- The replacement handler runs first; skipping the Base handler replaces preventBaseUIHandler(). -->
     <span {...props} onclick={event => { count('render'); if (scenario !== 'render-cancel') props.onclick?.(event); }} onclickcapture={() => count('capture')} data-state-disabled={state.disabled}>
-      Save
+      {@render children?.()}
       {#if scenario === 'descendant'}<input aria-label="Inner input" />{/if}
     </span>
   {/if}

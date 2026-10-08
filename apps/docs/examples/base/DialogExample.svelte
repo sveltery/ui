@@ -1,6 +1,5 @@
 <script lang="ts">
   import { onMount, untrack, type Snippet } from 'svelte';
-  import type { HTMLAttributes, HTMLButtonAttributes } from 'svelte/elements';
   import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, DialogClose } from '@sveltery/ui/dialog';
   import type { DialogDivProps, DialogPopupState, DialogTriggerHostProps, DialogTriggerState } from '@sveltery/base/dialog';
   let { scenario = 'ordinary' }: { scenario?: string } = $props();
@@ -26,19 +25,17 @@
   // Base parts have no refs; an attachment records each actual host and clears it on removal.
   function capture(assign: (node: HTMLElement | null) => void) { return (node: HTMLElement) => { assign(node); return () => assign(null); }; }
   const buttonClass = 'cn-button cn-button-variant-outline cn-button-size-default inline-flex items-center justify-center';
-  // Base cbe46682 calls onOpenChangeComplete inside an effect, so a callback that reads the state it writes loops. Reported to Base (sveltery/base#160); drop untrack once it lands.
-  function completed(next: boolean) { untrack(() => completions.push(next)); }
   onMount(() => { hydrated = true; });
 </script>
-{#snippet triggerRender(props: DialogTriggerHostProps, _state: DialogTriggerState, children: Snippet)}<button {...props as HTMLButtonAttributes} data-replacement="trigger">{@render children()}</button>{/snippet}
-{#snippet contentRender(props: DialogDivProps, _state: DialogPopupState, children: Snippet)}<section {...props as HTMLAttributes<HTMLElement>} data-replacement="content">{@render children()}</section>{/snippet}
+{#snippet triggerRender(props: DialogTriggerHostProps, _state: DialogTriggerState, children: Snippet | undefined)}<button {...props} data-replacement="trigger">{@render children?.()}</button>{/snippet}
+{#snippet contentRender(props: DialogDivProps, _state: DialogPopupState, children: Snippet | undefined)}<div {...props} data-replacement="content">{@render children?.()}</div>{/snippet}
 <main class="mx-auto max-w-2xl p-8" data-hydrated={hydrated}>
   <h1 class="mb-4 text-2xl font-medium">Dialog</h1>
   <p class="mb-6 text-muted-foreground">Update your profile, then return to the page.</p>
   <button type="button" class={buttonClass} data-testid="before">Before</button>
   {#if show}
     {const resolvedTriggerId = $derived(scenario === 'initial' ? initialTriggerId : undefined)}
-    <Dialog {open} {modal} defaultTriggerId={resolvedTriggerId} bind:this={dialog} onOpenChange={(next, details) => { log.push({ open: next, reason: details.reason }); if (cancelNext) { details.preventUnmountOnClose(); details.cancel(); cancelNext = false; } else open = next; }} onOpenChangeComplete={completed}>
+    <Dialog {open} {modal} defaultTriggerId={resolvedTriggerId} bind:this={dialog} onOpenChange={(next, details) => { log.push({ open: next, reason: details.reason }); if (cancelNext) { details.preventUnmountOnClose(); details.cancel(); cancelNext = false; } else open = next; }} onOpenChangeComplete={next => completions.push(next)}>
       <DialogTrigger id={resolvedTriggerId} render={scenario === 'custom' ? triggerRender : undefined} class={buttonClass} {@attach capture(node => { trigger = node; })} data-testid="trigger" name="dialog-trigger" onclick={() => {}}>
         Edit profile
       </DialogTrigger>

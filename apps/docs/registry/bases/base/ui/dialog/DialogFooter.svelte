@@ -11,8 +11,8 @@
   {@render children?.()}
   {#if showCloseButton}
     <Primitive.Close>
-      {#snippet render(closeProps: DialogTriggerHostProps, _state: DialogCloseState, closeChildren: Snippet)}
-        <Button {...closeProps} variant="outline">{@render closeChildren()}</Button>
+      {#snippet render(closeProps: DialogTriggerHostProps, _state: DialogCloseState, closeChildren: Snippet | undefined)}
+        <Button {...closeProps} variant="outline">{@render closeChildren?.()}</Button>
       {/snippet}
       Close
     </Primitive.Close>

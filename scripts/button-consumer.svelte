@@ -10,8 +10,7 @@
   function capture(node: HTMLElement) { ref = node; return () => { ref = null; }; }
   onMount(() => { hydrated = true; });
 </script>
-<!-- Base cbe46682 calls Button render snippets with (props, state) only; the fallback label covers absent children. -->
-{#snippet replacement(props: ButtonHostProps, _state: ButtonState, children?: Snippet)}
+{#snippet replacement(props: ButtonHostProps, _state: ButtonState, children: Snippet | undefined)}
   <span {...props} class={[props.class, 'consumer-render']}>{#if children}{@render children()}{:else}Fallback label{/if}</span>
 {/snippet}
 <main data-hydrated={hydrated} class="p-8">

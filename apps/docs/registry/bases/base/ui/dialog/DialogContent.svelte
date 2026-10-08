@@ -15,9 +15,9 @@
     {@render children?.()}
     {#if showCloseButton}
       <Primitive.Close data-slot="dialog-close">
-        {#snippet render(closeProps: DialogTriggerHostProps, _state: DialogCloseState, closeChildren: Snippet)}
+        {#snippet render(closeProps: DialogTriggerHostProps, _state: DialogCloseState, closeChildren: Snippet | undefined)}
           <Button {...closeProps} variant="ghost" class="cn-dialog-close" size="icon-sm">
-            {@render closeChildren()}
+            {@render closeChildren?.()}
           </Button>
         {/snippet}
         <IconPlaceholder lucide="XIcon" tabler="IconX" hugeicons="Cancel01Icon" phosphor="XIcon" remixicon="RiCloseLine" />

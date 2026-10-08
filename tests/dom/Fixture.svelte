@@ -31,15 +31,14 @@
   export function setCancel(value: string) { cancellation = value; }
   export function setOpen(value: boolean) { open = value; }
 </script>
-{#snippet buttonRender(props: HTMLAttributes<HTMLElement>, _state: unknown, children: Snippet)}<span {...props} onclick={event => { log('replacement-click'); props.onclick?.(event); }} data-replacement="">{@render children()}</span>{/snippet}
-{#snippet divRender(props: Record<string | symbol, unknown>, _state: unknown, children: Snippet)}<div {...props} data-replacement="">{@render children()}</div>{/snippet}
-{#snippet titleRender(props: Record<string | symbol, unknown>, _state: unknown, children: Snippet)}<h3 {...props} data-replacement="">{@render children()}</h3>{/snippet}
-{#snippet anchorRender(props: Record<string | symbol, unknown>, _state: unknown, children: Snippet)}<a {...props} href="#navigation" data-replacement="">{@render children()}</a>{/snippet}
+{#snippet buttonRender(props: HTMLAttributes<HTMLElement>, _state: unknown, children: Snippet | undefined)}<span {...props} onclick={event => { log('replacement-click'); props.onclick?.(event); }} data-replacement="">{@render children?.()}</span>{/snippet}
+{#snippet divRender(props: Record<string | symbol, unknown>, _state: unknown, children: Snippet | undefined)}<div {...props} data-replacement="">{@render children?.()}</div>{/snippet}
+{#snippet titleRender(props: Record<string | symbol, unknown>, _state: unknown, children: Snippet | undefined)}<h3 {...props} data-replacement="">{@render children?.()}</h3>{/snippet}
+{#snippet anchorRender(props: Record<string | symbol, unknown>, _state: unknown, children: Snippet | undefined)}<a {...props} href="#navigation" data-replacement="">{@render children?.()}</a>{/snippet}
 {#if visible}
   <UI.Dialog {open} bind:this={dialog} onOpenChange={(next, details) => { log('change', details); if (cancellation === 'close' || cancellation === 'defer-close') { if (cancellation === 'defer-close') details.preventUnmountOnClose(); details.cancel(); } else open = next; }}>
     <UI.DialogTrigger {...attached} {@attach capture(node => { trigger = node; })} id="trigger" name="open" type="button" nativeButton={!custom} {disabled} render={custom ? buttonRender : undefined} onclick={event => { log('consumer-click'); if (prevent) event.preventDefault(); }}>Open</UI.DialogTrigger>
-    <!-- Base cbe46682 Portal takes host attributes and attachments but declares no render prop (open Base gap); the replacement still reaches it by spread. -->
-    <UI.DialogPortal {...attached} keepMounted={keep} {@attach capture(node => { portalHost = node; })} {...(custom ? { render: divRender } : {})}>
+    <UI.DialogPortal {...attached} keepMounted={keep} {@attach capture(node => { portalHost = node; })} render={custom ? divRender : undefined}>
       <UI.DialogOverlay {...attached} {@attach capture(node => { overlay = node; })} render={custom ? divRender : undefined} class="opacity-100" />
       <UI.DialogContent {...attached} {@attach capture(node => { popup = node; })} render={custom ? divRender : undefined} class="p-8" showCloseButton={false} style="--is-open:1">
         <UI.DialogHeader {...attached} bind:ref={header}>

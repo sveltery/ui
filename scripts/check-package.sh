@@ -283,16 +283,18 @@ cat > "$consumer_directory/types.ts" <<'TS'
 import type { ComponentProps } from 'svelte';
 import { Dialog, DialogTrigger, DialogContent, DialogFooter } from '@sveltery/ui';
 import { DialogPortal, DialogOverlay } from '@sveltery/ui/dialog';
-const root: ComponentProps<typeof Dialog> = { modal: false, actions: null };
-const trigger: ComponentProps<typeof DialogTrigger> = { nativeButton: false, onclick: event => event.preventBaseUIHandler() };
-const popup: ComponentProps<typeof DialogContent> = { showCloseButton: true, class: state => state.open ? 'p-8' : '', initialFocus: false };
+const root: ComponentProps<typeof Dialog> = { modal: false, open: false, triggerId: null };
+const trigger: ComponentProps<typeof DialogTrigger> = { nativeButton: false, onclick: event => event.preventDefault() };
+const popup: ComponentProps<typeof DialogContent> = { showCloseButton: true, class: ['p-8'], initialFocus: false };
 const footer: ComponentProps<typeof DialogFooter> = { showCloseButton: true };
 const portal: ComponentProps<typeof DialogPortal> = { keepMounted: true, container: null };
 const overlay: ComponentProps<typeof DialogOverlay> = { forceRender: true };
 import { Button, buttonVariants, type ButtonState } from '@sveltery/ui/button';
-const button: ComponentProps<typeof Button> = { variant: 'destructive', size: 'icon-xs', type: 'submit', focusableWhenDisabled: true, nativeButton: false, class: state => state.disabled ? 'px-6' : 'px-4', onclick: event => event.preventBaseUIHandler() };
+const button: ComponentProps<typeof Button> = { variant: 'destructive', size: 'icon-xs', type: 'submit', focusableWhenDisabled: true, nativeButton: false, class: 'px-6', onclick: event => event.preventDefault() };
 const state: ButtonState = { disabled: false };
 buttonVariants({ variant: null, size: null, class: 'px-6' });
+// @ts-expect-error Base parts have no ref prop (use {@attach})
+const badRef: ComponentProps<typeof Button> = { ref: null };
 // @ts-expect-error unsupported styled variant
 const invalidButton: ComponentProps<typeof Button> = { variant: 'danger' };
 // @ts-expect-error packaged declarations reject CSS objects
@@ -317,7 +319,7 @@ const badKbd: KbdProps = { render: () => {} };
 void [kbdComponent, groupComponent, badKbd];
 void [skeleton, badSkeleton];
 void [textarea, badTextarea];
-void [root, trigger, popup, footer, portal, overlay, badStyle, badVariant, button, state, invalidButton];
+void [badRef, root, trigger, popup, footer, portal, overlay, badStyle, badVariant, button, state, invalidButton];
 TS
 sed 's#../apps/docs/registry/bases/base/ui/table/index.js#@sveltery/ui/table#' tests/types-table.ts > "$consumer_directory/table-types.ts"
 sed 's#../apps/docs/registry/bases/base/ui/card/index.js#@sveltery/ui/card#' tests/card-types.ts > "$consumer_directory/card-types.ts"

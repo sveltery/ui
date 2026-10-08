@@ -6,8 +6,8 @@
   let hydrated = $state(false);
   onMount(() => { hydrated = true; });
 </script>
-{#snippet anchor(props: DialogTriggerHostProps, _state: DialogCloseState, children: Snippet)}
-  <a {...props} href="#activated">{@render children()}</a>
+{#snippet anchor(props: DialogTriggerHostProps, _state: DialogCloseState, children: Snippet | undefined)}
+  <a {...props} href="#activated">{@render children?.()}</a>
 {/snippet}
 <main data-hydrated={hydrated}>
 <Dialog>

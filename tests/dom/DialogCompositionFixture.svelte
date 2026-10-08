@@ -21,8 +21,8 @@
   function capture<T extends HTMLElement>(assign: (node: T | null) => void) { return (node: T) => { assign(node); return () => assign(null); }; }
   export function observed() { return { open, popup, footer, attachments, cleanups, changes }; }
 </script>
-{#snippet popupRender(props: Record<string | symbol, unknown>, _state: unknown, children: Snippet)}
-  <section {...props} data-replacement="">{@render children()}</section>
+{#snippet popupRender(props: Record<string | symbol, unknown>, _state: unknown, children: Snippet | undefined)}
+  <section {...props} data-replacement="">{@render children?.()}</section>
 {/snippet}
 {#if visible}
   <IconLibraryProvider {library}>
