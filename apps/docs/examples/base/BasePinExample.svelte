@@ -7,7 +7,7 @@
   let open = $state(false);
   let show = $state(true);
   let hydrated = $state(false);
-  // Base 5cf487ac parts have no refs. Each attachment records its actual host and clears it on removal.
+  // Base c2b87f31 parts have no refs. Each attachment records its actual host and clears it on removal.
   let hosts = $state<Partial<Record<Part, HTMLElement | null>>>({});
   let dialog = $state<ReturnType<typeof Dialog>>();
   let first = $state<HTMLDivElement | null>(null);

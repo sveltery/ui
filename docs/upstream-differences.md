@@ -26,7 +26,7 @@ The [Base register](https://github.com/sveltery/base/blob/400ab42408f276824be7fe
 | Nonmodal ShadowRoot exit; [FloatingPortal](https://github.com/mui/base-ui/blob/47b40521eab921c2756bf9bdb0b0f07fbfdb8c8c/packages/react/src/floating-ui-react/components/FloatingPortal.tsx) | Retargeted React guards loop focus into the Popup; Base reverse Tab exits to the trigger and forward Tab exits to the following control/dismisses. | Correct logical exit across shadow retargeting. [Base PR #13](https://github.com/sveltery/base/pull/13), same paired shadow tests/run. UI Content does not establish every configurable Base Portal scenario. |
 | Disabled chorded mousedown; [useButton](https://github.com/mui/base-ui/blob/47b40521eab921c2756bf9bdb0b0f07fbfdb8c8c/packages/react/src/internals/use-button/useButton.ts) | React suppresses the consumer but leaves default focus possible without a new pointerdown; Base prevents disabled mousedown default focus for tested custom/native-focusable hosts. | Extend disabled default-cancellation intent. [Base PR #17](https://github.com/sveltery/base/pull/17), [trusted chorded probes](https://github.com/sveltery/base/blob/4dd04e495fc9f5bb6a0bb872fe103563d49535b1/tests/browser/button.spec.ts), [passing run](https://github.com/sveltery/base/actions/runs/36914270095). |
 
-The [Base restart adoption](#proposed-base-restart-adoption) drops the canceled-close and disabled-mousedown rows: Base 5cf487ac restores the upstream behavior for both. Decision status for these entries: landed in Base and inherited by the Base pin in [UI PR #5](https://github.com/sveltery/ui/pull/5). The cited evidence does not record specific user approval of these deviations. Merging establishes landed state only. Divergent expected results earn no parity credit. Base's disabled Close-anchor and native tabbable repairs are fidelity repairs; they are not added to this difference list.
+The [Base restart adoption](#proposed-base-restart-adoption) drops the canceled-close and disabled-mousedown rows: Base c2b87f31 restores the upstream behavior for both. Decision status for these entries: landed in Base and inherited by the Base pin in [UI PR #5](https://github.com/sveltery/ui/pull/5). The cited evidence does not record specific user approval of these deviations. Merging establishes landed state only. Divergent expected results earn no parity credit. Base's disabled Close-anchor and native tabbable repairs are fidelity repairs; they are not added to this difference list.
 
 ## Styled and framework adaptations
 
@@ -404,22 +404,22 @@ Actual8c WebKit112218555162 full log was read once:1507177bytes SHA256aa2a81f83b
 
 ## Proposed Base restart adoption
 
-Base source moves from `f884f3bb265485ef8e422e43a75eb3055db11fab` to [`5cf487acbbe5a84ac1104e9e8ff1a7cfd6781089`](https://github.com/sveltery/base/tree/5cf487acbbe5a84ac1104e9e8ff1a7cfd6781089), after Base's restart as a single sv-scaffolded package ([Base #93](https://github.com/sveltery/base/pull/93)). Base now ports Base UI 1.8.0 (`47b40521eab921c2756bf9bdb0b0f07fbfdb8c8c`) with native Svelte APIs and records its own differences in its [register](https://github.com/sveltery/base/blob/5cf487acbbe5a84ac1104e9e8ff1a7cfd6781089/docs/upstream-differences.md). The archive was rebuilt with `scripts/prepare-base.sh` (252,050 bytes, SHA-256 `2c551dc935ed2c778471bffe91dc90e714f5317cc36f1b3254f7a31a277ae01c`). It includes Base #159 (Portal host attributes), #158 (controllable values: a parent writing a controlled value no longer fires `on*Change`, as upstream), #157 (field fixes) and #156 (composite arrow keys). Shadcn stays at `d75a96ab781f3d659be1ad287347d5887ce9f2fc`. The four Base-backed families (Button, Dialog, Avatar, Separator) keep their wrapper anatomy, classes, defaults and spread order; only their Base bindings change.
+Base source moves from `f884f3bb265485ef8e422e43a75eb3055db11fab` to [`c2b87f319d2f70ed613c3b2e4280a4953d9923dc`](https://github.com/sveltery/base/tree/c2b87f319d2f70ed613c3b2e4280a4953d9923dc), after Base's restart as a single sv-scaffolded package ([Base #93](https://github.com/sveltery/base/pull/93)). Base now ports Base UI 1.8.0 (`47b40521eab921c2756bf9bdb0b0f07fbfdb8c8c`) with native Svelte APIs and records its own differences in its [register](https://github.com/sveltery/base/blob/c2b87f319d2f70ed613c3b2e4280a4953d9923dc/docs/upstream-differences.md). The archive was rebuilt with `scripts/prepare-base.sh` (252,341 bytes, SHA-256 `5b25e776c5bd4be67afb3241a80f8abdb5e5dbe77a92b9e35a10b3b9d5d31fc5`). It includes Base #159 (Portal host attributes), #158 (controllable values: a parent writing a controlled value no longer fires `on*Change`, as upstream), #157 (field fixes) and #156 (composite arrow keys). Shadcn stays at `d75a96ab781f3d659be1ad287347d5887ce9f2fc`. The four Base-backed families (Button, Dialog, Avatar, Separator) keep their wrapper anatomy, classes, defaults and spread order; only their Base bindings change.
 
 Decision status: proposed, not landed. The maintainer asked on 2026-10-08 for Svelte-native code here (`bind:this` and `$state`, `{@attach}`, no React-style refs) and for missing Base pieces to be reported to Base rather than patched in UI. No acceptance of the individual differences below is recorded.
 
 ### Restored upstream behavior inherited from Base
 
-| Behavior and source | Base UI 1.8 and Base 5cf487ac | Old Base f884 / UI evidence |
+| Behavior and source | Base UI 1.8 and Base c2b87f31 | Old Base f884 / UI evidence |
 | --- | --- | --- |
 | Canceled close with `preventUnmountOnClose()`; [DialogStore](https://github.com/mui/base-ui/blob/47b40521eab921c2756bf9bdb0b0f07fbfdb8c8c/packages/react/src/dialog/store/DialogStore.ts) and `useOpenStateTransitions` | The flag stays set after the canceled request, because its synced value only resets when `open` changes; the next close stays mounted until `unmount()`. | Old Base isolated each request (inherited difference above). [Dialog DOM test](../tests/dom/dialog.test.ts) and [example test](../tests/dom/dialog-example.test.ts) now assert the upstream result. |
 | Disabled chorded mousedown; [useButton](https://github.com/mui/base-ui/blob/47b40521eab921c2756bf9bdb0b0f07fbfdb8c8c/packages/react/src/internals/use-button/useButton.ts) | The default is left alone; the consumer handler is skipped (Base issue #66). | Old Base cancelled the default. [Button DOM test](../tests/dom/button.test.ts) now asserts the upstream result. |
 
-The inherited nonmodal ShadowRoot exit difference above is not re-verified against 5cf487ac in this change.
+The inherited nonmodal ShadowRoot exit difference above is not re-verified against c2b87f31 in this change.
 
 ### Framework and API substitutions
 
-| Area | Local behavior at 5cf487ac |
+| Area | Local behavior at c2b87f31 |
 | --- | --- |
 | Refs | Base parts have no `ref` prop. UI Button, Avatar/AvatarImage/AvatarFallback, Separator and the Dialog parts drop `ref`; consumers use `{@attach}`, which reaches the host through the props spread. Native-only parts (AvatarBadge, AvatarGroup, AvatarGroupCount, DialogHeader, DialogFooter) keep `bind:ref`. |
 | Class and style | Native values only. Base state callbacks are gone; the Separator conformance harness resolves a React `className` callback with the Separator state before handing Base a class. |
@@ -431,7 +431,7 @@ The inherited nonmodal ShadowRoot exit difference above is not re-verified again
 
 ### Base gaps found during adoption, fixed in Base
 
-Each gap below was reported to Base during this adoption rather than patched in UI, and is fixed at the 5cf487ac pin. The UI tests that failed on earlier pins now pass with their original assertions.
+Each gap below was reported to Base during this adoption rather than patched in UI, and is fixed at the c2b87f31 pin. The UI tests that failed on earlier pins now pass with their original assertions.
 
 | Gap | Upstream | Base fix | UI evidence |
 | --- | --- | --- | --- |
@@ -442,4 +442,4 @@ Each gap below was reported to Base during this adoption rather than patched in 
 | Server portal output | `FloatingPortal` renders nothing on the server. | [#165](https://github.com/sveltery/base/pull/165) | [Package consumer check](../scripts/check-package.sh) (5 ids, no portal or dialog in SSR HTML) |
 | Completion callback tracking | Callbacks run outside render tracking. | [#160](https://github.com/sveltery/base/pull/160); the [Dialog example](../apps/docs/examples/base/DialogExample.svelte) no longer wraps its callback in `untrack` | [Dialog example test](../tests/dom/dialog-example.test.ts) |
 
-The same pin also carries Base [#166](https://github.com/sveltery/base/pull/166) (an already-open nested popup stays open) and [#168](https://github.com/sveltery/base/pull/168) (Tab past the last control of a non-modal Popover closes it), which UI's current wrappers do not exercise.
+The same pin also carries Base [#166](https://github.com/sveltery/base/pull/166) (an already-open nested popup stays open) and [#168](https://github.com/sveltery/base/pull/168) (Tab past the last control of a non-modal Popover closes it), which UI's current wrappers do not exercise. It also carries [#167](https://github.com/sveltery/base/pull/167) (focus returns to the trigger when an open portal's container goes back to `null`; trigger `aria-controls` appears only once the popup exists, so server HTML for an open Popover trigger has `aria-expanded="false"` and no `aria-controls` until hydration, as upstream) and [#171](https://github.com/sveltery/base/pull/171) (Shift+Tab from an open non-modal Popover trigger closes it with reason `focus-out`).
