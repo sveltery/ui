@@ -26,7 +26,7 @@
   // Base parts have no refs; an attachment records each actual host and clears it on removal.
   function capture(assign: (node: HTMLElement | null) => void) { return (node: HTMLElement) => { assign(node); return () => assign(null); }; }
   const buttonClass = 'cn-button cn-button-variant-outline cn-button-size-default inline-flex items-center justify-center';
-  // Base ea4e108e calls onOpenChangeComplete inside an effect, so a callback that reads the state it writes loops. Reported to Base (sveltery/base#160); drop untrack once it lands.
+  // Base cbe46682 calls onOpenChangeComplete inside an effect, so a callback that reads the state it writes loops. Reported to Base (sveltery/base#160); drop untrack once it lands.
   function completed(next: boolean) { untrack(() => completions.push(next)); }
   onMount(() => { hydrated = true; });
 </script>

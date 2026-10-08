@@ -15,7 +15,7 @@
   let trace = $state<{ status: string; rootDOMStatus: string | null }[]>([]);
   const attachment = { [createAttachmentKey()]: () => { untrack(() => { attached++; }); return () => { untrack(() => { cleaned++; }); }; } };
 </script>
-<!-- Base ea4e108e calls Avatar render snippets with (props, state) only, so children stay absent until Base passes them. -->
+<!-- Base cbe46682 calls Avatar render snippets with (props, state) only, so children stay absent until Base passes them. -->
 {#snippet rootRender(props: HTMLAttributes<HTMLSpanElement>, _state: AvatarRootState, children?: Snippet)}
   <span {...props} data-root-status={_state.imageLoadingStatus} bind:this={root}>{@render children?.()}</span>
 {/snippet}

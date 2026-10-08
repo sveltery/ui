@@ -1,6 +1,6 @@
 # Avatar source port
 
-> **Base restart (ea4e108e).** Avatar now wraps Base `ea4e108e14ae8a73140bb7a360bc32454b19da4a`. The `ref` prop is gone: pass `{@attach}` to reach the host. `class` and `style` take native values only, with no state callbacks. Base ea4e108e calls Avatar `render` snippets with `(props, state)` only, so a replacement cannot render the part's children yet (an open Base gap). See the [restart adoption](upstream-differences.md#proposed-base-restart-adoption) for the full list and the open Base gaps. Older pin details below are historical.
+> **Base restart (cbe46682).** Avatar now wraps Base `cbe46682b84b6bdb9c260bc3da0b613b66243ca4`. The `ref` prop is gone: pass `{@attach}` to reach the host. `class` and `style` take native values only, with no state callbacks. Base cbe46682 calls Avatar `render` snippets with `(props, state)` only, so a replacement cannot render the part's children yet (an open Base gap). See the [restart adoption](upstream-differences.md#proposed-base-restart-adoption) for the full list and the open Base gaps. Older pin details below are historical.
 
 This proposed bounded port implements the six original styled exports and the seven original gallery functions at shadcn `d75a96ab781f3d659be1ad287347d5887ce9f2fc`. Full API parity, native browser/fresh delivery acceptance and landing are not established by this proposal. The genuine optional `delay={0}` contract remains blocked by the consumed Base version difference below.
 

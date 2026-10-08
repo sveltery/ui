@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 test('SSR and hydration match Base child forwarding and undefined native refs clean up', async ({ page, request }) => {
   const response = await request.get('/dialog-forwarding'); expect(response.ok()).toBe(true);
   const html = await response.text();
-  // Base ea4e108e always passes Dialog render snippets a children snippet, so no fallback label renders.
+  // Base cbe46682 always passes Dialog render snippets a children snippet, so no fallback label renders.
   expect((html.match(/Fallback label/g) ?? []).length).toBe(0);
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));

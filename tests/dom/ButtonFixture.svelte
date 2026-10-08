@@ -30,7 +30,7 @@
   function capture(node: HTMLElement) { ref = node; return () => { ref = null; }; }
   onMount(() => { hydrated = true; });
 </script>
-<!-- Base ea4e108e passes Button render snippets (props, state) only, so the label comes from this scope. -->
+<!-- Base cbe46682 passes Button render snippets (props, state) only, so the label comes from this scope. -->
 {#snippet replacement(props: ButtonHostProps, state: ButtonState)}
   {#if scenario === 'link'}
     <a {...props} href="#target">Go</a>

@@ -1,6 +1,6 @@
 # Experimental Button
 
-> **Base restart (ea4e108e).** Button now wraps Base `ea4e108e14ae8a73140bb7a360bc32454b19da4a`. The `ref` prop is gone: pass `{@attach}` to reach the host. `class` and `style` take native values only, with no state callbacks. Base ea4e108e calls Button `render` snippets with `(props, state)` only, so a replacement cannot render the Button's children yet (an open Base gap). A disabled mousedown now keeps its default, as Base UI 1.8 does. See the [restart adoption](upstream-differences.md#proposed-base-restart-adoption) for the full list and the open Base gaps. Older pin details below are historical.
+> **Base restart (cbe46682).** Button now wraps Base `cbe46682b84b6bdb9c260bc3da0b613b66243ca4`. The `ref` prop is gone: pass `{@attach}` to reach the host. `class` and `style` take native values only, with no state callbacks. Base cbe46682 calls Button `render` snippets with `(props, state)` only, so a replacement cannot render the Button's children yet (an open Base gap). A disabled mousedown now keeps its default, as Base UI 1.8 does. See the [restart adoption](upstream-differences.md#proposed-base-restart-adoption) for the full list and the open Base gaps. Older pin details below are historical.
 
 ## Landed direct remote submitter gates
 

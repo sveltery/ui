@@ -33,7 +33,7 @@ it('scenario changes replace attached hosts without changing owner state or canc
   expect(state()).toMatchObject({ open: true, attachments: 2, cleanups: 1, completions: [true, true, true] });
   expect(state().log.map((entry: { open: boolean }) => entry.open)).toEqual([true, false]);
   // Base UI 1.8 keeps preventUnmountOnClose from the canceled close (its synced value only resets when open changes),
-  // so the next close leaves the popup mounted. Base ea4e108e inherits this; old Base reset it.
+  // so the next close leaves the popup mounted. Base cbe46682 inherits this; old Base reset it.
   await click('action-close');
   expect(state()).toMatchObject({ open: false, popup: 'content', attachments: 2, cleanups: 1, completions: [true, true, true] });
   await click('trigger');
