@@ -1,5 +1,7 @@
 # Styled native Separator
 
+> **Base restart (2984bb24).** Separator now wraps Base `2984bb24a98a474ffad5df8da434af93f0f03472`. The `ref` prop is gone: pass `{@attach}` to reach the host. `class` and `style` take native values only, with no state callbacks. Base 2984bb24 calls Separator `render` snippets with `(props, state)` only, so a replacement cannot render the part's children yet (an open Base gap). See the [restart adoption](upstream-differences.md#proposed-base-restart-adoption) for the full list and the open Base gaps. Older pin details below are historical.
+
 The proposed `Separator` is exported from `@sveltery/ui` and `@sveltery/ui/separator`, with named `SeparatorProps` and `SeparatorState` native type conveniences. One canonical source directory is packaged and copied: [separator](../apps/docs/registry/bases/base/ui/separator/index.ts). All primitive orientation, ARIA, host/render composition, style callback, ref, attachment and event behavior comes from the actual locked `@sveltery/base/separator`; UI adds no behavior controller or placeholder.
 
 ```svelte

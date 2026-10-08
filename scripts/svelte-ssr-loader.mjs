@@ -16,7 +16,10 @@ registerHooks({
         return nextResolve(source.href, context);
       }
     }
-    return nextResolve(specifier, context);
+    // Svelte bundlers resolve the `svelte` export condition; sv-scaffolded packages such as
+    // Base (since sveltery/base#93) export Svelte entries under that condition only.
+    const conditions = context.conditions.includes('svelte') ? context.conditions : [...context.conditions, 'svelte'];
+    return nextResolve(specifier, { ...context, conditions });
   },
   load(url, context, nextLoad) {
     if (url.endsWith('.svelte') || (url.endsWith('.svelte.js') || url.endsWith('.svelte.ts'))) {

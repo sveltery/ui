@@ -883,6 +883,7 @@ packages:
   '@sveltery/base@file:.vendor/sveltery-base-0.0.0.tgz':
     resolution: {integrity: sha512-T3mJJgaQESsRI3dyLz1ZjXCBA8oeJ751Hwp0akTUJUCe8pAMgYIwLURB/DeHrVantgxFHP65Endlu7H4j9+N6w==, tarball: file:.vendor/sveltery-base-0.0.0.tgz}
     version: 0.0.0
+    engines: {node: '>=24 <25'}
     peerDependencies:
       svelte: ^5.57.1
 
@@ -3569,6 +3570,8 @@ snapshots:
 
   '@sveltery/base@file:.vendor/sveltery-base-0.0.0.tgz(svelte@5.57.1(@typescript-eslint/types@8.71.0))':
     dependencies:
+      '@floating-ui/dom': 1.8.0
+      '@floating-ui/utils': 0.2.12
       esm-env: 1.2.2
       svelte: 5.57.1(@typescript-eslint/types@8.71.0)
 

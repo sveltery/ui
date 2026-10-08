@@ -6,11 +6,13 @@ Ordinary UI bootstrap consumes the committed `.vendor/sveltery-base-0.0.0.tgz` a
 
 | Item | Immutable identity |
 | --- | --- |
-| Base source | `f884f3bb265485ef8e422e43a75eb3055db11fab` in [base.lock.json](../scripts/base.lock.json) |
+| Base source | `2984bb24a98a474ffad5df8da434af93f0f03472` in [base.lock.json](../scripts/base.lock.json) |
 | Package | Private `@sveltery/base` `0.0.0` |
-| Archive | `.vendor/sveltery-base-0.0.0.tgz`, 67,626 bytes |
-| Archive SHA-256 | `915dd6aebd304a7a9c384b0dd5eecd589722686897079fb6dec2961608c564fd` |
-| Frozen integrity | `sha512-ZkJimKxdfu+92S3kZNL6m3WS9Pob65l0xIeTlI6OYFHM+Sw1S8U8qdYlJcD0kFLljLD+E/la+0n5aCZTdEprsQ==` in [pnpm-lock.yaml](../pnpm-lock.yaml) |
+| Archive | `.vendor/sveltery-base-0.0.0.tgz`, 247,697 bytes |
+| Archive SHA-256 | `8d7468a1c6b63103096e687b83b8b895b0e7b45902571a4e95221161b3fc4887` |
+| Frozen integrity | `sha512-T3mJJgaQESsRI3dyLz1ZjXCBA8oeJ751Hwp0akTUJUCe8pAMgYIwLURB/DeHrVantgxFHP65Endlu7H4j9+N6w==` in [pnpm-lock.yaml](../pnpm-lock.yaml) |
+
+The [Base restart adoption](upstream-differences.md#proposed-base-restart-adoption) rebuilt this archive from Base `2984bb24a98a474ffad5df8da434af93f0f03472` with `scripts/prepare-base.sh`. The build is reproducible: two clean `pnpm build && pnpm pack` runs at that commit produced the same SHA-256. The f884 archive below (67,626 bytes, SHA-256 `915dd6aebd304a7a9c384b0dd5eecd589722686897079fb6dec2961608c564fd`) is the historical predecessor.
 
 This is a byte copy of the existing UI-owned archive retained with accepted UI main `b6d7251f85200b3ff82db98bb942387f56327b18`. No new Base source checkout, build, repack or dependency update produces it. Its 225 unique regular files have safe `package/` paths and retain their original 0644 member modes. The archive includes the original MIT license and complete third-party notice, including the Material-UI copyright and permission notice. Its package manifest retains `esm-env` 1.2.2, the original Svelte peer, and no install or prepare lifecycle script.
 
@@ -20,7 +22,7 @@ The archive is tracked with Git mode 100644. Its checkout filesystem permissions
 
 The [Avatar/Accordion upgrade record](base-pin-upgrade.md#source-package-and-archive-audit) describes the earlier archive build and ordinary-bootstrap reconstruction. That source/build evidence and its checksums remain historical and unchanged. This document and the current [installation guide](installation.md) supersede its statements that the archive is uncommitted and rebuilt by ordinary bootstrap. Current delivery does not advance the Base pin, claim a new build, or repeat those historical Base operations.
 
-[prepare-base.sh](../scripts/prepare-base.sh) remains unchanged as a historical manual reconstruction utility outside ordinary bootstrap and CI. Running it performs Base repository and build operations and requires separate explicit authorization for the separately managed Base project. Neither its presence nor this delivery change grants that authorization.
+[prepare-base.sh](../scripts/prepare-base.sh) is the manual reconstruction utility. Since the Base restart (sveltery/base#93) it installs, builds and packs Base from its repository root. It stays outside ordinary bootstrap and CI. It clones and builds Base read-only; it does not change the Base project.
 
 ## Source and gate mapping
 

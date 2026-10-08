@@ -11,6 +11,12 @@ tar -xzf .vendor/sveltery-base-0.0.0.tgz --strip-components=1 -C "$consumer_dire
 for dependency in svelte cn clsx class-variance-authority jsdom shadcn; do
   ln -s "$sveltery_repo_root/node_modules/$dependency" "$consumer_directory/node_modules/$dependency"
 done
+# Base's own runtime dependencies (esm-env and Floating UI since sveltery/base#93) resolve beside its installed copy.
+base_dependencies="$(realpath "$sveltery_repo_root/node_modules/@sveltery/base")/../.."
+for dependency in esm-env @floating-ui/dom @floating-ui/utils; do
+  mkdir -p "$(dirname "$consumer_directory/node_modules/$dependency")"
+  ln -s "$(realpath "$base_dependencies/$dependency")" "$consumer_directory/node_modules/$dependency"
+done
 cmp packages/ui/LICENSE "$consumer_directory/node_modules/@sveltery/ui/LICENSE"
 cmp packages/ui/THIRD_PARTY_NOTICES.md "$consumer_directory/node_modules/@sveltery/ui/THIRD_PARTY_NOTICES.md"
 cmp tests/reference/cn-upstream/LICENSE "$consumer_directory/node_modules/cn/LICENSE"
