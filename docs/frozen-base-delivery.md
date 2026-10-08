@@ -6,13 +6,13 @@ Ordinary UI bootstrap consumes the committed `.vendor/sveltery-base-0.0.0.tgz` a
 
 | Item | Immutable identity |
 | --- | --- |
-| Base source | `2984bb24a98a474ffad5df8da434af93f0f03472` in [base.lock.json](../scripts/base.lock.json) |
+| Base source | `ea4e108e14ae8a73140bb7a360bc32454b19da4a` in [base.lock.json](../scripts/base.lock.json) |
 | Package | Private `@sveltery/base` `0.0.0` |
-| Archive | `.vendor/sveltery-base-0.0.0.tgz`, 247,697 bytes |
-| Archive SHA-256 | `8d7468a1c6b63103096e687b83b8b895b0e7b45902571a4e95221161b3fc4887` |
+| Archive | `.vendor/sveltery-base-0.0.0.tgz`, 249,230 bytes |
+| Archive SHA-256 | `85461bc9f901a2c3676b6ddcb2e63cedcd0a3eed06b1d46e04f2a5df04f39428` |
 | Frozen integrity | `sha512-T3mJJgaQESsRI3dyLz1ZjXCBA8oeJ751Hwp0akTUJUCe8pAMgYIwLURB/DeHrVantgxFHP65Endlu7H4j9+N6w==` in [pnpm-lock.yaml](../pnpm-lock.yaml) |
 
-The [Base restart adoption](upstream-differences.md#proposed-base-restart-adoption) rebuilt this archive from Base `2984bb24a98a474ffad5df8da434af93f0f03472` with `scripts/prepare-base.sh`. The build is reproducible: two clean `pnpm build && pnpm pack` runs at that commit produced the same SHA-256. The f884 archive below (67,626 bytes, SHA-256 `915dd6aebd304a7a9c384b0dd5eecd589722686897079fb6dec2961608c564fd`) is the historical predecessor.
+The [Base restart adoption](upstream-differences.md#proposed-base-restart-adoption) rebuilt this archive from Base `ea4e108e14ae8a73140bb7a360bc32454b19da4a` with `scripts/prepare-base.sh`. The build is reproducible: two clean `pnpm build && pnpm pack` runs at that commit produced the same SHA-256. The f884 archive below (67,626 bytes, SHA-256 `915dd6aebd304a7a9c384b0dd5eecd589722686897079fb6dec2961608c564fd`) is the historical predecessor.
 
 This is a byte copy of the existing UI-owned archive retained with accepted UI main `b6d7251f85200b3ff82db98bb942387f56327b18`. No new Base source checkout, build, repack or dependency update produces it. Its 225 unique regular files have safe `package/` paths and retain their original 0644 member modes. The archive includes the original MIT license and complete third-party notice, including the Material-UI copyright and permission notice. Its package manifest retains `esm-env` 1.2.2, the original Svelte peer, and no install or prepare lifecycle script.
 

@@ -14,7 +14,7 @@
   function attachment(node: HTMLElement) { untrack(() => { attaches++; ref = node; }); node.dataset.probed = 'separator'; return () => untrack(() => { detaches++; ref = null; }); }
   onMount(() => { hydrated = true; });
 </script>
-<!-- Base 2984bb24 calls Separator render snippets with (props, state) only, so children stay absent until Base passes them. -->
+<!-- Base ea4e108e calls Separator render snippets with (props, state) only, so children stay absent until Base passes them. -->
 {#snippet replacement(props: HTMLAttributes<HTMLDivElement>, state: SeparatorState, children?: Snippet)}
   <div data-testid="replacement-wrap"><span {...props as HTMLAttributes<HTMLSpanElement>} data-state-orientation={state.orientation}>{#if children}{@render children()}{/if}</span></div>
 {/snippet}

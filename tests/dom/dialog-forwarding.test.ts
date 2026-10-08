@@ -9,7 +9,7 @@ it('five styled wrappers preserve absent, supplied and explicitly empty children
     for (const part of ['trigger', 'close', 'title', 'description', 'overlay']) {
       for (const kind of ['base', 'ui']) {
         const content = (mode: string) => document.querySelector(`[data-testid="${kind}-${part}-${mode}"]`)!.textContent;
-        // Base 2984bb24 always hands Dialog render snippets a children snippet, so an omitted child renders empty there.
+        // Base ea4e108e always hands Dialog render snippets a children snippet, so an omitted child renders empty there.
         expect(content('omitted'), `${kind} ${part}`).toBe(document.querySelector(`[data-testid="base-${part}-omitted"]`)!.textContent);
         expect(content('omitted'), `${kind} ${part}`).toBe('');
         expect(content('present'), `${kind} ${part}`).toBe('Explicit label');

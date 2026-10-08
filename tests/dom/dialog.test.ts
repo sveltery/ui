@@ -29,7 +29,7 @@ for (const custom of [false, true]) it(`every wrapper relays actual refs, attach
   expect(fixture.portal()!.isConnected).toBe(true);
   fixture.remove(); await settle();
   const removed = fixture.refs(); expect(removed.cleanups).toBe(removed.attachments);
-  for (const part of ['trigger', 'overlay', 'popup', 'title', 'description', 'close', 'header', 'footer'] as const) expect(removed[part]).toBeNull();
+  for (const part of ['trigger', 'portal', 'overlay', 'popup', 'title', 'description', 'close', 'header', 'footer'] as const) expect(removed[part]).toBeNull();
   expect(document.querySelector('[data-base-ui-portal]')).toBeNull(); expect(document.documentElement.style.overflow).toBe('');
 });
 it('replacement and consumer handlers compose before activation, and prevention cancels activation', async () => {

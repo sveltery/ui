@@ -26,7 +26,7 @@ The [Base register](https://github.com/sveltery/base/blob/400ab42408f276824be7fe
 | Nonmodal ShadowRoot exit; [FloatingPortal](https://github.com/mui/base-ui/blob/47b40521eab921c2756bf9bdb0b0f07fbfdb8c8c/packages/react/src/floating-ui-react/components/FloatingPortal.tsx) | Retargeted React guards loop focus into the Popup; Base reverse Tab exits to the trigger and forward Tab exits to the following control/dismisses. | Correct logical exit across shadow retargeting. [Base PR #13](https://github.com/sveltery/base/pull/13), same paired shadow tests/run. UI Content does not establish every configurable Base Portal scenario. |
 | Disabled chorded mousedown; [useButton](https://github.com/mui/base-ui/blob/47b40521eab921c2756bf9bdb0b0f07fbfdb8c8c/packages/react/src/internals/use-button/useButton.ts) | React suppresses the consumer but leaves default focus possible without a new pointerdown; Base prevents disabled mousedown default focus for tested custom/native-focusable hosts. | Extend disabled default-cancellation intent. [Base PR #17](https://github.com/sveltery/base/pull/17), [trusted chorded probes](https://github.com/sveltery/base/blob/4dd04e495fc9f5bb6a0bb872fe103563d49535b1/tests/browser/button.spec.ts), [passing run](https://github.com/sveltery/base/actions/runs/36914270095). |
 
-The [Base restart adoption](#proposed-base-restart-adoption) drops the canceled-close and disabled-mousedown rows: Base 2984bb24 restores the upstream behavior for both. Decision status for these entries: landed in Base and inherited by the Base pin in [UI PR #5](https://github.com/sveltery/ui/pull/5). The cited evidence does not record specific user approval of these deviations. Merging establishes landed state only. Divergent expected results earn no parity credit. Base's disabled Close-anchor and native tabbable repairs are fidelity repairs; they are not added to this difference list.
+The [Base restart adoption](#proposed-base-restart-adoption) drops the canceled-close and disabled-mousedown rows: Base ea4e108e restores the upstream behavior for both. Decision status for these entries: landed in Base and inherited by the Base pin in [UI PR #5](https://github.com/sveltery/ui/pull/5). The cited evidence does not record specific user approval of these deviations. Merging establishes landed state only. Divergent expected results earn no parity credit. Base's disabled Close-anchor and native tabbable repairs are fidelity repairs; they are not added to this difference list.
 
 ## Styled and framework adaptations
 
@@ -404,22 +404,22 @@ Actual8c WebKit112218555162 full log was read once:1507177bytes SHA256aa2a81f83b
 
 ## Proposed Base restart adoption
 
-Base source moves from `f884f3bb265485ef8e422e43a75eb3055db11fab` to [`2984bb24a98a474ffad5df8da434af93f0f03472`](https://github.com/sveltery/base/tree/2984bb24a98a474ffad5df8da434af93f0f03472), after Base's restart as a single sv-scaffolded package ([Base #93](https://github.com/sveltery/base/pull/93)). Base now ports Base UI 1.8.0 (`47b40521eab921c2756bf9bdb0b0f07fbfdb8c8c`) with native Svelte APIs and records its own differences in its [register](https://github.com/sveltery/base/blob/2984bb24a98a474ffad5df8da434af93f0f03472/docs/upstream-differences.md). The archive was rebuilt with `scripts/prepare-base.sh` (247,697 bytes, SHA-256 `8d7468a1c6b63103096e687b83b8b895b0e7b45902571a4e95221161b3fc4887`; two clean builds matched). Shadcn stays at `d75a96ab781f3d659be1ad287347d5887ce9f2fc`. The four Base-backed families (Button, Dialog, Avatar, Separator) keep their wrapper anatomy, classes, defaults and spread order; only their Base bindings change.
+Base source moves from `f884f3bb265485ef8e422e43a75eb3055db11fab` to [`ea4e108e14ae8a73140bb7a360bc32454b19da4a`](https://github.com/sveltery/base/tree/ea4e108e14ae8a73140bb7a360bc32454b19da4a), after Base's restart as a single sv-scaffolded package ([Base #93](https://github.com/sveltery/base/pull/93)). Base now ports Base UI 1.8.0 (`47b40521eab921c2756bf9bdb0b0f07fbfdb8c8c`) with native Svelte APIs and records its own differences in its [register](https://github.com/sveltery/base/blob/ea4e108e14ae8a73140bb7a360bc32454b19da4a/docs/upstream-differences.md). The archive was rebuilt with `scripts/prepare-base.sh` (249,230 bytes, SHA-256 `85461bc9f901a2c3676b6ddcb2e63cedcd0a3eed06b1d46e04f2a5df04f39428`). It includes Base #159 (Portal host attributes), #157 (field fixes) and #156 (composite arrow keys). Shadcn stays at `d75a96ab781f3d659be1ad287347d5887ce9f2fc`. The four Base-backed families (Button, Dialog, Avatar, Separator) keep their wrapper anatomy, classes, defaults and spread order; only their Base bindings change.
 
 Decision status: proposed, not landed. The maintainer asked on 2026-10-08 for Svelte-native code here (`bind:this` and `$state`, `{@attach}`, no React-style refs) and for missing Base pieces to be reported to Base rather than patched in UI. No acceptance of the individual differences below is recorded.
 
 ### Restored upstream behavior inherited from Base
 
-| Behavior and source | Base UI 1.8 and Base 2984bb24 | Old Base f884 / UI evidence |
+| Behavior and source | Base UI 1.8 and Base ea4e108e | Old Base f884 / UI evidence |
 | --- | --- | --- |
 | Canceled close with `preventUnmountOnClose()`; [DialogStore](https://github.com/mui/base-ui/blob/47b40521eab921c2756bf9bdb0b0f07fbfdb8c8c/packages/react/src/dialog/store/DialogStore.ts) and `useOpenStateTransitions` | The flag stays set after the canceled request, because its synced value only resets when `open` changes; the next close stays mounted until `unmount()`. | Old Base isolated each request (inherited difference above). [Dialog DOM test](../tests/dom/dialog.test.ts) and [example test](../tests/dom/dialog-example.test.ts) now assert the upstream result. |
 | Disabled chorded mousedown; [useButton](https://github.com/mui/base-ui/blob/47b40521eab921c2756bf9bdb0b0f07fbfdb8c8c/packages/react/src/internals/use-button/useButton.ts) | The default is left alone; the consumer handler is skipped (Base issue #66). | Old Base cancelled the default. [Button DOM test](../tests/dom/button.test.ts) now asserts the upstream result. |
 
-The inherited nonmodal ShadowRoot exit difference above is not re-verified against 2984bb24 in this change.
+The inherited nonmodal ShadowRoot exit difference above is not re-verified against ea4e108e in this change.
 
 ### Framework and API substitutions
 
-| Area | Local behavior at 2984bb24 |
+| Area | Local behavior at ea4e108e |
 | --- | --- |
 | Refs | Base parts have no `ref` prop. UI Button, Avatar/AvatarImage/AvatarFallback, Separator and the Dialog parts drop `ref`; consumers use `{@attach}`, which reaches the host through the props spread. Native-only parts (AvatarBadge, AvatarGroup, AvatarGroupCount, DialogHeader, DialogFooter) keep `bind:ref`. |
 | Class and style | Native values only. Base state callbacks are gone; the Separator conformance harness resolves a React `className` callback with the Separator state before handing Base a class. |
@@ -431,12 +431,13 @@ The inherited nonmodal ShadowRoot exit difference above is not re-verified again
 
 ### Open Base gaps (blocked, reported to Base)
 
-| Gap | Upstream | Base 2984bb24 | Failing UI evidence |
+| Gap | Upstream | Base ea4e108e | Failing UI evidence |
 | --- | --- | --- | --- |
-| Portal host props | `Dialog.Portal` renders its `<div>` with element props, `render` and refs; shadcn passes `data-slot="dialog-portal"`. | `DialogPortalProps` (and `PopoverPortalProps`) take only `keepMounted`, `container` and `children`. UI `DialogPortal` drops the `data-slot` rather than patching around it. | [Dialog DOM test](../tests/dom/dialog.test.ts) registry-defaults cases (3) |
+| Portal `render` | `Dialog.Portal` takes `BaseUIComponentProps<'div'>`, including `render`. | Since Base #159 `Dialog.Portal` takes host attributes, `{@attach}`, `keepMounted` and `container`, so UI `DialogPortal` passes `data-slot="dialog-portal"` again. `render` is neither declared nor applied, and Base's register does not record it. | [Dialog DOM test](../tests/dom/dialog.test.ts) custom-render case (portal part) |
 | Explicit `null` container | The portal waits without a host. | `null` falls back to the parent portal or `document.body`. | [Base pin DOM test](../tests/dom/base-pin.test.ts) and [browser case](../tests/browser/base-pin-cases.ts) |
 | Render children | `props.children` reaches the render element (the Empty gallery's `<Button render={<a />}>Create project</Button>`). | Button, Separator and Avatar render snippets get no children. | [Button DOM test](../tests/dom/button.test.ts) fallback-label case; [Empty SSR check](../scripts/check-empty-ssr.mjs) loses the anchor icons |
 | Server portal output | `FloatingPortal` renders nothing on the server, so a `defaultOpen` popup is absent from SSR HTML. | `FloatingPortal` renders an inline `<div>` with the popup during SSR and moves it on mount, so SSR HTML carries `role="dialog"` and its ids. | [Package consumer check](../scripts/check-package.sh) (`ids.length` 6, expected 5) |
-| Completion callback tracking | Callbacks run outside render tracking. | `onOpenChangeComplete` runs inside an effect, so a callback that reads and writes the same state loops (`effect_update_depth_exceeded`). | The [Dialog example](../apps/docs/examples/base/DialogExample.svelte) wraps its callback in `untrack`, commented as waiting on Base. |
+| Portal props type export | Not applicable (React types). | `DialogPortalProps` aliases `PortalProps` from Base's unexported `internal/portal-props`, so a wrapper typed with it cannot emit a portable declaration. UI `DialogPortal` declares a local `interface Props extends DialogPortalProps {}`; props are unchanged. | `pnpm --filter @sveltery/ui build` omitted `DialogPortal.svelte.d.ts` before the local interface |
+| Completion callback tracking | Callbacks run outside render tracking. | `onOpenChangeComplete` runs inside an effect, so a callback that reads and writes the same state loops (`effect_update_depth_exceeded`). Fix pending in [Base #160](https://github.com/sveltery/base/pull/160). | The [Dialog example](../apps/docs/examples/base/DialogExample.svelte) wraps its callback in `untrack`, commented as waiting on Base. |
 
 UI does not patch these in production code. The failing tests above stay as they are until Base lands the fixes and UI repins.

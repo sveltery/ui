@@ -9,7 +9,7 @@
 </script>
 
 <!-- Render element href follows all merged string/symbol props, as in the genuine source render anchor. -->
-<!-- Base 2984bb24 calls Button render snippets with (props, state) only, so children stay absent until Base passes them. -->
+<!-- Base ea4e108e calls Button render snippets with (props, state) only, so children stay absent until Base passes them. -->
 {#snippet anchor(props: ButtonHostProps, _state: ButtonState, children?: Snippet)}
   <!-- svelte-ignore a11y_invalid_attribute (Exact immutable source placeholder anchor.) -->
   <a {...props} href="#">{@render children?.()}</a>

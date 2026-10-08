@@ -58,7 +58,7 @@ for (const scenario of ['undefined-type', 'null-type']) it(`supplement: omitted 
   await unmount(mounted.pop()!);
   const explicit = await setup(scenario); expect(explicit.hasAttribute('type')).toBe(false); expect((explicit as HTMLButtonElement).type).toBe('submit');
 });
-// Base UI 1.8 leaves a disabled mousedown's default alone (sveltery/base#66); Base 2984bb24 keeps that, old Base cancelled it.
+// Base UI 1.8 leaves a disabled mousedown's default alone (sveltery/base#66); Base ea4e108e keeps that, old Base cancelled it.
 for (const scenario of ['custom-disabled', 'native-focusable']) it(`supplement: disabled mousedown keeps its default and skips the consumer without preceding pointerdown (${scenario})`, async () => {
   const button = await setup(scenario);
   const event = new MouseEvent('mousedown', { bubbles: true, cancelable: true, button: 0, buttons: 3 });

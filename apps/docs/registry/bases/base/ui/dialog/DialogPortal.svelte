@@ -1,9 +1,11 @@
 <script lang="ts">
-  import type { ComponentProps } from 'svelte';
-  import { Dialog as Primitive } from '@sveltery/base/dialog';
-  // Base 2984bb24 Portal takes no host attributes, so the pinned data-slot="dialog-portal" is blocked on Base.
-  let { children, ...props }: ComponentProps<typeof Primitive.Portal> = $props();
+  import { Dialog as Primitive, type DialogPortalProps } from '@sveltery/base/dialog';
+  // Base ea4e108e aliases DialogPortalProps to an unexported internal interface; a local interface
+  // keeps the packaged declaration portable without changing the props.
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type -- the named local interface is the point.
+  interface Props extends DialogPortalProps {}
+  let { children, ...props }: Props = $props();
 </script>
-<Primitive.Portal {...props}>
+<Primitive.Portal data-slot="dialog-portal" {...props}>
   {@render children?.()}
 </Primitive.Portal>
