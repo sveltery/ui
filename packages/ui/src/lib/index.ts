@@ -23,3 +23,6 @@ export * from './breadcrumb/index.js';
 export * from './pagination/index.js';
 export * from './native-select/index.js';
 export * from './marker/index.js';
+export * from './attachment/index.js';
+export * from './bubble/index.js';
+export * from './message/index.js';

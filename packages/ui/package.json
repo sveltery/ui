@@ -134,6 +134,21 @@
       "types": "./dist/marker/index.d.ts",
       "svelte": "./dist/marker/index.js",
       "default": "./dist/marker/index.js"
+    },
+    "./attachment": {
+      "types": "./dist/attachment/index.d.ts",
+      "svelte": "./dist/attachment/index.js",
+      "default": "./dist/attachment/index.js"
+    },
+    "./bubble": {
+      "types": "./dist/bubble/index.d.ts",
+      "svelte": "./dist/bubble/index.js",
+      "default": "./dist/bubble/index.js"
+    },
+    "./message": {
+      "types": "./dist/message/index.d.ts",
+      "svelte": "./dist/message/index.js",
+      "default": "./dist/message/index.js"
     }
   },
   "svelte": "./dist/index.js",
