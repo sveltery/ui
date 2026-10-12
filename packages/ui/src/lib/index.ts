@@ -20,3 +20,4 @@ export * from './spinner/index.js';
 export * from './button-group/index.js';
 export * from './item/index.js';
 export * from './breadcrumb/index.js';
+export * from './pagination/index.js';

@@ -378,6 +378,21 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
       },
       "body": "<path d=\"M20 6 9 17l-5-5\"/>"
     },
+    "ChevronLeftIcon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "class": "lucide lucide-chevron-left"
+      },
+      "body": "<path d=\"m15 18-6-6 6-6\"/>"
+    },
     "ChevronRightIcon": {
       "attributes": {
         "xmlns": "http://www.w3.org/2000/svg",
@@ -739,6 +754,21 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
         "class": "tabler-icon tabler-icon-check"
       },
       "body": "<path d=\"M5 12l5 5l10 -10\"/>"
+    },
+    "IconChevronLeft": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "class": "tabler-icon tabler-icon-chevron-left"
+      },
+      "body": "<path d=\"M15 6l-6 6l6 6\"/>"
     },
     "IconChevronRight": {
       "attributes": {
@@ -1406,6 +1436,16 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
       },
       "body": "<path d=\"M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z\"/>"
     },
+    "CaretLeftIcon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 256 256",
+        "fill": "currentColor"
+      },
+      "body": "<path d=\"M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z\"/>"
+    },
     "CaretRightIcon": {
       "attributes": {
         "xmlns": "http://www.w3.org/2000/svg",
@@ -1622,6 +1662,17 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
         "class": "remixicon"
       },
       "body": "<path d=\"M16.0503 12.0498L21 16.9996L16.0503 21.9493L14.636 20.5351L17.172 17.9988L4 17.9996V15.9996L17.172 15.9988L14.636 13.464L16.0503 12.0498ZM7.94975 2.0498L9.36396 3.46402L6.828 5.9988L20 5.99955V7.99955L6.828 7.9988L9.36396 10.5351L7.94975 11.9493L3 6.99955L7.94975 2.0498Z\"/>"
+    },
+    "RiArrowLeftSLine": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "currentColor",
+        "class": "remixicon"
+      },
+      "body": "<path d=\"M10.8284 12.0007L15.7782 16.9504L14.364 18.3646L8 12.0007L14.364 5.63672L15.7782 7.05093L10.8284 12.0007Z\"/>"
     },
     "RiArrowRightLine": {
       "attributes": {
