@@ -23,6 +23,7 @@ const svgFiles = (dir, prefix) => {
 
 const stroked = { xmlns: 'http://www.w3.org/2000/svg', width: '24', height: '24', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' };
 const tablerNodes = new Map(Object.entries(JSON.parse(readFileSync(join(packageDir('@tabler/icons'), 'tabler-nodes-outline.json'), 'utf8'))).map(([name, nodes]) => [`Icon${pascal(name)}`, { name, nodes }]));
+const tablerFilledNodes = new Map(Object.entries(JSON.parse(readFileSync(join(packageDir('@tabler/icons'), 'tabler-nodes-filled.json'), 'utf8'))).map(([name, nodes]) => [`Icon${pascal(name)}Filled`, { name, nodes }]));
 const phosphorFiles = svgFiles(join(packageDir('@phosphor-icons/core'), 'assets/regular'), '');
 const remixFiles = svgFiles(join(packageDir('remixicon'), 'icons'), 'Ri');
 
@@ -32,6 +33,8 @@ const resolvers = {
     return node && { attributes: { ...stroked, class: `lucide lucide-${kebab(name.replace(/Icon$/, ''))}` }, body: serialize(node[2]) };
   },
   tabler(name) {
+    const filled = tablerFilledNodes.get(name);
+    if (filled) return { attributes: { xmlns: stroked.xmlns, width: '24', height: '24', viewBox: '0 0 24 24', fill: 'currentColor', class: `tabler-icon tabler-icon-filled tabler-icon-${filled.name}` }, body: serialize(filled.nodes) };
     const icon = tablerNodes.get(name);
     return icon && { attributes: { ...stroked, class: `tabler-icon tabler-icon-${icon.name}` }, body: serialize(icon.nodes) };
   },
