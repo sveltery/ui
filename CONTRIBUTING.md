@@ -8,7 +8,7 @@ Use Node 24 and pnpm 12. Then run `pnpm install`.
 
 - `packages/ui/src/lib/<component>` holds each component, its variants and its types.
 - `packages/ui/src/lib/styles` holds the Nova and scoped style sheets.
-- `apps/docs` consumes `@sveltery/ui` like any app and hosts the examples.
+- `apps/docs` is the docs site. It consumes `@sveltery/ui` like any app and hosts the examples. Its pages live in `apps/docs/content/docs`, and [its README](apps/docs/content/docs/README.md) shows how to add one.
 - `tests/dom` holds vitest behavior tests, `tests/browser` holds Playwright tests, and `tests/installation` holds the packaging smoke test.
 
 ## Rules
@@ -18,3 +18,7 @@ Follow [AGENTS.md](AGENTS.md). Port the upstream shadcn/ui component, keep its c
 ## Checks
 
 `pnpm verify` runs lint, type checks, unit tests, the docs build, the remote-form fixture and the packaging smoke test. `pnpm test:browser --project chromium` runs the browser tests. Firefox and WebKit run nightly in CI.
+
+## Docs site
+
+`pnpm --filter @sveltery/docs dev` serves the site with hot reload. `pnpm --filter @sveltery/docs build` prerenders it for Cloudflare and builds the Pagefind search index, and `pnpm --filter @sveltery/docs preview` serves that build with `wrangler dev`. The Docs workflow deploys `main` when the `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets and the `DOCS_SITE_URL` variable exist. `DOCS_SITE_URL` is the deployed origin that the sitemap and `llms.txt` use.
