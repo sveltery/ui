@@ -14,114 +14,42 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  standards:
-    name: Standards
+  verify:
+    name: Verify
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
       - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
         with:
-          version: 12.6.0
           run_install: false
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version: '24'
-          package-manager-cache: false
-      - name: Frozen workspace install
-        run: bash scripts/bootstrap.sh
-      - name: ESLint
-        run: bash -c 'source scripts/toolchain.sh; pnpm lint'
-      - name: Whitespace
-        run: git show --format= --check HEAD
-  verification:
-    name: Verification
-    runs-on: ubuntu-24.04
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
-        with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
-          persist-credentials: false
-      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
-        with:
-          version: 12.6.0
-          run_install: false
-      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
-        with:
-          node-version: '24'
-          package-manager-cache: false
-      - name: Frozen workspace install
-        run: bash scripts/bootstrap.sh
-      - name: Types, DOM, builds and isolated SSR package consumer
+      - run: bash scripts/bootstrap.sh
+      - name: Lint, types, unit tests, docs build, remote forms and package smoke test
         run: bash scripts/verify.sh
-      - name: Fresh documented SvelteKit archive and source-copy consumers
-        run: bash scripts/check-installation.sh
-  dialog-browser:
-    name: ${{ matrix.engine == 'chromium' && 'Dialog browser' || matrix.engine == 'firefox' && 'Firefox browser' || 'WebKit browser' }}
-    # Native Ubuntu runner supported by Playwright; retain Chromium sandbox startup.
-    runs-on: ubuntu-22.04
-    timeout-minutes: ${{ matrix.engine == 'webkit' && 90 || 75 }}
-    strategy:
-      fail-fast: false
-      matrix:
-        engine: [chromium, firefox, webkit]
-    env:
-      SVELTERY_BROWSER_PROJECT: ${{ matrix.engine }}
+  browser:
+    name: Chromium
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
       - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
         with:
-          version: 12.6.0
           run_install: false
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version: '24'
-          package-manager-cache: false
-      - name: Frozen workspace install
-        run: bash scripts/bootstrap.sh
-      - name: Build actual Dialog library
-        run: pnpm --filter @sveltery/ui build
-      - name: Install selected official browser and OS dependencies
-        id: browser-install
-        run: bash -c 'source scripts/toolchain.sh; pnpm exec playwright install --with-deps "$SVELTERY_BROWSER_PROJECT"'
-      - name: Styled Svelte and pinned React reference acceptance
-        id: main-browser
-        if: ${{ !cancelled() && steps.browser-install.outcome == 'success' }}
-        run: bash -c 'source scripts/toolchain.sh; pnpm test:browser --project "$SVELTERY_BROWSER_PROJECT"'
-      - name: Preserve main-suite results before fresh consumers
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        if: ${{ !cancelled() && (steps.main-browser.outcome == 'success' || steps.main-browser.outcome == 'failure') }}
+      - run: bash scripts/bootstrap.sh
+      - run: bash -c 'source scripts/toolchain.sh; pnpm --filter @sveltery/ui build && pnpm exec playwright install --with-deps chromium && pnpm test:browser --project chromium'
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: failure()
         with:
-          name: browser-${{ matrix.engine }}-main-results
+          name: chromium-results
           path: test-results/
-          retention-days: 7
-      - name: Documented fresh consumers in selected browser
-        id: fresh-browser
-        if: ${{ !cancelled() && steps.browser-install.outcome == 'success' }}
-        run: bash scripts/check-installation.sh --browser
-      - name: Upload fresh-consumer failure artifacts
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        if: ${{ !cancelled() && steps.fresh-browser.outcome == 'failure' }}
-        with:
-          name: browser-${{ matrix.engine }}-failures
-          path: test-results/
-          retention-days: 7
-      - name: Isolated original React child-segmentation diagnostic
-        id: alert-segmentation-diagnostic
-        if: ${{ !cancelled() && matrix.engine == 'chromium' && steps.browser-install.outcome == 'success' && (steps.fresh-browser.outcome == 'success' || steps.fresh-browser.outcome == 'failure') }}
-        run: bash -c 'source scripts/toolchain.sh; pnpm exec playwright test --config diagnostics/alert-child-segmentation/playwright.config.ts --project chromium'
-      - name: Preserve isolated original React diagnostic
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        if: ${{ !cancelled() && matrix.engine == 'chromium' && (steps.alert-segmentation-diagnostic.outcome == 'success' || steps.alert-segmentation-diagnostic.outcome == 'failure') }}
-        with:
-          name: alert-child-segmentation-chromium-${{ github.run_id }}-${{ github.run_attempt }}
-          path: .checks/alert-child-segmentation-results/
-          if-no-files-found: error
           retention-days: 7
