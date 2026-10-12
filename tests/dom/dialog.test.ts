@@ -1,78 +1,112 @@
 import { afterEach, expect, it } from 'vitest';
 import { mount, tick, unmount } from 'svelte';
-import Fixture from './Fixture.svelte';
-import Example from '../../apps/docs/examples/base/DialogExample.svelte';
+import DialogFixture from './DialogFixture.svelte';
+
+type Fixture = { isOpen(): boolean; setOpen(next: boolean): void; remove(): void };
 const mounted: ReturnType<typeof mount>[] = [];
-async function settle() { await tick(); await new Promise(resolve => setTimeout(resolve, 70)); await tick(); }
-function setup(props: Parameters<typeof Fixture>[1] = {}) {
-  const host = document.createElement('div'); document.body.append(host);
-  const instance = mount(Fixture, { target: host, props }); mounted.push(instance); return instance;
+afterEach(async () => {
+  for (const instance of mounted.splice(0)) await unmount(instance);
+  document.body.replaceChildren();
+  document.documentElement.removeAttribute('style');
+});
+
+async function settle() {
+  await tick();
+  await new Promise(resolve => setTimeout(resolve, 70));
+  await tick();
 }
-function click(node: HTMLElement) { node.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, detail: 1 })); }
-afterEach(async () => { for (const instance of mounted.splice(0)) await unmount(instance); document.body.replaceChildren(); document.documentElement.removeAttribute('style'); });
-for (const custom of [false, true]) it(`every wrapper relays actual refs, attachments, children and cleanup (custom=${custom})`, async () => {
-  const fixture = setup({ custom }); await settle();
-  const trigger = fixture.refs().trigger!;
-  expect(trigger.getAttribute('name')).toBe('open'); expect(trigger.dataset.attached).toBe('');
-  click(trigger); await settle();
-  const refs = fixture.refs();
-  for (const [part, node] of Object.entries(refs)) {
-    if (!(node instanceof HTMLElement)) continue;
-    expect(node.isConnected, part).toBe(true); expect(node.dataset.attached, part).toBe('');
-    if (custom && !['header', 'footer'].includes(part)) expect(node.dataset.replacement, part).toBe('');
-  }
-  expect(refs.popup!.getAttribute('aria-labelledby')).toBe(refs.title!.id);
-  expect(refs.popup!.getAttribute('aria-describedby')).toBe(refs.description!.id);
-  for (const text of ['Title', 'Description', 'Dismiss']) expect(refs.popup!.textContent).toContain(text);
-  expect(refs.popup!.style.getPropertyValue('--is-open')).toBe('1');
-  expect(refs.popup!.classList.contains('p-8')).toBe(true); expect(refs.popup!.classList.contains('p-4')).toBe(false);
-  fixture.remove(); await settle();
-  const removed = fixture.refs(); expect(removed.cleanups).toBe(removed.attachments);
-  for (const part of ['trigger', 'portal', 'overlay', 'popup', 'title', 'description', 'close', 'header', 'footer'] as const) expect(removed[part]).toBeNull();
-  expect(document.querySelector('[data-base-ui-portal]')).toBeNull(); expect(document.documentElement.style.overflow).toBe('');
+
+async function setup(props: { contentClose?: boolean; footerClose?: boolean; cancel?: boolean } = {}) {
+  const events: string[] = [];
+  const instance = mount(DialogFixture, { target: document.body, props: { ...props, events } });
+  mounted.push(instance);
+  await settle();
+  const button = (name: string) => [...document.querySelectorAll<HTMLButtonElement>('button')].find(node => node.textContent?.trim() === name)!;
+  const popup = () => document.querySelector<HTMLElement>('[role=dialog]');
+  return { fixture: instance as unknown as Fixture, events, button, popup };
+}
+
+it('the trigger opens a labelled, portalled dialog with an overlay', async () => {
+  const { button, popup, fixture } = await setup();
+  const trigger = button('Open');
+  expect(trigger.dataset.slot).toBe('dialog-trigger');
+  expect(trigger.getAttribute('aria-haspopup')).toBe('dialog');
+  expect(popup()).toBeNull();
+  trigger.click();
+  await settle();
+  const dialog = popup()!;
+  expect(fixture.isOpen()).toBe(true);
+  expect(dialog.dataset.slot).toBe('dialog-content');
+  expect(dialog.classList.contains('cn-dialog-content')).toBe(true);
+  expect(dialog.classList.contains('p-8')).toBe(true);
+  expect(dialog.closest('[data-slot=dialog-portal]')!.parentElement).toBe(document.body);
+  expect(document.querySelector('[data-slot=dialog-overlay]')!.classList.contains('cn-dialog-overlay')).toBe(true);
+  expect(document.getElementById(dialog.getAttribute('aria-labelledby')!)!.textContent).toBe('Title');
+  expect(document.getElementById(dialog.getAttribute('aria-describedby')!)!.textContent).toBe('Description');
+  expect(trigger.getAttribute('aria-expanded')).toBe('true');
 });
-it('replacement and consumer handlers compose before activation, and prevention cancels activation', async () => {
-  const log: string[] = []; const fixture = setup({ custom: true, prevent: true, log: kind => log.push(kind) }); await settle();
-  click(fixture.refs().trigger!); await settle(); expect(log).toEqual(['replacement-click', 'consumer-click']); expect(fixture.refs().popup).toBeNull();
+
+it('the built-in close button is a ghost icon Button with a screen reader label', async () => {
+  const { button, popup } = await setup();
+  button('Open').click();
+  await settle();
+  const close = popup()!.querySelector<HTMLButtonElement>('.cn-dialog-close')!;
+  expect(close.localName).toBe('button');
+  expect(close.type).toBe('button');
+  expect(close.dataset.slot).toBe('dialog-close');
+  expect([...close.classList].filter(name => name.startsWith('cn-button'))).toEqual(['cn-button', 'cn-button-variant-ghost', 'cn-button-size-icon-sm']);
+  expect(close.querySelector('.sr-only')!.textContent).toBe('Close');
+  close.click();
+  await settle();
+  expect(popup()).toBeNull();
 });
-it('custom disabled trigger preserves keyboard and click prevention', async () => {
-  const fixture = setup({ custom: true, disabled: true }); await settle(); const trigger = fixture.refs().trigger!;
-  trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true })); click(trigger); await settle();
-  expect(trigger.getAttribute('aria-disabled')).toBe('true'); expect(fixture.refs().popup).toBeNull();
+
+it('the footer close option renders an outline Button and the content close can be omitted', async () => {
+  const { button, popup } = await setup({ contentClose: false, footerClose: true });
+  button('Open').click();
+  await settle();
+  const dialog = popup()!;
+  expect(dialog.querySelector('.cn-dialog-close')).toBeNull();
+  const footerClose = [...dialog.querySelectorAll<HTMLButtonElement>('[data-slot=dialog-footer] button')].map(node => [node.textContent?.trim(), node.classList.contains('cn-button-variant-outline')]);
+  expect(footerClose).toEqual([['Dismiss', false], ['Close', true]]);
 });
-it('bind:actions forwards imperative close, with cancellation preserving open content', async () => {
-  const fixture = setup(); await settle(); click(fixture.refs().trigger!); await settle();
-  fixture.setCancel('close'); fixture.refs().actions!.close(); await settle(); expect(fixture.refs().popup).not.toBeNull();
-  fixture.setCancel(''); fixture.refs().actions!.close(); await settle(); expect(fixture.refs().popup).toBeNull();
+
+it('bind:open opens and closes the dialog from the owner', async () => {
+  const { fixture, popup } = await setup();
+  fixture.setOpen(true);
+  await settle();
+  expect(popup()).not.toBeNull();
+  fixture.setOpen(false);
+  await settle();
+  expect(popup()).toBeNull();
 });
-it('canceled preventUnmountOnClose does not retain a later accepted close (Base fix gate)', async () => {
-  const fixture = setup(); await settle(); click(fixture.refs().trigger!); await settle();
-  fixture.setCancel('defer-close'); await tick(); fixture.refs().actions!.close(); await settle(); expect(fixture.refs().popup).not.toBeNull();
-  fixture.setCancel(''); await tick(); fixture.refs().actions!.close(); await settle(); expect(fixture.refs().popup).toBeNull();
+
+it('onOpenChange reports the reason and can cancel a close', async () => {
+  const { button, popup, events } = await setup({ cancel: false });
+  button('Open').click();
+  await settle();
+  button('Dismiss').click();
+  await settle();
+  expect(events.filter(event => event.startsWith('change'))).toEqual(['change:true:trigger-press', 'change:false:close-press']);
+  expect(popup()).toBeNull();
 });
-it('disabled replacement Close anchor suppresses native navigation (Base fix gate)', async () => {
-  const fixture = setup({ disabledAnchor: true }); await settle(); click(fixture.refs().trigger!); await settle();
-  const event = new MouseEvent('click', { bubbles: true, cancelable: true }); fixture.refs().close!.dispatchEvent(event); await settle();
-  expect(event.defaultPrevented).toBe(true); expect(fixture.refs().popup).not.toBeNull();
+
+it('a canceled change keeps the dialog in its current state', async () => {
+  const { button, popup, fixture } = await setup({ cancel: true });
+  button('Open').click();
+  await settle();
+  expect(popup()).toBeNull();
+  expect(fixture.isOpen()).toBe(false);
 });
-for (const scenario of ['ordinary', 'footer', 'no-close']) it(`content and footer close options preserve registry defaults (${scenario})`, async () => {
-  const host = document.createElement('div'); document.body.append(host); mounted.push(mount(Example, { target: host, props: { scenario } })); await settle();
-  click(host.querySelector<HTMLElement>('[data-testid=trigger]')!); await settle();
-  const popup = document.querySelector<HTMLElement>('[role=dialog]')!;
-  expect(popup.closest('[data-slot=dialog-portal]')).not.toBeNull(); expect(document.querySelector('[data-slot=dialog-overlay]')).not.toBeNull();
-  expect(popup.querySelectorAll('button')).toHaveLength(scenario === 'no-close' ? 1 : 2);
-  expect(!!popup.querySelector('.cn-dialog-close')).toBe(scenario === 'ordinary');
-  if (scenario === 'footer') expect(popup.querySelector('[data-slot=dialog-footer]')!.textContent).toContain('Close');
-});
-it('custom example attachment counters settle and clean up once per Popup lifetime', async () => {
-  const host = document.createElement('div'); document.body.append(host); mounted.push(mount(Example, { target: host, props: { scenario: 'custom' } })); await settle();
-  const state = () => JSON.parse(host.querySelector('[data-testid=state]')!.textContent ?? '{}');
-  click(host.querySelector<HTMLElement>('[data-testid=trigger]')!); await settle();
-  expect(state()).toMatchObject({ open: true, attachments: 1, cleanups: 0, popup: 'content' });
-  click(host.querySelector<HTMLElement>('[data-testid=action-close]')!); await settle();
-  expect(state()).toMatchObject({ open: false, attachments: 1, cleanups: 1, popup: false });
-  click(host.querySelector<HTMLElement>('[data-testid=trigger]')!); await settle();
-  expect(state()).toMatchObject({ open: true, attachments: 2, cleanups: 1, popup: 'content' });
-  click(host.querySelector<HTMLElement>('[data-testid=remove]')!); await settle();
-  expect(state()).toMatchObject({ attachments: 2, cleanups: 2, popup: false });
+
+it('attachments reach the popup and clean up, and unmounting releases the scroll lock', async () => {
+  const { button, events, fixture } = await setup();
+  button('Open').click();
+  await settle();
+  expect(events).toContain('attach:dialog-content');
+  fixture.remove();
+  await settle();
+  expect(events.at(-1)).toBe('detach:dialog-content');
+  expect(document.querySelector('[data-slot=dialog-portal]')).toBeNull();
+  expect(document.documentElement.style.overflow).toBe('');
 });

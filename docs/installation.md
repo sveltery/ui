@@ -1,0 +1,61 @@
+# Installation
+
+Sveltery UI and Sveltery Base are not published to npm yet. Install both from GitHub, pinned to a commit.
+
+## 1. Add the packages
+
+Pick a UI commit, and use the Base commit that the UI repository's `package.json` pins under `@sveltery/base`.
+
+```sh
+pnpm add github:sveltery/base#<base-commit>
+pnpm add @sveltery/ui@file:<path-to-packed-ui>.tgz
+pnpm add cn class-variance-authority clsx tailwindcss tw-animate-css shadcn
+```
+
+Build the UI archive from a checkout of this repository:
+
+```sh
+pnpm install
+pnpm --filter @sveltery/ui build
+pnpm --filter @sveltery/ui pack
+```
+
+pnpm builds Base from source on install. Allow it in `pnpm-workspace.yaml` with the key that pnpm prints:
+
+```yaml
+allowBuilds:
+  "@sveltery/base@https://codeload.github.com/sveltery/base/tar.gz/<base-commit>": true
+```
+
+## 2. Add the styles
+
+Import Tailwind and the Sveltery UI styles in your global CSS, and let Tailwind scan the package:
+
+```css
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@sveltery/ui/themes.css";
+@import "@sveltery/ui/nova.css";
+@source "../node_modules/@sveltery/ui/dist";
+```
+
+## 3. Use a component
+
+```svelte
+<script lang="ts">
+  import { Button } from '@sveltery/ui/button';
+  import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@sveltery/ui/dialog';
+  let open = $state(false);
+</script>
+
+<Dialog bind:open>
+  <DialogTrigger>Open</DialogTrigger>
+  <DialogContent>
+    <DialogTitle>Hello</DialogTitle>
+    <Button onclick={() => (open = false)}>Done</Button>
+  </DialogContent>
+</Dialog>
+```
+
+`tests/installation/smoke.sh` runs this install path on every change: it packs the UI, installs it with Base into a fresh project and renders every component on the server.

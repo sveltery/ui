@@ -1,7 +1,8 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import * as Primitive from '@sveltery/base/dialog';
+  import { Dialog as Primitive } from '@sveltery/base/dialog';
+  import type { DialogCloseState, DialogTriggerHostProps } from '@sveltery/base/dialog';
   import { Button } from '../button/index.js';
   import { classes } from '../shared/classes.js';
   let { children, class: classProp, ref = $bindable(), showCloseButton = false, ...props }: Omit<HTMLAttributes<HTMLDivElement>, 'children'> & { children?: Snippet; ref?: HTMLDivElement | null; showCloseButton?: boolean; } = $props();
@@ -10,9 +11,8 @@
   {@render children?.()}
   {#if showCloseButton}
     <Primitive.Close>
-      {#snippet render(closeProps: Record<string | symbol, unknown>, _state: unknown, closeChildren: Snippet | undefined)}
-        {const { tabindex, ...buttonProps } = $derived(closeProps)}
-        <Button {...(tabindex === undefined ? buttonProps : closeProps)} variant="outline">{@render closeChildren?.()}</Button>
+      {#snippet render(closeProps: DialogTriggerHostProps, _state: DialogCloseState, closeChildren: Snippet | undefined)}
+        <Button {...closeProps} variant="outline">{@render closeChildren?.()}</Button>
       {/snippet}
       Close
     </Primitive.Close>

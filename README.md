@@ -10,4 +10,4 @@ pnpm verify
 pnpm --filter @sveltery/docs dev
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the layout and checks. Original code is [MIT](LICENSE); derived code keeps its [upstream notices](packages/ui/THIRD_PARTY_NOTICES.md).
+See [installation](docs/installation.md) to use it in an app and [CONTRIBUTING.md](CONTRIBUTING.md) for the layout and checks. Original code is [MIT](LICENSE); derived code keeps its [upstream notices](packages/ui/THIRD_PARTY_NOTICES.md).

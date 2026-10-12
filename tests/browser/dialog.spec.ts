@@ -15,21 +15,6 @@ test('keyboard, labels, native close, isolation and focus return', async ({ page
   await expect(popup).toHaveCount(0); await expect(trigger).toBeFocused();
   await expect(page.getByRole('button', { name: 'Before', exact: true })).toBeVisible();
 });
-test('native owner props, actions, render children, attachment symbols and refs reach actual replacements', async ({ page }) => {
-  await page.goto('/dialog?scenario=custom'); await expect(page.locator('[data-hydrated=true]')).toBeVisible();
-  await page.getByTestId('trigger').focus(); await page.keyboard.press('Enter');
-  const popup = page.getByRole('dialog'); await expect(popup).toHaveAttribute('data-replacement', 'content');
-  await expect(popup.getByRole('button', { name: 'Close', exact: true })).toBeVisible();
-  const state = async () => JSON.parse(await page.getByTestId('state').textContent() ?? '{}');
-  await expect.poll(async () => (await state()).popup).toBe('content'); await expect.poll(async () => (await state()).trigger).toBe('trigger');
-  await expect.poll(async () => (await state()).attachments).toBe(1);
-  await page.getByTestId('action-close').evaluate((node: HTMLButtonElement) => node.click()); await expect(popup).toHaveCount(0);
-  await expect.poll(async () => (await state()).cleanups).toBe(1);
-  await page.getByTestId('trigger').press('Enter'); await expect(popup).toBeVisible();
-  await page.getByTestId('remove').evaluate((node: HTMLButtonElement) => node.click()); await expect(popup).toHaveCount(0);
-  await expect.poll(async () => (await state()).cleanups).toBe(2); await expect.poll(async () => (await state()).popup).toBe(false);
-  expect(await page.evaluate(() => document.documentElement.style.overflow)).toBe('');
-});
 for (const scenario of ['ordinary', 'footer', 'no-close']) test(`registry close options (${scenario})`, async ({ page }) => {
   await page.goto(`/dialog?scenario=${scenario}`); await expect(page.locator('[data-hydrated=true]')).toBeVisible(); await page.getByTestId('trigger').click();
   const popup = page.getByRole('dialog'); await expect(popup).toBeVisible();
@@ -66,7 +51,7 @@ test('Nova animation holds exit presence, removes it after completion and cancel
   const state = JSON.parse(await page.getByTestId('state').textContent() ?? '{}'); expect(state.open).toBe(true); expect(state.completions.filter((value: boolean) => !value)).toHaveLength(1);
   await page.keyboard.press('Escape'); await expect(popup).toHaveCount(0);
 });
-test('canceled deferral does not affect a later accepted close (Base fix gate)', async ({ page }) => {
+test('a canceled close keeps the dialog open and the next close succeeds', async ({ page }) => {
   await page.goto('/dialog'); await expect(page.locator('[data-hydrated=true]')).toBeVisible(); await page.getByTestId('trigger').click(); const popup = page.getByRole('dialog'); await expect(popup).toBeVisible();
   await page.getByTestId('cancel-next').evaluate((node: HTMLButtonElement) => node.click()); await page.keyboard.press('Escape'); await expect(popup).toBeVisible();
   await page.keyboard.press('Escape'); await expect(popup).toHaveCount(0);

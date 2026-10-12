@@ -15,7 +15,7 @@
     "verify": "bash scripts/verify.sh"
   },
   "devDependencies": {
-    "@sveltery/base": "file:.vendor/sveltery-base-0.0.0.tgz",
+    "@sveltery/base": "github:sveltery/base#d6e88119e2fe7965780f635fba091e148448a46e",
     "@playwright/test": "1.63.0",
     "@sveltejs/package": "2.5.8",
     "@sveltejs/vite-plugin-svelte": "7.3.1",
