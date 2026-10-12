@@ -4,4 +4,5 @@
 @import "@sveltery/ui/nova.css";
 @import "@sveltery/ui/styles.css";
 @source "../../../packages/ui/dist";
+@layer base { * { border-color: var(--border); } }
 body { margin: 0; background: var(--background); color: var(--foreground); font-family: Arial, sans-serif; }
