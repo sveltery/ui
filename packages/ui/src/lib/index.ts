@@ -16,3 +16,4 @@ export * from './example/index.js';
 export * from './separator/index.js';
 export * from './avatar/index.js';
 export * from './badge/index.js';
+export * from './spinner/index.js';

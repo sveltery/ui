@@ -408,6 +408,21 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
       },
       "body": "<path d=\"M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z\"/>"
     },
+    "Loader2Icon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "class": "lucide lucide-loader-2"
+      },
+      "body": "<path d=\"M21 12a9 9 0 1 1-6.219-8.56\"/>"
+    },
     "PlusIcon": {
       "attributes": {
         "xmlns": "http://www.w3.org/2000/svg",
@@ -560,6 +575,21 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
       },
       "body": "<path d=\"M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2\"/>"
     },
+    "IconLoader": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "class": "tabler-icon tabler-icon-loader"
+      },
+      "body": "<path d=\"M12 6l0 -3\"/><path d=\"M16.25 7.75l2.15 -2.15\"/><path d=\"M18 12l3 0\"/><path d=\"M16.25 16.25l2.15 2.15\"/><path d=\"M12 18l0 3\"/><path d=\"M7.75 16.25l-2.15 2.15\"/><path d=\"M6 12l-3 0\"/><path d=\"M7.75 7.75l-2.15 -2.15\"/>"
+    },
     "IconPlus": {
       "attributes": {
         "xmlns": "http://www.w3.org/2000/svg",
@@ -700,6 +730,18 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
       },
       "body": "<path d=\"M8 7H16.75C18.8567 7 19.91 7 20.6667 7.50559C20.9943 7.72447 21.2755 8.00572 21.4944 8.33329C22 9.08996 22 10.1433 22 12.25C22 15.7612 22 17.5167 21.1573 18.7779C20.7926 19.3238 20.3238 19.7926 19.7779 20.1573C18.5167 21 16.7612 21 13.25 21H12C7.28595 21 4.92893 21 3.46447 19.5355C2 18.0711 2 15.714 2 11V7.94427C2 6.1278 2 5.21956 2.38032 4.53806C2.65142 4.05227 3.05227 3.65142 3.53806 3.38032C4.21956 3 5.1278 3 6.94427 3C8.10802 3 8.6899 3 9.19926 3.19101C10.3622 3.62712 10.8418 4.68358 11.3666 5.73313L12 7\" stroke=\"currentColor\" stroke-linecap=\"round\"/>"
     },
+    "Loading03Icon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "color": "currentColor",
+        "stroke-width": "2"
+      },
+      "body": "<path d=\"M12 3V6\" stroke=\"currentColor\" stroke-linecap=\"round\"/><path d=\"M12 18V21\" stroke=\"currentColor\" stroke-linecap=\"round\"/><path d=\"M21 12L18 12\" stroke=\"currentColor\" stroke-linecap=\"round\"/><path d=\"M6 12L3 12\" stroke=\"currentColor\" stroke-linecap=\"round\"/><path d=\"M18.3635 5.63672L16.2422 7.75804\" stroke=\"currentColor\" stroke-linecap=\"round\"/><path d=\"M7.75804 16.2422L5.63672 18.3635\" stroke=\"currentColor\" stroke-linecap=\"round\"/><path d=\"M18.3635 18.3635L16.2422 16.2422\" stroke=\"currentColor\" stroke-linecap=\"round\"/><path d=\"M7.75804 7.75804L5.63672 5.63672\" stroke=\"currentColor\" stroke-linecap=\"round\"/>"
+    },
     "PlusSignIcon": {
       "attributes": {
         "xmlns": "http://www.w3.org/2000/svg",
@@ -805,6 +847,16 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
         "fill": "currentColor"
       },
       "body": "<path d=\"M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z\"/>"
+    },
+    "SpinnerIcon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 256 256",
+        "fill": "currentColor"
+      },
+      "body": "<path d=\"M136,32V64a8,8,0,0,1-16,0V32a8,8,0,0,1,16,0Zm37.25,58.75a8,8,0,0,0,5.66-2.35l22.63-22.62a8,8,0,0,0-11.32-11.32L167.6,77.09a8,8,0,0,0,5.65,13.66ZM224,120H192a8,8,0,0,0,0,16h32a8,8,0,0,0,0-16Zm-45.09,47.6a8,8,0,0,0-11.31,11.31l22.62,22.63a8,8,0,0,0,11.32-11.32ZM128,184a8,8,0,0,0-8,8v32a8,8,0,0,0,16,0V192A8,8,0,0,0,128,184ZM77.09,167.6,54.46,190.22a8,8,0,0,0,11.32,11.32L88.4,178.91A8,8,0,0,0,77.09,167.6ZM72,128a8,8,0,0,0-8-8H32a8,8,0,0,0,0,16H64A8,8,0,0,0,72,128ZM65.78,54.46A8,8,0,0,0,54.46,65.78L77.09,88.4A8,8,0,0,0,88.4,77.09Z\"/>"
     },
     "WarningCircleIcon": {
       "attributes": {

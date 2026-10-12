@@ -95,6 +95,11 @@
       "svelte": "./dist/avatar/index.js",
       "default": "./dist/avatar/index.js"
     },
+    "./spinner": {
+      "types": "./dist/spinner/index.d.ts",
+      "svelte": "./dist/spinner/index.js",
+      "default": "./dist/spinner/index.js"
+    },
     "./badge": {
       "types": "./dist/badge/index.d.ts",
       "svelte": "./dist/badge/index.js",
