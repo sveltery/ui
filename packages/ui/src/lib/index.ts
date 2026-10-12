@@ -28,3 +28,4 @@ export * from './bubble/index.js';
 export * from './message/index.js';
 export * from './accordion/index.js';
 export * from './checkbox/index.js';
+export * from './collapsible/index.js';
