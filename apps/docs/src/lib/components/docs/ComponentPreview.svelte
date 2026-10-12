@@ -28,7 +28,7 @@
     data-slot="preview"
     data-align={align}
     data-pagefind-ignore
-    class="no-scrollbar relative flex max-h-[36rem] min-h-72 w-full justify-center overflow-y-auto p-6 data-[align=center]:items-center data-[align=end]:items-end data-[align=start]:items-start sm:p-10 [&_[data-slot=example-wrapper]]:min-h-0 [&_[data-slot=example-wrapper]]:p-0 [&>.w-full]:bg-transparent"
+    class="no-scrollbar relative flex max-h-[36rem] min-h-72 w-full justify-center overflow-y-auto p-6 data-[align=center]:items-center-safe data-[align=end]:items-end-safe data-[align=start]:items-start sm:p-10 [&_[data-slot=example-wrapper]]:min-h-0 [&_[data-slot=example-wrapper]]:p-0 [&>.w-full]:bg-transparent"
   >
     <Example />
   </div>
