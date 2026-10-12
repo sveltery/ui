@@ -1,9 +1,8 @@
 <script lang="ts">
-  // Preserve the pinned native kbd host, including its nested keyboard semantics.
   import type { KbdGroupProps } from './types.js';
-  import { classes } from '../shared/classes.js';
-  let { children, class: classProp, ref = $bindable(), ...props }: KbdGroupProps = $props();
+  import { cn } from 'cn';
+  let { children, class: classProp, ...props }: KbdGroupProps = $props();
 </script>
-<kbd data-slot="kbd-group" {...props} class={classes('cn-kbd-group inline-flex items-center', classProp)} bind:this={ref}>
+<kbd data-slot="kbd-group" {...props} class={cn('cn-kbd-group inline-flex items-center', classProp)}>
   {@render children?.()}
 </kbd>

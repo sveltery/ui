@@ -1,11 +1,10 @@
 <script lang="ts">
-  import type { Snippet } from 'svelte';
   import type { HTMLTableAttributes } from 'svelte/elements';
-  import { classes } from '../shared/classes.js';
-  let { children, class: classProp, ref = $bindable(), ...props }: Omit<HTMLTableAttributes, 'children'> & { children?: Snippet; ref?: HTMLTableElement | null } = $props();
+  import { cn } from 'cn';
+  let { children, class: classProp, ...props }: HTMLTableAttributes = $props();
 </script>
 <div data-slot="table-container" class="cn-table-container">
-  <table data-slot="table" {...props} class={classes('cn-table', classProp)} bind:this={ref}>
+  <table data-slot="table" {...props} class={cn('cn-table', classProp)}>
     {@render children?.()}
   </table>
 </div>
