@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Button } from '@sveltery/ui/button';
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, CardAction } from '../../registry/bases/base/ui/card/index.js';
+  import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, CardAction } from '@sveltery/ui/card';
 </script>
 <!-- Seven selected pinned example bodies with genuine original helpers.
      Five remaining originals are unimplemented; action/override probes stay separate. -->

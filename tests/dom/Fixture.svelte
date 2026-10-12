@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createAttachmentKey } from 'svelte/attachments';
   import { untrack, type Snippet } from 'svelte';
-  import * as UI from '../../apps/docs/registry/bases/base/ui/dialog/index.js';
+  import * as UI from '$ui/dialog/index.js';
   import { mergeProps } from '@sveltery/base/merge-props';
   import type { Actions, ChangeEventDetails } from '@sveltery/base/dialog';
   let { custom = false, keep = false, initial = false, prevent = false, disabled = false, disabledAnchor = false, log = () => {} }: { custom?: boolean; keep?: boolean; initial?: boolean; prevent?: boolean; disabled?: boolean; disabledAnchor?: boolean; log?: (kind: string, details?: ChangeEventDetails) => void } = $props();

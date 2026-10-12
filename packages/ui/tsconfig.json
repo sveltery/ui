@@ -12,6 +12,6 @@
     "noEmit": true
   },
   "include": [
-    "../../apps/docs/registry/bases/base/ui/**/*"
+    "src/lib/**/*"
   ]
 }

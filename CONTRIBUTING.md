@@ -6,9 +6,9 @@ Use Node 24 and pnpm 12. Then run `pnpm install`.
 
 ## Layout
 
-- `apps/docs/registry/bases/base/ui/<component>` holds each component, its variants and its types.
-- `apps/docs/registry/styles` holds the Nova and scoped style sheets.
-- `apps/docs` hosts the examples.
+- `packages/ui/src/lib/<component>` holds each component, its variants and its types.
+- `packages/ui/src/lib/styles` holds the Nova and scoped style sheets.
+- `apps/docs` consumes `@sveltery/ui` like any app and hosts the examples.
 - `tests/dom` holds vitest behavior tests, `tests/browser` holds Playwright tests, and `tests/installation` holds the packaging smoke test.
 
 ## Rules
