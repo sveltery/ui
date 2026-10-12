@@ -2,6 +2,7 @@
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { Button } from '@sveltery/ui/button';
   import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Spinner } from '@sveltery/ui/spinner';
   import { Marker, MarkerContent, MarkerIcon } from '@sveltery/ui/marker';
 </script>
 
@@ -21,6 +22,18 @@
         />
       </MarkerIcon>
       <MarkerContent>Marker with icon</MarkerContent>
+    </Marker>
+    <Marker role="status">
+      <MarkerIcon>
+        <Spinner />
+      </MarkerIcon>
+      <MarkerContent>Marker with a spinner</MarkerContent>
+    </Marker>
+    <Marker role="status">
+      <MarkerIcon>
+        <Spinner />
+      </MarkerIcon>
+      <MarkerContent class="shimmer">Marker with shimmer effect</MarkerContent>
     </Marker>
     <Marker role="status">
       <MarkerContent class="shimmer">Thinking...</MarkerContent>
@@ -146,6 +159,12 @@
   <Example title="Separator" class="gap-8">
     <Marker variant="separator">
       <MarkerContent>Worked for 42s</MarkerContent>
+    </Marker>
+    <Marker variant="separator" role="status">
+      <MarkerIcon>
+        <Spinner />
+      </MarkerIcon>
+      <MarkerContent>Compacting conversation</MarkerContent>
     </Marker>
     <Marker variant="separator" role="status">
       <MarkerContent class="shimmer">Reading 4 files</MarkerContent>
