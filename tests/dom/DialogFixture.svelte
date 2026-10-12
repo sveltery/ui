@@ -3,16 +3,18 @@
   let { contentClose = true, footerClose = false, cancel = false, events = [] }: { contentClose?: boolean; footerClose?: boolean; cancel?: boolean; events?: string[] } = $props();
   let open = $state(false);
   let visible = $state(true);
+  let root: ReturnType<typeof UI.Dialog> | undefined = $state();
   export function isOpen() { return open; }
   export function setOpen(next: boolean) { open = next; }
   export function remove() { visible = false; }
+  export function close() { root?.close(); }
   function attach(node: HTMLElement) {
     events.push(`attach:${node.dataset.slot}`);
     return () => { events.push(`detach:${node.dataset.slot}`); };
   }
 </script>
 {#if visible}
-  <UI.Dialog bind:open onOpenChange={(next, details) => { events.push(`change:${next}:${details.reason}`); if (cancel) details.cancel(); }}>
+  <UI.Dialog bind:this={root} bind:open onOpenChange={(next, details) => { events.push(`change:${next}:${details.reason}`); if (cancel) details.cancel(); }}>
     <UI.DialogTrigger>Open</UI.DialogTrigger>
     <UI.DialogContent class="p-8" showCloseButton={contentClose} {@attach attach}>
       <UI.DialogHeader>

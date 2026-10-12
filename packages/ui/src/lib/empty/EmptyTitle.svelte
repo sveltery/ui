@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { EmptyTitleProps } from './types.js';
-  import { classes } from '../shared/classes.js';
-  let { children, class: classProp, ref = $bindable(), ...props }: EmptyTitleProps = $props();
+  import { cn } from 'cn';
+  let { children, class: classProp, ...props }: EmptyTitleProps = $props();
 </script>
-<div data-slot="empty-title" {...props} class={classes('cn-empty-title cn-font-heading', classProp)} bind:this={ref}>
+<div data-slot="empty-title" {...props} class={cn('cn-empty-title cn-font-heading', classProp)}>
   {@render children?.()}
 </div>

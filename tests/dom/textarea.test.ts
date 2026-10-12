@@ -37,3 +37,9 @@ it('submits enabled values and resets to defaults like a native form', () => {
   form.reset();
   expect(field('draft').value).toBe('Draft');
 });
+
+it('passes attachments and native attributes to the textarea', () => {
+  const { field } = setup();
+  expect(field('bound').dataset.attached).toBe('true');
+  expect(field('bound').rows).toBe(4);
+});

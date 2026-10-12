@@ -1,5 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 
+test.use({ baseURL: 'http://127.0.0.1:5175' });
+
 async function visit(page: Page, path: string) {
   await page.goto(path);
   await expect(page.locator('html')).toHaveAttribute('data-ready');

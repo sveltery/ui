@@ -1,9 +1,9 @@
 <script lang="ts">
   import type { AlertProps } from './types.js';
-  import { classes } from '../shared/classes.js';
+  import { cn } from 'cn';
   import { alertVariants } from './variants.js';
-  let { children, class: classProp, ref = $bindable(), variant, ...props }: AlertProps = $props();
+  let { children, class: classProp, variant, ...props }: AlertProps = $props();
 </script>
-<div data-slot="alert" role="alert" {...props} class={classes(alertVariants({ variant }), classProp)} bind:this={ref}>
+<div data-slot="alert" role="alert" {...props} class={cn(alertVariants({ variant }), classProp)}>
   {@render children?.()}
 </div>

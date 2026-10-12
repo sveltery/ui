@@ -1,9 +1,8 @@
 <script lang="ts">
-  import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { classes } from '../shared/classes.js';
-  let { children, class: classProp, ref = $bindable(), ...props }: Omit<HTMLAttributes<HTMLDivElement>, 'children'> & { children?: Snippet; ref?: HTMLDivElement | null } = $props();
+  import { cn } from 'cn';
+  let { children, class: classProp, ...props }: HTMLAttributes<HTMLDivElement> = $props();
 </script>
-<div data-slot="skeleton" {...props} class={classes('cn-skeleton animate-pulse', classProp)} bind:this={ref}>
+<div data-slot="skeleton" {...props} class={cn('cn-skeleton animate-pulse', classProp)}>
   {@render children?.()}
 </div>
