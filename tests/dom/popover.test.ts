@@ -77,13 +77,15 @@ it('defaults to bottom center and forwards side and align to the popup attribute
 });
 
 it('bind:open opens and closes the popover from the owner', async () => {
-  const { fixture, popup } = await setup();
+  const { fixture, popup, trigger } = await setup();
   fixture.setOpen(true);
   await settle();
   expect(popup()).not.toBeNull();
+  expect(trigger().getAttribute('aria-expanded')).toBe('true');
   fixture.setOpen(false);
   await settle();
   expect(popup()).toBeNull();
+  expect(trigger().getAttribute('aria-expanded')).toBe('false');
 });
 
 it('Escape closes the popover and writes the closed state back through bind:open', async () => {

@@ -6,7 +6,7 @@
   export function write(next: string) { size = next; }
 </script>
 <form>
-  <RadioGroup name="size" bind:value={size} class="grid-cols-2" onValueChange={(next) => events.push(`change:${next}`)}>
+  <RadioGroup name="size" bind:value={size} defaultValue="medium" class="grid-cols-2" onValueChange={(next) => events.push(`change:${next}`)}>
     <RadioGroupItem value="small" aria-label="Small" />
     <RadioGroupItem value="medium" aria-label="Medium" class="extra-item" />
     <RadioGroupItem value="large" aria-label="Large" />

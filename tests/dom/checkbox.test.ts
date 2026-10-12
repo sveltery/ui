@@ -74,5 +74,17 @@ it('submits ticked values with the form and skips unticked and disabled ones', a
   expect([...new FormData(form)]).toEqual([['terms', 'on'], ['bound', 'yes']]);
 });
 
-// Base 65ed839 renders the hidden input with a one-way `checked` and never restores `defaultChecked` on form reset.
-it.todo('form reset restores each checkbox to its default');
+it('form reset restores each checkbox to its default', async () => {
+  const { form, boxes, fixture } = await setup();
+  boxes()[0].click();
+  boxes()[1].click();
+  await tick();
+  expect([...new FormData(form)]).toEqual([['bound', 'yes']]);
+  form.reset();
+  await new Promise(resolve => setTimeout(resolve));
+  flushSync();
+  expect(boxes()[0].getAttribute('aria-checked')).toBe('true');
+  expect(boxes()[1].getAttribute('aria-checked')).toBe('false');
+  expect(fixture.read()).toBe(false);
+  expect([...new FormData(form)]).toEqual([['terms', 'on']]);
+});

@@ -46,13 +46,13 @@ it('submits enabled values and skips disabled ones', () => {
   expect([...new FormData(form)]).toEqual([['bound', 'me@example.com'], ['draft', 'Edited']]);
 });
 
-// Base's Input never writes defaultValue to the element, so the reset yields ''.
-it.fails('native form reset restores the defaultValue', () => {
+it('native form reset restores the defaultValue', async () => {
   const { form, field, type } = setup();
   expect(field('draft').value).toBe('Draft');
   type(field('draft'), 'Edited');
   expect(field('draft').value).toBe('Edited');
   form.reset();
+  await new Promise(resolve => setTimeout(resolve));
   flushSync();
   expect(field('draft').value).toBe('Draft');
 });
