@@ -129,6 +129,11 @@
       "types": "./dist/native-select/index.d.ts",
       "svelte": "./dist/native-select/index.js",
       "default": "./dist/native-select/index.js"
+    },
+    "./marker": {
+      "types": "./dist/marker/index.d.ts",
+      "svelte": "./dist/marker/index.js",
+      "default": "./dist/marker/index.js"
     }
   },
   "svelte": "./dist/index.js",
