@@ -169,9 +169,6 @@ importers:
 
   .:
     devDependencies:
-      '@base-ui/react':
-        specifier: 1.6.0
-        version: 1.6.0(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@eslint/js':
         specifier: 10.0.1
         version: 10.0.1(eslint@10.11.0(jiti@2.7.0))
@@ -197,8 +194,8 @@ importers:
         specifier: 7.3.1
         version: 7.3.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))(vite@8.3.1(@types/node@26.6.3)(jiti@2.7.0))
       '@sveltery/base':
-        specifier: file:.vendor/sveltery-base-0.0.0.tgz
-        version: file:.vendor/sveltery-base-0.0.0.tgz(svelte@5.57.1(@typescript-eslint/types@8.71.0))
+        specifier: github:sveltery/base#d6e88119e2fe7965780f635fba091e148448a46e
+        version: https://codeload.github.com/sveltery/base/tar.gz/d6e88119e2fe7965780f635fba091e148448a46e(svelte@5.57.1(@typescript-eslint/types@8.71.0))
       '@tabler/icons-react':
         specifier: 3.34.1
         version: 3.34.1(react@19.3.0)
@@ -208,12 +205,6 @@ importers:
       '@types/jsdom':
         specifier: 30.0.0
         version: 30.0.0
-      '@types/react':
-        specifier: 19.3.0
-        version: 19.3.0
-      '@types/react-dom':
-        specifier: 19.3.0
-        version: 19.3.0(@types/react@19.3.0)
       class-variance-authority:
         specifier: 0.7.1
         version: 0.7.1
@@ -253,9 +244,6 @@ importers:
       svelte-check:
         specifier: 4.7.6
         version: 4.7.6(picomatch@4.0.7)(svelte@5.57.1(@typescript-eslint/types@8.71.0))(typescript@5.9.3)
-      tailwind-merge:
-        specifier: 3.6.0
-        version: 3.6.0
       tailwindcss:
         specifier: 4.3.0
         version: 4.3.0
@@ -291,8 +279,8 @@ importers:
         specifier: 2.70.3
         version: 2.70.3(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))(vite@8.3.1(@types/node@26.6.3)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))(typescript@5.9.3)(vite@8.3.1(@types/node@26.6.3)(jiti@2.7.0))
       '@sveltery/base':
-        specifier: file:../../.vendor/sveltery-base-0.0.0.tgz
-        version: file:.vendor/sveltery-base-0.0.0.tgz(svelte@5.57.1(@typescript-eslint/types@8.71.0))
+        specifier: github:sveltery/base#d6e88119e2fe7965780f635fba091e148448a46e
+        version: https://codeload.github.com/sveltery/base/tar.gz/d6e88119e2fe7965780f635fba091e148448a46e(svelte@5.57.1(@typescript-eslint/types@8.71.0))
       shadcn:
         specifier: 4.21.1
         version: 4.21.1(typescript@5.9.3)
@@ -319,8 +307,8 @@ importers:
         version: 0.2.2
     devDependencies:
       '@sveltery/base':
-        specifier: file:../../.vendor/sveltery-base-0.0.0.tgz
-        version: file:.vendor/sveltery-base-0.0.0.tgz(svelte@5.57.1(@typescript-eslint/types@8.71.0))
+        specifier: github:sveltery/base#d6e88119e2fe7965780f635fba091e148448a46e
+        version: https://codeload.github.com/sveltery/base/tar.gz/d6e88119e2fe7965780f635fba091e148448a46e(svelte@5.57.1(@typescript-eslint/types@8.71.0))
       shadcn:
         specifier: 4.21.1
         version: 4.21.1(typescript@5.9.3)
@@ -461,10 +449,6 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
-  '@babel/runtime@7.29.7':
-    resolution: {integrity: sha512-Nq8OhGWiZIZGV6hLHoyAKLLcJihP/xFeBMGJoUrxTX2psI8dCifzLhZISFb+VWS3wFMRDmCGw5R+dOySCqPLhw==}
-    engines: {node: '>=6.9.0'}
-
   '@babel/template@7.29.7':
     resolution: {integrity: sha512-puq+Gf35oI24FeN11LkoUQFqv9uwNeWpxXZi/Ji3rRIoKAzKnxRaZ+Gkj0vKS9ZCiTESfng1N9LyOyXvo+m+Gg==}
     engines: {node: '>=6.9.0'}
@@ -476,33 +460,6 @@ packages:
   '@babel/types@7.29.8':
     resolution: {integrity: sha512-Vj1jF3cPfxg7OAfoI7QnVKLoILlm2JF9pnVHrX8qx7AHMiYWT+NDAA7jChlNgRS4WTLc/fD1lXLmPixluj+3Gg==}
     engines: {node: '>=6.9.0'}
-
-  '@base-ui/react@1.6.0':
-    resolution: {integrity: sha512-/jzjTWJYXhRFO45Bev9lc3cHbmjzCMpUqbMZ2AgKy/z25mY9B6shGSNcXcjQar9n5doM0KYW1W8fcFv2jZBuMw==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      '@date-fns/tz': ^1.2.0
-      '@types/react': ^17 || ^18 || ^19
-      date-fns: ^4.0.0
-      react: ^17 || ^18 || ^19
-      react-dom: ^17 || ^18 || ^19
-    peerDependenciesMeta:
-      '@date-fns/tz':
-        optional: true
-      '@types/react':
-        optional: true
-      date-fns:
-        optional: true
-
-  '@base-ui/utils@0.3.1':
-    resolution: {integrity: sha512-gFFiltORVmW/N6IILTGxizP3PBpVpysqML1ALY5Vk0mH+7faVkCknOU31goYHN5Aoek2dkjxva1XOD2Ce9WuIg==}
-    peerDependencies:
-      '@types/react': ^17 || ^18 || ^19
-      react: ^17 || ^18 || ^19
-      react-dom: ^17 || ^18 || ^19
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
 
   '@bramus/specificity@2.4.2':
     resolution: {integrity: sha512-ctxtJ/eA+t+6q2++vj5j7FYX3nRu311q1wfYH3xjlLOsczhlhxAg2FWNUXhpGvAw3BWo1xBcvOV6/YLc2r5FJw==}
@@ -610,12 +567,6 @@ packages:
 
   '@floating-ui/dom@1.8.0':
     resolution: {integrity: sha512-yXSrzeHZBTZadLOlfyhCkJHNeLJnHRnRInwdZ40L7ZiaAtrBwoYlsDrX3v5zB1Utk7CLfzcOVnVVWoXEky7Ceg==}
-
-  '@floating-ui/react-dom@2.1.9':
-    resolution: {integrity: sha512-JDjEFGCpImxDCA7JJKviA0M9+RtmJdj0m/NVU5IMgBK+AmZouAQQ7/+2GLH0GXXY0YMw9oXPB8hKdbPYg5QLYg==}
-    peerDependencies:
-      react: '>=16.8.0'
-      react-dom: '>=16.8.0'
 
   '@floating-ui/utils@0.2.12':
     resolution: {integrity: sha512-HpCo8tmWzLVad5s2d19EhAz5zqrrQ6s69qd6moPMQvkOuSwDT1YgRfWSVuc4ennqrgv3OHppiOGMQ7oC13yIww==}
@@ -880,9 +831,10 @@ packages:
       svelte: ^5.46.4
       vite: ^8.0.0-beta.7 || ^8.0.0
 
-  '@sveltery/base@file:.vendor/sveltery-base-0.0.0.tgz':
-    resolution: {integrity: sha512-ZkJimKxdfu+92S3kZNL6m3WS9Pob65l0xIeTlI6OYFHM+Sw1S8U8qdYlJcD0kFLljLD+E/la+0n5aCZTdEprsQ==, tarball: file:.vendor/sveltery-base-0.0.0.tgz}
+  '@sveltery/base@https://codeload.github.com/sveltery/base/tar.gz/d6e88119e2fe7965780f635fba091e148448a46e':
+    resolution: {gitHosted: true, integrity: sha512-pcriM4GCy3b5pCkYw5JPf90mt3KgfvPKkyh9RelVgDPu/wVEI1e31JVhpgtwsMWwA1QdYN4n0yQrh2ze1AvagQ==, tarball: https://codeload.github.com/sveltery/base/tar.gz/d6e88119e2fe7965780f635fba091e148448a46e}
     version: 0.0.0
+    engines: {node: '>=24 <25'}
     peerDependencies:
       svelte: ^5.57.1
 
@@ -1014,14 +966,6 @@ packages:
 
   '@types/node@26.6.3':
     resolution: {integrity: sha512-dsqMQQoeTLqu9wynDD00q573mNzso3IdQOAfHRJqLCcmCFPoGo9A1bDpUcv/9tnKpErQWv9uKeGfl37EIS02Yg==}
-
-  '@types/react-dom@19.3.0':
-    resolution: {integrity: sha512-ZI7bU42mZXXKHn/qNLEw2IrbiINU7X5+vfgdixBHkCNpYWXjKgfQ/P+uyGb5CjOLB9UcnTeg3rylQtV2hym44Q==}
-    peerDependencies:
-      '@types/react': ^19.3.0
-
-  '@types/react@19.3.0':
-    resolution: {integrity: sha512-N0rFCuH9YoxG9/m61l9MfpJKfmLOVU0em7ipIz6TRgSSkvReLB9vL85GB+yr8Bs5leqpvg96JSwF4ZS1s4viQg==}
 
   '@types/tough-cookie@4.0.5':
     resolution: {integrity: sha512-/Ad8+nIOV7Rl++6f1BdKxFSMgmoqEoYbHRpPcx3JEfv8VRsQe9Z4mCXeJBzxs7mbHY/XOZZuXlRNfhpVPbs6ZA==}
@@ -1326,9 +1270,6 @@ packages:
     resolution: {integrity: sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==}
     engines: {node: '>=4'}
     hasBin: true
-
-  csstype@3.2.3:
-    resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
 
   data-urls@7.0.0:
     resolution: {integrity: sha512-23XHcCF+coGYevirZceTVD7NdJOqVn+49IHyxgszm+JIiHLoB2TkmPtsYkNWT1pvRSGkc35L6NHs0yHkN2SumA==}
@@ -2465,9 +2406,6 @@ packages:
     resolution: {integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==}
     engines: {node: '>=0.10.0'}
 
-  reselect@5.3.0:
-    resolution: {integrity: sha512-XGoLeRAVzUTcJ1qkxPQhDJyIZ5d6zzZD9nT7AEZOaaU9UbWclhycElmhO+VD5bFeLuzhPBaOV2oXC8uG35ZSpg==}
-
   resolve-from@4.0.0:
     resolution: {integrity: sha512-pb/MYmXstAkysRFx8piNI1tGFNQIFA3vkE3Gq4EuA1dF6gHp/+vgZqsCGJapvy8N3Q+4o7FwvquPJcnZ7RYy4g==}
     engines: {node: '>=4'}
@@ -2667,9 +2605,6 @@ packages:
     os: [darwin, linux, win32, freebsd, openbsd, netbsd, sunos, android]
     hasBin: true
 
-  tailwind-merge@3.6.0:
-    resolution: {integrity: sha512-uxL7qAVQriqRQPAyK3pj66VqskWqoZ37PW94jwOTwNfq/z9oyu1V+eqrZqtR2+fCiXdYOZe/Modt8GtvqNzu+w==}
-
   tailwindcss@4.3.0:
     resolution: {integrity: sha512-y6nxMGB1nMW9R6k96e5gdIFzcfL/gTJRNaqGes1YvkLnPVXzWgbqFF2yLC0T8G774n24cx3Pe8XrKoniCOAH+Q==}
 
@@ -2796,11 +2731,6 @@ packages:
 
   uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
-
-  use-sync-external-store@1.7.0:
-    resolution: {integrity: sha512-6L+EeigHMQhdaIPNIFUKwfWJSwWFQ8gJbJ2DLOs5sDIegTwR9fRxvnM3uciHKjIZhFz+KAv2emhWMRvDmMcY8A==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
@@ -3168,8 +3098,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@babel/runtime@7.29.7': {}
-
   '@babel/template@7.29.7':
     dependencies:
       '@babel/code-frame': 7.29.7
@@ -3192,29 +3120,6 @@ snapshots:
     dependencies:
       '@babel/helper-string-parser': 7.29.7
       '@babel/helper-validator-identifier': 7.29.7
-
-  '@base-ui/react@1.6.0(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
-    dependencies:
-      '@babel/runtime': 7.29.7
-      '@base-ui/utils': 0.3.1(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@floating-ui/react-dom': 2.1.9(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@floating-ui/utils': 0.2.12
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
-      use-sync-external-store: 1.7.0(react@19.3.0)
-    optionalDependencies:
-      '@types/react': 19.3.0
-
-  '@base-ui/utils@0.3.1(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
-    dependencies:
-      '@babel/runtime': 7.29.7
-      '@floating-ui/utils': 0.2.12
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
-      reselect: 5.3.0
-      use-sync-external-store: 1.7.0(react@19.3.0)
-    optionalDependencies:
-      '@types/react': 19.3.0
 
   '@bramus/specificity@2.4.2':
     dependencies:
@@ -3321,12 +3226,6 @@ snapshots:
     dependencies:
       '@floating-ui/core': 1.8.0
       '@floating-ui/utils': 0.2.12
-
-  '@floating-ui/react-dom@2.1.9(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
-    dependencies:
-      '@floating-ui/dom': 1.8.0
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
 
   '@floating-ui/utils@0.2.12': {}
 
@@ -3567,8 +3466,10 @@ snapshots:
       vite: 8.3.1(@types/node@26.6.3)(jiti@2.7.0)
       vitefu: 1.1.3(vite@8.3.1(@types/node@26.6.3)(jiti@2.7.0))
 
-  '@sveltery/base@file:.vendor/sveltery-base-0.0.0.tgz(svelte@5.57.1(@typescript-eslint/types@8.71.0))':
+  '@sveltery/base@https://codeload.github.com/sveltery/base/tar.gz/d6e88119e2fe7965780f635fba091e148448a46e(svelte@5.57.1(@typescript-eslint/types@8.71.0))':
     dependencies:
+      '@floating-ui/dom': 1.8.0
+      '@floating-ui/utils': 0.2.12
       esm-env: 1.2.2
       svelte: 5.57.1(@typescript-eslint/types@8.71.0)
 
@@ -3678,14 +3579,6 @@ snapshots:
   '@types/node@26.6.3':
     dependencies:
       undici-types: 8.9.0
-
-  '@types/react-dom@19.3.0(@types/react@19.3.0)':
-    dependencies:
-      '@types/react': 19.3.0
-
-  '@types/react@19.3.0':
-    dependencies:
-      csstype: 3.2.3
 
   '@types/tough-cookie@4.0.5': {}
 
@@ -3999,8 +3892,6 @@ snapshots:
       source-map-js: 1.2.1
 
   cssesc@3.0.0: {}
-
-  csstype@3.2.3: {}
 
   data-urls@7.0.0:
     dependencies:
@@ -5012,8 +4903,6 @@ snapshots:
 
   require-from-string@2.0.2: {}
 
-  reselect@5.3.0: {}
-
   resolve-from@4.0.0: {}
 
   restore-cursor@5.1.0:
@@ -5292,8 +5181,6 @@ snapshots:
 
   systeminformation@5.33.15: {}
 
-  tailwind-merge@3.6.0: {}
-
   tailwindcss@4.3.0: {}
 
   tapable@2.3.3: {}
@@ -5398,10 +5285,6 @@ snapshots:
   uri-js@4.4.1:
     dependencies:
       punycode: 2.3.1
-
-  use-sync-external-store@1.7.0(react@19.3.0):
-    dependencies:
-      react: 19.3.0
 
   util-deprecate@1.0.2: {}
 

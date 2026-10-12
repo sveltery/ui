@@ -1,5 +1,4 @@
 <script lang="ts">
-  // Derived from shadcn-ui/ui d75a96ab781f3d659be1ad287347d5887ce9f2fc; MIT: tests/reference/LICENSE.
   import { Label } from '@sveltery/ui/label';
   import { Textarea } from '@sveltery/ui/textarea';
 </script>

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Pack @sveltery/ui, install it into a fresh consumer and render every component on the server.
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+source scripts/toolchain.sh
+consumer="$(mktemp -d)"
+trap 'rm -rf "$consumer"' EXIT
+pnpm --filter @sveltery/ui pack --pack-destination "$consumer" >/dev/null
+cp tests/installation/App.svelte tests/installation/check.mjs "$consumer"
+node -e '
+  const [root, consumer] = process.argv.slice(1);
+  const pkg = require(`${root}/package.json`);
+  const base = pkg.devDependencies["@sveltery/base"].replace(/^file:/, `file:${root}/`);
+  const deps = { "@sveltery/ui": `file:${consumer}/sveltery-ui-0.0.0.tgz`, "@sveltery/base": base, svelte: pkg.devDependencies.svelte };
+  require("fs").writeFileSync(`${consumer}/package.json`, JSON.stringify({ name: "consumer", private: true, type: "module", packageManager: pkg.packageManager, dependencies: deps }));
+' "$PWD" "$consumer"
+cp pnpm-workspace.yaml "$consumer/"
+(cd "$consumer" && pnpm install --config.auto-install-peers=true >/dev/null && node --conditions=svelte check.mjs)
