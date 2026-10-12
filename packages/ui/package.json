@@ -224,6 +224,11 @@
       "types": "./dist/sheet/index.d.ts",
       "svelte": "./dist/sheet/index.js",
       "default": "./dist/sheet/index.js"
+    },
+    "./input-group": {
+      "types": "./dist/input-group/index.d.ts",
+      "svelte": "./dist/input-group/index.js",
+      "default": "./dist/input-group/index.js"
     }
   },
   "svelte": "./dist/index.js",

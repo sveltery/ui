@@ -6,7 +6,7 @@
   :where(.style-nova) * { @apply border-border outline-ring/50; }
 }
 @layer components {
-.style-nova.style-nova :is(.cn-alert, .cn-alert-variant-default, .cn-alert-variant-destructive, .cn-alert-title, .cn-alert-description, .cn-alert-action, .cn-avatar, .cn-avatar-fallback, .cn-avatar-image, .cn-avatar-badge, .cn-avatar-group-count, .cn-empty, .cn-empty-header, .cn-empty-media, .cn-empty-media-default, .cn-empty-media-icon, .cn-empty-title, .cn-empty-description, .cn-empty-content, .cn-button, .cn-button-variant-default, .cn-button-variant-outline, .cn-button-variant-secondary, .cn-button-variant-ghost, .cn-button-variant-destructive, .cn-button-variant-link, .cn-button-size-xs, .cn-button-size-sm, .cn-button-size-default, .cn-button-size-lg, .cn-button-size-icon-xs, .cn-button-size-icon-sm, .cn-button-size-icon, .cn-button-size-icon-lg, .cn-dialog-overlay, .cn-dialog-content, .cn-dialog-close, .cn-dialog-header, .cn-dialog-footer, .cn-dialog-title, .cn-dialog-description, .cn-textarea, .cn-skeleton, .cn-kbd, .cn-kbd-group, .cn-table-container, .cn-table, .cn-table-header, .cn-table-body, .cn-table-footer, .cn-table-row, .cn-table-row-aria, .cn-table-head, .cn-table-head-aria, .cn-table-cell, .cn-table-cell-aria, .cn-table-caption, .cn-card, .cn-card-header, .cn-card-title, .cn-card-description, .cn-card-content, .cn-card-footer, .cn-label, .cn-label-aria, .cn-badge, .cn-badge-variant-default, .cn-badge-variant-secondary, .cn-badge-variant-outline, .cn-badge-variant-destructive, .cn-badge-variant-ghost, .cn-badge-variant-link, .cn-button-group, .cn-button-group-orientation-horizontal, .cn-button-group-orientation-vertical, .cn-button-group-text, .cn-button-group-separator, .cn-item, .cn-item-variant-default, .cn-item-variant-outline, .cn-item-variant-muted, .cn-item-size-default, .cn-item-size-sm, .cn-item-size-xs, .cn-item-media, .cn-item-media-variant-default, .cn-item-media-variant-icon, .cn-item-media-variant-image, .cn-item-content, .cn-item-title, .cn-item-description, .cn-item-actions, .cn-item-header, .cn-item-footer, .cn-item-group, .cn-item-separator, .cn-breadcrumb-list, .cn-breadcrumb-item, .cn-breadcrumb-link, .cn-breadcrumb-page, .cn-breadcrumb-separator, .cn-breadcrumb-ellipsis, .cn-pagination-content, .cn-pagination-ellipsis, .cn-pagination-previous, .cn-pagination-next, .cn-native-select, .cn-native-select-icon, .cn-marker, .cn-marker-variant-separator, .cn-marker-variant-border, .cn-marker-icon, .cn-marker-content, .cn-attachment, .cn-attachment-orientation-horizontal, .cn-attachment-orientation-vertical, .cn-attachment-size-default, .cn-attachment-size-sm, .cn-attachment-size-xs, .cn-attachment-media, .cn-attachment-media-variant-image, .cn-attachment-content, .cn-attachment-title, .cn-attachment-description, .cn-attachment-actions, .cn-attachment-group, .cn-attachment-trigger, .cn-bubble, .cn-bubble-content, .cn-bubble-variant-default, .cn-bubble-variant-secondary, .cn-bubble-variant-muted, .cn-bubble-variant-tinted, .cn-bubble-variant-outline, .cn-bubble-variant-ghost, .cn-bubble-variant-destructive, .cn-bubble-reactions, .cn-bubble-reactions-side-top, .cn-bubble-reactions-side-bottom, .cn-bubble-reactions-align-start, .cn-bubble-reactions-align-end, .cn-bubble-group, .cn-message, .cn-message-avatar, .cn-message-content, .cn-message-header, .cn-message-footer, .cn-message-group, .cn-accordion-item, .cn-accordion-trigger, .cn-accordion-content, .cn-accordion-content-inner, .cn-checkbox, .cn-checkbox-aria, .cn-checkbox-indicator, .cn-popover-content, .cn-popover-content-logical, .cn-popover-header, .cn-popover-title, .cn-popover-description, .cn-progress, .cn-progress-track, .cn-progress-indicator, .cn-progress-label, .cn-progress-value, .cn-radio-group, .cn-radio-group-item, .cn-radio-group-item-aria, .cn-radio-group-indicator, .cn-radio-group-indicator-icon, .cn-scroll-area-scrollbar, .cn-scroll-area-thumb, .cn-toggle, .cn-toggle-aria, .cn-toggle-variant-default, .cn-toggle-variant-outline, .cn-toggle-size-default, .cn-toggle-size-sm, .cn-toggle-size-lg, .cn-toggle-group, .cn-toggle-group-item, .cn-switch, .cn-switch-aria, .cn-switch-thumb, .cn-switch-thumb-aria, .cn-slider, .cn-slider-track, .cn-slider-range, .cn-slider-thumb, .cn-tabs, .cn-tabs-list, .cn-tabs-trigger, .cn-tabs-trigger-aria, .cn-tabs-content, .cn-input, .cn-sheet-overlay, .cn-sheet-content, .cn-sheet-close, .cn-sheet-header, .cn-sheet-footer, .cn-sheet-title, .cn-sheet-description) { all: revert-layer; --tw-leading: initial; }
+.style-nova.style-nova :is(.cn-alert, .cn-alert-variant-default, .cn-alert-variant-destructive, .cn-alert-title, .cn-alert-description, .cn-alert-action, .cn-avatar, .cn-avatar-fallback, .cn-avatar-image, .cn-avatar-badge, .cn-avatar-group-count, .cn-empty, .cn-empty-header, .cn-empty-media, .cn-empty-media-default, .cn-empty-media-icon, .cn-empty-title, .cn-empty-description, .cn-empty-content, .cn-button, .cn-button-variant-default, .cn-button-variant-outline, .cn-button-variant-secondary, .cn-button-variant-ghost, .cn-button-variant-destructive, .cn-button-variant-link, .cn-button-size-xs, .cn-button-size-sm, .cn-button-size-default, .cn-button-size-lg, .cn-button-size-icon-xs, .cn-button-size-icon-sm, .cn-button-size-icon, .cn-button-size-icon-lg, .cn-dialog-overlay, .cn-dialog-content, .cn-dialog-close, .cn-dialog-header, .cn-dialog-footer, .cn-dialog-title, .cn-dialog-description, .cn-textarea, .cn-skeleton, .cn-kbd, .cn-kbd-group, .cn-table-container, .cn-table, .cn-table-header, .cn-table-body, .cn-table-footer, .cn-table-row, .cn-table-row-aria, .cn-table-head, .cn-table-head-aria, .cn-table-cell, .cn-table-cell-aria, .cn-table-caption, .cn-card, .cn-card-header, .cn-card-title, .cn-card-description, .cn-card-content, .cn-card-footer, .cn-label, .cn-label-aria, .cn-badge, .cn-badge-variant-default, .cn-badge-variant-secondary, .cn-badge-variant-outline, .cn-badge-variant-destructive, .cn-badge-variant-ghost, .cn-badge-variant-link, .cn-button-group, .cn-button-group-orientation-horizontal, .cn-button-group-orientation-vertical, .cn-button-group-text, .cn-button-group-separator, .cn-item, .cn-item-variant-default, .cn-item-variant-outline, .cn-item-variant-muted, .cn-item-size-default, .cn-item-size-sm, .cn-item-size-xs, .cn-item-media, .cn-item-media-variant-default, .cn-item-media-variant-icon, .cn-item-media-variant-image, .cn-item-content, .cn-item-title, .cn-item-description, .cn-item-actions, .cn-item-header, .cn-item-footer, .cn-item-group, .cn-item-separator, .cn-breadcrumb-list, .cn-breadcrumb-item, .cn-breadcrumb-link, .cn-breadcrumb-page, .cn-breadcrumb-separator, .cn-breadcrumb-ellipsis, .cn-pagination-content, .cn-pagination-ellipsis, .cn-pagination-previous, .cn-pagination-next, .cn-native-select, .cn-native-select-icon, .cn-marker, .cn-marker-variant-separator, .cn-marker-variant-border, .cn-marker-icon, .cn-marker-content, .cn-attachment, .cn-attachment-orientation-horizontal, .cn-attachment-orientation-vertical, .cn-attachment-size-default, .cn-attachment-size-sm, .cn-attachment-size-xs, .cn-attachment-media, .cn-attachment-media-variant-image, .cn-attachment-content, .cn-attachment-title, .cn-attachment-description, .cn-attachment-actions, .cn-attachment-group, .cn-attachment-trigger, .cn-bubble, .cn-bubble-content, .cn-bubble-variant-default, .cn-bubble-variant-secondary, .cn-bubble-variant-muted, .cn-bubble-variant-tinted, .cn-bubble-variant-outline, .cn-bubble-variant-ghost, .cn-bubble-variant-destructive, .cn-bubble-reactions, .cn-bubble-reactions-side-top, .cn-bubble-reactions-side-bottom, .cn-bubble-reactions-align-start, .cn-bubble-reactions-align-end, .cn-bubble-group, .cn-message, .cn-message-avatar, .cn-message-content, .cn-message-header, .cn-message-footer, .cn-message-group, .cn-accordion-item, .cn-accordion-trigger, .cn-accordion-content, .cn-accordion-content-inner, .cn-checkbox, .cn-checkbox-aria, .cn-checkbox-indicator, .cn-popover-content, .cn-popover-content-logical, .cn-popover-header, .cn-popover-title, .cn-popover-description, .cn-progress, .cn-progress-track, .cn-progress-indicator, .cn-progress-label, .cn-progress-value, .cn-radio-group, .cn-radio-group-item, .cn-radio-group-item-aria, .cn-radio-group-indicator, .cn-radio-group-indicator-icon, .cn-scroll-area-scrollbar, .cn-scroll-area-thumb, .cn-toggle, .cn-toggle-aria, .cn-toggle-variant-default, .cn-toggle-variant-outline, .cn-toggle-size-default, .cn-toggle-size-sm, .cn-toggle-size-lg, .cn-toggle-group, .cn-toggle-group-item, .cn-switch, .cn-switch-aria, .cn-switch-thumb, .cn-switch-thumb-aria, .cn-slider, .cn-slider-track, .cn-slider-range, .cn-slider-thumb, .cn-tabs, .cn-tabs-list, .cn-tabs-trigger, .cn-tabs-trigger-aria, .cn-tabs-content, .cn-input, .cn-sheet-overlay, .cn-sheet-content, .cn-sheet-close, .cn-sheet-header, .cn-sheet-footer, .cn-sheet-title, .cn-sheet-description, .cn-input-group, .cn-input-group-addon, .cn-input-group-addon-align-inline-start, .cn-input-group-addon-align-inline-end, .cn-input-group-addon-align-block-start, .cn-input-group-addon-align-block-end, .cn-input-group-button, .cn-input-group-button-size-xs, .cn-input-group-button-size-icon-xs, .cn-input-group-button-size-icon-sm, .cn-input-group-text, .cn-input-group-input, .cn-input-group-textarea) { all: revert-layer; --tw-leading: initial; }
 .style-nova.style-nova {
   --ui-radius-sm: calc(var(--radius) * 0.6);
   --ui-radius-md: calc(var(--radius) * 0.8);
@@ -855,6 +855,59 @@
 
   .cn-sheet-description {
     @apply text-muted-foreground text-sm;
+  }
+
+  /* MARK: Input Group */
+  .cn-input-group {
+    @apply border-input dark:bg-input/30 has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[[data-slot][aria-invalid=true]]:border-destructive dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-disabled:bg-input/50 dark:has-disabled:bg-input/80 h-8 rounded-lg border transition-colors in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-disabled:opacity-50 has-[[data-slot=input-group-control]:focus-visible]:ring-3 has-[[data-slot][aria-invalid=true]]:ring-3 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-end]]:flex-col has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-start]]:flex-col has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:[&>input]:pr-1.5 has-[>[data-align=inline-start]]:[&>input]:pl-1.5;
+  }
+
+  .cn-input-group-addon {
+    @apply text-muted-foreground h-auto gap-2 py-1.5 text-sm font-medium group-data-[disabled=true]/input-group:opacity-50 [&>kbd]:rounded-[calc(var(--radius)-5px)] [&>svg:not([class*='size-'])]:size-4;
+  }
+
+  .cn-input-group-addon-align-inline-start {
+    @apply pl-2 has-[>button]:ml-[-0.3rem] has-[>kbd]:ml-[-0.15rem];
+  }
+
+  .cn-input-group-addon-align-inline-end {
+    @apply pr-2 has-[>button]:mr-[-0.3rem] has-[>kbd]:mr-[-0.15rem];
+  }
+
+  .cn-input-group-addon-align-block-start {
+    @apply px-2.5 pt-2 group-has-[>input]/input-group:pt-2 [.border-b]:pb-2;
+  }
+
+  .cn-input-group-addon-align-block-end {
+    @apply px-2.5 pb-2 group-has-[>input]/input-group:pb-2 [.border-t]:pt-2;
+  }
+
+  .cn-input-group-button {
+    @apply gap-2 text-sm;
+  }
+
+  .cn-input-group-button-size-xs {
+    @apply h-6 gap-1 rounded-[calc(var(--radius)-3px)] px-1.5 [&>svg:not([class*='size-'])]:size-3.5;
+  }
+
+  .cn-input-group-button-size-icon-xs {
+    @apply size-6 rounded-[calc(var(--radius)-3px)] p-0 has-[>svg]:p-0;
+  }
+
+  .cn-input-group-button-size-icon-sm {
+    @apply size-8 p-0 has-[>svg]:p-0;
+  }
+
+  .cn-input-group-text {
+    @apply text-muted-foreground gap-2 text-sm [&_svg:not([class*='size-'])]:size-4;
+  }
+
+  .cn-input-group-input {
+    @apply rounded-none border-0 bg-transparent shadow-none ring-0 focus-visible:ring-0 disabled:bg-transparent aria-invalid:ring-0 dark:bg-transparent dark:disabled:bg-transparent;
+  }
+
+  .cn-input-group-textarea {
+    @apply rounded-none border-0 bg-transparent py-2 shadow-none ring-0 focus-visible:ring-0 disabled:bg-transparent aria-invalid:ring-0 dark:bg-transparent dark:disabled:bg-transparent;
   }
 }
 }

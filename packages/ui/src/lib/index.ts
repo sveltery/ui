@@ -41,3 +41,4 @@ export * from './slider/index.js';
 export * from './tabs/index.js';
 export * from './input/index.js';
 export * from './sheet/index.js';
+export * from './input-group/index.js';
