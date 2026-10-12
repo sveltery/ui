@@ -94,6 +94,11 @@
       "types": "./dist/avatar/index.d.ts",
       "svelte": "./dist/avatar/index.js",
       "default": "./dist/avatar/index.js"
+    },
+    "./badge": {
+      "types": "./dist/badge/index.d.ts",
+      "svelte": "./dist/badge/index.js",
+      "default": "./dist/badge/index.js"
     }
   },
   "svelte": "./dist/index.js",
