@@ -1,5 +1,5 @@
 import type { HTMLAttributes } from 'svelte/elements';
-import type { RenderSnippet } from '../render.js';
+import type { RenderSnippet } from '../shared/render.js';
 import type { SeparatorProps } from '../separator/index.js';
 import type { ButtonGroupVariants } from './variants.js';
 
