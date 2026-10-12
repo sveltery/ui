@@ -5,7 +5,7 @@
   export function write(next: string) { value = next; }
 </script>
 <form>
-  <Textarea name="bound" bind:value />
+  <Textarea name="bound" rows={4} bind:value {@attach node => { node.dataset.attached = 'true'; }} />
   <Textarea name="draft" defaultValue="Draft" />
   <Textarea name="off" value="Off" disabled />
 </form>

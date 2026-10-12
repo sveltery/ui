@@ -2,7 +2,7 @@ import { afterEach, expect, it } from 'vitest';
 import { mount, tick, unmount } from 'svelte';
 import DialogFixture from './DialogFixture.svelte';
 
-type Fixture = { isOpen(): boolean; setOpen(next: boolean): void; remove(): void };
+type Fixture = { isOpen(): boolean; setOpen(next: boolean): void; remove(): void; close(): void };
 const mounted: ReturnType<typeof mount>[] = [];
 afterEach(async () => {
   for (const instance of mounted.splice(0)) await unmount(instance);
@@ -79,6 +79,17 @@ it('bind:open opens and closes the dialog from the owner', async () => {
   fixture.setOpen(false);
   await settle();
   expect(popup()).toBeNull();
+});
+
+it('the Dialog root closes imperatively through its close() export', async () => {
+  const { fixture, popup, events } = await setup();
+  fixture.setOpen(true);
+  await settle();
+  fixture.close();
+  await settle();
+  expect(popup()).toBeNull();
+  expect(fixture.isOpen()).toBe(false);
+  expect(events.filter(event => event.startsWith('change'))).toEqual(['change:false:imperative-action']);
 });
 
 it('onOpenChange reports the reason and can cancel a close', async () => {

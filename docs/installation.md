@@ -9,7 +9,7 @@ Pick a UI commit, and use the Base commit that the UI repository's `package.json
 ```sh
 pnpm add github:sveltery/base#<base-commit>
 pnpm add @sveltery/ui@file:<path-to-packed-ui>.tgz
-pnpm add cn class-variance-authority clsx tailwindcss tw-animate-css shadcn
+pnpm add tailwindcss tw-animate-css
 ```
 
 Build the UI archive from a checkout of this repository:
@@ -34,7 +34,6 @@ Import Tailwind and the Sveltery UI styles in your global CSS, and let Tailwind 
 ```css
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "shadcn/tailwind.css";
 @import "@sveltery/ui/themes.css";
 @import "@sveltery/ui/nova.css";
 @source "../node_modules/@sveltery/ui/dist";

@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { CardFooterProps } from './types.js';
-  import { classes } from '../shared/classes.js';
-  let { children, class: classProp, ref = $bindable(), ...props }: CardFooterProps = $props();
+  import { cn } from 'cn';
+  let { children, class: classProp, ...props }: CardFooterProps = $props();
 </script>
-<div data-slot="card-footer" {...props} class={classes('cn-card-footer flex items-center', classProp)} bind:this={ref}>
+<div data-slot="card-footer" {...props} class={cn('cn-card-footer flex items-center', classProp)}>
   {@render children?.()}
 </div>

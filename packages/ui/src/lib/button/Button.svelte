@@ -1,9 +1,8 @@
 <script lang="ts">
-  // shadcn Button anatomy/Nova appearance; behavior belongs to the pinned Base Button.
   import { Button as Primitive } from '@sveltery/base/button';
   import type { ButtonProps } from './types.js';
   import { buttonVariants } from './variants.js';
-  import { classes } from '../shared/classes.js';
+  import { cn } from 'cn';
   let { children, class: classProp, variant = 'default', size = 'default', ...props }: ButtonProps = $props();
 </script>
-<Primitive data-slot="button" {...props} {children} class={classes(buttonVariants({ variant, size }), classProp)} />
+<Primitive data-slot="button" {...props} {children} class={cn(buttonVariants({ variant, size }), classProp)} />

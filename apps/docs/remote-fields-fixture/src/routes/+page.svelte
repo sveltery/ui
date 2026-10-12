@@ -36,7 +36,7 @@
       <label for="native-text">Native text</label>
       <textarea id="native-text" {...current.fields.nativeText.as('text', 'Draft')}></textarea>
       <label for="ui-text">UI text</label>
-      <Textarea id="ui-text" {...current.fields.text.as('text', 'Draft')} bind:ref={textarea} {@attach attachment} />
+      <Textarea id="ui-text" {...current.fields.text.as('text', 'Draft')} {@attach attachment} {@attach node => { textarea = node as HTMLTextAreaElement; return () => { textarea = null; }; }} />
       <label for="empty-text">UI text without a default</label>
       <Textarea id="empty-text" {...current.fields.emptyText.as('text')} />
       <button id="native-submit" {...current.fields.action.as('submit', 'native')}>Submit native</button>

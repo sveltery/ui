@@ -1,9 +1,8 @@
 <script lang="ts">
-  import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { classes } from '../shared/classes.js';
-  let { children, class: classProp, ref = $bindable(), ...props }: Omit<HTMLAttributes<HTMLTableRowElement>, 'children'> & { children?: Snippet; ref?: HTMLTableRowElement | null } = $props();
+  import { cn } from 'cn';
+  let { children, class: classProp, ...props }: HTMLAttributes<HTMLTableRowElement> = $props();
 </script>
-<tr data-slot="table-row" {...props} class={classes('cn-table-row has-aria-expanded:bg-muted/50', classProp)} bind:this={ref}>
+<tr data-slot="table-row" {...props} class={cn('cn-table-row has-aria-expanded:bg-muted/50', classProp)}>
   {@render children?.()}
 </tr>

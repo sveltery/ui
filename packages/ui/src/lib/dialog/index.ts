@@ -1,4 +1,6 @@
-export { default as Dialog } from './Dialog.svelte';
+import { Dialog as Primitive } from '@sveltery/base/dialog';
+
+export const Dialog = Primitive.Root;
 export { default as DialogTrigger } from './DialogTrigger.svelte';
 export { default as DialogPortal } from './DialogPortal.svelte';
 export { default as DialogClose } from './DialogClose.svelte';

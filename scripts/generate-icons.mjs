@@ -1,52 +1,74 @@
-// Reproducible native SVG geometry. Package renderers remain reference-only dependencies.
+// Resolves every <IconPlaceholder> in the repository to SVG data from the framework-agnostic icon packages.
+// Run after adding or changing an icon; `--check` fails when the generated module is stale.
 import assert from 'node:assert/strict';
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
-import { createRequire } from 'node:module';
-import { dirname } from 'node:path';
-import { pathToFileURL } from 'node:url';
-import { createElement } from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
-import { JSDOM } from 'jsdom';
-const require = createRequire(import.meta.url);
-const packages = {};
-for (const pin of Object.values({ lucide: 'lucide-react', tabler: '@tabler/icons-react', hugeicons: '@hugeicons/core-free-icons', phosphor: '@phosphor-icons/react', remixicon: '@remixicon/react' }).map(name => ({ name }))) {
-  let root = dirname(require.resolve(pin.name));
-  while (true) {
-    try {
-      const pkg = JSON.parse(readFileSync(`${root}/package.json`, 'utf8'));
-      if (pkg.name === pin.name) { packages[pin.name] = await import(pathToFileURL(`${root}/${pkg.module ?? pkg.main}`)); break; }
-    } catch (error) { if (error.code !== 'ENOENT') throw error; }
-    root = dirname(root);
+import { execFileSync } from 'node:child_process';
+import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
+import * as lucide from 'lucide';
+import * as hugeicons from '@hugeicons/core-free-icons';
+
+const packageDir = name => join('node_modules', name);
+const output = 'packages/ui/src/lib/icons/generated.ts';
+const libraries = ['lucide', 'tabler', 'hugeicons', 'phosphor', 'remixicon'];
+const pascal = kebab => kebab.split('-').map(part => part.charAt(0).toUpperCase() + part.slice(1)).join('');
+const kebab = name => name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').replace(/([a-zA-Z])(\d)/g, '$1-$2').toLowerCase();
+const escape = value => String(value).replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;');
+const serialize = nodes => nodes.map(([tag, attributes]) => `<${tag}${Object.entries(attributes).map(([key, value]) => ` ${key}="${escape(value)}"`).join('')}/>`).join('');
+const svgBody = path => readFileSync(path, 'utf8').replace(/^[\s\S]*?<svg[^>]*>/, '').replace(/<\/svg>\s*$/, '');
+const svgFiles = (dir, prefix) => {
+  const files = new Map();
+  for (const entry of readdirSync(dir, { recursive: true })) if (entry.endsWith('.svg')) files.set(`${prefix}${pascal(entry.split('/').at(-1).slice(0, -4))}`, join(dir, entry));
+  return files;
+};
+
+const stroked = { xmlns: 'http://www.w3.org/2000/svg', width: '24', height: '24', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' };
+const tablerNodes = new Map(Object.entries(JSON.parse(readFileSync(join(packageDir('@tabler/icons'), 'tabler-nodes-outline.json'), 'utf8'))).map(([name, nodes]) => [`Icon${pascal(name)}`, { name, nodes }]));
+const phosphorFiles = svgFiles(join(packageDir('@phosphor-icons/core'), 'assets/regular'), '');
+const remixFiles = svgFiles(join(packageDir('remixicon'), 'icons'), 'Ri');
+
+const resolvers = {
+  lucide(name) {
+    const node = lucide[name] ?? lucide[name.replace(/Icon$/, '')];
+    return node && { attributes: { ...stroked, class: `lucide lucide-${kebab(name.replace(/Icon$/, ''))}` }, body: serialize(node[2]) };
+  },
+  tabler(name) {
+    const icon = tablerNodes.get(name);
+    return icon && { attributes: { ...stroked, class: `tabler-icon tabler-icon-${icon.name}` }, body: serialize(icon.nodes) };
+  },
+  hugeicons(name) {
+    const nodes = hugeicons[name];
+    // Upstream shadcn draws Hugeicons at stroke-width 2; it lives on the root so callers can override it.
+    const attributes = ({ key: _key, strokeWidth: _strokeWidth, ...rest }) => Object.fromEntries(Object.entries(rest).map(([key, value]) => [kebab(key), value]));
+    return nodes && { attributes: { xmlns: stroked.xmlns, width: '24', height: '24', viewBox: '0 0 24 24', fill: 'none', color: 'currentColor', 'stroke-width': '2' }, body: serialize(nodes.map(([tag, rest]) => [tag, attributes(rest)])) };
+  },
+  phosphor(name) {
+    const path = phosphorFiles.get(name.replace(/Icon$/, ''));
+    return path && { attributes: { xmlns: stroked.xmlns, width: '24', height: '24', viewBox: '0 0 256 256', fill: 'currentColor' }, body: svgBody(path) };
+  },
+  remixicon(name) {
+    const path = remixFiles.get(name);
+    return path && { attributes: { xmlns: stroked.xmlns, width: '24', height: '24', viewBox: '0 0 24 24', fill: 'currentColor', class: 'remixicon' }, body: svgBody(path) };
+  },
+};
+
+const sources = execFileSync('git', ['ls-files', '-co', '--exclude-standard', '--', 'packages/ui/src', 'apps', 'tests'], { encoding: 'utf8' }).split('\n').filter(path => path.endsWith('.svelte'));
+const icons = Object.fromEntries(libraries.map(library => [library, {}]));
+for (const path of sources) {
+  for (const [tag] of readFileSync(path, 'utf8').matchAll(/<IconPlaceholder\b[^>]*>/g)) {
+    const names = Object.fromEntries([...tag.matchAll(/\b(lucide|tabler|hugeicons|phosphor|remixicon)="([^"]+)"/g)].map(match => [match[1], match[2]]));
+    for (const library of libraries) {
+      const name = names[library];
+      assert(name, `${path}: IconPlaceholder needs a ${library} name in ${tag}`);
+      const icon = resolvers[library](name);
+      assert(icon, `${path}: ${library} has no icon named ${name}`);
+      icons[library][name] = icon;
+    }
   }
 }
-const libraryPackages = { lucide: 'lucide-react', tabler: '@tabler/icons-react', hugeicons: '@hugeicons/core-free-icons', phosphor: '@phosphor-icons/react', remixicon: '@remixicon/react' };
-const document = new JSDOM('').window.document;
-const host = document.createElement('div');
-const attributes = node => Object.fromEntries([...node.attributes].map(attr => [attr.name, attr.value]));
-function nodes(element) { return [...element.children].map(node => ({ tag: node.localName, attributes: attributes(node), nodes: nodes(node) })); }
-function svg(component, props = {}) { host.innerHTML = renderToStaticMarkup(createElement(component, props)); const node = host.querySelector('svg'); assert(node); return { attributes: attributes(node), nodes: nodes(node) }; }
-mkdirSync('packages/ui/src/lib/icons/generated', { recursive: true });
-const outputs = [];
-const licenseFiles = { lucide: 'lucide-LICENSE', tabler: 'tabler-LICENSE', hugeicons: 'hugeicons-core-LICENSE.md', phosphor: 'phosphor-LICENSE', remixicon: 'remix-LICENSE' };
-const moduleBytes = (data, library) => `/*!\n${readFileSync(`scripts/icons/licenses/${licenseFiles[library]}`, 'utf8')}*/\n// Generated by scripts/generate-icons.mjs.\nexport default ${JSON.stringify(data, null, 2)};\n`;
-for (const [library, packageName] of Object.entries(libraryPackages)) {
-  const map = readFileSync(`scripts/icons/__${library}__.ts`, 'utf8');
-  const names = [...map.matchAll(/export \{ (\w+) \}/g)].map(match => match[1]);
-  const icons = {};
-  const missing = [];
-  for (const name of names) {
-    const icon = packages[packageName][name];
-    if (!icon) { missing.push(name); continue; }
-    if (library === 'hugeicons') {
-      // Only MIT core-free geometry is extracted; no Pro React renderer source is copied.
-      icons[name] = { attributes: { xmlns: 'http://www.w3.org/2000/svg', width: '24', height: '24', viewBox: '0 0 24 24', fill: 'none', color: 'currentColor', class: '', 'stroke-width': '2', stroke: 'currentColor' }, nodes: svg(() => createElement('svg', null, ...icon.map(([tag, attrs]) => createElement(tag, attrs)))).nodes };
-    } else icons[name] = svg(icon);
-  }
-  const local = `packages/ui/src/lib/icons/generated/${library}.js`;
-  const bytes = moduleBytes(icons, library);
-  if (process.argv.includes('--check')) assert.equal(readFileSync(local, 'utf8'), bytes, `${library} reproducible geometry`); else writeFileSync(local, bytes);
-  outputs.push({ library, declared: names.length, extracted: Object.keys(icons).length, missing });
-}
-const fallback = moduleBytes(svg(packages['lucide-react'].SquareIcon), 'lucide');
-if (process.argv.includes('--check')) assert.equal(readFileSync('packages/ui/src/lib/icons/generated/fallback.js', 'utf8'), fallback); else writeFileSync('packages/ui/src/lib/icons/generated/fallback.js', fallback);
-console.log(outputs.map(item => `${item.library}: ${item.extracted}/${item.declared} genuine exported icons; ${item.missing.length} absent pinned package exports`).join('\n'));
+
+const sorted = Object.fromEntries(libraries.map(library => [library, Object.fromEntries(Object.entries(icons[library]).sort(([a], [b]) => a.localeCompare(b)))]));
+const licenses = ['lucide-LICENSE', 'tabler-LICENSE', 'hugeicons-core-LICENSE.md', 'phosphor-LICENSE', 'remix-LICENSE'].map(file => readFileSync(`packages/ui/src/lib/icons/licenses/${file}`, 'utf8').trim()).join('\n\n');
+const module = `/*!\n${licenses}\n*/\n// Generated by scripts/generate-icons.mjs from the icons named by every <IconPlaceholder>.\nimport type { IconData, IconLibraryName } from './config.js';\n\nexport const icons: Record<IconLibraryName, Record<string, IconData>> = ${JSON.stringify(sorted, null, 2)};\n`;
+if (process.argv.includes('--check')) assert.equal(readFileSync(output, 'utf8'), module, `${output} is stale; run node scripts/generate-icons.mjs`);
+else writeFileSync(output, module);
+console.log(libraries.map(library => `${library}: ${Object.keys(sorted[library]).length}`).join(', '));

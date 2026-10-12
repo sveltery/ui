@@ -1,40 +1,14 @@
 <script lang="ts">
   import type { IconPlaceholderProps } from './types.js';
   import { getIconLibraryContext } from './config.js';
-  import { loadIcon, loadedIcon } from './data.js';
-  import IconSvg from './IconSvg.svelte';
-  import fallback from './generated/fallback.js';
-  // Pinned original d75a96ab icon children have no empty HTML text siblings.
-  // Svelte 5.57.1 standalone controls and HMR component bodies create Text anchors.
-  // Eight constant-empty HTML encodings retain comment-only template ownership,
-  // preserving every original condition/await and all loader/cache behavior.
-  let { children, ref = $bindable(), ...props }: IconPlaceholderProps = $props();
-  const getLibrary = getIconLibraryContext();
-  const library = $derived(getLibrary());
-  const name = $derived(props[library]);
-  const available = $derived(name ? loadedIcon(library, name) : null);
-  const pending = $derived(available === undefined && name ? loadIcon(library, name) : null);
+  import { icons } from './generated.js';
+  let { lucide, tabler, hugeicons, phosphor, remixicon, class: className, ...props }: IconPlaceholderProps = $props();
+  const library = getIconLibraryContext();
+  const icon = $derived(icons[library()][{ lucide, tabler, hugeicons, phosphor, remixicon }[library()]]);
 </script>
-<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-{@html ''}{#if name}
-  <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-  {@html ''}{#if available !== undefined}
-    <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-    {@html ''}{#if available}
-      <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-      {@html ''}<IconSvg data={available} {library} attributes={props} {children} bind:ref />
-    {/if}
-  {:else}
-    <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-    {@html ''}{#await pending}
-      <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-      {@html ''}<IconSvg data={fallback} library="fallback" attributes={props} {children} bind:ref />
-    {:then data}
-      <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-      {@html ''}{#if data}
-        <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-        {@html ''}<IconSvg {data} {library} attributes={props} {children} bind:ref />
-      {/if}
-    {/await}
-  {/if}
+{#if icon}
+  <svg {...icon.attributes} {...props} class={[icon.attributes.class, className]}>
+    <!-- eslint-disable-next-line svelte/no-at-html-tags -- geometry generated at build time from the icon packages -->
+    {@html icon.body}
+  </svg>
 {/if}
