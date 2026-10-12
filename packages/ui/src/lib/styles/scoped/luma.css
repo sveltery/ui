@@ -6,7 +6,7 @@
   :where(.style-luma) * { @apply border-border outline-ring/50; }
 }
 @layer components {
-.style-luma.style-luma :is(.cn-alert, .cn-alert-variant-default, .cn-alert-variant-destructive, .cn-alert-title, .cn-alert-description, .cn-alert-action, .cn-avatar, .cn-avatar-fallback, .cn-avatar-image, .cn-avatar-badge, .cn-avatar-group-count, .cn-empty, .cn-empty-header, .cn-empty-media, .cn-empty-media-default, .cn-empty-media-icon, .cn-empty-title, .cn-empty-description, .cn-empty-content, .cn-button, .cn-button-variant-default, .cn-button-variant-outline, .cn-button-variant-secondary, .cn-button-variant-ghost, .cn-button-variant-destructive, .cn-button-variant-link, .cn-button-size-xs, .cn-button-size-sm, .cn-button-size-default, .cn-button-size-lg, .cn-button-size-icon-xs, .cn-button-size-icon-sm, .cn-button-size-icon, .cn-button-size-icon-lg, .cn-dialog-overlay, .cn-dialog-content, .cn-dialog-close, .cn-dialog-header, .cn-dialog-footer, .cn-dialog-title, .cn-dialog-description, .cn-textarea, .cn-skeleton, .cn-kbd, .cn-kbd-group, .cn-table-container, .cn-table, .cn-table-header, .cn-table-body, .cn-table-footer, .cn-table-row, .cn-table-row-aria, .cn-table-head, .cn-table-head-aria, .cn-table-cell, .cn-table-cell-aria, .cn-table-caption, .cn-card, .cn-card-header, .cn-card-title, .cn-card-description, .cn-card-content, .cn-card-footer, .cn-label, .cn-label-aria, .cn-badge, .cn-badge-variant-default, .cn-badge-variant-secondary, .cn-badge-variant-outline, .cn-badge-variant-destructive, .cn-badge-variant-ghost, .cn-badge-variant-link, .cn-button-group, .cn-button-group-orientation-horizontal, .cn-button-group-orientation-vertical, .cn-button-group-text, .cn-button-group-separator, .cn-item, .cn-item-variant-default, .cn-item-variant-outline, .cn-item-variant-muted, .cn-item-size-default, .cn-item-size-sm, .cn-item-size-xs, .cn-item-media, .cn-item-media-variant-default, .cn-item-media-variant-icon, .cn-item-media-variant-image, .cn-item-content, .cn-item-title, .cn-item-description, .cn-item-actions, .cn-item-header, .cn-item-footer, .cn-item-group, .cn-item-separator) { all: revert-layer; --tw-leading: initial; }
+.style-luma.style-luma :is(.cn-alert, .cn-alert-variant-default, .cn-alert-variant-destructive, .cn-alert-title, .cn-alert-description, .cn-alert-action, .cn-avatar, .cn-avatar-fallback, .cn-avatar-image, .cn-avatar-badge, .cn-avatar-group-count, .cn-empty, .cn-empty-header, .cn-empty-media, .cn-empty-media-default, .cn-empty-media-icon, .cn-empty-title, .cn-empty-description, .cn-empty-content, .cn-button, .cn-button-variant-default, .cn-button-variant-outline, .cn-button-variant-secondary, .cn-button-variant-ghost, .cn-button-variant-destructive, .cn-button-variant-link, .cn-button-size-xs, .cn-button-size-sm, .cn-button-size-default, .cn-button-size-lg, .cn-button-size-icon-xs, .cn-button-size-icon-sm, .cn-button-size-icon, .cn-button-size-icon-lg, .cn-dialog-overlay, .cn-dialog-content, .cn-dialog-close, .cn-dialog-header, .cn-dialog-footer, .cn-dialog-title, .cn-dialog-description, .cn-textarea, .cn-skeleton, .cn-kbd, .cn-kbd-group, .cn-table-container, .cn-table, .cn-table-header, .cn-table-body, .cn-table-footer, .cn-table-row, .cn-table-row-aria, .cn-table-head, .cn-table-head-aria, .cn-table-cell, .cn-table-cell-aria, .cn-table-caption, .cn-card, .cn-card-header, .cn-card-title, .cn-card-description, .cn-card-content, .cn-card-footer, .cn-label, .cn-label-aria, .cn-badge, .cn-badge-variant-default, .cn-badge-variant-secondary, .cn-badge-variant-outline, .cn-badge-variant-destructive, .cn-badge-variant-ghost, .cn-badge-variant-link, .cn-button-group, .cn-button-group-orientation-horizontal, .cn-button-group-orientation-vertical, .cn-button-group-text, .cn-button-group-separator, .cn-item, .cn-item-variant-default, .cn-item-variant-outline, .cn-item-variant-muted, .cn-item-size-default, .cn-item-size-sm, .cn-item-size-xs, .cn-item-media, .cn-item-media-variant-default, .cn-item-media-variant-icon, .cn-item-media-variant-image, .cn-item-content, .cn-item-title, .cn-item-description, .cn-item-actions, .cn-item-header, .cn-item-footer, .cn-item-group, .cn-item-separator, .cn-breadcrumb-list, .cn-breadcrumb-item, .cn-breadcrumb-link, .cn-breadcrumb-page, .cn-breadcrumb-separator, .cn-breadcrumb-ellipsis) { all: revert-layer; --tw-leading: initial; }
 .style-luma.style-luma {
   --ui-radius-sm: calc(var(--radius) * 0.6);
   --ui-radius-md: calc(var(--radius) * 0.8);
@@ -411,6 +411,31 @@
 
   .cn-item-separator {
     @apply my-2;
+  }
+
+  /* MARK: Breadcrumb */
+  .cn-breadcrumb-list {
+    @apply text-muted-foreground gap-1.5 text-sm sm:gap-2.5;
+  }
+
+  .cn-breadcrumb-item {
+    @apply gap-1.5;
+  }
+
+  .cn-breadcrumb-link {
+    @apply hover:text-foreground transition-colors;
+  }
+
+  .cn-breadcrumb-page {
+    @apply text-foreground font-normal;
+  }
+
+  .cn-breadcrumb-separator {
+    @apply [&>svg]:size-3.5;
+  }
+
+  .cn-breadcrumb-ellipsis {
+    @apply size-5 [&>svg]:size-4;
   }
 }
 }

@@ -395,4 +395,29 @@
   .cn-item-separator {
     @apply my-2;
   }
+
+  /* MARK: Breadcrumb */
+  .cn-breadcrumb-list {
+    @apply text-muted-foreground gap-1.5 text-sm;
+  }
+
+  .cn-breadcrumb-item {
+    @apply gap-1;
+  }
+
+  .cn-breadcrumb-link {
+    @apply hover:text-foreground transition-colors;
+  }
+
+  .cn-breadcrumb-page {
+    @apply text-foreground font-normal;
+  }
+
+  .cn-breadcrumb-separator {
+    @apply [&>svg]:size-3.5;
+  }
+
+  .cn-breadcrumb-ellipsis {
+    @apply size-5 [&>svg]:size-4;
+  }
 }
