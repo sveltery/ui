@@ -14,6 +14,7 @@
   import { Bubble, BubbleContent, BubbleGroup, BubbleReactions } from '@sveltery/ui/bubble';
   import { Button } from '@sveltery/ui/button';
   import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Marker, MarkerContent, MarkerIcon } from '@sveltery/ui/marker';
   import {
     Message,
     MessageAvatar,
@@ -22,6 +23,7 @@
     MessageGroup,
     MessageHeader,
   } from '@sveltery/ui/message';
+  import { Spinner } from '@sveltery/ui/spinner';
 </script>
 
 {#snippet MessageDefault()}
@@ -260,6 +262,84 @@
     </div>
   </Example>
 
+{/snippet}
+
+{#snippet MessageGroupChat()}
+  <Example title="Group Chat">
+    <div class="flex w-full max-w-md flex-col gap-10">
+      <Message align="end">
+        <MessageContent>
+          <Bubble variant="tinted">
+            <BubbleContent>
+              Why is the dashboard showing zero users
+            </BubbleContent>
+          </Bubble>
+        </MessageContent>
+      </Message>
+      <MessageGroup>
+        <Message>
+          <MessageAvatar />
+          <MessageContent>
+            <Bubble variant="muted">
+              <BubbleContent>Define &quot;zero.&quot;</BubbleContent>
+            </Bubble>
+          </MessageContent>
+        </Message>
+        <Message>
+          <MessageAvatar>
+            <Avatar>
+              <AvatarImage
+                src="https://github.com/evilrabbit.png"
+                alt="@evilrabbit"
+              />
+              <AvatarFallback>ER</AvatarFallback>
+            </Avatar>
+          </MessageAvatar>
+          <MessageContent>
+            <Bubble variant="muted">
+              <BubbleContent>What do you mean?</BubbleContent>
+            </Bubble>
+          </MessageContent>
+        </Message>
+      </MessageGroup>
+      <Message align="end">
+        <MessageContent>
+          <Bubble variant="tinted">
+            <BubbleContent>
+              <span class="font-medium">@eve</span> can you check?
+            </BubbleContent>
+          </Bubble>
+        </MessageContent>
+      </Message>
+      <Message>
+        <Marker role="status">
+          <MarkerIcon>
+            <Spinner />
+          </MarkerIcon>
+          <MarkerContent>Checking the logs...</MarkerContent>
+        </Marker>
+      </Message>
+      <Message>
+        <MessageContent>
+          <MessageHeader>Eve</MessageHeader>
+          <Bubble variant="ghost">
+            <BubbleContent>
+              <span class="whitespace-pre-wrap">
+                {`I found the following error in the logs:
+
+- Error: No users found
+- Stack trace:
+- at src/users/services/user-service.ts:123
+- at src/users/services/get-user.ts:230
+
+Can you check if the users are being created?`}
+              </span>
+            </BubbleContent>
+          </Bubble>
+        </MessageContent>
+      </Message>
+    </div>
+  </Example>
 {/snippet}
 
 {#snippet MessageHeaderFooter()}
@@ -721,6 +801,7 @@
   {@render MessageDefault()}
   {@render MessageWithAvatar()}
   {@render MessageGroupExample()}
+  {@render MessageGroupChat()}
   {@render MessageHeaderFooter()}
   {@render MessageActions()}
   {@render MessageAttachment()}

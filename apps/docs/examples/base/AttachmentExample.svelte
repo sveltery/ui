@@ -21,6 +21,7 @@
     DialogTrigger,
   } from '@sveltery/ui/dialog';
   import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Spinner } from '@sveltery/ui/spinner';
 
   let isVisible = $state(true);
 </script>
@@ -360,6 +361,293 @@
     </div>
   </Example>
 
+{/snippet}
+
+{#snippet AttachmentStates()}
+  <Example title="States" class="gap-8">
+    <div class="flex w-full flex-col gap-3">
+      <div class="px-1 text-xs font-medium text-muted-foreground">
+        Horizontal
+      </div>
+      <div class="flex flex-col gap-2">
+        <Attachment state="idle" class="w-full">
+          <AttachmentMedia>
+            <IconPlaceholder
+              lucide="ClockIcon"
+              tabler="IconClock"
+              hugeicons="Clock01Icon"
+              phosphor="ClockIcon"
+              remixicon="RiTimeLine"
+            />
+          </AttachmentMedia>
+          <AttachmentContent>
+            <AttachmentTitle>selected-file.pdf</AttachmentTitle>
+            <AttachmentDescription>Ready to upload</AttachmentDescription>
+          </AttachmentContent>
+          <AttachmentActions>
+            <AttachmentAction aria-label="Remove selected-file.pdf">
+              <IconPlaceholder
+                lucide="XIcon"
+                tabler="IconX"
+                hugeicons="Cancel01Icon"
+                phosphor="XIcon"
+                remixicon="RiCloseLine"
+              />
+            </AttachmentAction>
+          </AttachmentActions>
+        </Attachment>
+        <Attachment state="uploading" class="w-full">
+          <AttachmentMedia>
+            <Spinner />
+          </AttachmentMedia>
+          <AttachmentContent>
+            <AttachmentTitle>design-system.zip</AttachmentTitle>
+            <AttachmentDescription>Uploading · 64%</AttachmentDescription>
+          </AttachmentContent>
+          <AttachmentActions>
+            <AttachmentAction aria-label="Remove design-system.zip">
+              <IconPlaceholder
+                lucide="XIcon"
+                tabler="IconX"
+                hugeicons="Cancel01Icon"
+                phosphor="XIcon"
+                remixicon="RiCloseLine"
+              />
+            </AttachmentAction>
+          </AttachmentActions>
+        </Attachment>
+        <Attachment state="processing" class="w-full">
+          <AttachmentMedia>
+            <IconPlaceholder
+              lucide="FileTextIcon"
+              tabler="IconFileText"
+              hugeicons="FileIcon"
+              phosphor="FileTextIcon"
+              remixicon="RiFileTextLine"
+            />
+          </AttachmentMedia>
+          <AttachmentContent>
+            <AttachmentTitle>market-research.pdf</AttachmentTitle>
+            <AttachmentDescription>Processing document</AttachmentDescription>
+          </AttachmentContent>
+          <AttachmentActions>
+            <AttachmentAction aria-label="Remove market-research.pdf">
+              <IconPlaceholder
+                lucide="XIcon"
+                tabler="IconX"
+                hugeicons="Cancel01Icon"
+                phosphor="XIcon"
+                remixicon="RiCloseLine"
+              />
+            </AttachmentAction>
+          </AttachmentActions>
+        </Attachment>
+        <Attachment state="error" class="w-full">
+          <AttachmentMedia>
+            <IconPlaceholder
+              lucide="FileWarningIcon"
+              tabler="IconFileAlert"
+              hugeicons="FileCorruptIcon"
+              phosphor="FileXIcon"
+              remixicon="RiFileWarningLine"
+            />
+          </AttachmentMedia>
+          <AttachmentContent>
+            <AttachmentTitle>financial-model.xlsx</AttachmentTitle>
+            <AttachmentDescription>
+              Upload failed. Try again.
+            </AttachmentDescription>
+          </AttachmentContent>
+          <AttachmentActions>
+            <AttachmentAction aria-label="Retry upload">
+              <IconPlaceholder
+                lucide="RefreshCwIcon"
+                tabler="IconRefresh"
+                hugeicons="RefreshIcon"
+                phosphor="ArrowClockwiseIcon"
+                remixicon="RiRefreshLine"
+              />
+            </AttachmentAction>
+            <AttachmentAction aria-label="Remove attachment">
+              <IconPlaceholder
+                lucide="XIcon"
+                tabler="IconX"
+                hugeicons="Cancel01Icon"
+                phosphor="XIcon"
+                remixicon="RiCloseLine"
+              />
+            </AttachmentAction>
+          </AttachmentActions>
+        </Attachment>
+        <Attachment state="done" class="w-full">
+          <AttachmentMedia>
+            <IconPlaceholder
+              lucide="CheckIcon"
+              tabler="IconCheck"
+              hugeicons="Tick02Icon"
+              phosphor="CheckIcon"
+              remixicon="RiCheckLine"
+            />
+          </AttachmentMedia>
+          <AttachmentContent>
+            <AttachmentTitle>uploaded-report.pdf</AttachmentTitle>
+            <AttachmentDescription>Uploaded · 1.8 MB</AttachmentDescription>
+          </AttachmentContent>
+          <AttachmentActions>
+            <AttachmentAction aria-label="Remove uploaded-report.pdf">
+              <IconPlaceholder
+                lucide="XIcon"
+                tabler="IconX"
+                hugeicons="Cancel01Icon"
+                phosphor="XIcon"
+                remixicon="RiCloseLine"
+              />
+            </AttachmentAction>
+          </AttachmentActions>
+        </Attachment>
+      </div>
+    </div>
+    <div class="flex w-full flex-col gap-3">
+      <div class="px-1 text-xs font-medium text-muted-foreground">
+        Vertical
+      </div>
+      <AttachmentGroup class="w-full">
+        <Attachment state="idle" orientation="vertical">
+          <AttachmentMedia>
+            <IconPlaceholder
+              lucide="ClockIcon"
+              tabler="IconClock"
+              hugeicons="Clock01Icon"
+              phosphor="ClockIcon"
+              remixicon="RiTimeLine"
+            />
+          </AttachmentMedia>
+          <AttachmentContent>
+            <AttachmentTitle>selected-file.pdf</AttachmentTitle>
+            <AttachmentDescription>Ready</AttachmentDescription>
+          </AttachmentContent>
+          <AttachmentActions>
+            <AttachmentAction aria-label="Remove selected-file.pdf">
+              <IconPlaceholder
+                lucide="XIcon"
+                tabler="IconX"
+                hugeicons="Cancel01Icon"
+                phosphor="XIcon"
+                remixicon="RiCloseLine"
+              />
+            </AttachmentAction>
+          </AttachmentActions>
+        </Attachment>
+        <Attachment state="uploading" orientation="vertical">
+          <AttachmentMedia>
+            <Spinner />
+          </AttachmentMedia>
+          <AttachmentContent>
+            <AttachmentTitle>design-system.zip</AttachmentTitle>
+            <AttachmentDescription>Uploading</AttachmentDescription>
+          </AttachmentContent>
+          <AttachmentActions>
+            <AttachmentAction aria-label="Remove design-system.zip">
+              <IconPlaceholder
+                lucide="XIcon"
+                tabler="IconX"
+                hugeicons="Cancel01Icon"
+                phosphor="XIcon"
+                remixicon="RiCloseLine"
+              />
+            </AttachmentAction>
+          </AttachmentActions>
+        </Attachment>
+        <Attachment state="processing" orientation="vertical">
+          <AttachmentMedia>
+            <IconPlaceholder
+              lucide="FileTextIcon"
+              tabler="IconFileText"
+              hugeicons="FileIcon"
+              phosphor="FileTextIcon"
+              remixicon="RiFileTextLine"
+            />
+          </AttachmentMedia>
+          <AttachmentContent>
+            <AttachmentTitle>market-research.pdf</AttachmentTitle>
+            <AttachmentDescription>Processing</AttachmentDescription>
+          </AttachmentContent>
+          <AttachmentActions>
+            <AttachmentAction aria-label="Remove market-research.pdf">
+              <IconPlaceholder
+                lucide="XIcon"
+                tabler="IconX"
+                hugeicons="Cancel01Icon"
+                phosphor="XIcon"
+                remixicon="RiCloseLine"
+              />
+            </AttachmentAction>
+          </AttachmentActions>
+        </Attachment>
+        <Attachment state="error" orientation="vertical">
+          <AttachmentMedia>
+            <IconPlaceholder
+              lucide="FileWarningIcon"
+              tabler="IconFileAlert"
+              hugeicons="FileCorruptIcon"
+              phosphor="FileXIcon"
+              remixicon="RiFileWarningLine"
+            />
+          </AttachmentMedia>
+          <AttachmentContent>
+            <AttachmentTitle>financial-model.xlsx</AttachmentTitle>
+            <AttachmentDescription>Failed</AttachmentDescription>
+          </AttachmentContent>
+          <AttachmentActions>
+            <AttachmentAction aria-label="Retry financial-model.xlsx">
+              <IconPlaceholder
+                lucide="RefreshCwIcon"
+                tabler="IconRefresh"
+                hugeicons="RefreshIcon"
+                phosphor="ArrowClockwiseIcon"
+                remixicon="RiRefreshLine"
+              />
+            </AttachmentAction>
+            <AttachmentAction aria-label="Remove financial-model.xlsx">
+              <IconPlaceholder
+                lucide="XIcon"
+                tabler="IconX"
+                hugeicons="Cancel01Icon"
+                phosphor="XIcon"
+                remixicon="RiCloseLine"
+              />
+            </AttachmentAction>
+          </AttachmentActions>
+        </Attachment>
+        <Attachment state="done" orientation="vertical">
+          <AttachmentMedia>
+            <IconPlaceholder
+              lucide="CheckIcon"
+              tabler="IconCheck"
+              hugeicons="Tick02Icon"
+              phosphor="CheckIcon"
+              remixicon="RiCheckLine"
+            />
+          </AttachmentMedia>
+          <AttachmentContent>
+            <AttachmentTitle>uploaded-report.pdf</AttachmentTitle>
+            <AttachmentDescription>Done</AttachmentDescription>
+          </AttachmentContent>
+          <AttachmentActions>
+            <AttachmentAction aria-label="Remove uploaded-report.pdf">
+              <IconPlaceholder
+                lucide="XIcon"
+                tabler="IconX"
+                hugeicons="Cancel01Icon"
+                phosphor="XIcon"
+                remixicon="RiCloseLine"
+              />
+            </AttachmentAction>
+          </AttachmentActions>
+        </Attachment>
+      </AttachmentGroup>
+    </div>
+  </Example>
 {/snippet}
 
 {#snippet AttachmentImages()}
@@ -1262,6 +1550,7 @@
 <ExampleWrapper>
   {@render AttachmentFiles()}
   {@render AttachmentContentOnly()}
+  {@render AttachmentStates()}
   {@render AttachmentImages()}
   {@render AttachmentImageStates()}
   {@render AttachmentSizes()}
