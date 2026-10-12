@@ -144,6 +144,11 @@
       "types": "./dist/bubble/index.d.ts",
       "svelte": "./dist/bubble/index.js",
       "default": "./dist/bubble/index.js"
+    },
+    "./message": {
+      "types": "./dist/message/index.d.ts",
+      "svelte": "./dist/message/index.js",
+      "default": "./dist/message/index.js"
     }
   },
   "svelte": "./dist/index.js",
