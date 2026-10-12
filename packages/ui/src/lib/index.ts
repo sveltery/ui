@@ -39,3 +39,4 @@ export * from './toggle-group/index.js';
 export * from './switch/index.js';
 export * from './slider/index.js';
 export * from './tabs/index.js';
+export * from './input/index.js';

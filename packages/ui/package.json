@@ -214,6 +214,11 @@
       "types": "./dist/tabs/index.d.ts",
       "svelte": "./dist/tabs/index.js",
       "default": "./dist/tabs/index.js"
+    },
+    "./input": {
+      "types": "./dist/input/index.d.ts",
+      "svelte": "./dist/input/index.js",
+      "default": "./dist/input/index.js"
     }
   },
   "svelte": "./dist/index.js",
