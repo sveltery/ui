@@ -105,6 +105,11 @@
       "svelte": "./dist/button-group/index.js",
       "default": "./dist/button-group/index.js"
     },
+    "./item": {
+      "types": "./dist/item/index.d.ts",
+      "svelte": "./dist/item/index.js",
+      "default": "./dist/item/index.js"
+    },
     "./badge": {
       "types": "./dist/badge/index.d.ts",
       "svelte": "./dist/badge/index.js",

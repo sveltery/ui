@@ -18,3 +18,4 @@ export * from './avatar/index.js';
 export * from './badge/index.js';
 export * from './spinner/index.js';
 export * from './button-group/index.js';
+export * from './item/index.js';
