@@ -175,18 +175,12 @@ importers:
       '@hugeicons/core-free-icons':
         specifier: 1.2.1
         version: 1.2.1
-      '@hugeicons/react':
-        specifier: 1.1.1
-        version: 1.1.1(react@19.3.0)
-      '@phosphor-icons/react':
-        specifier: 2.1.10
-        version: 2.1.10(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@phosphor-icons/core':
+        specifier: 2.1.1
+        version: 2.1.1
       '@playwright/test':
         specifier: 1.63.0
         version: 1.63.0
-      '@remixicon/react':
-        specifier: 4.7.0
-        version: 4.7.0(react@19.3.0)
       '@sveltejs/package':
         specifier: 2.5.8
         version: 2.5.8(svelte@5.57.1(@typescript-eslint/types@8.71.0))(typescript@5.9.3)
@@ -196,9 +190,9 @@ importers:
       '@sveltery/base':
         specifier: github:sveltery/base#d6e88119e2fe7965780f635fba091e148448a46e
         version: https://codeload.github.com/sveltery/base/tar.gz/d6e88119e2fe7965780f635fba091e148448a46e(svelte@5.57.1(@typescript-eslint/types@8.71.0))
-      '@tabler/icons-react':
+      '@tabler/icons':
         specifier: 3.34.1
-        version: 3.34.1(react@19.3.0)
+        version: 3.34.1
       '@tailwindcss/vite':
         specifier: 4.3.0
         version: 4.3.0(vite@8.3.1(@types/node@26.6.3)(jiti@2.7.0))
@@ -208,9 +202,6 @@ importers:
       class-variance-authority:
         specifier: 0.7.1
         version: 0.7.1
-      clsx:
-        specifier: 2.1.1
-        version: 2.1.1
       cn:
         specifier: 0.2.2
         version: 0.2.2
@@ -226,18 +217,12 @@ importers:
       jsdom:
         specifier: 30.1.1
         version: 30.1.1
-      lucide-react:
+      lucide:
         specifier: 0.474.0
-        version: 0.474.0(react@19.3.0)
-      react:
-        specifier: 19.3.0
-        version: 19.3.0
-      react-dom:
-        specifier: 19.3.0
-        version: 19.3.0(react@19.3.0)
-      shadcn:
-        specifier: 4.21.1
-        version: 4.21.1(typescript@5.9.3)
+        version: 0.474.0
+      remixicon:
+        specifier: 4.7.0
+        version: 4.7.0
       svelte:
         specifier: 5.57.1
         version: 5.57.1(@typescript-eslint/types@8.71.0)
@@ -299,9 +284,6 @@ importers:
       class-variance-authority:
         specifier: 0.7.1
         version: 0.7.1
-      clsx:
-        specifier: 2.1.1
-        version: 2.1.1
       cn:
         specifier: 0.2.2
         version: 0.2.2
@@ -309,9 +291,30 @@ importers:
       '@sveltery/base':
         specifier: github:sveltery/base#d6e88119e2fe7965780f635fba091e148448a46e
         version: https://codeload.github.com/sveltery/base/tar.gz/d6e88119e2fe7965780f635fba091e148448a46e(svelte@5.57.1(@typescript-eslint/types@8.71.0))
-      shadcn:
-        specifier: 4.21.1
-        version: 4.21.1(typescript@5.9.3)
+      svelte:
+        specifier: 5.57.1
+        version: 5.57.1(@typescript-eslint/types@8.71.0)
+      tailwindcss:
+        specifier: 4.3.0
+        version: 4.3.0
+      tw-animate-css:
+        specifier: 1.4.0
+        version: 1.4.0
+
+  tests/app:
+    devDependencies:
+      '@sveltejs/adapter-auto':
+        specifier: 7.0.1
+        version: 7.0.1(@sveltejs/kit@2.70.3(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))(vite@8.3.1(@types/node@26.6.3)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))(typescript@5.9.3)(vite@8.3.1(@types/node@26.6.3)(jiti@2.7.0)))
+      '@sveltejs/kit':
+        specifier: 2.70.3
+        version: 2.70.3(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))(vite@8.3.1(@types/node@26.6.3)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))(typescript@5.9.3)(vite@8.3.1(@types/node@26.6.3)(jiti@2.7.0))
+      '@sveltery/base':
+        specifier: github:sveltery/base#d6e88119e2fe7965780f635fba091e148448a46e
+        version: https://codeload.github.com/sveltery/base/tar.gz/d6e88119e2fe7965780f635fba091e148448a46e(svelte@5.57.1(@typescript-eslint/types@8.71.0))
+      '@sveltery/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       svelte:
         specifier: 5.57.1
         version: 5.57.1(@typescript-eslint/types@8.71.0)
@@ -580,11 +583,6 @@ packages:
   '@hugeicons/core-free-icons@1.2.1':
     resolution: {integrity: sha512-ho0QdGMkgL+kt+QsZocCsKvJou1rfyVQWARrxIhNLi+9tCKayUUtD9jlHgioaRphmskSl84TxrDm9Ae0G4Uu1g==}
 
-  '@hugeicons/react@1.1.1':
-    resolution: {integrity: sha512-BAbFVtx0XZ/yF2poPLFn0N9Ji6ebV/MpI5+WRqooFp3smQDwpL+72m+BBs4KAM5djgWUpg12weyc5SJtTsOwsw==}
-    peerDependencies:
-      react: '>=16.0.0'
-
   '@humanfs/core@0.19.2':
     resolution: {integrity: sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA==}
     engines: {node: '>=18.18.0'}
@@ -654,12 +652,8 @@ packages:
   '@oxc-project/types@0.151.0':
     resolution: {integrity: sha512-J1yXrIlNDZVzE3ada310xeAw7nH8yCAyLPuUIsjKatFPmfn5bS1oW+cM+QsGOtVWd5nhSpbwZWx/rue+r5Z+PA==}
 
-  '@phosphor-icons/react@2.1.10':
-    resolution: {integrity: sha512-vt8Tvq8GLjheAZZYa+YG/pW7HDbov8El/MANW8pOAz4eGxrwhnbfrQZq0Cp4q8zBEu8NIhHdnr+r8thnfRSNYA==}
-    engines: {node: '>=10'}
-    peerDependencies:
-      react: '>= 16.8'
-      react-dom: '>= 16.8'
+  '@phosphor-icons/core@2.1.1':
+    resolution: {integrity: sha512-v4ARvrip4qBCImOE5rmPUylOEK4iiED9ZyKjcvzuezqMaiRASCHKcRIuvvxL/twvLpkfnEODCOJp5dM4eZilxQ==}
 
   '@playwright/test@1.63.0':
     resolution: {integrity: sha512-oxMK4vllB9RK5NQ2l1pq1IfOf2AvnEuj/vYGDj0H2nMtmtZpKtCwt/l00GEO6xjGfpBNAvjovvYdCm50dRQkpQ==}
@@ -668,11 +662,6 @@ packages:
 
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
-
-  '@remixicon/react@4.7.0':
-    resolution: {integrity: sha512-ODBQjdbOjnFguCqctYkpDjERXOInNaBnRPDKfZOBvbzExBAwr2BaH/6AHFTg/UAFzBDkwtylfMT8iKPAkLwPLQ==}
-    peerDependencies:
-      react: '>=18.2.0'
 
   '@rolldown/binding-android-arm-eabi@1.2.11':
     resolution: {integrity: sha512-A5kXfGKvKWWZE0TtPrfsvT+q4Y5d1QG8gGUzpYjGydM+fARM9MuX90PrXYXe0XbsDVgyxxNzHo6giCj90bsFNw==}
@@ -837,11 +826,6 @@ packages:
     engines: {node: '>=24 <25'}
     peerDependencies:
       svelte: ^5.57.1
-
-  '@tabler/icons-react@3.34.1':
-    resolution: {integrity: sha512-Ld6g0NqOO05kyyHsfU8h787PdHBm7cFmOycQSIrGp45XcXYDuOK2Bs0VC4T2FWSKZ6bx5g04imfzazf/nqtk1A==}
-    peerDependencies:
-      react: '>= 16'
 
   '@tabler/icons@3.34.1':
     resolution: {integrity: sha512-9gTnUvd7Fd/DmQgr3MKY+oJLa1RfNsQo8c/ir3TJAWghOuZXodbtbVp0QBY2DxWuuvrSZFys0HEbv1CoiI5y6A==}
@@ -2070,10 +2054,8 @@ packages:
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
 
-  lucide-react@0.474.0:
-    resolution: {integrity: sha512-CmghgHkh0OJNmxGKWc0qfPJCYHASPMVSyGY8fj3xgk4v84ItqDg64JNKFZn5hC6E0vHi6gxnbCgwhyVB09wQtA==}
-    peerDependencies:
-      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  lucide@0.474.0:
+    resolution: {integrity: sha512-2rfORNh9fzhCUKu0ciE48ogR1Zg7hleABLO5MBF06vOb4esTtE8FbfQJiC+wveiNFoeojWKz6zXheUToRR5uIg==}
 
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
@@ -2381,15 +2363,6 @@ packages:
     resolution: {integrity: sha512-K5zQjDllxWkf7Z5xJdV0/B0WTNqx6vxG70zJE4N0kBs4LovmEYWJzQGxC9bS9RAKu3bgM40lrd5zoLJ12MQ5BA==}
     engines: {node: '>= 0.10'}
 
-  react-dom@19.3.0:
-    resolution: {integrity: sha512-JDk8dgif51OjFoDE70+OT9ICyYr+69HlmihNwp1+Nsfbna3t5sIiCa9ZJktDmQ4/1b/rn26hIAR2uYXDMr5r0Q==}
-    peerDependencies:
-      react: ^19.3.0
-
-  react@19.3.0:
-    resolution: {integrity: sha512-E8LUcbtBWt20bbl2YoHfx4ZDBdxVTfOKtCZn9cDSJ4l6/nuoApcpIBcj47t2wZoVX8g2ZHuMHbiShgCR1T5Sog==}
-    engines: {node: '>=0.10.0'}
-
   readdirp@4.1.2:
     resolution: {integrity: sha512-GDhwkLfywWL2s6vEjyhri+eXmfH6j1L7JE27WhqLeYzoh/A3DBaYGEj2H/HFZCn/kMfim73FXxEJTw06WtxQwg==}
     engines: {node: '>= 14.18.0'}
@@ -2401,6 +2374,9 @@ packages:
   recast@0.23.21:
     resolution: {integrity: sha512-mFAyJq9vUbSTARLZUvAEf1z3YxlvAwswbmxMx2mPA/MSm4KmpwvwvhsH/NIrZhyOuwD60Lzyw2qh83uCbgTPYw==}
     engines: {node: '>= 4'}
+
+  remixicon@4.7.0:
+    resolution: {integrity: sha512-g2pHOofQWARWpxdbrQu5+K3C8ZbqguQFzE54HIMWFCpFa63pumaAltIgZmFMRQpKKBScRWQASQfWxS9asNCcHQ==}
 
   require-from-string@2.0.2:
     resolution: {integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==}
@@ -2444,9 +2420,6 @@ packages:
   saxes@6.0.0:
     resolution: {integrity: sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==}
     engines: {node: '>=v12.22.7'}
-
-  scheduler@0.28.0:
-    resolution: {integrity: sha512-juorfCmIkIw8tT+p5BXSm6PJjQF/ycEYmKyzURCIt/RaZIhL+PulbQ9Yu2z1HdOJDdqDTlxA1+xKBmHXJsczAw==}
 
   scule@1.3.0:
     resolution: {integrity: sha512-6FtHJEvt+pVMIB9IBY+IcCJ6Z5f1iQnytgyfKMhDKgmzYG+TeH/wx1y3l27rshSbLiSanrR9ffZDrEsmjlQF2g==}
@@ -3235,10 +3208,6 @@ snapshots:
 
   '@hugeicons/core-free-icons@1.2.1': {}
 
-  '@hugeicons/react@1.1.1(react@19.3.0)':
-    dependencies:
-      react: 19.3.0
-
   '@humanfs/core@0.19.2':
     dependencies:
       '@humanfs/types': 0.15.0
@@ -3318,20 +3287,13 @@ snapshots:
 
   '@oxc-project/types@0.151.0': {}
 
-  '@phosphor-icons/react@2.1.10(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
-    dependencies:
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+  '@phosphor-icons/core@2.1.1': {}
 
   '@playwright/test@1.63.0':
     dependencies:
       playwright: 1.63.0
 
   '@polka/url@1.0.0-next.29': {}
-
-  '@remixicon/react@4.7.0(react@19.3.0)':
-    dependencies:
-      react: 19.3.0
 
   '@rolldown/binding-android-arm-eabi@1.2.11':
     optional: true
@@ -3472,11 +3434,6 @@ snapshots:
       '@floating-ui/utils': 0.2.12
       esm-env: 1.2.2
       svelte: 5.57.1(@typescript-eslint/types@8.71.0)
-
-  '@tabler/icons-react@3.34.1(react@19.3.0)':
-    dependencies:
-      '@tabler/icons': 3.34.1
-      react: 19.3.0
 
   '@tabler/icons@3.34.1': {}
 
@@ -4617,9 +4574,7 @@ snapshots:
     dependencies:
       yallist: 3.1.1
 
-  lucide-react@0.474.0(react@19.3.0):
-    dependencies:
-      react: 19.3.0
+  lucide@0.474.0: {}
 
   magic-string@0.30.21:
     dependencies:
@@ -4882,13 +4837,6 @@ snapshots:
       iconv-lite: 0.7.3
       unpipe: 1.0.0
 
-  react-dom@19.3.0(react@19.3.0):
-    dependencies:
-      react: 19.3.0
-      scheduler: 0.28.0
-
-  react@19.3.0: {}
-
   readdirp@4.1.2: {}
 
   readdirp@5.1.1: {}
@@ -4900,6 +4848,8 @@ snapshots:
       source-map: 0.6.1
       tiny-invariant: 1.3.3
       tslib: 2.8.1
+
+  remixicon@4.7.0: {}
 
   require-from-string@2.0.2: {}
 
@@ -4958,8 +4908,6 @@ snapshots:
   saxes@6.0.0:
     dependencies:
       xmlchars: 2.2.0
-
-  scheduler@0.28.0: {}
 
   scule@1.3.0: {}
 
