@@ -94,6 +94,26 @@
       "types": "./dist/avatar/index.d.ts",
       "svelte": "./dist/avatar/index.js",
       "default": "./dist/avatar/index.js"
+    },
+    "./spinner": {
+      "types": "./dist/spinner/index.d.ts",
+      "svelte": "./dist/spinner/index.js",
+      "default": "./dist/spinner/index.js"
+    },
+    "./button-group": {
+      "types": "./dist/button-group/index.d.ts",
+      "svelte": "./dist/button-group/index.js",
+      "default": "./dist/button-group/index.js"
+    },
+    "./item": {
+      "types": "./dist/item/index.d.ts",
+      "svelte": "./dist/item/index.js",
+      "default": "./dist/item/index.js"
+    },
+    "./badge": {
+      "types": "./dist/badge/index.d.ts",
+      "svelte": "./dist/badge/index.js",
+      "default": "./dist/badge/index.js"
     }
   },
   "svelte": "./dist/index.js",
