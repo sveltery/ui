@@ -16,7 +16,7 @@
   <ToggleGroupItem value="italic" aria-label="Italic" variant="outline">I</ToggleGroupItem>
   <ToggleGroupItem value="underline" aria-label="Underline" disabled>U</ToggleGroupItem>
 </ToggleGroup>
-<ToggleGroup aria-label="Plain" id="plain" value={['b']}>
+<ToggleGroup aria-label="Plain" id="plain" value={['b']} style="color: red">
   <ToggleGroupItem value="a" aria-label="A">A</ToggleGroupItem>
   <ToggleGroupItem value="b" aria-label="B">B</ToggleGroupItem>
 </ToggleGroup>

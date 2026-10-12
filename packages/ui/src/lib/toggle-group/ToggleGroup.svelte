@@ -3,7 +3,7 @@
   import { cn } from 'cn';
   import { setToggleGroupContext } from './context.js';
   import type { ToggleGroupProps } from './types.js';
-  let { value = $bindable(), class: classProp, variant, size, spacing = 2, children, ...props }: ToggleGroupProps = $props();
+  let { value = $bindable(), class: classProp, variant, size, spacing = 2, style, children, ...props }: ToggleGroupProps = $props();
   setToggleGroupContext({
     get variant() { return variant; },
     get size() { return size; },
@@ -15,7 +15,7 @@
   data-variant={variant}
   data-size={size}
   data-spacing={spacing}
-  style="--gap: {spacing}"
+  style="--gap: {spacing};{style ?? ''}"
   bind:value
   {...props}
   class={cn('cn-toggle-group group/toggle-group flex w-fit flex-row items-center gap-[--spacing(var(--gap))] data-vertical:flex-col data-vertical:items-stretch', classProp)}

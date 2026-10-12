@@ -27,6 +27,8 @@ it('renders the group with its slot, data attributes, gap and classes', () => {
   expect(single.className).toBe('cn-toggle-group group/toggle-group flex w-fit flex-row items-center gap-[--spacing(var(--gap))] data-vertical:flex-col data-vertical:items-stretch');
   const plain = group('plain');
   expect(plain.hasAttribute('data-variant')).toBe(false);
+  expect(plain.style.getPropertyValue('--gap')).toBe('2');
+  expect(plain.style.color).toBe('red');
   expect(plain.hasAttribute('data-size')).toBe(false);
 });
 
