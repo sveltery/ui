@@ -1,6 +1,7 @@
 packages:
   - packages/*
   - apps/*
+  - tests/app
 engineStrict: true
 autoInstallPeers: false
 allowBuilds:
