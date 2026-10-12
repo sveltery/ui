@@ -10,11 +10,11 @@ async function visit(page: Page, path: string) {
 test('sidebar and pagination navigate between docs pages', async ({ page }) => {
   await visit(page, '/docs');
   await expect(page.getByRole('heading', { level: 1, name: 'Introduction' })).toBeVisible();
-  await page.getByRole('navigation', { name: 'Docs' }).getByRole('link', { name: 'Button' }).click();
+  await page.getByRole('navigation', { name: 'Docs' }).getByRole('link', { name: 'Button', exact: true }).click();
   await expect(page).toHaveURL('/docs/components/button');
   await expect(page.getByRole('heading', { level: 1, name: 'Button' })).toBeVisible();
-  await page.getByRole('navigation', { name: 'Pagination' }).getByRole('link', { name: 'Card' }).click();
-  await expect(page.getByRole('heading', { level: 1, name: 'Card' })).toBeVisible();
+  await page.getByRole('navigation', { name: 'Pagination' }).getByRole('link', { name: 'Button Group' }).click();
+  await expect(page.getByRole('heading', { level: 1, name: 'Button Group' })).toBeVisible();
   await expect(page.getByRole('navigation', { name: 'On this page' }).getByRole('link', { name: 'Usage' })).toHaveAttribute('href', '#usage');
 });
 
