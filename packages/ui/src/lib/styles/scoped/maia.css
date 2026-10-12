@@ -6,7 +6,7 @@
   :where(.style-maia) * { @apply border-border outline-ring/50; }
 }
 @layer components {
-.style-maia.style-maia :is(.cn-alert, .cn-alert-variant-default, .cn-alert-variant-destructive, .cn-alert-title, .cn-alert-description, .cn-alert-action, .cn-avatar, .cn-avatar-fallback, .cn-avatar-image, .cn-avatar-badge, .cn-avatar-group-count, .cn-empty, .cn-empty-header, .cn-empty-media, .cn-empty-media-default, .cn-empty-media-icon, .cn-empty-title, .cn-empty-description, .cn-empty-content, .cn-button, .cn-button-variant-default, .cn-button-variant-outline, .cn-button-variant-secondary, .cn-button-variant-ghost, .cn-button-variant-destructive, .cn-button-variant-link, .cn-button-size-xs, .cn-button-size-sm, .cn-button-size-default, .cn-button-size-lg, .cn-button-size-icon-xs, .cn-button-size-icon-sm, .cn-button-size-icon, .cn-button-size-icon-lg, .cn-dialog-overlay, .cn-dialog-content, .cn-dialog-close, .cn-dialog-header, .cn-dialog-footer, .cn-dialog-title, .cn-dialog-description, .cn-textarea, .cn-skeleton, .cn-kbd, .cn-kbd-group, .cn-table-container, .cn-table, .cn-table-header, .cn-table-body, .cn-table-footer, .cn-table-row, .cn-table-row-aria, .cn-table-head, .cn-table-head-aria, .cn-table-cell, .cn-table-cell-aria, .cn-table-caption, .cn-card, .cn-card-header, .cn-card-title, .cn-card-description, .cn-card-content, .cn-card-footer, .cn-label, .cn-label-aria, .cn-badge, .cn-badge-variant-default, .cn-badge-variant-secondary, .cn-badge-variant-outline, .cn-badge-variant-destructive, .cn-badge-variant-ghost, .cn-badge-variant-link, .cn-button-group, .cn-button-group-orientation-horizontal, .cn-button-group-orientation-vertical, .cn-button-group-text, .cn-button-group-separator, .cn-item, .cn-item-variant-default, .cn-item-variant-outline, .cn-item-variant-muted, .cn-item-size-default, .cn-item-size-sm, .cn-item-size-xs, .cn-item-media, .cn-item-media-variant-default, .cn-item-media-variant-icon, .cn-item-media-variant-image, .cn-item-content, .cn-item-title, .cn-item-description, .cn-item-actions, .cn-item-header, .cn-item-footer, .cn-item-group, .cn-item-separator) { all: revert-layer; --tw-leading: initial; }
+.style-maia.style-maia :is(.cn-alert, .cn-alert-variant-default, .cn-alert-variant-destructive, .cn-alert-title, .cn-alert-description, .cn-alert-action, .cn-avatar, .cn-avatar-fallback, .cn-avatar-image, .cn-avatar-badge, .cn-avatar-group-count, .cn-empty, .cn-empty-header, .cn-empty-media, .cn-empty-media-default, .cn-empty-media-icon, .cn-empty-title, .cn-empty-description, .cn-empty-content, .cn-button, .cn-button-variant-default, .cn-button-variant-outline, .cn-button-variant-secondary, .cn-button-variant-ghost, .cn-button-variant-destructive, .cn-button-variant-link, .cn-button-size-xs, .cn-button-size-sm, .cn-button-size-default, .cn-button-size-lg, .cn-button-size-icon-xs, .cn-button-size-icon-sm, .cn-button-size-icon, .cn-button-size-icon-lg, .cn-dialog-overlay, .cn-dialog-content, .cn-dialog-close, .cn-dialog-header, .cn-dialog-footer, .cn-dialog-title, .cn-dialog-description, .cn-textarea, .cn-skeleton, .cn-kbd, .cn-kbd-group, .cn-table-container, .cn-table, .cn-table-header, .cn-table-body, .cn-table-footer, .cn-table-row, .cn-table-row-aria, .cn-table-head, .cn-table-head-aria, .cn-table-cell, .cn-table-cell-aria, .cn-table-caption, .cn-card, .cn-card-header, .cn-card-title, .cn-card-description, .cn-card-content, .cn-card-footer, .cn-label, .cn-label-aria, .cn-badge, .cn-badge-variant-default, .cn-badge-variant-secondary, .cn-badge-variant-outline, .cn-badge-variant-destructive, .cn-badge-variant-ghost, .cn-badge-variant-link, .cn-button-group, .cn-button-group-orientation-horizontal, .cn-button-group-orientation-vertical, .cn-button-group-text, .cn-button-group-separator, .cn-item, .cn-item-variant-default, .cn-item-variant-outline, .cn-item-variant-muted, .cn-item-size-default, .cn-item-size-sm, .cn-item-size-xs, .cn-item-media, .cn-item-media-variant-default, .cn-item-media-variant-icon, .cn-item-media-variant-image, .cn-item-content, .cn-item-title, .cn-item-description, .cn-item-actions, .cn-item-header, .cn-item-footer, .cn-item-group, .cn-item-separator, .cn-breadcrumb-list, .cn-breadcrumb-item, .cn-breadcrumb-link, .cn-breadcrumb-page, .cn-breadcrumb-separator, .cn-breadcrumb-ellipsis, .cn-pagination-content, .cn-pagination-ellipsis, .cn-pagination-previous, .cn-pagination-next, .cn-native-select, .cn-native-select-icon, .cn-marker, .cn-marker-variant-separator, .cn-marker-variant-border, .cn-marker-icon, .cn-marker-content) { all: revert-layer; --tw-leading: initial; }
 .style-maia.style-maia {
   --ui-radius-sm: calc(var(--radius) * 0.6);
   --ui-radius-md: calc(var(--radius) * 0.8);
@@ -411,6 +411,78 @@
 
   .cn-item-separator {
     @apply my-2;
+  }
+
+  /* MARK: Breadcrumb */
+  .cn-breadcrumb-list {
+    @apply text-muted-foreground gap-1.5 text-sm sm:gap-2.5;
+  }
+
+  .cn-breadcrumb-item {
+    @apply gap-1.5;
+  }
+
+  .cn-breadcrumb-link {
+    @apply hover:text-foreground transition-colors;
+  }
+
+  .cn-breadcrumb-page {
+    @apply text-foreground font-normal;
+  }
+
+  .cn-breadcrumb-separator {
+    @apply [&>svg]:size-3.5;
+  }
+
+  .cn-breadcrumb-ellipsis {
+    @apply size-5 [&>svg]:size-4;
+  }
+
+  /* MARK: Pagination */
+  .cn-pagination-content {
+    @apply gap-1;
+  }
+
+  .cn-pagination-ellipsis {
+    @apply size-9 items-center justify-center [&_svg:not([class*='size-'])]:size-4;
+  }
+
+  .cn-pagination-previous {
+    @apply pl-2!;
+  }
+
+  .cn-pagination-next {
+    @apply pr-2!;
+  }
+
+  /* MARK: Native Select */
+  .cn-native-select {
+    @apply border-input bg-input/30 placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 dark:hover:bg-input/50 focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 h-9 w-full min-w-0 appearance-none rounded-4xl border py-1 pr-8 pl-3 text-sm transition-colors select-none focus-visible:ring-[3px] aria-invalid:ring-[3px] data-[size=sm]:h-8;
+  }
+
+  .cn-native-select-icon {
+    @apply text-muted-foreground top-1/2 right-3.5 size-4 -translate-y-1/2;
+  }
+
+  /* MARK: Marker */
+  .cn-marker {
+    @apply gap-2 text-sm text-muted-foreground [a]:hover:text-foreground [a]:underline-offset-3 [a]:underline [&_svg:not([class*='size-'])]:size-4 min-h-4 text-left;
+  }
+
+  .cn-marker-variant-separator {
+    @apply before:h-px before:min-w-0 before:flex-1 before:bg-border after:h-px after:min-w-0 after:flex-1 after:bg-border before:mr-1 after:ml-1;
+  }
+
+  .cn-marker-variant-border {
+    @apply border-b border-border pb-2;
+  }
+
+  .cn-marker-icon {
+    @apply size-4 [&_svg:not([class*='size-'])]:size-4;
+  }
+
+  .cn-marker-content {
+    @apply group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:hover:text-foreground *:[a]:underline *:[a]:underline-offset-3;
   }
 }
 }

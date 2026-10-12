@@ -378,6 +378,51 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
       },
       "body": "<path d=\"M20 6 9 17l-5-5\"/>"
     },
+    "ChevronDownIcon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "class": "lucide lucide-chevron-down"
+      },
+      "body": "<path d=\"m6 9 6 6 6-6\"/>"
+    },
+    "ChevronLeftIcon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "class": "lucide lucide-chevron-left"
+      },
+      "body": "<path d=\"m15 18-6-6 6-6\"/>"
+    },
+    "ChevronRightIcon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "class": "lucide lucide-chevron-right"
+      },
+      "body": "<path d=\"m9 18 6-6-6-6\"/>"
+    },
     "CircleAlertIcon": {
       "attributes": {
         "xmlns": "http://www.w3.org/2000/svg",
@@ -408,6 +453,36 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
       },
       "body": "<path d=\"M10.1 2.182a10 10 0 0 1 3.8 0\"/><path d=\"M13.9 21.818a10 10 0 0 1-3.8 0\"/><path d=\"M17.609 3.721a10 10 0 0 1 2.69 2.7\"/><path d=\"M2.182 13.9a10 10 0 0 1 0-3.8\"/><path d=\"M20.279 17.609a10 10 0 0 1-2.7 2.69\"/><path d=\"M21.818 10.1a10 10 0 0 1 0 3.8\"/><path d=\"M3.721 6.391a10 10 0 0 1 2.7-2.69\"/><path d=\"M6.391 20.279a10 10 0 0 1-2.69-2.7\"/>"
     },
+    "CircleUserIcon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "class": "lucide lucide-circle-user"
+      },
+      "body": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><circle cx=\"12\" cy=\"10\" r=\"3\"/><path d=\"M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662\"/>"
+    },
+    "ClockIcon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "class": "lucide lucide-clock"
+      },
+      "body": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><polyline points=\"12 6 12 12 16 14\"/>"
+    },
     "CopyIcon": {
       "attributes": {
         "xmlns": "http://www.w3.org/2000/svg",
@@ -422,6 +497,21 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
         "class": "lucide lucide-copy"
       },
       "body": "<rect width=\"14\" height=\"14\" x=\"8\" y=\"8\" rx=\"2\" ry=\"2\"/><path d=\"M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2\"/>"
+    },
+    "FileTextIcon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "class": "lucide lucide-file-text"
+      },
+      "body": "<path d=\"M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z\"/><path d=\"M14 2v4a2 2 0 0 0 2 2h4\"/><path d=\"M10 9H8\"/><path d=\"M16 13H8\"/><path d=\"M16 17H8\"/>"
     },
     "FlipHorizontalIcon": {
       "attributes": {
@@ -467,6 +557,21 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
         "class": "lucide lucide-folder"
       },
       "body": "<path d=\"M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z\"/>"
+    },
+    "GitBranchIcon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "class": "lucide lucide-git-branch"
+      },
+      "body": "<line x1=\"6\" x2=\"6\" y1=\"3\" y2=\"15\"/><circle cx=\"18\" cy=\"6\" r=\"3\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><path d=\"M18 9a9 9 0 0 1-9 9\"/>"
     },
     "HeartIcon": {
       "attributes": {
@@ -527,6 +632,21 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
         "class": "lucide lucide-minus"
       },
       "body": "<path d=\"M5 12h14\"/>"
+    },
+    "MoreHorizontalIcon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "class": "lucide lucide-more-horizontal"
+      },
+      "body": "<circle cx=\"12\" cy=\"12\" r=\"1\"/><circle cx=\"19\" cy=\"12\" r=\"1\"/><circle cx=\"5\" cy=\"12\" r=\"1\"/>"
     },
     "PlusIcon": {
       "attributes": {
@@ -710,6 +830,36 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
       },
       "body": "<path d=\"M5 12l5 5l10 -10\"/>"
     },
+    "IconChevronLeft": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "class": "tabler-icon tabler-icon-chevron-left"
+      },
+      "body": "<path d=\"M15 6l-6 6l6 6\"/>"
+    },
+    "IconChevronRight": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "class": "tabler-icon tabler-icon-chevron-right"
+      },
+      "body": "<path d=\"M9 6l6 6l-6 6\"/>"
+    },
     "IconCircleArrowLeft": {
       "attributes": {
         "xmlns": "http://www.w3.org/2000/svg",
@@ -740,6 +890,21 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
       },
       "body": "<path d=\"M8.56 3.69a9 9 0 0 0 -2.92 1.95\"/><path d=\"M3.69 8.56a9 9 0 0 0 -.69 3.44\"/><path d=\"M3.69 15.44a9 9 0 0 0 1.95 2.92\"/><path d=\"M8.56 20.31a9 9 0 0 0 3.44 .69\"/><path d=\"M15.44 20.31a9 9 0 0 0 2.92 -1.95\"/><path d=\"M20.31 15.44a9 9 0 0 0 .69 -3.44\"/><path d=\"M20.31 8.56a9 9 0 0 0 -1.95 -2.92\"/><path d=\"M15.44 3.69a9 9 0 0 0 -3.44 -.69\"/>"
     },
+    "IconClock": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "class": "tabler-icon tabler-icon-clock"
+      },
+      "body": "<path d=\"M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0\"/><path d=\"M12 7v5l3 3\"/>"
+    },
     "IconCopy": {
       "attributes": {
         "xmlns": "http://www.w3.org/2000/svg",
@@ -755,6 +920,21 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
       },
       "body": "<path d=\"M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z\"/><path d=\"M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1\"/>"
     },
+    "IconDots": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "class": "tabler-icon tabler-icon-dots"
+      },
+      "body": "<path d=\"M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\"/><path d=\"M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\"/><path d=\"M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0\"/>"
+    },
     "IconExclamationCircle": {
       "attributes": {
         "xmlns": "http://www.w3.org/2000/svg",
@@ -769,6 +949,21 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
         "class": "tabler-icon tabler-icon-exclamation-circle"
       },
       "body": "<path d=\"M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0\"/><path d=\"M12 9v4\"/><path d=\"M12 16v.01\"/>"
+    },
+    "IconFileDescription": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "class": "tabler-icon tabler-icon-file-description"
+      },
+      "body": "<path d=\"M14 3v4a1 1 0 0 0 1 1h4\"/><path d=\"M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z\"/><path d=\"M9 17h6\"/><path d=\"M9 13h6\"/>"
     },
     "IconFlipHorizontal": {
       "attributes": {
@@ -814,6 +1009,21 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
         "class": "tabler-icon tabler-icon-folder"
       },
       "body": "<path d=\"M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2\"/>"
+    },
+    "IconGitBranch": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "class": "tabler-icon tabler-icon-git-branch"
+      },
+      "body": "<path d=\"M7 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\"/><path d=\"M7 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\"/><path d=\"M17 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\"/><path d=\"M7 8l0 8\"/><path d=\"M9 18h6a2 2 0 0 0 2 -2v-5\"/><path d=\"M14 14l3 -3l3 3\"/>"
     },
     "IconLoader": {
       "attributes": {
@@ -905,6 +1115,21 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
       },
       "body": "<path d=\"M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0\"/><path d=\"M21 21l-6 -6\"/>"
     },
+    "IconSelector": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "class": "tabler-icon tabler-icon-selector"
+      },
+      "body": "<path d=\"M8 9l4 -4l4 4\"/><path d=\"M16 15l-4 4l-4 -4\"/>"
+    },
     "IconShare": {
       "attributes": {
         "xmlns": "http://www.w3.org/2000/svg",
@@ -934,6 +1159,21 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
         "class": "tabler-icon tabler-icon-trash"
       },
       "body": "<path d=\"M4 7l16 0\"/><path d=\"M10 11l0 6\"/><path d=\"M14 11l0 6\"/><path d=\"M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12\"/><path d=\"M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3\"/>"
+    },
+    "IconUserCircle": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "class": "tabler-icon tabler-icon-user-circle"
+      },
+      "body": "<path d=\"M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0\"/><path d=\"M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0\"/><path d=\"M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855\"/>"
     },
     "IconX": {
       "attributes": {
@@ -1084,6 +1324,18 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
       },
       "body": "<path d=\"M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M9.00009 12.0002L16.0001 12.0002M11.4999 8.50012C11.4999 8.50012 7.99996 11.0778 7.99995 12.0001C7.99994 12.9225 11.5 15.5001 11.5 15.5001\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
     },
+    "Clock01Icon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "color": "currentColor",
+        "stroke-width": "2"
+      },
+      "body": "<circle cx=\"12\" cy=\"12\" r=\"10\" stroke=\"currentColor\"/><path d=\"M12 8V12L14 14\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
+    },
     "Copy01Icon": {
       "attributes": {
         "xmlns": "http://www.w3.org/2000/svg",
@@ -1119,6 +1371,18 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
         "stroke-width": "2"
       },
       "body": "<path d=\"M19.5 5.5L18.8803 15.5251C18.7219 18.0864 18.6428 19.3671 18.0008 20.2879C17.6833 20.7431 17.2747 21.1273 16.8007 21.416C15.8421 22 14.559 22 11.9927 22C9.42312 22 8.1383 22 7.17905 21.4149C6.7048 21.1257 6.296 20.7408 5.97868 20.2848C5.33688 19.3626 5.25945 18.0801 5.10461 15.5152L4.5 5.5\" stroke=\"currentColor\" stroke-linecap=\"round\"/><path d=\"M3 5.5H21M16.0557 5.5L15.3731 4.09173C14.9196 3.15626 14.6928 2.68852 14.3017 2.39681C14.215 2.3321 14.1231 2.27454 14.027 2.2247C13.5939 2 13.0741 2 12.0345 2C10.9688 2 10.436 2 9.99568 2.23412C9.8981 2.28601 9.80498 2.3459 9.71729 2.41317C9.32164 2.7167 9.10063 3.20155 8.65861 4.17126L8.05292 5.5\" stroke=\"currentColor\" stroke-linecap=\"round\"/><path d=\"M9.5 16.5L9.5 10.5\" stroke=\"currentColor\" stroke-linecap=\"round\"/><path d=\"M14.5 16.5L14.5 10.5\" stroke=\"currentColor\" stroke-linecap=\"round\"/>"
+    },
+    "File01Icon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "color": "currentColor",
+        "stroke-width": "2"
+      },
+      "body": "<path d=\"M8 7L16 7\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M8 11L12 11\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M13 21.5V21C13 18.1716 13 16.7574 13.8787 15.8787C14.7574 15 16.1716 15 19 15H19.5M20 13.3431V10C20 6.22876 20 4.34315 18.8284 3.17157C17.6569 2 15.7712 2 12 2C8.22877 2 6.34315 2 5.17157 3.17157C4 4.34314 4 6.22876 4 10L4 14.5442C4 17.7892 4 19.4117 4.88607 20.5107C5.06508 20.7327 5.26731 20.9349 5.48933 21.1139C6.58831 22 8.21082 22 11.4558 22C12.1614 22 12.5141 22 12.8372 21.886C12.9044 21.8623 12.9702 21.835 13.0345 21.8043C13.3436 21.6564 13.593 21.407 14.0919 20.9081L18.8284 16.1716C19.4065 15.5935 19.6955 15.3045 19.8478 14.9369C20 14.5694 20 14.1606 20 13.3431Z\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
     },
     "FlipHorizontalIcon": {
       "attributes": {
@@ -1156,6 +1420,18 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
       },
       "body": "<path d=\"M8 7H16.75C18.8567 7 19.91 7 20.6667 7.50559C20.9943 7.72447 21.2755 8.00572 21.4944 8.33329C22 9.08996 22 10.1433 22 12.25C22 15.7612 22 17.5167 21.1573 18.7779C20.7926 19.3238 20.3238 19.7926 19.7779 20.1573C18.5167 21 16.7612 21 13.25 21H12C7.28595 21 4.92893 21 3.46447 19.5355C2 18.0711 2 15.714 2 11V7.94427C2 6.1278 2 5.21956 2.38032 4.53806C2.65142 4.05227 3.05227 3.65142 3.53806 3.38032C4.21956 3 5.1278 3 6.94427 3C8.10802 3 8.6899 3 9.19926 3.19101C10.3622 3.62712 10.8418 4.68358 11.3666 5.73313L12 7\" stroke=\"currentColor\" stroke-linecap=\"round\"/>"
     },
+    "GitBranchIcon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "color": "currentColor",
+        "stroke-width": "2"
+      },
+      "body": "<path d=\"M7 19H13C15.8284 19 17.2426 19 18.1213 18.1213C19 17.2426 19 15.8284 19 13V10M19 10C19.7002 10 21.0085 11.9943 21.5 12.5M19 10C18.2998 10 16.9915 11.9943 16.5 12.5\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M5 7L5 17\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"5\" cy=\"5\" r=\"2\" stroke=\"currentColor\"/><circle cx=\"19\" cy=\"5\" r=\"2\" stroke=\"currentColor\"/><circle cx=\"5\" cy=\"19\" r=\"2\" stroke=\"currentColor\"/>"
+    },
     "Loading03Icon": {
       "attributes": {
         "xmlns": "http://www.w3.org/2000/svg",
@@ -1179,6 +1455,18 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
         "stroke-width": "2"
       },
       "body": "<path d=\"M20 12L4 12\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
+    },
+    "MoreHorizontalCircle01Icon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "color": "currentColor",
+        "stroke-width": "2"
+      },
+      "body": "<path d=\"M21 12C21 11.1716 20.3284 10.5 19.5 10.5C18.6716 10.5 18 11.1716 18 12C18 12.8284 18.6716 13.5 19.5 13.5C20.3284 13.5 21 12.8284 21 12Z\" stroke=\"currentColor\"/><path d=\"M13.5 12C13.5 11.1716 12.8284 10.5 12 10.5C11.1716 10.5 10.5 11.1716 10.5 12C10.5 12.8284 11.1716 13.5 12 13.5C12.8284 13.5 13.5 12.8284 13.5 12Z\" stroke=\"currentColor\"/><path d=\"M6 12C6 11.1716 5.32843 10.5 4.5 10.5C3.67157 10.5 3 11.1716 3 12C3 12.8284 3.67157 13.5 4.5 13.5C5.32843 13.5 6 12.8284 6 12Z\" stroke=\"currentColor\"/>"
     },
     "Notification02Icon": {
       "attributes": {
@@ -1251,6 +1539,30 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
         "stroke-width": "2"
       },
       "body": "<path d=\"M5 14L8.5 17.5L19 6.5\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
+    },
+    "UnfoldMoreIcon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "color": "currentColor",
+        "stroke-width": "2"
+      },
+      "body": "<path d=\"M17.9999 14C17.9999 14 13.581 19 11.9999 19C10.4188 19 5.99994 14 5.99994 14\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M17.9999 9.99996C17.9999 9.99996 13.581 5.00001 11.9999 5C10.4188 4.99999 5.99994 10 5.99994 10\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
+    },
+    "UserCircleIcon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "color": "currentColor",
+        "stroke-width": "2"
+      },
+      "body": "<path d=\"M15 9C15 7.34315 13.6569 6 12 6C10.3431 6 9 7.34315 9 9C9 10.6569 10.3431 12 12 12C13.6569 12 15 10.6569 15 9Z\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M17 17C17 14.2386 14.7614 12 12 12C9.23858 12 7 14.2386 7 17\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
     }
   },
   "phosphor": {
@@ -1334,6 +1646,36 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
       },
       "body": "<path d=\"M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z\"/>"
     },
+    "CaretDownIcon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 256 256",
+        "fill": "currentColor"
+      },
+      "body": "<path d=\"M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z\"/>"
+    },
+    "CaretLeftIcon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 256 256",
+        "fill": "currentColor"
+      },
+      "body": "<path d=\"M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z\"/>"
+    },
+    "CaretRightIcon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 256 256",
+        "fill": "currentColor"
+      },
+      "body": "<path d=\"M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z\"/>"
+    },
     "CheckCircleIcon": {
       "attributes": {
         "xmlns": "http://www.w3.org/2000/svg",
@@ -1364,6 +1706,16 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
       },
       "body": "<path d=\"M96.26,37.05A8,8,0,0,1,102,27.29a104.11,104.11,0,0,1,52,0,8,8,0,0,1-2,15.75,8.15,8.15,0,0,1-2-.26,88.09,88.09,0,0,0-44,0A8,8,0,0,1,96.26,37.05ZM53.79,55.14a104.05,104.05,0,0,0-26,45,8,8,0,0,0,15.42,4.27,88,88,0,0,1,22-38.09A8,8,0,0,0,53.79,55.14ZM43.21,151.55a8,8,0,1,0-15.42,4.28,104.12,104.12,0,0,0,26,45,8,8,0,0,0,11.41-11.22A88.14,88.14,0,0,1,43.21,151.55ZM150,213.22a88,88,0,0,1-44,0,8,8,0,1,0-4,15.49,104.11,104.11,0,0,0,52,0,8,8,0,0,0-4-15.49ZM222.65,146a8,8,0,0,0-9.85,5.58,87.91,87.91,0,0,1-22,38.08,8,8,0,1,0,11.42,11.21,104,104,0,0,0,26-45A8,8,0,0,0,222.65,146Zm-9.86-41.54a8,8,0,0,0,15.42-4.28,104,104,0,0,0-26-45,8,8,0,1,0-11.41,11.22A88,88,0,0,1,212.79,104.45Z\"/>"
     },
+    "ClockIcon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 256 256",
+        "fill": "currentColor"
+      },
+      "body": "<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z\"/>"
+    },
     "CopyIcon": {
       "attributes": {
         "xmlns": "http://www.w3.org/2000/svg",
@@ -1374,6 +1726,26 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
       },
       "body": "<path d=\"M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32ZM160,208H48V96H160Zm48-48H176V88a8,8,0,0,0-8-8H96V48H208Z\"/>"
     },
+    "DotsThreeIcon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 256 256",
+        "fill": "currentColor"
+      },
+      "body": "<path d=\"M140,128a12,12,0,1,1-12-12A12,12,0,0,1,140,128Zm56-12a12,12,0,1,0,12,12A12,12,0,0,0,196,116ZM60,116a12,12,0,1,0,12,12A12,12,0,0,0,60,116Z\"/>"
+    },
+    "FileTextIcon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 256 256",
+        "fill": "currentColor"
+      },
+      "body": "<path d=\"M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Zm-32-80a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,136Zm0,32a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,168Z\"/>"
+    },
     "FolderIcon": {
       "attributes": {
         "xmlns": "http://www.w3.org/2000/svg",
@@ -1383,6 +1755,16 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
         "fill": "currentColor"
       },
       "body": "<path d=\"M216,72H131.31L104,44.69A15.86,15.86,0,0,0,92.69,40H40A16,16,0,0,0,24,56V200.62A15.4,15.4,0,0,0,39.38,216H216.89A15.13,15.13,0,0,0,232,200.89V88A16,16,0,0,0,216,72ZM40,56H92.69l16,16H40ZM216,200H40V88H216Z\"/>"
+    },
+    "GitBranchIcon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 256 256",
+        "fill": "currentColor"
+      },
+      "body": "<path d=\"M232,64a32,32,0,1,0-40,31v17a8,8,0,0,1-8,8H96a23.84,23.84,0,0,0-8,1.38V95a32,32,0,1,0-16,0v66a32,32,0,1,0,16,0V144a8,8,0,0,1,8-8h88a24,24,0,0,0,24-24V95A32.06,32.06,0,0,0,232,64ZM64,64A16,16,0,1,1,80,80,16,16,0,0,1,64,64ZM96,192a16,16,0,1,1-16-16A16,16,0,0,1,96,192ZM200,80a16,16,0,1,1,16-16A16,16,0,0,1,200,80Z\"/>"
     },
     "HeartIcon": {
       "attributes": {
@@ -1454,6 +1836,16 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
       },
       "body": "<path d=\"M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z\"/>"
     },
+    "UserCircleIcon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 256 256",
+        "fill": "currentColor"
+      },
+      "body": "<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM74.08,197.5a64,64,0,0,1,107.84,0,87.83,87.83,0,0,1-107.84,0ZM96,120a32,32,0,1,1,32,32A32,32,0,0,1,96,120Zm97.76,66.41a79.66,79.66,0,0,0-36.06-28.75,48,48,0,1,0-59.4,0,79.66,79.66,0,0,0-36.06,28.75,88,88,0,1,1,131.52,0Z\"/>"
+    },
     "WarningCircleIcon": {
       "attributes": {
         "xmlns": "http://www.w3.org/2000/svg",
@@ -1498,6 +1890,17 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
       },
       "body": "<path d=\"M3 10H2V4.00293C2 3.44903 2.45531 3 2.9918 3H21.0082C21.556 3 22 3.43788 22 4.00293V10H21V20.0015C21 20.553 20.5551 21 20.0066 21H3.9934C3.44476 21 3 20.5525 3 20.0015V10ZM19 10H5V19H19V10ZM4 5V8H20V5H4ZM9 12H15V14H9V12Z\"/>"
     },
+    "RiArrowDownSLine": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "currentColor",
+        "class": "remixicon"
+      },
+      "body": "<path d=\"M11.9999 13.1714L16.9497 8.22168L18.3639 9.63589L11.9999 15.9999L5.63599 9.63589L7.0502 8.22168L11.9999 13.1714Z\"/>"
+    },
     "RiArrowLeftCircleLine": {
       "attributes": {
         "xmlns": "http://www.w3.org/2000/svg",
@@ -1531,6 +1934,17 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
       },
       "body": "<path d=\"M16.0503 12.0498L21 16.9996L16.0503 21.9493L14.636 20.5351L17.172 17.9988L4 17.9996V15.9996L17.172 15.9988L14.636 13.464L16.0503 12.0498ZM7.94975 2.0498L9.36396 3.46402L6.828 5.9988L20 5.99955V7.99955L6.828 7.9988L9.36396 10.5351L7.94975 11.9493L3 6.99955L7.94975 2.0498Z\"/>"
     },
+    "RiArrowLeftSLine": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "currentColor",
+        "class": "remixicon"
+      },
+      "body": "<path d=\"M10.8284 12.0007L15.7782 16.9504L14.364 18.3646L8 12.0007L14.364 5.63672L15.7782 7.05093L10.8284 12.0007Z\"/>"
+    },
     "RiArrowRightLine": {
       "attributes": {
         "xmlns": "http://www.w3.org/2000/svg",
@@ -1541,6 +1955,17 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
         "class": "remixicon"
       },
       "body": "<path d=\"M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z\"/>"
+    },
+    "RiArrowRightSLine": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "currentColor",
+        "class": "remixicon"
+      },
+      "body": "<path d=\"M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z\"/>"
     },
     "RiArrowRightUpLine": {
       "attributes": {
@@ -1630,6 +2055,17 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
       },
       "body": "<path d=\"M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z\"/>"
     },
+    "RiFileTextLine": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "currentColor",
+        "class": "remixicon"
+      },
+      "body": "<path d=\"M21 8V20.9932C21 21.5501 20.5552 22 20.0066 22H3.9934C3.44495 22 3 21.556 3 21.0082V2.9918C3 2.45531 3.4487 2 4.00221 2H14.9968L21 8ZM19 9H14V4H5V20H19V9ZM8 7H11V9H8V7ZM8 11H16V13H8V11ZM8 15H16V17H8V15Z\"/>"
+    },
     "RiFolderLine": {
       "attributes": {
         "xmlns": "http://www.w3.org/2000/svg",
@@ -1640,6 +2076,17 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
         "class": "remixicon"
       },
       "body": "<path d=\"M4 5V19H20V7H11.5858L9.58579 5H4ZM12.4142 5H21C21.5523 5 22 5.44772 22 6V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H10.4142L12.4142 5Z\"/>"
+    },
+    "RiGitBranchLine": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "currentColor",
+        "class": "remixicon"
+      },
+      "body": "<path d=\"M7.10508 15.2101C8.21506 15.6501 9 16.7334 9 18C9 19.6569 7.65685 21 6 21C4.34315 21 3 19.6569 3 18C3 16.6938 3.83481 15.5825 5 15.1707V8.82929C3.83481 8.41746 3 7.30622 3 6C3 4.34315 4.34315 3 6 3C7.65685 3 9 4.34315 9 6C9 7.30622 8.16519 8.41746 7 8.82929V11.9996C7.83566 11.3719 8.87439 11 10 11H14C15.3835 11 16.5482 10.0635 16.8949 8.78991C15.7849 8.34988 15 7.26661 15 6C15 4.34315 16.3431 3 18 3C19.6569 3 21 4.34315 21 6C21 7.3332 20.1303 8.46329 18.9274 8.85392C18.5222 11.2085 16.4703 13 14 13H10C8.61653 13 7.45179 13.9365 7.10508 15.2101ZM6 17C5.44772 17 5 17.4477 5 18C5 18.5523 5.44772 19 6 19C6.55228 19 7 18.5523 7 18C7 17.4477 6.55228 17 6 17ZM6 5C5.44772 5 5 5.44772 5 6C5 6.55228 5.44772 7 6 7C6.55228 7 7 6.55228 7 6C7 5.44772 6.55228 5 6 5ZM18 5C17.4477 5 17 5.44772 17 6C17 6.55228 17.4477 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5Z\"/>"
     },
     "RiHeartLine": {
       "attributes": {
@@ -1662,6 +2109,17 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
         "class": "remixicon"
       },
       "body": "<path d=\"M11.9995 2C12.5518 2 12.9995 2.44772 12.9995 3V6C12.9995 6.55228 12.5518 7 11.9995 7C11.4472 7 10.9995 6.55228 10.9995 6V3C10.9995 2.44772 11.4472 2 11.9995 2ZM11.9995 17C12.5518 17 12.9995 17.4477 12.9995 18V21C12.9995 21.5523 12.5518 22 11.9995 22C11.4472 22 10.9995 21.5523 10.9995 21V18C10.9995 17.4477 11.4472 17 11.9995 17ZM20.6597 7C20.9359 7.47829 20.772 8.08988 20.2937 8.36602L17.6956 9.86602C17.2173 10.1422 16.6057 9.97829 16.3296 9.5C16.0535 9.02171 16.2173 8.41012 16.6956 8.13398L19.2937 6.63397C19.772 6.35783 20.3836 6.52171 20.6597 7ZM7.66935 14.5C7.94549 14.9783 7.78161 15.5899 7.30332 15.866L4.70525 17.366C4.22695 17.6422 3.61536 17.4783 3.33922 17C3.06308 16.5217 3.22695 15.9101 3.70525 15.634L6.30332 14.134C6.78161 13.8578 7.3932 14.0217 7.66935 14.5ZM20.6597 17C20.3836 17.4783 19.772 17.6422 19.2937 17.366L16.6956 15.866C16.2173 15.5899 16.0535 14.9783 16.3296 14.5C16.6057 14.0217 17.2173 13.8578 17.6956 14.134L20.2937 15.634C20.772 15.9101 20.9359 16.5217 20.6597 17ZM7.66935 9.5C7.3932 9.97829 6.78161 10.1422 6.30332 9.86602L3.70525 8.36602C3.22695 8.08988 3.06308 7.47829 3.33922 7C3.61536 6.52171 4.22695 6.35783 4.70525 6.63397L7.30332 8.13398C7.78161 8.41012 7.94549 9.02171 7.66935 9.5Z\"/>"
+    },
+    "RiMoreLine": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "currentColor",
+        "class": "remixicon"
+      },
+      "body": "<path d=\"M4.5 10.5C3.675 10.5 3 11.175 3 12C3 12.825 3.675 13.5 4.5 13.5C5.325 13.5 6 12.825 6 12C6 11.175 5.325 10.5 4.5 10.5ZM19.5 10.5C18.675 10.5 18 11.175 18 12C18 12.825 18.675 13.5 19.5 13.5C20.325 13.5 21 12.825 21 12C21 11.175 20.325 10.5 19.5 10.5ZM12 10.5C11.175 10.5 10.5 11.175 10.5 12C10.5 12.825 11.175 13.5 12 13.5C12.825 13.5 13.5 12.825 13.5 12C13.5 11.175 12.825 10.5 12 10.5Z\"/>"
     },
     "RiRefreshLine": {
       "attributes": {
@@ -1706,6 +2164,28 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
         "class": "remixicon"
       },
       "body": "<path d=\"M5 11V13H19V11H5Z\"/>"
+    },
+    "RiTimeLine": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "currentColor",
+        "class": "remixicon"
+      },
+      "body": "<path d=\"M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM13 12H17V14H11V7H13V12Z\"/>"
+    },
+    "RiUserSmileLine": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "currentColor",
+        "class": "remixicon"
+      },
+      "body": "<path d=\"M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM7 12H9C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12H17C17 14.7614 14.7614 17 12 17C9.23858 17 7 14.7614 7 12Z\"/>"
     }
   }
 };
