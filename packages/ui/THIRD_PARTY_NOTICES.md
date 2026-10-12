@@ -1,6 +1,6 @@
 # Third-party notices
 
-Component anatomy, class strings, examples and Nova styles derive from [shadcn-ui/ui](https://github.com/shadcn-ui/ui) under the MIT License below. Generated icon geometry keeps each icon library's license in its generated module and in `icons/licenses`.
+Component anatomy, class strings, examples and Nova styles derive from [shadcn-ui/ui](https://github.com/shadcn-ui/ui) under the MIT License below. `styles/shadcn.css` is vendored from the `shadcn` package's `dist/tailwind.css` under the same license. Generated icon geometry keeps each icon library's license in `icons/generated.ts` and in `icons/licenses`.
 
 MIT License
 
