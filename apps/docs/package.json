@@ -19,7 +19,7 @@
     "@sveltejs/adapter-auto": "7.0.1",
     "@sveltejs/adapter-cloudflare": "7.2.9",
     "@sveltejs/kit": "2.70.3",
-    "@sveltery/base": "github:sveltery/base#d6e88119e2fe7965780f635fba091e148448a46e",
+    "@sveltery/base": "github:sveltery/base#65ed839f5bc5a191c29d2b60f7540144f74fe421",
     "mdsvex": "0.12.8",
     "pagefind": "1.5.2",
     "shadcn": "4.21.1",

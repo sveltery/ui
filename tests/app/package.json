@@ -9,7 +9,7 @@
   "devDependencies": {
     "@sveltejs/adapter-auto": "7.0.1",
     "@sveltejs/kit": "2.70.3",
-    "@sveltery/base": "github:sveltery/base#d6e88119e2fe7965780f635fba091e148448a46e",
+    "@sveltery/base": "github:sveltery/base#65ed839f5bc5a191c29d2b60f7540144f74fe421",
     "@sveltery/ui": "workspace:*",
     "svelte": "5.57.1",
     "tailwindcss": "4.3.0",
