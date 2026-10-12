@@ -3,7 +3,7 @@ export default defineConfig({
   testDir: './tests/browser', workers: 1, fullyParallel: false, retries: 0, reporter: [['list']],
   projects: [
     // CHROMIUM_PATH runs a preinstalled local Chromium, typically as root in a container where the sandbox cannot start.
-    { name: 'chromium', use: { browserName: 'chromium', launchOptions: { executablePath: process.env.CHROMIUM_PATH, chromiumSandbox: !process.env.CHROMIUM_PATH } } },
+    { name: 'chromium', use: { browserName: 'chromium', launchOptions: { executablePath: process.env.CHROMIUM_PATH } } },
     { name: 'firefox', use: { browserName: 'firefox' } },
     { name: 'webkit', use: { browserName: 'webkit' } },
   ],
