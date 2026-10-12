@@ -34,3 +34,7 @@ export * from './popover/index.js';
 export * from './progress/index.js';
 export * from './radio-group/index.js';
 export * from './scroll-area/index.js';
+export * from './toggle/index.js';
+export * from './toggle-group/index.js';
+export * from './switch/index.js';
+export * from './slider/index.js';
