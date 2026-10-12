@@ -29,7 +29,7 @@ npx sv add tailwindcss
 ### Install the dependencies
 
 ```bash
-npm install github:sveltery/base cn class-variance-authority clsx tw-animate-css shadcn
+npm install github:sveltery/base cn class-variance-authority tw-animate-css shadcn
 ```
 
 pnpm builds Base from source on install. If pnpm asks, allow the build with the key that it prints in `pnpm-workspace.yaml`.
@@ -44,7 +44,18 @@ Import the Sveltery UI theme in your global stylesheet. The `shadcn` package pro
 @import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
 ```
+
+The base layer gives every border the theme's `--border` color. Without it, a bare `border` class draws in the text color.
 
 Then copy the theme tokens from the [theming page](/docs/theming) into the same file.
 
