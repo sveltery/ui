@@ -169,6 +169,11 @@
       "types": "./dist/direction/index.d.ts",
       "svelte": "./dist/direction/index.js",
       "default": "./dist/direction/index.js"
+    },
+    "./popover": {
+      "types": "./dist/popover/index.d.ts",
+      "svelte": "./dist/popover/index.js",
+      "default": "./dist/popover/index.js"
     }
   },
   "svelte": "./dist/index.js",

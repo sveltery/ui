@@ -30,3 +30,4 @@ export * from './accordion/index.js';
 export * from './checkbox/index.js';
 export * from './collapsible/index.js';
 export * from './direction/index.js';
+export * from './popover/index.js';
