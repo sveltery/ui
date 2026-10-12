@@ -1,3 +1,0 @@
-@custom-variant style-lyra (&:where(.style-lyra *));
-@custom-variant style-sera (&:where(.style-sera *));
-@custom-variant dark (&:is(.dark *));

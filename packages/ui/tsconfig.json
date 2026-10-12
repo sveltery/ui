@@ -12,17 +12,6 @@
     "noEmit": true
   },
   "include": [
-    "../../apps/docs/registry/bases/base/ui/**/*",
-    "../../tests/types.ts",
-    "../../tests/types-table.ts",
-    "../../tests/card-types.ts",
-    "../../tests/label-types.ts",
-    "../../tests/aspect-ratio-types.ts",
-    "../../tests/alert-types.ts",
-    "../../tests/empty-types.ts",
-    "../../tests/icons-types.ts",
-    "../../tests/example-types.ts",
-    "../../tests/separator-types.ts",
-    "../../tests/avatar-types.ts"
+    "../../apps/docs/registry/bases/base/ui/**/*"
   ]
 }

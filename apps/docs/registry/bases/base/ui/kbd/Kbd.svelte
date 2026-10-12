@@ -1,5 +1,4 @@
 <script lang="ts">
-  // Native pinned shadcn Kbd/Nova contract; see tests/reference/kbd-sources.json.
   import type { KbdProps } from './types.js';
   import { classes } from '../shared/classes.js';
   let { children, class: classProp, ref = $bindable(), ...props }: KbdProps = $props();

@@ -1,5 +1,4 @@
 <script lang="ts">
-  // Derived from pinned shadcn Label; see tests/reference/label-sources.json and MIT notices.
   import type { Snippet } from 'svelte';
   import type { HTMLLabelAttributes } from 'svelte/elements';
   import { classes } from '../shared/classes.js';

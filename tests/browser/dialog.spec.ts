@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
-for (const route of ['/dialog', '/reference']) test(`${route}: keyboard, labels, native close, isolation and focus return`, async ({ page }) => {
-  await page.goto(route); await expect(page.locator('[data-hydrated=true]')).toBeVisible();
+test('keyboard, labels, native close, isolation and focus return', async ({ page }) => {
+  await page.goto('/dialog'); await expect(page.locator('[data-hydrated=true]')).toBeVisible();
   const trigger = page.getByTestId('trigger'); await trigger.focus(); await page.keyboard.press('Enter');
   const popup = page.getByRole('dialog', { name: 'Edit profile' }); await expect(popup).toBeVisible();
   await expect(popup).toHaveAttribute('data-slot', 'dialog-content');

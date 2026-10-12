@@ -1,5 +1,4 @@
 <script lang="ts">
-  // Derived from pinned shadcn Table; see tests/reference/table-sources.json and MIT notices.
   import type { Snippet } from 'svelte';
   import type { HTMLTdAttributes } from 'svelte/elements';
   import { classes } from '../shared/classes.js';

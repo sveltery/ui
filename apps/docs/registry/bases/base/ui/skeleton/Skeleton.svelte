@@ -1,5 +1,4 @@
 <script lang="ts">
-  // Native shadcn Skeleton/Nova contract; see tests/reference/skeleton-sources.json.
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
   import { classes } from '../shared/classes.js';

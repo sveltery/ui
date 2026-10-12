@@ -1,5 +1,4 @@
 <script lang="ts">
-  // Six genuine pinned source bodies; MIT: tests/reference/LICENSE.
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { Button, buttonVariants } from '@sveltery/ui/button';
   import { IconPlaceholder } from '@sveltery/ui/icons';

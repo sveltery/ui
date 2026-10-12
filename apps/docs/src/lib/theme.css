@@ -8,7 +8,6 @@
 @custom-variant style-sera (&:where(.style-sera *));
 @custom-variant dark (&:is(.dark *));
 @source "../../../../packages/ui/dist";
-@source "../../../../tests/reference";
 /* Original app/globals.css reachable selection/document/body/active-pointer environment at shadcn d75a96ab781f3d659be1ad287347d5887ce9f2fc; MIT attribution in THIRD_PARTY_NOTICES.md. */
 @theme inline {
   --color-selection: var(--selection);

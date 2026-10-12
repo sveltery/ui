@@ -1,5 +1,4 @@
 <script lang="ts">
-  // Native pinned shadcn Alert contract; MIT and provenance: tests/reference/alert-sources.json.
   import type { AlertProps } from './types.js';
   import { classes } from '../shared/classes.js';
   import { alertVariants } from './variants.js';

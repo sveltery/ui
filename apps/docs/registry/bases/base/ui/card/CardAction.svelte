@@ -1,5 +1,4 @@
 <script lang="ts">
-  // Native pinned shadcn Card/Nova contract; see tests/reference/card-sources.json.
   import type { CardActionProps } from './types.js';
   import { classes } from '../shared/classes.js';
   let { children, class: classProp, ref = $bindable(), ...props }: CardActionProps = $props();

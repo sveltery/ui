@@ -1,5 +1,4 @@
 <script lang="ts">
-  // Native pinned shadcn Empty/Nova contract; see tests/reference/empty-sources.json.
   import { cva } from 'class-variance-authority';
   import type { EmptyMediaProps } from './types.js';
   import { classes } from '../shared/classes.js';

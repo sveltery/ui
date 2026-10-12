@@ -1,5 +1,4 @@
 <script lang="ts">
-  // Four selected immutable Empty bodies; helpers, controls and icon geometry remain canonical. MIT: tests/reference/LICENSE.
   import type { Snippet } from 'svelte';
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@sveltery/ui/empty';

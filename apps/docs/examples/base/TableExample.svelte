@@ -1,5 +1,4 @@
 <script lang="ts">
-  // Derived from shadcn-ui/ui d75a96ab781f3d659be1ad287347d5887ce9f2fc; MIT notice in tests/reference/LICENSE.
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@sveltery/ui/table';
   const invoices = [

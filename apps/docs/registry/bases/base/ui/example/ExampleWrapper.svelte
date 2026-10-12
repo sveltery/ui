@@ -1,5 +1,4 @@
 <script lang="ts">
-  // Pinned native scaffold; source and MIT notice: tests/reference/example-sources.json.
   import { classes } from '../shared/classes.js';
   import type { ExampleWrapperProps } from './types.js';
   let { children, class: classProp, ref = $bindable(), ...props }: ExampleWrapperProps = $props();

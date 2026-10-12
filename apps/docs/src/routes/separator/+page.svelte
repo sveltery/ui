@@ -1,4 +1,4 @@
 <script lang="ts">
   import SeparatorExample from '../../../examples/base/SeparatorExample.svelte';
 </script>
-<SeparatorExample />
+<main class="p-8"><SeparatorExample /></main>

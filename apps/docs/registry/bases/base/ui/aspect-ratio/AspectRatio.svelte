@@ -1,5 +1,4 @@
 <script lang="ts">
-  // Derived from pinned shadcn AspectRatio; source hashes and MIT: tests/reference/aspect-ratio-sources.json.
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
   import { classes } from '../shared/classes.js';

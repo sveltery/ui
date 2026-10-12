@@ -1,4 +1,3 @@
-// Derived from pinned shadcn Alert; MIT and provenance: tests/reference/alert-sources.json.
 import { cva } from 'class-variance-authority';
 export const alertVariants = cva('cn-alert group/alert relative w-full', {
   variants: { variant: { default: 'cn-alert-variant-default', destructive: 'cn-alert-variant-destructive' } },

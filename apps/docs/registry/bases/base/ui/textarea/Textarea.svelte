@@ -1,5 +1,4 @@
 <script lang="ts">
-  // Native shadcn Textarea/Nova contract; see tests/reference/textarea-sources.json.
   import type { HTMLTextareaAttributes } from 'svelte/elements';
   import { classes } from '../shared/classes.js';
   let { class: classProp, ref = $bindable(), defaultValue, defaultvalue, value = $bindable(), ...props }: Omit<HTMLTextareaAttributes, 'children'> & { ref?: HTMLTextAreaElement | null } = $props();

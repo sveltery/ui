@@ -1,5 +1,4 @@
 <script lang="ts">
-  // Native pinned shadcn Empty/Nova contract; see tests/reference/empty-sources.json.
   import type { EmptyHeaderProps } from './types.js';
   import { classes } from '../shared/classes.js';
   let { children, class: classProp, ref = $bindable(), ...props }: EmptyHeaderProps = $props();

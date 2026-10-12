@@ -1,5 +1,4 @@
 <script lang="ts">
-  // Native pinned shadcn Alert contract; MIT and provenance: tests/reference/alert-sources.json.
   import type { AlertTitleProps } from './types.js';
   import { classes } from '../shared/classes.js';
   let { children, class: classProp, ref = $bindable(), ...props }: AlertTitleProps = $props();
