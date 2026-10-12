@@ -1,5 +1,26 @@
+import { fileURLToPath } from 'node:url';
+import adapter from '@sveltejs/adapter-cloudflare';
 import { sveltekit } from '@sveltejs/kit/vite';
-import adapter from '@sveltejs/adapter-auto';
 import tailwindcss from '@tailwindcss/vite';
+import { mdsvex } from 'mdsvex';
 import { defineConfig } from 'vite';
-export default defineConfig({ plugins: [tailwindcss(), sveltekit({ adapter: adapter() })] });
+import { headings } from './markdown/headings';
+import { docsComponents, highlightCodeBlock } from './markdown/preprocess';
+
+const path = (relative: string) => fileURLToPath(new URL(relative, import.meta.url));
+
+export default defineConfig({
+  server: { fs: { allow: ['content', 'examples'] } },
+  plugins: [
+    tailwindcss(),
+    sveltekit({
+      adapter: adapter(),
+      extensions: ['.svelte', '.md'],
+      preprocess: [
+        mdsvex({ extensions: ['.md'], smartypants: false, remarkPlugins: [headings], highlight: { highlighter: highlightCodeBlock } }),
+        docsComponents({ examples: path('./examples'), ui: path('../../packages/ui/src/lib') }),
+      ],
+      prerender: { handleHttpError: 'fail', handleMissingId: 'fail' },
+    }),
+  ],
+});

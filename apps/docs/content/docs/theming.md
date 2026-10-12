@@ -1,0 +1,100 @@
+---
+title: Theming
+description: Change the look of every component with CSS variables.
+order: 2
+---
+
+Components use semantic color tokens such as `background`, `foreground` and `primary`. Tailwind maps each token to a utility, so `bg-primary` reads `var(--primary)`. To change the look of your app, change the token values. You do not need to rewrite component classes.
+
+```svelte
+<div class="bg-background text-foreground">Hello</div>
+```
+
+## Tokens come in pairs
+
+Each surface token has a `-foreground` token for the text and icons on that surface. For example, `primary` pairs with `primary-foreground`:
+
+```css
+--primary: oklch(0.205 0 0);
+--primary-foreground: oklch(0.985 0 0);
+```
+
+```svelte
+<div class="bg-primary text-primary-foreground">Hello</div>
+```
+
+## The token list
+
+| Token | Used for |
+| --- | --- |
+| `background`, `foreground` | The page and its text |
+| `card`, `card-foreground` | Cards |
+| `popover`, `popover-foreground` | Popovers, menus and dialogs |
+| `primary`, `primary-foreground` | Primary buttons and strong accents |
+| `secondary`, `secondary-foreground` | Secondary buttons |
+| `muted`, `muted-foreground` | Subtle backgrounds and secondary text |
+| `accent`, `accent-foreground` | Hover and active states |
+| `destructive` | Destructive actions and errors |
+| `border`, `input`, `ring` | Borders, form controls and focus rings |
+| `chart-1` to `chart-5` | Charts |
+| `sidebar` and its pairs | Sidebars |
+| `radius` | The base corner radius. `rounded-sm` to `rounded-4xl` derive from it |
+
+## Default theme
+
+Add the tokens to your global stylesheet. The `.dark` block overrides them for [dark mode](/docs/dark-mode).
+
+```css title="src/app.css" showLineNumbers
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+}
+```
+
+## Base colors
+
+The `@sveltery/ui/themes.css` stylesheet also ships the shadcn/ui base colors as classes, from `theme-neutral` to `theme-zinc`. Add one to an element to recolor everything inside it.
+
+```svelte
+<div class="theme-blue">
+  <Button>Blue</Button>
+</div>
+```

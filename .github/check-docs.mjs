@@ -14,7 +14,8 @@ for (const path of files) {
   if (!path.endsWith('.md')) continue;
   for (const match of text.matchAll(/\[[^\]]*\]\(([^\s)]+)\)/gu)) {
     const target = match[1].replace(/^<|>$/gu, '').split(/[?#]/u)[0];
-    if (!target || /^[a-z][a-z\d+.-]*:/iu.test(target)) continue;
+    // Root-relative links such as /docs/theming are docs-site routes, not repository files.
+    if (!target || target.startsWith('/') || /^[a-z][a-z\d+.-]*:/iu.test(target)) continue;
     assert(existsSync(resolve(dirname(path), decodeURIComponent(target))), `${path}: missing local link ${target}`);
   }
 }
