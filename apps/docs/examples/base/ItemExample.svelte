@@ -1117,7 +1117,7 @@
 {/snippet}
 
 {#snippet DefaultLinkItems()}
-  <Example title="asChild">
+  <Example title="Render">
     <ItemGroup>
       <Item render={link}>
         <ItemContent>
@@ -1181,7 +1181,7 @@
 {/snippet}
 
 {#snippet OutlineLinkItems()}
-  <Example title="Outline - asChild">
+  <Example title="Outline - Render">
     <ItemGroup>
       <Item variant="outline" render={link}>
         <ItemContent>
@@ -1245,7 +1245,7 @@
 {/snippet}
 
 {#snippet MutedLinkItems()}
-  <Example title="Muted - asChild">
+  <Example title="Muted - Render">
     <ItemGroup>
       <Item variant="muted" render={link}>
         <ItemContent>

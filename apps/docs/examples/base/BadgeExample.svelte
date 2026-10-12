@@ -105,7 +105,7 @@
 {/snippet}
 
 {#snippet BadgeAsLink()}
-  <Example title="asChild">
+  <Example title="Render">
     <div class="flex flex-wrap gap-2 style-sera:gap-6">
       <Badge>
         {#snippet render(props)}
