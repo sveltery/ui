@@ -32,6 +32,14 @@ export const blocks: Block[] = [
   { name: 'signup-03', description: 'A signup page with a muted background color.', route: 'signup', categories: ['authentication', 'signup'] },
   { name: 'signup-04', description: 'A signup page with form and image.', route: 'signup', categories: ['authentication', 'signup'] },
   { name: 'signup-05', description: 'A simple signup form with social providers.', route: 'signup', categories: ['authentication', 'signup'] },
+  { name: 'sidebar-09', description: 'Collapsible nested sidebars.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
+  { name: 'sidebar-10', description: 'A sidebar in a popover.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
+  { name: 'sidebar-11', description: 'A sidebar with a collapsible file tree.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
+  { name: 'sidebar-12', description: 'A sidebar with a calendar.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
+  { name: 'sidebar-13', description: 'A sidebar in a dialog.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
+  { name: 'sidebar-14', description: 'A sidebar on the right.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
+  { name: 'sidebar-15', description: 'A left and right sidebar.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
+  { name: 'sidebar-16', description: 'A sidebar with a sticky site header.', route: 'dashboard', categories: ['sidebar', 'dashboard'], iframeHeight: '800px' },
 ];
 
 /** Upstream's featured list. dashboard-01 waits for Select, so it is not in `blocks` yet and the page skips it. */
