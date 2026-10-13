@@ -16,6 +16,7 @@ export default defineConfig({
     sveltekit({
       adapter: adapter(),
       alias: { $lib: 'src/lib' },
+      experimental: { remoteFunctions: true },
       extensions: ['.svelte', '.md'],
       preprocess: [
         mdsvex({ extensions: ['.md'], smartypants: false, remarkPlugins: [headings], highlight: { highlighter: highlightCodeBlock } }),
