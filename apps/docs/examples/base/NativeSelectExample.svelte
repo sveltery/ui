@@ -53,8 +53,8 @@
 {#snippet NativeSelectWithField()}
   <Example title="With Field">
     <Field>
-      <FieldLabel id="native-select-country-label">Country</FieldLabel>
-      <NativeSelect aria-labelledby="native-select-country-label">
+      <FieldLabel>Country</FieldLabel>
+      <NativeSelect>
         <NativeSelectOption value="">Select a country</NativeSelectOption>
         <NativeSelectOption value="us">United States</NativeSelectOption>
         <NativeSelectOption value="uk">United Kingdom</NativeSelectOption>
