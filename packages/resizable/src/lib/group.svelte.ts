@@ -81,7 +81,7 @@ export class PanelEntry {
 
   attach: Attachment<HTMLElement> = (element) => {
     this.element = element;
-    this.group.sortPanels();
+    untrack(() => this.group.sortPanels());
     return () => {
       this.element = undefined;
     };
