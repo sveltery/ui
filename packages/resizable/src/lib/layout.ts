@@ -8,6 +8,8 @@ export interface PanelConstraints {
   minSize: number;
   maxSize: number;
   defaultSize: number | undefined;
+  /** How far past `minSize` a panel must move to collapse, or past `collapsedSize` to expand. Defaults to half the distance between them. */
+  collapsedThreshold?: number;
 }
 
 export type ResizeTrigger = 'keyboard' | 'pointer' | 'imperative';
@@ -34,18 +36,19 @@ export function toMap(ids: readonly string[], layout: readonly number[]): Layout
 }
 
 /**
- * Clamps one panel size to its constraints. A collapsible panel snaps to its collapsed size when
- * dragged below the midpoint between collapsed and minimum, and back to the minimum above it.
- * `prevSize` decides which side of the midpoint the panel starts from.
+ * Clamps one panel size to its constraints. A collapsible panel snaps to its collapsed size once it is
+ * dragged `collapsedThreshold` below its minimum, and back to the minimum once it is dragged that far
+ * above its collapsed size. `prevSize` decides which side the panel starts from.
  */
 export function clampPanelSize(constraints: PanelConstraints, size: number, prevSize: number): number {
-  const { collapsible, collapsedSize, minSize, maxSize } = constraints;
+  const { collapsible, collapsedSize, collapsedThreshold, minSize, maxSize } = constraints;
   if (compare(size, minSize) < 0) {
     if (collapsible) {
-      const half = (minSize - collapsedSize) / 2;
+      const threshold = collapsedThreshold ?? (minSize - collapsedSize) / 2;
       const wasCollapsed = compare(prevSize, collapsedSize) <= 0;
-      const midpoint = wasCollapsed ? collapsedSize + half : minSize - half;
-      size = compare(size, collapsedSize) <= 0 || compare(size, midpoint) < 0 ? collapsedSize : minSize;
+      const boundary = compare(size, wasCollapsed ? collapsedSize + threshold : minSize - threshold);
+      const collapse = compare(size, collapsedSize) <= 0 || boundary < 0 || (collapsedThreshold !== undefined && wasCollapsed && boundary === 0);
+      size = collapse ? collapsedSize : minSize;
     } else {
       size = minSize;
     }
@@ -122,10 +125,10 @@ export function adjustLayoutByDelta(args: {
     const grow = constraints[growIndex];
     if (grow.collapsible && compare(layout[growIndex], grow.minSize) < 0) {
       const span = grow.minSize - grow.collapsedSize;
-      const threshold = span / 2;
+      const threshold = grow.collapsedThreshold ?? span / 2;
       if (compare(layout[growIndex] + Math.abs(delta), grow.minSize) < 0) {
         const passed = compare(Math.abs(delta), threshold);
-        delta = passed > 0 || (passed === 0 && delta < 0) ? (delta < 0 ? -span : span) : 0;
+        delta = passed > 0 || (passed === 0 && grow.collapsedThreshold === undefined && delta < 0) ? (delta < 0 ? -span : span) : 0;
       }
     }
   }

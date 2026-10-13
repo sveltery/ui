@@ -33,6 +33,7 @@ export interface PanelOptions {
   maxSize?: SizeInput;
   collapsible?: boolean;
   collapsedSize?: SizeInput;
+  collapsedThreshold?: SizeInput;
 }
 
 interface Drag {
@@ -68,14 +69,15 @@ export class PanelEntry {
   collapsed = $derived.by(() => this.group.ready && this.group.collapsedAt(this.index));
 
   resolve(context: UnitContext): PanelConstraints {
-    const { defaultSize, minSize, maxSize, collapsible, collapsedSize } = this.#options();
+    const { defaultSize, minSize, maxSize, collapsible, collapsedSize, collapsedThreshold } = this.#options();
     const percent = (size: SizeInput | undefined) => (size === undefined ? undefined : toPercent(size, context));
     return {
       collapsible: collapsible ?? false,
       collapsedSize: percent(collapsedSize) ?? 0,
       minSize: percent(minSize) ?? 0,
       maxSize: percent(maxSize) ?? 100,
-      defaultSize: percent(defaultSize)
+      defaultSize: percent(defaultSize),
+      collapsedThreshold: percent(collapsedThreshold)
     };
   }
 
@@ -348,6 +350,14 @@ export class GroupState {
       case 'ArrowUp': if (!horizontal) delta = -KEY_STEP; break;
       case 'Home': delta = -100; break;
       case 'End': delta = 100; break;
+      case 'F6': {
+        event.preventDefault();
+        const separators = [...(this.element?.querySelectorAll<HTMLElement>(':scope > [role=separator]') ?? [])];
+        const index = separators.indexOf(event.currentTarget as HTMLElement);
+        const step = event.shiftKey ? separators.length - 1 : 1;
+        separators[(index + step) % separators.length]?.focus({ preventScroll: true });
+        return;
+      }
       case 'Enter': {
         const constraint = this.constraints[pivot[0]];
         if (!constraint.collapsible) return;
@@ -363,15 +373,25 @@ export class GroupState {
     this.#commit(adjustLayoutByDelta({ layout: this.layout, constraints: this.constraints, pivot, delta, trigger: 'keyboard' }), true);
   }
 
+  /** Resizes the first panel beside the separator that has a default size back to that size. */
+  resetToDefault(separator: SeparatorEntry): boolean {
+    const pivot = this.#pivot(separator);
+    if (separator.disabled || !pivot) return false;
+    const index = pivot.find((candidate) => this.constraints[candidate].defaultSize !== undefined);
+    if (index === undefined) return false;
+    this.#resizeTo(this.panels[index], this.constraints[index].defaultSize!, true);
+    return true;
+  }
+
   /** Moves the separator beside the panel so the panel reaches `percent`. The last panel moves the separator before it. */
-  #resizeTo(entry: PanelEntry, percent: number): void {
+  #resizeTo(entry: PanelEntry, percent: number, byUser = false): void {
     const index = entry.index;
     const count = this.panels.length;
     if (index < 0 || count < 2) return;
     const last = index === count - 1;
     const delta = (percent - this.layout[index]) * (last ? -1 : 1);
     const pivot: [number, number] = last ? [index - 1, index] : [index, index + 1];
-    this.#commit(adjustLayoutByDelta({ layout: this.layout, constraints: this.constraints, pivot, delta, trigger: 'imperative' }), false);
+    this.#commit(adjustLayoutByDelta({ layout: this.layout, constraints: this.constraints, pivot, delta, trigger: 'imperative' }), byUser);
   }
 
   collapse(entry: PanelEntry): void {
