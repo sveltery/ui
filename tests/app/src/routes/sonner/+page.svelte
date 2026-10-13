@@ -1,5 +1,11 @@
 <script lang="ts">
-  import { Toaster, toast } from '@sveltery/ui/sonner';
+  import { Toaster, toast, type ToastPosition } from '@sveltery/ui/sonner';
+  const positions: ToastPosition[] = ['top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center', 'bottom-right'];
+  let position = $state<ToastPosition | 'default'>('default');
+  let richColors = $state(false);
+  let closeButton = $state(false);
+  let styled = $state(false);
+  let labelled = $state(false);
   let log = $state<string[]>([]);
   let settle: { resolve: (value: string) => void; reject: (reason: Error) => void } | undefined;
   let updateId = '';
@@ -17,8 +23,29 @@
     if (unwrap) track(result.unwrap());
   }
 </script>
-<Toaster />
-<div class="flex flex-wrap gap-2 p-8">
+<Toaster position={position === 'default' ? undefined : position} {richColors} {closeButton} closeButtonAriaLabel={labelled ? 'Dismiss notification' : undefined} classNames={styled ? { description: 'italic', closeButton: 'bg-yellow-200' } : undefined} />
+{#snippet custom(id: string)}
+  <div data-testid="custom-body" class="w-full rounded-md bg-fuchsia-600 p-3 text-white">
+    Custom body {id.length > 0 ? 'ready' : 'missing id'}
+    <button type="button" data-testid="custom-dismiss" onclick={() => toast.dismiss(id)}>Dismiss custom</button>
+  </div>
+{/snippet}
+<div class="flex min-h-svh flex-wrap content-center items-center gap-2 p-8">
+  <select aria-label="Position" bind:value={position}>
+    {#each ['default', ...positions] as value (value)}<option {value}>{value}</option>{/each}
+  </select>
+  <label><input type="checkbox" bind:checked={richColors} /> richColors</label>
+  <label><input type="checkbox" bind:checked={closeButton} /> closeButton</label>
+  <label><input type="checkbox" bind:checked={styled} /> classNames</label>
+  <label><input type="checkbox" bind:checked={labelled} /> closeButtonAriaLabel</label>
+  <button type="button" onclick={() => { toast('First'); toast('Second'); }}>Two</button>
+  <button type="button" onclick={() => toast.success('Rich on', { richColors: true })}>Rich on</button>
+  <button type="button" onclick={() => toast.success('Rich off', { richColors: false })}>Rich off</button>
+  <button type="button" onclick={() => toast('Closable', { closeButton: true })}>Closable</button>
+  <button type="button" onclick={() => toast('Unclosable', { closeButton: false })}>Unclosable</button>
+  <button type="button" onclick={() => toast('Styled', { description: 'Details', className: 'border-dashed bg-yellow-100', classNames: { title: 'uppercase' } })}>Styled</button>
+  <button type="button" onclick={() => toast.custom(custom)}>Custom</button>
+  <button type="button" onclick={() => toast.custom(custom, { duration: 1000, className: 'opacity-90' })}>Short custom</button>
   <button type="button" onclick={() => toast('Event has been created')}>Basic</button>
   <button type="button" onclick={() => toast('Event has been created', { description: 'Monday, January 3rd at 6:00pm' })}>With description</button>
   <button type="button" onclick={() => toast.success('Event has been created')}>Success</button>

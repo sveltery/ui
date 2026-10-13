@@ -2,6 +2,7 @@
   import SiteFooter from '$lib/components/site/SiteFooter.svelte';
   import SiteHeader from '$lib/components/site/SiteHeader.svelte';
   import { Toaster } from '@sveltery/ui/sonner';
+  import { sonnerPosition } from '../../../examples/base/sonner/position.svelte.js';
   import { onMount } from 'svelte';
   let { children } = $props();
 
@@ -14,4 +15,4 @@
   <main class="flex min-h-0 flex-1 flex-col">{@render children()}</main>
   <SiteFooter />
 </div>
-<Toaster />
+<Toaster position={sonnerPosition.value} />
