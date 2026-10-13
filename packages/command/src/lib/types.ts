@@ -11,7 +11,10 @@ export interface CommandRootProps extends HTMLAttributes<HTMLDivElement> {
   shouldFilter?: boolean;
   /** Scores an item against the search from 0 (hidden) to 1 (best). Defaults to `defaultFilter`. */
   filter?: CommandFilter;
-  /** The selected item's value. Bindable. An empty string selects nothing. */
+  /**
+   * The selected item's value. Bindable. While it is empty, Root selects the first item. A value that names no item is
+   * kept, and selects the first item with that value once one mounts.
+   */
   value?: string;
   /** Called on every change of the selected value, including the menu's own automatic selection. */
   onValueChange?: (value: string) => void;
@@ -71,7 +74,7 @@ export interface CommandLoadingProps extends HTMLAttributes<HTMLDivElement> {
 export interface CommandState {
   readonly search: string;
   readonly value: string;
-  /** How many items match the search, not counting force-mounted ones. */
+  /** How many items match the search, not counting force-mounted ones. 0 until Root mounts. */
   readonly count: number;
   /** The id of the selected item element. */
   readonly selectedId: string | undefined;

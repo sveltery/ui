@@ -1,6 +1,6 @@
 import { createContext, untrack } from 'svelte';
 import type { Attachment } from 'svelte/attachments';
-import { SvelteSet } from 'svelte/reactivity';
+import { SvelteMap } from 'svelte/reactivity';
 import { commandScore } from './command-score.js';
 import type { GroupModel, ItemModel } from './item.svelte.js';
 import { rank, step, stepGroup, type CommandFilter, type View } from './rank.js';
@@ -31,21 +31,29 @@ export class CommandModel {
   readonly ids: { readonly label: string; readonly input: string; readonly list: string };
   /**
    * False on the server and until Root mounts. Until then nothing is filtered, reordered or selected, so the server
-   * markup and the first client render agree, and nothing reads a server-side derived before every item registered.
+   * markup and the first client render agree.
    */
   settled = $state(false);
-  // Sets mutate in place. Effect teardowns read state as it was before the change, so reassigning a filtered array
-  // from an unregister would drop an item registered in the same flush.
-  readonly #items = new SvelteSet<ItemModel>();
-  readonly #groups = new SvelteSet<GroupModel>();
+  // Maps mutate in place. Effect teardowns read state as it was before the change, so reassigning a filtered copy
+  // from an unregister would drop an entry registered in the same flush.
+  readonly #items = new SvelteMap<ItemModel, Element>();
+  readonly #groups = new SvelteMap<GroupModel, Element>();
   #search = $state.raw<SearchSource>();
   /** `#search` without reactivity, for the unlink, which runs in a teardown. */
   #linked: SearchSource | undefined;
   /** Bumped when nodes move inside Root, since document order is not otherwise reactive. */
   #layout = $state(0);
-  #byElement = new WeakMap<Element, ItemModel>();
   #lastSearch: string | undefined;
-  #scroll = true;
+  /** The picked item. With duplicate values, it tells which of the items that share the bound value is selected. */
+  #current = $state.raw<ItemModel>();
+  /**
+   * The view's count as of the last reconcile, undefined before. Svelte re-runs `{#if}` blocks eagerly whenever an
+   * effect writes state they read, so a block that read the view itself would rank the list again after each of the
+   * items that register in one flush.
+   */
+  count = $state<number>();
+  /** Set by a keyboard move or a new search, and consumed once that item is scrolled into view. */
+  #scrollRequest = $state.raw<{ readonly item: ItemModel }>();
 
   constructor(options: RootOptions) {
     this.#options = options;
@@ -62,19 +70,21 @@ export class CommandModel {
     return this.#options.disablePointerSelection;
   }
 
-  #view = $derived.by(() => {
+  // Split from the ranking so a keystroke does not sort by document position again.
+  #ordered = $derived.by(() => {
     void this.#layout;
-    return rank({
-      items: inDocumentOrder([...this.#items]),
-      groups: inDocumentOrder([...this.#groups]),
-      search: this.search,
-      filter: this.#options.shouldFilter ? (this.#options.filter ?? defaultFilter) : null
-    });
+    return { items: inDocumentOrder(this.#items), groups: inDocumentOrder(this.#groups) };
   });
-  /** Exactly one item: the first in visual order whose value is the bound value. */
+  #view = $derived.by(() =>
+    rank({ ...this.#ordered, search: this.search, filter: this.#options.shouldFilter ? (this.#options.filter ?? defaultFilter) : null })
+  );
+  /** The picked item while it still has the bound value, else the first item in visual order that has it. */
   #selected = $derived.by(() => {
-    const key = this.value.trim();
-    return key === '' ? undefined : this.#view.ordered.find((item) => item.value === key);
+    const value = this.value.trim();
+    if (value === '') return undefined;
+    const current = this.#current;
+    if (current?.value === value && this.#view.visibleItems.has(current)) return current;
+    return this.#view.ordered.find((item) => item.value === value);
   });
 
   get view(): View<ItemModel, GroupModel> | undefined {
@@ -86,17 +96,15 @@ export class CommandModel {
 
   readonly state: CommandState = stateOf(this);
 
-  register(item: ItemModel): void {
-    this.#items.add(item);
+  /** Returns the unregister. */
+  register(item: ItemModel, element: Element): () => void {
+    this.#items.set(item, element);
+    return () => this.#items.delete(item);
   }
-  unregister(item: ItemModel): void {
-    this.#items.delete(item);
-  }
-  registerGroup(group: GroupModel): void {
-    this.#groups.add(group);
-  }
-  unregisterGroup(group: GroupModel): void {
-    this.#groups.delete(group);
+  /** Returns the unregister. */
+  registerGroup(group: GroupModel, element: Element): () => void {
+    this.#groups.set(group, element);
+    return () => this.#groups.delete(group);
   }
   /** Input's bindable value is the search. Returns the unlink. */
   linkSearch(source: SearchSource): () => void {
@@ -106,44 +114,55 @@ export class CommandModel {
       this.#search = this.#linked = undefined;
     };
   }
-  /** Lets Root's mutation observer re-measure the item that owns a changed node. */
-  observe(element: Element, item: ItemModel): () => void {
-    this.#byElement.set(element, item);
-    return () => this.#byElement.delete(element);
-  }
 
-  /** The only writer of the selected value. */
-  pick(value: string, scroll: boolean): void {
+  /** The only writer of the selection. */
+  pick(item: ItemModel | undefined, scroll: boolean): void {
+    this.#current = item;
+    if (scroll && item) this.#scrollRequest = { item };
+    const value = item?.value ?? '';
     if (value === this.value) return;
-    this.#scroll = scroll;
     this.#options.value = value;
     this.#options.onValueChange?.(value);
   }
 
-  /** A new search selects the first item, and so does a bound value that names no visible item. */
+  /**
+   * Selects the first item when the search changed, when nothing is selected, or when the picked item unmounted or
+   * was filtered out. A value that names no item is otherwise kept, for an item that has not mounted yet.
+   */
   reconcile(): void {
     if (!this.settled) return;
+    // Text that renders the search changed in this same flush, before the mutation observer can report it.
+    untrack(() => this.#measure());
     const view = this.#view;
     const search = this.search;
+    const value = this.value;
     const selected = this.#selected;
     untrack(() => {
       const searched = this.#lastSearch !== undefined && this.#lastSearch !== search;
       this.#lastSearch = search;
-      const first = view.navigable[0]?.value;
-      if (searched) this.pick(first ?? '', true);
-      else if (!selected && first !== undefined) this.pick(first, true);
+      this.count = view.count;
+      const lost = this.#current !== undefined && !view.visibleItems.has(this.#current);
+      if (searched || lost || value.trim() === '') this.pick(view.navigable[0], searched);
+      else this.#current = selected;
     });
   }
 
-  /** Scrolls a keyboard or automatic selection into view, with its group heading when it leads its group. */
+  /** Scrolls the item a keyboard move or a new search picked into view, with its group heading when it leads its group. */
   followSelection(): void {
+    const request = this.#scrollRequest;
+    if (!request) return;
     const item = this.selectedItem;
     untrack(() => {
-      if (!item || !this.#scroll) return;
+      this.#scrollRequest = undefined;
+      if (request.item !== item) return;
       const leader = item.group && this.#view.ordered.find((entry) => entry.group === item.group);
       if (leader === item) item.group?.headingElement?.scrollIntoView?.({ block: 'nearest' });
       item.element?.scrollIntoView?.({ block: 'nearest' });
     });
+  }
+
+  #measure(): void {
+    for (const item of this.#items.keys()) item.measure();
   }
 
   keydown(event: KeyboardEvent): void {
@@ -189,19 +208,14 @@ export class CommandModel {
   }
 
   #go(item: ItemModel | undefined): void {
-    if (item?.value) this.pick(item.value, true);
+    if (item) this.pick(item, true);
   }
 
   attach: Attachment<HTMLElement> = (element) => {
+    this.settled = true;
     const observer = new MutationObserver((records) => {
-      let moved = false;
-      for (const record of records) {
-        if (record.type === 'childList') moved = true;
-        const target = record.target instanceof Element ? record.target : record.target.parentElement;
-        const owner = target?.closest('[cmdk-item]');
-        if (owner) this.#byElement.get(owner)?.measure();
-      }
-      if (moved) this.#layout += 1;
+      this.#measure();
+      if (records.some((record) => record.type === 'childList')) this.#layout += 1;
     });
     observer.observe(element, { childList: true, characterData: true, subtree: true });
     return () => observer.disconnect();
@@ -217,7 +231,7 @@ function stateOf(root: CommandModel): CommandState {
       return root.value;
     },
     get count() {
-      return root.view?.count ?? 0;
+      return root.count ?? 0;
     },
     get selectedId() {
       return root.selectedItem?.id;

@@ -30,8 +30,6 @@ export interface RankInput<I extends ItemEntry<G>, G extends GroupEntry> {
 }
 
 export interface View<I, G> {
-  /** Whether scores apply. When false, DOM order is the visual order and no slots are emitted. */
-  readonly ranked: boolean;
   readonly visibleItems: ReadonlySet<I>;
   readonly visibleGroups: ReadonlySet<G>;
   /** Visible items in the order the user sees them, disabled ones included. */
@@ -105,7 +103,6 @@ export function rank<I extends ItemEntry<G>, G extends GroupEntry>({ items, grou
   const groupItems = new Map<G, readonly I[]>(groupOrder.map((group) => [group, buckets.get(group)!.filter(usable)]));
 
   return {
-    ranked,
     visibleItems: new Set(visible),
     visibleGroups: new Set(groupOrder),
     ordered,

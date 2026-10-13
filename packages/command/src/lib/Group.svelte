@@ -2,7 +2,6 @@
   import { GroupModel, setGroup } from './item.svelte.js';
   import { getCommand } from './root.svelte.js';
   import type { CommandGroupProps } from './types.js';
-  import { RANKED_CONTAINER_STYLE } from './utils.js';
 
   let { heading, value, forceMount = false, children, ...rest }: CommandGroupProps = $props();
 
@@ -12,8 +11,6 @@
     get forceMount() { return forceMount; }
   });
   setGroup(group);
-  root.registerGroup(group);
-  $effect(() => () => root.unregisterGroup(group));
 </script>
 
 <div
@@ -31,7 +28,7 @@
       {#if typeof heading === 'string'}{heading}{:else}{@render heading()}{/if}
     </div>
   {/if}
-  <div cmdk-group-items="" role="group" aria-labelledby={heading ? headingId : undefined} style={RANKED_CONTAINER_STYLE}>
+  <div cmdk-group-items="" role="group" aria-labelledby={heading ? headingId : undefined}>
     {@render children?.()}
   </div>
 </div>

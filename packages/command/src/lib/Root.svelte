@@ -31,9 +31,6 @@
   });
   setCommand(root);
 
-  $effect(() => {
-    root.settled = true;
-  });
   $effect(() => root.reconcile());
   $effect(() => root.followSelection());
 </script>

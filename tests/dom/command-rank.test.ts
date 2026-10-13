@@ -31,7 +31,6 @@ const names = (entries: readonly { name: string }[]) => entries.map((entry) => e
 describe('rank', () => {
   it('keeps document order and emits no slots without a search', () => {
     const view = rank({ items, groups, search: '', filter });
-    expect(view.ranked).toBe(false);
     expect(names(view.ordered)).toEqual(['apple', 'banana', 'hammer', 'saw', 'pineapple', 'web']);
     expect(names(view.navigable)).toEqual(['apple', 'banana', 'hammer', 'pineapple', 'web']);
     expect(view.count).toBe(5);
@@ -41,7 +40,6 @@ describe('rank', () => {
 
   it('hides non-matches, sorts by score and puts ungrouped items before groups', () => {
     const view = rank({ items, groups, search: 'a', filter });
-    expect(view.ranked).toBe(true);
     // apple 1, banana 1/2, hammer 1/2, saw 1/2, pineapple 1/5, web force-mounted and unscored.
     expect(names(view.ordered)).toEqual(['pineapple', 'web', 'apple', 'banana', 'hammer', 'saw']);
     expect(names(view.navigable)).toEqual(['pineapple', 'web', 'apple', 'banana', 'hammer']);
@@ -75,8 +73,8 @@ describe('rank', () => {
 
   it('neither filters nor sorts without a filter', () => {
     const view = rank({ items, groups, search: 'zzz', filter: null });
-    expect(view.ranked).toBe(false);
     expect(names(view.ordered)).toEqual(['apple', 'banana', 'hammer', 'saw', 'pineapple', 'web']);
+    expect(view.itemSlot.size).toBe(0);
   });
 
   it('shows unmeasured items unscored and skips them in navigation', () => {

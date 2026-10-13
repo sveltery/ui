@@ -15,8 +15,6 @@
     get forceMount() { return forceMount; },
     get onSelect() { return onSelect; }
   });
-  root.register(item);
-  $effect(() => () => root.unregister(item));
 </script>
 
 <div

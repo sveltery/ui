@@ -7,6 +7,6 @@
   const root = getCommand();
 </script>
 
-{#if root.view?.count === 0}
+{#if root.count === 0}
   <div {...rest} cmdk-empty="" role="presentation">{@render children?.()}</div>
 {/if}

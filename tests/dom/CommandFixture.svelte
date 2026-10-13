@@ -32,6 +32,9 @@
   export function bound() {
     return { value, search };
   }
+  export function setValue(next: string) {
+    value = next;
+  }
 </script>
 
 <Command.Root
@@ -64,7 +67,7 @@
       Settings
     </Command.Item>
     {#if webItem}
-      <Command.Item data-testid="web" forceMount {onSelect}>Search the web</Command.Item>
+      <Command.Item data-testid="web" forceMount {onSelect}>Search the web for "{search}"</Command.Item>
     {/if}
     <CommandStateProbe />
   </Command.List>
