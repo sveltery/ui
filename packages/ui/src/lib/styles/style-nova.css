@@ -1005,4 +1005,9 @@
   .cn-calendar-caption-label {
     @apply h-6 pr-1 pl-1.5;
   }
+
+  /* MARK: Message Scroller */
+  .cn-message-scroller-content {
+    @apply gap-6;
+  }
 }
