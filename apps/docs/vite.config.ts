@@ -15,6 +15,7 @@ export default defineConfig({
     tailwindcss(),
     sveltekit({
       adapter: adapter(),
+      alias: { $lib: 'src/lib' },
       extensions: ['.svelte', '.md'],
       preprocess: [
         mdsvex({ extensions: ['.md'], smartypants: false, remarkPlugins: [headings], highlight: { highlighter: highlightCodeBlock } }),

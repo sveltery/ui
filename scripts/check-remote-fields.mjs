@@ -33,11 +33,12 @@ try {
     assert.equal(document.querySelector('#empty-text').value, '');
     // Version-scoped native spread-only diagnostic, not positive UI SSR parity.
     assert.equal(document.querySelector('#native-text').value, '');
-    console.log('Kit 2.70.3 native spread-only textarea SSR diagnostic: empty text content (known baseline limitation)');
+    console.log('Kit 3.0.1 native spread-only textarea SSR diagnostic: empty text content (known baseline limitation)');
     const form = document.querySelector('#probe');
+    const nameOf = id => document.getElementById(id).getAttribute('name');
     for (const [id, key, value] of [['native-submit', 'action', 'native'], ['base-submit', 'baseAction', 'base'], ['ui-submit', 'uiAction', 'ui']]) {
       const body = new URLSearchParams(new initialDOM.window.FormData(form, document.getElementById(id)));
-      body.set('nativeText', `HTTP ${value}`); body.set('text', 'HTTP UI\n<&>'); body.set('emptyText', 'HTTP empty');
+      body.set(nameOf('native-text'), `HTTP ${value}`); body.set(nameOf('ui-text'), 'HTTP UI\n<&>'); body.set(nameOf('empty-text'), 'HTTP empty');
       const response = await fetch(new URL(form.getAttribute('action'), origin), { method: 'POST', headers: { Origin: origin, Accept: 'text/html' }, body });
       assert.equal(response.status, 200);
       const returned = new JSDOM(await response.text());
@@ -50,7 +51,7 @@ try {
       } finally { returned.window.close(); }
     }
     const invalidBody = new URLSearchParams(new initialDOM.window.FormData(form, document.querySelector('#ui-submit')));
-    invalidBody.set('nativeText', 'x'); invalidBody.set('text', 'x');
+    invalidBody.set(nameOf('native-text'), 'x'); invalidBody.set(nameOf('ui-text'), 'x');
     const invalidResponse = await fetch(new URL(form.getAttribute('action'), origin), { method: 'POST', headers: { Origin: origin, Accept: 'text/html' }, body: invalidBody });
     assert.equal(invalidResponse.status, 200);
     const invalidDOM = new JSDOM(await invalidResponse.text());

@@ -3,6 +3,8 @@ import { expect, test, type Page } from '@playwright/test';
 test.use({ baseURL: 'http://127.0.0.1:5174' });
 const submitters = [['native-submit', 'action', 'native'], ['base-submit', 'baseAction', 'base'], ['ui-submit', 'uiAction', 'ui']] as const;
 async function json(page: Page, id: string) { return JSON.parse(await page.locator(`#${id}`).innerText()); }
+// Kit 3 suffixes each field name with the form id, as in `text/<hash>/probe`.
+async function formData(page: Page) { return (await json(page, 'form-data') as [string, string][]).map(([name, value]) => [name.split('/')[0], value]); }
 async function hydrated(page: Page) { await page.goto('/'); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true'); }
 async function edit(page: Page, native = 'Edited native', ui = 'Edited UI') {
   for (const [id, value] of [['native-text', native], ['ui-text', ui]]) {
@@ -20,7 +22,7 @@ test('direct field spreads retain defaults until trusted edits synchronize field
   expect(await json(page, 'values')).toEqual({});
   await edit(page); await expect.poll(() => json(page, 'values')).toEqual({ nativeText: 'Edited native', text: 'Edited UI' });
   await page.locator('#ui-submit').click(); await parsed(page, { nativeText: 'Edited native', text: 'Edited UI', emptyText: '', uiAction: 'ui' });
-  expect(await json(page, 'form-data')).toEqual([['nativeText', 'Edited native'], ['text', 'Edited UI'], ['emptyText', ''], ['uiAction', 'ui']]);
+  expect(await formData(page)).toEqual([['nativeText', 'Edited native'], ['text', 'Edited UI'], ['emptyText', ''], ['uiAction', 'ui']]);
   await testInfo.attach('direct-spread-submit', { body: JSON.stringify({ fields: await json(page, 'values'), formData: await json(page, 'form-data'), result: await json(page, 'result') }), contentType: 'application/json' });
 });
 
@@ -77,7 +79,7 @@ test('custom enhancement switches from retain to reset and fresh navigation rest
 for (const [id, field, value] of submitters) test(`${id} forwards submit attrs and clears the previous submitter`, async ({ page }) => {
   await hydrated(page); await page.locator('#mode-retain').click(); await edit(page); await page.locator(`#${id}`).click();
   await parsed(page, { nativeText: 'Edited native', text: 'Edited UI', emptyText: '', [field]: value });
-  expect(await json(page, 'form-data')).toEqual([['nativeText', 'Edited native'], ['text', 'Edited UI'], ['emptyText', ''], [field, value]]);
+  expect(await formData(page)).toEqual([['nativeText', 'Edited native'], ['text', 'Edited UI'], ['emptyText', ''], [field, value]]);
   const next = submitters[(submitters.findIndex(row => row[0] === id) + 1) % submitters.length];
   await page.locator(`#${next[0]}`).click(); await parsed(page, { nativeText: 'Edited native', text: 'Edited UI', emptyText: '', [next[1]]: next[2] });
   expect((await json(page, 'values'))[field]).toBeUndefined();
@@ -108,12 +110,12 @@ test.describe('progressive enhancement with JavaScript disabled', () => {
     await expect(page.locator('#ui-text')).toHaveText('Draft');
     await expect(page.locator('#native-text')).toHaveAttribute('defaultvalue', 'Draft');
     await testInfo.attach('native-spread-ssr', { body: await page.locator('#native-text').evaluate(node => node.outerHTML), contentType: 'text/html' });
-    test.fail(true, 'Kit 2.70.3/Svelte 5.57.1 native spread-only textarea has empty SSR content; separate baseline diagnostic, no UI parity credit.');
+    test.fail(true, 'Kit 3.0.1/Svelte 5.57.1 native spread-only textarea has empty SSR content; separate baseline diagnostic, no UI parity credit.');
     await expect(page.locator('#native-text')).toHaveText('Draft');
   });
 });
 
-test('UI SSR ID, identity and edited text survive hydration before scripts are released', async ({ page }) => {
+test('UI SSR ID and identity survive hydration, and hydration restores the field value as for a native textarea', async ({ page }) => {
   const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
   let release!: () => void; const gate = new Promise<void>(resolve => { release = resolve; });
   await page.route('**/*', async route => { if (route.request().resourceType() === 'script') await gate; await route.continue(); });
@@ -123,16 +125,16 @@ test('UI SSR ID, identity and edited text survive hydration before scripts are r
     const node = await page.locator('#ui-text').elementHandle(); expect(node).not.toBeNull();
     const nativeNode = await page.locator('#native-text').elementHandle(); expect(nativeNode).not.toBeNull();
     await page.locator('#native-text').fill('Native before hydration'); await page.locator('#ui-text').fill('Before hydration');
-    release(); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true'); await expect(page.locator('#ui-text')).toHaveValue('Before hydration');
+    // Kit 3 field spreads carry a `value`, so hydration restores the field value in both textareas, as for a native one.
+    release(); await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true'); await expect(page.locator('#ui-text')).toHaveValue('Draft');
     expect(await node!.evaluate(element => element === document.getElementById('ui-text'))).toBe(true);
     expect(await nativeNode!.evaluate(element => element === document.getElementById('native-text'))).toBe(true);
-    // The pinned spread-only native baseline overwrites its pre-hydration edit.
     await expect(page.locator('#native-text')).toHaveValue('Draft');
     expect(await json(page, 'values')).toEqual({});
     await page.locator('#mode-retain').click(); await page.locator('#ui-submit').click();
-    await parsed(page, { nativeText: 'Draft', text: 'Before hydration', emptyText: '', uiAction: 'ui' });
-    expect(await json(page, 'form-data')).toEqual([['nativeText', 'Draft'], ['text', 'Before hydration'], ['emptyText', ''], ['uiAction', 'ui']]);
-    await expect(page.locator('#ui-text')).toHaveValue('Before hydration'); expect(errors).toEqual([]);
+    await parsed(page, { nativeText: 'Draft', text: 'Draft', emptyText: '', uiAction: 'ui' });
+    expect(await formData(page)).toEqual([['nativeText', 'Draft'], ['text', 'Draft'], ['emptyText', ''], ['uiAction', 'ui']]);
+    await expect(page.locator('#ui-text')).toHaveValue('Draft'); expect(errors).toEqual([]);
   } finally { release(); }
 });
 

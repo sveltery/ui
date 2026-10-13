@@ -7,8 +7,8 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
   },
   "devDependencies": {
-    "@sveltejs/adapter-auto": "7.0.1",
-    "@sveltejs/kit": "2.70.3",
+    "@sveltejs/adapter-auto": "8.0.0",
+    "@sveltejs/kit": "3.0.1",
     "@sveltery/base": "github:sveltery/base#d4e26bfb0635862b894e87f5d74dbce656860a03",
     "@sveltery/ui": "workspace:*",
     "svelte": "5.57.1",

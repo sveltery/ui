@@ -16,9 +16,9 @@
   "devDependencies": {
     "@fontsource-variable/geist": "5.3.0",
     "@fontsource-variable/geist-mono": "5.3.0",
-    "@sveltejs/adapter-auto": "7.0.1",
-    "@sveltejs/adapter-cloudflare": "7.2.9",
-    "@sveltejs/kit": "2.70.3",
+    "@sveltejs/adapter-auto": "8.0.0",
+    "@sveltejs/adapter-cloudflare": "8.0.0",
+    "@sveltejs/kit": "3.0.1",
     "@sveltery/base": "github:sveltery/base#d4e26bfb0635862b894e87f5d74dbce656860a03",
     "mdsvex": "0.12.8",
     "pagefind": "1.5.2",
