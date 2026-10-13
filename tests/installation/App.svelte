@@ -8,6 +8,7 @@
   import { Empty, EmptyTitle } from '@sveltery/ui/empty';
   import { Kbd } from '@sveltery/ui/kbd';
   import { Label } from '@sveltery/ui/label';
+  import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerItem, MessageScrollerProvider, MessageScrollerViewport } from '@sveltery/ui/message-scroller';
   import { Questionnaire, QuestionnaireChoice, QuestionnaireChoices, QuestionnaireItem, QuestionnaireNext, QuestionnaireProgress, QuestionnaireSubmit, QuestionnaireTitle } from '@sveltery/ui/questionnaire';
   import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@sveltery/ui/resizable';
   import { Separator } from '@sveltery/ui/separator';
@@ -24,6 +25,7 @@
 <Empty><EmptyTitle>Nothing</EmptyTitle></Empty>
 <Kbd>K</Kbd>
 <Label for="notes">Notes</Label>
+<MessageScrollerProvider><MessageScroller><MessageScrollerViewport><MessageScrollerContent><MessageScrollerItem messageId="m1" scrollAnchor>Hello</MessageScrollerItem></MessageScrollerContent></MessageScrollerViewport><MessageScrollerButton /></MessageScroller></MessageScrollerProvider>
 <Questionnaire items={[{ name: 'size', choices: [{ value: 'small' }, { value: 'large' }] }, { name: 'color' }]} shortcuts="letters">
   <QuestionnaireProgress />
   <QuestionnaireItem name="size"><QuestionnaireTitle>Size</QuestionnaireTitle><QuestionnaireChoices><QuestionnaireChoice value="small">Small</QuestionnaireChoice><QuestionnaireChoice value="large">Large</QuestionnaireChoice></QuestionnaireChoices></QuestionnaireItem>
