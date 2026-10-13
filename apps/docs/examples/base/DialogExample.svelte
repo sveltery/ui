@@ -10,7 +10,8 @@
     DialogTitle,
     DialogTrigger,
   } from '@sveltery/ui/dialog';
-  import { Label } from '@sveltery/ui/label';
+  import { Field, FieldGroup, FieldLabel } from '@sveltery/ui/field';
+  import { Input } from '@sveltery/ui/input';
 
   let open = $state(false);
   let name = $state('Pedro Duarte');
@@ -32,16 +33,16 @@
           Make changes to your profile here. Click save when you&apos;re done.
         </DialogDescription>
       </DialogHeader>
-      <div class="grid gap-4 py-4">
-        <div class="grid gap-3">
-          <Label for="name">Name</Label>
-          <input id="name" name="name" bind:value={name} class="h-8 rounded-lg border border-border px-2" />
-        </div>
-        <div class="grid gap-3">
-          <Label for="username">Username</Label>
-          <input id="username" name="username" bind:value={username} class="h-8 rounded-lg border border-border px-2" />
-        </div>
-      </div>
+      <FieldGroup class="py-4">
+        <Field>
+          <FieldLabel>Name</FieldLabel>
+          <Input name="name" bind:value={name} />
+        </Field>
+        <Field>
+          <FieldLabel>Username</FieldLabel>
+          <Input name="username" bind:value={username} />
+        </Field>
+      </FieldGroup>
       <DialogFooter>
         <DialogClose class={buttonVariants({ variant: 'outline' })}>Cancel</DialogClose>
         <Button type="submit">Save changes</Button>

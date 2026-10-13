@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
+  import { Field, FieldDescription, FieldLabel } from '@sveltery/ui/field';
   import { NativeSelect, NativeSelectOptGroup, NativeSelectOption } from '@sveltery/ui/native-select';
 </script>
 
@@ -49,6 +50,22 @@
   </Example>
 {/snippet}
 
+{#snippet NativeSelectWithField()}
+  <Example title="With Field">
+    <Field>
+      <FieldLabel id="native-select-country-label">Country</FieldLabel>
+      <NativeSelect aria-labelledby="native-select-country-label">
+        <NativeSelectOption value="">Select a country</NativeSelectOption>
+        <NativeSelectOption value="us">United States</NativeSelectOption>
+        <NativeSelectOption value="uk">United Kingdom</NativeSelectOption>
+        <NativeSelectOption value="ca">Canada</NativeSelectOption>
+        <NativeSelectOption value="au">Australia</NativeSelectOption>
+      </NativeSelect>
+      <FieldDescription>Select your country of residence.</FieldDescription>
+    </Field>
+  </Example>
+{/snippet}
+
 {#snippet NativeSelectDisabled()}
   <Example title="Disabled">
     <NativeSelect disabled>
@@ -75,6 +92,7 @@
   {@render NativeSelectBasic()}
   {@render NativeSelectWithGroups()}
   {@render NativeSelectSizes()}
+  {@render NativeSelectWithField()}
   {@render NativeSelectDisabled()}
   {@render NativeSelectInvalid()}
 </ExampleWrapper>

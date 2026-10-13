@@ -13,7 +13,7 @@ const uiText: ComponentProps<typeof Textarea> = textAttrs;
 const baseSubmit: ComponentProps<typeof BaseButton> = submitAttrs;
 const uiSubmit: ComponentProps<typeof Button> = submitAttrs;
 const result: Input | undefined = current.result?.parsed;
-// @ts-expect-error submit fields require an explicit value in Kit 2.70.3
+// @ts-expect-error submit fields require an explicit value in Kit 3.0.1
 current.fields.action.as('submit');
 // @ts-expect-error a text field cannot use a numeric field type
 current.fields.text.as('number');

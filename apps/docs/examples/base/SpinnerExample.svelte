@@ -4,6 +4,8 @@
   import { Badge } from '@sveltery/ui/badge';
   import { Button, buttonVariants } from '@sveltery/ui/button';
   import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@sveltery/ui/empty';
+  import { Field, FieldLabel } from '@sveltery/ui/field';
+  import { InputGroup, InputGroupAddon, InputGroupInput } from '@sveltery/ui/input-group';
   import { Spinner } from '@sveltery/ui/spinner';
   import { IconPlaceholder } from '@sveltery/ui/icons';
 </script>
@@ -60,6 +62,20 @@
   </Example>
 {/snippet}
 
+{#snippet SpinnerInInputGroup()}
+  <Example title="In Input Group">
+    <Field>
+      <FieldLabel>Input Group</FieldLabel>
+      <InputGroup>
+        <InputGroupInput />
+        <InputGroupAddon>
+          <Spinner />
+        </InputGroupAddon>
+      </InputGroup>
+    </Field>
+  </Example>
+{/snippet}
+
 {#snippet SpinnerInEmpty()}
   <Example title="In Empty State" containerClass="lg:col-span-full">
     <Empty class="min-h-[300px]">
@@ -99,5 +115,6 @@
   {@render SpinnerBasic()}
   {@render SpinnerInButtons()}
   {@render SpinnerInBadges()}
+  {@render SpinnerInInputGroup()}
   {@render SpinnerInEmpty()}
 </ExampleWrapper>

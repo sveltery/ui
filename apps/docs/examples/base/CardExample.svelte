@@ -2,6 +2,8 @@
   import { Button } from '@sveltery/ui/button';
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@sveltery/ui/card';
+  import { Field, FieldGroup, FieldLabel } from '@sveltery/ui/field';
+  import { Input } from '@sveltery/ui/input';
 </script>
 
 <ExampleWrapper>
@@ -82,6 +84,42 @@
       </CardFooter>
     </Card>
   </Example>
+  <Example title="Login">
+    <Card class="mx-auto w-full max-w-sm">
+      <CardHeader>
+        <CardTitle>Login to your account</CardTitle>
+        <CardDescription>Enter your email below to login to your account</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form>
+          <FieldGroup>
+            <Field>
+              <FieldLabel>Email</FieldLabel>
+              <Input type="email" placeholder="m@example.com" required />
+            </Field>
+            <Field>
+              <div class="flex items-center">
+                <FieldLabel>Password</FieldLabel>
+                <!-- svelte-ignore a11y_invalid_attribute -->
+                <a href="#" class="ml-auto inline-block underline-offset-4 hover:underline">Forgot your password?</a>
+              </div>
+              <Input type="password" required />
+            </Field>
+          </FieldGroup>
+        </form>
+      </CardContent>
+      <CardFooter class="flex-col gap-2">
+        <Button type="submit" class="w-full">Login</Button>
+        <Button variant="outline" class="w-full">Login with Google</Button>
+        <div class="mt-4 text-center">
+          Don&apos;t have an account?
+          <!-- svelte-ignore a11y_invalid_attribute -->
+          <a href="#" class="underline underline-offset-4">Sign up</a>
+        </div>
+      </CardFooter>
+    </Card>
+  </Example>
+
   <Example title="Header with Border">
     <Card class="mx-auto w-full max-w-sm">
       <CardHeader class="border-b">

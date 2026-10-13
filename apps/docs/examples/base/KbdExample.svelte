@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
+  import { InputGroup, InputGroupAddon, InputGroupInput } from '@sveltery/ui/input-group';
   import { Kbd, KbdGroup } from '@sveltery/ui/kbd';
   import { IconPlaceholder } from '@sveltery/ui/icons';
 </script>
@@ -105,6 +106,17 @@
   </Example>
 {/snippet}
 
+{#snippet KbdInInputGroup()}
+  <Example title="InputGroup">
+    <InputGroup>
+      <InputGroupInput />
+      <InputGroupAddon>
+        <Kbd>Space</Kbd>
+      </InputGroupAddon>
+    </InputGroup>
+  </Example>
+{/snippet}
+
 {#snippet KbdWithSamp()}
   <Example title="With samp">
     <Kbd>
@@ -120,5 +132,6 @@
   {@render KbdArrowKeys()}
   {@render KbdWithIcons()}
   {@render KbdWithIconsAndText()}
+  {@render KbdInInputGroup()}
   {@render KbdWithSamp()}
 </ExampleWrapper>

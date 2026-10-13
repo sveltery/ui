@@ -11,10 +11,14 @@ const path = (relative: string) => fileURLToPath(new URL(relative, import.meta.u
 
 export default defineConfig({
   server: { fs: { allow: ['content', 'examples'] } },
+  // Examples load through a glob, so the dependency scan has to be pointed at them or a first visit reloads the page.
+  optimizeDeps: { entries: ['examples/**/*.svelte'] },
   plugins: [
     tailwindcss(),
     sveltekit({
       adapter: adapter(),
+      alias: { $lib: 'src/lib' },
+      experimental: { remoteFunctions: true },
       extensions: ['.svelte', '.md'],
       preprocess: [
         mdsvex({ extensions: ['.md'], smartypants: false, remarkPlugins: [headings], highlight: { highlighter: highlightCodeBlock } }),
