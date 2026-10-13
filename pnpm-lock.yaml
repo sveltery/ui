@@ -324,6 +324,12 @@ importers:
         specifier: 4.147.0
         version: 4.147.0(@cloudflare/workers-types@5.20261012.1)(@types/node@26.6.3)
 
+  packages/command:
+    devDependencies:
+      svelte:
+        specifier: 5.57.1
+        version: 5.57.1(@typescript-eslint/types@8.71.0)
+
   packages/day-picker:
     devDependencies:
       '@date-fns/tz':
@@ -372,6 +378,9 @@ importers:
       '@sveltery/base':
         specifier: github:sveltery/base#00f6aad0fedbbb5f6a1ea9549ae0760a32a54dab
         version: https://codeload.github.com/sveltery/base/tar.gz/00f6aad0fedbbb5f6a1ea9549ae0760a32a54dab(@sveltejs/kit@3.0.1(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))(typescript@6.0.3)(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))
+      '@sveltery/command':
+        specifier: workspace:*
+        version: link:../command
       '@sveltery/day-picker':
         specifier: workspace:*
         version: link:../day-picker
@@ -411,6 +420,9 @@ importers:
       '@sveltery/base':
         specifier: github:sveltery/base#00f6aad0fedbbb5f6a1ea9549ae0760a32a54dab
         version: https://codeload.github.com/sveltery/base/tar.gz/00f6aad0fedbbb5f6a1ea9549ae0760a32a54dab(@sveltejs/kit@3.0.1(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))(typescript@6.0.3)(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))
+      '@sveltery/command':
+        specifier: workspace:*
+        version: link:../../packages/command
       '@sveltery/day-picker':
         specifier: workspace:*
         version: link:../../packages/day-picker

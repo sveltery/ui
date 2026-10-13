@@ -19,7 +19,7 @@ registerHooks({
 const { render } = await import('svelte/server');
 const { default: App } = await import('./App.svelte');
 const { body } = render(App);
-for (const slot of ['alert', 'alert-title', 'alert-description', 'alert-action', 'aspect-ratio', 'avatar', 'button', 'card', 'card-header', 'card-title', 'card-content', 'carousel', 'carousel-content', 'carousel-item', 'carousel-previous', 'carousel-next', 'chart', 'dialog-trigger', 'empty', 'empty-title', 'kbd', 'label', 'message-scroller', 'message-scroller-viewport', 'message-scroller-content', 'message-scroller-item', 'message-scroller-button', 'questionnaire', 'questionnaire-progress', 'questionnaire-item', 'questionnaire-title', 'questionnaire-choice', 'questionnaire-next', 'questionnaire-submit', 'resizable-panel-group', 'resizable-panel', 'resizable-handle', 'separator', 'skeleton', 'table-container', 'table', 'table-body', 'table-row', 'table-cell', 'textarea']) {
+for (const slot of ['alert', 'alert-title', 'alert-description', 'alert-action', 'aspect-ratio', 'avatar', 'button', 'card', 'card-header', 'card-title', 'card-content', 'carousel', 'carousel-content', 'carousel-item', 'carousel-previous', 'carousel-next', 'chart', 'command', 'command-input', 'command-list', 'command-group', 'command-item', 'dialog-trigger', 'empty', 'empty-title', 'kbd', 'label', 'message-scroller', 'message-scroller-viewport', 'message-scroller-content', 'message-scroller-item', 'message-scroller-button', 'questionnaire', 'questionnaire-progress', 'questionnaire-item', 'questionnaire-title', 'questionnaire-choice', 'questionnaire-next', 'questionnaire-submit', 'resizable-panel-group', 'resizable-panel', 'resizable-handle', 'separator', 'skeleton', 'table-container', 'table', 'table-body', 'table-row', 'table-cell', 'textarea']) {
   assert(body.includes(`data-slot="${slot}"`), `server markup renders ${slot}`);
 }
 assert.match(body, /data-slot="resizable-panel"[^>]*style="flex: 30 1 0px/, 'percentage default sizes render on the server');
@@ -32,6 +32,10 @@ assert(tag('message-scroller-viewport').includes('role="region"') && tag('messag
 assert(tag('message-scroller-content').includes('role="log"'), 'the content is a log');
 assert(tag('message-scroller-item').includes('data-message-id="m1"') && tag('message-scroller-item').includes('data-scroll-anchor="true"'), 'items carry their id and anchor flag');
 assert(tag('message-scroller-button').includes('inert=""') && tag('message-scroller-button').includes('data-active="false"'), 'the scroll button starts inert');
+assert(tag('command-input').includes('role="combobox"'), 'the command input is a combobox');
+assert(tag('command-list').includes('role="listbox"'), 'the command list is a listbox');
+assert.match(body, /data-slot="command-item"[^>]*data-value="calc"|data-value="calc"[^>]*data-slot="command-item"/, 'command items render their value on the server');
+assert(!body.includes('data-slot="command-empty"'), 'the empty state waits for the client');
 assert(!body.includes('role="dialog"'), 'closed dialog content stays out of server markup');
 assert(body.includes('--color-visits: red;') && body.includes('--color-visits: blue;'), 'chart config renders its color variables on the server');
 assert.match(body, /<textarea[^>]*>Draft<\/textarea>/);
