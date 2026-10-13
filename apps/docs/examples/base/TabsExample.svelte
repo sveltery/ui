@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button } from '@sveltery/ui/button';
+  import { Button, buttonVariants } from '@sveltery/ui/button';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
   import { IconPlaceholder } from '@sveltery/ui/icons';
   import { Input } from '@sveltery/ui/input';
   import { Tabs, TabsContent, TabsList, TabsTrigger } from '@sveltery/ui/tabs';
@@ -186,6 +187,37 @@
   </Example>
 {/snippet}
 
+{#snippet TabsWithDropdown()}
+  <Example title="With Dropdown">
+    <Tabs value="overview">
+      <div class="flex items-center justify-between">
+        <TabsList>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          <TabsTrigger value="reports">Reports</TabsTrigger>
+        </TabsList>
+        <DropdownMenu>
+          <DropdownMenuTrigger class={buttonVariants({ variant: 'ghost', size: 'icon', class: 'size-8' })}>
+            <IconPlaceholder lucide="MoreHorizontalIcon" tabler="IconDots" hugeicons="MoreHorizontalCircle01Icon" phosphor="DotsThreeOutlineIcon" remixicon="RiMoreLine" />
+            <span class="sr-only">More options</span>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem>Settings</DropdownMenuItem>
+            <DropdownMenuItem>Export</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Archive</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+      <div class={panel}>
+        <TabsContent value="overview">View your dashboard metrics and key performance indicators.</TabsContent>
+        <TabsContent value="analytics">Detailed analytics and insights about your data.</TabsContent>
+        <TabsContent value="reports">Generate and view custom reports.</TabsContent>
+      </div>
+    </Tabs>
+  </Example>
+{/snippet}
+
 {#snippet TabsVertical()}
   <Example title="Vertical">
     <Tabs value="account" orientation="vertical">
@@ -242,6 +274,7 @@
   {@render TabsWithContent()}
   {@render TabsLineWithContent()}
   {@render TabsLineDisabled()}
+  {@render TabsWithDropdown()}
   {@render TabsVertical()}
   {@render TabsWithInputAndButton()}
 </ExampleWrapper>

@@ -1,7 +1,12 @@
 <script lang="ts">
+  import type { Snippet } from 'svelte';
+  import type { HTMLAttributes, HTMLButtonAttributes } from 'svelte/elements';
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { Button } from '@sveltery/ui/button';
+  import { ButtonGroup, ButtonGroupText } from '@sveltery/ui/button-group';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
+  import { Field, FieldDescription, FieldGroup, FieldLabel } from '@sveltery/ui/field';
   import { IconPlaceholder } from '@sveltery/ui/icons';
   import { Input } from '@sveltery/ui/input';
   import {
@@ -14,14 +19,31 @@
   } from '@sveltery/ui/input-group';
   import { Kbd, KbdGroup } from '@sveltery/ui/kbd';
   import { Label } from '@sveltery/ui/label';
+  import { Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger } from '@sveltery/ui/popover';
   import { Spinner } from '@sveltery/ui/spinner';
   import { Textarea } from '@sveltery/ui/textarea';
+  import { Tooltip, TooltipContent, TooltipTrigger } from '@sveltery/ui/tooltip';
 
   // Field, FieldGroup and FieldDescription are not ported yet. These stand in for them.
   const field = 'flex w-full flex-col gap-3';
   const group = 'flex w-full flex-col gap-7';
   const description = 'text-sm text-muted-foreground';
+
+  const countries = ['+1', '+44', '+46'];
+  let country = $state('+1');
 </script>
+
+{#snippet tooltipButton(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+  <InputGroupButton {...props as HTMLButtonAttributes} class="rounded-full" size="icon-xs">{@render children?.()}</InputGroupButton>
+{/snippet}
+
+{#snippet countryButton(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+  <InputGroupButton {...props as HTMLButtonAttributes} class="text-muted-foreground tabular-nums">{@render children?.()}</InputGroupButton>
+{/snippet}
+
+{#snippet popoverAddon(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+  <InputGroupAddon {...props as HTMLAttributes<HTMLDivElement>}>{@render children?.()}</InputGroupAddon>
+{/snippet}
 
 {#snippet InputGroupBasic()}
   <Example title="Basic">
@@ -274,6 +296,88 @@
         </InputGroup>
       </div>
     </div>
+  </Example>
+{/snippet}
+
+{#snippet InputGroupWithTooltipDropdownPopover()}
+  <Example title="With Tooltip, Dropdown, Popover">
+    <FieldGroup>
+      <Field>
+        <FieldLabel for="input-tooltip-20">Tooltip</FieldLabel>
+        <InputGroup>
+          <InputGroupInput id="input-tooltip-20" />
+          <InputGroupAddon align="inline-end">
+            <Tooltip>
+              <TooltipTrigger render={tooltipButton}>
+                <IconPlaceholder lucide="InfoIcon" tabler="IconInfoCircle" hugeicons="AlertCircleIcon" phosphor="InfoIcon" remixicon="RiInformationLine" />
+              </TooltipTrigger>
+              <TooltipContent>This is content in a tooltip.</TooltipContent>
+            </Tooltip>
+          </InputGroupAddon>
+        </InputGroup>
+        <FieldDescription>This is a description of the input group.</FieldDescription>
+      </Field>
+      <Field>
+        <FieldLabel for="input-dropdown-21">Dropdown</FieldLabel>
+        <InputGroup>
+          <InputGroupInput id="input-dropdown-21" />
+          <InputGroupAddon>
+            <DropdownMenu>
+              <DropdownMenuTrigger render={countryButton}>
+                {country}
+                <IconPlaceholder lucide="ChevronDownIcon" tabler="IconChevronDown" hugeicons="ArrowDownIcon" phosphor="CaretDownIcon" remixicon="RiArrowDownSLine" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" class="min-w-16" sideOffset={10} alignOffset={-8}>
+                {#each countries as code (code)}
+                  <DropdownMenuItem onclick={() => (country = code)}>{code}</DropdownMenuItem>
+                {/each}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </InputGroupAddon>
+        </InputGroup>
+        <FieldDescription>This is a description of the input group.</FieldDescription>
+      </Field>
+      <Field>
+        <FieldLabel for="input-secure-19">Popover</FieldLabel>
+        <InputGroup>
+          <Popover>
+            <PopoverTrigger render={popoverAddon} nativeButton={false}>
+              <InputGroupButton variant="secondary" size="icon-xs">
+                <IconPlaceholder lucide="InfoIcon" tabler="IconInfoCircle" hugeicons="AlertCircleIcon" phosphor="InfoIcon" remixicon="RiInformationLine" />
+              </InputGroupButton>
+            </PopoverTrigger>
+            <PopoverContent align="start">
+              <PopoverHeader>
+                <PopoverTitle>Your connection is not secure.</PopoverTitle>
+                <PopoverDescription>You should not enter any sensitive information on this site.</PopoverDescription>
+              </PopoverHeader>
+            </PopoverContent>
+          </Popover>
+          <InputGroupAddon class="pl-1 text-muted-foreground">https://</InputGroupAddon>
+          <InputGroupInput id="input-secure-19" />
+          <InputGroupAddon align="inline-end">
+            <InputGroupButton size="icon-xs">
+              <IconPlaceholder lucide="StarIcon" tabler="IconStar" hugeicons="StarIcon" phosphor="StarIcon" remixicon="RiStarLine" />
+            </InputGroupButton>
+          </InputGroupAddon>
+        </InputGroup>
+        <FieldDescription>This is a description of the input group.</FieldDescription>
+      </Field>
+      <Field>
+        <FieldLabel for="url">Button Group</FieldLabel>
+        <ButtonGroup>
+          <ButtonGroupText>https://</ButtonGroupText>
+          <InputGroup>
+            <InputGroupInput id="url" />
+            <InputGroupAddon align="inline-end">
+              <IconPlaceholder lucide="InfoIcon" tabler="IconInfoCircle" hugeicons="AlertCircleIcon" phosphor="InfoIcon" remixicon="RiInformationLine" />
+            </InputGroupAddon>
+          </InputGroup>
+          <ButtonGroupText>.com</ButtonGroupText>
+        </ButtonGroup>
+        <FieldDescription>This is a description of the input group.</FieldDescription>
+      </Field>
+    </FieldGroup>
   </Example>
 {/snippet}
 
@@ -595,6 +699,7 @@
   {@render InputGroupBasic()}
   {@render InputGroupWithAddons()}
   {@render InputGroupWithButtons()}
+  {@render InputGroupWithTooltipDropdownPopover()}
   {@render InputGroupWithKbd()}
   {@render InputGroupInCard()}
   {@render InputGroupTextareaExamples()}

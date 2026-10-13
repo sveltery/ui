@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
   import { IconPlaceholder } from '@sveltery/ui/icons';
   import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from '@sveltery/ui/item';
   import { Label } from '@sveltery/ui/label';
@@ -21,7 +22,8 @@
     SidebarTrigger,
   } from '@sveltery/ui/sidebar';
 
-  const version = '1.0.1';
+  const versions = ['1.0.1', '1.1.0-alpha', '2.0.0-beta1'];
+  let selectedVersion = $state(versions[0]);
   const navMain: { title: string; items: { title: string; isActive?: boolean }[] }[] = [
     {
       title: 'Getting Started',
@@ -42,6 +44,10 @@
   ];
 </script>
 
+{#snippet menuButton(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+  <SidebarMenuButton {...props} size="lg" class="data-open:bg-sidebar-accent data-open:text-sidebar-accent-foreground">{@render children?.()}</SidebarMenuButton>
+{/snippet}
+
 {#snippet link(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
   <!-- svelte-ignore a11y_invalid_attribute -->
   <a href="#" {...props}>{@render children?.()}</a>
@@ -54,17 +60,29 @@
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg">
-              <Item class="p-0" size="xs">
-                <ItemContent>
-                  <ItemTitle class="text-sm">Documentation</ItemTitle>
-                  <ItemDescription>v{version}</ItemDescription>
-                </ItemContent>
-                <ItemActions>
-                  <IconPlaceholder lucide="ChevronsUpDownIcon" tabler="IconSelector" hugeicons="UnfoldMoreIcon" phosphor="CaretUpDownIcon" remixicon="RiArrowUpDownLine" />
-                </ItemActions>
-              </Item>
-            </SidebarMenuButton>
+            <DropdownMenu>
+              <DropdownMenuTrigger render={menuButton}>
+                <Item class="p-0" size="xs">
+                  <ItemContent>
+                    <ItemTitle class="text-sm">Documentation</ItemTitle>
+                    <ItemDescription>v{selectedVersion}</ItemDescription>
+                  </ItemContent>
+                  <ItemActions>
+                    <IconPlaceholder lucide="ChevronsUpDownIcon" tabler="IconSelector" hugeicons="UnfoldMoreIcon" phosphor="CaretUpDownIcon" remixicon="RiArrowUpDownLine" />
+                  </ItemActions>
+                </Item>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {#each versions as version (version)}
+                  <DropdownMenuItem onclick={() => (selectedVersion = version)}>
+                    v{version}
+                    {#if version === selectedVersion}
+                      <IconPlaceholder lucide="CheckIcon" tabler="IconCheck" hugeicons="Tick02Icon" phosphor="CheckIcon" remixicon="RiCheckLine" class="ml-auto" />
+                    {/if}
+                  </DropdownMenuItem>
+                {/each}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </SidebarMenuItem>
         </SidebarMenu>
         <form>

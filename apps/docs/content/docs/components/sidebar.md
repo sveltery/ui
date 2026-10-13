@@ -154,8 +154,6 @@ The sidebar reads the `--sidebar`, `--sidebar-foreground`, `--sidebar-primary`, 
 
 ## Examples
 
-The upstream examples open dropdown menus from the team switcher, the user menu and the floating navigation. Those menus wait for the Menu component, so here the triggers are plain `SidebarMenuButton`s.
-
 ### Floating
 
 `variant="floating"` detaches the sidebar from the edge as a rounded, bordered card with a shadow.

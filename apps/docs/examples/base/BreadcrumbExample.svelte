@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
+  import { buttonVariants } from '@sveltery/ui/button';
   import {
     Breadcrumb,
     BreadcrumbEllipsis,
@@ -9,6 +10,7 @@
     BreadcrumbPage,
     BreadcrumbSeparator,
   } from '@sveltery/ui/breadcrumb';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
 </script>
 
 {#snippet BreadcrumbBasic()}
@@ -17,6 +19,40 @@
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink href="#">Home</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbLink href="#">Components</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
+  </Example>
+{/snippet}
+
+{#snippet BreadcrumbWithDropdown()}
+  <Example title="With Dropdown" class="items-center justify-center">
+    <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink href="#">Home</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <DropdownMenu>
+            <DropdownMenuTrigger class={buttonVariants({ variant: 'ghost', size: 'icon-sm' })}>
+              <BreadcrumbEllipsis />
+              <span class="sr-only">Toggle menu</span>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              <DropdownMenuItem>Documentation</DropdownMenuItem>
+              <DropdownMenuItem>Themes</DropdownMenuItem>
+              <DropdownMenuItem>GitHub</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
@@ -67,5 +103,6 @@
 
 <ExampleWrapper>
   {@render BreadcrumbBasic()}
+  {@render BreadcrumbWithDropdown()}
   {@render BreadcrumbWithLink()}
 </ExampleWrapper>

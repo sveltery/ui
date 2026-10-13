@@ -1,5 +1,8 @@
 <script lang="ts">
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
+  import { buttonVariants } from '@sveltery/ui/button';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
+  import { IconPlaceholder } from '@sveltery/ui/icons';
   import { Input } from '@sveltery/ui/input';
   import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@sveltery/ui/table';
   const invoices = [
@@ -10,6 +13,11 @@
     { invoice: 'INV005', paymentStatus: 'Paid', totalAmount: '$550.00', paymentMethod: 'PayPal' },
     { invoice: 'INV006', paymentStatus: 'Pending', totalAmount: '$200.00', paymentMethod: 'Bank Transfer' },
     { invoice: 'INV007', paymentStatus: 'Unpaid', totalAmount: '$300.00', paymentMethod: 'Credit Card' },
+  ];
+  const products = [
+    { name: 'Wireless Mouse', price: '$29.99' },
+    { name: 'Mechanical Keyboard', price: '$129.99' },
+    { name: 'USB-C Hub', price: '$49.99' },
   ];
 </script>
 
@@ -131,6 +139,39 @@
             <span class="inline-flex items-center rounded-full bg-gray-500/10 px-2 py-1 text-xs font-medium text-gray-700 dark:text-gray-400">Low</span>
           </TableCell>
         </TableRow>
+      </TableBody>
+    </Table>
+  </Example>
+  <Example title="With Actions">
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Product</TableHead>
+          <TableHead>Price</TableHead>
+          <TableHead class="text-right">Actions</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {#each products as product (product.name)}
+          <TableRow>
+            <TableCell class="font-medium">{product.name}</TableCell>
+            <TableCell>{product.price}</TableCell>
+            <TableCell class="text-right">
+              <DropdownMenu>
+                <DropdownMenuTrigger class={buttonVariants({ variant: 'ghost', size: 'icon', class: 'size-8' })}>
+                  <IconPlaceholder lucide="MoreHorizontalIcon" tabler="IconDots" hugeicons="MoreHorizontalCircle01Icon" phosphor="DotsThreeOutlineIcon" remixicon="RiMoreLine" />
+                  <span class="sr-only">Open menu</span>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem>Edit</DropdownMenuItem>
+                  <DropdownMenuItem>Duplicate</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </TableCell>
+          </TableRow>
+        {/each}
       </TableBody>
     </Table>
   </Example>

@@ -2,8 +2,9 @@
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button } from '@sveltery/ui/button';
+  import { Button, buttonVariants } from '@sveltery/ui/button';
   import { ButtonGroup, ButtonGroupText } from '@sveltery/ui/button-group';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
   import { Field, FieldGroup } from '@sveltery/ui/field';
   import { IconPlaceholder } from '@sveltery/ui/icons';
   import { Input } from '@sveltery/ui/input';
@@ -53,6 +54,68 @@
           GPU Size
         </ButtonGroupText>
         <Input id="input-text" placeholder="Type something here..." class="style-luma:border-border" />
+      </ButtonGroup>
+    </div>
+  </Example>
+{/snippet}
+
+{#snippet ButtonGroupWithDropdown()}
+  <Example title="With Dropdown">
+    <div class="flex flex-col gap-4">
+      <ButtonGroup>
+        <Button variant="outline">Update</Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger class={buttonVariants({ variant: 'outline', size: 'icon' })}>
+            <IconPlaceholder lucide="ChevronDownIcon" tabler="IconChevronDown" hugeicons="ArrowDown01Icon" phosphor="CaretDownIcon" remixicon="RiArrowDownSLine" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem>Disable</DropdownMenuItem>
+            <DropdownMenuItem variant="destructive">Uninstall</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </ButtonGroup>
+      <ButtonGroup>
+        <Button variant="outline">Follow</Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger class={buttonVariants({ variant: 'outline', size: 'icon' })}>
+            <IconPlaceholder lucide="ChevronDownIcon" tabler="IconChevronDown" hugeicons="ArrowDown01Icon" phosphor="CaretDownIcon" remixicon="RiArrowDownSLine" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" class="w-50">
+            <DropdownMenuGroup>
+              <DropdownMenuItem>
+                <IconPlaceholder lucide="VolumeX" tabler="IconVolume" hugeicons="VolumeOffIcon" phosphor="SpeakerSlashIcon" remixicon="RiVolumeMuteLine" />
+                Mute Conversation
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <IconPlaceholder lucide="CheckIcon" tabler="IconCheck" hugeicons="Tick02Icon" phosphor="CheckIcon" remixicon="RiCheckLine" />
+                Mark as Read
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <IconPlaceholder lucide="AlertTriangleIcon" tabler="IconAlertTriangle" hugeicons="AlertCircleIcon" phosphor="WarningIcon" remixicon="RiErrorWarningLine" />
+                Report Conversation
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <IconPlaceholder lucide="UserRoundXIcon" tabler="IconUserX" hugeicons="UserRemove01Icon" phosphor="UserMinusIcon" remixicon="RiUserUnfollowLine" />
+                Block User
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <IconPlaceholder lucide="ShareIcon" tabler="IconShare" hugeicons="Share03Icon" phosphor="ShareIcon" remixicon="RiShareLine" />
+                Share Conversation
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <IconPlaceholder lucide="CopyIcon" tabler="IconCopy" hugeicons="Copy01Icon" phosphor="CopyIcon" remixicon="RiFileCopyLine" />
+                Copy Conversation
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem variant="destructive">
+                <IconPlaceholder lucide="TrashIcon" tabler="IconTrash" hugeicons="Delete02Icon" phosphor="TrashIcon" remixicon="RiDeleteBinLine" />
+                Delete Conversation
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </ButtonGroup>
     </div>
   </Example>
@@ -449,6 +512,7 @@
   {@render ButtonGroupBasic()}
   {@render ButtonGroupWithInput()}
   {@render ButtonGroupWithText()}
+  {@render ButtonGroupWithDropdown()}
   {@render ButtonGroupWithIcons()}
   {@render ButtonGroupWithInputGroup()}
   {@render ButtonGroupWithFields()}
