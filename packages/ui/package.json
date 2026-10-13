@@ -274,6 +274,11 @@
       "types": "./dist/message-scroller/index.d.ts",
       "svelte": "./dist/message-scroller/index.js",
       "default": "./dist/message-scroller/index.js"
+    },
+    "./sidebar": {
+      "types": "./dist/sidebar/index.d.ts",
+      "svelte": "./dist/sidebar/index.js",
+      "default": "./dist/sidebar/index.js"
     }
   },
   "svelte": "./dist/index.js",
