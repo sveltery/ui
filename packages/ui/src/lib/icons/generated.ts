@@ -1113,6 +1113,21 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
       },
       "body": "<path d=\"M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8\"/><path d=\"M21 3v5h-5\"/>"
     },
+    "SaveIcon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "class": "lucide lucide-save"
+      },
+      "body": "<path d=\"M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z\"/><path d=\"M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7\"/><path d=\"M7 3v4a1 1 0 0 0 1 1h7\"/>"
+    },
     "SearchIcon": {
       "attributes": {
         "xmlns": "http://www.w3.org/2000/svg",
@@ -1669,6 +1684,21 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
         "class": "tabler-icon tabler-icon-copy"
       },
       "body": "<path d=\"M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z\"/><path d=\"M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1\"/>"
+    },
+    "IconDeviceFloppy": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "stroke": "currentColor",
+        "stroke-width": "2",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "class": "tabler-icon tabler-icon-device-floppy"
+      },
+      "body": "<path d=\"M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2\"/><path d=\"M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\"/><path d=\"M14 4l0 4l-6 0l0 -4\"/>"
     },
     "IconDots": {
       "attributes": {
@@ -2802,6 +2832,18 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
       },
       "body": "<path d=\"M9.57959 6.29516C10.5332 7.65364 11.01 8.33288 11.6564 8.46522C11.8828 8.51159 12.1172 8.51159 12.3436 8.46522C12.99 8.33288 13.4668 7.65364 14.4204 6.29516C15.5752 4.65002 16.1527 3.82745 15.9652 3.15323C15.9002 2.91938 15.7784 2.70324 15.6096 2.52214C15.1229 2 14.0819 2 12 2C9.9181 2 8.87715 2 8.39045 2.52214C8.22164 2.70324 8.09984 2.91938 8.03482 3.15323C7.84734 3.82745 8.42476 4.65003 9.57959 6.29516Z\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M14.4204 17.7048C13.4668 16.3464 12.99 15.6671 12.3436 15.5348C12.1172 15.4884 11.8828 15.4884 11.6564 15.5348C11.01 15.6671 10.5332 16.3464 9.57959 17.7048C8.42475 19.35 7.84734 20.1725 8.03482 20.8468C8.09984 21.0806 8.22164 21.2968 8.39045 21.4779C8.87715 22 9.9181 22 12 22C14.0819 22 15.1229 22 15.6095 21.4779C15.7784 21.2968 15.9002 21.0806 15.9652 20.8468C16.1527 20.1725 15.5752 19.35 14.4204 17.7048Z\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M10 12H14M17.5 12H21M3 12H6.5\" stroke=\"currentColor\" stroke-linecap=\"round\"/>"
     },
+    "FloppyDiskIcon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "none",
+        "color": "currentColor",
+        "stroke-width": "2"
+      },
+      "body": "<path d=\"M8 22V19C8 17.1144 8 16.1716 8.58579 15.5858C9.17157 15 10.1144 15 12 15C13.8856 15 14.8284 15 15.4142 15.5858C16 16.1716 16 17.1144 16 19V22\" stroke=\"currentColor\" stroke-linejoin=\"round\"/><path d=\"M10 7H14\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M3 11.8584C3 7.28199 3 4.99376 4.38674 3.54394C4.43797 3.49038 4.49038 3.43797 4.54394 3.38674C5.99376 2 8.28199 2 12.8584 2C13.943 2 14.4655 2.00376 14.9628 2.18936C15.4417 2.3681 15.8429 2.70239 16.6452 3.37099L18.8411 5.20092C19.9027 6.08561 20.4335 6.52795 20.7168 7.13266C21 7.73737 21 8.42833 21 9.81025V13C21 16.7497 21 18.6246 20.0451 19.9389C19.7367 20.3634 19.3634 20.7367 18.9389 21.0451C17.6246 22 15.7497 22 12 22C8.25027 22 6.3754 22 5.06107 21.0451C4.6366 20.7367 4.26331 20.3634 3.95491 19.9389C3 18.6246 3 16.7497 3 13V11.8584Z\" stroke=\"currentColor\"/>"
+    },
     "Folder01Icon": {
       "attributes": {
         "xmlns": "http://www.w3.org/2000/svg",
@@ -3549,6 +3591,16 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
         "fill": "currentColor"
       },
       "body": "<path d=\"M184,144H168a8,8,0,0,0-8,8v56a8,8,0,0,0,16,0v-8h8a28,28,0,0,0,0-56Zm0,40h-8V160h8a12,12,0,0,1,0,24Zm-48-32v56a8,8,0,0,1-16,0V152a8,8,0,0,1,16,0ZM96,208a8,8,0,0,1-8,8H56a8,8,0,0,1-7-12l25.16-44H56a8,8,0,0,1,0-16H88a8,8,0,0,1,7,12L69.79,200H88A8,8,0,0,1,96,208ZM213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40v72a8,8,0,0,0,16,0V40h88V88a8,8,0,0,0,8,8h48v16a8,8,0,0,0,16,0V88A8,8,0,0,0,213.66,82.34ZM160,80V51.31L188.69,80Z\"/>"
+    },
+    "FloppyDiskIcon": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 256 256",
+        "fill": "currentColor"
+      },
+      "body": "<path d=\"M219.31,72,184,36.69A15.86,15.86,0,0,0,172.69,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V83.31A15.86,15.86,0,0,0,219.31,72ZM168,208H88V152h80Zm40,0H184V152a16,16,0,0,0-16-16H88a16,16,0,0,0-16,16v56H48V48H172.69L208,83.31ZM160,72a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h56A8,8,0,0,1,160,72Z\"/>"
     },
     "FolderIcon": {
       "attributes": {
@@ -4338,6 +4390,17 @@ export const icons: Record<IconLibraryName, Record<string, IconData>> = {
         "class": "remixicon"
       },
       "body": "<path d=\"M5.46257 4.43262C7.21556 2.91688 9.5007 2 12 2C17.5228 2 22 6.47715 22 12C22 14.1361 21.3302 16.1158 20.1892 17.7406L17 12H20C20 7.58172 16.4183 4 12 4C9.84982 4 7.89777 4.84827 6.46023 6.22842L5.46257 4.43262ZM18.5374 19.5674C16.7844 21.0831 14.4993 22 12 22C6.47715 22 2 17.5228 2 12C2 9.86386 2.66979 7.88416 3.8108 6.25944L7 12H4C4 16.4183 7.58172 20 12 20C14.1502 20 16.1022 19.1517 17.5398 17.7716L18.5374 19.5674Z\"/>"
+    },
+    "RiSaveLine": {
+      "attributes": {
+        "xmlns": "http://www.w3.org/2000/svg",
+        "width": "24",
+        "height": "24",
+        "viewBox": "0 0 24 24",
+        "fill": "currentColor",
+        "class": "remixicon"
+      },
+      "body": "<path d=\"M7 19V13H17V19H19V7.82843L16.1716 5H5V19H7ZM4 3H17L21 7V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V4C3 3.44772 3.44772 3 4 3ZM9 15V19H15V15H9Z\"/>"
     },
     "RiSearchLine": {
       "attributes": {

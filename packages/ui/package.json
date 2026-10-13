@@ -259,6 +259,16 @@
       "types": "./dist/resizable/index.d.ts",
       "svelte": "./dist/resizable/index.js",
       "default": "./dist/resizable/index.js"
+    },
+    "./tooltip": {
+      "types": "./dist/tooltip/index.d.ts",
+      "svelte": "./dist/tooltip/index.js",
+      "default": "./dist/tooltip/index.js"
+    },
+    "./hover-card": {
+      "types": "./dist/hover-card/index.d.ts",
+      "svelte": "./dist/hover-card/index.js",
+      "default": "./dist/hover-card/index.js"
     }
   },
   "svelte": "./dist/index.js",
@@ -288,7 +298,7 @@
     "cn": "0.2.2"
   },
   "devDependencies": {
-    "@sveltery/base": "github:sveltery/base#d4e26bfb0635862b894e87f5d74dbce656860a03",
+    "@sveltery/base": "github:sveltery/base#e9262a470b99bd1d9090771bae0e50bbd6462c81",
     "@sveltery/day-picker": "workspace:*",
     "@sveltery/resizable": "workspace:*",
     "date-fns": "4.4.0",
