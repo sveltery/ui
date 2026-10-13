@@ -22,6 +22,8 @@
   const file = $derived(block.files.find((entry) => entry.target === activeFile));
   const height = $derived(block.iframeHeight ?? '930px');
 
+  const treeItemClass = 'rounded-none pl-(--index) whitespace-nowrap hover:bg-muted-foreground/15 focus:bg-muted-foreground/15 focus-visible:bg-muted-foreground/15 active:bg-muted-foreground/15 data-[active=true]:bg-muted-foreground/15';
+
   function resize(value: string[]) {
     view = 'preview';
     if (value[0]) panel?.resize(value[0]);
@@ -42,17 +44,16 @@
 {/snippet}
 
 {#snippet tree(item: FileTree, index: number)}
-  {@const itemClass = 'rounded-none pl-(--index) whitespace-nowrap hover:bg-muted-foreground/15 focus:bg-muted-foreground/15 focus-visible:bg-muted-foreground/15 active:bg-muted-foreground/15 data-[active=true]:bg-muted-foreground/15'}
   <SidebarMenuItem>
     {#if !item.children}
-      <SidebarMenuButton isActive={item.path === activeFile} onclick={() => (selectedFile = item.path)} class={itemClass} data-index={index} style="--index: {index * (index === 2 ? 1.2 : 1.3)}rem">
+      <SidebarMenuButton isActive={item.path === activeFile} onclick={() => (selectedFile = item.path)} class={treeItemClass} data-index={index} style="--index: {index * (index === 2 ? 1.2 : 1.3)}rem">
         {@render icon('<path d="m9 18 6-6-6-6" />', 'invisible')}
         {@render icon('<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /><path d="M14 2v4a2 2 0 0 0 2 2h4" />', 'h-4 w-4')}
         {item.name}
       </SidebarMenuButton>
     {:else}
       <Collapsible class="group/collapsible [&[data-open]>button>svg:first-child]:rotate-90" open>
-        <CollapsibleTrigger render={folderTrigger} class={itemClass} style="--index: {index * (index === 1 ? 1 : 1.2)}rem">
+        <CollapsibleTrigger render={folderTrigger} class={treeItemClass} style="--index: {index * (index === 1 ? 1 : 1.2)}rem">
           {@render icon('<path d="m9 18 6-6-6-6" />', 'transition-transform')}
           {@render icon('<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />')}
           {item.name}
