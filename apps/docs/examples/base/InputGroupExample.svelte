@@ -20,6 +20,7 @@
   import { Kbd, KbdGroup } from '@sveltery/ui/kbd';
   import { Label } from '@sveltery/ui/label';
   import { Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger } from '@sveltery/ui/popover';
+  import { toast } from '@sveltery/ui/sonner';
   import { Spinner } from '@sveltery/ui/spinner';
   import { Textarea } from '@sveltery/ui/textarea';
   import { Tooltip, TooltipContent, TooltipTrigger } from '@sveltery/ui/tooltip';
@@ -356,7 +357,7 @@
           <InputGroupAddon class="pl-1 text-muted-foreground">https://</InputGroupAddon>
           <InputGroupInput id="input-secure-19" />
           <InputGroupAddon align="inline-end">
-            <InputGroupButton size="icon-xs">
+            <InputGroupButton size="icon-xs" onclick={() => toast('Added to favorites')}>
               <IconPlaceholder lucide="StarIcon" tabler="IconStar" hugeicons="StarIcon" phosphor="StarIcon" remixicon="RiStarLine" />
             </InputGroupButton>
           </InputGroupAddon>

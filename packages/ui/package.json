@@ -314,6 +314,11 @@
       "types": "./dist/navigation-menu/index.d.ts",
       "svelte": "./dist/navigation-menu/index.js",
       "default": "./dist/navigation-menu/index.js"
+    },
+    "./sonner": {
+      "types": "./dist/sonner/index.d.ts",
+      "svelte": "./dist/sonner/index.js",
+      "default": "./dist/sonner/index.js"
     }
   },
   "svelte": "./dist/index.js",
