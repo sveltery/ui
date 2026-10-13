@@ -20,7 +20,7 @@ it('renders the root and a viewport that holds the content', async () => {
   expect(viewport.parentElement).toBe(root);
   expect(viewport.className).toBe('cn-scroll-area-viewport size-full rounded-[inherit] transition-[color,box-shadow] outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 base-ui-disable-scrollbar');
   expect(viewport.querySelector('h4')!.textContent).toBe('Tags');
-  expect(viewport.getAttribute('role')).toBe('presentation');
+  expect(viewport.hasAttribute('role')).toBe(false);
 });
 
 it('the horizontal ScrollBar carries its orientation, classes and a thumb', async () => {
