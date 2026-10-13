@@ -50,4 +50,5 @@ export * from './resizable/index.js';
 export * from './tooltip/index.js';
 export * from './hover-card/index.js';
 export * from './message-scroller/index.js';
+export * from './questionnaire/index.js';
 export * from './sidebar/index.js';
