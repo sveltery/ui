@@ -412,7 +412,7 @@ Turn off the label or the indicator with `hideLabel` and `hideIndicator`. Change
 </BarChart>
 ```
 
-Hover the charts in the [Tooltip](#tooltip-1) examples to compare the options.
+Hover the charts in the [tooltip](#tooltip-examples) examples to compare the options.
 
 ### Props
 
