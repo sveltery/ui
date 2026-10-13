@@ -54,3 +54,4 @@ export * from './questionnaire/index.js';
 export * from './sidebar/index.js';
 export * from './drawer/index.js';
 export * from './carousel/index.js';
+export * from './dropdown-menu/index.js';

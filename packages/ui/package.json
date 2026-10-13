@@ -299,6 +299,11 @@
       "types": "./dist/carousel/index.d.ts",
       "svelte": "./dist/carousel/index.js",
       "default": "./dist/carousel/index.js"
+    },
+    "./dropdown-menu": {
+      "types": "./dist/dropdown-menu/index.d.ts",
+      "svelte": "./dist/dropdown-menu/index.js",
+      "default": "./dist/dropdown-menu/index.js"
     }
   },
   "svelte": "./dist/index.js",
