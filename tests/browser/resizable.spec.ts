@@ -171,3 +171,38 @@ test('a saved layout survives a reload', async ({ page }) => {
   await expectSize(page, 'right', 299.5);
   await expect(page.locator('#persisted-handle')).toHaveAttribute('aria-valuenow', '63');
 });
+
+test('a collapsedThreshold sets how far past the minimum a panel moves before it collapses', async ({ page }) => {
+  await open(page);
+  const unit = (await measure(page, 'drawer')) / 30;
+  await drag(page, 'threshold-handle', -unit * 9);
+  await expectSize(page, 'drawer', unit * 25);
+  await drag(page, 'threshold-handle', -unit * 6);
+  await expectSize(page, 'drawer', 0);
+  await expect(page.locator('#drawer')).toHaveAttribute('data-collapsed', '');
+});
+
+test('double-clicking a handle resets the panel beside it to its default size', async ({ page }) => {
+  await open(page);
+  const unit = (await measure(page, 'drawer')) / 30;
+  await drag(page, 'threshold-handle', unit * 10);
+  await expectSize(page, 'drawer', unit * 40);
+  await page.locator('#threshold-handle').dblclick();
+  await expectSize(page, 'drawer', unit * 30);
+  await expect(page.locator('#threshold-handle')).toHaveAttribute('aria-valuenow', '30');
+  await drag(page, 'threshold-second-handle', unit * 10);
+  await page.locator('#threshold-second-handle').dblclick();
+  await expectSize(page, 'aside', unit * 20);
+});
+
+test('F6 moves focus to the next handle in the group and Shift+F6 to the previous one', async ({ page }) => {
+  await open(page);
+  await page.locator('#threshold-handle').focus();
+  await page.keyboard.press('F6');
+  await expect(page.locator('#threshold-second-handle')).toBeFocused();
+  await page.keyboard.press('F6');
+  await expect(page.locator('#threshold-handle')).toBeFocused();
+  await page.keyboard.press('Shift+F6');
+  await expect(page.locator('#threshold-second-handle')).toBeFocused();
+  await expect(page.locator('#drawer')).not.toHaveAttribute('data-collapsed', '');
+});

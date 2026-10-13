@@ -1,4 +1,6 @@
 <script lang="ts">
+  import type { Snippet } from 'svelte';
+  import type { HTMLAttributes } from 'svelte/elements';
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { Button } from '@sveltery/ui/button';
   import { ButtonGroup, ButtonGroupText } from '@sveltery/ui/button-group';
@@ -7,6 +9,7 @@
   import { Input } from '@sveltery/ui/input';
   import { InputGroup, InputGroupAddon, InputGroupInput } from '@sveltery/ui/input-group';
   import { Label } from '@sveltery/ui/label';
+  import { Tooltip, TooltipContent, TooltipTrigger } from '@sveltery/ui/tooltip';
 </script>
 
 {#snippet ButtonGroupBasic()}
@@ -164,6 +167,33 @@
           <span {...props}>1.2K</span>
         {/snippet}
       </Button>
+    </ButtonGroup>
+  </Example>
+{/snippet}
+
+{#snippet voiceAddon(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+  <InputGroupAddon align="inline-end" {...props as HTMLAttributes<HTMLDivElement>}>{@render children?.()}</InputGroupAddon>
+{/snippet}
+
+{#snippet ButtonGroupNested()}
+  <Example title="Nested">
+    <ButtonGroup>
+      <ButtonGroup>
+        <Button variant="outline" size="icon">
+          <IconPlaceholder lucide="PlusIcon" tabler="IconPlus" hugeicons="PlusSignIcon" phosphor="PlusIcon" remixicon="RiAddLine" />
+        </Button>
+      </ButtonGroup>
+      <ButtonGroup>
+        <InputGroup>
+          <InputGroupInput placeholder="Send a message..." />
+          <Tooltip>
+            <TooltipTrigger render={voiceAddon}>
+              <IconPlaceholder lucide="AudioLinesIcon" tabler="IconHeadphones" hugeicons="AudioWave01Icon" phosphor="MicrophoneIcon" remixicon="RiMicLine" />
+            </TooltipTrigger>
+            <TooltipContent>Voice Mode</TooltipContent>
+          </Tooltip>
+        </InputGroup>
+      </ButtonGroup>
     </ButtonGroup>
   </Example>
 {/snippet}
@@ -423,6 +453,7 @@
   {@render ButtonGroupWithInputGroup()}
   {@render ButtonGroupWithFields()}
   {@render ButtonGroupWithLike()}
+  {@render ButtonGroupNested()}
   {@render ButtonGroupPagination()}
   {@render ButtonGroupPaginationSplit()}
   {@render ButtonGroupNavigation()}

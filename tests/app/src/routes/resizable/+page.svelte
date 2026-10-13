@@ -33,6 +33,16 @@
   </ResizablePanelGroup>
 </div>
 
+<div id="threshold" style="width: 800px; height: 100px">
+  <ResizablePanelGroup>
+    <ResizablePanel id="drawer" defaultSize="30%" minSize="25%" collapsible collapsedThreshold="5%">Drawer</ResizablePanel>
+    <ResizableHandle id="threshold-handle" />
+    <ResizablePanel id="page" defaultSize="40%">Page</ResizablePanel>
+    <ResizableHandle id="threshold-second-handle" disableDoubleClick />
+    <ResizablePanel id="aside" defaultSize="30%">Aside</ResizablePanel>
+  </ResizablePanelGroup>
+</div>
+
 <div id="nested" style="width: 800px; height: 300px">
   <ResizablePanelGroup>
     <ResizablePanel id="outer-left" defaultSize="50%">Left</ResizablePanel>

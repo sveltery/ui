@@ -152,7 +152,7 @@ The server renders the default sizes, and the browser applies the saved ones whe
 
 ## Collapsible panels
 
-A collapsible panel snaps to `collapsedSize` when it is dragged below half way between `collapsedSize` and `minSize`, and snaps back to `minSize` when it is dragged above that. Press Enter on the handle to collapse the panel before it, and press Enter again to restore its last size. `data-collapsed` marks a collapsed panel for styling.
+A collapsible panel snaps to `collapsedSize` when it is dragged below half way between `collapsedSize` and `minSize`, and snaps back to `minSize` when it is dragged above that. Set `collapsedThreshold` to choose that distance instead: with `collapsedSize="5%"`, `collapsedThreshold="5%"` and `minSize="25%"`, the panel collapses below 20% and expands above 10%. Press Enter on the handle to collapse the panel before it, and press Enter again to restore its last size. `data-collapsed` marks a collapsed panel for styling.
 
 ```svelte
 <ResizablePanelGroup>
@@ -190,6 +190,9 @@ A handle is a focusable window splitter. It follows the WAI-ARIA pattern and rep
 | Arrow Up, Arrow Down | Move a horizontal handle by 5 percent in a vertical group |
 | Home, End | Move the handle as far as the panels allow |
 | Enter | Collapse or expand the panel before the handle, when it is collapsible |
+| F6, Shift+F6 | Move focus to the next or previous handle in the group |
+
+Double-click a handle to reset the first panel beside it that has a `defaultSize` to that size. Set `disableDoubleClick` on the handle to turn this off.
 
 ## RTL
 
@@ -229,6 +232,7 @@ A horizontal group follows the text direction. In a right-to-left page the first
 | `maxSize` | `number \| string` | `100%` | The largest size |
 | `collapsible` | `boolean` | `false` | Lets the panel collapse to `collapsedSize` |
 | `collapsedSize` | `number \| string` | `0` | The size when collapsed |
+| `collapsedThreshold` | `number \| string` | half way | How far past `minSize` the panel moves before it collapses, and past `collapsedSize` before it expands |
 | `onResize` | `(size, id, previous) => void` | | Runs when the panel size changes. A size is `{ asPercentage, inPixels }` |
 | `class` | `string` | | Added to the panel |
 
@@ -248,6 +252,7 @@ A panel bound with `bind:this` has these methods.
 | --- | --- | --- | --- |
 | `withHandle` | `boolean` | `false` | Shows a grip in the handle |
 | `disabled` | `boolean` | `false` | Turns off resizing for this handle |
+| `disableDoubleClick` | `boolean` | `false` | Stops a double click from resetting the panel beside the handle to its default size |
 | `class` | `string` | | Added to the handle |
 
 `ResizablePanelGroup`, `ResizablePanel` and `ResizableHandle` pass every other attribute to their `div`.
