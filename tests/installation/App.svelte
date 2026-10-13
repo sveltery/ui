@@ -5,6 +5,7 @@
   import { Button } from '@sveltery/ui/button';
   import { Card, CardContent, CardHeader, CardTitle } from '@sveltery/ui/card';
   import { ChartContainer } from '@sveltery/ui/chart';
+  import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@sveltery/ui/command';
   import { Dialog, DialogContent, DialogTrigger } from '@sveltery/ui/dialog';
   import { Empty, EmptyTitle } from '@sveltery/ui/empty';
   import { Kbd } from '@sveltery/ui/kbd';
@@ -23,6 +24,7 @@
 <Button>Save</Button>
 <Card><CardHeader><CardTitle>Card</CardTitle></CardHeader><CardContent>Body</CardContent></Card>
 <ChartContainer config={{ visits: { label: 'Visits', theme: { light: 'red', dark: 'blue' } } }}>Chart</ChartContainer>
+<Command><CommandInput placeholder="Search" /><CommandList><CommandEmpty>No results.</CommandEmpty><CommandGroup heading="Suggestions"><CommandItem>Calendar</CommandItem><CommandItem value="calc">Calculator</CommandItem></CommandGroup></CommandList></Command>
 <Dialog><DialogTrigger>Open</DialogTrigger><DialogContent>Content</DialogContent></Dialog>
 <Empty><EmptyTitle>Nothing</EmptyTitle></Empty>
 <Kbd>K</Kbd>
