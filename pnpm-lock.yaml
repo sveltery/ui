@@ -327,6 +327,12 @@ importers:
         specifier: 5.57.1
         version: 5.57.1(@typescript-eslint/types@8.71.0)
 
+  packages/questionnaire:
+    devDependencies:
+      svelte:
+        specifier: 5.57.1
+        version: 5.57.1(@typescript-eslint/types@8.71.0)
+
   packages/resizable:
     devDependencies:
       svelte:
@@ -351,6 +357,9 @@ importers:
       '@sveltery/message-scroller':
         specifier: workspace:*
         version: link:../message-scroller
+      '@sveltery/questionnaire':
+        specifier: workspace:*
+        version: link:../questionnaire
       '@sveltery/resizable':
         specifier: workspace:*
         version: link:../resizable
@@ -384,6 +393,9 @@ importers:
       '@sveltery/message-scroller':
         specifier: workspace:*
         version: link:../../packages/message-scroller
+      '@sveltery/questionnaire':
+        specifier: workspace:*
+        version: link:../../packages/questionnaire
       '@sveltery/resizable':
         specifier: workspace:*
         version: link:../../packages/resizable

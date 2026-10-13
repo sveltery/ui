@@ -274,17 +274,23 @@
       "types": "./dist/message-scroller/index.d.ts",
       "svelte": "./dist/message-scroller/index.js",
       "default": "./dist/message-scroller/index.js"
+    },
+    "./questionnaire": {
+      "types": "./dist/questionnaire/index.d.ts",
+      "svelte": "./dist/questionnaire/index.js",
+      "default": "./dist/questionnaire/index.js"
     }
   },
   "svelte": "./dist/index.js",
   "scripts": {
-    "build": "pnpm --filter @sveltery/resizable --filter @sveltery/message-scroller build && svelte-package",
+    "build": "pnpm --filter @sveltery/resizable --filter @sveltery/message-scroller --filter @sveltery/questionnaire build && svelte-package",
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "peerDependencies": {
     "@sveltery/base": "*",
     "@sveltery/day-picker": "*",
     "@sveltery/message-scroller": "*",
+    "@sveltery/questionnaire": "*",
     "@sveltery/resizable": "*",
     "date-fns": "^4.4.0",
     "svelte": "^5.57.1",
@@ -307,6 +313,7 @@
     "@sveltery/base": "github:sveltery/base#e9262a470b99bd1d9090771bae0e50bbd6462c81",
     "@sveltery/day-picker": "workspace:*",
     "@sveltery/message-scroller": "workspace:*",
+    "@sveltery/questionnaire": "workspace:*",
     "@sveltery/resizable": "workspace:*",
     "date-fns": "4.4.0",
     "svelte": "5.57.1",

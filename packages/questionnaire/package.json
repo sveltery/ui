@@ -1,0 +1,30 @@
+{
+  "name": "@sveltery/questionnaire",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "svelte": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "svelte": "./dist/index.js",
+  "scripts": {
+    "build": "svelte-package",
+    "check": "svelte-check --tsconfig ./tsconfig.json"
+  },
+  "peerDependencies": {
+    "svelte": "^5.57.1"
+  },
+  "devDependencies": {
+    "svelte": "5.57.1"
+  }
+}
