@@ -1,0 +1,86 @@
+---
+title: Date Picker
+description: A date picker component with range and presets.
+---
+
+<ComponentPreview name="base/DatePickerExample" />
+
+## Installation
+
+The Date Picker is built from the [Popover](/docs/components/popover#installation) and [Calendar](/docs/components/calendar#installation) components. Install both.
+
+## Usage
+
+```svelte
+<script lang="ts">
+  import { format } from 'date-fns';
+  import { buttonVariants } from '$lib/components/ui/button';
+  import { Calendar } from '$lib/components/ui/calendar';
+  import { Popover, PopoverContent, PopoverTrigger } from '$lib/components/ui/popover';
+
+  let date = $state<Date | undefined>();
+</script>
+
+<Popover>
+  <PopoverTrigger data-empty={!date} class={buttonVariants({ variant: 'outline', class: 'w-[212px] justify-start text-left font-normal data-[empty=true]:text-muted-foreground' })}>
+    {date ? format(date, 'PPP') : 'Pick a date'}
+  </PopoverTrigger>
+  <PopoverContent class="w-auto p-0">
+    <Calendar mode="single" bind:selected={date} />
+  </PopoverContent>
+</Popover>
+```
+
+## Composition
+
+There is no `DatePicker` root component. A date picker is a `Popover` with a `Calendar` inside:
+
+```text
+Popover
+├── PopoverTrigger
+└── PopoverContent
+    └── Calendar
+```
+
+To close the popover once a day is picked, bind its `open` and set it to `false` in the calendar's `onSelect`:
+
+```svelte
+<Popover bind:open>
+  …
+  <Calendar mode="single" bind:selected={date} onSelect={() => (open = false)} />
+</Popover>
+```
+
+## Range Picker
+
+Use `mode="range"` and two months. The trigger shows `from` and `to`.
+
+## With Presets
+
+Put buttons under the calendar that set `selected` and `month`. `fixedWeeks` keeps the popover the same height in every month.
+
+## Date of Birth
+
+`captionLayout="dropdown"` adds month and year dropdowns, so a date far in the past is a few clicks away.
+
+## Time Picker
+
+A native time input sits next to the date picker. Combine the two values when you submit.
+
+## In a Form
+
+A `Field` submits the value of the control it holds. Put a hidden input in the field with the date as `yyyy-MM-dd`, and pass `validate` to the field to require a date. `FieldError` shows the message after a submit.
+
+```svelte
+<Form onFormSubmit={save}>
+  <Field name="booking" validate={(value) => (value ? null : 'Pick a booking date.')}>
+    <FieldLabel>Booking date</FieldLabel>
+    <Popover bind:open>
+      …
+    </Popover>
+    <Input type="hidden" value={date ? format(date, 'yyyy-MM-dd') : ''} />
+    <FieldError />
+  </Field>
+  <Button type="submit">Book</Button>
+</Form>
+```
