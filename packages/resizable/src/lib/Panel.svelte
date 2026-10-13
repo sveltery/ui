@@ -33,6 +33,6 @@
   export function isCollapsed(): boolean { return group.collapsedAt(panel.index); }
 </script>
 
-<div {...rest} {id} data-panel data-collapsed={panel.collapsed || undefined} style="flex:{panel.size} 1 0px;overflow:hidden;{style ?? ''}" {@attach panel.attach}>
+<div {...rest} {id} data-panel="" data-collapsed={panel.collapsed ? '' : undefined} style="flex:{panel.size} 1 0px;overflow:hidden;{style ?? ''}" {@attach panel.attach}>
   {@render children?.()}
 </div>

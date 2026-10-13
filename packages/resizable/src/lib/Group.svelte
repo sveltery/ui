@@ -31,7 +31,7 @@
 
 <div
   {...rest}
-  data-group
+  data-group=""
   style="display:flex;flex-direction:{orientation === 'horizontal' ? 'row' : 'column'};flex-wrap:nowrap;overflow:hidden;height:100%;width:100%;{style ?? ''}"
   {@attach group.attach}
 >
