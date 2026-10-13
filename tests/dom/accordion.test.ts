@@ -72,10 +72,10 @@ it('bind:value round-trips from the owner', async () => {
   expect(panel('First content')).toBeDefined();
 });
 
-it('a disabled item ignores clicks and is marked aria-disabled', async () => {
+it('a disabled item ignores clicks and its trigger is a disabled button', async () => {
   const { trigger, fixture } = await setup();
   const third = trigger('Third');
-  expect(third.getAttribute('aria-disabled')).toBe('true');
+  expect(third.disabled).toBe(true);
   third.click();
   await tick();
   expect(fixture.read()).toEqual([]);
