@@ -1,6 +1,7 @@
 import { afterEach, expect, it } from 'vitest';
 import { flushSync, mount, tick, unmount } from 'svelte';
 import FieldForm from './FieldForm.svelte';
+import FieldCardFixture from './FieldCardFixture.svelte';
 
 type Fixture = { setErrors(next: Record<string, string>): void };
 let instance: ReturnType<typeof mount> | undefined;
@@ -83,4 +84,16 @@ it('FormError shows the errors no field claims, and FieldError the field ones', 
   expect(formError.className).toBe('cn-field-error font-normal [&>ul]:ml-4 [&>ul]:flex [&>ul]:list-disc [&>ul]:flex-col [&>ul]:gap-1');
   expect(formError.textContent).toBe('Signups are closed');
   expect(field('Email').querySelector('[data-slot=field-error]')!.textContent).toBe('Email already taken');
+});
+
+it('a label card outside a Field toggles its checkbox, and a set description needs no Field', async () => {
+  instance = mount(FieldCardFixture, { target: document.body });
+  flushSync();
+  const descriptions = [...document.querySelectorAll<HTMLElement>('[data-slot=field-description]')];
+  expect(descriptions.map(node => [node.localName, node.textContent])).toEqual([['p', 'Choose what we email you.'], ['p', 'Once a month.']]);
+  const checkbox = document.querySelector<HTMLElement>('[role=checkbox]')!;
+  expect(checkbox.getAttribute('aria-checked')).toBe('false');
+  document.querySelector<HTMLElement>('[data-slot=field-label]:not([class*=cn-field-title])')!.querySelector<HTMLElement>('.cn-field-title')!.click();
+  await tick(); flushSync();
+  expect(checkbox.getAttribute('aria-checked')).toBe('true');
 });
