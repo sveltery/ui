@@ -8,6 +8,7 @@
   import { Empty, EmptyTitle } from '@sveltery/ui/empty';
   import { Kbd } from '@sveltery/ui/kbd';
   import { Label } from '@sveltery/ui/label';
+  import { Questionnaire, QuestionnaireChoice, QuestionnaireChoices, QuestionnaireItem, QuestionnaireNext, QuestionnaireProgress, QuestionnaireSubmit, QuestionnaireTitle } from '@sveltery/ui/questionnaire';
   import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@sveltery/ui/resizable';
   import { Separator } from '@sveltery/ui/separator';
   import { Skeleton } from '@sveltery/ui/skeleton';
@@ -23,6 +24,12 @@
 <Empty><EmptyTitle>Nothing</EmptyTitle></Empty>
 <Kbd>K</Kbd>
 <Label for="notes">Notes</Label>
+<Questionnaire items={[{ name: 'size', choices: [{ value: 'small' }, { value: 'large' }] }, { name: 'color' }]} shortcuts="letters">
+  <QuestionnaireProgress />
+  <QuestionnaireItem name="size"><QuestionnaireTitle>Size</QuestionnaireTitle><QuestionnaireChoices><QuestionnaireChoice value="small">Small</QuestionnaireChoice><QuestionnaireChoice value="large">Large</QuestionnaireChoice></QuestionnaireChoices></QuestionnaireItem>
+  <QuestionnaireItem name="color"><QuestionnaireTitle>Color</QuestionnaireTitle></QuestionnaireItem>
+  <QuestionnaireNext /><QuestionnaireSubmit />
+</Questionnaire>
 <ResizablePanelGroup><ResizablePanel defaultSize="30%">One</ResizablePanel><ResizableHandle withHandle /><ResizablePanel>Two</ResizablePanel></ResizablePanelGroup>
 <Separator />
 <Skeleton />
