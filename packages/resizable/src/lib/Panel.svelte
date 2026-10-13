@@ -6,10 +6,10 @@
   import type { SizeInput } from './units.js';
 
   const generatedId = $props.id();
-  let { id = generatedId, defaultSize, minSize, maxSize, collapsible, collapsedSize, onResize, children, style, ...rest }: PanelProps = $props();
+  let { id = generatedId, defaultSize, minSize, maxSize, collapsible, collapsedSize, collapsedThreshold, onResize, children, style, ...rest }: PanelProps = $props();
 
   const group = getGroup();
-  const panel = new PanelEntry(group, () => ({ id, defaultSize, minSize, maxSize, collapsible, collapsedSize }));
+  const panel = new PanelEntry(group, () => ({ id, defaultSize, minSize, maxSize, collapsible, collapsedSize, collapsedThreshold }));
   group.register(panel);
   $effect(() => () => group.unregister(panel));
 
