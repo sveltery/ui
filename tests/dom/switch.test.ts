@@ -102,11 +102,12 @@ it('a read-only switch keeps its state', () => {
   expect(submitted().map(([name]) => name)).toContain('locked');
 });
 
-it.fails('reset returns the switches to their initial state (Base does not handle form reset yet)', () => {
+it('reset returns the switches to their initial state', async () => {
   const { form, root, input, click, fixture } = setup();
   click(root('airplane'));
   click(root('bluetooth'));
   form.reset();
+  await new Promise(resolve => setTimeout(resolve));
   flushSync();
   expect(fixture.read()).toBe(false);
   expect(root('airplane').getAttribute('aria-checked')).toBe('false');

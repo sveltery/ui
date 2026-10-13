@@ -103,11 +103,12 @@ it('submits each thumb value under the slider name and skips a disabled slider',
   expect(entries.filter(([name]) => name === 'off')).toEqual([]);
 });
 
-it.fails('reset returns the thumbs to their defaults (Base does not handle form reset yet)', () => {
+it('reset returns the thumbs to their defaults', async () => {
   const { form, inputs, press } = setup();
   press(inputs('single')[0], 'ArrowRight');
   press(inputs('multi')[2], 'ArrowRight');
   form.reset();
+  await new Promise(resolve => setTimeout(resolve));
   flushSync();
   expect(inputs('single')[0].value).toBe('25');
   expect(inputs('multi').map(input => input.value)).toEqual(['10', '20', '70']);

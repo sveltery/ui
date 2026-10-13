@@ -1,5 +1,5 @@
 import { afterEach, expect, it } from 'vitest';
-import { flushSync, mount, tick, unmount } from 'svelte';
+import { flushSync, mount, unmount } from 'svelte';
 import RadioGroupForm from './RadioGroupForm.svelte';
 
 type Fixture = { read(): string; write(next: string): void };
@@ -84,13 +84,13 @@ it('submits the checked value of each enabled named group', () => {
   expect(submitted()).toEqual({ size: 'small', plan: 'plus' });
 });
 
-it.fails('restores the initial selection when the form resets (Base does not handle reset yet)', async () => {
+it('restores the initial selection when the form resets', async () => {
   const { form, item, fixture, submitted } = setup();
   item('Small').click();
   item('Plus').click();
   flushSync();
   form.reset();
-  await tick();
+  await new Promise(resolve => setTimeout(resolve));
   flushSync();
   expect(fixture.read()).toBe('medium');
   expect(item('Medium').getAttribute('aria-checked')).toBe('true');
