@@ -11,7 +11,7 @@ node -e '
   const [root, consumer] = process.argv.slice(1);
   const pkg = require(`${root}/package.json`);
   const base = pkg.devDependencies["@sveltery/base"].replace(/^file:/, `file:${root}/`);
-  const deps = { "@sveltery/ui": `file:${consumer}/sveltery-ui-0.0.0.tgz`, "@sveltery/resizable": `file:${consumer}/sveltery-resizable-0.0.0.tgz`, "@sveltery/message-scroller": `file:${consumer}/sveltery-message-scroller-0.0.0.tgz`, "@sveltery/questionnaire": `file:${consumer}/sveltery-questionnaire-0.0.0.tgz`, "@sveltery/base": base, svelte: pkg.devDependencies.svelte };
+  const deps = { "@sveltery/ui": `file:${consumer}/sveltery-ui-0.0.0.tgz`, "@sveltery/resizable": `file:${consumer}/sveltery-resizable-0.0.0.tgz`, "@sveltery/message-scroller": `file:${consumer}/sveltery-message-scroller-0.0.0.tgz`, "@sveltery/questionnaire": `file:${consumer}/sveltery-questionnaire-0.0.0.tgz`, "@sveltery/base": base, layerchart: require(`${root}/packages/ui/package.json`).devDependencies.layerchart, svelte: pkg.devDependencies.svelte };
   require("fs").writeFileSync(`${consumer}/package.json`, JSON.stringify({ name: "consumer", private: true, type: "module", packageManager: pkg.packageManager, dependencies: deps }));
 ' "$PWD" "$consumer"
 cp pnpm-workspace.yaml "$consumer/"
