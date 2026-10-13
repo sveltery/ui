@@ -321,7 +321,7 @@
     "cn": "0.2.2"
   },
   "devDependencies": {
-    "@sveltery/base": "github:sveltery/base#61f00139bd36628614f927a08647f969b4ecbf7d",
+    "@sveltery/base": "github:sveltery/base#2c67ff3d6cd20120eeda1f045101016921ba83df",
     "@sveltery/day-picker": "workspace:*",
     "@sveltery/message-scroller": "workspace:*",
     "@sveltery/questionnaire": "workspace:*",
