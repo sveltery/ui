@@ -32,6 +32,12 @@ test('hovering a pie slice names the row from the config and colors its indicato
   await expect(tooltip.locator('[style*="--color-bg"]').first()).toHaveCSS('background-color', 'rgb(34, 197, 94)');
 });
 
+test('hovering a radial arc shows only that arc, though every arc is its own series', async ({ page }) => {
+  await open(page);
+  await pointAt(page, '#radial path.lc-arc-line >> nth=0');
+  await expect(page.locator('#radial .lc-tooltip-root')).toHaveText(/^\s*(Chrome 275|Safari 200|Firefox 187)$/);
+});
+
 test('arrow keys, Home and End step through the data points and Escape or blur hides the tooltip', async ({ page }) => {
   await open(page);
   const chart = page.locator('#bars');

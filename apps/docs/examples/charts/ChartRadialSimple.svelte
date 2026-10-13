@@ -48,15 +48,7 @@
         }}
       >
         {#snippet tooltip()}
-          <ChartTooltip>
-            {#snippet children({ data })}
-              <div class="border-border/50 bg-background flex min-w-[8rem] items-center gap-2 rounded-lg border px-2.5 py-1.5 text-xs shadow-xl">
-                <div class="h-2.5 w-2.5 shrink-0 rounded-[2px]" style:background={data.color as string}></div>
-                <span class="text-muted-foreground">{chartConfig[data.browser as keyof typeof chartConfig].label}</span>
-                <span class="text-foreground ms-auto font-mono font-medium tabular-nums">{(data.visitors as number).toLocaleString()}</span>
-              </div>
-            {/snippet}
-          </ChartTooltip>
+          <ChartTooltip hideLabel nameKey="browser" />
         {/snippet}
       </ArcChart>
     </ChartContainer>

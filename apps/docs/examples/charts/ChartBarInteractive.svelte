@@ -175,6 +175,7 @@
               });
             },
             ticks: (scale) => scaleUtc(scale.domain(), scale.range()).ticks(),
+            tickOcclusion: { padding: 32 },
           },
         }}
       >

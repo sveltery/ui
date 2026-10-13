@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { BarChart, PieChart } from 'layerchart';
+  import { ArcChart, BarChart, PieChart } from 'layerchart';
   import { ChartContainer, ChartLegend, ChartTooltip, type ChartConfig } from '@sveltery/ui/chart';
 
   const months = [
@@ -64,5 +64,21 @@
         <ChartLegend nameKey="browser" />
       {/snippet}
     </PieChart>
+  </ChartContainer>
+</div>
+
+<div style="width: 300px">
+  <ChartContainer id="radial" config={browsersConfig} class="aspect-square">
+    <ArcChart
+      label="browser"
+      value="visitors"
+      range={[90, -270]}
+      maxValue={275}
+      series={browsers.map((row) => ({ key: row.browser, color: `var(--color-${row.browser})`, data: [row] }))}
+    >
+      {#snippet tooltip()}
+        <ChartTooltip hideLabel nameKey="browser" />
+      {/snippet}
+    </ArcChart>
   </ChartContainer>
 </div>

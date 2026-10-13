@@ -23,7 +23,7 @@
   const { config } = getChartContainer();
 
   const data = $derived(chart.tooltip.data);
-  const items = $derived(chart.tooltip.series.filter((series) => series.visible));
+  const items = $derived(chart.tooltip.series.filter((series) => series.visible && series.value != null));
   const nestLabel = $derived(items.length === 1 && indicator !== 'dot');
 
   const header = $derived.by(() => {

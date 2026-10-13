@@ -809,7 +809,7 @@ See the props of the [tooltip](#props) and of the [legend](#props-1).
 
 <ComponentPreview name="charts/ChartRadialStacked" class="theme-blue" />
 
-## Tooltip
+## Tooltip examples
 
 ### Tooltip - Default
 
