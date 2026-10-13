@@ -2,7 +2,11 @@
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { Button } from '@sveltery/ui/button';
   import { ButtonGroup, ButtonGroupText } from '@sveltery/ui/button-group';
+  import { Field, FieldGroup } from '@sveltery/ui/field';
   import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Input } from '@sveltery/ui/input';
+  import { InputGroup, InputGroupAddon, InputGroupInput } from '@sveltery/ui/input-group';
+  import { Label } from '@sveltery/ui/label';
 </script>
 
 {#snippet ButtonGroupBasic()}
@@ -16,12 +20,36 @@
   </Example>
 {/snippet}
 
+{#snippet ButtonGroupWithInput()}
+  <Example title="With Input">
+    <div class="flex flex-col gap-4">
+      <ButtonGroup>
+        <Button variant="outline">Button</Button>
+        <Input placeholder="Type something here..." />
+      </ButtonGroup>
+      <ButtonGroup>
+        <Input placeholder="Type something here..." />
+        <Button variant="outline">Button</Button>
+      </ButtonGroup>
+    </div>
+  </Example>
+{/snippet}
+
 {#snippet ButtonGroupWithText()}
   <Example title="With Text">
     <div class="flex flex-col gap-4">
       <ButtonGroup>
         <ButtonGroupText>Text</ButtonGroupText>
         <Button variant="outline">Another Button</Button>
+      </ButtonGroup>
+      <ButtonGroup>
+        <ButtonGroupText>
+          {#snippet render(props, _state, children)}
+            <Label {...props} for="input-text">{@render children?.()}</Label>
+          {/snippet}
+          GPU Size
+        </ButtonGroupText>
+        <Input id="input-text" placeholder="Type something here..." class="style-luma:border-border" />
       </ButtonGroup>
     </div>
   </Example>
@@ -60,6 +88,60 @@
         </Button>
       </ButtonGroup>
     </div>
+  </Example>
+{/snippet}
+
+{#snippet ButtonGroupWithInputGroup()}
+  <Example title="With Input Group">
+    <div class="flex flex-col gap-4">
+      <InputGroup>
+        <InputGroupInput placeholder="Type to search..." />
+        <InputGroupAddon align="inline-start" class="text-muted-foreground">
+          <IconPlaceholder
+            lucide="SearchIcon"
+            tabler="IconSearch"
+            hugeicons="Search01Icon"
+            phosphor="MagnifyingGlassIcon"
+            remixicon="RiSearchLine"
+          />
+        </InputGroupAddon>
+      </InputGroup>
+    </div>
+  </Example>
+{/snippet}
+
+{#snippet ButtonGroupWithFields()}
+  <Example title="With Fields">
+    <FieldGroup class="grid grid-cols-3 gap-4">
+      <Field class="col-span-2">
+        <Label for="width">Width</Label>
+        <ButtonGroup>
+          <InputGroup>
+            <InputGroupInput id="width" />
+            <InputGroupAddon class="text-muted-foreground">W</InputGroupAddon>
+            <InputGroupAddon align="inline-end" class="text-muted-foreground">px</InputGroupAddon>
+          </InputGroup>
+          <Button variant="outline" size="icon">
+            <IconPlaceholder
+              lucide="MinusIcon"
+              tabler="IconMinus"
+              hugeicons="MinusSignIcon"
+              phosphor="MinusIcon"
+              remixicon="RiSubtractLine"
+            />
+          </Button>
+          <Button variant="outline" size="icon">
+            <IconPlaceholder
+              lucide="PlusIcon"
+              tabler="IconPlus"
+              hugeicons="PlusSignIcon"
+              phosphor="PlusIcon"
+              remixicon="RiAddLine"
+            />
+          </Button>
+        </ButtonGroup>
+      </Field>
+    </FieldGroup>
   </Example>
 {/snippet}
 
@@ -212,6 +294,20 @@
   </Example>
 {/snippet}
 
+{#snippet ButtonGroupTextAlignment()}
+  <Example title="Text Alignment">
+    <Field>
+      <Label id="alignment-label">Text Alignment</Label>
+      <ButtonGroup aria-labelledby="alignment-label">
+        <Button variant="outline" size="sm">Left</Button>
+        <Button variant="outline" size="sm">Center</Button>
+        <Button variant="outline" size="sm">Right</Button>
+        <Button variant="outline" size="sm">Justify</Button>
+      </ButtonGroup>
+    </Field>
+  </Example>
+{/snippet}
+
 {#snippet ButtonGroupVertical()}
   <Example title="Vertical">
     <div class="flex gap-6">
@@ -321,12 +417,16 @@
 
 <ExampleWrapper>
   {@render ButtonGroupBasic()}
+  {@render ButtonGroupWithInput()}
   {@render ButtonGroupWithText()}
   {@render ButtonGroupWithIcons()}
+  {@render ButtonGroupWithInputGroup()}
+  {@render ButtonGroupWithFields()}
   {@render ButtonGroupWithLike()}
   {@render ButtonGroupPagination()}
   {@render ButtonGroupPaginationSplit()}
   {@render ButtonGroupNavigation()}
+  {@render ButtonGroupTextAlignment()}
   {@render ButtonGroupVertical()}
   {@render ButtonGroupVerticalNested()}
 </ExampleWrapper>

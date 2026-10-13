@@ -4,6 +4,8 @@
   import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@sveltery/ui/empty';
   import { Button, buttonVariants } from '@sveltery/ui/button';
   import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { InputGroup, InputGroupAddon, InputGroupInput } from '@sveltery/ui/input-group';
+  import { Kbd } from '@sveltery/ui/kbd';
 </script>
 
 {#snippet LearnMore()}
@@ -58,6 +60,41 @@
   </Example>
 {/snippet}
 
+{#snippet EmptyWithBorder()}
+  <Example title="With Border">
+    <Empty class="border">
+      <EmptyHeader>
+        <EmptyTitle>404 - Not Found</EmptyTitle>
+        <EmptyDescription>
+          The page you're looking for doesn't exist. Try searching for what you need below.
+        </EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent>
+        <InputGroup class="w-3/4">
+          <InputGroupInput placeholder="Try searching for pages..." />
+          <InputGroupAddon>
+            <IconPlaceholder
+              lucide="CircleDashedIcon"
+              tabler="IconCircleDashed"
+              hugeicons="DashedLineCircleIcon"
+              phosphor="CircleDashedIcon"
+              remixicon="RiLoaderLine"
+            />
+          </InputGroupAddon>
+          <InputGroupAddon align="inline-end">
+            <Kbd>/</Kbd>
+          </InputGroupAddon>
+        </InputGroup>
+        <EmptyDescription>
+          Need help?
+          <!-- svelte-ignore a11y_invalid_attribute -->
+          <a href="#">Contact support</a>
+        </EmptyDescription>
+      </EmptyContent>
+    </Empty>
+  </Example>
+{/snippet}
+
 {#snippet EmptyWithIcon()}
   <Example title="With Icon">
     <Empty class="border">
@@ -90,6 +127,41 @@
           />
           New Post
         </Button>
+      </EmptyContent>
+    </Empty>
+  </Example>
+{/snippet}
+
+{#snippet EmptyWithMutedBackgroundAlt()}
+  <Example title="With Muted Background Alt">
+    <Empty class="bg-muted/50">
+      <EmptyHeader>
+        <EmptyTitle>404 - Not Found</EmptyTitle>
+        <EmptyDescription>
+          The page you're looking for doesn't exist. Try searching for what you need below.
+        </EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent>
+        <InputGroup class="w-3/4">
+          <InputGroupInput placeholder="Try searching for pages..." />
+          <InputGroupAddon>
+            <IconPlaceholder
+              lucide="CircleDashedIcon"
+              tabler="IconCircleDashed"
+              hugeicons="DashedLineCircleIcon"
+              phosphor="CircleDashedIcon"
+              remixicon="RiLoaderLine"
+            />
+          </InputGroupAddon>
+          <InputGroupAddon align="inline-end">
+            <Kbd>/</Kbd>
+          </InputGroupAddon>
+        </InputGroup>
+        <EmptyDescription>
+          Need help?
+          <!-- svelte-ignore a11y_invalid_attribute -->
+          <a href="#">Contact support</a>
+        </EmptyDescription>
       </EmptyContent>
     </Empty>
   </Example>
@@ -128,6 +200,8 @@
 <ExampleWrapper>
   {@render EmptyBasic()}
   {@render EmptyWithMutedBackground()}
+  {@render EmptyWithBorder()}
   {@render EmptyWithIcon()}
+  {@render EmptyWithMutedBackgroundAlt()}
   {@render EmptyInCard()}
 </ExampleWrapper>
