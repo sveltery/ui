@@ -1,9 +1,23 @@
 <script lang="ts">
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { Bubble, BubbleContent, BubbleGroup, BubbleReactions } from '@sveltery/ui/bubble';
-  import { Button } from '@sveltery/ui/button';
+  import { cn } from 'cn';
+  import { Button, buttonVariants } from '@sveltery/ui/button';
+  import { Collapsible, CollapsibleTrigger } from '@sveltery/ui/collapsible';
   import { IconPlaceholder } from '@sveltery/ui/icons';
   import { Marker, MarkerContent } from '@sveltery/ui/marker';
+
+  const collapsibleText = `The accessibility review found two focus states that were visually too subtle in dark mode.
+
+I checked the dialog, menu, and drawer paths because each one renders focusable controls inside a layered surface.
+
+The dialog and drawer are fine. The menu needs the hover and focus tokens split so keyboard focus stays visible when the pointer is not involved.
+
+I also recommend keeping the change in the style file instead of the primitive so the other themes can choose their own focus treatment later.`;
+  const previewLength = 180;
+  const isLong = collapsibleText.length > previewLength;
+  const preview = `${collapsibleText.slice(0, previewLength)}...`;
+  let collapsibleOpen = $state(false);
 
   const quickReplies = [
     'I need help with my account.',
@@ -148,6 +162,45 @@ Ghost bubbles are full width and can take the full width of the container.
     </div>
   </Example>
 
+{/snippet}
+
+{#snippet BubbleCollapsible()}
+  <Example title="Collapsible">
+    <div class="flex w-full max-w-md flex-col gap-8">
+      <Collapsible bind:open={collapsibleOpen}>
+        <Bubble variant="muted" align="end">
+          <BubbleContent class="whitespace-pre-line">
+            <div>{collapsibleOpen || !isLong ? collapsibleText : preview}</div>
+            {#if isLong}
+              <CollapsibleTrigger
+                class={cn(buttonVariants({ variant: 'link' }), 'gap-1 p-0 text-muted-foreground')}
+              >
+                {collapsibleOpen ? 'Show less' : 'Show more'}
+                <IconPlaceholder
+                  lucide="ChevronDownIcon"
+                  tabler="IconChevronDown"
+                  hugeicons="ArrowDown01Icon"
+                  phosphor="CaretDownIcon"
+                  remixicon="RiArrowDownSLine"
+                  data-icon="inline-end"
+                  class="group-data-panel-open/button:rotate-180"
+                />
+              </CollapsibleTrigger>
+            {/if}
+          </BubbleContent>
+        </Bubble>
+      </Collapsible>
+      <Bubble variant="ghost">
+        <BubbleContent>
+          <span class="whitespace-pre-wrap">{`Ghost bubbles work for assistant text and other content that should not be framed.
+
+This is perfect for assistant messages that should not have a frame and can take the full width of the container.
+
+Use this for content that needs the whole row.`}</span>
+        </BubbleContent>
+      </Bubble>
+    </div>
+  </Example>
 {/snippet}
 
 {#snippet BubbleButtonLinks()}
@@ -396,6 +449,7 @@ Ghost bubbles are full width and can take the full width of the container.
   {@render BubbleVariants()}
   {@render BubbleAlignment()}
   {@render BubbleGrouped()}
+  {@render BubbleCollapsible()}
   {@render BubbleButtonLinks()}
   {@render BubbleWithReactions()}
   {@render BubbleReactionsButtons()}

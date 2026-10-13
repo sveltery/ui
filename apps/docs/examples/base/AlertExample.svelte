@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { Alert, AlertTitle, AlertDescription } from '@sveltery/ui/alert';
+  import { Alert, AlertAction, AlertTitle, AlertDescription } from '@sveltery/ui/alert';
+  import { Badge } from '@sveltery/ui/badge';
+  import { Button } from '@sveltery/ui/button';
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { IconPlaceholder } from '@sveltery/ui/icons';
 </script>
@@ -156,8 +158,46 @@
   </Example>
 {/snippet}
 
+{#snippet AlertWithActions()}
+  <Example title="With Actions">
+    <div class="mx-auto flex w-full max-w-lg flex-col gap-4">
+      <Alert>
+        <IconPlaceholder
+          lucide="CircleAlertIcon"
+          tabler="IconExclamationCircle"
+          hugeicons="AlertCircleIcon"
+          phosphor="WarningCircleIcon"
+          remixicon="RiErrorWarningLine"
+        />
+        <AlertTitle>The selected emails have been marked as spam.</AlertTitle>
+        <AlertAction>
+          <Button size="xs">Undo</Button>
+        </AlertAction>
+      </Alert>
+      <Alert>
+        <IconPlaceholder
+          lucide="CircleAlertIcon"
+          tabler="IconExclamationCircle"
+          hugeicons="AlertCircleIcon"
+          phosphor="WarningCircleIcon"
+          remixicon="RiErrorWarningLine"
+        />
+        <AlertTitle>The selected emails have been marked as spam.</AlertTitle>
+        <AlertDescription>
+          This is a very long alert title that demonstrates how the component handles extended
+          text content.
+        </AlertDescription>
+        <AlertAction>
+          <Badge variant="secondary">Badge</Badge>
+        </AlertAction>
+      </Alert>
+    </div>
+  </Example>
+{/snippet}
+
 <ExampleWrapper class="lg:grid-cols-1">
   {@render AlertBasic()}
   {@render AlertWithIcons()}
   {@render AlertDestructive()}
+  {@render AlertWithActions()}
 </ExampleWrapper>
