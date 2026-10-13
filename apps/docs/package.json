@@ -24,7 +24,7 @@
     "@sveltejs/adapter-auto": "8.0.0",
     "@sveltejs/adapter-cloudflare": "8.0.0",
     "@sveltejs/kit": "3.0.1",
-    "@sveltery/base": "github:sveltery/base#bec068ab4ce5df7d4ff5cadc2cf95c25d92f5f26",
+    "@sveltery/base": "github:sveltery/base#00f6aad0fedbbb5f6a1ea9549ae0760a32a54dab",
     "embla-carousel": "8.6.0",
     "embla-carousel-autoplay": "8.6.0",
     "mdsvex": "0.12.8",
