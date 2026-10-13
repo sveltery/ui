@@ -2,7 +2,7 @@
   import { getGroup, SeparatorEntry } from './group.svelte.js';
   import type { SeparatorProps } from './types.js';
 
-  let { disabled = false, children, style, ...rest }: SeparatorProps = $props();
+  let { disabled = false, disableDoubleClick = false, children, style, ...rest }: SeparatorProps = $props();
 
   const group = getGroup();
   const separator = new SeparatorEntry(group, () => ({ disabled }));
@@ -36,6 +36,9 @@
   onpointerenter={() => (separator.hovered = true)}
   onpointerleave={() => (separator.hovered = false)}
   onkeydown={(event) => group.keydown(separator, event)}
+  ondblclick={(event) => {
+    if (!disableDoubleClick && !event.defaultPrevented && group.resetToDefault(separator)) event.preventDefault();
+  }}
   {@attach separator.attach}
 >
   {@render children?.()}

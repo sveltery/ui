@@ -22,6 +22,15 @@ it('collapses a collapsible panel below the midpoint between collapsed and minim
   expect(clampPanelSize(collapsible(25, 5), 15, 40)).toBe(25);
 });
 
+it('collapses a panel with a collapsedThreshold once it moves that far past its edge', () => {
+  const constraints = panel({ collapsible: true, collapsedSize: 5, minSize: 25, collapsedThreshold: 5 });
+  expect(clampPanelSize(constraints, 21, 40)).toBe(25);
+  expect(clampPanelSize(constraints, 19, 40)).toBe(5);
+  expect(clampPanelSize(constraints, 9, 5)).toBe(5);
+  expect(clampPanelSize(constraints, 10, 5)).toBe(5);
+  expect(clampPanelSize(constraints, 11, 5)).toBe(25);
+});
+
 it('validates a layout by scaling it to 100 and clamping every panel', () => {
   expect(validateLayout([30, 30], [panel(), panel()])).toEqual([50, 50]);
   expect(validateLayout([20, 20, 20], [panel(), panel(), panel()])).toEqual([33.334, 33.333, 33.333]);
@@ -109,4 +118,10 @@ it('leaves absolute units unresolved until the group has a size', () => {
 
 it('rejects a size it cannot read', () => {
   expect(() => toPercent('wide', context)).toThrow('Invalid size "wide"');
+});
+
+it('opens a collapsed panel dragged past its collapsedThreshold and keeps it closed short of it', () => {
+  const constraints = [panel({ collapsible: true, minSize: 20, collapsedThreshold: 4 }), panel()];
+  expect(adjustLayoutByDelta({ layout: [0, 100], constraints, pivot: [0, 1], delta: 3, trigger: 'pointer' })).toEqual([0, 100]);
+  expect(adjustLayoutByDelta({ layout: [0, 100], constraints, pivot: [0, 1], delta: 5, trigger: 'pointer' })).toEqual([20, 80]);
 });

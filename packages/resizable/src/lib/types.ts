@@ -39,6 +39,8 @@ export interface PanelProps extends Omit<HTMLAttributes<HTMLDivElement>, 'childr
   maxSize?: SizeInput;
   collapsible?: boolean;
   collapsedSize?: SizeInput;
+  /** How far past `minSize` the panel must be dragged to collapse, or past `collapsedSize` to expand. Defaults to half the distance between them. */
+  collapsedThreshold?: SizeInput;
   onResize?: (size: PanelSize, id: string, previous: PanelSize | undefined) => void;
   style?: string | null;
   children?: Snippet;
@@ -46,6 +48,8 @@ export interface PanelProps extends Omit<HTMLAttributes<HTMLDivElement>, 'childr
 
 export interface SeparatorProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'style'> {
   disabled?: boolean;
+  /** Stops a double click from resetting the panels beside the separator to their default size. */
+  disableDoubleClick?: boolean;
   style?: string | null;
   children?: Snippet;
 }
