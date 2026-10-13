@@ -52,7 +52,7 @@
           spline: { curve: curveLinearClosed, motion: 'tween' },
           grid: { radialY: 'linear', x: false },
           yAxis: { format: () => '' },
-          tooltip: { context: { mode: 'voronoi' } },
+          tooltip: { context: { mode: 'band' } },
         }}
       >
         {#snippet tooltip()}

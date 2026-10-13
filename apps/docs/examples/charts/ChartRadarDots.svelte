@@ -60,7 +60,7 @@
           },
           tooltip: {
             context: {
-              mode: 'voronoi',
+              mode: 'band',
             },
           },
           highlight: {
