@@ -26,7 +26,7 @@
     "svelte": "^5.57.1"
   },
   "devDependencies": {
-    "@sveltery/base": "github:sveltery/base#bec068ab4ce5df7d4ff5cadc2cf95c25d92f5f26",
+    "@sveltery/base": "github:sveltery/base#00f6aad0fedbbb5f6a1ea9549ae0760a32a54dab",
     "svelte": "5.57.1"
   }
 }
