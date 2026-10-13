@@ -14,6 +14,7 @@
     FieldTitle,
   } from '@sveltery/ui/field';
   import { Input } from '@sveltery/ui/input';
+  import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '@sveltery/ui/input-otp';
   import { NativeSelect, NativeSelectOptGroup, NativeSelectOption } from '@sveltery/ui/native-select';
   import { RadioGroup, RadioGroupItem } from '@sveltery/ui/radio-group';
   import { Slider } from '@sveltery/ui/slider';
@@ -25,6 +26,8 @@
   let temperature = $state([0.3, 0.7]);
   let priceRange = $state([25, 75]);
   let colorBalance = $state([10, 20, 70]);
+  let otpValue = $state('');
+  let pinValue = $state('');
 </script>
 
 {#snippet InputFields()}
@@ -440,6 +443,97 @@
   </Example>
 {/snippet}
 
+{#snippet InputOTPFields()}
+  <Example title="OTP Input Fields">
+    <FieldGroup>
+      <Field>
+        <FieldLabel for="otp-basic">Verification Code</FieldLabel>
+        <InputOTP id="otp-basic" length={6}>
+          <InputOTPGroup>
+            <InputOTPSlot />
+            <InputOTPSlot />
+            <InputOTPSlot />
+            <InputOTPSlot />
+            <InputOTPSlot />
+            <InputOTPSlot />
+          </InputOTPGroup>
+        </InputOTP>
+      </Field>
+      <Field>
+        <FieldLabel for="otp-with-desc">Enter OTP</FieldLabel>
+        <InputOTP id="otp-with-desc" length={6} bind:value={otpValue}>
+          <InputOTPGroup>
+            <InputOTPSlot />
+            <InputOTPSlot />
+            <InputOTPSlot />
+            <InputOTPSlot />
+            <InputOTPSlot />
+            <InputOTPSlot />
+          </InputOTPGroup>
+        </InputOTP>
+        <FieldDescription>Enter the 6-digit code sent to your email.</FieldDescription>
+      </Field>
+      <Field>
+        <FieldLabel for="otp-separator">Two-Factor Authentication</FieldLabel>
+        <InputOTP id="otp-separator" length={6}>
+          <InputOTPGroup>
+            <InputOTPSlot />
+            <InputOTPSlot />
+            <InputOTPSlot />
+          </InputOTPGroup>
+          <InputOTPSeparator />
+          <InputOTPGroup>
+            <InputOTPSlot />
+            <InputOTPSlot />
+            <InputOTPSlot />
+          </InputOTPGroup>
+        </InputOTP>
+        <FieldDescription>Enter the code from your authenticator app.</FieldDescription>
+      </Field>
+      <Field>
+        <FieldLabel for="otp-pin">PIN Code</FieldLabel>
+        <InputOTP id="otp-pin" length={4} validationType="numeric" bind:value={pinValue}>
+          <InputOTPGroup>
+            <InputOTPSlot />
+            <InputOTPSlot />
+            <InputOTPSlot />
+            <InputOTPSlot />
+          </InputOTPGroup>
+        </InputOTP>
+        <FieldDescription>Enter your 4-digit PIN (numbers only).</FieldDescription>
+      </Field>
+      <Field invalid>
+        <FieldLabel for="otp-invalid">Invalid OTP</FieldLabel>
+        <InputOTP id="otp-invalid" length={6}>
+          <InputOTPGroup>
+            <InputOTPSlot />
+            <InputOTPSlot />
+            <InputOTPSlot />
+            <InputOTPSlot />
+            <InputOTPSlot />
+            <InputOTPSlot />
+          </InputOTPGroup>
+        </InputOTP>
+        <FieldDescription>This OTP field contains validation errors.</FieldDescription>
+      </Field>
+      <Field disabled>
+        <FieldLabel for="otp-disabled-field">Disabled OTP</FieldLabel>
+        <InputOTP id="otp-disabled-field" length={6} disabled>
+          <InputOTPGroup>
+            <InputOTPSlot />
+            <InputOTPSlot />
+            <InputOTPSlot />
+            <InputOTPSlot />
+            <InputOTPSlot />
+            <InputOTPSlot />
+          </InputOTPGroup>
+        </InputOTP>
+        <FieldDescription>This OTP field is currently disabled.</FieldDescription>
+      </Field>
+    </FieldGroup>
+  </Example>
+{/snippet}
+
 {#snippet HorizontalFields()}
   <Example title="Horizontal Fields">
     <FieldGroup class="**:data-[slot=field-content]:min-w-48">
@@ -495,5 +589,6 @@
   {@render SwitchFields()}
   {@render SliderFields()}
   {@render NativeSelectFields()}
+  {@render InputOTPFields()}
   {@render HorizontalFields()}
 </ExampleWrapper>

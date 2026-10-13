@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
+  import { Input } from '@sveltery/ui/input';
   import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@sveltery/ui/table';
   const invoices = [
     { invoice: 'INV001', paymentStatus: 'Paid', totalAmount: '$250.00', paymentMethod: 'Credit Card' },
@@ -129,6 +130,40 @@
           <TableCell class="text-right">
             <span class="inline-flex items-center rounded-full bg-gray-500/10 px-2 py-1 text-xs font-medium text-gray-700 dark:text-gray-400">Low</span>
           </TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+  </Example>
+  <Example title="With Input">
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Product</TableHead>
+          <TableHead>Quantity</TableHead>
+          <TableHead>Price</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow>
+          <TableCell class="font-medium">Wireless Mouse</TableCell>
+          <TableCell>
+            <Input type="number" value="1" class="h-8 w-20" min="0" />
+          </TableCell>
+          <TableCell>$29.99</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell class="font-medium">Mechanical Keyboard</TableCell>
+          <TableCell>
+            <Input type="number" value="2" class="h-8 w-20" min="0" />
+          </TableCell>
+          <TableCell>$129.99</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell class="font-medium">USB-C Hub</TableCell>
+          <TableCell>
+            <Input type="number" value="1" class="h-8 w-20" min="0" />
+          </TableCell>
+          <TableCell>$49.99</TableCell>
         </TableRow>
       </TableBody>
     </Table>
