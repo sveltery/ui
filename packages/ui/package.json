@@ -279,6 +279,11 @@
       "types": "./dist/questionnaire/index.d.ts",
       "svelte": "./dist/questionnaire/index.js",
       "default": "./dist/questionnaire/index.js"
+    },
+    "./sidebar": {
+      "types": "./dist/sidebar/index.d.ts",
+      "svelte": "./dist/sidebar/index.js",
+      "default": "./dist/sidebar/index.js"
     }
   },
   "svelte": "./dist/index.js",
