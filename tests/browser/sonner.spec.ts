@@ -9,6 +9,11 @@ async function removed(page: Page, toast: ReturnType<typeof toasts>, remaining =
   await expect.poll(async () => { await page.clock.runFor(100); return toast.count(); }).toBe(remaining);
 }
 
+// The exit animation can finish before the next check, so a closed toast is either ending or already gone.
+async function closed(toast: ReturnType<typeof toasts>) {
+  await expect.poll(async () => (await toast.count()) === 0 || (await toast.getAttribute('data-ending-style')) === '').toBe(true);
+}
+
 test.beforeEach(async ({ page }) => {
   await page.clock.install({ time: new Date('2026-01-01T00:00:00Z') });
   await page.goto('/sonner');
@@ -29,7 +34,7 @@ test('toast() shows the message with no icon and closes after 4 seconds', async 
   await page.clock.runFor(3900);
   await expect(toast).not.toHaveAttribute('data-ending-style');
   await page.clock.runFor(200);
-  await expect(toast).toHaveAttribute('data-ending-style', '');
+  await closed(toast);
   await removed(page, toast);
 });
 
@@ -112,7 +117,7 @@ test('toast.promise() shows loading, then the success message and description', 
   await expect(toast.locator('[data-slot=toast-title]')).toHaveText('Launch party has been saved');
   await expect(toast.locator('[data-slot=toast-description]')).toHaveText('Saved to your calendar');
   await page.clock.runFor(4100);
-  await expect(toast).toHaveAttribute('data-ending-style', '');
+  await closed(toast);
   await removed(page, toast);
 });
 
