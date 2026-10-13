@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { Button } from '@sveltery/ui/button';
+  import { Field, FieldDescription, FieldLabel } from '@sveltery/ui/field';
   import { Input } from '@sveltery/ui/input';
   import { Label } from '@sveltery/ui/label';
   import { NativeSelect, NativeSelectOption } from '@sveltery/ui/native-select';
@@ -20,67 +21,67 @@
 
 {#snippet InputWithLabel()}
   <Example title="With Label">
-    <div class="flex w-full flex-col gap-3">
-      <Label for="input-demo-email">Email</Label>
+    <Field>
+      <FieldLabel for="input-demo-email">Email</FieldLabel>
       <Input id="input-demo-email" type="email" placeholder="name@example.com" />
-    </div>
+    </Field>
   </Example>
 {/snippet}
 
 {#snippet InputWithDescription()}
   <Example title="With Description">
-    <div class="flex w-full flex-col gap-3">
-      <Label for="input-demo-username">Username</Label>
+    <Field>
+      <FieldLabel for="input-demo-username">Username</FieldLabel>
       <Input id="input-demo-username" type="text" placeholder="Enter your username" />
-      <p class="text-sm text-muted-foreground">Choose a unique username for your account.</p>
-    </div>
+      <FieldDescription>Choose a unique username for your account.</FieldDescription>
+    </Field>
   </Example>
 {/snippet}
 
 {#snippet InputDisabled()}
   <Example title="Disabled">
-    <div class="flex w-full flex-col gap-3">
-      <Label for="input-demo-disabled">Email</Label>
+    <Field>
+      <FieldLabel for="input-demo-disabled">Email</FieldLabel>
       <Input id="input-demo-disabled" type="email" placeholder="Email" disabled />
-    </div>
+    </Field>
   </Example>
 {/snippet}
 
 {#snippet InputTypes()}
   <Example title="Input Types">
     <div class="flex w-full flex-col gap-6">
-      <div class="flex w-full flex-col gap-3">
-        <Label for="input-demo-password">Password</Label>
+      <Field>
+        <FieldLabel for="input-demo-password">Password</FieldLabel>
         <Input id="input-demo-password" type="password" placeholder="Password" />
-      </div>
-      <div class="flex w-full flex-col gap-3">
-        <Label for="input-demo-tel">Phone</Label>
+      </Field>
+      <Field>
+        <FieldLabel for="input-demo-tel">Phone</FieldLabel>
         <Input id="input-demo-tel" type="tel" placeholder="+1 (555) 123-4567" />
-      </div>
-      <div class="flex w-full flex-col gap-3">
-        <Label for="input-demo-url">URL</Label>
+      </Field>
+      <Field>
+        <FieldLabel for="input-demo-url">URL</FieldLabel>
         <Input id="input-demo-url" type="url" placeholder="https://example.com" />
-      </div>
-      <div class="flex w-full flex-col gap-3">
-        <Label for="input-demo-search">Search</Label>
+      </Field>
+      <Field>
+        <FieldLabel for="input-demo-search">Search</FieldLabel>
         <Input id="input-demo-search" type="search" placeholder="Search" />
-      </div>
-      <div class="flex w-full flex-col gap-3">
-        <Label for="input-demo-number">Number</Label>
+      </Field>
+      <Field>
+        <FieldLabel for="input-demo-number">Number</FieldLabel>
         <Input id="input-demo-number" type="number" placeholder="123" />
-      </div>
-      <div class="flex w-full flex-col gap-3">
-        <Label for="input-demo-date">Date</Label>
+      </Field>
+      <Field>
+        <FieldLabel for="input-demo-date">Date</FieldLabel>
         <Input id="input-demo-date" type="date" />
-      </div>
-      <div class="flex w-full flex-col gap-3">
-        <Label for="input-demo-time">Time</Label>
+      </Field>
+      <Field>
+        <FieldLabel for="input-demo-time">Time</FieldLabel>
         <Input id="input-demo-time" type="time" />
-      </div>
-      <div class="flex w-full flex-col gap-3">
-        <Label for="input-demo-file">File</Label>
+      </Field>
+      <Field>
+        <FieldLabel for="input-demo-file">File</FieldLabel>
         <Input id="input-demo-file" type="file" />
-      </div>
+      </Field>
     </div>
   </Example>
 {/snippet}

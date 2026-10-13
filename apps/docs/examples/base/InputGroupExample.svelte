@@ -18,17 +18,11 @@
     InputGroupTextarea,
   } from '@sveltery/ui/input-group';
   import { Kbd, KbdGroup } from '@sveltery/ui/kbd';
-  import { Label } from '@sveltery/ui/label';
   import { Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger } from '@sveltery/ui/popover';
   import { toast } from '@sveltery/ui/sonner';
   import { Spinner } from '@sveltery/ui/spinner';
   import { Textarea } from '@sveltery/ui/textarea';
   import { Tooltip, TooltipContent, TooltipTrigger } from '@sveltery/ui/tooltip';
-
-  // Field, FieldGroup and FieldDescription are not ported yet. These stand in for them.
-  const field = 'flex w-full flex-col gap-3';
-  const group = 'flex w-full flex-col gap-7';
-  const description = 'text-sm text-muted-foreground';
 
   const countries = ['+1', '+44', '+46'];
   let country = $state('+1');
@@ -48,38 +42,38 @@
 
 {#snippet InputGroupBasic()}
   <Example title="Basic">
-    <div class={group}>
-      <div class={field}>
-        <Label for="input-default-01">Default (No Input Group)</Label>
+    <FieldGroup>
+      <Field>
+        <FieldLabel for="input-default-01">Default (No Input Group)</FieldLabel>
         <Input placeholder="Placeholder" id="input-default-01" />
-      </div>
-      <div class={field}>
-        <Label for="input-group-02">Input Group</Label>
+      </Field>
+      <Field>
+        <FieldLabel for="input-group-02">Input Group</FieldLabel>
         <InputGroup>
           <InputGroupInput id="input-group-02" placeholder="Placeholder" />
         </InputGroup>
-      </div>
-      <div class={field} data-disabled="true">
-        <Label for="input-disabled-03">Disabled</Label>
+      </Field>
+      <Field disabled>
+        <FieldLabel for="input-disabled-03">Disabled</FieldLabel>
         <InputGroup>
           <InputGroupInput id="input-disabled-03" placeholder="This field is disabled" disabled />
         </InputGroup>
-      </div>
-      <div class={field} data-invalid="true">
-        <Label for="input-invalid-04">Invalid</Label>
+      </Field>
+      <Field invalid>
+        <FieldLabel for="input-invalid-04">Invalid</FieldLabel>
         <InputGroup>
           <InputGroupInput id="input-invalid-04" placeholder="This field is invalid" aria-invalid="true" />
         </InputGroup>
-      </div>
-    </div>
+      </Field>
+    </FieldGroup>
   </Example>
 {/snippet}
 
 {#snippet InputGroupWithAddons()}
   <Example title="With Addons">
-    <div class={group}>
-      <div class={field}>
-        <Label for="input-icon-left-05">Addon (inline-start)</Label>
+    <FieldGroup>
+      <Field>
+        <FieldLabel for="input-icon-left-05">Addon (inline-start)</FieldLabel>
         <InputGroup>
           <InputGroupInput id="input-icon-left-05" />
           <InputGroupAddon>
@@ -93,9 +87,9 @@
             />
           </InputGroupAddon>
         </InputGroup>
-      </div>
-      <div class={field}>
-        <Label for="input-icon-right-07">Addon (inline-end)</Label>
+      </Field>
+      <Field>
+        <FieldLabel for="input-icon-right-07">Addon (inline-end)</FieldLabel>
         <InputGroup>
           <InputGroupInput id="input-icon-right-07" />
           <InputGroupAddon align="inline-end">
@@ -108,9 +102,9 @@
             />
           </InputGroupAddon>
         </InputGroup>
-      </div>
-      <div class={field}>
-        <Label for="input-icon-both-09">Addon (inline-start and inline-end)</Label>
+      </Field>
+      <Field>
+        <FieldLabel for="input-icon-both-09">Addon (inline-start and inline-end)</FieldLabel>
         <InputGroup>
           <InputGroupInput id="input-icon-both-09" />
           <InputGroupAddon>
@@ -134,9 +128,9 @@
             />
           </InputGroupAddon>
         </InputGroup>
-      </div>
-      <div class={field}>
-        <Label for="input-addon-20">Addon (block-start)</Label>
+      </Field>
+      <Field>
+        <FieldLabel for="input-addon-20">Addon (block-start)</FieldLabel>
         <InputGroup class="h-auto">
           <InputGroupInput id="input-addon-20" />
           <InputGroupAddon align="block-start">
@@ -151,9 +145,9 @@
             />
           </InputGroupAddon>
         </InputGroup>
-      </div>
-      <div class={field}>
-        <Label for="input-addon-21">Addon (block-end)</Label>
+      </Field>
+      <Field>
+        <FieldLabel for="input-addon-21">Addon (block-end)</FieldLabel>
         <InputGroup class="h-auto">
           <InputGroupInput id="input-addon-21" />
           <InputGroupAddon align="block-end">
@@ -168,9 +162,9 @@
             />
           </InputGroupAddon>
         </InputGroup>
-      </div>
-      <div class={field}>
-        <Label for="input-icon-both-10">Multiple Icons</Label>
+      </Field>
+      <Field>
+        <FieldLabel for="input-icon-both-10">Multiple Icons</FieldLabel>
         <InputGroup>
           <InputGroupInput id="input-icon-both-10" />
           <InputGroupAddon align="inline-end">
@@ -202,9 +196,9 @@
             />
           </InputGroupAddon>
         </InputGroup>
-      </div>
-      <div class={field}>
-        <Label for="input-description-10">Description</Label>
+      </Field>
+      <Field>
+        <FieldLabel for="input-description-10">Description</FieldLabel>
         <InputGroup>
           <InputGroupInput id="input-description-10" />
           <InputGroupAddon align="inline-end">
@@ -217,13 +211,13 @@
             />
           </InputGroupAddon>
         </InputGroup>
-        <p class={description}>This is a description of the input group.</p>
-      </div>
-      <div class={field}>
-        <Label for="input-label-10">Label</Label>
+        <FieldDescription>This is a description of the input group.</FieldDescription>
+      </Field>
+      <Field>
+        <FieldLabel for="input-label-10">Label</FieldLabel>
         <InputGroup>
           <InputGroupAddon>
-            <Label for="input-label-10">Label</Label>
+            <FieldLabel for="input-label-10">Label</FieldLabel>
           </InputGroupAddon>
           <InputGroupInput id="input-label-10" />
         </InputGroup>
@@ -233,16 +227,16 @@
             <InputGroupText>(optional)</InputGroupText>
           </InputGroupAddon>
         </InputGroup>
-      </div>
-    </div>
+      </Field>
+    </FieldGroup>
   </Example>
 {/snippet}
 
 {#snippet InputGroupWithButtons()}
   <Example title="With Buttons">
-    <div class={group}>
-      <div class={field}>
-        <Label for="input-button-13">Button</Label>
+    <FieldGroup>
+      <Field>
+        <FieldLabel for="input-button-13">Button</FieldLabel>
         <InputGroup>
           <InputGroupInput id="input-button-13" />
           <InputGroupAddon>
@@ -295,8 +289,8 @@
             </InputGroupButton>
           </InputGroupAddon>
         </InputGroup>
-      </div>
-    </div>
+      </Field>
+    </FieldGroup>
   </Example>
 {/snippet}
 
@@ -384,9 +378,9 @@
 
 {#snippet InputGroupWithKbd()}
   <Example title="With Kbd">
-    <div class={group}>
-      <div class={field}>
-        <Label for="input-kbd-22">Input Group with Kbd</Label>
+    <FieldGroup>
+      <Field>
+        <FieldLabel for="input-kbd-22">Input Group with Kbd</FieldLabel>
         <InputGroup>
           <InputGroupInput id="input-kbd-22" />
           <InputGroupAddon>
@@ -424,9 +418,9 @@
             </KbdGroup>
           </InputGroupAddon>
         </InputGroup>
-      </div>
-      <div class={field}>
-        <Label for="input-username-26">Username</Label>
+      </Field>
+      <Field>
+        <FieldLabel for="input-username-26">Username</FieldLabel>
         <InputGroup>
           <InputGroupInput id="input-username-26" defaultValue="shadcn" />
           <InputGroupAddon align="inline-end">
@@ -442,8 +436,8 @@
             </div>
           </InputGroupAddon>
         </InputGroup>
-        <p class="text-sm text-green-700">This username is available.</p>
-      </div>
+        <FieldDescription class="text-green-700">This username is available.</FieldDescription>
+      </Field>
       <InputGroup>
         <InputGroupInput id="input-search-docs-27" placeholder="Search documentation..." />
         <InputGroupAddon>
@@ -470,9 +464,9 @@
         </InputGroupAddon>
         <InputGroupAddon align="inline-end">Disabled</InputGroupAddon>
       </InputGroup>
-      <div class="grid grid-cols-2 gap-4">
-        <div class={field}>
-          <Label for="input-group-11">First Name</Label>
+      <FieldGroup class="grid grid-cols-2 gap-4">
+        <Field>
+          <FieldLabel for="input-group-11">First Name</FieldLabel>
           <InputGroup>
             <InputGroupInput id="input-group-11" placeholder="First Name" />
             <InputGroupAddon align="inline-end">
@@ -485,9 +479,9 @@
               />
             </InputGroupAddon>
           </InputGroup>
-        </div>
-        <div class={field}>
-          <Label for="input-group-12">Last Name</Label>
+        </Field>
+        <Field>
+          <FieldLabel for="input-group-12">Last Name</FieldLabel>
           <InputGroup>
             <InputGroupInput id="input-group-12" placeholder="Last Name" />
             <InputGroupAddon align="inline-end">
@@ -500,19 +494,19 @@
               />
             </InputGroupAddon>
           </InputGroup>
-        </div>
-      </div>
-      <div class={field} data-disabled="true">
-        <Label for="input-group-29">Loading (&quot;data-disabled=&quot;true&quot;)</Label>
+        </Field>
+      </FieldGroup>
+      <Field disabled>
+        <FieldLabel for="input-group-29">Loading (&quot;data-disabled=&quot;true&quot;)</FieldLabel>
         <InputGroup>
           <InputGroupInput id="input-group-29" disabled defaultValue="shadcn" />
           <InputGroupAddon align="inline-end">
             <Spinner />
           </InputGroupAddon>
         </InputGroup>
-        <p class={description}>This is a description of the input group.</p>
-      </div>
-    </div>
+        <FieldDescription>This is a description of the input group.</FieldDescription>
+      </Field>
+    </FieldGroup>
   </Example>
 {/snippet}
 
@@ -524,9 +518,9 @@
         <CardDescription>This is a card with an input group.</CardDescription>
       </CardHeader>
       <CardContent>
-        <div class={group}>
-          <div class={field}>
-            <Label for="email-input">Email Address</Label>
+        <FieldGroup>
+          <Field>
+            <FieldLabel for="email-input">Email Address</FieldLabel>
             <InputGroup>
               <InputGroupInput id="email-input" type="email" placeholder="you@example.com" />
               <InputGroupAddon align="inline-end">
@@ -539,9 +533,9 @@
                 />
               </InputGroupAddon>
             </InputGroup>
-          </div>
-          <div class={field}>
-            <Label for="website-input">Website URL</Label>
+          </Field>
+          <Field>
+            <FieldLabel for="website-input">Website URL</FieldLabel>
             <InputGroup>
               <InputGroupAddon>
                 <InputGroupText>https://</InputGroupText>
@@ -557,17 +551,17 @@
                 />
               </InputGroupAddon>
             </InputGroup>
-          </div>
-          <div class={field}>
-            <Label for="feedback-textarea">Feedback &amp; Comments</Label>
+          </Field>
+          <Field>
+            <FieldLabel for="feedback-textarea">Feedback &amp; Comments</FieldLabel>
             <InputGroup>
               <InputGroupTextarea id="feedback-textarea" placeholder="Share your thoughts..." class="min-h-[100px]" />
               <InputGroupAddon align="block-end">
                 <InputGroupText>0/500 characters</InputGroupText>
               </InputGroupAddon>
             </InputGroup>
-          </div>
-        </div>
+          </Field>
+        </FieldGroup>
       </CardContent>
       <CardFooter class="justify-end gap-2">
         <Button variant="outline">Cancel</Button>
@@ -579,34 +573,34 @@
 
 {#snippet InputGroupTextareaExamples()}
   <Example title="Textarea">
-    <div class={group}>
-      <div class={field}>
-        <Label for="textarea-header-footer-12">Default Textarea (No Input Group)</Label>
+    <FieldGroup>
+      <Field>
+        <FieldLabel for="textarea-header-footer-12">Default Textarea (No Input Group)</FieldLabel>
         <Textarea id="textarea-header-footer-12" placeholder="Enter your text here..." />
-      </div>
-      <div class={field}>
-        <Label for="textarea-header-footer-13">Input Group</Label>
+      </Field>
+      <Field>
+        <FieldLabel for="textarea-header-footer-13">Input Group</FieldLabel>
         <InputGroup>
           <InputGroupTextarea id="textarea-header-footer-13" placeholder="Enter your text here..." />
         </InputGroup>
-        <p class={description}>This is a description of the input group.</p>
-      </div>
-      <div class={field} data-invalid="true">
-        <Label for="textarea-header-footer-14">Invalid</Label>
+        <FieldDescription>This is a description of the input group.</FieldDescription>
+      </Field>
+      <Field invalid>
+        <FieldLabel for="textarea-header-footer-14">Invalid</FieldLabel>
         <InputGroup>
           <InputGroupTextarea id="textarea-header-footer-14" placeholder="Enter your text here..." aria-invalid="true" />
         </InputGroup>
-        <p class={description}>This is a description of the input group.</p>
-      </div>
-      <div class={field} data-disabled="true">
-        <Label for="textarea-header-footer-15">Disabled</Label>
+        <FieldDescription>This is a description of the input group.</FieldDescription>
+      </Field>
+      <Field disabled>
+        <FieldLabel for="textarea-header-footer-15">Disabled</FieldLabel>
         <InputGroup>
           <InputGroupTextarea id="textarea-header-footer-15" placeholder="Enter your text here..." disabled />
         </InputGroup>
-        <p class={description}>This is a description of the input group.</p>
-      </div>
-      <div class={field}>
-        <Label for="prompt-31">Addon (block-start)</Label>
+        <FieldDescription>This is a description of the input group.</FieldDescription>
+      </Field>
+      <Field>
+        <FieldLabel for="prompt-31">Addon (block-start)</FieldLabel>
         <InputGroup>
           <InputGroupTextarea id="prompt-31" />
           <InputGroupAddon align="block-start">
@@ -621,10 +615,10 @@
             />
           </InputGroupAddon>
         </InputGroup>
-        <p class={description}>This is a description of the input group.</p>
-      </div>
-      <div class={field}>
-        <Label for="textarea-header-footer-30">Addon (block-end)</Label>
+        <FieldDescription>This is a description of the input group.</FieldDescription>
+      </Field>
+      <Field>
+        <FieldLabel for="textarea-header-footer-30">Addon (block-end)</FieldLabel>
         <InputGroup>
           <InputGroupTextarea id="textarea-header-footer-30" placeholder="Enter your text here..." />
           <InputGroupAddon align="block-end">
@@ -641,9 +635,9 @@
             </InputGroupButton>
           </InputGroupAddon>
         </InputGroup>
-      </div>
-      <div class={field}>
-        <Label for="textarea-comment-31">Addon (Buttons)</Label>
+      </Field>
+      <Field>
+        <FieldLabel for="textarea-comment-31">Addon (Buttons)</FieldLabel>
         <InputGroup>
           <InputGroupTextarea id="textarea-comment-31" placeholder="Share your thoughts..." class="min-h-[120px]" />
           <InputGroupAddon align="block-end">
@@ -651,9 +645,9 @@
             <InputGroupButton variant="default" size="sm">Post Comment</InputGroupButton>
           </InputGroupAddon>
         </InputGroup>
-      </div>
-      <div class={field}>
-        <Label for="textarea-code-32">Code Editor</Label>
+      </Field>
+      <Field>
+        <FieldLabel for="textarea-code-32">Code Editor</FieldLabel>
         <InputGroup>
           <InputGroupTextarea id="textarea-code-32" placeholder="console.log('Hello, world!');" class="min-h-[300px] py-3" />
           <InputGroupAddon align="block-start" class="border-b">
@@ -691,8 +685,8 @@
             <InputGroupText class="ml-auto">JavaScript</InputGroupText>
           </InputGroupAddon>
         </InputGroup>
-      </div>
-    </div>
+      </Field>
+    </FieldGroup>
   </Example>
 {/snippet}
 

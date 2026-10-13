@@ -1,8 +1,8 @@
 <script lang="ts">
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { Button, buttonVariants } from '@sveltery/ui/button';
+  import { Field, FieldGroup, FieldLabel } from '@sveltery/ui/field';
   import { Input } from '@sveltery/ui/input';
-  import { Label } from '@sveltery/ui/label';
   import {
     Sheet,
     SheetClose,
@@ -27,16 +27,16 @@
           <SheetDescription>Make changes to your profile here. Click save when you&apos;re done.</SheetDescription>
         </SheetHeader>
         <div class="style-vega:px-4 style-nova:px-4 style-lyra:px-4 style-maia:px-6 style-mira:px-6 style-luma:px-6 style-rhea:px-6">
-          <div class="flex w-full flex-col gap-7">
-            <div class="flex w-full flex-col gap-3">
-              <Label for="sheet-demo-name">Name</Label>
+          <FieldGroup>
+            <Field>
+              <FieldLabel for="sheet-demo-name">Name</FieldLabel>
               <Input id="sheet-demo-name" defaultValue="Pedro Duarte" />
-            </div>
-            <div class="flex w-full flex-col gap-3">
-              <Label for="sheet-demo-username">Username</Label>
+            </Field>
+            <Field>
+              <FieldLabel for="sheet-demo-username">Username</FieldLabel>
               <Input id="sheet-demo-username" defaultValue="@peduarte" />
-            </div>
-          </div>
+            </Field>
+          </FieldGroup>
         </div>
         <SheetFooter>
           <Button type="submit">Save changes</Button>

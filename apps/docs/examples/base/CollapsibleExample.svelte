@@ -9,8 +9,10 @@
   import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/ui/card';
   import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@sveltery/ui/collapsible';
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
+  import { Field, FieldGroup, FieldLabel } from '@sveltery/ui/field';
   import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { Label } from '@sveltery/ui/label';
+  import { Input } from '@sveltery/ui/input';
+  import { Tabs, TabsList, TabsTrigger } from '@sveltery/ui/tabs';
 
   const fileTree: FileTreeItem[] = [
     {
@@ -106,10 +108,12 @@
   <Example title="File Tree" class="items-center">
     <Card class="mx-auto w-full max-w-[16rem] gap-2" size="sm">
       <CardHeader>
-        <div class="flex w-full rounded-lg bg-muted p-[3px] text-sm font-medium">
-          <span class="flex-1 rounded-md bg-background px-2 py-1 text-center">Explorer</span>
-          <span class="flex-1 px-2 py-1 text-center text-muted-foreground">Outline</span>
-        </div>
+        <Tabs defaultValue="explorer">
+          <TabsList class="w-full">
+            <TabsTrigger value="explorer">Explorer</TabsTrigger>
+            <TabsTrigger value="settings">Outline</TabsTrigger>
+          </TabsList>
+        </Tabs>
       </CardHeader>
       <CardContent>
         <div class="flex flex-col gap-1">
@@ -129,26 +133,26 @@
       </CardHeader>
       <CardContent>
         <Collapsible bind:open={settingsOpen} class="flex items-start gap-2">
-          <div class="grid w-full grid-cols-2 gap-2">
-            <div class="grid gap-2">
-              <Label for="radius-x" class="sr-only">Radius X</Label>
-              <input id="radius-x" placeholder="0" value="0" class="h-8 rounded-lg border border-border px-2" />
-            </div>
-            <div class="grid gap-2">
-              <Label for="radius-y" class="sr-only">Radius Y</Label>
-              <input id="radius-y" placeholder="0" value="0" class="h-8 rounded-lg border border-border px-2" />
-            </div>
+          <FieldGroup class="grid w-full grid-cols-2 gap-2">
+            <Field>
+              <FieldLabel for="radius-x" class="sr-only">Radius X</FieldLabel>
+              <Input id="radius-x" placeholder="0" defaultValue={0} />
+            </Field>
+            <Field>
+              <FieldLabel for="radius-y" class="sr-only">Radius Y</FieldLabel>
+              <Input id="radius-y" placeholder="0" defaultValue={0} />
+            </Field>
             <CollapsibleContent class="col-span-full grid grid-cols-subgrid gap-2">
-              <div class="grid gap-2">
-                <Label for="radius-tl" class="sr-only">Radius X</Label>
-                <input id="radius-tl" placeholder="0" value="0" class="h-8 rounded-lg border border-border px-2" />
-              </div>
-              <div class="grid gap-2">
-                <Label for="radius-br" class="sr-only">Radius Y</Label>
-                <input id="radius-br" placeholder="0" value="0" class="h-8 rounded-lg border border-border px-2" />
-              </div>
+              <Field>
+                <FieldLabel for="radius-tl" class="sr-only">Radius X</FieldLabel>
+                <Input id="radius-tl" placeholder="0" defaultValue={0} />
+              </Field>
+              <Field>
+                <FieldLabel for="radius-br" class="sr-only">Radius Y</FieldLabel>
+                <Input id="radius-br" placeholder="0" defaultValue={0} />
+              </Field>
             </CollapsibleContent>
-          </div>
+          </FieldGroup>
           <CollapsibleTrigger render={settingsTrigger}>
             {#if settingsOpen}
               <IconPlaceholder lucide="MinimizeIcon" tabler="IconMinimize" hugeicons="MinusSignIcon" phosphor="MinusIcon" remixicon="RiSubtractLine" />
