@@ -34,5 +34,10 @@ export const blocks: Block[] = [
   { name: 'signup-05', description: 'A simple signup form with social providers.', route: 'signup', categories: ['authentication', 'signup'] },
 ];
 
-/** Upstream's featured list. dashboard-01 waits for Select, so it is not in `blocks` yet and the page skips it. */
-export const featured = ['dashboard-01', 'sidebar-07', 'sidebar-03', 'login-03', 'login-04'];
+export const blocksIn = (slug: CategorySlug) => blocks.filter((block) => block.categories.includes(slug));
+
+/** Categories in the nav: not hidden, and with a block to show. */
+export const navCategories = categories.filter((category) => !category.hidden && blocksIn(category.slug).length);
+
+/** Upstream's featured list, in its order, limited to ported blocks. dashboard-01 waits for Select. */
+export const featured = ['dashboard-01', 'sidebar-07', 'sidebar-03', 'login-03', 'login-04'].flatMap((name) => blocks.filter((block) => block.name === name));

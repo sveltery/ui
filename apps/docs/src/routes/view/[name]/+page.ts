@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 import type { Component } from 'svelte';
-import { blocks } from '$blocks/registry';
+import { blocks } from '#blocks/registry';
 import type { EntryGenerator, PageLoad } from './$types';
 
 const pages = import.meta.glob<{ default: Component }>('/blocks/*/page.svelte');

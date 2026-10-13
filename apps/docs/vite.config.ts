@@ -17,7 +17,7 @@ export default defineConfig({
     tailwindcss(),
     sveltekit({
       adapter: adapter(),
-      alias: { $lib: 'src/lib', $blocks: 'blocks' },
+      alias: { $lib: 'src/lib' },
       experimental: { remoteFunctions: true },
       extensions: ['.svelte', '.md'],
       preprocess: [

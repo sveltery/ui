@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { blocks as registry } from '../../apps/docs/blocks/registry';
 
 test.use({ baseURL: 'http://127.0.0.1:5175' });
 
@@ -31,6 +32,10 @@ async function visit(page: Page, path: string) {
   return errors;
 }
 
+test('every registered block has a row here', () => {
+  expect(Object.keys(blocks)).toEqual(registry.map(({ name }) => name));
+});
+
 for (const [name, text] of Object.entries(blocks)) {
   test(`${name} renders on its own page`, async ({ page }) => {
     const errors = await visit(page, `/view/${name}`);
@@ -42,8 +47,10 @@ for (const [name, text] of Object.entries(blocks)) {
 test('the category nav lists each category and its blocks', async ({ page }) => {
   await visit(page, '/blocks');
   const nav = page.getByRole('navigation', { name: 'Blocks' });
-  await expect(nav.getByRole('link')).toHaveText(['Featured', 'Sidebar', 'Login', 'Signup']);
+  await expect(nav.getByRole('link')).toHaveText(['Featured', 'Login', 'Signup']);
   await expect(nav.getByRole('link', { name: 'Featured' })).toHaveAttribute('aria-current', 'page');
+  await expect(page.locator('[data-slot=block-viewer]').evaluateAll((viewers) => viewers.map((viewer) => viewer.id))).resolves.toEqual(['login-03', 'login-04']);
+  await expect(page.getByRole('link', { name: 'Browse more blocks' })).toHaveAttribute('href', '/blocks/login');
 
   await nav.getByRole('link', { name: 'Login' }).click();
   await expect(page).toHaveURL('/blocks/login');
@@ -63,7 +70,8 @@ test('the Code tab shows the files in their app paths', async ({ page }) => {
 
   await viewer.getByRole('button', { name: 'login-form.svelte' }).click();
   await expect(caption).toHaveText('src/lib/components/login-form.svelte Copy');
-  await expect(viewer.locator('pre')).toContainText("import { Button } from '$lib/components/ui/button/index.js';");
+  await expect(viewer.locator('pre')).toContainText("import { Button } from '$lib/components/ui/button';");
+  await expect(viewer.locator('pre')).not.toContainText('svelte-ignore');
 
   await viewer.getByRole('button', { name: 'components' }).click();
   await expect(viewer.getByRole('button', { name: 'login-form.svelte' })).toBeHidden();
@@ -82,4 +90,15 @@ test('the size toggles resize the preview', async ({ page }) => {
   await expect.poll(async () => Math.round(((await panel.boundingBox())!.width / full) * 10)).toBe(3);
   await viewer.getByRole('button', { name: 'Desktop' }).click();
   await expect.poll(async () => Math.round((await panel.boundingBox())!.width)).toBe(Math.round(full));
+});
+
+test('a preview follows the docs theme toggle', async ({ page }) => {
+  await visit(page, '/blocks/login');
+  const preview = page.locator('#login-01 iframe');
+  await preview.scrollIntoViewIfNeeded();
+  const html = page.frameLocator('#login-01 iframe').locator('html');
+  await expect(html).toHaveAttribute('data-ready');
+  await expect(html).not.toHaveClass(/dark/);
+  await page.getByRole('button', { name: 'Toggle theme' }).click();
+  await expect(html).toHaveClass(/dark/);
 });
