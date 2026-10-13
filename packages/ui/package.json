@@ -304,6 +304,11 @@
       "types": "./dist/command/index.d.ts",
       "svelte": "./dist/command/index.js",
       "default": "./dist/command/index.js"
+    },
+    "./dropdown-menu": {
+      "types": "./dist/dropdown-menu/index.d.ts",
+      "svelte": "./dist/dropdown-menu/index.js",
+      "default": "./dist/dropdown-menu/index.js"
     }
   },
   "svelte": "./dist/index.js",
@@ -338,7 +343,7 @@
     "embla-carousel": "8.6.0"
   },
   "devDependencies": {
-    "@sveltery/base": "github:sveltery/base#2c67ff3d6cd20120eeda1f045101016921ba83df",
+    "@sveltery/base": "github:sveltery/base#00f6aad0fedbbb5f6a1ea9549ae0760a32a54dab",
     "@sveltery/command": "workspace:*",
     "@sveltery/day-picker": "workspace:*",
     "@sveltery/message-scroller": "workspace:*",
