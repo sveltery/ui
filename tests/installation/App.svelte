@@ -3,6 +3,7 @@
   import { AspectRatio } from '@sveltery/ui/aspect-ratio';
   import { Avatar, AvatarFallback, AvatarImage } from '@sveltery/ui/avatar';
   import { Button } from '@sveltery/ui/button';
+  import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@sveltery/ui/carousel';
   import { Card, CardContent, CardHeader, CardTitle } from '@sveltery/ui/card';
   import { ChartContainer } from '@sveltery/ui/chart';
   import { Dialog, DialogContent, DialogTrigger } from '@sveltery/ui/dialog';
@@ -23,6 +24,7 @@
 <Button>Save</Button>
 <Card><CardHeader><CardTitle>Card</CardTitle></CardHeader><CardContent>Body</CardContent></Card>
 <ChartContainer config={{ visits: { label: 'Visits', theme: { light: 'red', dark: 'blue' } } }}>Chart</ChartContainer>
+<Carousel><CarouselContent><CarouselItem>Slide</CarouselItem></CarouselContent><CarouselPrevious /><CarouselNext /></Carousel>
 <Dialog><DialogTrigger>Open</DialogTrigger><DialogContent>Content</DialogContent></Dialog>
 <Empty><EmptyTitle>Nothing</EmptyTitle></Empty>
 <Kbd>K</Kbd>

@@ -1263,4 +1263,13 @@
   .cn-drawer-footer-base {
     @apply gap-2 p-4 pt-0;
   }
+
+  /* MARK: Carousel */
+  .cn-carousel-previous {
+    @apply rounded-full;
+  }
+
+  .cn-carousel-next {
+    @apply rounded-full;
+  }
 }

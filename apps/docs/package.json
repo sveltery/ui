@@ -25,6 +25,8 @@
     "@sveltejs/adapter-cloudflare": "8.0.0",
     "@sveltejs/kit": "3.0.1",
     "@sveltery/base": "github:sveltery/base#2c67ff3d6cd20120eeda1f045101016921ba83df",
+    "embla-carousel": "8.6.0",
+    "embla-carousel-autoplay": "8.6.0",
     "mdsvex": "0.12.8",
     "pagefind": "1.5.2",
     "shadcn": "4.21.1",
