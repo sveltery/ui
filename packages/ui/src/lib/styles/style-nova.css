@@ -1264,6 +1264,15 @@
     @apply gap-2 p-4 pt-0;
   }
 
+  /* MARK: Carousel */
+  .cn-carousel-previous {
+    @apply rounded-full;
+  }
+
+  .cn-carousel-next {
+    @apply rounded-full;
+  }
+
   /* MARK: Command */
   .cn-command {
     @apply bg-popover text-popover-foreground rounded-xl! p-1;

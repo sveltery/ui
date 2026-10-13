@@ -1,9 +1,22 @@
 <script lang="ts">
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button } from '@sveltery/ui/button';
+  import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@sveltery/ui/accordion';
+  import { Button, buttonVariants } from '@sveltery/ui/button';
+  import {
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+  } from '@sveltery/ui/drawer';
   import { IconPlaceholder } from '@sveltery/ui/icons';
   import { Spinner } from '@sveltery/ui/spinner';
   import { Marker, MarkerContent, MarkerIcon } from '@sveltery/ui/marker';
+
+  const drawerFiles = ['app/chat/page.tsx', 'components/message.tsx', 'lib/ai.ts'];
 </script>
 
 {#snippet MarkerExamples()}
@@ -205,8 +218,76 @@
   </Example>
 {/snippet}
 
+{#snippet MarkerAccordion()}
+  <Example title="Accordion" containerClass="min-h-72">
+    <Accordion>
+      <AccordionItem value="1">
+        <AccordionTrigger>
+          <Marker>
+            <MarkerIcon>
+              <IconPlaceholder
+                lucide="ClockIcon"
+                tabler="IconClock"
+                hugeicons="Clock01Icon"
+                phosphor="ClockIcon"
+                remixicon="RiTimeLine"
+              />
+            </MarkerIcon>
+            <MarkerContent>Worked for 42s</MarkerContent>
+          </Marker>
+        </AccordionTrigger>
+        <AccordionContent>
+          <p class="text-sm text-muted-foreground">
+            The user asked for a list of all the files in the current directory. The assistant responded with a
+            list of all the files in the current directory.
+          </p>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  </Example>
+{/snippet}
+
+{#snippet MarkerDrawer()}
+  <Example title="Drawer">
+    <Drawer swipeDirection="right">
+      <Marker variant="separator">
+        <DrawerTrigger class={buttonVariants({ variant: 'outline' })}>
+          <IconPlaceholder
+            lucide="SearchIcon"
+            tabler="IconSearch"
+            hugeicons="SearchIcon"
+            phosphor="MagnifyingGlassIcon"
+            remixicon="RiSearchLine"
+            data-icon="inline-start"
+          />
+          Explored 4 files
+        </DrawerTrigger>
+      </Marker>
+      <DrawerContent>
+        <DrawerHeader>
+          <DrawerTitle>File Activity</DrawerTitle>
+          <DrawerDescription>Files read while preparing the response.</DrawerDescription>
+        </DrawerHeader>
+        <div class="grid gap-3 px-4 text-sm">
+          {#each drawerFiles as file (file)}
+            <div class="flex items-center justify-between gap-4 rounded-md border px-3 py-2">
+              <span class="truncate">{file}</span>
+              <span class="text-muted-foreground">read</span>
+            </div>
+          {/each}
+        </div>
+        <DrawerFooter>
+          <DrawerClose class={buttonVariants({ variant: 'outline' })}>Close</DrawerClose>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
+  </Example>
+{/snippet}
+
 <ExampleWrapper>
   {@render MarkerExamples()}
   {@render MarkerBorder()}
   {@render MarkerSeparator()}
+  {@render MarkerAccordion()}
+  {@render MarkerDrawer()}
 </ExampleWrapper>

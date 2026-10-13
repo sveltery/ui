@@ -295,7 +295,20 @@ Use the `render` snippet to replace a part's default element. It receives the el
 
 `Questionnaire` always renders a native form and supports `onsubmit`, `onreset`, `action`, and the other form props. Do not nest a Questionnaire inside another form. Answers serialize through native controls: `FormData.get(itemName)` reads a single answer and `FormData.getAll(itemName)` reads multiple answers.
 
-`novalidate` is `true` by default so validation uses `QuestionnaireError` instead of the browser's constraint validation UI. `form.reset()` restores the initial item, default answers, skip state, and validation state.
+`novalidate` is `true` by default so validation uses `QuestionnaireError` instead of the browser's constraint validation UI. It takes effect once the page is hydrated, so a page without JavaScript keeps the browser's validation. `form.reset()` restores the initial item, default answers, skip state, and validation state.
+
+## Forms and fields
+
+`Questionnaire` is a Base `Form`, and each `QuestionnaireItem` is a Base `Field.Root` named after the item. A submit with an invalid item, a Form error or a source issue switches to the first such item and focuses it, even when it is not the current step. Pass a SvelteKit remote form with `form`, and server errors keyed by item name with `errors`. `QuestionnaireError` shows the item's issue or error when it has one. `Field.Error` from `@sveltery/base/field` also works inside an item.
+
+```svelte
+<Questionnaire form={answers}>
+  <QuestionnaireItem name="team" required>
+    <!-- choices -->
+    <QuestionnaireError />
+  </QuestionnaireItem>
+</Questionnaire>
+```
 
 ## Keyboard
 
@@ -429,7 +442,10 @@ The form and coordination root.
 | `items` | `readonly QuestionnaireItemDefinition[]` | | Optional item data for server rendering and item order. |
 | `onItemChange` | `(item: string) => void` | | Called when navigation requests a different item. |
 | `shortcuts` | `'letters' \| 'numbers'` | | Assigns scoped answer shortcuts in definition or rendered DOM order. |
-| `novalidate` | `boolean` | `true` | Disables native constraint UI while preserving questionnaire validation. |
+| `novalidate` | `boolean` | `true` | Disables native constraint UI once hydrated, while preserving questionnaire validation. |
+| `form` | `FormSource` | | A SvelteKit remote form or other Base form source. Its issues show on the matching items. |
+| `enhance` | `(instance) => unknown` | | Runs once the source has validated a submit, as Base `Form` does. |
+| `errors` | `Record<string, string \| string[]>` | | Bindable. Errors keyed by item name, usually from a server action. |
 | `onsubmit` | `(event: SubmitEvent) => void` | | Native form submission handler after every item validates. |
 | `onreset` | `(event: Event) => void` | | Native reset handler. Prevent default to stop questionnaire reset. |
 

@@ -553,6 +553,10 @@ See the props of the [tooltip](#props) and of the [legend](#props-1).
 | `color` | `string` | Any CSS color. Not allowed with `theme` |
 | `theme` | `{ light: string; dark: string }` | A color for each mode. Not allowed with `color` |
 
+## Examples
+
+<ComponentPreview name="base/ChartExample" class="theme-blue" />
+
 ## Area
 
 ### Area Chart
