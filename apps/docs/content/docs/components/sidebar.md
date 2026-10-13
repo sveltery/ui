@@ -152,6 +152,28 @@ export function load({ cookies }) {
 
 The sidebar reads the `--sidebar`, `--sidebar-foreground`, `--sidebar-primary`, `--sidebar-primary-foreground`, `--sidebar-accent`, `--sidebar-accent-foreground`, `--sidebar-border` and `--sidebar-ring` variables from your theme.
 
+## Examples
+
+The upstream examples open dropdown menus from the team switcher, the user menu and the floating navigation. Those menus wait for the Menu component, so here the triggers are plain `SidebarMenuButton`s.
+
+### Floating
+
+`variant="floating"` detaches the sidebar from the edge as a rounded, bordered card with a shadow.
+
+<ComponentPreview name="base/SidebarFloatingExample" />
+
+### Icon
+
+`collapsible="icon"` shrinks the sidebar to a `3rem` strip of icons, and each `SidebarMenuButton` with a `tooltip` names its icon on hover.
+
+<ComponentPreview name="base/SidebarIconExample" />
+
+### Inset
+
+`variant="inset"` renders the page content in a rounded panel inside the sidebar's background.
+
+<ComponentPreview name="base/SidebarInsetExample" />
+
 ## API reference
 
 `Sidebar` has no Base primitive of its own. On mobile it is a `Sheet`, styled on the Sveltery Base `Dialog` primitive, and `SidebarMenuButton` shows its `tooltip` with a `Tooltip`, styled on the Sveltery Base `Tooltip` primitive. Both own their behavior, focus handling and accessibility. See the [Base UI Dialog](https://base-ui.com/react/components/dialog) and [Base UI Tooltip](https://base-ui.com/react/components/tooltip) documentation for the behavior they port.
