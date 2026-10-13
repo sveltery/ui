@@ -970,4 +970,9 @@
   .cn-field-error {
     @apply text-destructive text-sm;
   }
+
+  /* MARK: Resizable */
+  .cn-resizable-handle-icon {
+    @apply bg-border h-6 w-1 rounded-lg;
+  }
 }
