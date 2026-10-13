@@ -13,6 +13,8 @@ export interface ItemOptions {
   readonly disabled: boolean;
   readonly invalid: boolean;
   readonly onStatusChange: ((status: QuestionnaireItemStatus) => void) | undefined;
+  /** Runs the item's Field validation, which calls `check`. */
+  validateField(): void;
 }
 
 export type Answer = ChoiceModel | InputModel;
@@ -25,6 +27,9 @@ export class ItemModel {
   skipped = $state(false);
   /** Set once navigation or submission validated the item, so errors only show after an attempt. */
   attempted = $state(false);
+  /** Whether the item's Field is invalid, which includes Form errors and source issues on its name. */
+  fieldInvalid = $state(false);
+  #syncing = false;
   descriptions = $state.raw<string[]>([]);
   errors = $state.raw<string[]>([]);
   /** The status last reported, undefined until the first report pass records the settled status. */
@@ -60,7 +65,10 @@ export class ItemModel {
   status: QuestionnaireItemStatus = $derived(this.answers.some((answer) => answer.answered) ? 'answered' : this.skipped ? 'skipped' : 'unanswered');
   #skippedOptional = $derived(this.status === 'skipped' && !this.required);
   valid = $derived.by(() => this.disabled || this.#skippedOptional || (!this.#options.invalid && this.status === 'answered'));
-  invalid = $derived.by(() => !this.disabled && !this.#skippedOptional && (this.#options.invalid || (this.attempted && !this.valid)));
+  invalid = $derived.by(
+    () => !this.disabled && !this.#skippedOptional && (this.#options.invalid || (this.attempted && !this.valid) || this.fieldInvalid)
+  );
+  message = $derived(this.required ? 'Choose an answer to continue.' : 'Choose an answer or skip this question.');
   active = $derived.by(() => !this.disabled && this.root.activeName === this.name);
 
   /** With `items`, shortcuts follow the definition's choice order. Without it, the enabled choices' document order. */
@@ -124,8 +132,30 @@ export class ItemModel {
     }
   }
 
+  /** The Field's `validate`. Form calls it for every item on submit, which counts as an attempt. */
+  check = (): string | null => {
+    if (!this.#syncing) this.attempted = true;
+    return this.valid ? null : this.message;
+  };
+
+  /** Keeps the Field's validity in step with the answers once an attempt or `invalid` made it matter. */
+  syncField(): void {
+    const relevant = this.attempted || this.#options.invalid;
+    void this.valid;
+    if (!relevant) return;
+    untrack(() => {
+      this.#syncing = true;
+      try {
+        this.#options.validateField();
+      } finally {
+        this.#syncing = false;
+      }
+    });
+  }
+
   validate(): boolean {
     this.attempted = true;
+    this.#options.validateField();
     if (!this.valid) return false;
     if (!this.root.nativeValidation) return true;
     const element = this.answers.find((answer) => answer.answered && answer.element?.willValidate && !answer.element.validity.valid)?.element;
