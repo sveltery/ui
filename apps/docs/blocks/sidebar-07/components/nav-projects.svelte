@@ -1,0 +1,74 @@
+<script lang="ts">
+  import type { Snippet } from 'svelte';
+  import type { HTMLAttributes } from 'svelte/elements';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
+  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuAction, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@sveltery/ui/sidebar';
+
+  let {
+    projects,
+  }: {
+    projects: {
+      name: string;
+      url: string;
+      icon: Snippet;
+    }[];
+  } = $props();
+
+  const sidebar = useSidebar();
+</script>
+
+{#snippet action(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+  <SidebarMenuAction {...props} showOnHover class="aria-expanded:bg-muted">{@render children?.()}</SidebarMenuAction>
+{/snippet}
+
+<SidebarGroup class="group-data-[collapsible=icon]:hidden">
+  <SidebarGroupLabel>Projects</SidebarGroupLabel>
+  <SidebarMenu>
+    {#each projects as item (item.name)}
+      {#snippet link(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+        <a href={item.url} {...props}>{@render children?.()}</a>
+      {/snippet}
+      <SidebarMenuItem>
+        <SidebarMenuButton render={link}>
+          {@render item.icon()}
+          <span>{item.name}</span>
+        </SidebarMenuButton>
+        <DropdownMenu>
+          <DropdownMenuTrigger render={action}>
+            <IconPlaceholder lucide="MoreHorizontalIcon" tabler="IconDots" hugeicons="MoreHorizontalCircle01Icon" phosphor="DotsThreeOutlineIcon" remixicon="RiMoreLine" />
+            <span class="sr-only">More</span>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent class="w-fit" side={sidebar.isMobile ? 'bottom' : 'right'} align={sidebar.isMobile ? 'end' : 'start'}>
+            <DropdownMenuItem>
+              <IconPlaceholder lucide="FolderIcon" tabler="IconFolder" hugeicons="FolderIcon" phosphor="FolderIcon" remixicon="RiFolderLine" />
+              <span>View Project</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <IconPlaceholder lucide="ArrowRightIcon" tabler="IconArrowForward" hugeicons="ArrowRightIcon" phosphor="ShareFatIcon" remixicon="RiShareForwardLine" />
+              <span>Share Project</span>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem variant="destructive">
+              <IconPlaceholder lucide="Trash2Icon" tabler="IconTrash" hugeicons="Delete02Icon" phosphor="TrashIcon" remixicon="RiDeleteBinLine" />
+              <span>Delete Project</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </SidebarMenuItem>
+    {/each}
+    <SidebarMenuItem>
+      <SidebarMenuButton class="text-sidebar-foreground/70">
+        <IconPlaceholder
+          lucide="MoreHorizontalIcon"
+          tabler="IconDots"
+          hugeicons="MoreHorizontalCircle01Icon"
+          phosphor="DotsThreeOutlineIcon"
+          remixicon="RiMoreLine"
+          class="text-sidebar-foreground/70"
+        />
+        <span>More</span>
+      </SidebarMenuButton>
+    </SidebarMenuItem>
+  </SidebarMenu>
+</SidebarGroup>
