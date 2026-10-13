@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { flushSync, mount, unmount } from 'svelte';
 import QuestionnaireCollectionFixture from './QuestionnaireCollectionFixture.svelte';
 import QuestionnaireFixture from './QuestionnaireFixture.svelte';
+import QuestionnaireRemoteFixture from './QuestionnaireRemoteFixture.svelte';
 
 type Fixture = { toggle(): void; preventKeydown(): void; bound(): { item: string; checked: boolean; text: string } };
 let instance: ReturnType<typeof mount> | undefined;
@@ -930,5 +931,25 @@ describe('Questionnaire with items', () => {
       ['[Questionnaire] Rendered choice "fixed" in item "answer" is missing from Root.items and will not receive a shortcut.'],
       ['[Questionnaire] Rendered choice "fixed" in item "answer" is missing from Root.items and will not receive a shortcut.']
     ]);
+  });
+
+  it('returns to an earlier step when a remote form reports an issue on it, and shows it in Field.Error', async () => {
+    instance = mount(QuestionnaireRemoteFixture, {
+      target: document.body,
+      props: { serverIssues: [{ message: 'That scope is full.', path: ['scope'] }] }
+    });
+    flushSync();
+    choose('scope-choice');
+    click(button('next'));
+    choose('detail-choice');
+    click(button('submit'));
+
+    await vi.waitFor(() => expect(item('scope').hasAttribute('data-active')).toBe(true));
+    expect(item('detail').hidden).toBe(true);
+    expect(el('scope-field-error').textContent).toBe('That scope is full.');
+    expect(el('scope-error').hidden).toBe(false);
+    expect(el('scope-error').textContent).toBe('That scope is full.');
+    expect(item('scope').getAttribute('aria-invalid')).toBe('true');
+    expect(document.activeElement).toBe(choiceInput('scope-choice'));
   });
 });

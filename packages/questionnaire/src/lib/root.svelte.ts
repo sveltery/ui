@@ -1,3 +1,4 @@
+import type { FormFocusInvalidDetail } from '@sveltery/base/form';
 import { createContext, flushSync, untrack } from 'svelte';
 import type { Attachment } from 'svelte/attachments';
 import {
@@ -74,12 +75,6 @@ export class QuestionnaireModel {
     return definition ? Boolean(definition.required) : (this.activeItem?.required ?? false);
   });
   activeStatus = $derived<QuestionnaireItemStatus | null>(this.#index < 0 ? null : (this.activeItem?.status ?? 'unanswered'));
-  /** Items in navigation order, the order submission validates them in. */
-  #ordered = $derived(
-    this.collection
-      ? this.collection.enabledItems.flatMap((definition) => this.runtime.filter((item) => item.name === definition.name))
-      : this.runtime
-  );
   #warnings = $derived.by(() =>
     this.collection
       ? [
@@ -173,21 +168,17 @@ export class QuestionnaireModel {
     if (name) this.select(name);
   }
 
-  /** Runs before every other submit listener so an invalid submit never reaches them. */
-  #gate = (event: SubmitEvent) => {
-    const invalid = this.#ordered.find((item) => !item.validate());
-    if (!invalid) return;
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    if (invalid.name === this.activeName) invalid.focusInvalid();
-    else this.select(invalid.name, 'invalid');
+  /** Form's reveal for an invalid answer: switch to its item, which then takes focus. */
+  focusInvalid = ({ control }: FormFocusInvalidDetail): void => {
+    const item = this.runtime.find((entry) => entry.element?.contains(control));
+    if (!item) return;
+    if (item.name === this.activeName) item.focusInvalid();
+    else this.select(item.name, 'invalid');
   };
 
   attach: Attachment<HTMLFormElement> = (element) => {
     this.element = element;
-    element.addEventListener('submit', this.#gate, { capture: true });
     return () => {
-      element.removeEventListener('submit', this.#gate, { capture: true });
       this.element = undefined;
     };
   };

@@ -22,9 +22,11 @@
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "peerDependencies": {
+    "@sveltery/base": "*",
     "svelte": "^5.57.1"
   },
   "devDependencies": {
+    "@sveltery/base": "github:sveltery/base#2c67ff3d6cd20120eeda1f045101016921ba83df",
     "svelte": "5.57.1"
   }
 }
