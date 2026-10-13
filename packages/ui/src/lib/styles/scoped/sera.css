@@ -6,7 +6,7 @@
   :where(.style-sera) * { @apply border-border outline-ring/50; }
 }
 @layer components {
-.style-sera.style-sera :is(.cn-alert, .cn-alert-variant-default, .cn-alert-variant-destructive, .cn-alert-title, .cn-alert-description, .cn-alert-action, .cn-avatar, .cn-avatar-fallback, .cn-avatar-image, .cn-avatar-badge, .cn-avatar-group-count, .cn-empty, .cn-empty-header, .cn-empty-media, .cn-empty-media-default, .cn-empty-media-icon, .cn-empty-title, .cn-empty-description, .cn-empty-content, .cn-button, .cn-button-variant-default, .cn-button-variant-outline, .cn-button-variant-secondary, .cn-button-variant-ghost, .cn-button-variant-destructive, .cn-button-variant-link, .cn-button-size-xs, .cn-button-size-sm, .cn-button-size-default, .cn-button-size-lg, .cn-button-size-icon-xs, .cn-button-size-icon-sm, .cn-button-size-icon, .cn-button-size-icon-lg, .cn-dialog-overlay, .cn-dialog-content, .cn-dialog-close, .cn-dialog-header, .cn-dialog-footer, .cn-dialog-title, .cn-dialog-description, .cn-textarea, .cn-skeleton, .cn-kbd, .cn-kbd-group, .cn-table-container, .cn-table, .cn-table-header, .cn-table-body, .cn-table-footer, .cn-table-row, .cn-table-row-aria, .cn-table-head, .cn-table-head-aria, .cn-table-cell, .cn-table-cell-aria, .cn-table-caption, .cn-card, .cn-card-header, .cn-card-title, .cn-card-description, .cn-card-content, .cn-card-footer, .cn-label, .cn-label-aria, .cn-badge, .cn-badge-variant-default, .cn-badge-variant-secondary, .cn-badge-variant-outline, .cn-badge-variant-destructive, .cn-badge-variant-ghost, .cn-badge-variant-link, .cn-button-group, .cn-button-group-orientation-horizontal, .cn-button-group-orientation-vertical, .cn-button-group-text, .cn-button-group-separator, .cn-item, .cn-item-variant-default, .cn-item-variant-outline, .cn-item-variant-muted, .cn-item-size-default, .cn-item-size-sm, .cn-item-size-xs, .cn-item-media, .cn-item-media-variant-default, .cn-item-media-variant-icon, .cn-item-media-variant-image, .cn-item-content, .cn-item-title, .cn-item-description, .cn-item-actions, .cn-item-header, .cn-item-footer, .cn-item-group, .cn-item-separator, .cn-breadcrumb-list, .cn-breadcrumb-item, .cn-breadcrumb-link, .cn-breadcrumb-page, .cn-breadcrumb-separator, .cn-breadcrumb-ellipsis, .cn-pagination-content, .cn-pagination-ellipsis, .cn-pagination-previous, .cn-pagination-next, .cn-native-select, .cn-native-select-icon, .cn-marker, .cn-marker-variant-separator, .cn-marker-variant-border, .cn-marker-icon, .cn-marker-content, .cn-attachment, .cn-attachment-orientation-horizontal, .cn-attachment-orientation-vertical, .cn-attachment-size-default, .cn-attachment-size-sm, .cn-attachment-size-xs, .cn-attachment-media, .cn-attachment-media-variant-image, .cn-attachment-content, .cn-attachment-title, .cn-attachment-description, .cn-attachment-actions, .cn-attachment-group, .cn-attachment-trigger, .cn-bubble, .cn-bubble-content, .cn-bubble-variant-default, .cn-bubble-variant-secondary, .cn-bubble-variant-muted, .cn-bubble-variant-tinted, .cn-bubble-variant-outline, .cn-bubble-variant-ghost, .cn-bubble-variant-destructive, .cn-bubble-reactions, .cn-bubble-reactions-side-top, .cn-bubble-reactions-side-bottom, .cn-bubble-reactions-align-start, .cn-bubble-reactions-align-end, .cn-bubble-group, .cn-message, .cn-message-avatar, .cn-message-content, .cn-message-header, .cn-message-footer, .cn-message-group, .cn-accordion-item, .cn-accordion-trigger, .cn-accordion-content, .cn-accordion-content-inner, .cn-checkbox, .cn-checkbox-aria, .cn-checkbox-indicator, .cn-popover-content, .cn-popover-content-logical, .cn-popover-header, .cn-popover-title, .cn-popover-description, .cn-progress, .cn-progress-track, .cn-progress-indicator, .cn-progress-label, .cn-progress-value, .cn-radio-group, .cn-radio-group-item, .cn-radio-group-item-aria, .cn-radio-group-indicator, .cn-radio-group-indicator-icon, .cn-scroll-area-scrollbar, .cn-scroll-area-thumb, .cn-toggle, .cn-toggle-aria, .cn-toggle-variant-default, .cn-toggle-variant-outline, .cn-toggle-size-default, .cn-toggle-size-sm, .cn-toggle-size-lg, .cn-toggle-group, .cn-toggle-group-item, .cn-switch, .cn-switch-aria, .cn-switch-thumb, .cn-switch-thumb-aria, .cn-slider, .cn-slider-track, .cn-slider-range, .cn-slider-thumb, .cn-tabs, .cn-tabs-list, .cn-tabs-trigger, .cn-tabs-content, .cn-input, .cn-sheet-overlay, .cn-sheet-content, .cn-sheet-close, .cn-sheet-header, .cn-sheet-footer, .cn-sheet-title, .cn-sheet-description, .cn-input-group, .cn-input-group-addon, .cn-input-group-addon-align-inline-end, .cn-input-group-addon-align-block-start, .cn-input-group-addon-align-block-end, .cn-input-group-button, .cn-input-group-button-size-xs, .cn-input-group-button-size-icon-xs, .cn-input-group-button-size-icon-sm, .cn-input-group-text, .cn-input-group-input, .cn-input-group-textarea, .cn-alert-dialog-overlay, .cn-alert-dialog-content, .cn-alert-dialog-header, .cn-alert-dialog-media, .cn-alert-dialog-title, .cn-alert-dialog-description, .cn-field-set, .cn-field-legend, .cn-field-group, .cn-field, .cn-field-content, .cn-field-label, .cn-field-label-aria, .cn-field-title, .cn-field-description, .cn-field-separator, .cn-field-separator-content, .cn-field-error, .cn-carousel-previous, .cn-carousel-next) { all: revert-layer; --tw-leading: initial; }
+.style-sera.style-sera :is(.cn-alert, .cn-alert-variant-default, .cn-alert-variant-destructive, .cn-alert-title, .cn-alert-description, .cn-alert-action, .cn-avatar, .cn-avatar-fallback, .cn-avatar-image, .cn-avatar-badge, .cn-avatar-group-count, .cn-empty, .cn-empty-header, .cn-empty-media, .cn-empty-media-default, .cn-empty-media-icon, .cn-empty-title, .cn-empty-description, .cn-empty-content, .cn-button, .cn-button-variant-default, .cn-button-variant-outline, .cn-button-variant-secondary, .cn-button-variant-ghost, .cn-button-variant-destructive, .cn-button-variant-link, .cn-button-size-xs, .cn-button-size-sm, .cn-button-size-default, .cn-button-size-lg, .cn-button-size-icon-xs, .cn-button-size-icon-sm, .cn-button-size-icon, .cn-button-size-icon-lg, .cn-dialog-overlay, .cn-dialog-content, .cn-dialog-close, .cn-dialog-header, .cn-dialog-footer, .cn-dialog-title, .cn-dialog-description, .cn-textarea, .cn-skeleton, .cn-kbd, .cn-kbd-group, .cn-table-container, .cn-table, .cn-table-header, .cn-table-body, .cn-table-footer, .cn-table-row, .cn-table-row-aria, .cn-table-head, .cn-table-head-aria, .cn-table-cell, .cn-table-cell-aria, .cn-table-caption, .cn-card, .cn-card-header, .cn-card-title, .cn-card-description, .cn-card-content, .cn-card-footer, .cn-label, .cn-label-aria, .cn-badge, .cn-badge-variant-default, .cn-badge-variant-secondary, .cn-badge-variant-outline, .cn-badge-variant-destructive, .cn-badge-variant-ghost, .cn-badge-variant-link, .cn-button-group, .cn-button-group-orientation-horizontal, .cn-button-group-orientation-vertical, .cn-button-group-text, .cn-button-group-separator, .cn-item, .cn-item-variant-default, .cn-item-variant-outline, .cn-item-variant-muted, .cn-item-size-default, .cn-item-size-sm, .cn-item-size-xs, .cn-item-media, .cn-item-media-variant-default, .cn-item-media-variant-icon, .cn-item-media-variant-image, .cn-item-content, .cn-item-title, .cn-item-description, .cn-item-actions, .cn-item-header, .cn-item-footer, .cn-item-group, .cn-item-separator, .cn-breadcrumb-list, .cn-breadcrumb-item, .cn-breadcrumb-link, .cn-breadcrumb-page, .cn-breadcrumb-separator, .cn-breadcrumb-ellipsis, .cn-pagination-content, .cn-pagination-ellipsis, .cn-pagination-previous, .cn-pagination-next, .cn-native-select, .cn-native-select-icon, .cn-marker, .cn-marker-variant-separator, .cn-marker-variant-border, .cn-marker-icon, .cn-marker-content, .cn-attachment, .cn-attachment-orientation-horizontal, .cn-attachment-orientation-vertical, .cn-attachment-size-default, .cn-attachment-size-sm, .cn-attachment-size-xs, .cn-attachment-media, .cn-attachment-media-variant-image, .cn-attachment-content, .cn-attachment-title, .cn-attachment-description, .cn-attachment-actions, .cn-attachment-group, .cn-attachment-trigger, .cn-bubble, .cn-bubble-content, .cn-bubble-variant-default, .cn-bubble-variant-secondary, .cn-bubble-variant-muted, .cn-bubble-variant-tinted, .cn-bubble-variant-outline, .cn-bubble-variant-ghost, .cn-bubble-variant-destructive, .cn-bubble-reactions, .cn-bubble-reactions-side-top, .cn-bubble-reactions-side-bottom, .cn-bubble-reactions-align-start, .cn-bubble-reactions-align-end, .cn-bubble-group, .cn-message, .cn-message-avatar, .cn-message-content, .cn-message-header, .cn-message-footer, .cn-message-group, .cn-accordion-item, .cn-accordion-trigger, .cn-accordion-content, .cn-accordion-content-inner, .cn-checkbox, .cn-checkbox-aria, .cn-checkbox-indicator, .cn-popover-content, .cn-popover-content-logical, .cn-popover-header, .cn-popover-title, .cn-popover-description, .cn-progress, .cn-progress-track, .cn-progress-indicator, .cn-progress-label, .cn-progress-value, .cn-radio-group, .cn-radio-group-item, .cn-radio-group-item-aria, .cn-radio-group-indicator, .cn-radio-group-indicator-icon, .cn-scroll-area-scrollbar, .cn-scroll-area-thumb, .cn-toggle, .cn-toggle-aria, .cn-toggle-variant-default, .cn-toggle-variant-outline, .cn-toggle-size-default, .cn-toggle-size-sm, .cn-toggle-size-lg, .cn-toggle-group, .cn-toggle-group-item, .cn-switch, .cn-switch-aria, .cn-switch-thumb, .cn-switch-thumb-aria, .cn-slider, .cn-slider-track, .cn-slider-range, .cn-slider-thumb, .cn-tabs, .cn-tabs-list, .cn-tabs-trigger, .cn-tabs-content, .cn-input, .cn-sheet-overlay, .cn-sheet-content, .cn-sheet-close, .cn-sheet-header, .cn-sheet-footer, .cn-sheet-title, .cn-sheet-description, .cn-input-group, .cn-input-group-addon, .cn-input-group-addon-align-inline-end, .cn-input-group-addon-align-block-start, .cn-input-group-addon-align-block-end, .cn-input-group-button, .cn-input-group-button-size-xs, .cn-input-group-button-size-icon-xs, .cn-input-group-button-size-icon-sm, .cn-input-group-text, .cn-input-group-input, .cn-input-group-textarea, .cn-alert-dialog-overlay, .cn-alert-dialog-content, .cn-alert-dialog-header, .cn-alert-dialog-media, .cn-alert-dialog-title, .cn-alert-dialog-description, .cn-field-set, .cn-field-legend, .cn-field-group, .cn-field, .cn-field-content, .cn-field-label, .cn-field-label-aria, .cn-field-title, .cn-field-description, .cn-field-separator, .cn-field-separator-content, .cn-field-error, .cn-input-otp, .cn-input-otp-group, .cn-input-otp-slot, .cn-input-otp-separator, .cn-resizable-handle-icon, .cn-calendar, .cn-calendar-dropdown-root, .cn-calendar-caption-label, .cn-calendar-caption, .cn-tooltip-content, .cn-tooltip-content-logical, .cn-tooltip-arrow, .cn-tooltip-arrow-logical, .cn-hover-card-content, .cn-hover-card-content-logical, .cn-message-scroller-content, .cn-questionnaire, .cn-questionnaire-progress, .cn-questionnaire-item, .cn-questionnaire-title, .cn-questionnaire-description, .cn-questionnaire-choices, .cn-questionnaire-choice, .cn-questionnaire-choice-indicator, .cn-questionnaire-choice-indicator-dot, .cn-questionnaire-choice-indicator-check, .cn-questionnaire-choice-content, .cn-questionnaire-choice-description, .cn-questionnaire-shortcut, .cn-questionnaire-input-wrapper, .cn-questionnaire-input, .cn-questionnaire-error, .cn-questionnaire-actions, .cn-sidebar-gap, .cn-sidebar-inner, .cn-sidebar-rail, .cn-sidebar-inset, .cn-sidebar-input, .cn-sidebar-header, .cn-sidebar-content, .cn-sidebar-footer, .cn-sidebar-separator, .cn-sidebar-group, .cn-sidebar-menu, .cn-sidebar-group-content, .cn-sidebar-group-label, .cn-sidebar-group-action, .cn-sidebar-menu-button, .cn-sidebar-menu-button-aria, .cn-sidebar-menu-button-variant-default, .cn-sidebar-menu-button-variant-outline, .cn-sidebar-menu-button-size-default, .cn-sidebar-menu-button-size-sm, .cn-sidebar-menu-button-size-lg, .cn-sidebar-menu-action, .cn-sidebar-menu-badge, .cn-sidebar-menu-skeleton, .cn-sidebar-menu-skeleton-icon, .cn-sidebar-menu-skeleton-text, .cn-sidebar-menu-sub, .cn-sidebar-menu-sub-button, .cn-drawer-overlay, .cn-drawer-content, .cn-drawer-popup, .cn-drawer-handle, .cn-drawer-swipe-handle, .cn-drawer-header, .cn-drawer-header-base, .cn-drawer-title, .cn-drawer-description, .cn-drawer-footer, .cn-drawer-footer-base, .cn-carousel-previous, .cn-carousel-next) { all: revert-layer; --tw-leading: initial; }
 .style-sera.style-sera {
   --ui-radius-sm: calc(var(--radius) * 0.6);
   --ui-radius-md: calc(var(--radius) * 0.8);
@@ -978,6 +978,303 @@
 
   .cn-field-error {
     @apply text-destructive text-sm;
+  }
+
+  /* MARK: Input OTP */
+  .cn-input-otp {
+    @apply gap-2;
+  }
+
+  .cn-input-otp-group {
+    @apply has-aria-invalid:border-b-destructive dark:has-aria-invalid:border-b-destructive/50 rounded-none gap-1;
+  }
+
+  .cn-input-otp-slot {
+    @apply border-transparent border-b-input bg-transparent focus:border-b-ring aria-invalid:border-b-destructive dark:aria-invalid:border-b-destructive/50 size-10 border text-sm transition-[color,border-color] outline-none first:rounded-none last:rounded-none;
+  }
+
+  .cn-input-otp-separator {
+    @apply [&_svg:not([class*='size-'])]:size-3.5;
+  }
+
+  /* MARK: Resizable */
+  .cn-resizable-handle-icon {
+    @apply bg-border h-6 w-1 rounded-none;
+  }
+
+  /* MARK: Calendar */
+  .cn-calendar {
+    @apply p-3 [--cell-radius:0] [--cell-size:--spacing(8)];
+  }
+
+  .cn-calendar-dropdown-root {
+    @apply has-focus:border-ring border-input has-focus:ring-ring/30 rounded-none border has-focus:ring-2;
+  }
+
+  .cn-calendar-caption-label {
+    @apply h-8 pr-2 pl-3 text-xs font-semibold uppercase tracking-wide;
+  }
+
+  .cn-calendar-caption {
+    @apply text-xs font-semibold uppercase tracking-wide;
+  }
+
+  /* MARK: Tooltip */
+  .cn-tooltip-content {
+    @apply data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-[state=delayed-open]:animate-in data-[state=delayed-open]:fade-in-0 data-[state=delayed-open]:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 inline-flex items-center gap-1.5 rounded-none px-3 py-1.5 text-xs has-data-[slot=kbd]:pr-1.5 **:data-[slot=kbd]:relative **:data-[slot=kbd]:isolate **:data-[slot=kbd]:z-50 **:data-[slot=kbd]:rounded-none;
+  }
+
+  .cn-tooltip-content-logical {
+    @apply data-[side=inline-start]:slide-in-from-right-2 data-[side=inline-end]:slide-in-from-left-2;
+  }
+
+  .cn-tooltip-arrow {
+    @apply size-2.5 translate-y-[calc(-50%-2px)] rotate-45 rounded-none;
+  }
+
+  .cn-tooltip-arrow-logical {
+    @apply data-[side=inline-end]:top-1/2! data-[side=inline-end]:-left-1 data-[side=inline-end]:translate-x-[1.5px] data-[side=inline-end]:-translate-y-1/2 data-[side=inline-start]:top-1/2! data-[side=inline-start]:-right-1 data-[side=inline-start]:translate-x-[-1.5px] data-[side=inline-start]:-translate-y-1/2;
+  }
+
+  /* MARK: Hover Card */
+  .cn-hover-card-content {
+    @apply data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 bg-popover text-popover-foreground w-72 p-4 text-sm shadow-md ring-1 duration-100;
+  }
+
+  .cn-hover-card-content-logical {
+    @apply data-[side=inline-start]:slide-in-from-right-2 data-[side=inline-end]:slide-in-from-left-2;
+  }
+
+  /* MARK: Message Scroller */
+  .cn-message-scroller-content {
+    @apply gap-8;
+  }
+
+  /* MARK: Questionnaire */
+  .cn-questionnaire {
+    @apply gap-6;
+  }
+
+  .cn-questionnaire-progress {
+    @apply text-xs uppercase tracking-wide;
+  }
+
+  .cn-questionnaire-item {
+    @apply flex flex-col gap-5;
+  }
+
+  .cn-questionnaire-title {
+    @apply text-xs font-semibold uppercase tracking-wide [&:not(:has(~[data-slot=questionnaire-description]))]:mb-5;
+  }
+
+  .cn-questionnaire-description {
+    @apply text-sm normal-case tracking-normal;
+  }
+
+  .cn-questionnaire-choices {
+    @apply gap-3;
+  }
+
+  .cn-questionnaire-choice {
+    @apply hover:bg-muted/50 data-checked:bg-primary/5 data-checked:border-primary/30 dark:data-checked:border-primary/20 dark:data-checked:bg-primary/10 data-invalid:border-destructive has-[>input:focus-visible]:ring-ring/30 gap-3 rounded-none border border-input bg-transparent px-4 py-4 text-sm has-[>input:focus-visible]:ring-2;
+  }
+
+  .cn-questionnaire-choice-indicator {
+    @apply border-input group-data-checked/questionnaire-choice:border-foreground group-data-[type=checkbox]/questionnaire-choice:group-data-checked/questionnaire-choice:bg-primary group-data-[type=checkbox]/questionnaire-choice:group-data-checked/questionnaire-choice:text-primary-foreground group-data-[type=checkbox]/questionnaire-choice:group-data-checked/questionnaire-choice:border-primary size-4.5 translate-y-[--spacing(0.45)] group-has-data-[slot=questionnaire-choice-description]/questionnaire-choice:translate-y-0.5;
+  }
+
+  .cn-questionnaire-choice-indicator-dot {
+    @apply bg-foreground size-2;
+  }
+
+  .cn-questionnaire-choice-indicator-check {
+    @apply size-3.5;
+  }
+
+  .cn-questionnaire-choice-content {
+    @apply gap-1;
+  }
+
+  .cn-questionnaire-choice-description {
+    @apply text-muted-foreground;
+  }
+
+  .cn-questionnaire-shortcut {
+    @apply border-input bg-background text-muted-foreground size-5 translate-y-[--spacing(0.45)] group-has-data-[slot=questionnaire-choice-description]/questionnaire-choice:translate-y-0.5 items-center justify-center rounded-none border font-mono text-[0.625rem] font-medium leading-none;
+  }
+
+  .cn-questionnaire-input-wrapper {
+    @apply w-full;
+  }
+
+  .cn-questionnaire-input {
+    @apply border-transparent border-b-input bg-transparent focus-visible:border-b-ring aria-invalid:border-b-destructive dark:aria-invalid:border-b-destructive/50 h-10 border px-0 py-1 text-base md:text-sm;
+  }
+
+  .cn-questionnaire-error {
+    @apply mt-2 text-sm;
+  }
+
+  .cn-questionnaire-actions {
+    @apply gap-2 sm:min-h-10;
+  }
+
+  /* MARK: Sidebar */
+  .cn-sidebar-gap {
+    @apply transition-[width] duration-200 ease-linear;
+  }
+
+  .cn-sidebar-inner {
+    @apply bg-sidebar group-data-[variant=floating]:ring-sidebar-border group-data-[variant=floating]:rounded-none group-data-[variant=floating]:shadow-sm group-data-[variant=floating]:ring-1;
+  }
+
+  .cn-sidebar-rail {
+    @apply hover:after:bg-sidebar-border;
+  }
+
+  .cn-sidebar-inset {
+    @apply bg-background md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-none md:peer-data-[variant=inset]:shadow-sm md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2;
+  }
+
+  .cn-sidebar-input {
+    @apply bg-transparent border-input h-8 w-full shadow-none;
+  }
+
+  .cn-sidebar-header {
+    @apply gap-2 p-2 [--radius:0];
+  }
+
+  .cn-sidebar-content {
+    @apply no-scrollbar gap-2 [--radius:0];
+  }
+
+  .cn-sidebar-footer {
+    @apply gap-2 p-2;
+  }
+
+  .cn-sidebar-separator {
+    @apply bg-sidebar-border mx-2;
+  }
+
+  .cn-sidebar-group {
+    @apply p-2;
+  }
+
+  .cn-sidebar-menu {
+    @apply gap-0.5;
+  }
+
+  .cn-sidebar-group-content {
+    @apply text-sm;
+  }
+
+  .cn-sidebar-group-label {
+    @apply text-sidebar-foreground/70 ring-sidebar-ring h-8 rounded-none px-3 text-xs font-semibold uppercase tracking-wider transition-[margin,opacity] duration-200 ease-linear group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0 focus-visible:ring-2 [&>svg]:size-3.5;
+  }
+
+  .cn-sidebar-group-action {
+    @apply text-sidebar-foreground ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground absolute top-3.5 right-3 w-5 rounded-none p-0 focus-visible:ring-2 [&>svg]:size-3.5;
+  }
+
+  .cn-sidebar-menu-button {
+    @apply ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground active:bg-sidebar-accent active:text-sidebar-accent-foreground data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground data-open:hover:bg-sidebar-accent data-open:hover:text-sidebar-accent-foreground gap-2 rounded-none px-3 py-2 text-left text-sm transition-[width,height,padding] group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! focus-visible:ring-2 data-active:font-medium;
+  }
+
+  .cn-sidebar-menu-button-aria {
+    @apply aria-expanded:hover:bg-sidebar-accent aria-expanded:hover:text-sidebar-accent-foreground;
+  }
+
+  .cn-sidebar-menu-button-variant-default {
+    @apply hover:bg-sidebar-accent hover:text-sidebar-accent-foreground;
+  }
+
+  .cn-sidebar-menu-button-variant-outline {
+    @apply bg-background hover:bg-sidebar-accent hover:text-sidebar-accent-foreground shadow-[0_0_0_1px_var(--sidebar-border)] hover:shadow-[0_0_0_1px_var(--sidebar-accent)];
+  }
+
+  .cn-sidebar-menu-button-size-default {
+    @apply h-9 text-sm;
+  }
+
+  .cn-sidebar-menu-button-size-sm {
+    @apply h-8 text-xs;
+  }
+
+  .cn-sidebar-menu-button-size-lg {
+    @apply h-14 px-3 text-sm group-data-[collapsible=icon]:p-0!;
+  }
+
+  .cn-sidebar-menu-action {
+    @apply text-sidebar-foreground ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground peer-hover/menu-button:text-sidebar-accent-foreground absolute top-1.5 right-1 aspect-square w-5 rounded-none p-0 peer-data-[size=default]/menu-button:top-2 peer-data-[size=lg]/menu-button:top-2.5 peer-data-[size=sm]/menu-button:top-1 focus-visible:ring-2 [&>svg]:size-3.5;
+  }
+
+  .cn-sidebar-menu-badge {
+    @apply text-sidebar-foreground peer-hover/menu-button:text-sidebar-accent-foreground peer-data-active/menu-button:text-sidebar-accent-foreground pointer-events-none absolute right-1 flex h-5 min-w-5 rounded-none px-1 text-xs font-medium peer-data-[size=default]/menu-button:top-1.5 peer-data-[size=lg]/menu-button:top-2.5 peer-data-[size=sm]/menu-button:top-1;
+  }
+
+  .cn-sidebar-menu-skeleton {
+    @apply h-8 gap-2 rounded-none px-2;
+  }
+
+  .cn-sidebar-menu-skeleton-icon {
+    @apply size-3.5 rounded-none;
+  }
+
+  .cn-sidebar-menu-skeleton-text {
+    @apply h-4;
+  }
+
+  .cn-sidebar-menu-sub {
+    @apply border-sidebar-border mx-3.5 translate-x-px gap-1 border-l px-2.5 py-0.5 group-data-[collapsible=icon]:hidden;
+  }
+
+  .cn-sidebar-menu-sub-button {
+    @apply text-sidebar-foreground ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground active:bg-sidebar-accent active:text-sidebar-accent-foreground [&>svg]:text-sidebar-accent-foreground data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground h-7 gap-2 rounded-none px-3 focus-visible:ring-2 data-[size=md]:text-sm data-[size=sm]:text-xs [&>svg]:size-3.5;
+  }
+
+  /* MARK: Drawer */
+  .cn-drawer-overlay {
+    @apply bg-black/20 supports-backdrop-filter:backdrop-blur-sm;
+  }
+
+  .cn-drawer-content {
+    @apply bg-popover text-popover-foreground flex h-auto flex-col text-sm data-[vaul-drawer-direction=bottom]:rounded-none data-[vaul-drawer-direction=bottom]:border-t data-[vaul-drawer-direction=left]:rounded-none data-[vaul-drawer-direction=left]:border-r data-[vaul-drawer-direction=right]:rounded-none data-[vaul-drawer-direction=right]:border-l data-[vaul-drawer-direction=top]:rounded-none data-[vaul-drawer-direction=top]:border-b;
+  }
+
+  .cn-drawer-popup {
+    @apply bg-popover text-popover-foreground text-sm data-[swipe-direction=down]:rounded-none data-[swipe-direction=down]:border-t data-[swipe-direction=left]:rounded-none data-[swipe-direction=left]:border-r data-[swipe-direction=right]:rounded-none data-[swipe-direction=right]:border-l data-[swipe-direction=up]:rounded-none data-[swipe-direction=up]:border-b;
+  }
+
+  .cn-drawer-handle {
+    @apply bg-muted mx-auto mt-4 hidden h-1.5 w-[100px] shrink-0 rounded-none;
+  }
+
+  .cn-drawer-swipe-handle {
+    @apply after:bg-muted after:block after:shrink-0 after:rounded-none group-data-[swipe-axis=y]/drawer-popup:h-3 group-data-[swipe-axis=y]/drawer-popup:w-full group-data-[swipe-axis=y]/drawer-popup:justify-center group-data-[swipe-axis=y]/drawer-popup:after:h-1.5 group-data-[swipe-axis=y]/drawer-popup:after:w-[100px] group-data-[swipe-direction=down]/drawer-popup:items-end group-data-[swipe-direction=up]/drawer-popup:items-start group-data-[swipe-axis=x]/drawer-popup:h-full group-data-[swipe-axis=x]/drawer-popup:w-3 group-data-[swipe-axis=x]/drawer-popup:items-center group-data-[swipe-axis=x]/drawer-popup:after:h-[100px] group-data-[swipe-axis=x]/drawer-popup:after:w-1.5 group-data-[swipe-direction=left]/drawer-popup:justify-start group-data-[swipe-direction=right]/drawer-popup:justify-end;
+  }
+
+  .cn-drawer-header {
+    @apply gap-1 p-4 md:gap-2 md:text-left;
+  }
+
+  .cn-drawer-header-base {
+    @apply gap-1 p-4 pb-0 md:gap-2 md:text-left;
+  }
+
+  .cn-drawer-title {
+    @apply text-foreground text-lg font-semibold uppercase tracking-wider;
+  }
+
+  .cn-drawer-description {
+    @apply text-muted-foreground text-sm leading-relaxed mt-0.5;
+  }
+
+  .cn-drawer-footer {
+    @apply gap-2 p-4;
+  }
+
+  .cn-drawer-footer-base {
+    @apply gap-2 p-4 pt-0;
   }
 }
 }

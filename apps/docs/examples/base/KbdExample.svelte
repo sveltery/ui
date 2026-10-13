@@ -3,6 +3,8 @@
   import { InputGroup, InputGroupAddon, InputGroupInput } from '@sveltery/ui/input-group';
   import { Kbd, KbdGroup } from '@sveltery/ui/kbd';
   import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { buttonVariants } from '@sveltery/ui/button';
+  import { Tooltip, TooltipContent, TooltipTrigger } from '@sveltery/ui/tooltip';
 </script>
 
 {#snippet KbdBasic()}
@@ -117,6 +119,21 @@
   </Example>
 {/snippet}
 
+{#snippet KbdInTooltip()}
+  <Example title="Tooltip">
+    <Tooltip>
+      <TooltipTrigger class={buttonVariants({ size: 'icon-sm', variant: 'outline' })}>
+        <IconPlaceholder lucide="SaveIcon" tabler="IconDeviceFloppy" hugeicons="FloppyDiskIcon" phosphor="FloppyDiskIcon" remixicon="RiSaveLine" />
+      </TooltipTrigger>
+      <TooltipContent class="pr-1.5">
+        <div class="flex items-center gap-2">
+          Save Changes <Kbd>S</Kbd>
+        </div>
+      </TooltipContent>
+    </Tooltip>
+  </Example>
+{/snippet}
+
 {#snippet KbdWithSamp()}
   <Example title="With samp">
     <Kbd>
@@ -133,5 +150,6 @@
   {@render KbdWithIcons()}
   {@render KbdWithIconsAndText()}
   {@render KbdInInputGroup()}
+  {@render KbdInTooltip()}
   {@render KbdWithSamp()}
 </ExampleWrapper>

@@ -5,9 +5,12 @@ export default defineConfig({
   resolve: {
     alias: [
       { find: /^\$ui\//, replacement: new URL('./packages/ui/src/lib/', import.meta.url).pathname },
+      { find: /^@sveltery\/message-scroller$/, replacement: new URL('./packages/message-scroller/src/lib/index.ts', import.meta.url).pathname },
+      { find: /^@sveltery\/questionnaire$/, replacement: new URL('./packages/questionnaire/src/lib/index.ts', import.meta.url).pathname },
+      { find: /^@sveltery\/resizable$/, replacement: new URL('./packages/resizable/src/lib/index.ts', import.meta.url).pathname },
       { find: /^@sveltery\/ui\/icons$/, replacement: new URL('./packages/ui/src/lib/icons/index.ts', import.meta.url).pathname },
     ],
     conditions: ['browser'],
   },
-  test: { environment: 'jsdom', include: ['tests/dom/*.test.ts'] },
+  test: { environment: 'jsdom', include: ['tests/dom/*.test.ts', 'packages/day-picker/src/**/*.test.ts'] },
 });
