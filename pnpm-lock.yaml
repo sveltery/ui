@@ -321,6 +321,12 @@ importers:
         specifier: 5.57.1
         version: 5.57.1(@typescript-eslint/types@8.71.0)
 
+  packages/resizable:
+    devDependencies:
+      svelte:
+        specifier: 5.57.1
+        version: 5.57.1(@typescript-eslint/types@8.71.0)
+
   packages/ui:
     dependencies:
       class-variance-authority:
@@ -336,6 +342,9 @@ importers:
       '@sveltery/day-picker':
         specifier: workspace:*
         version: link:../day-picker
+      '@sveltery/resizable':
+        specifier: workspace:*
+        version: link:../resizable
       date-fns:
         specifier: 4.4.0
         version: 4.4.0
@@ -363,6 +372,9 @@ importers:
       '@sveltery/day-picker':
         specifier: workspace:*
         version: link:../../packages/day-picker
+      '@sveltery/resizable':
+        specifier: workspace:*
+        version: link:../../packages/resizable
       '@sveltery/ui':
         specifier: workspace:*
         version: link:../../packages/ui

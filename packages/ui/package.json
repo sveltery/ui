@@ -254,16 +254,22 @@
       "types": "./dist/calendar/index.d.ts",
       "svelte": "./dist/calendar/index.js",
       "default": "./dist/calendar/index.js"
+    },
+    "./resizable": {
+      "types": "./dist/resizable/index.d.ts",
+      "svelte": "./dist/resizable/index.js",
+      "default": "./dist/resizable/index.js"
     }
   },
   "svelte": "./dist/index.js",
   "scripts": {
-    "build": "svelte-package",
+    "build": "pnpm --filter @sveltery/resizable build && svelte-package",
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "peerDependencies": {
     "@sveltery/base": "*",
     "@sveltery/day-picker": "*",
+    "@sveltery/resizable": "*",
     "date-fns": "^4.4.0",
     "svelte": "^5.57.1",
     "tailwindcss": "4.3.0",
@@ -284,6 +290,7 @@
   "devDependencies": {
     "@sveltery/base": "github:sveltery/base#d4e26bfb0635862b894e87f5d74dbce656860a03",
     "@sveltery/day-picker": "workspace:*",
+    "@sveltery/resizable": "workspace:*",
     "date-fns": "4.4.0",
     "svelte": "5.57.1",
     "tailwindcss": "4.3.0",

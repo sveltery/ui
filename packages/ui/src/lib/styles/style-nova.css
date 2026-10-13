@@ -988,6 +988,11 @@
     @apply [&_svg:not([class*='size-'])]:size-4;
   }
 
+  /* MARK: Resizable */
+  .cn-resizable-handle-icon {
+    @apply bg-border h-6 w-1 rounded-lg;
+  }
+
   /* MARK: Calendar */
   .cn-calendar {
     @apply p-2 [--cell-radius:var(--radius-md)] [--cell-size:--spacing(7)];
