@@ -4,6 +4,7 @@
   import { Avatar, AvatarFallback, AvatarImage } from '@sveltery/ui/avatar';
   import { Button } from '@sveltery/ui/button';
   import { Card, CardContent, CardHeader, CardTitle } from '@sveltery/ui/card';
+  import { ChartContainer } from '@sveltery/ui/chart';
   import { Dialog, DialogContent, DialogTrigger } from '@sveltery/ui/dialog';
   import { Empty, EmptyTitle } from '@sveltery/ui/empty';
   import { Kbd } from '@sveltery/ui/kbd';
@@ -19,6 +20,7 @@
 <Avatar><AvatarImage src="/a.png" alt="" /><AvatarFallback>CN</AvatarFallback></Avatar>
 <Button>Save</Button>
 <Card><CardHeader><CardTitle>Card</CardTitle></CardHeader><CardContent>Body</CardContent></Card>
+<ChartContainer config={{ visits: { label: 'Visits', theme: { light: 'red', dark: 'blue' } } }}>Chart</ChartContainer>
 <Dialog><DialogTrigger>Open</DialogTrigger><DialogContent>Content</DialogContent></Dialog>
 <Empty><EmptyTitle>Nothing</EmptyTitle></Empty>
 <Kbd>K</Kbd>
