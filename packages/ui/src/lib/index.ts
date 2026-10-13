@@ -45,3 +45,4 @@ export * from './input-group/index.js';
 export * from './field/index.js';
 export * from './form/index.js';
 export * from './alert-dialog/index.js';
+export * from './carousel/index.js';

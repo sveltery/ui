@@ -19,7 +19,7 @@ registerHooks({
 const { render } = await import('svelte/server');
 const { default: App } = await import('./App.svelte');
 const { body } = render(App);
-for (const slot of ['alert', 'alert-title', 'alert-description', 'alert-action', 'aspect-ratio', 'avatar', 'button', 'card', 'card-header', 'card-title', 'card-content', 'dialog-trigger', 'empty', 'empty-title', 'kbd', 'label', 'separator', 'skeleton', 'table-container', 'table', 'table-body', 'table-row', 'table-cell', 'textarea']) {
+for (const slot of ['alert', 'alert-title', 'alert-description', 'alert-action', 'aspect-ratio', 'avatar', 'button', 'card', 'card-header', 'card-title', 'card-content', 'carousel', 'carousel-content', 'carousel-item', 'carousel-previous', 'carousel-next', 'dialog-trigger', 'empty', 'empty-title', 'kbd', 'label', 'separator', 'skeleton', 'table-container', 'table', 'table-body', 'table-row', 'table-cell', 'textarea']) {
   assert(body.includes(`data-slot="${slot}"`), `server markup renders ${slot}`);
 }
 assert(!body.includes('role="dialog"'), 'closed dialog content stays out of server markup');

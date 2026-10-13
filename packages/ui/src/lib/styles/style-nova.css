@@ -970,4 +970,13 @@
   .cn-field-error {
     @apply text-destructive text-sm;
   }
+
+  /* MARK: Carousel */
+  .cn-carousel-previous {
+    @apply rounded-full;
+  }
+
+  .cn-carousel-next {
+    @apply rounded-full;
+  }
 }

@@ -244,6 +244,11 @@
       "types": "./dist/alert-dialog/index.d.ts",
       "svelte": "./dist/alert-dialog/index.js",
       "default": "./dist/alert-dialog/index.js"
+    },
+    "./carousel": {
+      "types": "./dist/carousel/index.d.ts",
+      "svelte": "./dist/carousel/index.js",
+      "default": "./dist/carousel/index.js"
     }
   },
   "svelte": "./dist/index.js",
@@ -259,7 +264,8 @@
   },
   "dependencies": {
     "class-variance-authority": "0.7.1",
-    "cn": "0.2.2"
+    "cn": "0.2.2",
+    "embla-carousel": "8.6.0"
   },
   "devDependencies": {
     "@sveltery/base": "github:sveltery/base#d4e26bfb0635862b894e87f5d74dbce656860a03",

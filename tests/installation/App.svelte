@@ -3,6 +3,7 @@
   import { AspectRatio } from '@sveltery/ui/aspect-ratio';
   import { Avatar, AvatarFallback, AvatarImage } from '@sveltery/ui/avatar';
   import { Button } from '@sveltery/ui/button';
+  import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@sveltery/ui/carousel';
   import { Card, CardContent, CardHeader, CardTitle } from '@sveltery/ui/card';
   import { Dialog, DialogContent, DialogTrigger } from '@sveltery/ui/dialog';
   import { Empty, EmptyTitle } from '@sveltery/ui/empty';
@@ -18,6 +19,7 @@
 <Avatar><AvatarImage src="/a.png" alt="" /><AvatarFallback>CN</AvatarFallback></Avatar>
 <Button>Save</Button>
 <Card><CardHeader><CardTitle>Card</CardTitle></CardHeader><CardContent>Body</CardContent></Card>
+<Carousel><CarouselContent><CarouselItem>Slide</CarouselItem></CarouselContent><CarouselPrevious /><CarouselNext /></Carousel>
 <Dialog><DialogTrigger>Open</DialogTrigger><DialogContent>Content</DialogContent></Dialog>
 <Empty><EmptyTitle>Nothing</EmptyTitle></Empty>
 <Kbd>K</Kbd>
