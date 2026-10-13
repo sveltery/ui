@@ -3,6 +3,7 @@
   import type { HTMLAttributes } from 'svelte/elements';
   import { Button } from '@sveltery/ui/button';
   import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/ui/card';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
   import { Field } from '@sveltery/ui/field';
   import { IconPlaceholder } from '@sveltery/ui/icons';
   import { Item, ItemContent, ItemDescription, ItemTitle } from '@sveltery/ui/item';
@@ -22,12 +23,21 @@
     SidebarTrigger,
   } from '@sveltery/ui/sidebar';
 
-  const navMain = ['Getting Started', 'Build Your Application', 'API Reference', 'Architecture'];
+  const navMain = [
+    { title: 'Getting Started', items: ['Installation', 'Project Structure'] },
+    { title: 'Build Your Application', items: ['Routing', 'Data Fetching', 'Rendering', 'Caching', 'Styling', 'Optimizing', 'Configuring', 'Testing', 'Authentication', 'Deploying', 'Upgrading', 'Examples'] },
+    { title: 'API Reference', items: ['Components', 'File Conventions', 'Functions', 'next.config.js Options', 'CLI', 'Edge Runtime'] },
+    { title: 'Architecture', items: ['Accessibility', 'Fast Refresh', 'Next.js Compiler', 'Supported Browsers', 'Turbopack'] },
+  ];
 </script>
 
 {#snippet link(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
   <!-- svelte-ignore a11y_invalid_attribute -->
   <a href="#" {...props}>{@render children?.()}</a>
+{/snippet}
+
+{#snippet navButton(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+  <SidebarMenuButton {...props} class="data-popup-open:bg-sidebar-accent data-popup-open:text-sidebar-accent-foreground">{@render children?.()}</SidebarMenuButton>
 {/snippet}
 
 <!-- The transform makes this box the containing block of the sidebar's fixed container, so it fills the box and not the window. -->
@@ -51,13 +61,24 @@
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu>
-            {#each navMain as title (title)}
-              <SidebarMenuItem>
-                <SidebarMenuButton>
-                  {title}
-                  <IconPlaceholder lucide="MoreHorizontalIcon" tabler="IconDots" hugeicons="MoreHorizontalCircle01Icon" phosphor="DotsThreeOutlineIcon" remixicon="RiMoreLine" class="ml-auto" />
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+            {#each navMain as item (item.title)}
+              <DropdownMenu>
+                <SidebarMenuItem>
+                  <DropdownMenuTrigger render={navButton}>
+                    {item.title}
+                    <IconPlaceholder lucide="MoreHorizontalIcon" tabler="IconDots" hugeicons="MoreHorizontalCircle01Icon" phosphor="DotsThreeOutlineIcon" remixicon="RiMoreLine" class="ml-auto" />
+                  </DropdownMenuTrigger>
+                  {#if item.items.length}
+                    <DropdownMenuContent side="right" align="start">
+                      <DropdownMenuGroup>
+                        {#each item.items as subItem (subItem)}
+                          <DropdownMenuItem render={link}>{subItem}</DropdownMenuItem>
+                        {/each}
+                      </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                  {/if}
+                </SidebarMenuItem>
+              </DropdownMenu>
             {/each}
           </SidebarMenu>
         </SidebarGroup>

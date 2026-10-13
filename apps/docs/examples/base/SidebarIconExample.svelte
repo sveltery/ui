@@ -4,7 +4,9 @@
   import { Avatar, AvatarFallback, AvatarImage } from '@sveltery/ui/avatar';
   import { Button } from '@sveltery/ui/button';
   import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@sveltery/ui/collapsible';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
   import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@sveltery/ui/item';
   import {
     Sidebar,
     SidebarContent,
@@ -25,7 +27,12 @@
   } from '@sveltery/ui/sidebar';
 
   const user = { name: 'shadcn', email: 'm@example.com', avatar: 'https://github.com/shadcn.png' };
-  const team = { name: 'Acme Inc', plan: 'Enterprise' };
+  const teams = [
+    { name: 'Acme Inc', plan: 'Enterprise' },
+    { name: 'Acme Corp.', plan: 'Startup' },
+    { name: 'Evil Corp.', plan: 'Free' },
+  ];
+  let activeTeam = $state(teams[0]);
   const navMain = [
     { title: 'Playground', isActive: true, items: ['History', 'Starred', 'Settings'] },
     { title: 'Models', items: ['Genesis', 'Explorer', 'Quantum'] },
@@ -34,6 +41,10 @@
   ];
   const projects = ['Design Engineering', 'Sales & Marketing', 'Travel'];
 </script>
+
+{#snippet menuButton(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+  <SidebarMenuButton {...props} size="lg" class="data-open:bg-sidebar-accent data-open:text-sidebar-accent-foreground">{@render children?.()}</SidebarMenuButton>
+{/snippet}
 
 {#snippet link(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
   <!-- svelte-ignore a11y_invalid_attribute -->
@@ -69,20 +80,32 @@
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg">
-              <Button size="icon-sm" render={logo} nativeButton={false} class="size-8">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
-                  <rect width="256" height="256" fill="none"></rect>
-                  <line x1="208" y1="128" x2="128" y2="208" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></line>
-                  <line x1="192" y1="40" x2="40" y2="192" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></line>
-                </svg>
-              </Button>
-              <div class="grid flex-1 text-left text-sm leading-tight">
-                <span class="truncate font-medium">{team.name}</span>
-                <span class="truncate text-xs">{team.plan}</span>
-              </div>
-              <IconPlaceholder lucide="ChevronsUpDownIcon" tabler="IconSelector" hugeicons="UnfoldMoreIcon" phosphor="CaretUpDownIcon" remixicon="RiArrowUpDownLine" />
-            </SidebarMenuButton>
+            <DropdownMenu>
+              <DropdownMenuTrigger render={menuButton}>
+                <Button size="icon-sm" render={logo} nativeButton={false} class="size-8">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+                    <rect width="256" height="256" fill="none"></rect>
+                    <line x1="208" y1="128" x2="128" y2="208" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></line>
+                    <line x1="192" y1="40" x2="40" y2="192" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></line>
+                  </svg>
+                </Button>
+                <div class="grid flex-1 text-left text-sm leading-tight">
+                  <span class="truncate font-medium">{activeTeam.name}</span>
+                  <span class="truncate text-xs">{activeTeam.plan}</span>
+                </div>
+                <IconPlaceholder lucide="ChevronsUpDownIcon" tabler="IconSelector" hugeicons="UnfoldMoreIcon" phosphor="CaretUpDownIcon" remixicon="RiArrowUpDownLine" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel>Teams</DropdownMenuLabel>
+                </DropdownMenuGroup>
+                <DropdownMenuGroup>
+                  {#each teams as team (team.name)}
+                    <DropdownMenuItem onclick={() => (activeTeam = team)}>{team.name}</DropdownMenuItem>
+                  {/each}
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
@@ -139,17 +162,47 @@
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg">
-              <Avatar>
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback class="rounded-lg">CN</AvatarFallback>
-              </Avatar>
-              <div class="grid flex-1 text-left text-sm leading-tight">
-                <span class="truncate font-medium">{user.name}</span>
-                <span class="truncate text-xs">{user.email}</span>
-              </div>
-              <IconPlaceholder lucide="ChevronsUpDownIcon" tabler="IconSelector" hugeicons="UnfoldMoreIcon" phosphor="CaretUpDownIcon" remixicon="RiArrowUpDownLine" />
-            </SidebarMenuButton>
+            <DropdownMenu>
+              <DropdownMenuTrigger render={menuButton}>
+                <Avatar>
+                  <AvatarImage src={user.avatar} alt={user.name} />
+                  <AvatarFallback class="rounded-lg">CN</AvatarFallback>
+                </Avatar>
+                <div class="grid flex-1 text-left text-sm leading-tight">
+                  <span class="truncate font-medium">{user.name}</span>
+                  <span class="truncate text-xs">{user.email}</span>
+                </div>
+                <IconPlaceholder lucide="ChevronsUpDownIcon" tabler="IconSelector" hugeicons="UnfoldMoreIcon" phosphor="CaretUpDownIcon" remixicon="RiArrowUpDownLine" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel>
+                    <Item size="xs">
+                      <ItemMedia>
+                        <Avatar>
+                          <AvatarImage src={user.avatar} alt={user.name} />
+                          <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
+                      </ItemMedia>
+                      <ItemContent>
+                        <ItemTitle>{user.name}</ItemTitle>
+                        <ItemDescription>{user.email}</ItemDescription>
+                      </ItemContent>
+                    </Item>
+                  </DropdownMenuLabel>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>Account</DropdownMenuItem>
+                  <DropdownMenuItem>Billing</DropdownMenuItem>
+                  <DropdownMenuItem>Settings</DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>Log out</DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
