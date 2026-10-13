@@ -269,16 +269,22 @@
       "types": "./dist/hover-card/index.d.ts",
       "svelte": "./dist/hover-card/index.js",
       "default": "./dist/hover-card/index.js"
+    },
+    "./message-scroller": {
+      "types": "./dist/message-scroller/index.d.ts",
+      "svelte": "./dist/message-scroller/index.js",
+      "default": "./dist/message-scroller/index.js"
     }
   },
   "svelte": "./dist/index.js",
   "scripts": {
-    "build": "pnpm --filter @sveltery/resizable build && svelte-package",
+    "build": "pnpm --filter @sveltery/resizable --filter @sveltery/message-scroller build && svelte-package",
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "peerDependencies": {
     "@sveltery/base": "*",
     "@sveltery/day-picker": "*",
+    "@sveltery/message-scroller": "*",
     "@sveltery/resizable": "*",
     "date-fns": "^4.4.0",
     "svelte": "^5.57.1",
@@ -300,6 +306,7 @@
   "devDependencies": {
     "@sveltery/base": "github:sveltery/base#e9262a470b99bd1d9090771bae0e50bbd6462c81",
     "@sveltery/day-picker": "workspace:*",
+    "@sveltery/message-scroller": "workspace:*",
     "@sveltery/resizable": "workspace:*",
     "date-fns": "4.4.0",
     "svelte": "5.57.1",

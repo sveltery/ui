@@ -8,6 +8,7 @@
   import { Empty, EmptyTitle } from '@sveltery/ui/empty';
   import { Kbd } from '@sveltery/ui/kbd';
   import { Label } from '@sveltery/ui/label';
+  import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerItem, MessageScrollerProvider, MessageScrollerViewport } from '@sveltery/ui/message-scroller';
   import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@sveltery/ui/resizable';
   import { Separator } from '@sveltery/ui/separator';
   import { Skeleton } from '@sveltery/ui/skeleton';
@@ -23,6 +24,7 @@
 <Empty><EmptyTitle>Nothing</EmptyTitle></Empty>
 <Kbd>K</Kbd>
 <Label for="notes">Notes</Label>
+<MessageScrollerProvider><MessageScroller><MessageScrollerViewport><MessageScrollerContent><MessageScrollerItem messageId="m1" scrollAnchor>Hello</MessageScrollerItem></MessageScrollerContent></MessageScrollerViewport><MessageScrollerButton /></MessageScroller></MessageScrollerProvider>
 <ResizablePanelGroup><ResizablePanel defaultSize="30%">One</ResizablePanel><ResizableHandle withHandle /><ResizablePanel>Two</ResizablePanel></ResizablePanelGroup>
 <Separator />
 <Skeleton />

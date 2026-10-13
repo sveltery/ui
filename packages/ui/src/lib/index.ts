@@ -49,3 +49,4 @@ export * from './input-otp/index.js';
 export * from './resizable/index.js';
 export * from './tooltip/index.js';
 export * from './hover-card/index.js';
+export * from './message-scroller/index.js';
