@@ -521,6 +521,15 @@ test('preview lays its cards out in seven columns with five charts', async ({ pa
   await expect(page.locator(`${target} [data-slot=chart]`)).toHaveCount(5);
 });
 
+test('the preview icon grid renders sixteen icons', async ({ page }) => {
+  await visit(page, '/view/preview');
+  const tiles = page.locator(`${target} .grid-cols-8 > div`);
+  await expect(tiles).toHaveCount(16);
+  await expect(tiles.locator('svg')).toHaveCount(16);
+  await expect(tiles.first().locator('svg')).toHaveClass(/lucide-copy/);
+  await expect(tiles.last().locator('svg')).toHaveClass(/lucide-settings/);
+});
+
 test('preview-02 lays its cards out in six columns with nine charts', async ({ page }) => {
   await visit(page, '/view/preview-02');
   await expect(page.locator(`${target} > div`)).toHaveCount(6);
