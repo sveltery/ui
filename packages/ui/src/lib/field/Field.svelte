@@ -1,11 +1,9 @@
-<script lang="ts" generics="F extends FieldHandle = FieldHandle">
-  import { Field as Primitive } from '@sveltery/base/field';
-  import type { FieldHandle } from '@sveltery/base/form';
+<script lang="ts">
   import { cn } from 'cn';
-  import { setInField } from './context.js';
   import { fieldVariants } from './variants.js';
   import type { FieldProps } from './types.js';
-  let { children, class: classProp, orientation = 'vertical', ...props }: FieldProps<F> = $props();
-  setInField();
+  let { children, class: classProp, orientation = 'vertical', ...props }: FieldProps = $props();
 </script>
-<Primitive.Root role="group" data-slot="field" data-orientation={orientation} {children} {...props} class={cn(fieldVariants({ orientation }), classProp)} />
+<div role="group" data-slot="field" data-orientation={orientation} {...props} class={cn(fieldVariants({ orientation }), classProp)}>
+  {@render children?.()}
+</div>
