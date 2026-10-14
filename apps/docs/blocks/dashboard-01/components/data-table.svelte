@@ -125,7 +125,7 @@
 
   function save(event: SubmitEvent, item: Section) {
     event.preventDefault();
-    toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), { loading: `Saving ${item.header}`, success: 'Done', error: 'Error' });
+    toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), { loading: { title: `Saving ${item.header}` }, success: { title: 'Done' }, error: { title: 'Error' } });
   }
 
   const chartData = [
