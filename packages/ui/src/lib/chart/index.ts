@@ -1,4 +1,5 @@
 export { default as ChartContainer } from './ChartContainer.svelte';
+export { default as ChartStyle } from './ChartStyle.svelte';
 export { default as ChartTooltip } from './ChartTooltip.svelte';
 export { default as ChartTooltipContent } from './ChartTooltipContent.svelte';
 export { default as ChartLegend } from './ChartLegend.svelte';

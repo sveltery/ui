@@ -15,8 +15,7 @@
     formatter,
     color,
     labelClass,
-    class: classProp,
-    ...props
+    class: classProp
   }: ChartTooltipContentProps = $props();
 
   const chart = getChartContext<ChartRow>();
@@ -34,8 +33,7 @@
       : (label ?? category?.(data));
     const text = typeof value === 'string' ? (config[value]?.label ?? value) : value;
     if (labelFormatter) return labelFormatter(text, items);
-    if (text == null) return;
-    return text instanceof Date ? text.toLocaleDateString() : String(text);
+    if (text) return text;
   });
 
   const rows = $derived(
@@ -52,15 +50,12 @@
 </script>
 
 {#snippet headerRow()}
-  {#if header}
+  {#if header !== undefined}
     <div class={cn('font-medium', labelClass)}>{header}</div>
   {/if}
 {/snippet}
 
-<div
-  class={cn('grid min-w-[8rem] items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl', classProp)}
-  {...props}
->
+<div class={cn('cn-chart-tooltip grid min-w-32 items-start', classProp)}>
   {#if !nestLabel}
     {@render headerRow()}
   {/if}
@@ -68,7 +63,7 @@
     {#each rows as row, index (row.series.key)}
       {const Icon = row.icon}
       <div class={cn('flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-muted-foreground', indicator === 'dot' && 'items-center')}>
-        {#if formatter && row.series.value !== undefined}
+        {#if formatter && row.series.value !== undefined && row.series.label}
           {@render formatter({ item: row.series, data, index, name: row.name, value: row.series.value })}
         {:else}
           {#if Icon}
