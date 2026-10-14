@@ -25,7 +25,7 @@
     {#if showTrigger}
       <ComboboxTrigger {disabled} data-slot="input-group-button" class="group-has-data-[slot=combobox-clear]/input-group:hidden data-pressed:bg-transparent">
         {#snippet render(hostProps, _state, content)}
-          <InputGroupButton size="icon-xs" variant="ghost" {...hostProps as Record<string, unknown>}>
+          <InputGroupButton size="icon-xs" variant="ghost" {...hostProps}>
             {@render content?.()}
           </InputGroupButton>
         {/snippet}

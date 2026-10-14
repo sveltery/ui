@@ -9,7 +9,7 @@
 
 <Primitive.Clear data-slot="combobox-clear" {...props} class={cn('cn-combobox-clear', classProp)}>
   {#snippet render(hostProps, _state, content)}
-    <InputGroupButton variant="ghost" size="icon-xs" {...hostProps as Record<string, unknown>}>
+    <InputGroupButton variant="ghost" size="icon-xs" {...hostProps}>
       {@render content?.()}
     </InputGroupButton>
   {/snippet}
