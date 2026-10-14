@@ -36,7 +36,7 @@
 {/snippet}
 
 {#snippet action(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
-  <SidebarMenuAction {...props} class="aria-expanded:rotate-90">{@render children?.()}</SidebarMenuAction>
+  <SidebarMenuAction {...props} class={[props.class, 'aria-expanded:rotate-90']}>{@render children?.()}</SidebarMenuAction>
 {/snippet}
 
 <SidebarGroup>

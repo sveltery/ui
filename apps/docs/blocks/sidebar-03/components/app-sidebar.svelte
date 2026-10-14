@@ -186,7 +186,7 @@
       <SidebarMenu>
         {#each data.navMain as item (item.title)}
           {#snippet link(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
-            <a href={item.url} class="font-medium" {...props}>{@render children?.()}</a>
+            <a href={item.url} {...props} class={[props.class, 'font-medium']}>{@render children?.()}</a>
           {/snippet}
           <SidebarMenuItem>
             <SidebarMenuButton render={link}>

@@ -26,8 +26,16 @@ const blocks: Record<string, string> = {
   'sidebar-08': 'Platform',
 };
 
+/** Errors the last visited page logged; every test ends by expecting none. */
+let errors: string[] = [];
+test.beforeEach(() => {
+  errors = [];
+});
+test.afterEach(() => {
+  expect(errors).toEqual([]);
+});
+
 async function visit(page: Page, path: string) {
-  const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
   page.on('console', (message) => {
     if (message.type() === 'error' && !message.location().url.includes('/pagefind/')) errors.push(message.text());
@@ -37,7 +45,6 @@ async function visit(page: Page, path: string) {
   });
   await page.goto(path);
   await expect(page.locator('html')).toHaveAttribute('data-ready');
-  return errors;
 }
 
 test('every registered block has a row here', () => {
@@ -46,9 +53,8 @@ test('every registered block has a row here', () => {
 
 for (const [name, text] of Object.entries(blocks)) {
   test(`${name} renders on its own page`, async ({ page }) => {
-    const errors = await visit(page, `/view/${name}`);
+    await visit(page, `/view/${name}`);
     await expect(page.getByText(text, { exact: true }).first()).toBeVisible();
-    expect(errors).toEqual([]);
   });
 }
 
@@ -164,6 +170,7 @@ test('sidebar-02 section labels collapse and expand their links', async ({ page 
 test('sidebar-03 lists submenu links under each section link', async ({ page }) => {
   await visit(page, '/view/sidebar-03');
   await expect(page.getByRole('link', { name: 'Getting Started' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Getting Started' })).toHaveCSS('font-weight', '500');
   await expect(page.getByRole('link', { name: 'Installation' })).toBeVisible();
   await expect(page.locator(sidebar).getByRole('link', { name: 'Data Fetching' })).toHaveAttribute('data-active', 'true');
   await expect(page.locator(sidebar).getByRole('link', { name: 'Routing' })).not.toHaveAttribute('data-active');
@@ -182,14 +189,20 @@ test('sidebar-05 sections open with a plus and close with a minus', async ({ pag
   const buildYourApplication = page.getByRole('button', { name: 'Build Your Application' });
   await expect(buildYourApplication).toHaveAttribute('aria-expanded', 'true');
   await expect(gettingStarted).toHaveAttribute('aria-expanded', 'false');
+  // Each button holds a plus and a minus icon; the open one shows its minus.
+  const icons = async (button: typeof gettingStarted) => [await button.locator('svg').nth(0).isVisible(), await button.locator('svg').nth(1).isVisible()];
   await expect(page.getByRole('link', { name: 'Routing' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Installation' })).toBeHidden();
+  await expect.poll(() => icons(gettingStarted)).toEqual([true, false]);
+  await expect.poll(() => icons(buildYourApplication)).toEqual([false, true]);
 
   await gettingStarted.click();
   await expect(page.getByRole('link', { name: 'Installation' })).toBeVisible();
+  await expect.poll(() => icons(gettingStarted)).toEqual([false, true]);
   await buildYourApplication.click();
   await expect(page.getByRole('link', { name: 'Routing' })).toBeHidden();
   await expect(buildYourApplication).toHaveAttribute('aria-expanded', 'false');
+  await expect.poll(() => icons(buildYourApplication)).toEqual([true, false]);
 });
 
 test('sidebar-06 opens each section as a dropdown menu of links', async ({ page }) => {
@@ -211,6 +224,22 @@ test('sidebar-07 collapses to icons and hides the project list', async ({ page }
   await expect(page.locator(sidebar)).toHaveAttribute('data-collapsible', 'icon');
   await expect(page.locator('[data-slot=sidebar-container]')).toHaveCSS('width', '48px');
   await expect(page.getByText('Projects', { exact: true })).toBeHidden();
+});
+
+test('sidebar-07 shows nav tooltips only while collapsed', async ({ page }) => {
+  await visit(page, '/view/sidebar-07');
+  const models = page.getByRole('button', { name: 'Models' });
+  await models.hover();
+  await page.waitForTimeout(800);
+  // Base UI gives the tooltip popup no role.
+  const tooltip = page.locator('[data-slot=tooltip-content]');
+  await expect(tooltip).toBeHidden();
+  await page.locator(trigger).click();
+  await expect(page.locator(sidebar)).toHaveAttribute('data-collapsible', 'icon');
+  await page.mouse.move(600, 400);
+  await models.hover();
+  await expect(tooltip).toBeVisible();
+  await expect(tooltip).toHaveText('Models');
 });
 
 test('sidebar-07 team switcher changes the active team', async ({ page }) => {
@@ -256,7 +285,7 @@ test('sidebar-08 toggle buttons open the submenus', async ({ page }) => {
   await visit(page, '/view/sidebar-08');
   await expect(page.getByRole('link', { name: 'History' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Genesis' })).toBeHidden();
-  const models = page.locator('li', { hasText: 'Models' });
+  const models = page.getByRole('listitem').filter({ has: page.getByRole('link', { name: 'Models', exact: true }) });
   await models.getByRole('button', { name: 'Toggle' }).click();
   await expect(page.getByRole('link', { name: 'Genesis' })).toBeVisible();
   await models.getByRole('button', { name: 'Toggle' }).click();

@@ -24,7 +24,7 @@
 </script>
 
 {#snippet menuButton(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
-  <SidebarMenuButton {...props} class="aria-expanded:bg-muted">{@render children?.()}</SidebarMenuButton>
+  <SidebarMenuButton {...props} class={[props.class, 'aria-expanded:bg-muted']}>{@render children?.()}</SidebarMenuButton>
 {/snippet}
 
 <SidebarGroup>

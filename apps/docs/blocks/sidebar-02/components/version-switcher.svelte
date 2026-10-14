@@ -11,7 +11,7 @@
 </script>
 
 {#snippet menuButton(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
-  <SidebarMenuButton {...props} size="lg" class="data-open:bg-sidebar-accent data-open:text-sidebar-accent-foreground">{@render children?.()}</SidebarMenuButton>
+  <SidebarMenuButton {...props} size="lg" class={[props.class, 'data-open:bg-sidebar-accent data-open:text-sidebar-accent-foreground']}>{@render children?.()}</SidebarMenuButton>
 {/snippet}
 
 <SidebarMenu>
@@ -29,6 +29,7 @@
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
         {#each versions as version (version)}
+          <!-- Upstream passes onSelect, which Base UI menu items do not call; onclick is what selects. -->
           <DropdownMenuItem onclick={() => (selectedVersion = version)}>
             v{version}
             {#if version === selectedVersion}

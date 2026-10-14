@@ -26,11 +26,11 @@
 
   const sidebar = useSidebar();
   // svelte-ignore state_referenced_locally
-  let activeTeam = $state(teams[0]);
+  let activeTeam = $state.raw(teams[0]);
 </script>
 
 {#snippet menuButton(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
-  <SidebarMenuButton {...props} size="lg" class="data-open:bg-sidebar-accent data-open:text-sidebar-accent-foreground">{@render children?.()}</SidebarMenuButton>
+  <SidebarMenuButton {...props} size="lg" class={[props.class, 'data-open:bg-sidebar-accent data-open:text-sidebar-accent-foreground']}>{@render children?.()}</SidebarMenuButton>
 {/snippet}
 
 {#if activeTeam}

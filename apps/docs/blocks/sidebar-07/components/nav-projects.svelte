@@ -19,7 +19,7 @@
 </script>
 
 {#snippet action(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
-  <SidebarMenuAction {...props} showOnHover class="aria-expanded:bg-muted">{@render children?.()}</SidebarMenuAction>
+  <SidebarMenuAction {...props} showOnHover class={[props.class, 'aria-expanded:bg-muted']}>{@render children?.()}</SidebarMenuAction>
 {/snippet}
 
 <SidebarGroup class="group-data-[collapsible=icon]:hidden">
