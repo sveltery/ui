@@ -56,6 +56,7 @@ export * from './drawer/index.js';
 export * from './carousel/index.js';
 export * from './command/index.js';
 export * from './dropdown-menu/index.js';
+export * from './menubar/index.js';
 export * from './navigation-menu/index.js';
 export * from './sonner/index.js';
 // Toaster and toast collide with Sonner's, so only @sveltery/ui/toast exports those two.
