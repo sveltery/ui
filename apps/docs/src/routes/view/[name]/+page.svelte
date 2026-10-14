@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Toaster } from '@sveltery/ui/sonner';
+  import { Toaster } from '@sveltery/ui/toast';
   import { site } from '$lib/site';
   let { data } = $props();
 
@@ -19,5 +19,5 @@
 <div class="bg-background">
   <data.component />
 </div>
-<!-- Upstream's root layout holds a Toaster, so blocks call toast() without one of their own. -->
-<Toaster position="top-center" />
+<!-- Upstream's root layout holds a Toaster, so blocks call toast without one of their own. -->
+<Toaster />
