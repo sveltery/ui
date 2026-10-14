@@ -12,7 +12,7 @@
       url: string;
       icon: Snippet;
     }[];
-  } & Omit<ComponentProps<typeof SidebarGroup>, 'children'> = $props();
+  } & ComponentProps<typeof SidebarGroup> = $props();
   // The host element's typed event handlers do not fit the element this snippet renders, so only `class` is typed.
   type RenderProps = Pick<HTMLAttributes<HTMLElement>, 'class'>;
 </script>

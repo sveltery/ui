@@ -1,6 +1,5 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import type { HTMLAttributes } from 'svelte/elements';
   import {
     DropdownMenu,
     DropdownMenuContent,
@@ -27,19 +26,16 @@
   const sidebar = useSidebar();
   // svelte-ignore state_referenced_locally
   let activeTeam = $state.raw(teams[0]);
-  // The host element's typed event handlers do not fit the element this snippet renders, so only `class` is typed.
-  type RenderProps = Pick<HTMLAttributes<HTMLElement>, 'class'>;
 </script>
-
-{#snippet menuButton(props: RenderProps, _state: unknown, children?: Snippet)}
-  <SidebarMenuButton {...props} size="lg" class={[props.class, 'data-popup-open:bg-sidebar-accent data-popup-open:text-sidebar-accent-foreground']}>{@render children?.()}</SidebarMenuButton>
-{/snippet}
 
 {#if activeTeam}
   <SidebarMenu>
     <SidebarMenuItem>
       <DropdownMenu>
-        <DropdownMenuTrigger render={menuButton}>
+        <DropdownMenuTrigger>
+          {#snippet render(props, _state, children)}
+            <SidebarMenuButton {...props} size="lg" class={[props.class, 'data-popup-open:bg-sidebar-accent data-popup-open:text-sidebar-accent-foreground']}>{@render children?.()}</SidebarMenuButton>
+          {/snippet}
           <div class="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
             {@render activeTeam.logo()}
           </div>
