@@ -21,7 +21,7 @@
     "@playwright/test": "1.63.0",
     "@sveltejs/package": "2.5.8",
     "@sveltejs/vite-plugin-svelte": "7.3.1",
-    "@sveltery/base": "github:sveltery/base#91d73bf41b4edc167b22694b70968d8cead547f6",
+    "@sveltery/base": "github:sveltery/base#a08e8d71c1ec8027e6418865905ed51e64b0a976",
     "@tabler/icons": "3.34.1",
     "@tailwindcss/vite": "4.3.0",
     "@types/jsdom": "30.0.0",
