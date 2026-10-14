@@ -10,7 +10,19 @@
   import { Input } from '@sveltery/ui/input';
   import { InputGroup, InputGroupAddon, InputGroupInput } from '@sveltery/ui/input-group';
   import { Label } from '@sveltery/ui/label';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
   import { Tooltip, TooltipContent, TooltipTrigger } from '@sveltery/ui/tooltip';
+
+  const currencyItems = [
+    { label: '$', value: '$' },
+    { label: '€', value: '€' },
+    { label: '£', value: '£' }
+  ];
+  const durationItems = [
+    { label: 'Hours', value: 'hours' },
+    { label: 'Days', value: 'days' },
+    { label: 'Weeks', value: 'weeks' }
+  ];
 </script>
 
 {#snippet ButtonGroupBasic()}
@@ -118,6 +130,32 @@
         </DropdownMenu>
       </ButtonGroup>
     </div>
+  </Example>
+{/snippet}
+
+{#snippet ButtonGroupWithSelect()}
+  <Example title="With Select">
+    <Field>
+      <Label for="amount">Amount</Label>
+      <ButtonGroup>
+        <Select items={currencyItems} defaultValue={currencyItems[0]}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {#each currencyItems as item (item.value)}
+                <SelectItem value={item}>{item.label}</SelectItem>
+              {/each}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+        <Input id="amount" placeholder="Enter amount to send" />
+        <Button variant="outline">
+          <IconPlaceholder lucide="ArrowRightIcon" tabler="IconArrowRight" hugeicons="ArrowRight01Icon" phosphor="ArrowRightIcon" remixicon="RiArrowRightLine" />
+        </Button>
+      </ButtonGroup>
+    </Field>
   </Example>
 {/snippet}
 
@@ -236,6 +274,26 @@
 
 {#snippet voiceAddon(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
   <InputGroupAddon align="inline-end" {...props as HTMLAttributes<HTMLDivElement>}>{@render children?.()}</InputGroupAddon>
+{/snippet}
+
+{#snippet ButtonGroupWithSelectAndInput()}
+  <Example title="With Select and Input">
+    <ButtonGroup>
+      <Select items={durationItems} defaultValue="hours">
+        <SelectTrigger id="duration">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent align="start">
+          <SelectGroup>
+            {#each durationItems as item (item.value)}
+              <SelectItem value={item.value}>{item.label}</SelectItem>
+            {/each}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+      <Input />
+    </ButtonGroup>
+  </Example>
 {/snippet}
 
 {#snippet ButtonGroupNested()}
@@ -513,10 +571,12 @@
   {@render ButtonGroupWithInput()}
   {@render ButtonGroupWithText()}
   {@render ButtonGroupWithDropdown()}
+  {@render ButtonGroupWithSelect()}
   {@render ButtonGroupWithIcons()}
   {@render ButtonGroupWithInputGroup()}
   {@render ButtonGroupWithFields()}
   {@render ButtonGroupWithLike()}
+  {@render ButtonGroupWithSelectAndInput()}
   {@render ButtonGroupNested()}
   {@render ButtonGroupPagination()}
   {@render ButtonGroupPaginationSplit()}

@@ -4,6 +4,7 @@
   import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
   import { IconPlaceholder } from '@sveltery/ui/icons';
   import { Input } from '@sveltery/ui/input';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
   import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@sveltery/ui/table';
   const invoices = [
     { invoice: 'INV001', paymentStatus: 'Paid', totalAmount: '$250.00', paymentMethod: 'Credit Card' },
@@ -18,6 +19,17 @@
     { name: 'Wireless Mouse', price: '$29.99' },
     { name: 'Mechanical Keyboard', price: '$129.99' },
     { name: 'USB-C Hub', price: '$49.99' },
+  ];
+  const people = [
+    { value: 'sarah', label: 'Sarah Chen' },
+    { value: 'marcus', label: 'Marc Rodriguez' },
+    { value: 'emily', label: 'Emily Watson' },
+    { value: 'david', label: 'David Kim' },
+  ];
+  const tasks = [
+    { task: 'Design homepage', assignee: 'sarah', status: 'In Progress' },
+    { task: 'Implement API', assignee: 'marcus', status: 'Pending' },
+    { task: 'Write tests', assignee: 'emily', status: 'Not Started' },
   ];
 </script>
 
@@ -170,6 +182,39 @@
                 </DropdownMenuContent>
               </DropdownMenu>
             </TableCell>
+          </TableRow>
+        {/each}
+      </TableBody>
+    </Table>
+  </Example>
+  <Example title="With Select">
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Task</TableHead>
+          <TableHead>Assignee</TableHead>
+          <TableHead>Status</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {#each tasks as item (item.task)}
+          <TableRow>
+            <TableCell class="font-medium">{item.task}</TableCell>
+            <TableCell>
+              <Select items={people} defaultValue={people.find((person) => person.value === item.assignee)} itemToStringValue={(person: (typeof people)[number]) => person.value}>
+                <SelectTrigger class="w-40" size="sm">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {#each people as person (person.value)}
+                      <SelectItem value={person}>{person.label}</SelectItem>
+                    {/each}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </TableCell>
+            <TableCell>{item.status}</TableCell>
           </TableRow>
         {/each}
       </TableBody>

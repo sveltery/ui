@@ -1,6 +1,8 @@
 <script lang="ts">
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { Field, FieldDescription, FieldLabel } from '@sveltery/ui/field';
+  import { Input } from '@sveltery/ui/input';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
   import { ToggleGroup, ToggleGroupItem } from '@sveltery/ui/toggle-group';
   import { IconPlaceholder } from '@sveltery/ui/icons';
 
@@ -9,6 +11,11 @@
     { value: 'normal', label: 'Normal', weight: 'font-normal' },
     { value: 'medium', label: 'Medium', weight: 'font-medium' },
     { value: 'bold', label: 'Bold', weight: 'font-bold' },
+  ];
+  const statusItems = [
+    { label: 'All', value: 'all' },
+    { label: 'Active', value: 'active' },
+    { label: 'Archived', value: 'archived' },
   ];
   let fontWeight = $state(['normal']);
 </script>
@@ -277,6 +284,30 @@
   </Example>
 {/snippet}
 
+{#snippet ToggleGroupWithInputAndSelect()}
+  <Example title="With Input and Select">
+    <div class="flex items-center gap-2">
+      <Input type="search" placeholder="Search..." class="flex-1" />
+      <Select items={statusItems} defaultValue={statusItems[0]}>
+        <SelectTrigger class="w-32">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            {#each statusItems as item (item.value)}
+              <SelectItem value={item}>{item.label}</SelectItem>
+            {/each}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+      <ToggleGroup value={['grid']} variant="outline">
+        <ToggleGroupItem value="grid" aria-label="Grid view">Grid</ToggleGroupItem>
+        <ToggleGroupItem value="list" aria-label="List view">List</ToggleGroupItem>
+      </ToggleGroup>
+    </div>
+  </Example>
+{/snippet}
+
 {#snippet ToggleGroupVertical()}
   <Example title="Vertical">
     <ToggleGroup multiple orientation="vertical" spacing={1}>
@@ -426,6 +457,7 @@
   {@render ToggleGroupFilter()}
   {@render ToggleGroupDateRange()}
   {@render ToggleGroupSort()}
+  {@render ToggleGroupWithInputAndSelect()}
   {@render ToggleGroupVertical()}
   {@render ToggleGroupVerticalOutline()}
   {@render ToggleGroupVerticalOutlineWithIcons()}
