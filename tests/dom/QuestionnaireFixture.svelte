@@ -185,6 +185,12 @@
     <Questionnaire.Next data-testid="next" />
     <Questionnaire.Submit data-testid="submit" />
   </Questionnaire.Root>
+{:else if scenario === 'submit-earlier'}
+  <Questionnaire.Root data-testid="root" defaultItem="second" {onsubmit}>
+    <TestItem required name="first" />
+    <TestItem required name="second" />
+    <Questionnaire.Submit data-testid="submit" />
+  </Questionnaire.Root>
 {:else if scenario === 'native-input'}
   <Questionnaire.Root data-testid="root" defaultItem="answer" novalidate={false}>
     <Questionnaire.Item data-testid="answer" required name="answer">

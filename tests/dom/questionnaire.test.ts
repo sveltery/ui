@@ -457,6 +457,19 @@ describe('Questionnaire', () => {
     expect(values('answer')).toEqual([]);
   });
 
+  it('returns a submit from a later item to the first invalid one and focuses its control', () => {
+    const onsubmit = submitSpy();
+    setup('submit-earlier', { onsubmit });
+    choose('second-choice');
+    expect(item('first').hidden).toBe(true);
+    click(button('submit'));
+    expect(onsubmit).not.toHaveBeenCalled();
+    expect(item('first').hasAttribute('data-active')).toBe(true);
+    expect(item('first').hidden).toBe(false);
+    expect(item('second').hidden).toBe(true);
+    expect(document.activeElement).toBe(choiceInput('first-choice'));
+  });
+
   it('does not require fixed radios when an Input can answer the item', () => {
     setup('native-input');
     expect(form().noValidate).toBe(false);
