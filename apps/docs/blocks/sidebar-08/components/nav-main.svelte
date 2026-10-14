@@ -37,10 +37,6 @@
   <SidebarMenuItem {...props}>{@render children?.()}</SidebarMenuItem>
 {/snippet}
 
-{#snippet action(props: RenderProps, _state: unknown, children?: Snippet)}
-  <SidebarMenuAction {...props} class={[props.class, 'aria-expanded:rotate-90']}>{@render children?.()}</SidebarMenuAction>
-{/snippet}
-
 <SidebarGroup>
   <SidebarGroupLabel>Platform</SidebarGroupLabel>
   <SidebarMenu>
@@ -54,7 +50,10 @@
           <span>{item.title}</span>
         </SidebarMenuButton>
         {#if item.items?.length}
-          <CollapsibleTrigger render={action}>
+          <CollapsibleTrigger>
+            {#snippet render(props, _state, children)}
+              <SidebarMenuAction {...props} class={[props.class, 'aria-expanded:rotate-90']}>{@render children?.()}</SidebarMenuAction>
+            {/snippet}
             <IconPlaceholder lucide="ChevronRightIcon" tabler="IconChevronRight" hugeicons="ArrowRight01Icon" phosphor="CaretRightIcon" remixicon="RiArrowRightSLine" />
             <span class="sr-only">Toggle</span>
           </CollapsibleTrigger>

@@ -31,11 +31,11 @@
   <SidebarGroupLabel>Platform</SidebarGroupLabel>
   <SidebarMenu>
     {#each items as item (item.title)}
-      {#snippet trigger(props: RenderProps, _state: unknown, children?: Snippet)}
-        <SidebarMenuButton {...props} tooltip={item.title}>{@render children?.()}</SidebarMenuButton>
-      {/snippet}
       <Collapsible open={item.isActive} class="group/collapsible" render={menuItem}>
-        <CollapsibleTrigger render={trigger}>
+        <CollapsibleTrigger>
+          {#snippet render(props, _state, children)}
+            <SidebarMenuButton {...props} tooltip={item.title}>{@render children?.()}</SidebarMenuButton>
+          {/snippet}
           {@render item.icon?.()}
           <span>{item.title}</span>
           <IconPlaceholder
