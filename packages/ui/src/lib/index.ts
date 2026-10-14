@@ -58,3 +58,4 @@ export * from './command/index.js';
 export * from './dropdown-menu/index.js';
 export * from './navigation-menu/index.js';
 export * from './sonner/index.js';
+export * from './context-menu/index.js';
