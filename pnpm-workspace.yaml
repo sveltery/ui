@@ -7,7 +7,7 @@ autoInstallPeers: false
 allowBuilds:
   esbuild: true
   workerd: true
-  "@sveltery/base@https://codeload.github.com/sveltery/base/tar.gz/b69895789c6faf0fdeed6c5f83224d1262d78a1a": true
+  "@sveltery/base@https://codeload.github.com/sveltery/base/tar.gz/b93223877938e17cae060b81b6f3243913f380c5": true
 minimumReleaseAgeExclude:
   - vitest@5.0.3
   - "@vitest/mocker@5.0.3"
