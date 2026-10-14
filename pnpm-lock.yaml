@@ -188,8 +188,8 @@ importers:
         specifier: 7.3.1
         version: 7.3.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0))
       '@sveltery/base':
-        specifier: github:sveltery/base#b69895789c6faf0fdeed6c5f83224d1262d78a1a
-        version: https://codeload.github.com/sveltery/base/tar.gz/b69895789c6faf0fdeed6c5f83224d1262d78a1a(@sveltejs/kit@3.0.1(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))(typescript@6.0.3)(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))
+        specifier: github:sveltery/base#b93223877938e17cae060b81b6f3243913f380c5
+        version: https://codeload.github.com/sveltery/base/tar.gz/b93223877938e17cae060b81b6f3243913f380c5(@sveltejs/kit@3.0.1(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))(typescript@6.0.3)(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))
       '@tabler/icons':
         specifier: 3.34.1
         version: 3.34.1
@@ -291,8 +291,8 @@ importers:
         specifier: 3.0.1
         version: 3.0.1(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))(typescript@6.0.3)(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0))
       '@sveltery/base':
-        specifier: github:sveltery/base#b69895789c6faf0fdeed6c5f83224d1262d78a1a
-        version: https://codeload.github.com/sveltery/base/tar.gz/b69895789c6faf0fdeed6c5f83224d1262d78a1a(@sveltejs/kit@3.0.1(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))(typescript@6.0.3)(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))
+        specifier: github:sveltery/base#b93223877938e17cae060b81b6f3243913f380c5
+        version: https://codeload.github.com/sveltery/base/tar.gz/b93223877938e17cae060b81b6f3243913f380c5(@sveltejs/kit@3.0.1(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))(typescript@6.0.3)(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))
       '@types/d3-scale':
         specifier: 4.0.9
         version: 4.0.9
@@ -360,8 +360,8 @@ importers:
   packages/questionnaire:
     devDependencies:
       '@sveltery/base':
-        specifier: github:sveltery/base#b69895789c6faf0fdeed6c5f83224d1262d78a1a
-        version: https://codeload.github.com/sveltery/base/tar.gz/b69895789c6faf0fdeed6c5f83224d1262d78a1a(@sveltejs/kit@3.0.1(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))(typescript@6.0.3)(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))
+        specifier: github:sveltery/base#b93223877938e17cae060b81b6f3243913f380c5
+        version: https://codeload.github.com/sveltery/base/tar.gz/b93223877938e17cae060b81b6f3243913f380c5(@sveltejs/kit@3.0.1(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))(typescript@6.0.3)(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))
       svelte:
         specifier: 5.57.1
         version: 5.57.1(@typescript-eslint/types@8.71.0)
@@ -385,8 +385,8 @@ importers:
         version: 8.6.0
     devDependencies:
       '@sveltery/base':
-        specifier: github:sveltery/base#b69895789c6faf0fdeed6c5f83224d1262d78a1a
-        version: https://codeload.github.com/sveltery/base/tar.gz/b69895789c6faf0fdeed6c5f83224d1262d78a1a(@sveltejs/kit@3.0.1(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))(typescript@6.0.3)(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))
+        specifier: github:sveltery/base#b93223877938e17cae060b81b6f3243913f380c5
+        version: https://codeload.github.com/sveltery/base/tar.gz/b93223877938e17cae060b81b6f3243913f380c5(@sveltejs/kit@3.0.1(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))(typescript@6.0.3)(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))
       '@sveltery/command':
         specifier: workspace:*
         version: link:../command
@@ -427,8 +427,8 @@ importers:
         specifier: 3.0.1
         version: 3.0.1(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))(typescript@6.0.3)(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0))
       '@sveltery/base':
-        specifier: github:sveltery/base#b69895789c6faf0fdeed6c5f83224d1262d78a1a
-        version: https://codeload.github.com/sveltery/base/tar.gz/b69895789c6faf0fdeed6c5f83224d1262d78a1a(@sveltejs/kit@3.0.1(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))(typescript@6.0.3)(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))
+        specifier: github:sveltery/base#b93223877938e17cae060b81b6f3243913f380c5
+        version: https://codeload.github.com/sveltery/base/tar.gz/b93223877938e17cae060b81b6f3243913f380c5(@sveltejs/kit@3.0.1(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))(typescript@6.0.3)(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))
       '@sveltery/command':
         specifier: workspace:*
         version: link:../../packages/command
@@ -1447,8 +1447,8 @@ packages:
       svelte: ^5.46.4
       vite: ^8.0.0-beta.7 || ^8.0.0
 
-  '@sveltery/base@https://codeload.github.com/sveltery/base/tar.gz/b69895789c6faf0fdeed6c5f83224d1262d78a1a':
-    resolution: {gitHosted: true, integrity: sha512-h84LI+1IyQBtuJS7eW1LsU/geR9ykW0ny0S8C0JRGSISXfanUKPOxQZG86bTiwt2BA3azlXH4OMNEXoFyulyCw==, tarball: https://codeload.github.com/sveltery/base/tar.gz/b69895789c6faf0fdeed6c5f83224d1262d78a1a}
+  '@sveltery/base@https://codeload.github.com/sveltery/base/tar.gz/b93223877938e17cae060b81b6f3243913f380c5':
+    resolution: {gitHosted: true, integrity: sha512-I7mzvl4LiatRwQIZ10F9GY/n8gm2aN+ERMn1r5SBvw3A2Fc7xgnyKmCf4IU1NqR5iW3QiTfRBKt+46ONOiDa2A==, tarball: https://codeload.github.com/sveltery/base/tar.gz/b93223877938e17cae060b81b6f3243913f380c5}
     version: 0.0.0
     engines: {node: '>=22'}
     peerDependencies:
@@ -4829,7 +4829,7 @@ snapshots:
       vite: 8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)
       vitefu: 1.1.3(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0))
 
-  '@sveltery/base@https://codeload.github.com/sveltery/base/tar.gz/b69895789c6faf0fdeed6c5f83224d1262d78a1a(@sveltejs/kit@3.0.1(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))(typescript@6.0.3)(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))':
+  '@sveltery/base@https://codeload.github.com/sveltery/base/tar.gz/b93223877938e17cae060b81b6f3243913f380c5(@sveltejs/kit@3.0.1(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))(typescript@6.0.3)(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))':
     dependencies:
       '@floating-ui/dom': 1.8.0
       '@floating-ui/utils': 0.2.12
