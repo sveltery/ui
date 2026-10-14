@@ -16,9 +16,9 @@
 </script>
 
 <InputGroup class={cn('cn-combobox-input w-auto', classProp)}>
-  <Primitive.Input {...props}>
+  <Primitive.Input {disabled} {...props}>
     {#snippet render(hostProps)}
-      <InputGroupInput {disabled} {...hostProps} />
+      <InputGroupInput {...hostProps} />
     {/snippet}
   </Primitive.Input>
   <InputGroupAddon align="inline-end">
