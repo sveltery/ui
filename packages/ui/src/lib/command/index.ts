@@ -7,14 +7,3 @@ export { default as CommandGroup } from './CommandGroup.svelte';
 export { default as CommandItem } from './CommandItem.svelte';
 export { default as CommandShortcut } from './CommandShortcut.svelte';
 export { default as CommandSeparator } from './CommandSeparator.svelte';
-export type {
-  CommandProps,
-  CommandDialogProps,
-  CommandInputProps,
-  CommandListProps,
-  CommandEmptyProps,
-  CommandGroupProps,
-  CommandItemProps,
-  CommandSeparatorProps,
-  CommandShortcutProps
-} from './types.js';

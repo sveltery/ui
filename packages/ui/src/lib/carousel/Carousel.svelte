@@ -8,6 +8,8 @@
   let canScrollNext = $state(false);
 
   setCarouselContext({
+    get api() { return api; },
+    get opts() { return opts; },
     get orientation() { return orientation; },
     get canScrollPrev() { return canScrollPrev; },
     get canScrollNext() { return canScrollNext; },

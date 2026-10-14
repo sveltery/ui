@@ -23,6 +23,4 @@ export { default as SidebarMenuSubItem } from './SidebarMenuSubItem.svelte';
 export { default as SidebarMenuSubButton } from './SidebarMenuSubButton.svelte';
 export { useSidebar } from './context.js';
 export type { SidebarContextValue } from './context.js';
-export { sidebarMenuButtonVariants } from './variants.js';
-export type { SidebarMenuButtonVariants } from './variants.js';
 export type * from './types.js';

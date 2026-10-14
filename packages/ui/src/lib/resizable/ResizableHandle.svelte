@@ -2,7 +2,7 @@
   import { Separator } from '@sveltery/resizable';
   import { cn } from 'cn';
   import type { ResizableHandleProps } from './types.js';
-  let { withHandle = false, class: classProp, children, ...props }: ResizableHandleProps = $props();
+  let { withHandle = false, class: classProp, ...props }: ResizableHandleProps = $props();
 </script>
 <Separator
   data-slot="resizable-handle"
@@ -12,5 +12,4 @@
   {#if withHandle}
     <div class="cn-resizable-handle-icon z-10 flex shrink-0"></div>
   {/if}
-  {@render children?.()}
 </Separator>

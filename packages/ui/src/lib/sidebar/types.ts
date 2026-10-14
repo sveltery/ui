@@ -3,6 +3,7 @@ import type { HTMLAnchorAttributes, HTMLAttributes, HTMLButtonAttributes } from 
 import type { RenderSnippet } from '../shared/render.js';
 import type { ButtonProps } from '../button/index.js';
 import type { InputProps } from '@sveltery/base/input';
+import type { TooltipTriggerState } from '@sveltery/base/tooltip';
 import type { SeparatorProps } from '../separator/index.js';
 import type { TooltipContent } from '../tooltip/index.js';
 import type { SidebarMenuButtonVariants } from './variants.js';
@@ -38,19 +39,20 @@ export type SidebarMenuSkeletonProps = DivProps & { showIcon?: boolean };
 export type SidebarMenuSubProps = HTMLAttributes<HTMLUListElement>;
 export type SidebarMenuSubItemProps = HTMLAttributes<HTMLLIElement>;
 
-export type SidebarGroupLabelState = { slot: 'sidebar-group-label' };
+export type SidebarGroupLabelState = { slot: 'sidebar-group-label'; sidebar: 'group-label' };
 export type SidebarGroupLabelProps = DivProps & { render?: RenderSnippet<SidebarGroupLabelState, HTMLDivElement> };
-export type SidebarGroupActionState = { slot: 'sidebar-group-action' };
+export type SidebarGroupActionState = { slot: 'sidebar-group-action'; sidebar: 'group-action' };
 export type SidebarGroupActionProps = HTMLButtonAttributes & { render?: RenderSnippet<SidebarGroupActionState, HTMLButtonElement> };
-export type SidebarMenuActionState = { slot: 'sidebar-menu-action' };
+export type SidebarMenuActionState = { slot: 'sidebar-menu-action'; sidebar: 'menu-action' };
 export type SidebarMenuActionProps = HTMLButtonAttributes & { showOnHover?: boolean; render?: RenderSnippet<SidebarMenuActionState, HTMLButtonElement> };
-export type SidebarMenuButtonState = { slot: 'sidebar-menu-button'; size: NonNullable<SidebarMenuButtonVariants['size']>; active: boolean };
+export type SidebarMenuButtonState = { slot: 'sidebar-menu-button'; sidebar: 'menu-button'; size: SidebarMenuButtonVariants['size']; active: boolean };
 export type SidebarMenuButtonProps = HTMLButtonAttributes &
   SidebarMenuButtonVariants & {
     isActive?: boolean;
     /** Shown beside the button while the sidebar is collapsed to icons. */
     tooltip?: string | ComponentProps<typeof TooltipContent>;
-    render?: RenderSnippet<SidebarMenuButtonState, HTMLButtonElement>;
+    /** Receives the menu-button state, or the tooltip trigger state when `tooltip` is set. */
+    render?: RenderSnippet<SidebarMenuButtonState | TooltipTriggerState, HTMLButtonElement>;
   };
-export type SidebarMenuSubButtonState = { slot: 'sidebar-menu-sub-button'; size: 'sm' | 'md'; active: boolean };
+export type SidebarMenuSubButtonState = { slot: 'sidebar-menu-sub-button'; sidebar: 'menu-sub-button'; size: 'sm' | 'md'; active: boolean };
 export type SidebarMenuSubButtonProps = HTMLAnchorAttributes & { size?: 'sm' | 'md'; isActive?: boolean; render?: RenderSnippet<SidebarMenuSubButtonState, HTMLAnchorElement> };

@@ -1,7 +1,10 @@
 import { createContext } from 'svelte';
 import type { Attachment } from 'svelte/attachments';
+import type { CarouselApi, CarouselOptions } from './types.js';
 
 export type CarouselContextValue = {
+  readonly api: CarouselApi | undefined;
+  readonly opts: CarouselOptions | undefined;
   readonly orientation: 'horizontal' | 'vertical';
   readonly canScrollPrev: boolean;
   readonly canScrollNext: boolean;
@@ -10,4 +13,4 @@ export type CarouselContextValue = {
   scrollNext(): void;
 };
 
-export const [getCarouselContext, setCarouselContext] = createContext<CarouselContextValue>();
+export const [useCarousel, setCarouselContext] = createContext<CarouselContextValue>();

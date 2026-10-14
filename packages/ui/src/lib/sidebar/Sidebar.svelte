@@ -4,7 +4,7 @@
   import { useSidebar } from './context.js';
   import { SIDEBAR_WIDTH_MOBILE } from './constants.js';
   import type { SidebarProps } from './types.js';
-  let { side = 'left', variant = 'sidebar', collapsible = 'offcanvas', children, class: classProp, ...props }: SidebarProps = $props();
+  let { side = 'left', variant = 'sidebar', collapsible = 'offcanvas', children, class: classProp, dir, ...props }: SidebarProps = $props();
   const sidebar = useSidebar();
   const floatingOrInset = $derived(variant === 'floating' || variant === 'inset');
 </script>
@@ -14,7 +14,7 @@
   </div>
 {:else if sidebar.isMobile}
   <Sheet open={sidebar.openMobile} onOpenChange={sidebar.setOpenMobile}>
-    <SheetContent {...props} data-sidebar="sidebar" data-slot="sidebar" data-mobile="true" {side} class="w-(--sidebar-width) bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden" style="--sidebar-width: {SIDEBAR_WIDTH_MOBILE}">
+    <SheetContent {dir} data-sidebar="sidebar" data-slot="sidebar" data-mobile="true" {side} class="w-(--sidebar-width) bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden" style="--sidebar-width: {SIDEBAR_WIDTH_MOBILE}">
       <SheetHeader class="sr-only">
         <SheetTitle>Sidebar</SheetTitle>
         <SheetDescription>Displays the mobile sidebar.</SheetDescription>

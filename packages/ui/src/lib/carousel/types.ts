@@ -4,12 +4,12 @@ import type { ButtonProps } from '../button/index.js';
 
 export type CarouselApi = EmblaCarouselType;
 export type CarouselOptions = EmblaOptionsType;
-export type CarouselPlugin = EmblaPluginType;
+export type CarouselPlugin = EmblaPluginType[];
 
 export type CarouselProps = HTMLAttributes<HTMLDivElement> & {
   orientation?: 'horizontal' | 'vertical';
   opts?: CarouselOptions;
-  plugins?: CarouselPlugin[];
+  plugins?: CarouselPlugin;
   /** The Embla instance, set once the carousel mounts. Read it with `bind:api`. */
   api?: CarouselApi;
 };
