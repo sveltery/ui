@@ -32,6 +32,7 @@ export const blocks: Block[] = [
   { name: 'signup-03', description: 'A signup page with a muted background color.', route: 'signup', categories: ['authentication', 'signup'] },
   { name: 'signup-04', description: 'A signup page with form and image.', route: 'signup', categories: ['authentication', 'signup'] },
   { name: 'signup-05', description: 'A simple signup form with social providers.', route: 'signup', categories: ['authentication', 'signup'] },
+  { name: 'dashboard-01', description: 'A dashboard with sidebar, charts and data table.', route: 'dashboard', categories: ['dashboard'], iframeHeight: '1000px' },
   { name: 'sidebar-01', description: 'A simple sidebar with navigation grouped by section.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
   { name: 'sidebar-02', description: 'A sidebar with collapsible sections.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
   { name: 'sidebar-03', description: 'A sidebar with submenus.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
@@ -55,5 +56,5 @@ export const blocksIn = (slug: CategorySlug) => blocks.filter((block) => block.c
 /** Categories in the nav: not hidden, and with a block to show. */
 export const navCategories = categories.filter((category) => !category.hidden && blocksIn(category.slug).length);
 
-/** Upstream's featured list, in its order, limited to ported blocks. dashboard-01 waits for Select. */
+/** Upstream's featured list, in its order, limited to ported blocks. */
 export const featured = ['dashboard-01', 'sidebar-07', 'sidebar-03', 'login-03', 'login-04'].flatMap((name) => blocks.filter((block) => block.name === name));
