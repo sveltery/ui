@@ -99,3 +99,10 @@ for (const [name, component, tag, slot, classes] of parts) {
     expect(part.textContent).toBe('Content');
   });
 }
+
+it('a null variant and size add no variant classes or attributes', () => {
+  const item = render(Item, { children: text, variant: null, size: null }).firstElementChild!;
+  expect(item.hasAttribute('data-variant')).toBe(false);
+  expect(item.hasAttribute('data-size')).toBe(false);
+  expect(item.className).toBe('cn-item group/item flex w-full flex-wrap items-center transition-colors duration-100 outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 [a]:transition-colors');
+});

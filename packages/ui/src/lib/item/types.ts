@@ -5,7 +5,7 @@ import type { ItemMediaVariants, ItemVariants } from './variants.js';
 
 type NativeItemProps = HTMLAttributes<HTMLDivElement>;
 
-export type ItemState = { slot: 'item'; variant: NonNullable<ItemVariants['variant']>; size: NonNullable<ItemVariants['size']> };
+export type ItemState = { slot: 'item'; variant: ItemVariants['variant']; size: ItemVariants['size'] };
 export type ItemProps = NativeItemProps & ItemVariants & { render?: RenderSnippet<ItemState, HTMLDivElement> };
 export type ItemGroupProps = NativeItemProps;
 export type ItemSeparatorProps = SeparatorProps;
