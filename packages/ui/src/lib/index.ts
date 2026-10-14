@@ -63,3 +63,4 @@ export * from './sonner/index.js';
 export { Toast, ToastProvider, ToastPortal, ToastViewport, ToastContent, ToastTitle, ToastDescription, ToastAction, ToastClose, createToastManager, getToastManager } from './toast/index.js';
 export * from './context-menu/index.js';
 export * from './select/index.js';
+export * from './combobox/index.js';

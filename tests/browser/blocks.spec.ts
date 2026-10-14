@@ -5,6 +5,8 @@ test.use({ baseURL: 'http://127.0.0.1:5175' });
 
 /** Every ported block and a line of its demo content. */
 const blocks: Record<string, string> = {
+  preview: 'Live Audio Waveform',
+  'preview-02': 'Kitchen Island',
   'preview-03': 'Preview 03',
   'login-01': 'Login to your account',
   'login-02': 'Login to your account',
@@ -53,7 +55,7 @@ async function visit(page: Page, path: string) {
     if (response.status() >= 400 && !response.url().includes('/pagefind/')) errors.push(`${response.status()} ${response.url()}`);
   });
   await page.goto(path);
-  await expect(page.locator('html')).toHaveAttribute('data-ready');
+  await expect(page.locator('html')).toHaveAttribute('data-ready', { timeout: 30_000 });
 }
 
 test('every registered block has a row here', () => {
@@ -508,4 +510,56 @@ test('sidebar-16 expands the navigation sections and opens a project menu', asyn
 
   await page.locator('[data-slot=dropdown-menu-trigger]').first().click();
   await expect(page.getByRole('menuitem', { name: 'Share Project' })).toBeVisible();
+});
+
+const target = '[data-slot=capture-target]';
+
+test('preview lays its cards out in seven columns with five charts', async ({ page }) => {
+  await visit(page, '/view/preview');
+  await expect(page.locator(`${target} > div`)).toHaveCount(7);
+  await expect(page.locator(`${target} [data-slot=card]`)).toHaveCount(32);
+  await expect(page.locator(`${target} [data-slot=chart]`)).toHaveCount(5);
+});
+
+test('preview-02 lays its cards out in six columns with nine charts', async ({ page }) => {
+  await visit(page, '/view/preview-02');
+  await expect(page.locator(`${target} > div`)).toHaveCount(6);
+  await expect(page.locator(`${target} [data-slot=card]`)).toHaveCount(37);
+  await expect(page.locator(`${target} [data-slot=chart]`)).toHaveCount(9);
+});
+
+test('the preview waveform card toggles its processing and mode buttons', async ({ page }) => {
+  await visit(page, '/view/preview');
+  const card = page.locator('[data-slot=card]').filter({ hasText: 'Live Audio Waveform' });
+  await expect(card.getByRole('img')).toHaveAttribute('aria-label', 'Processing audio');
+  await card.getByRole('button', { name: 'Stop Processing' }).click();
+  await expect(card.getByRole('img')).toHaveAttribute('aria-label', 'Audio waveform idle');
+  await expect(card.getByRole('button', { name: 'Start Processing' })).toBeVisible();
+  await card.getByRole('button', { name: 'Static' }).click();
+  await expect(card.getByRole('button', { name: 'Scrolling' })).toBeVisible();
+});
+
+test('the preview-02 kitchen island applies a scene to its sliders', async ({ page }) => {
+  await visit(page, '/view/preview-02');
+  const card = page.locator('[data-slot=card]').filter({ hasText: 'Kitchen Island' });
+  const sliders = card.getByRole('slider');
+  await expect(sliders).toHaveCount(4);
+  await expect(sliders.evaluateAll((inputs) => inputs.map((input) => (input as HTMLInputElement).value))).resolves.toEqual(['90', '70', '30', '0']);
+  await card.getByRole('button', { name: 'Dining' }).click();
+  await expect(sliders.evaluateAll((inputs) => inputs.map((input) => (input as HTMLInputElement).value))).resolves.toEqual(['50', '40', '20', '60']);
+});
+
+test('the preview-02 notification card selects all and shows the mixed state', async ({ page }) => {
+  await visit(page, '/view/preview-02');
+  const card = page.locator('[data-slot=card]').filter({ hasText: 'Choose what you want to be notified about.' });
+  const all = card.getByRole('checkbox', { name: 'Select all' });
+  await expect(all).toHaveAttribute('aria-checked', 'mixed');
+  await expect(card.getByRole('checkbox', { name: 'Transaction alerts' })).toBeChecked();
+  await expect(card.getByRole('checkbox', { name: 'Goal milestones' })).not.toBeChecked();
+  await card.getByRole('checkbox', { name: 'Goal milestones' }).click();
+  await card.getByRole('checkbox', { name: 'Market updates' }).click();
+  await expect(all).toBeChecked();
+  await all.click();
+  await expect(card.getByRole('checkbox')).toHaveCount(5);
+  for (const box of await card.getByRole('checkbox').all()) await expect(box).not.toBeChecked();
 });

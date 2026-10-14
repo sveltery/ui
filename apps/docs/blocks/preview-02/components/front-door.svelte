@@ -1,0 +1,25 @@
+<script lang="ts">
+  import { Badge } from '@sveltery/ui/badge';
+  import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/ui/card';
+  import { IconPlaceholder } from '@sveltery/ui/icons';
+</script>
+
+<Card>
+  <CardHeader>
+    <CardTitle>Front Door</CardTitle>
+    <CardDescription>Smart Lock Pro</CardDescription>
+    <CardAction>
+      <div class="flex items-center gap-1.5 text-sm text-muted-foreground">
+        Locked
+        <IconPlaceholder lucide="LockIcon" tabler="IconLock" hugeicons="SquareLock02Icon" phosphor="LockKeyIcon" remixicon="RiLockLine" class="size-4" />
+      </div>
+    </CardAction>
+  </CardHeader>
+  <CardContent>
+    <div
+      class="relative flex aspect-video items-center justify-center overflow-hidden rounded-lg bg-muted bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,var(--border)_10px,var(--border)_11px)]"
+    >
+      <Badge variant="destructive" class="absolute top-2 right-2">Live</Badge>
+    </div>
+  </CardContent>
+</Card>
