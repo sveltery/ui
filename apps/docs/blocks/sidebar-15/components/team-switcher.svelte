@@ -7,9 +7,11 @@
 
   let { teams }: { teams: { name: string; logo: Snippet; plan: string }[] } = $props();
   let activeTeam = $state.raw(teams[0]);
+  // The host element's typed event handlers do not fit the element this snippet renders, so only `class` is typed.
+  type RenderProps = Pick<HTMLAttributes<HTMLElement>, 'class'>;
 </script>
 
-{#snippet menuButton(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+{#snippet menuButton(props: RenderProps, _state: unknown, children?: Snippet)}
   <SidebarMenuButton {...props} class={[props.class, 'w-fit px-1.5 aria-expanded:bg-muted aria-expanded:text-foreground']}>{@render children?.()}</SidebarMenuButton>
 {/snippet}
 

@@ -4,13 +4,15 @@
   import { SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@sveltery/ui/sidebar';
 
   let { items, ...props }: { items: { title: string; url: string; icon: Snippet }[] } & ComponentProps<typeof SidebarGroup> = $props();
+  // The host element's typed event handlers do not fit the element this snippet renders, so only `class` is typed.
+  type RenderProps = Pick<HTMLAttributes<HTMLElement>, 'class'>;
 </script>
 
 <SidebarGroup {...props}>
   <SidebarGroupContent>
     <SidebarMenu>
       {#each items as item (item.title)}
-        {#snippet link(hostProps: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+        {#snippet link(hostProps: RenderProps, _state: unknown, children?: Snippet)}
           <a href={item.url} {...hostProps}>{@render children?.()}</a>
         {/snippet}
         <SidebarMenuItem>

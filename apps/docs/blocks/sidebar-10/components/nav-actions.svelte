@@ -71,9 +71,11 @@
       },
     ],
   ];
+  // The host element's typed event handlers do not fit the element this snippet renders, so only `class` is typed.
+  type RenderProps = Pick<HTMLAttributes<HTMLElement>, 'class'>;
 </script>
 
-{#snippet moreButton(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+{#snippet moreButton(props: RenderProps, _state: unknown, children?: Snippet)}
   <Button {...props} variant="ghost" size="icon" class={[props.class, 'h-7 w-7 data-open:bg-accent']}>{@render children?.()}</Button>
 {/snippet}
 
