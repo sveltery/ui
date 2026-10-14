@@ -32,6 +32,14 @@ export const blocks: Block[] = [
   { name: 'signup-03', description: 'A signup page with a muted background color.', route: 'signup', categories: ['authentication', 'signup'] },
   { name: 'signup-04', description: 'A signup page with form and image.', route: 'signup', categories: ['authentication', 'signup'] },
   { name: 'signup-05', description: 'A simple signup form with social providers.', route: 'signup', categories: ['authentication', 'signup'] },
+  { name: 'sidebar-01', description: 'A simple sidebar with navigation grouped by section.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
+  { name: 'sidebar-02', description: 'A sidebar with collapsible sections.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
+  { name: 'sidebar-03', description: 'A sidebar with submenus.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
+  { name: 'sidebar-04', description: 'A floating sidebar with submenus.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
+  { name: 'sidebar-05', description: 'A sidebar with collapsible submenus.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
+  { name: 'sidebar-06', description: 'A sidebar with submenus as dropdowns.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
+  { name: 'sidebar-07', description: 'A sidebar that collapses to icons.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
+  { name: 'sidebar-08', description: 'An inset sidebar with secondary navigation.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
 ];
 
 export const blocksIn = (slug: CategorySlug) => blocks.filter((block) => block.categories.includes(slug));
