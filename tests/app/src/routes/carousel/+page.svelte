@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '@sveltery/ui/carousel';
+  import Probe from './Probe.svelte';
   let api = $state.raw<CarouselApi>();
   let selected = $state(-1);
   let loop = $state(false);
@@ -22,4 +23,5 @@
   </CarouselContent>
   <CarouselPrevious />
   <CarouselNext />
+  <Probe />
 </Carousel>

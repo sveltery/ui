@@ -1,7 +1,8 @@
 import { afterEach, expect, it } from 'vitest';
-import { flushSync, mount, unmount } from 'svelte';
+import { createRawSnippet, flushSync, mount, unmount } from 'svelte';
 import { savedLayout } from '@sveltery/resizable';
 import ResizableFixture from './ResizableFixture.svelte';
+import ResizableHandleChildren from './ResizableHandleChildren.svelte';
 
 let instance: ReturnType<typeof mount> | undefined;
 afterEach(async () => { if (instance) await unmount(instance); document.body.replaceChildren(); });
@@ -193,4 +194,12 @@ it('ignores storage that is unreadable, malformed or blocked', () => {
   for (const stored of ['not json', '[1,2]', '{"left":"wide"}', 'null']) {
     expect(savedLayout({ id: 'editor', storage: { getItem: () => stored, setItem: () => {} } }).defaultLayout).toBeUndefined();
   }
+});
+
+it('a handle renders its grip and drops any children', () => {
+  const children = createRawSnippet(() => ({ render: () => '<span class="extra-child">extra</span>' }));
+  instance = mount(ResizableHandleChildren, { target: document.body, props: { handleProps: { id: 'handle-with-children', withHandle: true, children } } });
+  flushSync();
+  const handle = document.getElementById('handle-with-children')!;
+  expect([...handle.children].map(child => child.className)).toEqual(['cn-resizable-handle-icon z-10 flex shrink-0']);
 });

@@ -47,6 +47,20 @@ test('a collapsed menu button shows its tooltip, and an expanded one does not', 
   await expect(tooltip).toHaveAttribute('data-side', 'right');
 });
 
+test('a render snippet on a menu button with a tooltip receives the tooltip trigger state', async ({ page }) => {
+  const settings = page.locator('[data-slot=sidebar-menu-button]', { hasText: 'Settings' });
+  await expect(settings).toHaveAttribute('data-render-state', '{"open":false}');
+  await expect(settings).toHaveAttribute('data-sidebar', 'menu-button');
+  await expect(settings).not.toHaveAttribute('data-size');
+});
+
+test('dir is not set on the desktop container', async ({ page }) => {
+  await page.goto('/sidebar?rtl');
+  await expect(page.locator('[data-hydrated=true]')).toBeAttached();
+  await expect(page.locator(container)).toBeVisible();
+  await expect(page.locator(container)).not.toHaveAttribute('dir');
+});
+
 test('the open state survives a reload through the sidebar_state cookie', async ({ page, context }) => {
   await page.locator('[data-slot=sidebar-trigger]').click();
   await expect(page.locator(sidebar)).toHaveAttribute('data-state', 'collapsed');
@@ -81,5 +95,14 @@ test.describe('on a phone', () => {
 
     await page.keyboard.press('Control+b');
     await expect(sheet).toBeVisible();
+  });
+
+  test('dir reaches the sheet and other attributes do not', async ({ page }) => {
+    await page.goto('/sidebar?rtl');
+    await expect(page.locator('[data-hydrated=true]')).toBeAttached();
+    await page.locator('[data-slot=sidebar-trigger]').click();
+    const sheet = page.getByRole('dialog', { name: 'Sidebar' });
+    await expect(sheet).toHaveAttribute('dir', 'rtl');
+    await expect(sheet).not.toHaveAttribute('data-testid');
   });
 });

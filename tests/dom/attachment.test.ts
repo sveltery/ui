@@ -102,6 +102,11 @@ it('AttachmentAction accepts its own variant and size', () => {
   expect(button.classList.contains('cn-button-variant-ghost')).toBe(false);
 });
 
+it('AttachmentAction falls back to ghost for a null variant', () => {
+  const button = render(AttachmentAction, { children: text, variant: null }).firstElementChild!;
+  expect(button.classList.contains('cn-button-variant-ghost')).toBe(true);
+});
+
 it('AttachmentAction clicks reach the caller', () => {
   let clicks = 0;
   const button = render(AttachmentAction, { children: text, onclick: () => clicks++ }).firstElementChild as HTMLButtonElement;

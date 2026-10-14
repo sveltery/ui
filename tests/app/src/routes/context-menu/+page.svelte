@@ -37,7 +37,7 @@
       <ContextMenuSeparator />
       <ContextMenuSub>
         <ContextMenuSubTrigger>More Tools</ContextMenuSubTrigger>
-        <ContextMenuSubContent>
+        <ContextMenuSubContent class="sub-extra">
           <ContextMenuItem onclick={() => (last = 'Save Page')}>Save Page...</ContextMenuItem>
           <ContextMenuItem onclick={() => (last = 'Developer Tools')}>Developer Tools</ContextMenuItem>
         </ContextMenuSubContent>

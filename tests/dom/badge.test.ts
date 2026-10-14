@@ -46,3 +46,9 @@ it('renders through a render snippet onto a link', () => {
   expect(link.textContent!.trim()).toBe('Link text');
   expect(document.querySelector('span[data-slot="badge"]')).toBe(null);
 });
+
+it('a null variant adds no variant class or attribute', () => {
+  const badge = render(Badge, { children: text, variant: null }).firstElementChild!;
+  expect(badge.hasAttribute('data-variant')).toBe(false);
+  expect([...badge.classList].filter(name => name.startsWith('cn-badge-variant'))).toEqual([]);
+});

@@ -35,8 +35,9 @@ it('renders root, control, track, range and thumb with the upstream slots and cl
   expect(root('multi').classList.contains('extra')).toBe(true);
 });
 
-it('renders one thumb per value', () => {
+it('renders one thumb per value, and a min and a max thumb without a value', () => {
   const { thumbs } = setup();
+  expect(thumbs('bare').length).toBe(2);
   expect(thumbs('single').length).toBe(1);
   expect(thumbs('range').length).toBe(2);
   expect(thumbs('multi').length).toBe(3);
