@@ -368,6 +368,10 @@ When the design has no visible label, use `aria-label`:
 <QuestionnaireInput aria-label="Other answer" placeholder="Type another answer…" />
 ```
 
+## Examples
+
+<ComponentPreview name="base/QuestionnaireExample" />
+
 ## API Reference
 
 Every part accepts the native attributes of its element and a `class`. Navigation parts also accept the Button `size` and `variant` props. `QuestionnaireActions` is a styled-only layout `div`, and `QuestionnaireChoiceDescription` is a styled `span` for text under a choice label.
