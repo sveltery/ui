@@ -200,9 +200,10 @@ test('the keyboard picks up a row with space, moves it live with the arrow keys 
   await expect(headers(page).nth(1)).toHaveText('Executive summary');
   await expect(headers(page).nth(2)).toHaveText('Cover page');
 
-  await page.getByRole('button', { name: 'Drag to reorder' }).nth(2).focus();
+  await expect(page.getByRole('button', { name: 'Drag to reorder' }).nth(2)).toBeFocused();
   await page.keyboard.press('Space');
   await page.keyboard.press('ArrowUp');
+  await expect(headers(page).nth(1)).toHaveText('Cover page');
   await page.keyboard.press('Escape');
   await expect(headers(page).nth(1)).toHaveText('Executive summary');
   await expect(headers(page).nth(2)).toHaveText('Cover page');

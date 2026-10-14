@@ -100,7 +100,7 @@
 
   // svelte-ignore state_referenced_locally
   let data = $state.raw(initialData);
-  let snapshot = initialData;
+  let snapshot: Section[] = [];
   const table = createTable({
     features,
     columns,
@@ -397,7 +397,7 @@
         onDragStart={() => (snapshot = data)}
         onDragOver={(event) => (data = move(data, event))}
         onDragEnd={(event) => {
-          // @dnd-kit/svelte reorders on drag over, so a cancelled drag puts back the order from before it.
+          // Rows move on drag over, so a cancelled drag puts back the order from before it.
           if (event.canceled) data = snapshot;
         }}
       >
