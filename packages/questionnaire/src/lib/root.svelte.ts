@@ -1,4 +1,3 @@
-import type { FormFocusInvalidDetail } from '@sveltery/base/form';
 import { createContext, flushSync, untrack } from 'svelte';
 import type { Attachment } from 'svelte/attachments';
 import {
@@ -168,13 +167,14 @@ export class QuestionnaireModel {
     if (name) this.select(name);
   }
 
-  /** Form's reveal for an invalid answer: switch to its item, which then takes focus. */
-  focusInvalid = ({ control }: FormFocusInvalidDetail): void => {
-    const item = this.runtime.find((entry) => entry.element?.contains(control));
-    if (!item) return;
-    if (item.name === this.activeName) item.focusInvalid();
-    else this.select(item.name, 'invalid');
-  };
+  /** Validates every item in navigation order and moves to the first invalid one. Returns whether the submit may go on. */
+  submit(): boolean {
+    const invalid = this.#names.flatMap((name) => this.runtime.filter((item) => item.name === name)).find((item) => !item.validate());
+    if (!invalid) return true;
+    if (invalid.name === this.activeName) invalid.focusInvalid();
+    else this.select(invalid.name, 'invalid');
+    return false;
+  }
 
   attach: Attachment<HTMLFormElement> = (element) => {
     this.element = element;

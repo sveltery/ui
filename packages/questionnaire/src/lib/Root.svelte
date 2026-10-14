@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { Form } from '@sveltery/base/form';
   import { QuestionnaireModel, setRoot } from './root.svelte.js';
   import type { QuestionnaireRootProps } from './types.js';
   import { dataAttributes } from './utils.js';
@@ -10,10 +9,10 @@
     items,
     onItemChange,
     shortcuts,
-    errors = $bindable(),
     novalidate = true,
     onkeydown,
     onreset,
+    onsubmit,
     children,
     ...rest
   }: QuestionnaireRootProps = $props();
@@ -37,10 +36,8 @@
   $effect(() => root.warn());
 </script>
 
-<Form
-  bind:errors
+<form
   {novalidate}
-  onFocusInvalid={root.focusInvalid}
   data-shortcuts={shortcuts}
   {...dataAttributes(root.state)}
   {...rest}
@@ -52,7 +49,11 @@
     onreset?.(event);
     if (!event.defaultPrevented) root.reset();
   }}
+  onsubmit={(event) => {
+    if (root.submit()) onsubmit?.(event);
+    else event.preventDefault();
+  }}
   {@attach root.attach}
 >
   {@render children?.()}
-</Form>
+</form>

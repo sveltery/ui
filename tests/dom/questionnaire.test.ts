@@ -2,7 +2,6 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { flushSync, mount, unmount } from 'svelte';
 import QuestionnaireCollectionFixture from './QuestionnaireCollectionFixture.svelte';
 import QuestionnaireFixture from './QuestionnaireFixture.svelte';
-import QuestionnaireRemoteFixture from './QuestionnaireRemoteFixture.svelte';
 
 type Fixture = { toggle(): void; preventKeydown(): void; bound(): { item: string; checked: boolean; text: string } };
 let instance: ReturnType<typeof mount> | undefined;
@@ -531,24 +530,28 @@ describe('Questionnaire', () => {
     expect(document.activeElement).toBe(choiceInput('scope-delegation'));
   });
 
-  it('stops an invalid submit before every other submit listener', () => {
-    setup('main');
-    const later = vi.fn();
-    const bubbled = vi.fn();
-    form().addEventListener('submit', later);
-    document.body.addEventListener('submit', bubbled);
-    const event = new Event('submit', { bubbles: true, cancelable: true });
-    act(() => form().dispatchEvent(event));
-    expect(event.defaultPrevented).toBe(true);
-    expect(later).not.toHaveBeenCalled();
-    expect(bubbled).not.toHaveBeenCalled();
+  it('prevents an invalid submit and passes a valid one to onsubmit', () => {
+    const onsubmit = vi.fn((event: SubmitEvent) => event.defaultPrevented);
+    setup('main', { onsubmit });
+    const invalid = new Event('submit', { bubbles: true, cancelable: true });
+    act(() => form().dispatchEvent(invalid));
+    expect(invalid.defaultPrevented).toBe(true);
+    expect(onsubmit.mock.results).toEqual([]);
 
     choose('scope-delegation');
     click(button('next'));
     choose('detail-focused');
-    act(() => form().dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })));
-    expect(later).toHaveBeenCalledOnce();
-    expect(bubbled).toHaveBeenCalledOnce();
+    const valid = new Event('submit', { bubbles: true, cancelable: true });
+    act(() => form().dispatchEvent(valid));
+    expect(valid.defaultPrevented).toBe(false);
+    expect(onsubmit.mock.results).toEqual([{ type: 'return', value: false }]);
+  });
+
+  it('renders each item as a fieldset holding only its answer controls', () => {
+    setup('main');
+    const controls = (name: string) => Array.from(item(name).elements, (control) => (control as HTMLInputElement).type);
+    expect(controls('scope')).toEqual(['radio', 'radio', 'text']);
+    expect(controls('detail')).toEqual(['radio', 'radio']);
   });
 
   it('keeps validation active until an attempted item remains valid', () => {
@@ -933,23 +936,4 @@ describe('Questionnaire with items', () => {
     ]);
   });
 
-  it('returns to an earlier step when a remote form reports an issue on it, and shows it in Field.Error', async () => {
-    instance = mount(QuestionnaireRemoteFixture, {
-      target: document.body,
-      props: { serverIssues: [{ message: 'That scope is full.', path: ['scope'] }] }
-    });
-    flushSync();
-    choose('scope-choice');
-    click(button('next'));
-    choose('detail-choice');
-    click(button('submit'));
-
-    await vi.waitFor(() => expect(item('scope').hasAttribute('data-active')).toBe(true));
-    expect(item('detail').hidden).toBe(true);
-    expect(el('scope-field-error').textContent).toBe('That scope is full.');
-    expect(el('scope-error').hidden).toBe(false);
-    expect(el('scope-error').textContent).toBe('That scope is full.');
-    expect(item('scope').getAttribute('aria-invalid')).toBe('true');
-    expect(document.activeElement).toBe(choiceInput('scope-choice'));
-  });
 });

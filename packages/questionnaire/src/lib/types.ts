@@ -1,4 +1,3 @@
-import type { FormErrors, FormProps } from '@sveltery/base/form';
 import type { Snippet } from 'svelte';
 import type {
   HTMLAttributes,
@@ -49,8 +48,7 @@ export interface QuestionnaireRootState {
   total: number;
 }
 
-export interface QuestionnaireRootProps
-  extends Omit<HTMLFormAttributes, 'children' | 'novalidate'>, Pick<FormProps, 'form' | 'enhance'> {
+export interface QuestionnaireRootProps extends Omit<HTMLFormAttributes, 'children' | 'novalidate'> {
   /** The active item name. Bind it to follow and set navigation. */
   item?: string;
   /** The item to start on when `item` is undefined. Defaults to the first enabled item. */
@@ -60,9 +58,7 @@ export interface QuestionnaireRootProps
   /** Called when navigation moves to another item. */
   onItemChange?: (item: string) => void;
   shortcuts?: QuestionnaireShortcutMode;
-  /** Errors keyed by item name, usually from a server action. Use `bind:errors` so answering an item clears its entry. */
-  errors?: FormErrors;
-  /** Turns off the browser's constraint validation UI once the form is hydrated. Questionnaire validation still runs. @default true */
+  /** Turns off the browser's constraint validation UI. Questionnaire validation still runs. @default true */
   novalidate?: boolean;
   children?: Snippet;
 }
