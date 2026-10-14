@@ -8,5 +8,6 @@ export const site = {
     { href: '/docs', label: 'Docs' },
     { href: '/docs/components', label: 'Components' },
     { href: '/docs/forms', label: 'Forms' },
+    { href: '/blocks', label: 'Blocks' },
   ],
 } as const;
