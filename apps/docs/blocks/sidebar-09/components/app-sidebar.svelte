@@ -144,8 +144,8 @@
 
   // Note: I'm using state to show active item.
   // IRL you should use the url/router.
-  let activeItem = $state(data.navMain[0]);
-  let mails = $state(data.mails);
+  let activeItem = $state.raw(data.navMain[0]);
+  let mails = $state.raw(data.mails);
   const { setOpen } = useSidebar();
 </script>
 

@@ -74,7 +74,7 @@
 </script>
 
 {#snippet moreButton(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
-  <Button {...props} variant="ghost" size="icon" class="h-7 w-7 data-open:bg-accent">{@render children?.()}</Button>
+  <Button {...props} variant="ghost" size="icon" class={[props.class, 'h-7 w-7 data-open:bg-accent']}>{@render children?.()}</Button>
 {/snippet}
 
 {#snippet settings2Icon()}
