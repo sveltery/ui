@@ -79,7 +79,7 @@
             <ItemTitle>{holding.name}</ItemTitle>
             <ItemDescription>{holding.shares}</ItemDescription>
           </ItemContent>
-          <ChartContainer aria-label="{holding.name} quarterly dividends" config={miniChartConfig} class="hidden aspect-auto h-8 w-24 md:block">
+          <ChartContainer aria-label="{holding.name} quarterly dividends" config={miniChartConfig} class="hidden h-8 w-24 md:block">
             <BarChart
               data={holding.data}
               x="q"

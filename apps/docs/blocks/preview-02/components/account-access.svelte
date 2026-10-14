@@ -1,10 +1,14 @@
 <script lang="ts">
+  import type { Snippet } from 'svelte';
+  import type { HTMLAttributes } from 'svelte/elements';
   import { Button } from '@sveltery/ui/button';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
   import { Field, FieldGroup, FieldLabel } from '@sveltery/ui/field';
   import { Input } from '@sveltery/ui/input';
   import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@sveltery/ui/item';
   import { IconPlaceholder } from '@sveltery/ui/icons';
+  // The host element's typed event handlers do not fit the element this snippet renders, so only `class` is typed.
+  type RenderProps = Pick<HTMLAttributes<HTMLElement>, 'class'>;
 </script>
 
 <Card>
@@ -38,8 +42,8 @@
       Update Security
     </Button>
     <Item variant="muted">
-      {#snippet render(props, _state, content)}
-        <a {...(props as Record<string, unknown>)} href="#">{@render content?.()}</a>
+      {#snippet render(props: RenderProps, _state: unknown, content?: Snippet)}
+        <a {...props} href="#">{@render content?.()}</a>
       {/snippet}
       <ItemMedia variant="icon">
         <IconPlaceholder lucide="AlertCircleIcon" tabler="IconAlertCircle" hugeicons="AlertCircleIcon" phosphor="WarningCircleIcon" remixicon="RiErrorWarningLine" class="text-destructive" />
