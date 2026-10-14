@@ -2,10 +2,10 @@
   import { cn } from 'cn';
   import type { SidebarMenuActionProps, SidebarMenuActionState } from './types.js';
   let { children, class: classProp, render, showOnHover = false, ...props }: SidebarMenuActionProps = $props();
-  const state: SidebarMenuActionState = { slot: 'sidebar-menu-action' };
+  const state: SidebarMenuActionState = { slot: 'sidebar-menu-action', sidebar: 'menu-action' };
   const hostProps = $derived({
     'data-slot': state.slot,
-    'data-sidebar': 'menu-action',
+    'data-sidebar': state.sidebar,
     ...props,
     class: cn(
       'cn-sidebar-menu-action flex items-center justify-center outline-hidden transition-transform group-data-[collapsible=icon]:hidden after:absolute after:-inset-2 md:after:hidden [&>svg]:shrink-0',

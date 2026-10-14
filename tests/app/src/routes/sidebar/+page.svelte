@@ -3,7 +3,7 @@
   let { data } = $props();
 </script>
 <SidebarProvider defaultOpen={data.open}>
-  <Sidebar collapsible="icon">
+  <Sidebar collapsible="icon" data-testid="app-sidebar" dir={data.rtl ? 'rtl' : undefined}>
     <SidebarContent>
       <SidebarGroup>
         <SidebarMenu>
@@ -17,6 +17,14 @@
             <SidebarMenuButton>
               <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" /></svg>
               <span>Calendar</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton tooltip="Open settings" size={null}>
+              {#snippet render(props, state, children)}
+                <button {...props} data-render-state={JSON.stringify(state)}>{@render children?.()}</button>
+              {/snippet}
+              <span>Settings</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
