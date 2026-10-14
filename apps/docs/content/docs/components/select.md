@@ -177,18 +177,18 @@ Set `disabled` on `Select` to disable the whole control, or on a `SelectItem` to
 
 ## Invalid
 
-Set `invalid` on the `Field` to show an error state. The trigger reads the state from the field, or you can set `aria-invalid` on `SelectTrigger` yourself.
+Set `aria-invalid` on `SelectTrigger` to show an error state. In a [Field](/docs/components/field), also set `data-invalid` on the `Field` and add a `FieldError`.
 
 ```svelte
-<Field invalid>
+<Field data-invalid>
   <FieldLabel>Fruit</FieldLabel>
   <Select {items}>
-    <SelectTrigger>
+    <SelectTrigger aria-invalid>
       <SelectValue />
     </SelectTrigger>
     ...
   </Select>
-  <FieldError match>Please select a fruit.</FieldError>
+  <FieldError>Please select a fruit.</FieldError>
 </Field>
 ```
 

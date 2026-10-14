@@ -343,7 +343,7 @@
           </ComboboxList>
         </ComboboxContent>
       </Combobox>
-      <Field invalid>
+      <Field data-invalid>
         <FieldLabel for="combobox-framework-invalid">Framework</FieldLabel>
         <Combobox items={frameworks}>
           <ComboboxInput id="combobox-framework-invalid" placeholder="Select a framework" aria-invalid />
@@ -355,7 +355,7 @@
           </ComboboxContent>
         </Combobox>
         <FieldDescription>Please select a valid framework.</FieldDescription>
-        <FieldError match>This field is required.</FieldError>
+        <FieldError errors={[{ message: 'This field is required.' }]} />
       </Field>
     </div>
   </Example>
@@ -513,7 +513,7 @@
 {#snippet ComboboxMultiple()}
   <Example title="Combobox Multiple">
     <Combobox multiple autoHighlight items={frameworks} defaultValue={[frameworks[0]]}>
-      <ComboboxChips bind:ref={multipleAnchor}>
+      <ComboboxChips {@attach (node) => { multipleAnchor = node; }}>
         <ComboboxValue>
           {#snippet children(values)}
             {@render MultipleChips(values as string[], true, {})}
@@ -533,7 +533,7 @@
 {#snippet ComboboxMultipleDisabled()}
   <Example title="Combobox Multiple Disabled">
     <Combobox multiple autoHighlight items={frameworks} defaultValue={[frameworks[0], frameworks[1]]} disabled>
-      <ComboboxChips bind:ref={multipleDisabledAnchor}>
+      <ComboboxChips {@attach (node) => { multipleDisabledAnchor = node; }}>
         <ComboboxValue>
           {#snippet children(values)}
             {@render MultipleChips(values as string[], true, { disabled: true })}
@@ -554,7 +554,7 @@
   <Example title="Combobox Multiple Invalid">
     <div class="flex flex-col gap-4">
       <Combobox multiple autoHighlight items={frameworks} defaultValue={[frameworks[0], frameworks[1]]}>
-        <ComboboxChips bind:ref={multipleInvalidAnchor1}>
+        <ComboboxChips {@attach (node) => { multipleInvalidAnchor1 = node; }}>
           <ComboboxValue>
             {#snippet children(values)}
               {@render MultipleChips(values as string[], true, { 'aria-invalid': 'true' })}
@@ -568,10 +568,10 @@
           </ComboboxList>
         </ComboboxContent>
       </Combobox>
-      <Field invalid>
+      <Field data-invalid>
         <FieldLabel for="combobox-multiple-invalid">Frameworks</FieldLabel>
         <Combobox multiple autoHighlight items={frameworks} defaultValue={[frameworks[0], frameworks[1], frameworks[2]]}>
-          <ComboboxChips bind:ref={multipleInvalidAnchor2}>
+          <ComboboxChips {@attach (node) => { multipleInvalidAnchor2 = node; }}>
             <ComboboxValue>
               {#snippet children(values)}
                 {@render MultipleChips(values as string[], true, { id: 'combobox-multiple-invalid', 'aria-invalid': true })}
@@ -586,7 +586,7 @@
           </ComboboxContent>
         </Combobox>
         <FieldDescription>Please select at least one framework.</FieldDescription>
-        <FieldError match>This field is required.</FieldError>
+        <FieldError errors={[{ message: 'This field is required.' }]} />
       </Field>
     </div>
   </Example>
@@ -595,7 +595,7 @@
 {#snippet ComboboxMultipleNoRemove()}
   <Example title="Combobox Multiple (No Remove)">
     <Combobox multiple autoHighlight items={frameworks} defaultValue={[frameworks[0], frameworks[1]]}>
-      <ComboboxChips bind:ref={multipleNoRemoveAnchor}>
+      <ComboboxChips {@attach (node) => { multipleNoRemoveAnchor = node; }}>
         <ComboboxValue>
           {#snippet children(values)}
             {@render MultipleChips(values as string[], false, {})}
