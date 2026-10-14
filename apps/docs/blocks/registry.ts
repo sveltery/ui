@@ -32,6 +32,14 @@ export const blocks: Block[] = [
   { name: 'signup-03', description: 'A signup page with a muted background color.', route: 'signup', categories: ['authentication', 'signup'] },
   { name: 'signup-04', description: 'A signup page with form and image.', route: 'signup', categories: ['authentication', 'signup'] },
   { name: 'signup-05', description: 'A simple signup form with social providers.', route: 'signup', categories: ['authentication', 'signup'] },
+  { name: 'sidebar-01', description: 'A simple sidebar with navigation grouped by section.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
+  { name: 'sidebar-02', description: 'A sidebar with collapsible sections.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
+  { name: 'sidebar-03', description: 'A sidebar with submenus.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
+  { name: 'sidebar-04', description: 'A floating sidebar with submenus.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
+  { name: 'sidebar-05', description: 'A sidebar with collapsible submenus.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
+  { name: 'sidebar-06', description: 'A sidebar with submenus as dropdowns.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
+  { name: 'sidebar-07', description: 'A sidebar that collapses to icons.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
+  { name: 'sidebar-08', description: 'An inset sidebar with secondary navigation.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
   { name: 'sidebar-09', description: 'Collapsible nested sidebars.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
   { name: 'sidebar-10', description: 'A sidebar in a popover.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
   { name: 'sidebar-11', description: 'A sidebar with a collapsible file tree.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
@@ -42,5 +50,10 @@ export const blocks: Block[] = [
   { name: 'sidebar-16', description: 'A sidebar with a sticky site header.', route: 'dashboard', categories: ['sidebar', 'dashboard'], iframeHeight: '800px' },
 ];
 
-/** Upstream's featured list. dashboard-01 waits for Select, so it is not in `blocks` yet and the page skips it. */
-export const featured = ['dashboard-01', 'sidebar-07', 'sidebar-03', 'login-03', 'login-04'];
+export const blocksIn = (slug: CategorySlug) => blocks.filter((block) => block.categories.includes(slug));
+
+/** Categories in the nav: not hidden, and with a block to show. */
+export const navCategories = categories.filter((category) => !category.hidden && blocksIn(category.slug).length);
+
+/** Upstream's featured list, in its order, limited to ported blocks. dashboard-01 waits for Select. */
+export const featured = ['dashboard-01', 'sidebar-07', 'sidebar-03', 'login-03', 'login-04'].flatMap((name) => blocks.filter((block) => block.name === name));

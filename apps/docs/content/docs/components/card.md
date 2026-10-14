@@ -50,3 +50,9 @@ Change the imports to match your project setup.
   </CardFooter>
 </Card>
 ```
+
+## Image card
+
+Place an image above `CardHeader` and drop the top padding with `pt-0`. Put a `Badge` or an action next to the footer content with `ml-auto`. Here the footer opens an `AlertDialog`.
+
+<ComponentPreview name="base/ComponentExample" />

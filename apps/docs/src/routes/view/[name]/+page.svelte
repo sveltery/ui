@@ -1,11 +1,14 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
   import { site } from '$lib/site';
   let { data } = $props();
 
-  // Browser tests wait for this before they use interactive controls.
-  onMount(() => (document.documentElement.dataset.ready = ''));
+  // The docs page around the preview iframe writes the theme; follow it without a reload.
+  function syncTheme(event: StorageEvent) {
+    if (event.key === 'theme') document.documentElement.classList.toggle('dark', event.newValue === 'dark');
+  }
 </script>
+
+<svelte:window onstorage={syncTheme} />
 
 <svelte:head>
   <title>{data.block.name} - {site.name}</title>

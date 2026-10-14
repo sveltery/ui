@@ -1,6 +1,7 @@
 <script lang="ts">
   import { buttonVariants } from '@sveltery/ui/button';
   import { cn } from 'cn';
+  import { navCategories } from '#blocks/registry';
   import BlocksNav from '$lib/components/blocks/BlocksNav.svelte';
   import { site } from '$lib/site';
   let { children } = $props();
@@ -25,7 +26,7 @@
 <div id="blocks" class="container-wrapper scroll-mt-24 px-6">
   <div class="flex items-center justify-between gap-4 py-4">
     <BlocksNav />
-    <a href="/blocks/sidebar" class={cn(buttonVariants({ variant: 'secondary', size: 'sm' }), 'mr-7 hidden shadow-none lg:flex')}>Browse all blocks</a>
+    <a href="/blocks/{navCategories[0].slug}" class={cn(buttonVariants({ variant: 'secondary', size: 'sm' }), 'mr-7 hidden shadow-none lg:flex')}>Browse all blocks</a>
   </div>
 </div>
 <div class="container-wrapper flex-1 bg-muted/30 px-6 md:py-12">
