@@ -169,6 +169,14 @@
     <Questionnaire.Skip data-testid="skip" />
     <Questionnaire.Submit data-testid="submit" />
   </Questionnaire.Root>
+{:else if scenario === 'skip-bound'}
+  <Questionnaire.Root data-testid="root" defaultItem="answer" {onsubmit}>
+    <Questionnaire.Item data-testid="answer" name="answer">
+      <Questionnaire.Title>Answer</Questionnaire.Title>
+      <Choice data-testid="bound-answer" bind:checked={flag} value="bound">Bound</Choice>
+    </Questionnaire.Item>
+    <Questionnaire.Skip data-testid="skip" />
+  </Questionnaire.Root>
 {:else if scenario === 'native-input'}
   <Questionnaire.Root data-testid="root" defaultItem="answer" novalidate={false}>
     <Questionnaire.Item data-testid="answer" required name="answer">

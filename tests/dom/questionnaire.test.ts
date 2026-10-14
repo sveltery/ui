@@ -420,6 +420,16 @@ describe('Questionnaire', () => {
     expect(submitted).toEqual([]);
   });
 
+  it('answers a skipped item when its bound choice is checked from outside', () => {
+    const fixture = setup('skip-bound');
+    click(button('skip'));
+    expect(item('answer').dataset.status).toBe('skipped');
+    act(() => fixture.toggle());
+    expect(choiceInput('bound-answer').checked).toBe(true);
+    expect(item('answer').dataset.status).toBe('answered');
+    expect(values('answer')).toEqual(['bound']);
+  });
+
   it('does not require fixed radios when an Input can answer the item', () => {
     setup('native-input');
     expect(form().noValidate).toBe(false);
