@@ -30,6 +30,9 @@
   export function toggle() {
     flag = !flag;
   }
+  export function write(next: string) {
+    text = next;
+  }
   export function preventKeydown() {
     preventKeys = true;
   }
@@ -174,8 +177,13 @@
     <Questionnaire.Item data-testid="answer" name="answer">
       <Questionnaire.Title>Answer</Questionnaire.Title>
       <Choice data-testid="bound-answer" bind:checked={flag} value="bound">Bound</Choice>
+      <Questionnaire.Input data-testid="bound-input" aria-label="Custom answer" bind:value={text} />
     </Questionnaire.Item>
+    <TestItem name="after" />
+    <Questionnaire.Previous data-testid="previous" />
     <Questionnaire.Skip data-testid="skip" />
+    <Questionnaire.Next data-testid="next" />
+    <Questionnaire.Submit data-testid="submit" />
   </Questionnaire.Root>
 {:else if scenario === 'native-input'}
   <Questionnaire.Root data-testid="root" defaultItem="answer" novalidate={false}>

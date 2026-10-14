@@ -60,7 +60,8 @@ export class ItemModel {
   /** The rendered choices, which the dev warnings compare with `items`. */
   choices = $derived(this.controls.flatMap((answer) => (answer.kind === 'choice' ? [{ value: answer.value, disabled: answer.ownDisabled }] : [])));
   hasInputAnswer = $derived(this.answers.some((answer) => answer.kind === 'input'));
-  status: QuestionnaireItemStatus = $derived(this.answers.some((answer) => answer.answered) ? 'answered' : this.skipped ? 'skipped' : 'unanswered');
+  #answered = $derived(this.answers.some((answer) => answer.answered));
+  status: QuestionnaireItemStatus = $derived(this.skipped ? 'skipped' : this.#answered ? 'answered' : 'unanswered');
   #skippedOptional = $derived(this.status === 'skipped' && !this.required);
   valid = $derived.by(() => this.disabled || this.#skippedOptional || (!this.#options.invalid && this.status === 'answered'));
   invalid = $derived.by(
@@ -106,9 +107,8 @@ export class ItemModel {
     return () => (this.errors = this.errors.filter((entry) => entry !== id));
   }
 
-  /** Records a user's answer. A single-answer item keeps only this one. */
+  /** Keeps only the answer a user just chose in a single-answer item. */
   claim(answer: Answer): void {
-    this.skipped = false;
     if (!this.multiple) for (const entry of this.#registered) if (entry !== answer) entry.deselect();
   }
 
@@ -188,6 +188,12 @@ export class ItemModel {
       }
       this.#wasMultiple = multiple;
     });
+  }
+
+  /** An answer clears a skip, whether a click or a bound value made it. */
+  clearSkip(): void {
+    // Losing every answer, which Skip itself causes, keeps the skip.
+    if (this.#answered) untrack(() => (this.skipped = false));
   }
 
   reportStatus(): void {
@@ -270,7 +276,6 @@ export class ChoiceModel {
     this.#options.onchange?.(event);
     this.checked = event.currentTarget.checked;
     if (this.checked) this.item.claim(this);
-    else this.item.skipped = false;
   };
 
   attach: Attachment<HTMLInputElement> = (element) => {
@@ -293,14 +298,16 @@ export class InputModel {
   readonly #options: InputOptions;
   readonly #initial: string | number | null | undefined;
   element = $state.raw<HTMLInputElement>();
-  /** Whether this input is the item's answer. A single-answer item deselects it, keeping its text as a draft. */
-  selected = $state(false);
+  /**
+   * Whether this input is the item's answer. Every value change selects a filled input, from typing or a bound value.
+   * A single-answer item deselects it, keeping its text as a draft.
+   */
+  selected = $derived(hasInputValue(this.value));
 
   constructor(item: ItemModel, options: InputOptions) {
     this.item = item;
     this.#options = options;
     this.#initial = options.value;
-    this.selected = hasInputValue(options.value);
   }
 
   get value(): string | number | null | undefined {

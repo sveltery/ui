@@ -3,7 +3,7 @@ import { flushSync, mount, unmount } from 'svelte';
 import QuestionnaireCollectionFixture from './QuestionnaireCollectionFixture.svelte';
 import QuestionnaireFixture from './QuestionnaireFixture.svelte';
 
-type Fixture = { toggle(): void; preventKeydown(): void; bound(): { item: string; checked: boolean; text: string } };
+type Fixture = { toggle(): void; write(text: string): void; preventKeydown(): void; bound(): { item: string; checked: boolean; text: string } };
 let instance: ReturnType<typeof mount> | undefined;
 afterEach(async () => {
   if (instance) await unmount(instance);
@@ -421,13 +421,40 @@ describe('Questionnaire', () => {
   });
 
   it('answers a skipped item when its bound choice is checked from outside', () => {
-    const fixture = setup('skip-bound');
+    const onsubmit = submitSpy();
+    const fixture = setup('skip-bound', { onsubmit });
+    act(() => fixture.toggle());
+    expect(item('answer').dataset.status).toBe('answered');
     click(button('skip'));
     expect(item('answer').dataset.status).toBe('skipped');
+    expect(choiceInput('bound-answer').checked).toBe(false);
     act(() => fixture.toggle());
     expect(choiceInput('bound-answer').checked).toBe(true);
     expect(item('answer').dataset.status).toBe('answered');
     expect(values('answer')).toEqual(['bound']);
+
+    act(() => fixture.toggle());
+    expect(choiceInput('bound-answer').checked).toBe(false);
+    expect(item('answer').dataset.status).toBe('unanswered');
+    click(button('previous'));
+    click(button('next'));
+    expect(item('answer').hasAttribute('data-active')).toBe(true);
+    expect(item('answer').getAttribute('aria-invalid')).toBe('true');
+    click(button('submit'));
+    expect(onsubmit).not.toHaveBeenCalled();
+  });
+
+  it('answers a skipped item when its bound input is filled from outside', () => {
+    const fixture = setup('skip-bound');
+    click(button('skip'));
+    expect(item('answer').dataset.status).toBe('skipped');
+    act(() => fixture.write('Custom'));
+    expect(item('answer').dataset.status).toBe('answered');
+    expect(values('answer')).toEqual(['Custom']);
+
+    act(() => fixture.write(''));
+    expect(item('answer').dataset.status).toBe('unanswered');
+    expect(values('answer')).toEqual([]);
   });
 
   it('does not require fixed radios when an Input can answer the item', () => {

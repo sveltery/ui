@@ -30,6 +30,7 @@
   root.register(item);
   $effect(() => () => root.unregister(item));
   $effect.pre(() => item.syncMultiple());
+  $effect.pre(() => item.clearSkip());
   $effect(() => item.reportStatus());
 
   const active = $derived(item.active);
