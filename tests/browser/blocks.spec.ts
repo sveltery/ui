@@ -16,6 +16,7 @@ const blocks: Record<string, string> = {
   'signup-03': 'Create your account',
   'signup-04': 'Create your account',
   'signup-05': 'Welcome to Acme Inc.',
+  'dashboard-01': 'Total Visitors',
   'sidebar-01': 'Getting Started',
   'sidebar-02': 'Getting Started',
   'sidebar-03': 'Getting Started',
@@ -71,7 +72,7 @@ test('the category nav lists each category and its blocks', async ({ page }) => 
   const nav = page.getByRole('navigation', { name: 'Blocks' });
   await expect(nav.getByRole('link')).toHaveText(['Featured', 'Sidebar', 'Login', 'Signup']);
   await expect(nav.getByRole('link', { name: 'Featured' })).toHaveAttribute('aria-current', 'page');
-  await expect(page.locator('[data-slot=block-viewer]').evaluateAll((viewers) => viewers.map((viewer) => viewer.id))).resolves.toEqual(['sidebar-07', 'sidebar-03', 'login-03', 'login-04']);
+  await expect(page.locator('[data-slot=block-viewer]').evaluateAll((viewers) => viewers.map((viewer) => viewer.id))).resolves.toEqual(['dashboard-01', 'sidebar-07', 'sidebar-03', 'login-03', 'login-04']);
   await expect(page.getByRole('link', { name: 'Browse more blocks' })).toHaveAttribute('href', '/blocks/sidebar');
 
   await nav.getByRole('link', { name: 'Login' }).click();
@@ -100,6 +101,21 @@ test('the Code tab shows the files in their app paths', async ({ page }) => {
 
   await viewer.getByRole('tab', { name: 'Preview' }).click();
   await expect(viewer.locator('iframe')).toBeVisible();
+});
+
+test('the Code tab keeps a block data file beside its page', async ({ page }) => {
+  await visit(page, '/blocks');
+  const viewer = page.locator('#dashboard-01');
+  await expect(viewer.locator('iframe')).toHaveAttribute('src', '/view/dashboard-01');
+  await viewer.getByRole('tab', { name: 'Code' }).click();
+  const caption = viewer.locator('figcaption');
+  await expect(caption).toHaveText('src/routes/dashboard/+page.svelte Copy');
+  await expect(viewer.locator('pre')).toContainText("import data from './data.json';");
+
+  await viewer.getByRole('button', { name: 'data.json' }).click();
+  await expect(caption).toHaveText('src/routes/dashboard/data.json Copy');
+  await expect(viewer.locator('pre code')).toHaveAttribute('data-language', 'json');
+  await expect(viewer.locator('pre')).toContainText('"header": "Cover page"');
 });
 
 test('the size toggles resize the preview', async ({ page }) => {
