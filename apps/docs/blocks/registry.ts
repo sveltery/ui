@@ -47,7 +47,7 @@ export const blocks: Block[] = [
   { name: 'sidebar-13', description: 'A sidebar in a dialog.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
   { name: 'sidebar-14', description: 'A sidebar on the right.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
   { name: 'sidebar-15', description: 'A left and right sidebar.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
-  { name: 'sidebar-16', description: 'A sidebar with a sticky site header.', route: 'dashboard', categories: ['sidebar', 'dashboard'], iframeHeight: '800px' },
+  { name: 'sidebar-16', description: 'A sidebar with a sticky site header.', route: 'dashboard', categories: ['sidebar', 'dashboard'] },
 ];
 
 export const blocksIn = (slug: CategorySlug) => blocks.filter((block) => block.categories.includes(slug));

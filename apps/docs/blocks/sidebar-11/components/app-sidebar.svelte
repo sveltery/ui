@@ -18,7 +18,7 @@
   } from '@sveltery/ui/sidebar';
   import { IconPlaceholder } from '@sveltery/ui/icons';
   let { ...props }: SidebarProps = $props();
-  type TreeItem = string | TreeItem[];
+  type TreeItem = string | [name: string, ...items: TreeItem[]];
 
   const data: { changes: { file: string; state: string }[]; tree: TreeItem[] } = {
     changes: [
@@ -63,8 +63,6 @@
     ],
   };
 
-  const nameOf = (item: TreeItem) => (Array.isArray(item) ? item[0] : item) as string;
-  const childrenOf = (item: TreeItem) => (Array.isArray(item) ? item.slice(1) : []);
 </script>
 
 {#snippet collapsibleTrigger(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
@@ -72,22 +70,23 @@
 {/snippet}
 
 {#snippet tree(item: TreeItem)}
-  {#if !childrenOf(item).length}
-    <SidebarMenuButton isActive={nameOf(item) === 'button.tsx'} class="data-[active=true]:bg-transparent">
+  {const [name, ...items] = $derived(typeof item === 'string' ? [item] : item)}
+  {#if !items.length}
+    <SidebarMenuButton isActive={name === 'button.tsx'} class="data-[active=true]:bg-transparent">
       <IconPlaceholder lucide="FileIcon" tabler="IconFile" hugeicons="FileIcon" phosphor="FileIcon" remixicon="RiFileLine" />
-      {nameOf(item)}
+      {name}
     </SidebarMenuButton>
   {:else}
     <SidebarMenuItem>
-      <Collapsible class="group/collapsible [&[data-open]>button>svg:first-child]:rotate-90" open={nameOf(item) === 'components' || nameOf(item) === 'ui'}>
+      <Collapsible class="group/collapsible [&[data-state=open]>button>svg:first-child]:rotate-90" open={name === 'components' || name === 'ui'}>
         <SidebarMenuButton render={collapsibleTrigger}>
           <IconPlaceholder lucide="ChevronRightIcon" tabler="IconChevronRight" hugeicons="ArrowRight01Icon" phosphor="CaretRightIcon" remixicon="RiArrowRightSLine" class="transition-transform" />
           <IconPlaceholder lucide="FolderIcon" tabler="IconFolder" hugeicons="FolderIcon" phosphor="FolderIcon" remixicon="RiFolderLine" />
-          {nameOf(item)}
+          {name}
         </SidebarMenuButton>
         <CollapsibleContent>
           <SidebarMenuSub>
-            {#each childrenOf(item) as subItem, index (index)}
+            {#each items as subItem, index (index)}
               {@render tree(subItem)}
             {/each}
           </SidebarMenuSub>

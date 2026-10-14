@@ -134,8 +134,8 @@
   <Button variant="ghost" size="icon" class="h-7 w-7">
     <IconPlaceholder lucide="StarIcon" tabler="IconStar" hugeicons="StarIcon" phosphor="StarIcon" remixicon="RiStarLine" />
   </Button>
-  <Popover bind:open={isOpen} triggerId="nav-actions-trigger">
-    <PopoverTrigger id="nav-actions-trigger" render={moreButton}>
+  <Popover bind:open={isOpen}>
+    <PopoverTrigger render={moreButton}>
       <IconPlaceholder lucide="MoreHorizontalIcon" tabler="IconDots" hugeicons="MoreHorizontalCircle01Icon" phosphor="DotsThreeOutlineIcon" remixicon="RiMoreLine" />
     </PopoverTrigger>
     <PopoverContent class="w-56 overflow-hidden rounded-lg p-0" align="end">

@@ -10,8 +10,8 @@
   <SidebarGroupContent>
     <SidebarMenu>
       {#each items as item (item.title)}
-        {#snippet link(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
-          <a href={item.url} {...props}>{@render children?.()}</a>
+        {#snippet link(hostProps: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+          <a href={item.url} {...hostProps}>{@render children?.()}</a>
         {/snippet}
         <SidebarMenuItem>
           <SidebarMenuButton size="sm" render={link}>

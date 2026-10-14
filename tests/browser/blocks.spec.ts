@@ -313,17 +313,18 @@ test('sidebar-08 project and user menus open', async ({ page }) => {
   await expect(page.getByRole('menuitem', { name: 'Log out' })).toBeVisible();
 });
 
-const expandedSidebar = (page: Page) => page.locator('[data-slot=sidebar][data-state]');
+const desktopSidebar = (page: Page) => page.locator('[data-slot=sidebar][data-state]');
+// sidebar-16's toggle sits in its site header and, as upstream, has no accessible name.
 const triggerFor = (page: Page, name: string) => (name === 'sidebar-16' ? page.locator('header button').first() : page.locator('[data-slot=sidebar-trigger]'));
 
 for (const name of ['sidebar-09', 'sidebar-10', 'sidebar-11', 'sidebar-12', 'sidebar-14', 'sidebar-15', 'sidebar-16']) {
   test(`${name} collapses and expands from its trigger`, async ({ page }) => {
     await visit(page, `/view/${name}`);
-    await expect(expandedSidebar(page)).toHaveAttribute('data-state', 'expanded');
+    await expect(desktopSidebar(page)).toHaveAttribute('data-state', 'expanded');
     await triggerFor(page, name).click();
-    await expect(expandedSidebar(page)).toHaveAttribute('data-state', 'collapsed');
+    await expect(desktopSidebar(page)).toHaveAttribute('data-state', 'collapsed');
     await triggerFor(page, name).click();
-    await expect(expandedSidebar(page)).toHaveAttribute('data-state', 'expanded');
+    await expect(desktopSidebar(page)).toHaveAttribute('data-state', 'expanded');
   });
 
   test(`${name} opens as a sheet at phone width`, async ({ page }) => {
@@ -333,12 +334,15 @@ for (const name of ['sidebar-09', 'sidebar-10', 'sidebar-11', 'sidebar-12', 'sid
     await expect(sheet).toBeHidden();
     await triggerFor(page, name).click();
     await expect(sheet).toBeVisible();
+    await expect(sheet.locator('[data-slot=sidebar-menu-button]').first()).toBeVisible();
     await page.keyboard.press('Escape');
     await expect(sheet).toBeHidden();
   });
 }
 
 test('sidebar-09 shows the picked folder and a shorter mail list', async ({ page }) => {
+  // Picking a folder shuffles the mails and keeps 5 to 10; with Math.random at 0 it keeps 5.
+  await page.addInitScript(() => (Math.random = () => 0));
   await visit(page, '/view/sidebar-09');
   const title = page.locator('[data-slot=sidebar-header] .text-base');
   const mails = page.locator('[data-slot=sidebar-content] a.border-b');
@@ -347,16 +351,15 @@ test('sidebar-09 shows the picked folder and a shorter mail list', async ({ page
 
   await page.getByRole('button', { name: 'Drafts' }).click();
   await expect(title).toHaveText('Drafts');
-  await expect.poll(() => mails.count()).toBeGreaterThanOrEqual(5);
-  await expect.poll(() => mails.count()).toBeLessThanOrEqual(10);
+  await expect(mails).toHaveCount(5);
 });
 
 test('sidebar-09 opens the user menu and picking a folder reopens a collapsed sidebar', async ({ page }) => {
   await visit(page, '/view/sidebar-09');
   await page.locator('[data-slot=sidebar-trigger]').click();
-  await expect(expandedSidebar(page)).toHaveAttribute('data-state', 'collapsed');
+  await expect(desktopSidebar(page)).toHaveAttribute('data-state', 'collapsed');
   await page.getByRole('button', { name: 'Sent' }).click();
-  await expect(expandedSidebar(page)).toHaveAttribute('data-state', 'expanded');
+  await expect(desktopSidebar(page)).toHaveAttribute('data-state', 'expanded');
   await expect(page.locator('[data-slot=sidebar-header] .text-base')).toHaveText('Sent');
 
   await page.getByRole('button', { name: /shadcn/ }).click();
@@ -369,9 +372,9 @@ test('sidebar-10 opens its actions popover on load and closes it with Escape', a
   const popover = page.locator('[data-slot=popover-content]');
   await expect(popover.getByRole('button', { name: 'Customize Page' })).toBeVisible();
   await expect(popover.getByRole('button', { name: 'Move to Trash' })).toBeVisible();
+  // The popover opens on mount, after its trigger registers, and still anchors to the trigger's right edge.
   const trigger = (await page.locator('[data-slot=popover-trigger]').boundingBox())!;
-  const box = (await popover.boundingBox())!;
-  expect(Math.round(box.x + box.width)).toBe(Math.round(trigger.x + trigger.width));
+  await expect.poll(async () => Math.round(((await popover.boundingBox())!).x + ((await popover.boundingBox())!).width)).toBe(Math.round(trigger.x + trigger.width));
   await page.keyboard.press('Escape');
   await expect(popover).toBeHidden();
   await page.locator('[data-slot=popover-trigger]').click();
@@ -380,7 +383,9 @@ test('sidebar-10 opens its actions popover on load and closes it with Escape', a
 
 test('sidebar-10 switches the team', async ({ page }) => {
   await visit(page, '/view/sidebar-10');
+  await expect(page.locator('[data-slot=popover-content]')).toBeVisible();
   await page.keyboard.press('Escape');
+  await expect(page.locator('[data-slot=popover-content]')).toBeHidden();
   const trigger = page.getByRole('button', { name: 'Acme Inc' });
   await trigger.click();
   await expect(page.getByRole('menuitem', { name: /Acme Corp\./ })).toContainText('⌘2');
@@ -391,7 +396,9 @@ test('sidebar-10 switches the team', async ({ page }) => {
 
 test('sidebar-10 expands a workspace and opens a favorite menu', async ({ page }) => {
   await visit(page, '/view/sidebar-10');
+  await expect(page.locator('[data-slot=popover-content]')).toBeVisible();
   await page.keyboard.press('Escape');
+  await expect(page.locator('[data-slot=popover-content]')).toBeHidden();
   await expect(page.getByText('Daily Journal & Reflection')).toBeHidden();
   const toggle = page.locator('[data-slot=sidebar-menu-item]', { hasText: 'Personal Life Management' }).locator('[data-slot=sidebar-menu-action]').first();
   await toggle.click();
@@ -409,6 +416,8 @@ test('sidebar-11 opens and closes the file tree folders', async ({ page }) => {
   await expect(page.getByText('button.tsx', { exact: true }).first()).toBeVisible();
   await expect(page.getByText('layout.tsx', { exact: true })).toBeHidden();
   await page.getByRole('button', { name: 'app', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'api', exact: true })).toBeVisible();
+  await expect(page.getByText('layout.tsx', { exact: true })).toBeHidden();
   await page.getByRole('button', { name: 'api', exact: true }).click();
   await expect(page.getByText('layout.tsx', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'app', exact: true }).click();
@@ -459,8 +468,8 @@ test('sidebar-13 hides the settings navigation at phone width', async ({ page })
 
 test('sidebar-14 puts the sidebar on the right', async ({ page }) => {
   await visit(page, '/view/sidebar-14');
-  await expect(expandedSidebar(page)).toHaveAttribute('data-side', 'right');
-  const box = (await expandedSidebar(page).locator('[data-slot=sidebar-container]').boundingBox())!;
+  await expect(desktopSidebar(page)).toHaveAttribute('data-side', 'right');
+  const box = (await desktopSidebar(page).locator('[data-slot=sidebar-container]').boundingBox())!;
   expect(Math.round(box.x + box.width)).toBe(1280);
   await expect(page.locator('[data-slot=sidebar] a[data-active=true]')).toHaveText('Data Fetching');
 });
@@ -469,7 +478,7 @@ test('sidebar-15 shows a left sidebar and a calendar sidebar on the right', asyn
   await visit(page, '/view/sidebar-15');
   await expect(page.getByText('Workspaces', { exact: true })).toBeVisible();
   await expect(page.getByText('My Calendars', { exact: true })).toBeVisible();
-  await expect(expandedSidebar(page)).toHaveCount(1);
+  await expect(desktopSidebar(page)).toHaveCount(1);
   await page.getByRole('button', { name: /shadcn/ }).click();
   await expect(page.getByRole('menuitem', { name: 'Log out' })).toBeVisible();
 });
