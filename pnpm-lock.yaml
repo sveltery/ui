@@ -360,7 +360,7 @@ importers:
   packages/questionnaire:
     dependencies:
       esm-env:
-        specifier: 1.2.2
+        specifier: ^1.2.1
         version: 1.2.2
     devDependencies:
       svelte:

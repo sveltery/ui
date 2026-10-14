@@ -22,7 +22,7 @@
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "dependencies": {
-    "esm-env": "1.2.2"
+    "esm-env": "^1.2.1"
   },
   "peerDependencies": {
     "svelte": "^5.57.1"
