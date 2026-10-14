@@ -1,6 +1,7 @@
 <script lang="ts">
+  import type { ComponentProps } from 'svelte';
   import * as UI from '$ui/sheet/index.js';
-  let { side, closeButton = true }: { side?: UI.SheetSide; closeButton?: boolean } = $props();
+  let { side, closeButton = true }: { side?: ComponentProps<typeof UI.SheetContent>['side']; closeButton?: boolean } = $props();
   let open = $state(false);
   export function isOpen() { return open; }
   export function setOpen(next: boolean) { open = next; }
