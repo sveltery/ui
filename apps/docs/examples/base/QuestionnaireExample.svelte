@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { toast } from '@sveltery/ui/sonner';
+  import { toast } from '@sveltery/ui/toast';
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { buttonVariants } from '@sveltery/ui/button';
   import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
@@ -47,7 +47,8 @@
       timing: formData.get('timing'),
     };
 
-    toast('Questionnaire submitted', {
+    toast.add({
+      title: 'Questionnaire submitted',
       description: `Direction: ${values.direction ?? 'None'} · Progress signals: ${values.signals.join(', ') || 'None'} · Timing: ${values.timing ?? 'None'}`,
     });
   }
