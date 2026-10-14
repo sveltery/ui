@@ -1,8 +1,12 @@
 <script lang="ts">
-  import type { ComponentProps } from 'svelte';
+  import type { ComponentProps, Snippet } from 'svelte';
+  import type { HTMLButtonAttributes } from 'svelte/elements';
   import { Toast as Primitive } from '@sveltery/base/toast';
   import { cn } from 'cn';
-  import { buttonVariants } from '../button/index.js';
-  let { children, class: classProp, ...props }: ComponentProps<typeof Primitive.Action> = $props();
+  import { Button } from '../button/index.js';
+  let { class: classProp, ...props }: ComponentProps<typeof Primitive.Action> = $props();
 </script>
-<Primitive.Action data-slot="toast-action" {...props} {children} class={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'shrink-0', classProp)} />
+{#snippet button(buttonProps: HTMLButtonAttributes, _state: unknown, content: Snippet | undefined)}
+  <Button variant="outline" size="sm" {...buttonProps}>{@render content?.()}</Button>
+{/snippet}
+<Primitive.Action data-slot="toast-action" render={button} {...props} class={cn('shrink-0', classProp)} />

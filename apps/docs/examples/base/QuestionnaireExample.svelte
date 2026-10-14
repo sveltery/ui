@@ -1,7 +1,7 @@
 <script lang="ts">
   import { toast } from '@sveltery/ui/toast';
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { buttonVariants } from '@sveltery/ui/button';
+  import { Button } from '@sveltery/ui/button';
   import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
   import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@sveltery/ui/dialog';
   import {
@@ -236,7 +236,10 @@
 {#snippet QuestionnaireDialog()}
   <Example title="Dialog" class="items-center justify-center" containerClass="md:col-span-2">
     <Dialog>
-      <DialogTrigger class={buttonVariants({ variant: 'outline' })}>Open questionnaire</DialogTrigger>
+      <DialogTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+        Open questionnaire
+      </DialogTrigger>
       <DialogContent>
         <Questionnaire defaultItem="direction" items={questionnaireItems} onsubmit={handleSubmit}>
           <DialogHeader>

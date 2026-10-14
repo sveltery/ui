@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@sveltery/ui/accordion';
-  import { Button, buttonVariants } from '@sveltery/ui/button';
+  import { Button } from '@sveltery/ui/button';
   import {
     Drawer,
     DrawerClose,
@@ -251,7 +251,8 @@
   <Example title="Drawer">
     <Drawer swipeDirection="right">
       <Marker variant="separator">
-        <DrawerTrigger class={buttonVariants({ variant: 'outline' })}>
+        <DrawerTrigger>
+          {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
           <IconPlaceholder
             lucide="SearchIcon"
             tabler="IconSearch"
@@ -277,7 +278,10 @@
           {/each}
         </div>
         <DrawerFooter>
-          <DrawerClose class={buttonVariants({ variant: 'outline' })}>Close</DrawerClose>
+          <DrawerClose>
+            {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+            Close
+          </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

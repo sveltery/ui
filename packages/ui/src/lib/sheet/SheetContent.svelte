@@ -1,12 +1,12 @@
 <script lang="ts">
+  import type { ComponentProps } from 'svelte';
   import { Dialog as Primitive } from '@sveltery/base/dialog';
   import { cn } from 'cn';
   import SheetPortal from './SheetPortal.svelte';
   import SheetOverlay from './SheetOverlay.svelte';
-  import type { SheetContentProps } from './types.js';
-  import { buttonVariants } from '../button/index.js';
+  import { Button } from '../button/index.js';
   import { IconPlaceholder } from '../icons/index.js';
-  let { children, class: classProp, side = 'right', showCloseButton = true, ...props }: SheetContentProps = $props();
+  let { children, class: classProp, side = 'right', showCloseButton = true, ...props }: ComponentProps<typeof Primitive.Popup> & { side?: 'top' | 'right' | 'bottom' | 'left'; showCloseButton?: boolean } = $props();
 </script>
 <SheetPortal>
   <SheetOverlay />
@@ -21,7 +21,10 @@
   >
     {@render children?.()}
     {#if showCloseButton}
-      <Primitive.Close data-slot="sheet-close" class={cn(buttonVariants({ variant: 'ghost', size: 'icon-sm' }), 'cn-sheet-close')}>
+      <Primitive.Close data-slot="sheet-close">
+        {#snippet render(buttonProps, _state, content)}
+          <Button variant="ghost" class="cn-sheet-close" size="icon-sm" {...buttonProps}>{@render content?.()}</Button>
+        {/snippet}
         <IconPlaceholder lucide="XIcon" tabler="IconX" hugeicons="Cancel01Icon" phosphor="XIcon" remixicon="RiCloseLine" />
         <span class="sr-only">Close</span>
       </Primitive.Close>

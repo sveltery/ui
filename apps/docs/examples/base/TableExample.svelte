@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { buttonVariants } from '@sveltery/ui/button';
+  import { Button } from '@sveltery/ui/button';
   import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
   import { IconPlaceholder } from '@sveltery/ui/icons';
   import { Input } from '@sveltery/ui/input';
@@ -170,7 +170,8 @@
             <TableCell>{product.price}</TableCell>
             <TableCell class="text-right">
               <DropdownMenu>
-                <DropdownMenuTrigger class={buttonVariants({ variant: 'ghost', size: 'icon', class: 'size-8' })}>
+                <DropdownMenuTrigger>
+                  {#snippet render(props, _state, content)}<Button variant="ghost" size="icon" class="size-8" {...props}>{@render content?.()}</Button>{/snippet}
                   <IconPlaceholder lucide="MoreHorizontalIcon" tabler="IconDots" hugeicons="MoreHorizontalCircle01Icon" phosphor="DotsThreeOutlineIcon" remixicon="RiMoreLine" />
                   <span class="sr-only">Open menu</span>
                 </DropdownMenuTrigger>

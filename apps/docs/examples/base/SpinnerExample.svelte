@@ -1,14 +1,20 @@
 <script lang="ts">
-  import { cn } from 'cn';
+  import type { Snippet } from 'svelte';
+  import type { HTMLAttributes } from 'svelte/elements';
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { Badge } from '@sveltery/ui/badge';
-  import { Button, buttonVariants } from '@sveltery/ui/button';
+  import { Button } from '@sveltery/ui/button';
   import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@sveltery/ui/empty';
   import { Field, FieldLabel } from '@sveltery/ui/field';
   import { InputGroup, InputGroupAddon, InputGroupInput } from '@sveltery/ui/input-group';
   import { Spinner } from '@sveltery/ui/spinner';
   import { IconPlaceholder } from '@sveltery/ui/icons';
 </script>
+
+{#snippet link(props: HTMLAttributes<HTMLElement>, _state: unknown, content: Snippet | undefined)}
+  <!-- svelte-ignore a11y_invalid_attribute -->
+  <a href="#" {...props}>{@render content?.()}</a>
+{/snippet}
 
 {#snippet SpinnerBasic()}
   <Example title="Basic">
@@ -91,12 +97,10 @@
       </EmptyHeader>
       <EmptyContent>
         <div class="flex gap-2">
-          <!-- svelte-ignore a11y_invalid_attribute -->
-          <a href="#" class={buttonVariants()}>Create project</a>
+          <Button render={link} nativeButton={false}>Create project</Button>
           <Button variant="outline">Import project</Button>
         </div>
-        <!-- svelte-ignore a11y_invalid_attribute -->
-        <a href="#" class={cn(buttonVariants({ variant: 'link' }), 'text-muted-foreground')}>
+        <Button variant="link" render={link} nativeButton={false} class="text-muted-foreground">
           Learn more
           <IconPlaceholder
             lucide="ArrowRightIcon"
@@ -105,7 +109,7 @@
             phosphor="ArrowRightIcon"
             remixicon="RiArrowRightLine"
           />
-        </a>
+        </Button>
       </EmptyContent>
     </Empty>
   </Example>

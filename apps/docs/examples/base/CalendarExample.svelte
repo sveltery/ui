@@ -2,7 +2,7 @@
   import { addDays, format } from 'date-fns';
   import { es } from 'date-fns/locale';
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button, buttonVariants } from '@sveltery/ui/button';
+  import { Button } from '@sveltery/ui/button';
   import { Calendar, CalendarDayButton, type DateRange } from '@sveltery/ui/calendar';
   import { Card, CardContent, CardFooter } from '@sveltery/ui/card';
   import { Field, FieldGroup, FieldLabel } from '@sveltery/ui/field';
@@ -186,7 +186,8 @@
     <Field class="mx-auto w-72">
       <FieldLabel for="date-picker-simple">Date</FieldLabel>
       <Popover>
-        <PopoverTrigger id="date-picker-simple" class={buttonVariants({ variant: 'outline', class: 'justify-start px-2.5 font-normal' })}>
+        <PopoverTrigger id="date-picker-simple">
+          {#snippet render(props, _state, content)}<Button variant="outline" class="justify-start px-2.5 font-normal" {...props}>{@render content?.()}</Button>{/snippet}
           {@render calendarIcon()}
           {#if simple}{format(simple, 'PPP')}{:else}<span>Pick a date</span>{/if}
         </PopoverTrigger>
@@ -201,7 +202,8 @@
     <Field class="mx-auto w-72">
       <Popover bind:open={dropdownsOpen}>
         <FieldLabel for="date-picker-with-dropdowns-desktop">Date</FieldLabel>
-        <PopoverTrigger id="date-picker-with-dropdowns-desktop" class={buttonVariants({ variant: 'outline', class: 'justify-start px-2.5 font-normal' })}>
+        <PopoverTrigger id="date-picker-with-dropdowns-desktop">
+          {#snippet render(props, _state, content)}<Button variant="outline" class="justify-start px-2.5 font-normal" {...props}>{@render content?.()}</Button>{/snippet}
           {#if dropdowns}{format(dropdowns, 'PPP')}{:else}<span>Pick a date</span>{/if}
           <IconPlaceholder lucide="ChevronDownIcon" tabler="IconChevronDown" hugeicons="ArrowDownIcon" phosphor="CaretDownIcon" remixicon="RiArrowDownSLine" data-icon="inline-start" class="ml-auto" />
         </PopoverTrigger>
@@ -219,7 +221,8 @@
     <Field class="mx-auto w-72">
       <FieldLabel for="date-picker-range">Date Picker Range</FieldLabel>
       <Popover>
-        <PopoverTrigger id="date-picker-range" class={buttonVariants({ variant: 'outline', class: 'justify-start px-2.5 font-normal' })}>
+        <PopoverTrigger id="date-picker-range">
+          {#snippet render(props, _state, content)}<Button variant="outline" class="justify-start px-2.5 font-normal" {...props}>{@render content?.()}</Button>{/snippet}
           {@render calendarIcon()}
           {#if pickerRange?.from}
             {#if pickerRange.to}
@@ -248,7 +251,8 @@
 
   <Example title="In Popover">
     <Popover>
-      <PopoverTrigger class={buttonVariants({ variant: 'outline', class: 'px-2.5 font-normal' })}>
+      <PopoverTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" class="px-2.5 font-normal" {...props}>{@render content?.()}</Button>{/snippet}
         {@render calendarIcon()}
         Open Calendar
       </PopoverTrigger>

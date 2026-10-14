@@ -2,7 +2,7 @@
   import type { Snippet } from 'svelte';
   import type { HTMLAnchorAttributes, HTMLAttributes } from 'svelte/elements';
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button, buttonVariants } from '@sveltery/ui/button';
+  import { Button } from '@sveltery/ui/button';
   import { IconPlaceholder } from '@sveltery/ui/icons';
   import { Kbd } from '@sveltery/ui/kbd';
   import { Tooltip, TooltipContent, TooltipTrigger } from '@sveltery/ui/tooltip';
@@ -21,7 +21,10 @@
 <ExampleWrapper>
   <Example title="Basic">
     <Tooltip>
-      <TooltipTrigger class={buttonVariants({ variant: 'outline', class: 'w-fit' })}>Show Tooltip</TooltipTrigger>
+      <TooltipTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" class="w-fit" {...props}>{@render content?.()}</Button>{/snippet}
+        Show Tooltip
+      </TooltipTrigger>
       <TooltipContent>
         <p>Add to library</p>
       </TooltipContent>
@@ -31,7 +34,10 @@
     <div class="flex flex-wrap gap-2">
       {#each sides as side (side)}
         <Tooltip>
-          <TooltipTrigger class={buttonVariants({ variant: 'outline', class: 'w-fit capitalize' })}>{side.replace('-', ' ')}</TooltipTrigger>
+          <TooltipTrigger>
+            {#snippet render(props, _state, content)}<Button variant="outline" class="w-fit capitalize" {...props}>{@render content?.()}</Button>{/snippet}
+            {side.replace('-', ' ')}
+          </TooltipTrigger>
           <TooltipContent {side}>
             <p>Add to library</p>
           </TooltipContent>
@@ -41,7 +47,8 @@
   </Example>
   <Example title="With Icon">
     <Tooltip>
-      <TooltipTrigger class={buttonVariants({ variant: 'ghost', size: 'icon' })}>
+      <TooltipTrigger>
+        {#snippet render(props, _state, content)}<Button variant="ghost" size="icon" {...props}>{@render content?.()}</Button>{/snippet}
         <IconPlaceholder lucide="InfoIcon" tabler="IconInfoCircle" hugeicons="AlertCircleIcon" phosphor="InfoIcon" remixicon="RiInformationLine" />
         <span class="sr-only">Info</span>
       </TooltipTrigger>
@@ -52,7 +59,10 @@
   </Example>
   <Example title="Long Content">
     <Tooltip>
-      <TooltipTrigger class={buttonVariants({ variant: 'outline', class: 'w-fit' })}>Show Tooltip</TooltipTrigger>
+      <TooltipTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" class="w-fit" {...props}>{@render content?.()}</Button>{/snippet}
+        Show Tooltip
+      </TooltipTrigger>
       <TooltipContent>To learn more about how this works, check out the docs. If you have any questions, please reach out to us.</TooltipContent>
     </Tooltip>
   </Example>
@@ -68,7 +78,8 @@
   </Example>
   <Example title="With Keyboard Shortcut">
     <Tooltip>
-      <TooltipTrigger class={buttonVariants({ variant: 'outline', size: 'icon-sm' })}>
+      <TooltipTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" size="icon-sm" {...props}>{@render content?.()}</Button>{/snippet}
         <IconPlaceholder lucide="SaveIcon" tabler="IconDeviceFloppy" hugeicons="FloppyDiskIcon" phosphor="FloppyDiskIcon" remixicon="RiSaveLine" />
       </TooltipTrigger>
       <TooltipContent>
@@ -86,7 +97,10 @@
   </Example>
   <Example title="Formatted Content">
     <Tooltip>
-      <TooltipTrigger class={buttonVariants({ variant: 'outline', class: 'w-fit' })}>Status</TooltipTrigger>
+      <TooltipTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" class="w-fit" {...props}>{@render content?.()}</Button>{/snippet}
+        Status
+      </TooltipTrigger>
       <TooltipContent>
         <div class="flex flex-col gap-1">
           <p class="font-semibold">Active</p>

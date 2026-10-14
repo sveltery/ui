@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { buttonVariants } from '@sveltery/ui/button';
+  import { Button } from '@sveltery/ui/button';
   import {
     Breadcrumb,
     BreadcrumbEllipsis,
@@ -43,7 +43,8 @@
         <BreadcrumbSeparator />
         <BreadcrumbItem>
           <DropdownMenu>
-            <DropdownMenuTrigger class={buttonVariants({ variant: 'ghost', size: 'icon-sm' })}>
+            <DropdownMenuTrigger>
+              {#snippet render(props, _state, content)}<Button variant="ghost" size="icon-sm" {...props}>{@render content?.()}</Button>{/snippet}
               <BreadcrumbEllipsis />
               <span class="sr-only">Toggle menu</span>
             </DropdownMenuTrigger>

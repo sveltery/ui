@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { Avatar, AvatarFallback, AvatarImage } from '@sveltery/ui/avatar';
-  import { buttonVariants } from '@sveltery/ui/button';
+  import { Button } from '@sveltery/ui/button';
   import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@sveltery/ui/dialog';
   import {
     DropdownMenu,
@@ -40,7 +40,10 @@
 {#snippet DropdownMenuBasic()}
   <Example title="Basic">
     <DropdownMenu>
-      <DropdownMenuTrigger class={buttonVariants({ variant: 'outline', class: 'w-fit' })}>Open</DropdownMenuTrigger>
+      <DropdownMenuTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" class="w-fit" {...props}>{@render content?.()}</Button>{/snippet}
+        Open
+      </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuGroup>
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
@@ -60,7 +63,10 @@
 {#snippet DropdownMenuComplex()}
   <Example title="Complex">
     <DropdownMenu>
-      <DropdownMenuTrigger class={buttonVariants({ variant: 'outline', class: 'w-fit' })}>Complex Menu</DropdownMenuTrigger>
+      <DropdownMenuTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" class="w-fit" {...props}>{@render content?.()}</Button>{/snippet}
+        Complex Menu
+      </DropdownMenuTrigger>
       <DropdownMenuContent class="w-56">
         <DropdownMenuGroup>
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
@@ -144,7 +150,8 @@
     <div class="flex flex-wrap justify-center gap-2">
       {#each sides as side (side)}
         <DropdownMenu>
-          <DropdownMenuTrigger class={buttonVariants({ variant: 'outline', class: 'w-fit capitalize' })}>
+          <DropdownMenuTrigger>
+            {#snippet render(props, _state, content)}<Button variant="outline" class="w-fit capitalize" {...props}>{@render content?.()}</Button>{/snippet}
             {side.replace('-', ' ')}
           </DropdownMenuTrigger>
           <DropdownMenuContent {side}>
@@ -163,7 +170,10 @@
 {#snippet DropdownMenuWithIcons()}
   <Example title="With Icons">
     <DropdownMenu>
-      <DropdownMenuTrigger class={buttonVariants({ variant: 'outline', class: 'w-fit' })}>Open</DropdownMenuTrigger>
+      <DropdownMenuTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" class="w-fit" {...props}>{@render content?.()}</Button>{/snippet}
+        Open
+      </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem>
           <IconPlaceholder lucide="UserIcon" tabler="IconUser" hugeicons="UserIcon" phosphor="UserIcon" remixicon="RiUserLine" />
@@ -190,7 +200,10 @@
 {#snippet DropdownMenuWithShortcuts()}
   <Example title="With Shortcuts">
     <DropdownMenu>
-      <DropdownMenuTrigger class={buttonVariants({ variant: 'outline', class: 'w-fit' })}>Open</DropdownMenuTrigger>
+      <DropdownMenuTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" class="w-fit" {...props}>{@render content?.()}</Button>{/snippet}
+        Open
+      </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuGroup>
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
@@ -224,7 +237,10 @@
 {#snippet DropdownMenuWithSubmenu()}
   <Example title="With Submenu">
     <DropdownMenu>
-      <DropdownMenuTrigger class={buttonVariants({ variant: 'outline', class: 'w-fit' })}>Open</DropdownMenuTrigger>
+      <DropdownMenuTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" class="w-fit" {...props}>{@render content?.()}</Button>{/snippet}
+        Open
+      </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuGroup>
           <DropdownMenuItem>Team</DropdownMenuItem>
@@ -252,7 +268,10 @@
 {#snippet DropdownMenuWithCheckboxes()}
   <Example title="With Checkboxes">
     <DropdownMenu>
-      <DropdownMenuTrigger class={buttonVariants({ variant: 'outline', class: 'w-fit' })}>Checkboxes</DropdownMenuTrigger>
+      <DropdownMenuTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" class="w-fit" {...props}>{@render content?.()}</Button>{/snippet}
+        Checkboxes
+      </DropdownMenuTrigger>
       <DropdownMenuContent class="min-w-40">
         <DropdownMenuGroup>
           <DropdownMenuLabel>Appearance</DropdownMenuLabel>
@@ -277,7 +296,10 @@
 {#snippet DropdownMenuWithCheckboxesIcons()}
   <Example title="Checkboxes with Icons">
     <DropdownMenu>
-      <DropdownMenuTrigger class={buttonVariants({ variant: 'outline', class: 'w-fit' })}>Notifications</DropdownMenuTrigger>
+      <DropdownMenuTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" class="w-fit" {...props}>{@render content?.()}</Button>{/snippet}
+        Notifications
+      </DropdownMenuTrigger>
       <DropdownMenuContent class="min-w-56">
         <DropdownMenuGroup>
           <DropdownMenuLabel>Notification Preferences</DropdownMenuLabel>
@@ -302,7 +324,10 @@
 {#snippet DropdownMenuWithRadio()}
   <Example title="With Radio Group">
     <DropdownMenu>
-      <DropdownMenuTrigger class={buttonVariants({ variant: 'outline', class: 'w-fit' })}>Radio Group</DropdownMenuTrigger>
+      <DropdownMenuTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" class="w-fit" {...props}>{@render content?.()}</Button>{/snippet}
+        Radio Group
+      </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuGroup>
           <DropdownMenuLabel>Panel Position</DropdownMenuLabel>
@@ -329,7 +354,10 @@
 {#snippet DropdownMenuWithRadioIcons()}
   <Example title="Radio with Icons">
     <DropdownMenu>
-      <DropdownMenuTrigger class={buttonVariants({ variant: 'outline', class: 'w-fit' })}>Payment Method</DropdownMenuTrigger>
+      <DropdownMenuTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" class="w-fit" {...props}>{@render content?.()}</Button>{/snippet}
+        Payment Method
+      </DropdownMenuTrigger>
       <DropdownMenuContent class="min-w-56">
         <DropdownMenuGroup>
           <DropdownMenuLabel>Select Payment Method</DropdownMenuLabel>
@@ -356,7 +384,10 @@
 {#snippet DropdownMenuWithDestructive()}
   <Example title="With Destructive Items">
     <DropdownMenu>
-      <DropdownMenuTrigger class={buttonVariants({ variant: 'outline', class: 'w-fit' })}>Actions</DropdownMenuTrigger>
+      <DropdownMenuTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" class="w-fit" {...props}>{@render content?.()}</Button>{/snippet}
+        Actions
+      </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem>
           <IconPlaceholder lucide="PencilIcon" tabler="IconPencil" hugeicons="EditIcon" phosphor="PencilIcon" remixicon="RiPencilLine" />
@@ -406,7 +437,8 @@
   <Example title="With Avatar">
     <div class="flex items-center justify-between gap-4">
       <DropdownMenu>
-        <DropdownMenuTrigger class={buttonVariants({ variant: 'outline', class: 'h-12 justify-start px-2 md:max-w-[200px] style-sera:font-normal style-sera:tracking-normal style-sera:normal-case' })}>
+        <DropdownMenuTrigger>
+          {#snippet render(props, _state, content)}<Button variant="outline" class="h-12 justify-start px-2 md:max-w-[200px] style-sera:font-normal style-sera:tracking-normal style-sera:normal-case" {...props}>{@render content?.()}</Button>{/snippet}
           <Avatar>
             <AvatarImage src="https://github.com/shadcn.png" alt="Shadcn" />
             <AvatarFallback class="rounded-lg">CN</AvatarFallback>
@@ -422,7 +454,8 @@
         </DropdownMenuContent>
       </DropdownMenu>
       <DropdownMenu>
-        <DropdownMenuTrigger class={buttonVariants({ variant: 'ghost', size: 'icon', class: 'rounded-full' })}>
+        <DropdownMenuTrigger>
+          {#snippet render(props, _state, content)}<Button variant="ghost" size="icon" class="rounded-full" {...props}>{@render content?.()}</Button>{/snippet}
           <Avatar>
             <AvatarImage src="https://github.com/shadcn.png" alt="shadcn" />
             <AvatarFallback>LR</AvatarFallback>
@@ -439,14 +472,20 @@
 {#snippet DropdownMenuInDialog()}
   <Example title="In Dialog">
     <Dialog>
-      <DialogTrigger class={buttonVariants({ variant: 'outline' })}>Open Dialog</DialogTrigger>
+      <DialogTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+        Open Dialog
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Dropdown Menu Example</DialogTitle>
           <DialogDescription>Click the button below to see the dropdown menu.</DialogDescription>
         </DialogHeader>
         <DropdownMenu>
-          <DropdownMenuTrigger class={buttonVariants({ variant: 'outline', class: 'w-fit' })}>Open Menu</DropdownMenuTrigger>
+          <DropdownMenuTrigger>
+            {#snippet render(props, _state, content)}<Button variant="outline" class="w-fit" {...props}>{@render content?.()}</Button>{/snippet}
+            Open Menu
+          </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem>
               <IconPlaceholder lucide="CopyIcon" tabler="IconCopy" hugeicons="CopyIcon" phosphor="CopyIcon" remixicon="RiFileCopyLine" />
@@ -488,7 +527,10 @@
 {#snippet DropdownMenuWithInset()}
   <Example title="With Inset">
     <DropdownMenu>
-      <DropdownMenuTrigger class={buttonVariants({ variant: 'outline', class: 'w-fit' })}>Open</DropdownMenuTrigger>
+      <DropdownMenuTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" class="w-fit" {...props}>{@render content?.()}</Button>{/snippet}
+        Open
+      </DropdownMenuTrigger>
       <DropdownMenuContent class="w-44">
         <DropdownMenuGroup>
           <DropdownMenuLabel>Actions</DropdownMenuLabel>

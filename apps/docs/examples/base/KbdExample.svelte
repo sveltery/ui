@@ -3,7 +3,7 @@
   import { InputGroup, InputGroupAddon, InputGroupInput } from '@sveltery/ui/input-group';
   import { Kbd, KbdGroup } from '@sveltery/ui/kbd';
   import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { buttonVariants } from '@sveltery/ui/button';
+  import { Button } from '@sveltery/ui/button';
   import { Tooltip, TooltipContent, TooltipTrigger } from '@sveltery/ui/tooltip';
 </script>
 
@@ -122,7 +122,8 @@
 {#snippet KbdInTooltip()}
   <Example title="Tooltip">
     <Tooltip>
-      <TooltipTrigger class={buttonVariants({ size: 'icon-sm', variant: 'outline' })}>
+      <TooltipTrigger>
+        {#snippet render(props, _state, content)}<Button size="icon-sm" variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
         <IconPlaceholder lucide="SaveIcon" tabler="IconDeviceFloppy" hugeicons="FloppyDiskIcon" phosphor="FloppyDiskIcon" remixicon="RiSaveLine" />
       </TooltipTrigger>
       <TooltipContent class="pr-1.5">

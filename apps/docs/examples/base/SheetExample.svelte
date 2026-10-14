@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button, buttonVariants } from '@sveltery/ui/button';
+  import { Button } from '@sveltery/ui/button';
   import { Field, FieldGroup, FieldLabel } from '@sveltery/ui/field';
   import { Input } from '@sveltery/ui/input';
   import {
@@ -20,7 +20,10 @@
 {#snippet SheetWithForm()}
   <Example title="With Form">
     <Sheet>
-      <SheetTrigger class={buttonVariants({ variant: 'outline' })}>Open</SheetTrigger>
+      <SheetTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+        Open
+      </SheetTrigger>
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Edit profile</SheetTitle>
@@ -40,7 +43,10 @@
         </div>
         <SheetFooter>
           <Button type="submit">Save changes</Button>
-          <SheetClose class={buttonVariants({ variant: 'outline' })}>Close</SheetClose>
+          <SheetClose>
+            {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+            Close
+          </SheetClose>
         </SheetFooter>
       </SheetContent>
     </Sheet>
@@ -50,7 +56,10 @@
 {#snippet SheetNoCloseButton()}
   <Example title="No Close Button">
     <Sheet>
-      <SheetTrigger class={buttonVariants({ variant: 'outline' })}>No Close Button</SheetTrigger>
+      <SheetTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+        No Close Button
+      </SheetTrigger>
       <SheetContent showCloseButton={false}>
         <SheetHeader>
           <SheetTitle>No Close Button</SheetTitle>
@@ -69,7 +78,10 @@
     <div class="flex flex-wrap gap-2">
       {#each sides as side (side)}
         <Sheet>
-          <SheetTrigger class={buttonVariants({ variant: 'outline', class: 'capitalize' })}>{side}</SheetTrigger>
+          <SheetTrigger>
+            {#snippet render(props, _state, content)}<Button variant="outline" class="capitalize" {...props}>{@render content?.()}</Button>{/snippet}
+            {side}
+          </SheetTrigger>
           <SheetContent {side} class="data-[side=bottom]:max-h-[50vh] data-[side=top]:max-h-[50vh]">
             <SheetHeader>
               <SheetTitle>Edit profile</SheetTitle>
@@ -88,7 +100,10 @@
             </div>
             <SheetFooter>
               <Button type="submit">Save changes</Button>
-              <SheetClose class={buttonVariants({ variant: 'outline' })}>Cancel</SheetClose>
+              <SheetClose>
+                {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+                Cancel
+              </SheetClose>
             </SheetFooter>
           </SheetContent>
         </Sheet>
