@@ -309,6 +309,18 @@
       <Choice data-testid="last-answer" value="last">Last</Choice>
     </Questionnaire.Item>
   </Questionnaire.Root>
+{:else if scenario === 'keyed-order'}
+  <Questionnaire.Root data-testid="root" defaultItem="first" shortcuts="letters">
+    <Questionnaire.Progress data-testid="progress" />
+    {#each flag ? ['last', 'first'] : ['first', 'last'] as name (name)}
+      <Questionnaire.Item data-testid={name} name={name}>
+        <Questionnaire.Title>{name}</Questionnaire.Title>
+        {#each flag ? ['b', 'a'] : ['a', 'b'] as value (value)}
+          <Choice data-testid="{name}-{value}" {value}>{value}</Choice>
+        {/each}
+      </Questionnaire.Item>
+    {/each}
+  </Questionnaire.Root>
 {:else if scenario === 'overflow'}
   <Questionnaire.Root data-testid="root" defaultItem="answers" {shortcuts}>
     <Questionnaire.Item data-testid="answers" name="answers">

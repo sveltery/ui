@@ -30,6 +30,8 @@ type FocusTarget = 'item' | 'invalid';
 export class QuestionnaireModel {
   readonly #options: RootOptions;
   element = $state.raw<HTMLFormElement>();
+  /** Bumped by every child list change, so document order follows a keyed reorder that registers nothing. */
+  domVersion = $state(0);
   #registered = $state.raw<ItemModel[]>([]);
   #focusTarget: FocusTarget = 'item';
   /** The active item the last focus pass saw, undefined before the first pass. */
@@ -54,7 +56,10 @@ export class QuestionnaireModel {
 
   collection = $derived.by(() => createQuestionnaireCollection(this.#options.items));
   /** Enabled rendered items in document order. */
-  runtime = $derived(inDocumentOrder(this.#registered).filter((item) => !item.disabled));
+  runtime = $derived.by(() => {
+    void this.domVersion;
+    return inDocumentOrder(this.#registered).filter((item) => !item.disabled);
+  });
   /** Enabled item names in navigation order. `items` is authoritative when given. */
   #names = $derived(this.collection ? this.collection.enabledItems.map((item) => item.name) : this.runtime.map((item) => item.name));
   /** The requested item, or the first enabled one when the request names no enabled item. */
@@ -178,7 +183,10 @@ export class QuestionnaireModel {
 
   attach: Attachment<HTMLFormElement> = (element) => {
     this.element = element;
+    const observer = new MutationObserver(() => this.domVersion++);
+    observer.observe(element, { childList: true, subtree: true });
     return () => {
+      observer.disconnect();
       this.element = undefined;
     };
   };

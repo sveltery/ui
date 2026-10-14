@@ -673,6 +673,16 @@ describe('Questionnaire', () => {
     expect(el('last-answer').dataset.shortcut).toBe('B');
   });
 
+  it('follows a keyed reorder of items and answers', async () => {
+    const fixture = setup('keyed-order');
+    expect(el('progress').textContent).toBe('Question 1 of 2');
+    expect(el('first-a').dataset.shortcut).toBe('A');
+    act(() => fixture.toggle());
+    await vi.waitFor(() => expect(el('progress').textContent).toBe('Question 2 of 2'));
+    expect(el('first-b').dataset.shortcut).toBe('A');
+    expect(el('first-a').dataset.shortcut).toBe('B');
+  });
+
   it.each([
     { count: 27, lastShortcut: 'Z', shortcuts: 'letters' },
     { count: 10, lastShortcut: '9', shortcuts: 'numbers' }

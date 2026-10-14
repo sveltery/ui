@@ -51,7 +51,10 @@ export class ItemModel {
   }
 
   /** Answer controls in document order. */
-  controls = $derived(inDocumentOrder(this.#registered));
+  controls = $derived.by(() => {
+    void this.root.domVersion;
+    return inDocumentOrder(this.#registered);
+  });
   /** The enabled answer controls, the only ones that count as answers. */
   answers = $derived(this.controls.filter((answer) => !answer.disabled));
   /** The rendered choices, which the dev warnings compare with `items`. */
