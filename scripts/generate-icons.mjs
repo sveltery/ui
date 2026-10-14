@@ -1,4 +1,4 @@
-// Resolves every <IconPlaceholder> in the repository to SVG data from the framework-agnostic icon packages.
+// Resolves every icon named by an <IconPlaceholder> or a library-keyed object literal in the repository to SVG data from the framework-agnostic icon packages.
 // Run after adding or changing an icon; `--check` fails when the generated module is stale.
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
@@ -6,10 +6,10 @@ import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import * as lucide from 'lucide';
 import * as hugeicons from '@hugeicons/core-free-icons';
+import { iconNames, libraries } from './icon-names.mjs';
 
 const packageDir = name => join('node_modules', name);
 const output = 'packages/ui/src/lib/icons/generated.ts';
-const libraries = ['lucide', 'tabler', 'hugeicons', 'phosphor', 'remixicon'];
 const pascal = kebab => kebab.split('-').map(part => part.charAt(0).toUpperCase() + part.slice(1)).join('');
 const kebab = name => name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').replace(/([a-zA-Z])(\d)/g, '$1-$2').toLowerCase();
 const escape = value => String(value).replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;');
@@ -57,11 +57,10 @@ const resolvers = {
 const sources = execFileSync('git', ['ls-files', '-co', '--exclude-standard', '--', 'packages/ui/src', 'apps', 'tests'], { encoding: 'utf8' }).split('\n').filter(path => path.endsWith('.svelte'));
 const icons = Object.fromEntries(libraries.map(library => [library, {}]));
 for (const path of sources) {
-  for (const [tag] of readFileSync(path, 'utf8').matchAll(/<IconPlaceholder\b[^>]*>/g)) {
-    const names = Object.fromEntries([...tag.matchAll(/\b(lucide|tabler|hugeicons|phosphor|remixicon)="([^"]+)"/g)].map(match => [match[1], match[2]]));
+  for (const { group, names } of iconNames(readFileSync(path, 'utf8'))) {
     for (const library of libraries) {
       const name = names[library];
-      assert(name, `${path}: IconPlaceholder needs a ${library} name in ${tag}`);
+      assert(name, `${path}: IconPlaceholder needs a ${library} name in ${group}`);
       const icon = resolvers[library](name);
       assert(icon, `${path}: ${library} has no icon named ${name}`);
       icons[library][name] = icon;
