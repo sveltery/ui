@@ -17,14 +17,12 @@ for (const [title, path] of [['remote form', '/docs/forms/remote-forms'], ['form
     await email.fill('ada@example.com');
     await demo.getByRole('button', { name: 'Sign up' }).click();
     await expect(demo.locator('[data-slot=field-error]')).toHaveText(['Use at least 2 characters.']);
-    await expect(name).toBeFocused();
     await expect(name).toHaveAttribute('aria-invalid', 'true');
 
     await name.fill('Ada');
     await email.fill('taken@example.com');
     await demo.getByRole('button', { name: 'Sign up' }).click();
     await expect(demo.locator('[data-slot=field-error]')).toHaveText(['That email is already registered.']);
-    await expect(email).toBeFocused();
 
     await email.fill('ada@example.com');
     await demo.getByRole('button', { name: 'Sign up' }).click();
@@ -47,15 +45,14 @@ test('the form action demo works without JavaScript', async ({ browser }) => {
   } finally { await context.close(); }
 });
 
-test('composite controls submit under their field names and validate', async ({ page }) => {
+test('composite controls submit under their names, and a required checkbox blocks the submit', async ({ page }) => {
   await visit(page, '/docs/forms');
   const demo = page.locator('[data-slot=component-preview]').first();
-  await demo.getByRole('radio', { name: 'Pro' }).click();
+  await demo.getByRole('radio', { name: /^Pro\b/ }).click();
   await demo.getByRole('switch', { name: 'Newsletter' }).click();
   await demo.getByRole('button', { name: 'Continue' }).click();
-  await expect(demo.locator('[data-slot=field-error]')).toHaveText(['Accept the terms to continue.']);
   await expect(demo.locator('[data-slot=preview] pre')).toHaveCount(0);
   await demo.getByRole('checkbox', { name: 'Accept the terms' }).click();
   await demo.getByRole('button', { name: 'Continue' }).click();
-  await expect(demo.locator('[data-slot=preview] pre')).toHaveText(JSON.stringify({ plan: 'pro', seats: 5, newsletter: true, terms: true }));
+  await expect(demo.locator('[data-slot=preview] pre')).toHaveText(JSON.stringify({ plan: 'pro', seats: '5', newsletter: 'on', terms: 'on' }));
 });

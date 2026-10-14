@@ -1,10 +1,10 @@
 ---
 title: Form actions
-description: Bind Form and Field to a SvelteKit form action.
+description: Use Field with a SvelteKit form action.
 order: 2
 ---
 
-A classic [form action](https://svelte.dev/docs/kit/form-actions) works like a [remote form](/docs/forms/remote-forms). `actionForm` from `@sveltery/base/form/kit` builds a form source from the page's `form` prop, and `parseForm` reads the request on the server with the same field encoding. The `Field` markup does not change.
+A classic [form action](https://svelte.dev/docs/kit/form-actions) works like a [remote form](/docs/forms/remote-forms). `actionForm` from `@sveltery/base/form/kit` builds a form source from the page's `form` prop, and `parseForm` reads the request on the server with the same field encoding. The markup does not change.
 
 <ComponentPreview name="forms/FormActionExample" />
 
@@ -35,26 +35,27 @@ Pass `form` to `actionForm` as a getter, so that the source follows each new val
 ```svelte title="src/routes/signup/+page.svelte"
 <script lang="ts">
   import { actionForm } from '@sveltery/base/form/kit';
+  import { Button } from '$lib/components/ui/button';
   import { Field, FieldError, FieldLabel } from '$lib/components/ui/field';
-  import { Form, FormError } from '$lib/components/ui/form';
+  import { Input } from '$lib/components/ui/input';
   import { signupSchema } from '$lib/forms/signup';
 
   let { form } = $props();
   const f = actionForm(signupSchema, () => form);
 </script>
 
-<Form form={f}>
-  <FormError />
-  <Field field={f.fields.email} type="email">
-    <FieldLabel>Email</FieldLabel>
-    <Input required />
-    <FieldError />
+<form {...f}>
+  <FieldError errors={f.fields.issues()} />
+  <Field data-invalid={!!f.fields.email.issues()}>
+    <FieldLabel for="email">Email</FieldLabel>
+    <Input id="email" {...f.fields.email.as('email')} required />
+    <FieldError errors={f.fields.email.issues()} />
   </Field>
   <Button type="submit" disabled={f.pending > 0}>Sign up</Button>
   {#if f.result}
     <p>Welcome, {f.result.welcome}.</p>
   {/if}
-</Form>
+</form>
 ```
 
 `actionForm` runs `use:enhance` for you, so do not add it. The schema runs in the browser before each submit, and only a valid submit reaches the server. For a named action, pass its name, as in `actionForm(schema, () => form, { action: 'signup' })`.

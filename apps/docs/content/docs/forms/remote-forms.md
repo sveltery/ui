@@ -1,10 +1,10 @@
 ---
 title: Remote forms
-description: Bind Form and Field to a SvelteKit remote form.
+description: Use Field with a SvelteKit remote form.
 order: 1
 ---
 
-Pass a SvelteKit [remote form](https://svelte.dev/docs/kit/remote-functions#form) to `form` on `Form`, and each of its fields to `field` on a `Field`. The remote form owns the values and the issues. Each `Field` shows its issues, and `Form` sends the submit through the remote form.
+Spread a SvelteKit [remote form](https://svelte.dev/docs/kit/remote-functions#form) onto a `<form>`, and each of its fields onto a control with `as()`. The remote form owns the values and the issues. Each `Field` shows its field's issues in `FieldError`.
 
 <ComponentPreview name="forms/RemoteFormExample" />
 
@@ -46,27 +46,28 @@ export const signup = form(signupSchema, async (data, issue) => {
 
 ```svelte
 <script lang="ts">
+  import { Button } from '$lib/components/ui/button';
   import { Field, FieldError, FieldLabel } from '$lib/components/ui/field';
-  import { Form, FormError } from '$lib/components/ui/form';
+  import { Input } from '$lib/components/ui/input';
   import { signupSchema } from '$lib/forms/signup';
   import { signup } from '$lib/forms/signup.remote';
 
   const f = signup.preflight(signupSchema);
 </script>
 
-<Form form={f}>
-  <FormError />
-  <Field field={f.fields.email} type="email">
-    <FieldLabel>Email</FieldLabel>
-    <Input required />
-    <FieldError />
+<form {...f}>
+  <FieldError errors={f.fields.issues()} />
+  <Field data-invalid={!!f.fields.email.issues()}>
+    <FieldLabel for="email">Email</FieldLabel>
+    <Input id="email" {...f.fields.email.as('email')} required />
+    <FieldError errors={f.fields.email.issues()} />
   </Field>
   <Button type="submit" disabled={f.pending > 0}>Sign up</Button>
-</Form>
+</form>
 ```
 
-The control takes its name and value from the field, so do not set `name` or `value` on it. `type` on `Field` is the input type of its control, and TypeScript checks it against the field's value: a `number` field needs `type="number"` or `type="range"`, and a `boolean` field `type="checkbox"` or `type="switch"`.
+`as()` gives the control its `name`, `type`, value and `aria-invalid`, so do not set them yourself. TypeScript checks the type against the field's value: a `number` field needs `as('number')` or `as('range')`, and a `boolean` field `as('checkbox')`. `f.fields.issues()` holds the issues on the whole form.
 
-A submit checks the native constraints first, then the preflight schema, then the handler on the server. Each issue shows in its field, and `Form` focuses the first invalid field. When the handler returns, `f.result` holds its return value and the form resets.
+A submit checks the native constraints first, then the preflight schema, then the handler on the server. Each issue shows in its field. When the handler returns, `f.result` holds its return value and the form resets.
 
 The form also works before the page hydrates and with JavaScript off: the browser checks the constraints, the form posts to the server, and the page renders again with the issues.
