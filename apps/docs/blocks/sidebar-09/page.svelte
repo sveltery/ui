@@ -1,0 +1,36 @@
+<script lang="ts">
+  import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@sveltery/ui/breadcrumb';
+  import { Separator } from '@sveltery/ui/separator';
+  import { SidebarInset, SidebarProvider, SidebarTrigger } from '@sveltery/ui/sidebar';
+  import AppSidebar from './components/app-sidebar.svelte';
+</script>
+
+<SidebarProvider style="--sidebar-width: 350px">
+  <AppSidebar />
+  <SidebarInset>
+    <header class="sticky top-0 flex shrink-0 items-center gap-2 border-b bg-background p-4">
+      <SidebarTrigger class="-ml-1" />
+      <Separator
+        orientation="vertical"
+        class="mr-2 data-vertical:h-4 data-vertical:self-auto"
+      />
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem class="hidden md:block">
+            <BreadcrumbLink href="#">All Inboxes</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator class="hidden md:block" />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Inbox</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+    </header>
+    <div class="flex flex-1 flex-col gap-4 p-4">
+      {#each { length: 24 } as _, index (index)}
+        <div class="aspect-video h-12 w-full rounded-lg bg-muted/50"></div>
+      {/each}
+    </div>
+  </SidebarInset>
+</SidebarProvider>
+
