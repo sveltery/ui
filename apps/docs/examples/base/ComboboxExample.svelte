@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { toast } from '@sveltery/ui/sonner';
+  import { toast } from '@sveltery/ui/toast';
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { Button, buttonVariants } from '@sveltery/ui/button';
   import { Card, CardContent, CardFooter } from '@sveltery/ui/card';
@@ -237,7 +237,7 @@
   function submitFramework(event: SubmitEvent) {
     event.preventDefault();
     const framework = new FormData(event.currentTarget as HTMLFormElement).get('framework') as string;
-    toast(`You selected ${framework} as your framework.`);
+    toast.add({ title: `You selected ${framework} as your framework.` });
   }
 </script>
 
@@ -663,7 +663,7 @@
           <Button
             type="button"
             onclick={() => {
-              toast('Framework selected.');
+              toast.add({ title: 'Framework selected.' });
               dialogOpen = false;
             }}
           >

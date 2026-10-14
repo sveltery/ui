@@ -16,7 +16,7 @@
   import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
   import { Separator } from '@sveltery/ui/separator';
   import { useSidebar } from '@sveltery/ui/sidebar';
-  import { toast } from '@sveltery/ui/sonner';
+  import { toast } from '@sveltery/ui/toast';
   import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@sveltery/ui/table';
   import { Tabs, TabsContent, TabsList, TabsTrigger } from '@sveltery/ui/tabs';
 
@@ -125,7 +125,7 @@
 
   function save(event: SubmitEvent, item: Section) {
     event.preventDefault();
-    toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), { loading: `Saving ${item.header}`, success: 'Done', error: 'Error' });
+    toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), { loading: { title: `Saving ${item.header}` }, success: { title: 'Done' }, error: { title: 'Error' } });
   }
 
   const chartData = [
