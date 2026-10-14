@@ -6,9 +6,11 @@
   import { SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarSeparator } from '@sveltery/ui/sidebar';
 
   let { calendars }: { calendars: { name: string; items: string[] }[] } = $props();
+  // The host element's typed event handlers do not fit the element this snippet renders, so only `class` is typed.
+  type RenderProps = Pick<HTMLAttributes<HTMLElement>, 'class'>;
 </script>
 
-{#snippet collapsibleTrigger(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+{#snippet collapsibleTrigger(props: RenderProps, _state: unknown, children?: Snippet)}
   <CollapsibleTrigger {...props}>{@render children?.()}</CollapsibleTrigger>
 {/snippet}
 

@@ -138,9 +138,11 @@
       },
     ],
   }
+  // The host element's typed event handlers do not fit the element this snippet renders, so only `class` is typed.
+  type RenderProps = Pick<HTMLAttributes<HTMLElement>, 'class'>;
 </script>
 
-{#snippet home(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+{#snippet home(props: RenderProps, _state: unknown, children?: Snippet)}
   <!-- svelte-ignore a11y_invalid_attribute -->
   <a href="#" {...props}>{@render children?.()}</a>
 {/snippet}

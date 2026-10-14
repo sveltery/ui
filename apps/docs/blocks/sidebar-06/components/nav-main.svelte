@@ -21,9 +21,11 @@
   } = $props();
 
   const sidebar = useSidebar();
+  // The host element's typed event handlers do not fit the element this snippet renders, so only `class` is typed.
+  type RenderProps = Pick<HTMLAttributes<HTMLElement>, 'class'>;
 </script>
 
-{#snippet menuButton(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+{#snippet menuButton(props: RenderProps, _state: unknown, children?: Snippet)}
   <SidebarMenuButton {...props} class={[props.class, 'aria-expanded:bg-muted']}>{@render children?.()}</SidebarMenuButton>
 {/snippet}
 
@@ -46,7 +48,7 @@
           {#if item.items?.length}
             <DropdownMenuContent side={sidebar.isMobile ? 'bottom' : 'right'} align={sidebar.isMobile ? 'end' : 'start'} class="min-w-56 rounded-lg">
               {#each item.items as subItem (subItem.title)}
-                {#snippet link(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+                {#snippet link(props: RenderProps, _state: unknown, children?: Snippet)}
                   <a href={subItem.url} {...props}>{@render children?.()}</a>
                 {/snippet}
                 <DropdownMenuItem render={link}>

@@ -16,9 +16,11 @@
   } from '@sveltery/ui/sidebar';
 
   let { items }: { items: { title: string; url: string; icon: Snippet; isActive?: boolean; items?: { title: string; url: string }[] }[] } = $props();
+  // The host element's typed event handlers do not fit the element this snippet renders, so only `class` is typed.
+  type RenderProps = Pick<HTMLAttributes<HTMLElement>, 'class'>;
 </script>
 
-{#snippet collapsibleTrigger(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+{#snippet collapsibleTrigger(props: RenderProps, _state: unknown, children?: Snippet)}
   <CollapsibleTrigger {...props}>{@render children?.()}</CollapsibleTrigger>
 {/snippet}
 
@@ -26,10 +28,10 @@
   <SidebarGroupLabel>Platform</SidebarGroupLabel>
   <SidebarMenu>
     {#each items as item (item.title)}
-      {#snippet menuItem(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+      {#snippet menuItem(props: RenderProps, _state: unknown, children?: Snippet)}
         <SidebarMenuItem {...props}>{@render children?.()}</SidebarMenuItem>
       {/snippet}
-      {#snippet link(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+      {#snippet link(props: RenderProps, _state: unknown, children?: Snippet)}
         <a href={item.url} {...props}>{@render children?.()}</a>
       {/snippet}
       <Collapsible open={item.isActive} render={menuItem}>
@@ -45,7 +47,7 @@
           <CollapsibleContent>
             <SidebarMenuSub>
               {#each item.items as subItem (subItem.title)}
-                {#snippet subLink(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+                {#snippet subLink(props: RenderProps, _state: unknown, children?: Snippet)}
                   <a href={subItem.url} {...props}>{@render children?.()}</a>
                 {/snippet}
                 <SidebarMenuSubItem>

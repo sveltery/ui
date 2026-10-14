@@ -8,9 +8,11 @@
   let { versions, defaultVersion }: { versions: string[]; defaultVersion: string } = $props();
   // svelte-ignore state_referenced_locally
   let selectedVersion = $state(defaultVersion);
+  // The host element's typed event handlers do not fit the element this snippet renders, so only `class` is typed.
+  type RenderProps = Pick<HTMLAttributes<HTMLElement>, 'class'>;
 </script>
 
-{#snippet menuButton(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+{#snippet menuButton(props: RenderProps, _state: unknown, children?: Snippet)}
   <SidebarMenuButton {...props} size="lg" class={[props.class, 'data-popup-open:bg-sidebar-accent data-popup-open:text-sidebar-accent-foreground']}>{@render children?.()}</SidebarMenuButton>
 {/snippet}
 

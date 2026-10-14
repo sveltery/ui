@@ -16,9 +16,11 @@
   } = $props();
 
   const sidebar = useSidebar();
+  // The host element's typed event handlers do not fit the element this snippet renders, so only `class` is typed.
+  type RenderProps = Pick<HTMLAttributes<HTMLElement>, 'class'>;
 </script>
 
-{#snippet action(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+{#snippet action(props: RenderProps, _state: unknown, children?: Snippet)}
   <SidebarMenuAction {...props} showOnHover class={[props.class, 'aria-expanded:bg-muted']}>{@render children?.()}</SidebarMenuAction>
 {/snippet}
 
@@ -26,7 +28,7 @@
   <SidebarGroupLabel>Projects</SidebarGroupLabel>
   <SidebarMenu>
     {#each projects as item (item.name)}
-      {#snippet link(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+      {#snippet link(props: RenderProps, _state: unknown, children?: Snippet)}
         <a href={item.url} {...props}>{@render children?.()}</a>
       {/snippet}
       <SidebarMenuItem>

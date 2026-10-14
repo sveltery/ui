@@ -19,9 +19,11 @@
       }[];
     }[];
   } = $props();
+  // The host element's typed event handlers do not fit the element this snippet renders, so only `class` is typed.
+  type RenderProps = Pick<HTMLAttributes<HTMLElement>, 'class'>;
 </script>
 
-{#snippet menuItem(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+{#snippet menuItem(props: RenderProps, _state: unknown, children?: Snippet)}
   <SidebarMenuItem {...props}>{@render children?.()}</SidebarMenuItem>
 {/snippet}
 
@@ -29,7 +31,7 @@
   <SidebarGroupLabel>Platform</SidebarGroupLabel>
   <SidebarMenu>
     {#each items as item (item.title)}
-      {#snippet trigger(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+      {#snippet trigger(props: RenderProps, _state: unknown, children?: Snippet)}
         <SidebarMenuButton {...props} tooltip={item.title}>{@render children?.()}</SidebarMenuButton>
       {/snippet}
       <Collapsible open={item.isActive} class="group/collapsible" render={menuItem}>

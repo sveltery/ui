@@ -59,6 +59,8 @@
       },
     ],
   };
+  // The host element's typed event handlers do not fit the element this snippet renders, so only `class` is typed.
+  type RenderProps = Pick<HTMLAttributes<HTMLElement>, 'class'>;
 </script>
 
 {#snippet bellIcon()}
@@ -109,12 +111,12 @@
   <IconPlaceholder lucide="SettingsIcon" tabler="IconSettings" hugeicons="SettingsIcon" phosphor="GearIcon" remixicon="RiSettingsLine" />
 {/snippet}
 
-{#snippet link(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+{#snippet link(props: RenderProps, _state: unknown, children?: Snippet)}
   <!-- svelte-ignore a11y_invalid_attribute -->
   <a href="#" {...props}>{@render children?.()}</a>
 {/snippet}
 
-{#snippet triggerButton(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+{#snippet triggerButton(props: RenderProps, _state: unknown, children?: Snippet)}
   <Button {...props} size="sm">{@render children?.()}</Button>
 {/snippet}
 

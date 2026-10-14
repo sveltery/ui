@@ -18,7 +18,10 @@
   } from '@sveltery/ui/sidebar';
   import { IconPlaceholder } from '@sveltery/ui/icons';
   let { ...props }: SidebarProps = $props();
-  type TreeItem = string | [name: string, ...items: TreeItem[]];
+  type TreeItem = string | TreeBranch;
+  interface TreeBranch extends Array<TreeItem> {
+    0: string;
+  }
 
   const data: { changes: { file: string; state: string }[]; tree: TreeItem[] } = {
     changes: [
@@ -63,9 +66,11 @@
     ],
   };
 
+  // The host element's typed event handlers do not fit the element this snippet renders, so only `class` is typed.
+  type RenderProps = Pick<HTMLAttributes<HTMLElement>, 'class'>;
 </script>
 
-{#snippet collapsibleTrigger(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+{#snippet collapsibleTrigger(props: RenderProps, _state: unknown, children?: Snippet)}
   <CollapsibleTrigger {...props}>{@render children?.()}</CollapsibleTrigger>
 {/snippet}
 
