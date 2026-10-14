@@ -21,7 +21,7 @@ async function visit(page: Page) {
   await expect(page.locator('html')).toHaveAttribute('data-ready');
 }
 
-const headers = (page: Page) => page.locator('tbody tr td:nth-child(3)');
+const headers = (page: Page) => page.locator('tbody tr:not([data-dnd-placeholder]) td:nth-child(3)');
 /** Each element's text with its whitespace collapsed, as a reader sees it. */
 const texts = (locator: Locator) => locator.evaluateAll((elements) => elements.map((element) => element.textContent!.replace(/\s+/g, ' ').trim()));
 const footer = (page: Page) => page.getByText(/row\(s\) selected\./);
@@ -166,7 +166,7 @@ test('the columns menu hides and shows a column', async ({ page }) => {
   await expect(page.locator('tbody tr').first()).toContainText('In Process');
 });
 
-test('dragging a row by its handle moves it', async ({ page }) => {
+test('dragging a row by its handle moves the rows it passes and drops it there', async ({ page }) => {
   await visit(page);
   const handles = page.getByRole('button', { name: 'Drag to reorder' });
   await handles.nth(3).scrollIntoViewIfNeeded();
@@ -175,7 +175,10 @@ test('dragging a row by its handle moves it', async ({ page }) => {
   await page.mouse.move(from.x + from.width / 2, from.y + from.height / 2);
   await page.mouse.down();
   await page.mouse.move(from.x + from.width / 2, to.y + to.height / 2 + 10, { steps: 8 });
-  await expect(page.locator('tbody tr').first()).toHaveAttribute('data-dragging', 'true');
+  await expect(page.locator('tbody tr[data-dragging=true]:not([data-dnd-placeholder])')).toHaveCount(1);
+  await expect(headers(page).nth(0)).toHaveText('Table of contents');
+  await expect(headers(page).nth(1)).toHaveText('Executive summary');
+  await expect(headers(page).nth(2)).toHaveText('Cover page');
   await page.mouse.up();
   await expect(headers(page).nth(0)).toHaveText('Table of contents');
   await expect(headers(page).nth(1)).toHaveText('Executive summary');
@@ -183,12 +186,14 @@ test('dragging a row by its handle moves it', async ({ page }) => {
   await expect(page.locator('tbody tr[data-dragging=true]')).toHaveCount(0);
 });
 
-test('the keyboard picks up a row with space, moves it with the arrow keys and drops it with space', async ({ page }) => {
+test('the keyboard picks up a row with space, moves it live with the arrow keys and drops it with space', async ({ page }) => {
   await visit(page);
   const handle = page.getByRole('button', { name: 'Drag to reorder' }).first();
   await handle.focus();
   await page.keyboard.press('Space');
   await page.keyboard.press('ArrowDown');
+  await expect(headers(page).nth(0)).toHaveText('Table of contents');
+  await expect(headers(page).nth(1)).toHaveText('Cover page');
   await page.keyboard.press('ArrowDown');
   await page.keyboard.press('Space');
   await expect(headers(page).nth(0)).toHaveText('Table of contents');
@@ -207,13 +212,12 @@ test('a row dragged on the second page moves within that page', async ({ page })
   await visit(page);
   await page.getByRole('button', { name: 'Go to next page' }).click();
   await expect(headers(page).first()).toHaveText('Adaptive Communication Protocols');
-  const second = await texts(headers(page).nth(1));
   await page.getByRole('button', { name: 'Drag to reorder' }).first().focus();
   await page.keyboard.press('Space');
   await page.keyboard.press('ArrowDown');
   await page.keyboard.press('Space');
   await expect(pageLabel(page)).toHaveText('Page 2 of 7');
-  await expect(headers(page).nth(0)).toHaveText(second);
+  await expect(headers(page).nth(0)).toHaveText('Advantages Over Current Technologies');
   await expect(headers(page).nth(1)).toHaveText('Adaptive Communication Protocols');
 });
 

@@ -99,7 +99,8 @@
   ]);
 
   // svelte-ignore state_referenced_locally
-  let data = $state(initialData);
+  let data = $state.raw(initialData);
+  let snapshot = initialData;
   const table = createTable({
     features,
     columns,
@@ -391,7 +392,15 @@
   </div>
   <TabsContent value="outline" class="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6">
     <div class="overflow-hidden rounded-lg border">
-      <DragDropProvider modifiers={[RestrictToVerticalAxis]} onDragEnd={(event) => (data = move(data, event))}>
+      <DragDropProvider
+        modifiers={[RestrictToVerticalAxis]}
+        onDragStart={() => (snapshot = data)}
+        onDragOver={(event) => (data = move(data, event))}
+        onDragEnd={(event) => {
+          // @dnd-kit/svelte reorders on drag over, so a cancelled drag puts back the order from before it.
+          if (event.canceled) data = snapshot;
+        }}
+      >
         <Table>
           <TableHeader class="sticky top-0 z-10 bg-muted">
             {#each table.getHeaderGroups() as headerGroup (headerGroup.id)}
