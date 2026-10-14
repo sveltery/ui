@@ -1,9 +1,8 @@
 <script lang="ts">
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { Button } from '@sveltery/ui/button';
-  import { Field, FieldDescription, FieldLabel } from '@sveltery/ui/field';
+  import { Field, FieldDescription, FieldGroup, FieldLabel } from '@sveltery/ui/field';
   import { Input } from '@sveltery/ui/input';
-  import { Label } from '@sveltery/ui/label';
   import { NativeSelect, NativeSelectOption } from '@sveltery/ui/native-select';
   import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
 </script>
@@ -131,45 +130,47 @@
 
 {#snippet InputForm()}
   <Example title="Form">
-    <form class="flex w-full flex-col gap-7">
-      <div class="flex w-full flex-col gap-3">
-        <Label for="form-name">Name</Label>
-        <Input id="form-name" name="name" type="text" placeholder="John Doe" />
-      </div>
-      <div class="flex w-full flex-col gap-3">
-        <Label for="form-email">Email</Label>
-        <Input id="form-email" name="email" type="email" placeholder="john@example.com" />
-        <p class="text-sm text-muted-foreground">We&apos;ll never share your email with anyone.</p>
-      </div>
-      <div class="grid grid-cols-2 gap-4">
-        <div class="flex w-full flex-col gap-3">
-          <Label for="form-phone">Phone</Label>
-          <Input id="form-phone" name="phone" type="tel" placeholder="+1 (555) 123-4567" />
+    <form class="w-full">
+      <FieldGroup>
+        <Field>
+          <FieldLabel for="form-name">Name</FieldLabel>
+          <Input id="form-name" name="name" type="text" placeholder="John Doe" />
+        </Field>
+        <Field>
+          <FieldLabel for="form-email">Email</FieldLabel>
+          <Input id="form-email" name="email" type="email" placeholder="john@example.com" />
+          <FieldDescription>We&apos;ll never share your email with anyone.</FieldDescription>
+        </Field>
+        <div class="grid grid-cols-2 gap-4">
+          <Field>
+            <FieldLabel for="form-phone">Phone</FieldLabel>
+            <Input id="form-phone" name="phone" type="tel" placeholder="+1 (555) 123-4567" />
+          </Field>
+          <Field>
+            <FieldLabel for="form-country">Country</FieldLabel>
+            <Select name="country" defaultValue="us">
+              <SelectTrigger id="form-country">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="us">United States</SelectItem>
+                  <SelectItem value="uk">United Kingdom</SelectItem>
+                  <SelectItem value="ca">Canada</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </Field>
         </div>
-        <div class="flex w-full flex-col gap-3">
-          <Label for="form-country">Country</Label>
-          <Select id="form-country" name="country" defaultValue="us">
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="us">United States</SelectItem>
-                <SelectItem value="uk">United Kingdom</SelectItem>
-                <SelectItem value="ca">Canada</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-      <div class="flex w-full flex-col gap-3">
-        <Label for="form-address">Address</Label>
-        <Input id="form-address" name="address" type="text" placeholder="123 Main St" />
-      </div>
-      <div class="flex w-full items-center gap-3">
-        <Button type="button" variant="outline">Cancel</Button>
-        <Button type="submit">Submit</Button>
-      </div>
+        <Field>
+          <FieldLabel for="form-address">Address</FieldLabel>
+          <Input id="form-address" name="address" type="text" placeholder="123 Main St" />
+        </Field>
+        <Field orientation="horizontal">
+          <Button type="button" variant="outline">Cancel</Button>
+          <Button type="submit">Submit</Button>
+        </Field>
+      </FieldGroup>
     </form>
   </Example>
 {/snippet}

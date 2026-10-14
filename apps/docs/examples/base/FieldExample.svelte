@@ -30,6 +30,12 @@
   let otpValue = $state('');
   let pinValue = $state('');
 
+  const fruitItems = [
+    { label: 'Select a fruit', value: null },
+    { label: 'Apple', value: 'apple' },
+    { label: 'Banana', value: 'banana' },
+    { label: 'Orange', value: 'orange' },
+  ];
   const selectBasicItems = [
     { label: 'Choose an option', value: null },
     { label: 'Option 1', value: 'option1' },
@@ -675,6 +681,24 @@
           <FieldDescription>Receive email updates about your account.</FieldDescription>
         </FieldContent>
         <Switch />
+      </Field>
+      <Field orientation="horizontal">
+        <FieldContent>
+          <FieldLabel for="horizontal-select">Favorite Fruit</FieldLabel>
+          <FieldDescription>Choose your favorite fruit.</FieldDescription>
+        </FieldContent>
+        <Select items={fruitItems}>
+          <SelectTrigger id="horizontal-select">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {#each fruitItems as item (item.value)}
+                <SelectItem value={item.value}>{item.label}</SelectItem>
+              {/each}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
       </Field>
       <Field orientation="horizontal">
         <FieldContent>

@@ -2,9 +2,9 @@ import { expect, test, type Page } from '@playwright/test';
 
 test.use({ baseURL: 'http://127.0.0.1:5175' });
 
-async function visit(page: Page, path: string) {
+async function visit(page: Page, path: string, timeout = 5000) {
   await page.goto(path);
-  await expect(page.locator('html')).toHaveAttribute('data-ready');
+  await expect(page.locator('html')).toHaveAttribute('data-ready', { timeout });
 }
 
 test('sidebar and pagination navigate between docs pages', async ({ page }) => {
@@ -60,4 +60,34 @@ test('the mobile menu opens as a popover and closes on navigation', async ({ pag
   await menu.getByRole('link', { name: 'Theming' }).click();
   await expect(page).toHaveURL('/docs/theming');
   await expect(menu).toBeHidden();
+});
+
+test('the Field Horizontal Fields example offers Favorite Fruit and shows the chosen fruit', async ({ page }) => {
+  await visit(page, '/docs/components/field', 30_000);
+  const section = page.locator('[data-slot=example]').filter({ hasText: 'Horizontal Fields' });
+  const fruit = section.getByLabel('Favorite Fruit');
+  await expect(fruit).toHaveText('Select a fruit');
+  await fruit.click();
+  await expect(page.locator('[role=listbox]:visible').getByRole('option')).toHaveText(['Select a fruit', 'Apple', 'Banana', 'Orange']);
+  await page.locator('[role=listbox]:visible').getByRole('option', { name: 'Banana', exact: true }).click();
+  await expect(page.locator('[role=listbox]:visible').getByRole('option')).toHaveCount(0);
+  await expect(fruit).toHaveText('Banana');
+});
+
+test('the Input Form example labels each control and describes the email field', async ({ page }) => {
+  await visit(page, '/docs/components/input');
+  const form = page.locator('[data-slot=example]').filter({ has: page.locator('#form-name') });
+  await expect(form.getByLabel('Name')).toHaveAttribute('placeholder', 'John Doe');
+  const email = form.getByLabel('Email');
+  await expect(email).toHaveAttribute('type', 'email');
+  await expect(form.getByText("We'll never share your email with anyone.")).toBeVisible();
+  await expect(form.getByLabel('Phone')).toHaveAttribute('type', 'tel');
+  await expect(form.getByLabel('Address')).toHaveAttribute('placeholder', '123 Main St');
+  const country = form.getByRole('combobox', { name: 'Country' });
+  await country.click();
+  await expect(page.locator('[role=listbox]:visible').getByRole('option')).toHaveText(['United States', 'United Kingdom', 'Canada']);
+  await page.locator('[role=listbox]:visible').getByRole('option', { name: 'Canada', exact: true }).click();
+  await expect(page.locator('[role=listbox]:visible').getByRole('option')).toHaveCount(0);
+  await expect(form.getByRole('button', { name: 'Cancel' })).toBeVisible();
+  await expect(form.getByRole('button', { name: 'Submit' })).toBeVisible();
 });
