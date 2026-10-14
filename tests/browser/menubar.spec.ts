@@ -54,6 +54,7 @@ test('hovering another trigger while a menu is open switches menus', async ({ pa
 test('ArrowRight and ArrowLeft in an open menu move between menus and wrap around', async ({ page }) => {
   const menu = page.locator('[role=menu][data-open]');
   await trigger(page, 'File').click();
+  await expect(page.getByRole('menu')).toBeFocused();
   await page.keyboard.press('ArrowDown');
   await expect(page.getByRole('menuitem', { name: 'New Tab' })).toBeFocused();
   await page.keyboard.press('ArrowRight');
@@ -113,6 +114,7 @@ test('arrow keys highlight items, a disabled item does not activate and Enter ac
 
 test('Escape closes the menu and returns focus to its trigger', async ({ page }) => {
   await trigger(page, 'Edit').click();
+  await expect(page.getByRole('menu')).toBeFocused();
   await page.keyboard.press('ArrowDown');
   await expect(page.getByRole('menuitem', { name: 'Undo' })).toBeFocused();
   await page.keyboard.press('Escape');
@@ -123,6 +125,7 @@ test('Escape closes the menu and returns focus to its trigger', async ({ page })
 
 test('a submenu opens with ArrowRight or hover, shows the open style and closes with ArrowLeft', async ({ page }) => {
   await trigger(page, 'File').click();
+  await expect(page.getByRole('menu')).toBeFocused();
   const share = page.getByRole('menuitem', { name: 'Share' });
   await page.keyboard.press('ArrowUp');
   await expect(page.getByRole('menuitem', { name: 'Delete' })).toBeFocused();
