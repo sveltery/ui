@@ -175,6 +175,16 @@ test('a submenu opens with ArrowRight or hover and closes with ArrowLeft', async
   await expect(page.locator('output')).toHaveText('Last: Developer Tools; Bookmarks: true; Theme: light');
 });
 
+test('a class on the submenu content replaces its default subcontent classes', async ({ page }) => {
+  await rightClick(page, 300, 100);
+  await page.getByRole('menuitem', { name: 'More Tools' }).hover();
+  const submenu = page.locator('[data-slot=context-menu-sub-content]');
+  await expect(submenu).toBeVisible();
+  await expect(submenu).toHaveClass(/(^| )sub-extra( |$)/);
+  await expect(submenu).toHaveClass(/(^| )cn-context-menu-content( |$)/);
+  await expect(submenu).not.toHaveClass(/cn-context-menu-subcontent/);
+});
+
 test('the submenu trigger keeps its accent background while focus is inside the submenu', async ({ page }) => {
   await rightClick(page, 300, 100);
   const subTrigger = page.getByRole('menuitem', { name: 'More Tools' });

@@ -1,8 +1,7 @@
-<script lang="ts">
-  import { Drawer as Primitive } from '@sveltery/base/drawer';
+<script lang="ts" generics="Payload = unknown">
+  import { Drawer as Primitive, type DrawerRootProps } from '@sveltery/base/drawer';
   import { setDrawerContext } from './context.js';
-  import type { DrawerProps } from './types.js';
-  let { open = $bindable(), snapPoint = $bindable(), modal = true, showSwipeHandle = false, snapPoints, swipeDirection = 'down', ...props }: DrawerProps = $props();
+  let { open = $bindable(), snapPoint = $bindable(), triggerId = $bindable(), modal = true, showSwipeHandle = false, snapPoints, swipeDirection = 'down', ...props }: DrawerRootProps<Payload> & { showSwipeHandle?: boolean } = $props();
 
   setDrawerContext({
     get hasSnapPoints() { return snapPoints != null && snapPoints.length > 0; },
@@ -11,4 +10,4 @@
     get swipeDirection() { return swipeDirection; },
   });
 </script>
-<Primitive.Root bind:open bind:snapPoint {modal} {snapPoints} {swipeDirection} {...props} />
+<Primitive.Root bind:open bind:snapPoint bind:triggerId {modal} {snapPoints} {swipeDirection} {...props} />

@@ -1,10 +1,10 @@
 <script lang="ts">
+  import type { ComponentProps } from 'svelte';
   import { Input } from '@sveltery/command';
   import { cn } from 'cn';
   import { InputGroup, InputGroupAddon } from '../input-group/index.js';
   import { IconPlaceholder } from '../icons/index.js';
-  import type { CommandInputProps } from './types.js';
-  let { value = $bindable(''), class: classProp, ...props }: CommandInputProps = $props();
+  let { value = $bindable(''), class: classProp, ...props }: ComponentProps<typeof Input> = $props();
 </script>
 <div data-slot="command-input-wrapper" class="cn-command-input-wrapper">
   <InputGroup class="cn-command-input-group">

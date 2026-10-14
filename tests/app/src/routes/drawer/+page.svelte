@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '@sveltery/ui/drawer';
+  let openedBy = $state<string | null>();
 </script>
 <div class="flex flex-wrap gap-2 p-8">
   <Drawer>
@@ -44,4 +45,14 @@
       </DrawerFooter>
     </DrawerContent>
   </Drawer>
+  <Drawer bind:triggerId={openedBy}>
+    <DrawerTrigger id="first-trigger">Open from first</DrawerTrigger>
+    <DrawerTrigger id="second-trigger">Open from second</DrawerTrigger>
+    <DrawerContent>
+      <DrawerHeader>
+        <DrawerTitle>Shared drawer</DrawerTitle>
+      </DrawerHeader>
+    </DrawerContent>
+  </Drawer>
+  <output data-testid="opened-by">{openedBy ?? ''}</output>
 </div>
