@@ -1,4 +1,7 @@
 <script lang="ts">
+  // contribution-history, dividend-income and power-usage show fixed Nova, Geist and Inherit values
+  // because upstream's design-system search params (useDesignSystemSearchParams) are not ported.
+  // Upstream's album-card and catalog-toolbar cards are not ported either; its index does not import them.
   import AccountAccess from './components/account-access.svelte';
   import CardOverview from './components/card-overview.svelte';
   import ClaimableBalance from './components/claimable-balance.svelte';
