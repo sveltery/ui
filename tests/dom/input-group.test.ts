@@ -64,7 +64,7 @@ it('clicking a button inside an addon does not focus the input and still runs it
   expect(document.activeElement).not.toBe(field('url'));
 });
 
-it('a consumer onclick that calls preventDefault skips the focus', () => {
+it('a consumer onclick replaces the focus handler, as upstream', () => {
   const { field, byText, events } = setup();
   byText('Veto').click();
   expect(events).toEqual(['addon']);
