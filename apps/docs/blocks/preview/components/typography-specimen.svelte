@@ -30,7 +30,7 @@
     <Dialog>
       <DialogTrigger>
         {#snippet render(props, _state, content)}
-          <Button {...(props as Record<string, unknown>)} variant="outline" class={[props.class, 'w-full']}>{@render content?.()}</Button>
+          <Button {...props} variant="outline" class={[props.class, 'w-full']}>{@render content?.()}</Button>
         {/snippet}
         Share Feedback
       </DialogTrigger>
@@ -86,7 +86,7 @@
         <DialogFooter>
           <DialogClose>
             {#snippet render(props, _state, content)}
-              <Button {...(props as Record<string, unknown>)} variant="outline">{@render content?.()}</Button>
+              <Button {...props} variant="outline">{@render content?.()}</Button>
             {/snippet}
             Cancel
           </DialogClose>

@@ -1,4 +1,6 @@
 <script lang="ts">
+  import type { Snippet } from 'svelte';
+  import type { HTMLAttributes } from 'svelte/elements';
   import { Card, CardContent, CardHeader, CardTitle } from '@sveltery/ui/card';
   import { Item, ItemActions, ItemContent, ItemGroup, ItemMedia, ItemTitle } from '@sveltery/ui/item';
 
@@ -34,6 +36,8 @@
       value: '5.11 GB Hrs / 1K GB Hrs'
     }
   ];
+  // The host element's typed event handlers do not fit the element this snippet renders, so only `class` is typed.
+  type RenderProps = Pick<HTMLAttributes<HTMLElement>, 'class'>;
 </script>
 
 {#snippet CircularGauge({ percentage }: { percentage: number })}
@@ -84,8 +88,8 @@
     <ItemGroup class="gap-0">
       {#each items as item (item.name)}
         <Item size="xs" class="px-0 group-hover/item-group:bg-transparent">
-          {#snippet render(props, _state, content)}
-            <a {...(props as Record<string, unknown>)} href="#">{@render content?.()}</a>
+          {#snippet render(props: RenderProps, _state: unknown, content?: Snippet)}
+            <a {...props} href="#">{@render content?.()}</a>
           {/snippet}
           <ItemMedia variant="icon" class="text-primary">
             {@render CircularGauge({ percentage: item.percentage })}

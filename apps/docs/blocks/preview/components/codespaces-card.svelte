@@ -39,7 +39,7 @@
             <Tooltip>
               <TooltipTrigger>
                 {#snippet render(props, _state, content)}
-                  <Button {...(props as Record<string, unknown>)} variant="ghost" size="icon-sm">{@render content?.()}</Button>
+                  <Button {...props} variant="ghost" size="icon-sm">{@render content?.()}</Button>
                 {/snippet}
                 <IconPlaceholder lucide="PlusIcon" tabler="IconPlus" hugeicons="PlusSignIcon" phosphor="PlusIcon" remixicon="RiAddLine" />
               </TooltipTrigger>
@@ -48,7 +48,7 @@
             <DropdownMenu>
               <DropdownMenuTrigger>
                 {#snippet render(props, _state, content)}
-                  <Button {...(props as Record<string, unknown>)} variant="ghost" size="icon-sm">{@render content?.()}</Button>
+                  <Button {...props} variant="ghost" size="icon-sm">{@render content?.()}</Button>
                 {/snippet}
                 <IconPlaceholder lucide="MoreHorizontalIcon" tabler="IconDots" hugeicons="MoreHorizontalCircle01Icon" phosphor="DotsThreeOutlineIcon" remixicon="RiMoreLine" />
               </DropdownMenuTrigger>
@@ -129,7 +129,7 @@
             <Tooltip>
               <TooltipTrigger>
                 {#snippet render(props, _state, content)}
-                  <Button {...(props as Record<string, unknown>)} variant="ghost" size="icon">{@render content?.()}</Button>
+                  <Button {...props} variant="ghost" size="icon">{@render content?.()}</Button>
                 {/snippet}
                 <IconPlaceholder lucide="InfoIcon" tabler="IconInfoCircle" hugeicons="AlertCircleIcon" phosphor="InfoIcon" remixicon="RiInformationLine" />
               </TooltipTrigger>

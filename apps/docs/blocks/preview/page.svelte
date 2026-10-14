@@ -1,4 +1,7 @@
 <script lang="ts">
+  // style-overview, typography-specimen and bar-chart-card show fixed Nova, Geist and Inherit values
+  // because upstream's design-system search params (useDesignSystemSearchParams) are not ported.
+  // Upstream's assign-issue and bar-visualizer cards are not ported either; its index does not import them.
   import ActivateAgentDialog from './components/activate-agent-dialog.svelte';
   import AnalyticsCard from './components/analytics-card.svelte';
   import AnomalyAlert from './components/anomaly-alert.svelte';
