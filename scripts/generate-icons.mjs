@@ -60,7 +60,7 @@ for (const path of sources) {
   for (const { group, names } of iconNames(readFileSync(path, 'utf8'))) {
     for (const library of libraries) {
       const name = names[library];
-      assert(name, `${path}: IconPlaceholder needs a ${library} name in ${group}`);
+      assert(name, `${path}: icon needs a ${library} name in ${group}`);
       const icon = resolvers[library](name);
       assert(icon, `${path}: ${library} has no icon named ${name}`);
       icons[library][name] = icon;
