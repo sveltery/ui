@@ -310,6 +310,11 @@
       "svelte": "./dist/dropdown-menu/index.js",
       "default": "./dist/dropdown-menu/index.js"
     },
+    "./context-menu": {
+      "types": "./dist/context-menu/index.d.ts",
+      "svelte": "./dist/context-menu/index.js",
+      "default": "./dist/context-menu/index.js"
+    },
     "./navigation-menu": {
       "types": "./dist/navigation-menu/index.d.ts",
       "svelte": "./dist/navigation-menu/index.js",
