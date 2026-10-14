@@ -1,15 +1,17 @@
 import { Toast } from '@sveltery/base/toast';
-import type { PromiseData, PromiseMessage, ToastNode, ToastOptions } from './types.js';
+import type { CustomToast, CustomToastOptions, PromiseData, PromiseMessage, ToastData, ToastNode, ToastOptions } from './types.js';
 
 export const toastManager = Toast.createToastManager();
 
-function show(type: string | undefined, message: ToastNode, { id, description, duration, action }: ToastOptions = {}) {
+function show(type: string | undefined, message: ToastNode | undefined, { id, description, duration, action, className, classNames, closeButton, richColors }: ToastOptions = {}, custom?: CustomToast) {
   let toastId = '';
+  const data: ToastData = { className, classNames, closeButton, richColors, custom };
   toastId = toastManager.add({
     id,
     title: message,
     description,
     type,
+    data,
     ...(duration !== undefined && { timeout: duration === Infinity ? 0 : duration }),
     ...(action && {
       actionProps: {
@@ -47,6 +49,8 @@ export const toast = Object.assign((message: ToastNode, options?: ToastOptions) 
   warning: (message: ToastNode, options?: ToastOptions) => show('warning', message, options),
   error: (message: ToastNode, options?: ToastOptions) => show('error', message, options),
   loading: (message: ToastNode, options?: ToastOptions) => show('loading', message, options),
+  /** Shows a toast with your own body and no default styling. It has no icon, close button or action. */
+  custom: (content: CustomToast, options?: CustomToastOptions) => show(undefined, undefined, options, content),
   promise,
   /** Closes the toast with this id, or every toast without one. */
   dismiss: (id?: string) => toastManager.close(id)
