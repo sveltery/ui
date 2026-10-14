@@ -7,7 +7,7 @@ description: A toast built from the Base toast parts, with a toast manager you c
 
 ## About
 
-Toast is the shadcn/ui Toast, built on the Sveltery Base `Toast` parts. It is separate from [Sonner](/docs/components/sonner). `Toaster` renders the provider, the portal, the viewport and one `Toast` for each toast. The `toast` manager adds toasts from components, modules and event handlers.
+Toast is the shadcn/ui Toast, built on the Sveltery Base `Toast` parts. `Toaster` renders the provider, the portal, the viewport and one `Toast` for each toast. The `toast` manager adds toasts from components, modules and event handlers. Sveltery UI has no Sonner component, because Toast covers the same behavior. Where shadcn/ui code calls `toast()` from `sonner`, call `toast.add()` here.
 
 ## Installation
 
