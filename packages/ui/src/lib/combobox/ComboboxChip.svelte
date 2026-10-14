@@ -12,7 +12,7 @@
   {#if showRemove}
     <Primitive.ChipRemove data-slot="combobox-chip-remove" class="cn-combobox-chip-remove">
       {#snippet render(hostProps, _state, content)}
-        <Button variant="ghost" size="icon-xs" {...hostProps as Record<string, unknown>}>
+        <Button variant="ghost" size="icon-xs" {...hostProps}>
           {@render content?.()}
         </Button>
       {/snippet}

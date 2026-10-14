@@ -8,8 +8,8 @@
 {#snippet SwitchBasic()}
   <Example title="Basic">
     <Field orientation="horizontal">
-      <Switch />
-      <FieldLabel>Airplane Mode</FieldLabel>
+      <Switch id="switch-basic" />
+      <FieldLabel for="switch-basic">Airplane Mode</FieldLabel>
     </Field>
   </Example>
 {/snippet}
@@ -25,13 +25,13 @@
 
 {#snippet SwitchWithDescription()}
   <Example title="With Description">
-    <FieldLabel>
+    <FieldLabel for="switch-focus-mode">
       <Field orientation="horizontal">
         <FieldContent>
           <FieldTitle>Share across devices</FieldTitle>
           <FieldDescription>Focus is shared across devices, and turns off when you leave the app.</FieldDescription>
         </FieldContent>
-        <Switch />
+        <Switch id="switch-focus-mode" />
       </Field>
     </FieldLabel>
   </Example>

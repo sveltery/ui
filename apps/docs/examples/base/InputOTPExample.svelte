@@ -22,13 +22,13 @@
         <form>
           <Field>
             <div class="flex items-center justify-between">
-              <FieldLabel>Verification code</FieldLabel>
+              <FieldLabel for="otp-verification">Verification code</FieldLabel>
               <Button variant="outline" size="xs">
                 <IconPlaceholder lucide="RefreshCwIcon" hugeicons="RefreshIcon" tabler="IconRefresh" phosphor="ArrowClockwiseIcon" remixicon="RiRefreshLine" data-icon="inline-start" />
                 Resend Code
               </Button>
             </div>
-            <InputOTP length={6} required>
+            <InputOTP length={6} id="otp-verification" required>
               <InputOTPGroup class="*:data-[slot=input-otp-slot]:text-xl style-vega:*:data-[slot=input-otp-slot]:h-16 style-vega:*:data-[slot=input-otp-slot]:w-12 style-nova:*:data-[slot=input-otp-slot]:h-12 style-nova:*:data-[slot=input-otp-slot]:w-11 style-lyra:*:data-[slot=input-otp-slot]:h-12 style-lyra:*:data-[slot=input-otp-slot]:w-11 style-maia:*:data-[slot=input-otp-slot]:h-16 style-maia:*:data-[slot=input-otp-slot]:w-12 style-mira:*:data-[slot=input-otp-slot]:h-12 style-mira:*:data-[slot=input-otp-slot]:w-11 style-luma:*:data-[slot=input-otp-slot]:h-16 style-luma:*:data-[slot=input-otp-slot]:w-12">
                 <InputOTPSlot />
                 <InputOTPSlot />
@@ -57,8 +57,8 @@
   </Example>
   <Example title="Simple">
     <Field>
-      <FieldLabel>Simple</FieldLabel>
-      <InputOTP length={6}>
+      <FieldLabel for="simple">Simple</FieldLabel>
+      <InputOTP id="simple" length={6}>
         <InputOTPGroup>
           <InputOTPSlot />
           <InputOTPSlot />
@@ -75,8 +75,8 @@
   </Example>
   <Example title="Digits Only">
     <Field>
-      <FieldLabel>Digits Only</FieldLabel>
-      <InputOTP length={6} validationType="numeric">
+      <FieldLabel for="digits-only">Digits Only</FieldLabel>
+      <InputOTP id="digits-only" length={6} validationType="numeric">
         <InputOTPGroup>
           <InputOTPSlot />
           <InputOTPSlot />
@@ -90,8 +90,8 @@
   </Example>
   <Example title="With Separator">
     <Field>
-      <FieldLabel>With Separator</FieldLabel>
-      <InputOTP length={6} bind:value={separated}>
+      <FieldLabel for="with-separator">With Separator</FieldLabel>
+      <InputOTP id="with-separator" length={6} bind:value={separated}>
         <InputOTPGroup>
           <InputOTPSlot />
           <InputOTPSlot />
@@ -111,9 +111,9 @@
   </Example>
   <Example title="Alphanumeric">
     <Field>
-      <FieldLabel>Alphanumeric</FieldLabel>
+      <FieldLabel for="alphanumeric">Alphanumeric</FieldLabel>
       <FieldDescription>Accepts both letters and numbers.</FieldDescription>
-      <InputOTP length={6} validationType="alphanumeric">
+      <InputOTP id="alphanumeric" length={6} validationType="alphanumeric">
         <InputOTPGroup>
           <InputOTPSlot />
           <InputOTPSlot />
@@ -129,9 +129,9 @@
     </Field>
   </Example>
   <Example title="Disabled">
-    <Field disabled>
-      <FieldLabel>Disabled</FieldLabel>
-      <InputOTP length={6} value="123456">
+    <Field>
+      <FieldLabel for="disabled">Disabled</FieldLabel>
+      <InputOTP id="disabled" length={6} disabled value="123456">
         <InputOTPGroup>
           <InputOTPSlot />
           <InputOTPSlot />
@@ -148,9 +148,9 @@
   </Example>
   <Example title="4 Digits">
     <Field>
-      <FieldLabel>4 Digits</FieldLabel>
+      <FieldLabel for="four-digits">4 Digits</FieldLabel>
       <FieldDescription>Common pattern for PIN codes.</FieldDescription>
-      <InputOTP length={4} validationType="numeric">
+      <InputOTP id="four-digits" length={4} validationType="numeric">
         <InputOTPGroup>
           <InputOTPSlot />
           <InputOTPSlot />
@@ -161,26 +161,26 @@
     </Field>
   </Example>
   <Example title="Invalid State">
-    <Field invalid>
-      <FieldLabel>Invalid State</FieldLabel>
+    <Field>
+      <FieldLabel for="invalid">Invalid State</FieldLabel>
       <FieldDescription>Example showing the invalid error state.</FieldDescription>
-      <InputOTP length={6} bind:value={invalid}>
+      <InputOTP id="invalid" length={6} bind:value={invalid}>
         <InputOTPGroup>
-          <InputOTPSlot />
-          <InputOTPSlot />
+          <InputOTPSlot aria-invalid />
+          <InputOTPSlot aria-invalid />
         </InputOTPGroup>
         <InputOTPSeparator />
         <InputOTPGroup>
-          <InputOTPSlot />
-          <InputOTPSlot />
+          <InputOTPSlot aria-invalid />
+          <InputOTPSlot aria-invalid />
         </InputOTPGroup>
         <InputOTPSeparator />
         <InputOTPGroup>
-          <InputOTPSlot />
-          <InputOTPSlot />
+          <InputOTPSlot aria-invalid />
+          <InputOTPSlot aria-invalid />
         </InputOTPGroup>
       </InputOTP>
-      <FieldError match>Invalid code. Please try again.</FieldError>
+      <FieldError errors={[{ message: 'Invalid code. Please try again.' }]} />
     </Field>
   </Example>
 </ExampleWrapper>

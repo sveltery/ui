@@ -33,6 +33,7 @@ Change the imports to match your project setup.
 <script lang="ts">
   import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSet } from '$lib/components/ui/field';
   import { Input } from '$lib/components/ui/input';
+  import { Switch } from '$lib/components/ui/switch';
 </script>
 ```
 
@@ -41,15 +42,19 @@ Change the imports to match your project setup.
   <FieldLegend>Profile</FieldLegend>
   <FieldDescription>This appears on invoices and emails.</FieldDescription>
   <FieldGroup>
-    <Field name="name">
-      <FieldLabel>Full name</FieldLabel>
-      <Input autocomplete="off" placeholder="Evil Rabbit" />
+    <Field>
+      <FieldLabel for="name">Full name</FieldLabel>
+      <Input id="name" autocomplete="off" placeholder="Evil Rabbit" />
       <FieldDescription>This appears on invoices and emails.</FieldDescription>
     </Field>
-    <Field name="username">
-      <FieldLabel>Username</FieldLabel>
-      <Input autocomplete="off" required />
-      <FieldError />
+    <Field>
+      <FieldLabel for="username">Username</FieldLabel>
+      <Input id="username" autocomplete="off" aria-invalid />
+      <FieldError>Choose another username.</FieldError>
+    </Field>
+    <Field orientation="horizontal">
+      <Switch id="newsletter" />
+      <FieldLabel for="newsletter">Subscribe to the newsletter</FieldLabel>
     </Field>
   </FieldGroup>
 </FieldSet>
@@ -57,9 +62,18 @@ Change the imports to match your project setup.
 
 ## Anatomy
 
-`Field` is a Sveltery Base `Field.Root`. The control inside it, such as an [Input](/docs/components/input), is labelled by `FieldLabel` and described by `FieldDescription` and `FieldError`, so you do not pair `id` and `for` by hand.
+The `Field` parts are plain elements. `Field` is a `<div role="group">`, `FieldLabel` is a `<label>`, and `FieldDescription` is a `<p>`. Pair each `FieldLabel` with its control by hand: give the control an `id` and the label a matching `for`.
 
-- `FieldSet` and `FieldLegend` group related fields under one label. `FieldLegend` takes `variant="label"` for label-sized text.
+```svelte
+<Field>
+  <FieldLabel for="input-id">Label</FieldLabel>
+  <!-- Input, Select, Switch, etc. -->
+  <FieldDescription>Optional helper text.</FieldDescription>
+  <FieldError>Validation message.</FieldError>
+</Field>
+```
+
+- `FieldSet` and `FieldLegend` render a `<fieldset>` and its `<legend>`, which group related fields under one label. `FieldLegend` takes `variant="label"` for label-sized text.
 - `FieldGroup` stacks fields, and `FieldSeparator` divides them.
 - `FieldContent` groups a label and its description next to a control in a horizontal field.
 - `FieldTitle` is a heading for a field that has no single control to label.
@@ -68,52 +82,70 @@ Change the imports to match your project setup.
 
 ## Validation and errors
 
-`FieldError` shows the field's current message: the browser's message for a failed constraint, the result of `validate`, or an issue from a [form source](/docs/forms). It renders nothing while the field is valid. Pass children for a message of your own, and set `match` to a `ValidityState` flag to show it only for that constraint:
+`Field` does not validate. You decide when a field is invalid and mark it:
+
+- Set `data-invalid` on `Field` to switch the whole field into its error style.
+- Set `aria-invalid` on the control so assistive technology announces it.
+- Render `FieldError` right after the control, or inside `FieldContent`.
 
 ```svelte
-<Field name="website">
-  <FieldLabel>Website</FieldLabel>
-  <Input type="url" required />
-  <FieldError match="valueMissing">Enter a website.</FieldError>
-  <FieldError match="typeMismatch">Enter a full URL, such as https://example.com.</FieldError>
+<Field data-invalid>
+  <FieldLabel for="email">Email</FieldLabel>
+  <Input id="email" type="email" aria-invalid />
+  <FieldError>Enter a valid email address.</FieldError>
 </Field>
 ```
 
-An invalid field sets `data-invalid` on the field and its parts, and `aria-invalid` on the control, which the styles read.
+`FieldError` is a `<div role="alert">`. It renders its children, or the messages in `errors`, an array of `{ message?: string }` objects. Several messages render as a list. With no children and no message it renders nothing.
+
+```svelte
+<FieldError errors={[{ message: 'Enter a valid email address.' }]} />
+```
+
+A disabled field works the same way. Set `data-disabled` on `Field` and `disabled` on the control.
 
 ## Choice controls
 
-A [Checkbox](/docs/components/checkbox), [Switch](/docs/components/switch) or [Slider](/docs/components/slider) inside a `Field` takes its name from the `FieldLabel`. In a [Radio Group](/docs/components/radio-group), wrap each option in `FieldItem`, so that each radio has its own label while the group stays one field:
+For a [Checkbox](/docs/components/checkbox), [Switch](/docs/components/switch) or [Radio Group](/docs/components/radio-group) option, use a horizontal `Field` and pair the label with the control's `id`:
 
 ```svelte
-<Field name="plan">
-  <FieldSet>
-    <FieldLegend variant="label">Plan</FieldLegend>
-    <RadioGroup defaultValue="starter">
-      <FieldItem>
-        <RadioGroupItem value="starter" />
-        <FieldLabel>Starter</FieldLabel>
-      </FieldItem>
-      <FieldItem>
-        <RadioGroupItem value="pro" />
-        <FieldLabel>Pro</FieldLabel>
-      </FieldItem>
-    </RadioGroup>
-  </FieldSet>
-</Field>
+<FieldSet>
+  <FieldLegend variant="label">Plan</FieldLegend>
+  <RadioGroup defaultValue="starter">
+    <Field orientation="horizontal">
+      <RadioGroupItem value="starter" id="plan-starter" />
+      <FieldLabel for="plan-starter">Starter</FieldLabel>
+    </Field>
+    <Field orientation="horizontal">
+      <RadioGroupItem value="pro" id="plan-pro" />
+      <FieldLabel for="plan-pro">Pro</FieldLabel>
+    </Field>
+  </RadioGroup>
+</FieldSet>
+```
+
+To make the whole option a selectable card, wrap the `Field` in a `FieldLabel`:
+
+```svelte
+<FieldLabel for="plan-pro">
+  <Field orientation="horizontal">
+    <RadioGroupItem value="pro" id="plan-pro" />
+    <FieldContent>
+      <FieldTitle>Pro</FieldTitle>
+      <FieldDescription>For growing businesses.</FieldDescription>
+    </FieldContent>
+  </Field>
+</FieldLabel>
 ```
 
 ## Forms
 
-Give each `Field` a `name`, and it takes part in a [Form](/docs/forms). To bind a SvelteKit [remote form](/docs/forms/remote-forms) or [form action](/docs/forms/form-actions), pass its field to `field` instead.
+`Field` only lays out and styles a field. The control's own `name` is what a form submits. See the [Forms](/docs/forms) guide for building forms with `Field`.
 
 ## Differences from shadcn/ui
 
-- `Field` wraps Sveltery Base Field, so labelling, descriptions and validation work without ids, and the field binds to a form source.
-- `FieldError` has no `errors` prop. It reads the field's own errors, or renders its children.
-- `FieldItem` is added for the options of a radio or checkbox group.
-- `FieldLegend` renders a `<div>` labelled into its `FieldSet`, as Base does, and must sit inside a `FieldSet`.
+- The parts match shadcn/ui's Base UI variant. `FieldLabel` takes the HTML `for` attribute in place of React's `htmlFor`.
 
 ## API reference
 
-`Field` is styled on top of the Sveltery Base `Field` and `Fieldset` primitives, which own labelling, validation and form binding. See the [Base UI Field documentation](https://base-ui.com/react/components/field) for the behavior they port.
+The `Field` parts are styled HTML elements and take that element's attributes. `Field` adds `orientation`, `FieldLegend` adds `variant`, and `FieldError` adds `errors`. The controls you put inside a field come from their own components, such as [Input](/docs/components/input) and [Select](/docs/components/select).

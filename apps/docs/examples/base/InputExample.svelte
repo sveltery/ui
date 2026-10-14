@@ -134,21 +134,21 @@
       <FieldGroup>
         <Field>
           <FieldLabel for="form-name">Name</FieldLabel>
-          <Input id="form-name" name="name" type="text" placeholder="John Doe" />
+          <Input id="form-name" type="text" placeholder="John Doe" />
         </Field>
         <Field>
           <FieldLabel for="form-email">Email</FieldLabel>
-          <Input id="form-email" name="email" type="email" placeholder="john@example.com" />
+          <Input id="form-email" type="email" placeholder="john@example.com" />
           <FieldDescription>We&apos;ll never share your email with anyone.</FieldDescription>
         </Field>
         <div class="grid grid-cols-2 gap-4">
           <Field>
             <FieldLabel for="form-phone">Phone</FieldLabel>
-            <Input id="form-phone" name="phone" type="tel" placeholder="+1 (555) 123-4567" />
+            <Input id="form-phone" type="tel" placeholder="+1 (555) 123-4567" />
           </Field>
           <Field>
             <FieldLabel for="form-country">Country</FieldLabel>
-            <Select name="country" defaultValue="us">
+            <Select defaultValue="us">
               <SelectTrigger id="form-country">
                 <SelectValue />
               </SelectTrigger>
@@ -164,7 +164,7 @@
         </div>
         <Field>
           <FieldLabel for="form-address">Address</FieldLabel>
-          <Input id="form-address" name="address" type="text" placeholder="123 Main St" />
+          <Input id="form-address" type="text" placeholder="123 Main St" />
         </Field>
         <Field orientation="horizontal">
           <Button type="button" variant="outline">Cancel</Button>

@@ -14,5 +14,4 @@ export { default as ComboboxChips } from './ComboboxChips.svelte';
 export { default as ComboboxChip } from './ComboboxChip.svelte';
 export { default as ComboboxChipsInput } from './ComboboxChipsInput.svelte';
 export { default as ComboboxTrigger } from './ComboboxTrigger.svelte';
-export { default as ComboboxClear } from './ComboboxClear.svelte';
 export { default as ComboboxValue } from './ComboboxValue.svelte';
