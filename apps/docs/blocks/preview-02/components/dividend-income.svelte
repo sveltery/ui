@@ -1,0 +1,107 @@
+<script lang="ts">
+  import { scaleBand } from 'd3-scale';
+  import { BarChart } from 'layerchart';
+  import { Button } from '@sveltery/ui/button';
+  import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/ui/card';
+  import { type ChartConfig, ChartContainer, ChartTooltip } from '@sveltery/ui/chart';
+  import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@sveltery/ui/item';
+  import { IconPlaceholder } from '@sveltery/ui/icons';
+
+  const HOLDINGS = [
+    {
+      name: 'Vanguard VIG',
+      shares: '450 Shares',
+      amount: '$1,842.10',
+      data: [
+        { q: 'Q1', value: 380 },
+        { q: 'Q2', value: 420 },
+        { q: 'Q3', value: 390 },
+        { q: 'Q4', value: 652 }
+      ]
+    },
+    {
+      name: 'S&P 500 VOO',
+      shares: '112 Shares',
+      amount: '$928.40',
+      data: [
+        { q: 'Q1', value: 180 },
+        { q: 'Q2', value: 210 },
+        { q: 'Q3', value: 320 },
+        { q: 'Q4', value: 218 }
+      ]
+    },
+    {
+      name: 'Apple AAPL',
+      shares: '85 Shares',
+      amount: '$340.00',
+      data: [
+        { q: 'Q1', value: 60 },
+        { q: 'Q2', value: 70 },
+        { q: 'Q3', value: 120 },
+        { q: 'Q4', value: 90 }
+      ]
+    },
+    {
+      name: 'Realty Income',
+      shares: '320 Shares',
+      amount: '$1,139.50',
+      data: [
+        { q: 'Q1', value: 240 },
+        { q: 'Q2', value: 260 },
+        { q: 'Q3', value: 280 },
+        { q: 'Q4', value: 360 }
+      ]
+    }
+  ];
+  const miniChartConfig = {
+    value: {
+      label: 'Dividend',
+      color: 'var(--chart-2)'
+    }
+  } satisfies ChartConfig;
+</script>
+
+<Card>
+  <CardHeader>
+    <CardTitle>Q2 Dividend Income</CardTitle>
+    <CardDescription>Quarterly dividend payouts across your portfolio holdings.</CardDescription>
+    <CardAction>
+      <Button variant="ghost" size="icon-sm" class="bg-muted">
+        <IconPlaceholder lucide="XIcon" tabler="IconX" hugeicons="Cancel01Icon" phosphor="XIcon" remixicon="RiCloseLine" />
+      </Button>
+    </CardAction>
+  </CardHeader>
+  <CardContent>
+    <ItemGroup>
+      {#each HOLDINGS as holding (holding.name)}
+        <Item variant="muted">
+          <ItemContent>
+            <ItemTitle>{holding.name}</ItemTitle>
+            <ItemDescription>{holding.shares}</ItemDescription>
+          </ItemContent>
+          <ChartContainer aria-label="{holding.name} quarterly dividends" config={miniChartConfig} class="hidden aspect-auto h-8 w-24 md:block">
+            <BarChart
+              data={holding.data}
+              x="q"
+              xScale={scaleBand().padding(0.25)}
+              series={[{ key: 'value', label: 'Dividend', color: 'var(--color-value)' }]}
+              axis={false}
+              grid={false}
+              rule={false}
+              padding={0}
+              props={{
+                bars: { stroke: 'none', strokeWidth: 0, rounded: 'top', radius: 3 },
+                highlight: { area: { fill: 'none' } }
+              }}
+            >
+              {#snippet tooltip()}
+                <ChartTooltip hideLabel />
+              {/snippet}
+            </BarChart>
+          </ChartContainer>
+          <span class="hidden text-sm font-semibold tabular-nums md:block">{holding.amount}</span>
+        </Item>
+      {/each}
+    </ItemGroup>
+  </CardContent>
+</Card>

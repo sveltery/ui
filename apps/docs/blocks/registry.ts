@@ -21,6 +21,8 @@ export type Block = {
 
 /** Every block, in upstream registry order. A block without categories is served at `/view/<name>` only. */
 export const blocks: Block[] = [
+  { name: 'preview', description: 'Preview', route: 'preview', categories: [] },
+  { name: 'preview-02', description: 'Preview 02', route: 'preview', categories: [] },
   { name: 'preview-03', description: 'Preview 03', route: 'preview', categories: [] },
   { name: 'login-01', description: 'A simple login form.', route: 'login', categories: ['authentication', 'login'] },
   { name: 'login-02', description: 'A two column login page with a cover image.', route: 'login', categories: ['authentication', 'login'] },
