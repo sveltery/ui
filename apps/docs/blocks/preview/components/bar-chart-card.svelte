@@ -39,7 +39,7 @@
     </CardDescription>
   </CardHeader>
   <CardContent class="flex flex-col gap-4 pt-0">
-    <ChartContainer aria-label="Desktop and mobile traffic by month" config={barChartConfig} class="aspect-auto h-[180px] w-full">
+    <ChartContainer aria-label="Desktop and mobile traffic by month" config={barChartConfig} class="max-h-[180px] w-full">
       <BarChart
         data={barChartData}
         x="month"
