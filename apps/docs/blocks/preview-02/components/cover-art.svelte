@@ -24,7 +24,7 @@
   <CardFooter class="flex-col gap-2">
     <Button variant="secondary" class="w-full" nativeButton={false}>
       {#snippet render(props, _state, content)}
-        <label {...(props as Record<string, unknown>)} for="cover-art" class={[props.class, 'cursor-pointer']}>{@render content?.()}</label>
+        <label {...props} for="cover-art" class={[props.class, 'cursor-pointer']}>{@render content?.()}</label>
       {/snippet}
       Upload Artwork
     </Button>
