@@ -17,6 +17,7 @@
   import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '@sveltery/ui/input-otp';
   import { NativeSelect, NativeSelectOptGroup, NativeSelectOption } from '@sveltery/ui/native-select';
   import { RadioGroup, RadioGroupItem } from '@sveltery/ui/radio-group';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
   import { Slider } from '@sveltery/ui/slider';
   import { Switch } from '@sveltery/ui/switch';
   import { Textarea } from '@sveltery/ui/textarea';
@@ -28,6 +29,37 @@
   let colorBalance = $state([10, 20, 70]);
   let otpValue = $state('');
   let pinValue = $state('');
+
+  const selectBasicItems = [
+    { label: 'Choose an option', value: null },
+    { label: 'Option 1', value: 'option1' },
+    { label: 'Option 2', value: 'option2' },
+    { label: 'Option 3', value: 'option3' },
+  ];
+  const selectCountryItems = [
+    { label: 'Select your country', value: null },
+    { label: 'United States', value: 'us' },
+    { label: 'United Kingdom', value: 'uk' },
+    { label: 'Canada', value: 'ca' },
+  ];
+  const selectTimezoneItems = [
+    { label: 'Select timezone', value: null },
+    { label: 'UTC', value: 'utc' },
+    { label: 'Eastern Time', value: 'est' },
+    { label: 'Pacific Time', value: 'pst' },
+  ];
+  const selectInvalidItems = [
+    { label: 'This field has an error', value: null },
+    { label: 'Option 1', value: 'option1' },
+    { label: 'Option 2', value: 'option2' },
+    { label: 'Option 3', value: 'option3' },
+  ];
+  const selectDisabledItems = [
+    { label: 'Cannot select', value: null },
+    { label: 'Option 1', value: 'option1' },
+    { label: 'Option 2', value: 'option2' },
+    { label: 'Option 3', value: 'option3' },
+  ];
 </script>
 
 {#snippet InputFields()}
@@ -108,6 +140,92 @@
       <Field disabled>
         <FieldLabel>Disabled Field</FieldLabel>
         <Textarea placeholder="Cannot edit" disabled />
+        <FieldDescription>This field is currently disabled.</FieldDescription>
+      </Field>
+    </FieldGroup>
+  </Example>
+{/snippet}
+
+{#snippet SelectFields()}
+  <Example title="Select Fields">
+    <FieldGroup>
+      <Field>
+        <FieldLabel>Basic Select</FieldLabel>
+        <Select items={selectBasicItems}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {#each selectBasicItems as item (item.value)}
+                <SelectItem value={item.value}>{item.label}</SelectItem>
+              {/each}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </Field>
+      <Field>
+        <FieldLabel>Country</FieldLabel>
+        <Select items={selectCountryItems}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {#each selectCountryItems as item (item.value)}
+                <SelectItem value={item.value}>{item.label}</SelectItem>
+              {/each}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+        <FieldDescription>Select the country where you currently reside.</FieldDescription>
+      </Field>
+      <Field>
+        <FieldLabel>Timezone</FieldLabel>
+        <FieldDescription>Choose your local timezone for accurate scheduling.</FieldDescription>
+        <Select items={selectTimezoneItems}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {#each selectTimezoneItems as item (item.value)}
+                <SelectItem value={item.value}>{item.label}</SelectItem>
+              {/each}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </Field>
+      <Field invalid>
+        <FieldLabel>Invalid Select</FieldLabel>
+        <Select items={selectInvalidItems}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {#each selectInvalidItems as item (item.value)}
+                <SelectItem value={item.value}>{item.label}</SelectItem>
+              {/each}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+        <FieldDescription>This field contains validation errors.</FieldDescription>
+      </Field>
+      <Field disabled>
+        <FieldLabel>Disabled Field</FieldLabel>
+        <Select items={selectDisabledItems} disabled>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {#each selectDisabledItems as item (item.value)}
+                <SelectItem value={item.value}>{item.label}</SelectItem>
+              {/each}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
         <FieldDescription>This field is currently disabled.</FieldDescription>
       </Field>
     </FieldGroup>
@@ -584,6 +702,7 @@
 <ExampleWrapper>
   {@render InputFields()}
   {@render TextareaFields()}
+  {@render SelectFields()}
   {@render CheckboxFields()}
   {@render RadioFields()}
   {@render SwitchFields()}

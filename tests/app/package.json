@@ -9,7 +9,7 @@
   "devDependencies": {
     "@sveltejs/adapter-auto": "8.0.0",
     "@sveltejs/kit": "3.0.1",
-    "@sveltery/base": "github:sveltery/base#23b500c8a609cb43366f3686bb3108c682f5c1e0",
+    "@sveltery/base": "github:sveltery/base#31d98f41c97f2328ec760ffd7c70822f72ed667d",
     "@sveltery/command": "workspace:*",
     "@sveltery/day-picker": "workspace:*",
     "@sveltery/message-scroller": "workspace:*",

@@ -5,6 +5,7 @@
   import { Input } from '@sveltery/ui/input';
   import { Label } from '@sveltery/ui/label';
   import { NativeSelect, NativeSelectOption } from '@sveltery/ui/native-select';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
 </script>
 
 {#snippet InputBasic()}
@@ -95,6 +96,26 @@
   </Example>
 {/snippet}
 
+{#snippet InputWithSelect()}
+  <Example title="With Select">
+    <div class="flex w-full gap-2">
+      <Input type="text" placeholder="Enter amount" class="flex-1" />
+      <Select defaultValue="usd">
+        <SelectTrigger class="w-32">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectItem value="usd">USD</SelectItem>
+            <SelectItem value="eur">EUR</SelectItem>
+            <SelectItem value="gbp">GBP</SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    </div>
+  </Example>
+{/snippet}
+
 {#snippet InputWithNativeSelect()}
   <Example title="With Native Select">
     <div class="flex w-full gap-2">
@@ -127,11 +148,18 @@
         </div>
         <div class="flex w-full flex-col gap-3">
           <Label for="form-country">Country</Label>
-          <NativeSelect id="form-country" name="country" value="us">
-            <NativeSelectOption value="us">United States</NativeSelectOption>
-            <NativeSelectOption value="uk">United Kingdom</NativeSelectOption>
-            <NativeSelectOption value="ca">Canada</NativeSelectOption>
-          </NativeSelect>
+          <Select id="form-country" name="country" defaultValue="us">
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="us">United States</SelectItem>
+                <SelectItem value="uk">United Kingdom</SelectItem>
+                <SelectItem value="ca">Canada</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
       </div>
       <div class="flex w-full flex-col gap-3">
@@ -153,6 +181,7 @@
   {@render InputWithDescription()}
   {@render InputDisabled()}
   {@render InputTypes()}
+  {@render InputWithSelect()}
   {@render InputWithButton()}
   {@render InputWithNativeSelect()}
   {@render InputForm()}

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
+  import { Field, FieldLabel } from '@sveltery/ui/field';
   import {
     Pagination,
     PaginationContent,
@@ -9,6 +10,7 @@
     PaginationNext,
     PaginationPrevious,
   } from '@sveltery/ui/pagination';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
 </script>
 
 {#snippet PaginationBasic()}
@@ -52,7 +54,40 @@
   </Example>
 {/snippet}
 
+{#snippet PaginationWithSelect()}
+  <Example title="With Select">
+    <div class="flex items-center justify-between gap-4">
+      <Field orientation="horizontal" class="w-fit">
+        <FieldLabel>Rows per page</FieldLabel>
+        <Select defaultValue="25">
+          <SelectTrigger class="w-20">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent align="start">
+            <SelectGroup>
+              {#each ['10', '25', '50', '100'] as rows (rows)}
+                <SelectItem value={rows}>{rows}</SelectItem>
+              {/each}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </Field>
+      <Pagination class="mx-0 w-auto">
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious href="#" />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationNext href="#" />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
+    </div>
+  </Example>
+{/snippet}
+
 <ExampleWrapper>
   {@render PaginationBasic()}
   {@render PaginationSimple()}
+  {@render PaginationWithSelect()}
 </ExampleWrapper>
