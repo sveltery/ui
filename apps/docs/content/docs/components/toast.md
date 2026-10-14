@@ -1,0 +1,184 @@
+---
+title: Toast
+description: A toast built from the Base toast parts, with a toast manager you can call from anywhere.
+---
+
+<ComponentPreview name="base/ToastExample" />
+
+## About
+
+Toast is the shadcn/ui Toast, built on the Sveltery Base `Toast` parts. It is separate from [Sonner](/docs/components/sonner). `Toaster` renders the provider, the portal, the viewport and one `Toast` for each toast. The `toast` manager adds toasts from components, modules and event handlers.
+
+## Installation
+
+<Steps>
+
+### Install the dependencies
+
+```bash
+npm install cn class-variance-authority github:sveltery/base
+```
+
+### Copy the component
+
+Copy the following files into `src/lib/components/ui/toast`. The toast action and close button also need the [Button](/docs/components/button) component's `buttonVariants`.
+
+<ComponentSource name="toast" />
+
+### Update the import paths
+
+Change the imports to match your project setup.
+
+</Steps>
+
+## Usage
+
+Mount `Toaster` once, in your root layout.
+
+```svelte
+<script lang="ts">
+  import { Toaster } from '$lib/components/ui/toast';
+  let { children } = $props();
+</script>
+
+{@render children()}
+<Toaster />
+```
+
+Call `toast.add()` from any component or module.
+
+```svelte
+<script lang="ts">
+  import { toast } from '$lib/components/ui/toast';
+</script>
+
+<button onclick={() => toast.add({ title: 'Event created', description: 'Sunday, December 3 at 9:00 AM' })}>
+  Show Toast
+</button>
+```
+
+## Examples
+
+### With action
+
+`actionProps` adds a button. `children` is its label and `onclick` runs when it is clicked. `toast.add()` returns the toast's id, so the handler can close the toast.
+
+```ts
+const id = toast.add({
+  title: 'Event created',
+  description: 'You can undo this action.',
+  actionProps: {
+    children: 'Undo',
+    onclick() {
+      toast.close(id);
+      toast.add({ description: 'Event creation undone.' });
+    }
+  }
+});
+```
+
+### Promise
+
+`toast.promise()` shows the `loading` toast, then replaces it with `success` or `error`. Each takes a string, an options object, or a function of the result or the error that returns either. It returns the promise you passed.
+
+```ts
+toast.promise(createEvent(), {
+  loading: 'Creating event…',
+  success: (data) => `${data.name} created.`,
+  error: 'Could not create event.'
+});
+```
+
+### Types
+
+Set `type` to `success`, `info`, `warning`, `error` or `loading` to show that icon. Other values show no icon.
+
+```ts
+toast.add({ title: 'Event created', type: 'success' });
+```
+
+### Custom layout
+
+`Toaster` is the standard layout. To change it, compose the parts yourself and read the toasts with `getToastManager()` inside a `ToastProvider`.
+
+```svelte
+<script lang="ts">
+  import { Toast, ToastClose, ToastContent, ToastDescription, ToastPortal, ToastTitle, ToastViewport, getToastManager } from '$lib/components/ui/toast';
+
+  const manager = getToastManager();
+</script>
+
+<ToastPortal>
+  <ToastViewport>
+    {#each manager.toasts as item (item.id)}
+      <Toast toast={item}>
+        <ToastContent>
+          <div class="flex min-w-0 flex-1 flex-col gap-1">
+            <ToastTitle />
+            <ToastDescription />
+          </div>
+          <ToastClose />
+        </ToastContent>
+      </Toast>
+    {/each}
+  </ToastViewport>
+</ToastPortal>
+```
+
+Render that component inside `<ToastProvider toastManager={toast}>`.
+
+## API reference
+
+### Toaster
+
+`Toaster` takes the Base `Toast.Provider` props and passes the global `toast` manager as `toastManager`. Pass your own manager from `createToastManager()` to use a separate stack.
+
+| Prop           | Type           | Default | Description                                                      |
+| -------------- | -------------- | ------- | ---------------------------------------------------------------- |
+| `timeout`      | `number`       | `5000`  | Milliseconds before a toast closes itself. `0` keeps it open.    |
+| `limit`        | `number`       | `3`     | How many toasts show at once. Older toasts get `data-limited`.   |
+| `toastManager` | `ToastManager` | `toast` | The manager that feeds this provider.                            |
+
+### toast
+
+| Method                         | Description                                                                |
+| ------------------------------ | -------------------------------------------------------------------------- |
+| `toast.add(options)`           | Adds a toast and returns its id. An existing `id` updates that toast.      |
+| `toast.update(id, updates)`    | Changes a toast. `updates` is an object or a function of the current toast. |
+| `toast.close(id?)`             | Closes one toast, or every toast without an id.                            |
+| `toast.promise(promise, opts)` | Shows a toast that follows the promise.                                    |
+
+`title` and `description` are a string or a Svelte snippet.
+
+| Option        | Type                         | Description                                                          |
+| ------------- | ---------------------------- | -------------------------------------------------------------------- |
+| `id`          | `string`                     | Reuse an id to update that toast in place.                           |
+| `title`       | `string \| Snippet`          | The first line.                                                      |
+| `description` | `string \| Snippet`          | The second line.                                                     |
+| `type`        | `string`                     | Picks the icon and sets `data-type`.                                 |
+| `timeout`     | `number`                     | Milliseconds before this toast closes itself. `0` keeps it open.     |
+| `priority`    | `'low' \| 'high'`            | `high` is announced urgently.                                        |
+| `actionProps` | `ButtonHTMLAttributes`       | Props for the action button. `children` is its label.                |
+| `onClose`     | `() => void`                 | Runs when the toast closes.                                          |
+| `onRemove`    | `() => void`                 | Runs when the toast leaves the DOM after its exit animation.         |
+| `data`        | `object`                     | Custom data for your own layout.                                     |
+
+### Parts
+
+Each part accepts the props of the Base part it wraps and sets a `data-slot`.
+
+| Component          | Base part            | `data-slot`         |
+| ------------------ | -------------------- | ------------------- |
+| `ToastProvider`    | `Toast.Provider`     | none                |
+| `ToastPortal`      | `Toast.Portal`       | `toast-portal`      |
+| `ToastViewport`    | `Toast.Viewport`     | `toast-viewport`    |
+| `Toast`            | `Toast.Root`         | `toast`             |
+| `ToastContent`     | `Toast.Content`      | `toast-content`     |
+| `ToastTitle`       | `Toast.Title`        | `toast-title`       |
+| `ToastDescription` | `Toast.Description`  | `toast-description` |
+| `ToastAction`      | `Toast.Action`       | `toast-action`      |
+| `ToastClose`       | `Toast.Close`        | `toast-close`       |
+
+`ToastClose` shows an X icon unless you pass children. The icon for a toast's `type` has `data-slot="toast-icon"`.
+
+See the [Base Toast documentation](https://base-ui.com/react/components/toast) for the behavior it ports: stacking, hover and F6 expansion, swipe to dismiss and screen reader announcements.
