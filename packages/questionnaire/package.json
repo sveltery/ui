@@ -21,6 +21,9 @@
     "build": "svelte-package",
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
+  "dependencies": {
+    "esm-env": "1.2.2"
+  },
   "peerDependencies": {
     "svelte": "^5.57.1"
   },

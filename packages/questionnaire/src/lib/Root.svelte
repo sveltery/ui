@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { DEV } from 'esm-env';
   import { QuestionnaireModel, setRoot } from './root.svelte.js';
   import type { QuestionnaireRootProps } from './types.js';
   import { dataAttributes } from './utils.js';
@@ -33,7 +34,7 @@
 
   $effect(() => root.reconcile());
   $effect(() => root.followFocus());
-  $effect(() => root.warn());
+  if (DEV) $effect(() => root.warn());
 </script>
 
 <form
