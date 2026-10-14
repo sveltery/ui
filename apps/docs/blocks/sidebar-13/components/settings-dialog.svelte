@@ -120,7 +120,9 @@
   <DialogTrigger>
     {#snippet render(props, _state, children)}
       <Button {...props} size="sm">{@render children?.()}</Button>
-    {/snippet}Open Dialog</DialogTrigger>
+    {/snippet}
+    Open Dialog
+  </DialogTrigger>
   <DialogContent class="overflow-hidden p-0 md:max-h-[500px] md:max-w-[700px] lg:max-w-[800px]">
     <DialogTitle class="sr-only">Settings</DialogTitle>
     <DialogDescription class="sr-only">Customize your settings here.</DialogDescription>

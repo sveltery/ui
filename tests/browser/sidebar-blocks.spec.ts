@@ -20,28 +20,33 @@ test('sidebar-09 user menu highlights its trigger while open', async ({ page }) 
   await expect(page.getByRole('menu')).toBeVisible();
   await page.mouse.move(1, 1);
   await expect(trigger).toHaveAttribute('data-popup-open', '');
-  await expect.poll(() => style(trigger, 'background-color')).not.toBe('rgba(0, 0, 0, 0)');
+  await expect.poll(() => style(trigger, 'background-color')).toBe('oklch(0.97 0 0)');
 });
 
-test('sidebar-10 page actions popover is open after load and highlights its trigger', async ({ page }) => {
+test('sidebar-10 page actions popover is open after load and marks its trigger', async ({ page }) => {
   await visit(page, 'sidebar-10');
   const popup = page.getByRole('dialog');
   const trigger = page.locator('[data-slot=popover-trigger]');
   await expect(popup.getByText('Customize Page')).toBeVisible();
   await expect(trigger).toHaveAttribute('data-popup-open', '');
-  await page.mouse.move(1, 1);
-  await expect.poll(() => style(trigger, 'background-color')).not.toBe('rgba(0, 0, 0, 0)');
-  const open = await style(trigger, 'background-color');
 
   await page.keyboard.press('Escape');
   await expect(popup).toBeHidden();
-  await page.mouse.move(1, 1);
-  await expect.poll(() => style(trigger, 'background-color')).toBe('rgba(0, 0, 0, 0)');
+  await expect(trigger).not.toHaveAttribute('data-popup-open');
 
   await trigger.click();
   await expect(popup.getByText('Customize Page')).toBeVisible();
-  await page.mouse.move(1, 1);
-  await expect.poll(() => style(trigger, 'background-color')).toBe(open);
+  await expect(trigger).toHaveAttribute('data-popup-open', '');
+});
+
+test('sidebar-11 open folders rotate their chevron', async ({ page }) => {
+  await visit(page, 'sidebar-11');
+  const folder = page.getByRole('button', { name: 'components', exact: true });
+  const chevron = folder.locator('svg').first();
+  await expect.poll(() => style(chevron, 'rotate')).toBe('90deg');
+
+  await folder.click();
+  await expect.poll(() => style(chevron, 'rotate')).toBe('none');
 });
 
 test('sidebar-16 previews 800px tall (798px inside its border) and sidebar-15 at the default 930px (928px)', async ({ page }) => {

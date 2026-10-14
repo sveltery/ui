@@ -11,8 +11,7 @@
 <SidebarMenu>
   <SidebarMenuItem>
     <DropdownMenu>
-      <DropdownMenuTrigger
-      >
+      <DropdownMenuTrigger>
         {#snippet render(props, _state, children)}
           <SidebarMenuButton {...props} size="lg" class={[props.class, 'md:h-8 md:p-0 data-popup-open:bg-sidebar-accent data-popup-open:text-sidebar-accent-foreground']}>{@render children?.()}</SidebarMenuButton>
         {/snippet}
