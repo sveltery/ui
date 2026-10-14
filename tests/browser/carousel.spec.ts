@@ -53,3 +53,9 @@ test('changing opts restarts Embla with the new options', async ({ page }) => {
   await previous.click();
   await expect(page.getByTestId('selected')).toHaveText('2');
 });
+
+test('useCarousel gives a child the Embla api and the options', async ({ page }) => {
+  await expect(page.getByTestId('probe')).toHaveText('3 slides, loop false');
+  await page.getByLabel('Loop').check();
+  await expect(page.getByTestId('probe')).toHaveText('3 slides, loop true');
+});
