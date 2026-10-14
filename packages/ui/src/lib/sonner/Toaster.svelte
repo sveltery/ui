@@ -1,24 +1,34 @@
 <script lang="ts">
-  import { Toast } from '@sveltery/base/toast';
-  import { cn } from 'cn';
-  import type { ToasterProps, ToastPosition } from './types.js';
-  import ToasterList from './ToasterList.svelte';
-  import { toastManager } from './toast.js';
-  let { class: classProp, timeout = 4000, limit = 3, position = 'bottom-right', richColors = false, closeButton = false, closeButtonAriaLabel = 'Close toast', classNames, ...props }: ToasterProps = $props();
-
-  const placement: Record<ToastPosition, string> = {
-    'top-left': 'top-4 sm:right-auto sm:left-4 sm:mx-0 sm:w-full',
-    'top-center': 'top-4',
-    'top-right': 'top-4 sm:right-4 sm:left-auto sm:mx-0 sm:w-full',
-    'bottom-left': 'bottom-4 sm:right-auto sm:left-4 sm:mx-0 sm:w-full',
-    'bottom-center': 'bottom-4',
-    'bottom-right': 'bottom-4 sm:right-4 sm:left-auto sm:mx-0 sm:w-full'
-  };
+  import { Toaster as Sonner, type ToasterProps } from 'svelte-sonner';
+  import { IconPlaceholder } from '../icons/index.js';
+  let { ...props }: ToasterProps = $props();
 </script>
-<Toast.Provider {toastManager} {timeout} {limit}>
-  <Toast.Portal>
-    <Toast.Viewport data-slot="toast-viewport" data-position={position} {...props} class={cn('toaster group pointer-events-none fixed inset-x-4 z-50 mx-auto w-auto max-w-sm outline-none', placement[position], classProp)}>
-      <ToasterList {position} {richColors} {closeButton} {closeButtonAriaLabel} {classNames} />
-    </Toast.Viewport>
-  </Toast.Portal>
-</Toast.Provider>
+
+{#snippet successIcon()}
+  <IconPlaceholder lucide="CircleCheckIcon" tabler="IconCircleCheck" hugeicons="CheckmarkCircle02Icon" phosphor="CheckCircleIcon" remixicon="RiCheckboxCircleLine" class="size-4" />
+{/snippet}
+{#snippet infoIcon()}
+  <IconPlaceholder lucide="InfoIcon" tabler="IconInfoCircle" hugeicons="InformationCircleIcon" phosphor="InfoIcon" remixicon="RiInformationLine" class="size-4" />
+{/snippet}
+{#snippet warningIcon()}
+  <IconPlaceholder lucide="TriangleAlertIcon" tabler="IconAlertTriangle" hugeicons="Alert02Icon" phosphor="WarningIcon" remixicon="RiErrorWarningLine" class="size-4" />
+{/snippet}
+{#snippet errorIcon()}
+  <IconPlaceholder lucide="OctagonXIcon" tabler="IconAlertOctagon" hugeicons="MultiplicationSignCircleIcon" phosphor="XCircleIcon" remixicon="RiCloseCircleLine" class="size-4" />
+{/snippet}
+{#snippet loadingIcon()}
+  <IconPlaceholder lucide="Loader2Icon" tabler="IconLoader" hugeicons="Loading03Icon" phosphor="SpinnerIcon" remixicon="RiLoaderLine" class="size-4 animate-spin" />
+{/snippet}
+
+<Sonner
+  theme="system"
+  class="toaster group"
+  {successIcon}
+  {infoIcon}
+  {warningIcon}
+  {errorIcon}
+  {loadingIcon}
+  style="--normal-bg: var(--popover); --normal-text: var(--popover-foreground); --normal-border: var(--border); --border-radius: var(--radius);"
+  toastOptions={{ classes: { toast: 'cn-toast' } }}
+  {...props}
+/>

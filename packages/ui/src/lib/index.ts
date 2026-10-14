@@ -59,7 +59,7 @@ export * from './dropdown-menu/index.js';
 export * from './menubar/index.js';
 export * from './navigation-menu/index.js';
 export * from './sonner/index.js';
-// Toaster and toast collide with Sonner's, so only @sveltery/ui/toast exports those two.
+// Toaster collides with Sonner's, so only @sveltery/ui/toast exports Toaster and toast.
 export { Toast, ToastProvider, ToastPortal, ToastViewport, ToastContent, ToastTitle, ToastDescription, ToastAction, ToastClose, createToastManager, getToastManager } from './toast/index.js';
 export * from './context-menu/index.js';
 export * from './select/index.js';

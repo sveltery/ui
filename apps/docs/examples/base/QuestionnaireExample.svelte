@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { toast } from '@sveltery/ui/sonner';
+  import { toast } from 'svelte-sonner';
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { buttonVariants } from '@sveltery/ui/button';
   import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';

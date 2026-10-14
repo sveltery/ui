@@ -16,7 +16,7 @@
   import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
   import { Separator } from '@sveltery/ui/separator';
   import { useSidebar } from '@sveltery/ui/sidebar';
-  import { toast } from '@sveltery/ui/sonner';
+  import { toast } from 'svelte-sonner';
   import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@sveltery/ui/table';
   import { Tabs, TabsContent, TabsList, TabsTrigger } from '@sveltery/ui/tabs';
 

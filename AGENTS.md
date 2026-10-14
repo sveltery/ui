@@ -8,5 +8,6 @@ Sveltery UI is the shadcn/ui layer for Svelte, built on [Sveltery Base](https://
 - Headless behavior (focus, keyboard, ARIA, dismissal, forms) belongs in Sveltery Base. If a component needs behavior Base lacks, fix it in Base.
 - Keep components thin: a Base part or native element, the upstream classes, and spread props.
 - Framework-agnostic dependencies are used directly. React-only dependencies get a Svelte implementation in its own package.
+- Sonner uses `svelte-sonner`, the Svelte port of `sonner`, directly.
 - Test behavior with literal expected values. Do not diff against React output.
 - Run `pnpm verify` before opening a pull request.
