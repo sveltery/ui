@@ -183,22 +183,38 @@ test('dragging a row by its handle moves it', async ({ page }) => {
   await expect(page.locator('tbody tr[data-dragging=true]')).toHaveCount(0);
 });
 
-test('the arrow keys move a row from its focused handle', async ({ page }) => {
+test('the keyboard picks up a row with space, moves it with the arrow keys and drops it with space', async ({ page }) => {
   await visit(page);
   const handle = page.getByRole('button', { name: 'Drag to reorder' }).first();
   await handle.focus();
+  await page.keyboard.press('Space');
   await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('Space');
   await expect(headers(page).nth(0)).toHaveText('Table of contents');
-  await expect(headers(page).nth(1)).toHaveText('Cover page');
-  await expect(page.getByRole('status')).toHaveText('Cover page moved to row 2 of 10.');
-  await page.keyboard.press('ArrowDown');
+  await expect(headers(page).nth(1)).toHaveText('Executive summary');
   await expect(headers(page).nth(2)).toHaveText('Cover page');
+
+  await page.getByRole('button', { name: 'Drag to reorder' }).nth(2).focus();
+  await page.keyboard.press('Space');
   await page.keyboard.press('ArrowUp');
-  await expect(headers(page).nth(1)).toHaveText('Cover page');
-  await page.keyboard.press('ArrowUp');
-  await page.keyboard.press('ArrowUp');
-  await expect(headers(page).nth(0)).toHaveText('Cover page');
-  await expect(headers(page).nth(1)).toHaveText('Table of contents');
+  await page.keyboard.press('Escape');
+  await expect(headers(page).nth(1)).toHaveText('Executive summary');
+  await expect(headers(page).nth(2)).toHaveText('Cover page');
+});
+
+test('a row dragged on the second page moves within that page', async ({ page }) => {
+  await visit(page);
+  await page.getByRole('button', { name: 'Go to next page' }).click();
+  await expect(headers(page).first()).toHaveText('Adaptive Communication Protocols');
+  const second = await texts(headers(page).nth(1));
+  await page.getByRole('button', { name: 'Drag to reorder' }).first().focus();
+  await page.keyboard.press('Space');
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('Space');
+  await expect(pageLabel(page)).toHaveText('Page 2 of 7');
+  await expect(headers(page).nth(0)).toHaveText(second);
+  await expect(headers(page).nth(1)).toHaveText('Adaptive Communication Protocols');
 });
 
 test('a row header opens its drawer with the row in the form', async ({ page }) => {

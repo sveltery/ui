@@ -1,6 +1,4 @@
 <script lang="ts">
-  import type { Snippet } from 'svelte';
-  import type { HTMLAttributes } from 'svelte/elements';
   import { Avatar, AvatarFallback, AvatarImage } from '@sveltery/ui/avatar';
   import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
   import { IconPlaceholder } from '@sveltery/ui/icons';
@@ -8,18 +6,15 @@
 
   let { user }: { user: { name: string; email: string; avatar: string } } = $props();
   const sidebar = useSidebar();
-  // The host element's typed event handlers do not fit the element this snippet renders, so only `class` is typed.
-  type RenderProps = Pick<HTMLAttributes<HTMLElement>, 'class'>;
 </script>
-
-{#snippet menuButton(props: RenderProps, _state: unknown, children?: Snippet)}
-  <SidebarMenuButton {...props} size="lg" class={[props.class, 'aria-expanded:bg-muted']}>{@render children?.()}</SidebarMenuButton>
-{/snippet}
 
 <SidebarMenu>
   <SidebarMenuItem>
     <DropdownMenu>
-      <DropdownMenuTrigger render={menuButton}>
+      <DropdownMenuTrigger>
+        {#snippet render(props, _state, children)}
+          <SidebarMenuButton {...props} size="lg" class={[props.class, 'aria-expanded:bg-muted']}>{@render children?.()}</SidebarMenuButton>
+        {/snippet}
         <Avatar class="size-8 rounded-lg grayscale">
           <AvatarImage src={user.avatar} alt={user.name} />
           <AvatarFallback class="rounded-lg">CN</AvatarFallback>

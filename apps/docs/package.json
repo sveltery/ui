@@ -13,8 +13,12 @@
     "deploy": "wrangler deploy"
   },
   "dependencies": {
+    "@dnd-kit/abstract": "0.5.0",
+    "@dnd-kit/helpers": "0.5.0",
+    "@dnd-kit/svelte": "0.5.0",
     "@sveltery/day-picker": "workspace:*",
     "@sveltery/ui": "workspace:*",
+    "@tanstack/svelte-table": "9.3.1",
     "cn": "0.2.2",
     "d3-scale": "4.0.2",
     "d3-shape": "3.2.0",

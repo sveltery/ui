@@ -2,10 +2,10 @@
   import { scaleUtc } from 'd3-scale';
   import { curveNatural } from 'd3-shape';
   import { Area, AreaChart } from 'layerchart';
+  import { MediaQuery } from 'svelte/reactivity';
   import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/ui/card';
   import { type ChartConfig, ChartContainer, ChartTooltip } from '@sveltery/ui/chart';
   import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
-  import { useSidebar } from '@sveltery/ui/sidebar';
   import { ToggleGroup, ToggleGroupItem } from '@sveltery/ui/toggle-group';
 
   const chartData = [
@@ -114,9 +114,9 @@
     { value: '7d', label: 'Last 7 days', days: 7 },
   ];
 
-  const sidebar = useSidebar();
+  const isMobile = new MediaQuery('max-width: 767px');
   // Phones start on the last 7 days; a picked range overrides it until the breakpoint changes.
-  let timeRange = $derived(sidebar.isMobile ? '7d' : '90d');
+  let timeRange = $derived(isMobile.current ? '7d' : '90d');
 
   const filteredData = $derived.by(() => {
     const days = ranges.find((range) => range.value === timeRange)?.days ?? 90;
