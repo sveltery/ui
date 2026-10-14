@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes, HTMLButtonAttributes } from 'svelte/elements';
-  import { Button, buttonVariants } from '@sveltery/ui/button';
+  import { Button } from '@sveltery/ui/button';
   import { Checkbox } from '@sveltery/ui/checkbox';
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import {
@@ -103,7 +103,10 @@
 {#snippet DialogWithForm()}
   <Example title="With Form" class="items-center justify-center">
     <Dialog bind:open>
-      <DialogTrigger class={buttonVariants({ variant: 'outline' })}>Edit Profile</DialogTrigger>
+      <DialogTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+        Edit Profile
+      </DialogTrigger>
       <DialogContent>
         <form
           onsubmit={(event) => {
@@ -129,7 +132,10 @@
             </Field>
           </FieldGroup>
           <DialogFooter>
-            <DialogClose class={buttonVariants({ variant: 'outline' })}>Cancel</DialogClose>
+            <DialogClose>
+              {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+              Cancel
+            </DialogClose>
             <Button type="submit">Save changes</Button>
           </DialogFooter>
         </form>
@@ -141,7 +147,10 @@
 {#snippet DialogScrollableContent()}
   <Example title="Scrollable Content" class="items-center justify-center">
     <Dialog>
-      <DialogTrigger class={buttonVariants({ variant: 'outline' })}>Scrollable Content</DialogTrigger>
+      <DialogTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+        Scrollable Content
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Scrollable Content</DialogTitle>
@@ -156,7 +165,10 @@
 {#snippet DialogWithStickyFooter()}
   <Example title="With Sticky Footer" class="items-center justify-center">
     <Dialog>
-      <DialogTrigger class={buttonVariants({ variant: 'outline' })}>Sticky Footer</DialogTrigger>
+      <DialogTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+        Sticky Footer
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Scrollable Content</DialogTitle>
@@ -164,7 +176,10 @@
         </DialogHeader>
         {@render LoremParagraphs()}
         <DialogFooter>
-          <DialogClose class={buttonVariants({ variant: 'outline' })}>Close</DialogClose>
+          <DialogClose>
+            {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+            Close
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -174,7 +189,10 @@
 {#snippet DialogNoCloseButton()}
   <Example title="No Close Button" class="items-center justify-center">
     <Dialog>
-      <DialogTrigger class={buttonVariants({ variant: 'outline' })}>No Close Button</DialogTrigger>
+      <DialogTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+        No Close Button
+      </DialogTrigger>
       <DialogContent showCloseButton={false}>
         <DialogHeader>
           <DialogTitle>No Close Button</DialogTitle>
@@ -183,7 +201,10 @@
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <DialogClose class={buttonVariants({ variant: 'outline' })}>Close</DialogClose>
+          <DialogClose>
+            {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+            Close
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -193,7 +214,10 @@
 {#snippet DialogChatSettings()}
   <Example title="Chat Settings" class="items-center justify-center">
     <Dialog>
-      <DialogTrigger class={buttonVariants({ variant: 'outline' })}>Chat Settings</DialogTrigger>
+      <DialogTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+        Chat Settings
+      </DialogTrigger>
       <DialogContent class="min-w-md">
         <DialogHeader>
           <DialogTitle>Chat Settings</DialogTitle>

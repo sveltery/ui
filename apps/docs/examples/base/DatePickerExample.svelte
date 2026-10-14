@@ -1,14 +1,13 @@
 <script lang="ts">
-  import { cn } from 'cn';
   import { addDays, format } from 'date-fns';
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button, buttonVariants } from '@sveltery/ui/button';
+  import { Button } from '@sveltery/ui/button';
   import { Calendar, type DateRange } from '@sveltery/ui/calendar';
   import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@sveltery/ui/field';
   import { Form } from '@sveltery/ui/form';
   import { IconPlaceholder } from '@sveltery/ui/icons';
   import { Input } from '@sveltery/ui/input';
-  import { InputGroup, InputGroupAddon, InputGroupInput, inputGroupButtonVariants } from '@sveltery/ui/input-group';
+  import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '@sveltery/ui/input-group';
   import { Popover, PopoverContent, PopoverTrigger } from '@sveltery/ui/popover';
 
   const year = new Date().getFullYear();
@@ -54,10 +53,8 @@
 <ExampleWrapper>
   <Example title="Date Picker">
     <Popover>
-      <PopoverTrigger
-        data-empty={!demo}
-        class={buttonVariants({ variant: 'outline', class: 'w-[212px] justify-between text-left font-normal data-[empty=true]:text-muted-foreground' })}
-      >
+      <PopoverTrigger data-empty={!demo}>
+        {#snippet render(props, _state, content)}<Button variant="outline" class="w-[212px] justify-between text-left font-normal data-[empty=true]:text-muted-foreground" {...props}>{@render content?.()}</Button>{/snippet}
         {#if demo}{format(demo, 'PPP')}{:else}<span>Pick a date</span>{/if}
         {@render chevronDown()}
       </PopoverTrigger>
@@ -71,7 +68,8 @@
     <Field class="mx-auto w-60">
       <FieldLabel for="date-picker-range">Date Picker Range</FieldLabel>
       <Popover>
-        <PopoverTrigger id="date-picker-range" class={buttonVariants({ variant: 'outline', class: 'justify-start px-2.5 font-normal' })}>
+        <PopoverTrigger id="date-picker-range">
+          {#snippet render(props, _state, content)}<Button variant="outline" class="justify-start px-2.5 font-normal" {...props}>{@render content?.()}</Button>{/snippet}
           {@render calendarIcon()}
           {#if range?.from}
             {#if range.to}
@@ -92,10 +90,8 @@
 
   <Example title="With Presets">
     <Popover>
-      <PopoverTrigger
-        data-empty={!preset}
-        class={buttonVariants({ variant: 'outline', class: 'w-[240px] justify-start px-2.5 text-left font-normal data-[empty=true]:text-muted-foreground' })}
-      >
+      <PopoverTrigger data-empty={!preset}>
+        {#snippet render(props, _state, content)}<Button variant="outline" class="w-[240px] justify-start px-2.5 text-left font-normal data-[empty=true]:text-muted-foreground" {...props}>{@render content?.()}</Button>{/snippet}
         {@render calendarIcon()}
         {#if preset}{format(preset, 'PPP')}{:else}<span>Pick a date</span>{/if}
       </PopoverTrigger>
@@ -125,7 +121,8 @@
     <Field class="mx-auto w-44">
       <FieldLabel for="date">Date of birth</FieldLabel>
       <Popover bind:open={dobOpen}>
-        <PopoverTrigger id="date" class={buttonVariants({ variant: 'outline', class: 'justify-start font-normal' })}>
+        <PopoverTrigger id="date">
+          {#snippet render(props, _state, content)}<Button variant="outline" class="justify-start font-normal" {...props}>{@render content?.()}</Button>{/snippet}
           {dob ? dob.toLocaleDateString() : 'Select date'}
         </PopoverTrigger>
         <PopoverContent class="w-auto overflow-hidden p-0" align="start">
@@ -140,7 +137,8 @@
       <Field>
         <FieldLabel for="date-picker-optional">Date</FieldLabel>
         <Popover bind:open={timeOpen}>
-          <PopoverTrigger id="date-picker-optional" class={buttonVariants({ variant: 'outline', class: 'w-32 justify-between font-normal' })}>
+          <PopoverTrigger id="date-picker-optional">
+            {#snippet render(props, _state, content)}<Button variant="outline" class="w-32 justify-between font-normal" {...props}>{@render content?.()}</Button>{/snippet}
             {time ? format(time, 'PPP') : 'Select date'}
             {@render chevronDown()}
           </PopoverTrigger>
@@ -186,7 +184,8 @@
         />
         <InputGroupAddon align="inline-end">
           <Popover bind:open={inputOpen}>
-            <PopoverTrigger id="date-picker" aria-label="Select date" class={cn(buttonVariants({ variant: 'ghost' }), inputGroupButtonVariants({ size: 'icon-xs' }))}>
+            <PopoverTrigger id="date-picker" aria-label="Select date">
+              {#snippet render(props, _state, content)}<InputGroupButton variant="ghost" size="icon-xs" {...props}>{@render content?.()}</InputGroupButton>{/snippet}
               <IconPlaceholder lucide="CalendarIcon" tabler="IconCalendar" hugeicons="CalendarIcon" phosphor="CalendarBlankIcon" remixicon="RiCalendarLine" />
               <span class="sr-only">Select date</span>
             </PopoverTrigger>
@@ -212,10 +211,8 @@
       <Field name="booking" validate={(value) => (value ? null : 'Pick a booking date.')}>
         <FieldLabel>Booking date</FieldLabel>
         <Popover bind:open={bookingOpen}>
-          <PopoverTrigger
-            data-empty={!booking}
-            class={buttonVariants({ variant: 'outline', class: 'justify-start px-2.5 font-normal data-[empty=true]:text-muted-foreground' })}
-          >
+          <PopoverTrigger data-empty={!booking}>
+            {#snippet render(props, _state, content)}<Button variant="outline" class="justify-start px-2.5 font-normal data-[empty=true]:text-muted-foreground" {...props}>{@render content?.()}</Button>{/snippet}
             {@render calendarIcon()}
             {#if booking}{format(booking, 'PPP')}{:else}<span>Pick a date</span>{/if}
           </PopoverTrigger>

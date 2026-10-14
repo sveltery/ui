@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { buttonVariants } from '@sveltery/ui/button';
+  import { Button } from '@sveltery/ui/button';
   import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@sveltery/ui/dialog';
   import {
     Questionnaire,
@@ -34,7 +34,10 @@
 
 <div class="flex flex-col items-center gap-4">
   <Dialog bind:open>
-    <DialogTrigger class={buttonVariants({ variant: 'outline' })}>Open clarification</DialogTrigger>
+    <DialogTrigger>
+      {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+      Open clarification
+    </DialogTrigger>
     <DialogContent>
       <Questionnaire defaultItem="scope" {items} onsubmit={handleSubmit}>
         <QuestionnaireItem name="scope" required>
@@ -86,7 +89,10 @@
         </QuestionnaireItem>
 
         <DialogFooter>
-          <DialogClose type="button" class={buttonVariants({ variant: 'outline' })}>Cancel</DialogClose>
+          <DialogClose type="button">
+            {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+            Cancel
+          </DialogClose>
           <QuestionnaireActions>
             <QuestionnairePrevious />
             <QuestionnaireNext>Next</QuestionnaireNext>

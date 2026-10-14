@@ -4,7 +4,7 @@
   import { cn } from 'cn';
   import DialogPortal from './DialogPortal.svelte';
   import DialogOverlay from './DialogOverlay.svelte';
-  import { buttonVariants } from '../button/index.js';
+  import { Button } from '../button/index.js';
   import { IconPlaceholder } from '../icons/index.js';
   let { children, class: classProp, showCloseButton = true, ...props }: ComponentProps<typeof Primitive.Popup> & { showCloseButton?: boolean } = $props();
 </script>
@@ -13,7 +13,10 @@
   <Primitive.Popup data-slot="dialog-content" {...props} class={cn('cn-dialog-content fixed top-1/2 left-1/2 z-50 w-full -translate-x-1/2 -translate-y-1/2 outline-none', classProp)}>
     {@render children?.()}
     {#if showCloseButton}
-      <Primitive.Close data-slot="dialog-close" class={cn(buttonVariants({ variant: 'ghost', size: 'icon-sm' }), 'cn-dialog-close')}>
+      <Primitive.Close data-slot="dialog-close">
+        {#snippet render(buttonProps, _state, content)}
+          <Button variant="ghost" class="cn-dialog-close" size="icon-sm" {...buttonProps}>{@render content?.()}</Button>
+        {/snippet}
         <IconPlaceholder lucide="XIcon" tabler="IconX" hugeicons="Cancel01Icon" phosphor="XIcon" remixicon="RiCloseLine" />
         <span class="sr-only">Close</span>
       </Primitive.Close>

@@ -2,7 +2,7 @@
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button, buttonVariants } from '@sveltery/ui/button';
+  import { Button } from '@sveltery/ui/button';
   import { ButtonGroup, ButtonGroupText } from '@sveltery/ui/button-group';
   import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
   import { Field, FieldGroup } from '@sveltery/ui/field';
@@ -77,7 +77,8 @@
       <ButtonGroup>
         <Button variant="outline">Update</Button>
         <DropdownMenu>
-          <DropdownMenuTrigger class={buttonVariants({ variant: 'outline', size: 'icon' })}>
+          <DropdownMenuTrigger>
+            {#snippet render(props, _state, content)}<Button variant="outline" size="icon" {...props}>{@render content?.()}</Button>{/snippet}
             <IconPlaceholder lucide="ChevronDownIcon" tabler="IconChevronDown" hugeicons="ArrowDown01Icon" phosphor="CaretDownIcon" remixicon="RiArrowDownSLine" />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -89,7 +90,8 @@
       <ButtonGroup>
         <Button variant="outline">Follow</Button>
         <DropdownMenu>
-          <DropdownMenuTrigger class={buttonVariants({ variant: 'outline', size: 'icon' })}>
+          <DropdownMenuTrigger>
+            {#snippet render(props, _state, content)}<Button variant="outline" size="icon" {...props}>{@render content?.()}</Button>{/snippet}
             <IconPlaceholder lucide="ChevronDownIcon" tabler="IconChevronDown" hugeicons="ArrowDown01Icon" phosphor="CaretDownIcon" remixicon="RiArrowDownSLine" />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" class="w-50">

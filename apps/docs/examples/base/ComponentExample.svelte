@@ -13,7 +13,7 @@
     AlertDialogTrigger,
   } from '@sveltery/ui/alert-dialog';
   import { Badge } from '@sveltery/ui/badge';
-  import { Button, buttonVariants } from '@sveltery/ui/button';
+  import { Button } from '@sveltery/ui/button';
   import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
   import { Combobox, ComboboxCollection, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from '@sveltery/ui/combobox';
   import {
@@ -70,7 +70,8 @@
       </CardHeader>
       <CardFooter>
         <AlertDialog>
-          <AlertDialogTrigger class={buttonVariants()}>
+          <AlertDialogTrigger>
+            {#snippet render(props, _state, content)}<Button {...props}>{@render content?.()}</Button>{/snippet}
             <IconPlaceholder
               lucide="PlusIcon"
               tabler="IconPlus"

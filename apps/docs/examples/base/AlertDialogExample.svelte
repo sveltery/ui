@@ -12,7 +12,7 @@
     AlertDialogTitle,
     AlertDialogTrigger,
   } from '@sveltery/ui/alert-dialog';
-  import { buttonVariants } from '@sveltery/ui/button';
+  import { Button } from '@sveltery/ui/button';
   import {
     Dialog,
     DialogContent,
@@ -28,7 +28,10 @@
 {#snippet AlertDialogBasic()}
   <Example title="Basic" class="items-center">
     <AlertDialog>
-      <AlertDialogTrigger class={buttonVariants({ variant: 'outline' })}>Default</AlertDialogTrigger>
+      <AlertDialogTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+        Default
+      </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
@@ -49,7 +52,10 @@
 {#snippet AlertDialogSmall()}
   <Example title="Small" class="items-center">
     <AlertDialog>
-      <AlertDialogTrigger class={buttonVariants({ variant: 'outline' })}>Small</AlertDialogTrigger>
+      <AlertDialogTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+        Small
+      </AlertDialogTrigger>
       <AlertDialogContent size="sm">
         <AlertDialogHeader>
           <AlertDialogTitle>Allow accessory to connect?</AlertDialogTitle>
@@ -69,7 +75,10 @@
 {#snippet AlertDialogWithMedia()}
   <Example title="With Media" class="items-center">
     <AlertDialog>
-      <AlertDialogTrigger class={buttonVariants({ variant: 'outline' })}>Default (Media)</AlertDialogTrigger>
+      <AlertDialogTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+        Default (Media)
+      </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogMedia>
@@ -98,7 +107,10 @@
 {#snippet AlertDialogSmallWithMedia()}
   <Example title="Small With Media" class="items-center">
     <AlertDialog>
-      <AlertDialogTrigger class={buttonVariants({ variant: 'outline' })}>Small (Media)</AlertDialogTrigger>
+      <AlertDialogTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+        Small (Media)
+      </AlertDialogTrigger>
       <AlertDialogContent size="sm">
         <AlertDialogHeader>
           <AlertDialogMedia>
@@ -127,7 +139,10 @@
 {#snippet AlertDialogDestructive()}
   <Example title="Destructive" class="items-center">
     <AlertDialog>
-      <AlertDialogTrigger class={buttonVariants({ variant: 'destructive' })}>Delete Chat</AlertDialogTrigger>
+      <AlertDialogTrigger>
+        {#snippet render(props, _state, content)}<Button variant="destructive" {...props}>{@render content?.()}</Button>{/snippet}
+        Delete Chat
+      </AlertDialogTrigger>
       <AlertDialogContent size="sm">
         <AlertDialogHeader>
           <AlertDialogMedia class="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
@@ -158,7 +173,10 @@
 {#snippet AlertDialogInDialog()}
   <Example title="In Dialog" class="items-center">
     <Dialog>
-      <DialogTrigger class={buttonVariants({ variant: 'outline' })}>Open Dialog</DialogTrigger>
+      <DialogTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+        Open Dialog
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Alert Dialog Example</DialogTitle>
@@ -166,7 +184,10 @@
         </DialogHeader>
         <DialogFooter>
           <AlertDialog>
-            <AlertDialogTrigger class={buttonVariants()}>Open Alert Dialog</AlertDialogTrigger>
+            <AlertDialogTrigger>
+              {#snippet render(props, _state, content)}<Button {...props}>{@render content?.()}</Button>{/snippet}
+              Open Alert Dialog
+            </AlertDialogTrigger>
             <AlertDialogContent size="sm">
               <AlertDialogHeader>
                 <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>

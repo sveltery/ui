@@ -1,8 +1,7 @@
 <script lang="ts">
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { Bubble, BubbleContent, BubbleGroup, BubbleReactions } from '@sveltery/ui/bubble';
-  import { cn } from 'cn';
-  import { Button, buttonVariants } from '@sveltery/ui/button';
+  import { Button } from '@sveltery/ui/button';
   import { Collapsible, CollapsibleTrigger } from '@sveltery/ui/collapsible';
   import { IconPlaceholder } from '@sveltery/ui/icons';
   import { Marker, MarkerContent } from '@sveltery/ui/marker';
@@ -172,9 +171,8 @@ Ghost bubbles are full width and can take the full width of the container.
           <BubbleContent class="whitespace-pre-line">
             <div>{collapsibleOpen || !isLong ? collapsibleText : preview}</div>
             {#if isLong}
-              <CollapsibleTrigger
-                class={cn(buttonVariants({ variant: 'link' }), 'gap-1 p-0 text-muted-foreground')}
-              >
+              <CollapsibleTrigger>
+                {#snippet render(props, _state, content)}<Button variant="link" class="gap-1 p-0 text-muted-foreground" {...props}>{@render content?.()}</Button>{/snippet}
                 {collapsibleOpen ? 'Show less' : 'Show more'}
                 <IconPlaceholder
                   lucide="ChevronDownIcon"

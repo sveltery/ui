@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { buttonVariants } from '@sveltery/ui/button';
+  import { Button } from '@sveltery/ui/button';
   import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@sveltery/ui/dialog';
   import { Field, FieldGroup, FieldLabel } from '@sveltery/ui/field';
   import { Input } from '@sveltery/ui/input';
@@ -13,7 +13,10 @@
 {#snippet PopoverBasic()}
   <Example title="Basic">
     <Popover>
-      <PopoverTrigger class={buttonVariants({ variant: 'outline', class: 'w-fit' })}>Open Popover</PopoverTrigger>
+      <PopoverTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" class="w-fit" {...props}>{@render content?.()}</Button>{/snippet}
+        Open Popover
+      </PopoverTrigger>
       <PopoverContent align="start">
         <PopoverHeader>
           <PopoverTitle>Dimensions</PopoverTitle>
@@ -31,7 +34,8 @@
         <div class="flex flex-wrap gap-2">
           {#each sides as side (side)}
             <Popover>
-              <PopoverTrigger class={buttonVariants({ variant: 'outline', class: 'w-fit capitalize' })}>
+              <PopoverTrigger>
+                {#snippet render(props, _state, content)}<Button variant="outline" class="w-fit capitalize" {...props}>{@render content?.()}</Button>{/snippet}
                 {side.replace('-', ' ')}
               </PopoverTrigger>
               <PopoverContent {side} class="w-40">
@@ -48,7 +52,10 @@
 {#snippet PopoverWithForm()}
   <Example title="With Form">
     <Popover>
-      <PopoverTrigger class={buttonVariants({ variant: 'outline' })}>Open Popover</PopoverTrigger>
+      <PopoverTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+        Open Popover
+      </PopoverTrigger>
       <PopoverContent class="w-64" align="start">
         <PopoverHeader>
           <PopoverTitle>Dimensions</PopoverTitle>
@@ -73,15 +80,24 @@
   <Example title="Alignments">
     <div class="flex gap-6">
       <Popover>
-        <PopoverTrigger class={buttonVariants({ variant: 'outline', size: 'sm' })}>Start</PopoverTrigger>
+        <PopoverTrigger>
+          {#snippet render(props, _state, content)}<Button variant="outline" size="sm" {...props}>{@render content?.()}</Button>{/snippet}
+          Start
+        </PopoverTrigger>
         <PopoverContent align="start" class="w-40">Aligned to start</PopoverContent>
       </Popover>
       <Popover>
-        <PopoverTrigger class={buttonVariants({ variant: 'outline', size: 'sm' })}>Center</PopoverTrigger>
+        <PopoverTrigger>
+          {#snippet render(props, _state, content)}<Button variant="outline" size="sm" {...props}>{@render content?.()}</Button>{/snippet}
+          Center
+        </PopoverTrigger>
         <PopoverContent align="center" class="w-40">Aligned to center</PopoverContent>
       </Popover>
       <Popover>
-        <PopoverTrigger class={buttonVariants({ variant: 'outline', size: 'sm' })}>End</PopoverTrigger>
+        <PopoverTrigger>
+          {#snippet render(props, _state, content)}<Button variant="outline" size="sm" {...props}>{@render content?.()}</Button>{/snippet}
+          End
+        </PopoverTrigger>
         <PopoverContent align="end" class="w-40">Aligned to end</PopoverContent>
       </Popover>
     </div>
@@ -91,14 +107,20 @@
 {#snippet PopoverInDialog()}
   <Example title="In Dialog">
     <Dialog>
-      <DialogTrigger class={buttonVariants({ variant: 'outline' })}>Open Dialog</DialogTrigger>
+      <DialogTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+        Open Dialog
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Popover Example</DialogTitle>
           <DialogDescription>Click the button below to see the popover.</DialogDescription>
         </DialogHeader>
         <Popover>
-          <PopoverTrigger class={buttonVariants({ variant: 'outline', class: 'w-fit' })}>Open Popover</PopoverTrigger>
+          <PopoverTrigger>
+            {#snippet render(props, _state, content)}<Button variant="outline" class="w-fit" {...props}>{@render content?.()}</Button>{/snippet}
+            Open Popover
+          </PopoverTrigger>
           <PopoverContent align="start">
             <PopoverHeader>
               <PopoverTitle>Popover in Dialog</PopoverTitle>
