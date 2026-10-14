@@ -39,7 +39,7 @@
     <CardDescription>Last night · 7h 24m</CardDescription>
   </CardHeader>
   <CardContent class="flex flex-col gap-3">
-    <ChartContainer aria-label="Sleep stages by hour" config={sleepChartConfig} class="aspect-auto h-32 w-full">
+    <ChartContainer aria-label="Sleep stages by hour" config={sleepChartConfig} class="h-32 w-full">
       <BarChart
         data={sleepChartData}
         x="hour"

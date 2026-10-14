@@ -79,7 +79,7 @@
       <AlertDialog>
         <AlertDialogTrigger>
           {#snippet render(props, _state, content)}
-            <Button {...(props as Record<string, unknown>)} variant="outline">{@render content?.()}</Button>
+            <Button {...props} variant="outline">{@render content?.()}</Button>
           {/snippet}
           <span class="hidden md:flex style-sera:md:hidden">Alert Dialog</span>
           <span class="flex md:hidden style-sera:md:flex">Dialog</span>
@@ -105,7 +105,7 @@
         <DropdownMenu>
           <DropdownMenuTrigger>
             {#snippet render(props, _state, content)}
-              <Button {...(props as Record<string, unknown>)} variant="outline" size="icon">{@render content?.()}</Button>
+              <Button {...props} variant="outline" size="icon">{@render content?.()}</Button>
             {/snippet}
             <IconPlaceholder lucide="ChevronUpIcon" tabler="IconChevronUp" hugeicons="ArrowUp01Icon" phosphor="CaretUpIcon" remixicon="RiArrowUpSLine" />
           </DropdownMenuTrigger>

@@ -28,7 +28,7 @@
     <CardDescription>Last 6 months of activity</CardDescription>
   </CardHeader>
   <CardContent>
-        <ChartContainer aria-label="Contributions by month" config={chartConfig} class="aspect-auto h-[200px] w-full">
+        <ChartContainer aria-label="Contributions by month" config={chartConfig} class="h-[200px] w-full">
           <BarChart
             data={chartData}
             x="month"

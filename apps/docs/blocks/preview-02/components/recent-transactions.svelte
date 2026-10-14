@@ -37,7 +37,7 @@
             <DropdownMenu>
               <DropdownMenuTrigger>
                 {#snippet render(props, _state, content)}
-                  <Button {...(props as Record<string, unknown>)} variant="ghost" size="icon-sm">{@render content?.()}</Button>
+                  <Button {...props} variant="ghost" size="icon-sm">{@render content?.()}</Button>
                 {/snippet}
                 <IconPlaceholder lucide="MoreHorizontalIcon" tabler="IconDotsVertical" hugeicons="MoreVerticalCircle01Icon" phosphor="DotsThreeIcon" remixicon="RiMore2Line" />
               </DropdownMenuTrigger>
@@ -71,7 +71,7 @@
             <DropdownMenu>
               <DropdownMenuTrigger>
                 {#snippet render(props, _state, content)}
-                  <Button {...(props as Record<string, unknown>)} variant="ghost" size="icon-sm">{@render content?.()}</Button>
+                  <Button {...props} variant="ghost" size="icon-sm">{@render content?.()}</Button>
                 {/snippet}
                 <IconPlaceholder lucide="MoreHorizontalIcon" tabler="IconDotsVertical" hugeicons="MoreVerticalCircle01Icon" phosphor="DotsThreeIcon" remixicon="RiMore2Line" />
               </DropdownMenuTrigger>
@@ -105,7 +105,7 @@
             <DropdownMenu>
               <DropdownMenuTrigger>
                 {#snippet render(props, _state, content)}
-                  <Button {...(props as Record<string, unknown>)} variant="ghost" size="icon-sm">{@render content?.()}</Button>
+                  <Button {...props} variant="ghost" size="icon-sm">{@render content?.()}</Button>
                 {/snippet}
                 <IconPlaceholder lucide="MoreHorizontalIcon" tabler="IconDotsVertical" hugeicons="MoreVerticalCircle01Icon" phosphor="DotsThreeIcon" remixicon="RiMore2Line" />
               </DropdownMenuTrigger>
@@ -139,7 +139,7 @@
             <DropdownMenu>
               <DropdownMenuTrigger>
                 {#snippet render(props, _state, content)}
-                  <Button {...(props as Record<string, unknown>)} variant="ghost" size="icon-sm">{@render content?.()}</Button>
+                  <Button {...props} variant="ghost" size="icon-sm">{@render content?.()}</Button>
                 {/snippet}
                 <IconPlaceholder lucide="MoreHorizontalIcon" tabler="IconDotsVertical" hugeicons="MoreVerticalCircle01Icon" phosphor="DotsThreeIcon" remixicon="RiMore2Line" />
               </DropdownMenuTrigger>
@@ -173,7 +173,7 @@
             <DropdownMenu>
               <DropdownMenuTrigger>
                 {#snippet render(props, _state, content)}
-                  <Button {...(props as Record<string, unknown>)} variant="ghost" size="icon-sm">{@render content?.()}</Button>
+                  <Button {...props} variant="ghost" size="icon-sm">{@render content?.()}</Button>
                 {/snippet}
                 <IconPlaceholder lucide="MoreHorizontalIcon" tabler="IconDotsVertical" hugeicons="MoreVerticalCircle01Icon" phosphor="DotsThreeIcon" remixicon="RiMore2Line" />
               </DropdownMenuTrigger>

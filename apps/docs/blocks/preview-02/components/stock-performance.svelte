@@ -42,9 +42,9 @@
     }
   } satisfies ChartConfig;
   const monthIndex = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-  let ticker = $state<string | null>('VOO');
+  let ticker = $state('VOO');
   const data = $derived(
-    (CHART_DATA[ticker ?? ''] ?? DEFAULT_DATA).map((row) => ({
+    (CHART_DATA[ticker] ?? DEFAULT_DATA).map((row) => ({
       ...row,
       date: new Date(Date.UTC(2024, monthIndex.indexOf(row.month), 1))
     }))
@@ -63,7 +63,10 @@
         <FieldLabel for="ticker-select">Ticker</FieldLabel>
         <Combobox
           items={TICKERS}
-          bind:value={ticker}
+          value={ticker}
+          onValueChange={(value) => {
+            if (value !== null) ticker = value;
+          }}
         >
           <ComboboxInput id="ticker-select" placeholder="Search ticker..." />
           <ComboboxContent>
@@ -80,7 +83,7 @@
       </Field>
     </FieldGroup>
     <Separator class="style-sera:hidden" />
-    <ChartContainer aria-label="Price by month" config={chartConfig} class="aspect-auto h-[200px] w-full">
+    <ChartContainer aria-label="Price by month" config={chartConfig} class="h-[200px] w-full">
       <AreaChart
         {data}
         x="date"

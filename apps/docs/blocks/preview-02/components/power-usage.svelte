@@ -30,7 +30,7 @@
     <CardDescription>Whole Home</CardDescription>
   </CardHeader>
   <CardContent class="flex flex-col gap-4">
-        <ChartContainer aria-label="Power usage by hour" config={chartConfig} class="aspect-auto h-[140px] w-full">
+        <ChartContainer aria-label="Power usage by hour" config={chartConfig} class="h-[140px] w-full">
           <BarChart
             data={chartData}
             x="hour"
