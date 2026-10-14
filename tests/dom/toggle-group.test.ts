@@ -55,13 +55,13 @@ it('items use their own variant and size when the group sets none', () => {
   expect(group('multiple').classList.contains('extra')).toBe(true);
 });
 
-it('an item outside a group takes the default variant, size and spacing', () => {
+it('an item outside a group keeps its own variant and size and takes the default spacing', () => {
   const { item } = setup();
   const solo = item('Solo');
-  expect(solo.dataset.variant).toBe('default');
-  expect(solo.dataset.size).toBe('default');
+  expect(solo.dataset.variant).toBe('outline');
+  expect(solo.dataset.size).toBe('lg');
   expect(solo.dataset.spacing).toBe('2');
-  expect([...solo.classList]).toContain('cn-toggle-variant-default');
+  expect([...solo.classList]).toContain('cn-toggle-variant-outline');
 });
 
 it('single mode presses one item at a time and bind:value follows', () => {

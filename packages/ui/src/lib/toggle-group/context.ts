@@ -9,7 +9,7 @@ export type ToggleGroupContextValue = {
 };
 
 const key = Symbol('toggle-group');
-const outsideGroup: ToggleGroupContextValue = { variant: 'default', size: 'default', spacing: 2, orientation: 'horizontal' };
+const outsideGroup: ToggleGroupContextValue = { variant: undefined, size: undefined, spacing: 2, orientation: 'horizontal' };
 
 export const getToggleGroupContext = (): ToggleGroupContextValue => getContext(key) ?? outsideGroup;
 export const setToggleGroupContext = (value: ToggleGroupContextValue) => setContext(key, value);
