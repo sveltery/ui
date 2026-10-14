@@ -98,3 +98,15 @@ The `@sveltery/ui/themes.css` stylesheet also ships the shadcn/ui base colors as
   <Button>Blue</Button>
 </div>
 ```
+
+## Styling open triggers
+
+Upstream shadcn/ui class strings use `data-open:` on trigger elements, such as a sidebar menu button that opens a dropdown menu. Base UI sets `data-open` on popups, panels and accordion items, not on most triggers, so those classes never apply here. This is a deliberate fix of an upstream mismatch. Use the attribute the trigger really sets.
+
+| Trigger | Attribute | Example class |
+| --- | --- | --- |
+| Menu, popover, dialog, tooltip, navigation menu | `data-popup-open` | `data-popup-open:bg-accent` |
+| Collapsible and accordion triggers | `data-panel-open` | `data-panel-open:rotate-90` |
+| Any trigger with `aria-expanded` | `aria-expanded` | `aria-expanded:bg-muted` |
+
+Popups and panels, such as `DropdownMenuContent`, `CollapsibleContent` and the collapsible root, do set `data-open` and `data-closed`. A `group-data-open/collapsible:rotate-90` class on a chevron works when `group/collapsible` sits on the collapsible root.

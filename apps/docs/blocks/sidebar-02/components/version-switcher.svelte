@@ -11,7 +11,7 @@
 </script>
 
 {#snippet menuButton(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
-  <SidebarMenuButton {...props} size="lg" class={[props.class, 'data-open:bg-sidebar-accent data-open:text-sidebar-accent-foreground']}>{@render children?.()}</SidebarMenuButton>
+  <SidebarMenuButton {...props} size="lg" class={[props.class, 'data-popup-open:bg-sidebar-accent data-popup-open:text-sidebar-accent-foreground']}>{@render children?.()}</SidebarMenuButton>
 {/snippet}
 
 <SidebarMenu>
