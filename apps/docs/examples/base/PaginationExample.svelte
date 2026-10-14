@@ -58,9 +58,9 @@
   <Example title="With Select">
     <div class="flex items-center justify-between gap-4">
       <Field orientation="horizontal" class="w-fit">
-        <FieldLabel>Rows per page</FieldLabel>
+        <FieldLabel for="select-rows-per-page">Rows per page</FieldLabel>
         <Select defaultValue="25">
-          <SelectTrigger class="w-20">
+          <SelectTrigger class="w-20" id="select-rows-per-page">
             <SelectValue />
           </SelectTrigger>
           <SelectContent align="start">

@@ -25,16 +25,15 @@
   type RenderProps = Pick<HTMLAttributes<HTMLElement>, 'class'>;
 </script>
 
-{#snippet menuButton(props: RenderProps, _state: unknown, children?: Snippet)}
-  <SidebarMenuButton {...props} class={[props.class, 'aria-expanded:bg-muted']}>{@render children?.()}</SidebarMenuButton>
-{/snippet}
-
 <SidebarGroup>
   <SidebarMenu>
     {#each items as item (item.title)}
       <DropdownMenu>
         <SidebarMenuItem>
-          <DropdownMenuTrigger render={menuButton}>
+          <DropdownMenuTrigger>
+            {#snippet render(props, _state, children)}
+              <SidebarMenuButton {...props} class={[props.class, 'aria-expanded:bg-muted']}>{@render children?.()}</SidebarMenuButton>
+            {/snippet}
             {item.title}
             <IconPlaceholder
               lucide="MoreHorizontalIcon"

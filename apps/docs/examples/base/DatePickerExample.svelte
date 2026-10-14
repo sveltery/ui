@@ -5,7 +5,6 @@
   import { Button, buttonVariants } from '@sveltery/ui/button';
   import { Calendar, type DateRange } from '@sveltery/ui/calendar';
   import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@sveltery/ui/field';
-  import { Form } from '@sveltery/ui/form';
   import { IconPlaceholder } from '@sveltery/ui/icons';
   import { Input } from '@sveltery/ui/input';
   import { InputGroup, InputGroupAddon, InputGroupInput, inputGroupButtonVariants } from '@sveltery/ui/input-group';
@@ -32,6 +31,7 @@
 
   let booking = $state<Date | undefined>();
   let bookingOpen = $state(false);
+  let bookingInvalid = $state(false);
   let submitted = $state<Record<string, unknown> | null>(null);
 
   const presets = [
@@ -208,11 +208,20 @@
   </Example>
 
   <Example title="In a Form">
-    <Form class="mx-auto flex w-60 flex-col gap-4" onFormSubmit={(values) => (submitted = values)}>
-      <Field name="booking" validate={(value) => (value ? null : 'Pick a booking date.')}>
-        <FieldLabel>Booking date</FieldLabel>
+    <form
+      class="mx-auto flex w-60 flex-col gap-4"
+      onsubmit={(event) => {
+        event.preventDefault();
+        bookingInvalid = !booking;
+        submitted = booking ? Object.fromEntries(new FormData(event.currentTarget)) : null;
+      }}
+    >
+      <Field data-invalid={bookingInvalid}>
+        <FieldLabel for="booking-date">Booking date</FieldLabel>
         <Popover bind:open={bookingOpen}>
           <PopoverTrigger
+            id="booking-date"
+            aria-invalid={bookingInvalid}
             data-empty={!booking}
             class={buttonVariants({ variant: 'outline', class: 'justify-start px-2.5 font-normal data-[empty=true]:text-muted-foreground' })}
           >
@@ -220,17 +229,28 @@
             {#if booking}{format(booking, 'PPP')}{:else}<span>Pick a date</span>{/if}
           </PopoverTrigger>
           <PopoverContent class="w-auto p-0" align="start">
-            <Calendar mode="single" bind:selected={booking} defaultMonth={booking} disabled={{ before: new Date() }} onSelect={() => (bookingOpen = false)} />
+            <Calendar
+              mode="single"
+              bind:selected={booking}
+              defaultMonth={booking}
+              disabled={{ before: new Date() }}
+              onSelect={() => {
+                bookingOpen = false;
+                bookingInvalid = false;
+              }}
+            />
           </PopoverContent>
         </Popover>
-        <Input type="hidden" value={booking ? format(booking, 'yyyy-MM-dd') : ''} />
+        <input type="hidden" name="booking" value={booking ? format(booking, 'yyyy-MM-dd') : ''} />
         <FieldDescription>Bookings open from today.</FieldDescription>
-        <FieldError />
+        {#if bookingInvalid}
+          <FieldError>Pick a booking date.</FieldError>
+        {/if}
       </Field>
       <Button type="submit">Book</Button>
       {#if submitted}
         <pre class="text-xs">{JSON.stringify(submitted)}</pre>
       {/if}
-    </Form>
+    </form>
   </Example>
 </ExampleWrapper>

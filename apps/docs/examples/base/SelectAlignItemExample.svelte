@@ -18,10 +18,10 @@
 <FieldGroup class="w-full max-w-xs">
   <Field orientation="horizontal">
     <FieldContent>
-      <FieldLabel>Align Item</FieldLabel>
+      <FieldLabel for="align-item">Align Item</FieldLabel>
       <FieldDescription>Toggle to align the item with the trigger.</FieldDescription>
     </FieldContent>
-    <Switch bind:checked={alignItemWithTrigger} />
+    <Switch id="align-item" bind:checked={alignItemWithTrigger} />
   </Field>
   <Field>
     <Select {items} defaultValue="banana">

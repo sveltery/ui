@@ -56,7 +56,7 @@
     </Combobox>
 
     <Combobox name="stack" items={frameworks} multiple defaultValue={['Next.js']} bind:value={chips} autoHighlight>
-      <ComboboxChips bind:ref={anchor} class="w-72" data-testid="chips">
+      <ComboboxChips {@attach (node) => { anchor = node; }} class="w-72" data-testid="chips">
         <ComboboxValue>
           {#snippet children(values)}
             {const selected = $derived(values as string[])}
@@ -166,10 +166,10 @@
     </ComboboxContent>
   </Combobox>
 
-  <Field invalid class="w-72">
-    <FieldLabel>Invalid framework</FieldLabel>
+  <Field data-invalid class="w-72">
+    <FieldLabel for="invalid-framework">Invalid framework</FieldLabel>
     <Combobox items={frameworks}>
-      <ComboboxInput data-testid="invalid" placeholder="Select a framework" />
+      <ComboboxInput id="invalid-framework" aria-invalid data-testid="invalid" placeholder="Select a framework" />
       <ComboboxContent>
         <ComboboxEmpty>No items found.</ComboboxEmpty>
         <ComboboxList>
@@ -177,7 +177,7 @@
         </ComboboxList>
       </ComboboxContent>
     </Combobox>
-    <FieldError match>Please select a framework.</FieldError>
+    <FieldError>Please select a framework.</FieldError>
   </Field>
 
   <Dialog>

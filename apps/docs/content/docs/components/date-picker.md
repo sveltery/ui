@@ -69,18 +69,21 @@ A native time input sits next to the date picker. Combine the two values when yo
 
 ## In a Form
 
-A `Field` submits the value of the control it holds. Put a hidden input in the field with the date as `yyyy-MM-dd`, and pass `validate` to the field to require a date. `FieldError` shows the message after a submit.
+A popover trigger is a button, so it submits nothing. Put a hidden input with the date as `yyyy-MM-dd` next to it. Check the date in the form's `onsubmit`. Set `data-invalid` on the `Field` and `aria-invalid` on the trigger, and render a `FieldError` while the date is missing.
 
 ```svelte
-<Form onFormSubmit={save}>
-  <Field name="booking" validate={(value) => (value ? null : 'Pick a booking date.')}>
-    <FieldLabel>Booking date</FieldLabel>
+<form onsubmit={save}>
+  <Field data-invalid={invalid}>
+    <FieldLabel for="booking-date">Booking date</FieldLabel>
     <Popover bind:open>
+      <PopoverTrigger id="booking-date" aria-invalid={invalid}>…</PopoverTrigger>
       …
     </Popover>
-    <Input type="hidden" value={date ? format(date, 'yyyy-MM-dd') : ''} />
-    <FieldError />
+    <input type="hidden" name="booking" value={date ? format(date, 'yyyy-MM-dd') : ''} />
+    {#if invalid}
+      <FieldError>Pick a booking date.</FieldError>
+    {/if}
   </Field>
   <Button type="submit">Book</Button>
-</Form>
+</form>
 ```

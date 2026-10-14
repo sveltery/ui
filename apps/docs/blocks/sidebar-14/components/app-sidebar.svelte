@@ -177,11 +177,8 @@
               {#if item.items?.length}
                 <SidebarMenuSub>
                   {#each item.items as subItem (subItem.title)}
-                    {#snippet subLink(props: RenderProps, _state: unknown, children?: Snippet)}
-                      <a href={subItem.url} {...props}>{@render children?.()}</a>
-                    {/snippet}
                     <SidebarMenuSubItem>
-                      <SidebarMenuSubButton isActive={subItem.isActive} render={subLink}>
+                      <SidebarMenuSubButton isActive={subItem.isActive} href={subItem.url}>
                         {subItem.title}
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>

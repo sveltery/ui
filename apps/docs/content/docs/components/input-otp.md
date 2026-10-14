@@ -61,15 +61,14 @@ Typing moves to the next slot, Backspace moves back, and pasting a code fills ev
 
 ## In a form
 
-Put `InputOTP` in a [Field](/docs/components/field) to label it and submit its value under the field's `name`. A native reset restores `defaultValue`. `onValueComplete` runs when every slot is filled, and `autoSubmit` submits the form at that point.
+Give `InputOTP` a `name` and it submits its value with its form. A native reset restores `defaultValue`. `onValueComplete` runs when every slot is filled, and `autoSubmit` submits the form at that point. To label it, put it in a [Field](/docs/components/field) and pair the `FieldLabel` with the `InputOTP` `id`.
 
 ```svelte
-<Field name="code">
-  <FieldLabel>Verification code</FieldLabel>
-  <InputOTP length={6} required>
+<Field>
+  <FieldLabel for="code">Verification code</FieldLabel>
+  <InputOTP id="code" name="code" length={6} required>
     …
   </InputOTP>
-  <FieldError />
 </Field>
 ```
 

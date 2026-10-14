@@ -83,7 +83,7 @@
     </SidebarMenuButton>
   {:else}
     <SidebarMenuItem>
-      <Collapsible class="group/collapsible [&[data-state=open]>button>svg:first-child]:rotate-90" open={name === 'components' || name === 'ui'}>
+      <Collapsible class="group/collapsible [&[data-open]>button>svg:first-child]:rotate-90" open={name === 'components' || name === 'ui'}>
         <SidebarMenuButton render={collapsibleTrigger}>
           <IconPlaceholder lucide="ChevronRightIcon" tabler="IconChevronRight" hugeicons="ArrowRight01Icon" phosphor="CaretRightIcon" remixicon="RiArrowRightSLine" class="transition-transform" />
           <IconPlaceholder lucide="FolderIcon" tabler="IconFolder" hugeicons="FolderIcon" phosphor="FolderIcon" remixicon="RiFolderLine" />

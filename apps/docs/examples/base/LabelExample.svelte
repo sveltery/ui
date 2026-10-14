@@ -21,7 +21,7 @@
     </Field>
   </Example>
   <Example title="Disabled">
-    <Field disabled>
+    <Field data-disabled={true}>
       <Label for="label-demo-disabled">Disabled</Label>
       <Input id="label-demo-disabled" placeholder="Disabled" disabled />
     </Field>

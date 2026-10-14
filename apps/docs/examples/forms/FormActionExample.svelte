@@ -3,30 +3,29 @@
   import { actionForm } from '@sveltery/base/form/kit';
   import { Button } from '@sveltery/ui/button';
   import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@sveltery/ui/field';
-  import { Form, FormError } from '@sveltery/ui/form';
   import { Input } from '@sveltery/ui/input';
   import { signupSchema } from '$lib/forms/signup';
 
   const f = actionForm(signupSchema, () => page.form);
 </script>
 
-<Form form={f} class="w-full max-w-sm">
+<form {...f} class="w-full max-w-sm">
   <FieldGroup>
-    <FormError />
-    <Field field={f.fields.name}>
-      <FieldLabel>Name</FieldLabel>
-      <Input required autocomplete="off" />
-      <FieldError />
+    <FieldError errors={f.fields.issues()} />
+    <Field data-invalid={!!f.fields.name.issues()}>
+      <FieldLabel for="action-name">Name</FieldLabel>
+      <Input id="action-name" {...f.fields.name.as('text')} required autocomplete="off" />
+      <FieldError errors={f.fields.name.issues()} />
     </Field>
-    <Field field={f.fields.email} type="email">
-      <FieldLabel>Email</FieldLabel>
-      <Input required autocomplete="off" />
+    <Field data-invalid={!!f.fields.email.issues()}>
+      <FieldLabel for="action-email">Email</FieldLabel>
+      <Input id="action-email" {...f.fields.email.as('email')} required autocomplete="off" />
       <FieldDescription>Try taken@example.com to see an issue from the server.</FieldDescription>
-      <FieldError />
+      <FieldError errors={f.fields.email.issues()} />
     </Field>
     <Button type="submit" disabled={f.pending > 0}>Sign up</Button>
     {#if f.result}
       <p class="text-sm">Welcome, {f.result.welcome}.</p>
     {/if}
   </FieldGroup>
-</Form>
+</form>

@@ -1,7 +1,21 @@
 <script lang="ts">
-  import type { ComponentProps } from 'svelte';
-  import { Field as Primitive } from '@sveltery/base/field';
+  import type { HTMLAttributes } from 'svelte/elements';
   import { cn } from 'cn';
-  let { children, class: classProp, ...props }: ComponentProps<typeof Primitive.Error> = $props();
+  let { children, class: classProp, errors, ...props }: HTMLAttributes<HTMLDivElement> & { errors?: Array<{ message?: string } | undefined> } = $props();
+  const uniqueErrors = $derived([...new Map(errors?.map((error) => [error?.message, error])).values()]);
 </script>
-<Primitive.Error role="alert" data-slot="field-error" {children} {...props} class={cn('cn-field-error font-normal [&>ul]:ml-4 [&>ul]:flex [&>ul]:list-disc [&>ul]:flex-col [&>ul]:gap-1', classProp)} />
+{#if children || uniqueErrors.length > 1 || uniqueErrors[0]?.message}
+  <div role="alert" data-slot="field-error" {...props} class={cn('cn-field-error font-normal', classProp)}>
+    {#if children}
+      {@render children()}
+    {:else if uniqueErrors.length === 1}
+      {uniqueErrors[0]?.message}
+    {:else}
+      <ul class="ml-4 flex list-disc flex-col gap-1">
+        {#each uniqueErrors as error, index (index)}
+          {#if error?.message}<li>{error.message}</li>{/if}
+        {/each}
+      </ul>
+    {/if}
+  </div>
+{/if}

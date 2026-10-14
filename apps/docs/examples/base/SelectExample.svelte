@@ -270,9 +270,9 @@
 {#snippet SelectWithField()}
   <Example title="With Field">
     <Field>
-      <FieldLabel>Favorite Fruit</FieldLabel>
+      <FieldLabel for="select-fruit">Favorite Fruit</FieldLabel>
       <Select items={fruitItems}>
-        <SelectTrigger>
+        <SelectTrigger id="select-fruit">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
@@ -303,10 +303,10 @@
           </SelectGroup>
         </SelectContent>
       </Select>
-      <Field invalid>
-        <FieldLabel>Favorite Fruit</FieldLabel>
+      <Field data-invalid>
+        <FieldLabel for="select-fruit-invalid">Favorite Fruit</FieldLabel>
         <Select items={fruitItems}>
-          <SelectTrigger>
+          <SelectTrigger id="select-fruit-invalid" aria-invalid>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -317,7 +317,7 @@
             </SelectGroup>
           </SelectContent>
         </Select>
-        <FieldError match>Please select a valid fruit.</FieldError>
+        <FieldError errors={[{ message: 'Please select a valid fruit.' }]} />
       </Field>
     </div>
   </Example>

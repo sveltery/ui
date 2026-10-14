@@ -41,7 +41,7 @@
               <span>{workspace.emoji}</span>
               <span>{workspace.name}</span>
             </SidebarMenuButton>
-            <SidebarMenuAction render={collapsibleTrigger} class="left-2 bg-sidebar-accent text-sidebar-accent-foreground data-open:rotate-90" showOnHover>
+            <SidebarMenuAction render={collapsibleTrigger} class="left-2 bg-sidebar-accent text-sidebar-accent-foreground data-panel-open:rotate-90" showOnHover>
               <IconPlaceholder lucide="ChevronRightIcon" tabler="IconChevronRight" hugeicons="ArrowRight01Icon" phosphor="CaretRightIcon" remixicon="RiArrowRightSLine" />
             </SidebarMenuAction>
             <SidebarMenuAction showOnHover>

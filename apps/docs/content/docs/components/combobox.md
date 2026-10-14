@@ -163,7 +163,7 @@ Use `itemToStringValue` when your items are objects. It gives the form value and
 
 ## Multiple Selection
 
-Use `multiple` with chips for multi-select behavior. `ComboboxValue` passes the selected values to its snippet. Bind `ref` on `ComboboxChips` and pass the element to `ComboboxContent` as `anchor` so the popup lines up with the chips instead of the input.
+Use `multiple` with chips for multi-select behavior. `ComboboxValue` passes the selected values to its snippet. Attach to `ComboboxChips` to get its element, and pass it to `ComboboxContent` as `anchor` so the popup lines up with the chips instead of the input.
 
 ```svelte
 <script lang="ts">
@@ -172,7 +172,7 @@ Use `multiple` with chips for multi-select behavior. `ComboboxValue` passes the 
 </script>
 
 <Combobox items={frameworks} multiple bind:value>
-  <ComboboxChips bind:ref={anchor}>
+  <ComboboxChips {@attach (node) => { anchor = node; }}>
     <ComboboxValue>
       {#snippet children(values)}
         {@const selected = values as string[]}
@@ -281,4 +281,4 @@ Wrap the combobox in a [DirectionProvider](/docs/components/direction) and set `
 
 ## API reference
 
-`Combobox` is styled on top of the Sveltery Base `Combobox` primitive, which owns the filtering, popup positioning, keyboard navigation, focus handling, dismissal and form value. `ComboboxContent` renders the Base portal, positioner and popup, and takes the positioner's `side`, `align`, `sideOffset`, `alignOffset` and `anchor` props. `ComboboxInput` takes `showTrigger` and `showClear`, and `ComboboxChip` takes `showRemove`. `ComboboxChips` takes a bindable `ref` for the anchor element. The trigger and the input group button set `data-popup-open` and `data-pressed` while the popup is open, so style the open state with `data-popup-open:`. See the [Base UI Combobox documentation](https://base-ui.com/react/components/combobox) for the behavior it ports.
+`Combobox` is styled on top of the Sveltery Base `Combobox` primitive, which owns the filtering, popup positioning, keyboard navigation, focus handling, dismissal and form value. `ComboboxContent` renders the Base portal, positioner and popup, and takes the positioner's `side`, `align`, `sideOffset`, `alignOffset` and `anchor` props. `ComboboxInput` takes `showTrigger` and `showClear`, and `ComboboxChip` takes `showRemove`. The trigger and the input group button set `data-popup-open` and `data-pressed` while the popup is open, so style the open state with `data-popup-open:`. See the [Base UI Combobox documentation](https://base-ui.com/react/components/combobox) for the behavior it ports.

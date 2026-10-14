@@ -7,7 +7,7 @@
 </script>
 
 <Combobox multiple autoHighlight items={frameworks} defaultValue={[frameworks[0]]}>
-  <ComboboxChips bind:ref={anchor} class="w-full max-w-xs">
+  <ComboboxChips {@attach (node) => { anchor = node; }} class="w-full max-w-xs">
     <ComboboxValue>
       {#snippet children(values)}
         {const selected = $derived(values as string[])}
