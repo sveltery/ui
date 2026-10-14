@@ -3,6 +3,7 @@
   import { IconPlaceholder } from '@sveltery/ui/icons';
   import { Item, ItemActions, ItemContent, ItemGroup, ItemMedia, ItemTitle } from '@sveltery/ui/item';
   import { Progress, ProgressLabel, ProgressValue } from '@sveltery/ui/progress';
+  import { Slider } from '@sveltery/ui/slider';
 
   let value = $state(50);
 
@@ -39,7 +40,7 @@
   <Example title="Controlled">
     <div class="flex w-full flex-col gap-4">
       <Progress {value} class="w-full" />
-      <input type="range" min="0" max="100" step="1" bind:value class="w-full accent-primary" aria-label="Progress value" />
+      <Slider bind:value min={0} max={100} step={1} />
     </div>
   </Example>
 {/snippet}

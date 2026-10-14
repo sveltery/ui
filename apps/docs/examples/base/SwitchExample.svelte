@@ -1,15 +1,16 @@
 <script lang="ts">
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
+  import { Field, FieldContent, FieldDescription, FieldLabel, FieldTitle } from '@sveltery/ui/field';
   import { Label } from '@sveltery/ui/label';
   import { Switch } from '@sveltery/ui/switch';
 </script>
 
 {#snippet SwitchBasic()}
   <Example title="Basic">
-    <div class="flex items-center gap-2">
-      <Switch id="switch-basic" />
-      <Label for="switch-basic">Airplane Mode</Label>
-    </div>
+    <Field orientation="horizontal">
+      <Switch />
+      <FieldLabel>Airplane Mode</FieldLabel>
+    </Field>
   </Example>
 {/snippet}
 
@@ -24,15 +25,15 @@
 
 {#snippet SwitchWithDescription()}
   <Example title="With Description">
-    <Label for="switch-focus-mode" class="items-start justify-between gap-4 rounded-lg border p-4">
-      <div class="flex flex-col gap-1">
-        <span class="font-medium">Share across devices</span>
-        <span class="font-normal text-muted-foreground">
-          Focus is shared across devices, and turns off when you leave the app.
-        </span>
-      </div>
-      <Switch id="switch-focus-mode" />
-    </Label>
+    <FieldLabel>
+      <Field orientation="horizontal">
+        <FieldContent>
+          <FieldTitle>Share across devices</FieldTitle>
+          <FieldDescription>Focus is shared across devices, and turns off when you leave the app.</FieldDescription>
+        </FieldContent>
+        <Switch />
+      </Field>
+    </FieldLabel>
   </Example>
 {/snippet}
 

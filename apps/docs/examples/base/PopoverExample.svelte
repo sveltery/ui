@@ -2,12 +2,12 @@
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { buttonVariants } from '@sveltery/ui/button';
   import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@sveltery/ui/dialog';
-  import { Label } from '@sveltery/ui/label';
+  import { Field, FieldGroup, FieldLabel } from '@sveltery/ui/field';
+  import { Input } from '@sveltery/ui/input';
   import { Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger } from '@sveltery/ui/popover';
 
   const topSides = ['inline-start', 'left', 'top'] as const;
   const bottomSides = ['bottom', 'right', 'inline-end'] as const;
-  const inputClass = 'h-8 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50';
 </script>
 
 {#snippet PopoverBasic()}
@@ -54,16 +54,16 @@
           <PopoverTitle>Dimensions</PopoverTitle>
           <PopoverDescription>Set the dimensions for the layer.</PopoverDescription>
         </PopoverHeader>
-        <div class="flex flex-col gap-4">
-          <div class="flex items-center gap-2">
-            <Label for="width" class="w-1/2">Width</Label>
-            <input id="width" class={inputClass} value="100%" />
-          </div>
-          <div class="flex items-center gap-2">
-            <Label for="height" class="w-1/2">Height</Label>
-            <input id="height" class={inputClass} value="25px" />
-          </div>
-        </div>
+        <FieldGroup class="gap-4">
+          <Field orientation="horizontal">
+            <FieldLabel for="width" class="w-1/2">Width</FieldLabel>
+            <Input id="width" defaultValue="100%" />
+          </Field>
+          <Field orientation="horizontal">
+            <FieldLabel for="height" class="w-1/2">Height</FieldLabel>
+            <Input id="height" defaultValue="25px" />
+          </Field>
+        </FieldGroup>
       </PopoverContent>
     </Popover>
   </Example>

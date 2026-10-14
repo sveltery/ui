@@ -2,11 +2,7 @@
   import SiteFooter from '$lib/components/site/SiteFooter.svelte';
   import SiteHeader from '$lib/components/site/SiteHeader.svelte';
   import { Toaster } from '@sveltery/ui/sonner';
-  import { onMount } from 'svelte';
   let { children } = $props();
-
-  // Browser tests wait for this before they use interactive controls.
-  onMount(() => (document.documentElement.dataset.ready = ''));
 </script>
 
 <div data-slot="layout" class="relative z-10 flex min-h-svh flex-col bg-background">

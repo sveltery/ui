@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Checkbox } from '@sveltery/ui/checkbox';
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Label } from '@sveltery/ui/label';
+  import { Field, FieldContent, FieldDescription, FieldGroup, FieldLabel, FieldTitle } from '@sveltery/ui/field';
   import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@sveltery/ui/table';
 
   const tableData = [
@@ -31,59 +31,57 @@
 
 <ExampleWrapper>
   <Example title="Basic">
-    <div class="flex items-center gap-2">
-      <Checkbox id="terms" />
-      <Label for="terms">Accept terms and conditions</Label>
-    </div>
+    <Field orientation="horizontal">
+      <Checkbox />
+      <FieldLabel>Accept terms and conditions</FieldLabel>
+    </Field>
   </Example>
 
   <Example title="With Description">
-    <div class="flex items-start gap-2">
-      <Checkbox id="terms-2" defaultChecked />
-      <div class="grid gap-1">
-        <Label for="terms-2">Accept terms and conditions</Label>
-        <p class="text-sm text-muted-foreground">
-          By clicking this checkbox, you agree to the terms and conditions.
-        </p>
-      </div>
-    </div>
+    <Field orientation="horizontal">
+      <Checkbox defaultChecked />
+      <FieldContent>
+        <FieldLabel>Accept terms and conditions</FieldLabel>
+        <FieldDescription>By clicking this checkbox, you agree to the terms and conditions.</FieldDescription>
+      </FieldContent>
+    </Field>
   </Example>
 
   <Example title="Invalid">
-    <div class="flex items-center gap-2" data-invalid>
-      <Checkbox id="terms-3" aria-invalid="true" />
-      <Label for="terms-3">Accept terms and conditions</Label>
-    </div>
+    <Field orientation="horizontal" invalid>
+      <Checkbox aria-invalid />
+      <FieldLabel>Accept terms and conditions</FieldLabel>
+    </Field>
   </Example>
 
   <Example title="Disabled">
-    <div class="flex items-center gap-2">
-      <Checkbox id="toggle" disabled />
-      <Label for="toggle">Enable notifications</Label>
-    </div>
+    <Field orientation="horizontal">
+      <Checkbox disabled />
+      <FieldLabel>Enable notifications</FieldLabel>
+    </Field>
   </Example>
 
   <Example title="With Title">
-    <div class="grid gap-3">
-      <Label for="toggle-2" class="items-start gap-2 rounded-lg border p-3">
-        <Checkbox id="toggle-2" defaultChecked />
-        <div class="grid gap-1">
-          <span class="font-medium">Enable notifications</span>
-          <span class="text-sm font-normal text-muted-foreground">
-            You can enable or disable notifications at any time.
-          </span>
-        </div>
-      </Label>
-      <Label for="toggle-4" class="items-start gap-2 rounded-lg border p-3 opacity-50">
-        <Checkbox id="toggle-4" disabled />
-        <div class="grid gap-1">
-          <span class="font-medium">Enable notifications</span>
-          <span class="text-sm font-normal text-muted-foreground">
-            You can enable or disable notifications at any time.
-          </span>
-        </div>
-      </Label>
-    </div>
+    <FieldGroup>
+      <FieldLabel>
+        <Field orientation="horizontal">
+          <Checkbox defaultChecked />
+          <FieldContent>
+            <FieldTitle>Enable notifications</FieldTitle>
+            <FieldDescription>You can enable or disable notifications at any time.</FieldDescription>
+          </FieldContent>
+        </Field>
+      </FieldLabel>
+      <FieldLabel>
+        <Field orientation="horizontal" disabled>
+          <Checkbox disabled />
+          <FieldContent>
+            <FieldTitle>Enable notifications</FieldTitle>
+            <FieldDescription>You can enable or disable notifications at any time.</FieldDescription>
+          </FieldContent>
+        </Field>
+      </FieldLabel>
+    </FieldGroup>
   </Example>
 
   <Example title="In Table">
@@ -120,14 +118,14 @@
   </Example>
 
   <Example title="Group">
-    <div class="grid gap-3">
-      <Label>Show these items on the desktop:</Label>
+    <Field>
+      <FieldLabel>Show these items on the desktop:</FieldLabel>
       {#each desktopItems as item (item.id)}
-        <div class="flex items-center gap-2">
-          <Checkbox id={item.id} />
-          <Label for={item.id} class="font-normal">{item.label}</Label>
-        </div>
+        <Field orientation="horizontal">
+          <Checkbox />
+          <FieldLabel class="font-normal">{item.label}</FieldLabel>
+        </Field>
       {/each}
-    </div>
+    </Field>
   </Example>
 </ExampleWrapper>

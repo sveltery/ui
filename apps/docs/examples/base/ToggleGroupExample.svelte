@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Label } from '@sveltery/ui/label';
+  import { Field, FieldDescription, FieldLabel } from '@sveltery/ui/field';
   import { ToggleGroup, ToggleGroupItem } from '@sveltery/ui/toggle-group';
   import { IconPlaceholder } from '@sveltery/ui/icons';
 
@@ -395,8 +395,8 @@
 
 {#snippet ToggleGroupFontWeightSelector()}
   <Example title="Font Weight Selector">
-    <div class="flex flex-col gap-2">
-      <Label>Font Weight</Label>
+    <Field>
+      <FieldLabel>Font Weight</FieldLabel>
       <ToggleGroup bind:value={fontWeight} variant="outline" spacing={2} size="lg">
         {#each fontWeights as { value, label, weight } (value)}
           <ToggleGroupItem
@@ -409,10 +409,10 @@
           </ToggleGroupItem>
         {/each}
       </ToggleGroup>
-      <p class="text-sm text-muted-foreground">
+      <FieldDescription>
         Use <code class="rounded-md bg-muted px-1 py-0.5 font-mono">font-{fontWeight[0]}</code> to set the font weight.
-      </p>
-    </div>
+      </FieldDescription>
+    </Field>
   </Example>
 {/snippet}
 

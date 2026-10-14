@@ -27,9 +27,9 @@
     </Field>
   </Example>
   <Example title="With Textarea">
-    <div>
+    <Field>
       <Label for="label-demo-message">Message</Label>
       <Textarea id="label-demo-message" placeholder="Message" />
-    </div>
+    </Field>
   </Example>
 </ExampleWrapper>
