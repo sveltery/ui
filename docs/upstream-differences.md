@@ -14,5 +14,6 @@ Where upstream code misbehaves on Base UI, Sveltery UI fixes it instead of copyi
 
 - **Version switcher** (blocks sidebar-01 and sidebar-02). Upstream's menu items use `onSelect`, which Base menu items never call. Sveltery UI uses `onclick`.
 - **Nav user** (block sidebar-09). Upstream puts `DropdownMenuLabel` outside a `DropdownMenuGroup`, which Base requires. Sveltery UI wraps it in the group.
+- **File tree** (block sidebar-11). Upstream rotates an open folder's chevron with `[data-state=open]`, which Base never sets. Sveltery UI matches `[data-open]`.
 - **Time range select** (block dashboard-01, `chart-area-interactive`). Upstream's Select has no `items`, so Base shows the raw value ("7d") instead of its label. Sveltery UI passes `items`.
 - **Data table reorder** (block dashboard-01, `data-table`). A reorder replaces the table's data, and TanStack Table then resets to page 1 by default. Sveltery UI sets `autoResetPageIndex: false`, so a row moved on page 2 stays on page 2.
