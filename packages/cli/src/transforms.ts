@@ -1,0 +1,126 @@
+import MagicString from 'magic-string';
+import { parse, type AST } from 'svelte/compiler';
+import { iconLibraries } from './icons.js';
+import { CliError } from './parse.js';
+import { iconLibraryNames, type IconLibraryName } from './registry.js';
+
+export type SourceFile = { target: string; content: string };
+export type TransformContext = { iconLibrary: IconLibraryName; /** The project CSS defines `--font-heading`. */ fontHeading: boolean };
+export type TransformResult = { content: string; dependencies?: string[] };
+export type Transform = (file: SourceFile, ctx: TransformContext) => TransformResult;
+
+type Node = { type: string; start: number; end: number; [key: string]: unknown };
+
+function* walk(value: unknown, seen = new WeakSet<object>()): Generator<Node> {
+  if (typeof value !== 'object' || value === null || seen.has(value)) return;
+  seen.add(value);
+  if (typeof (value as Node).type === 'string' && typeof (value as Node).start === 'number') yield value as Node;
+  for (const child of Object.values(value)) yield* walk(child, seen);
+}
+
+const PLACEHOLDER = 'IconPlaceholder';
+
+/** Replaces `<IconPlaceholder lucide="CheckIcon" ...>` and its import with the configured library's component. */
+export const transformIcons: Transform = (file, ctx) => {
+  if (!file.target.endsWith('.svelte') || !file.content.includes(PLACEHOLDER)) return { content: file.content };
+  const library = iconLibraries[ctx.iconLibrary];
+  const ast = parse(file.content, { filename: file.target, modern: true });
+  const s = new MagicString(file.content);
+  const icons: string[] = [];
+  let importDeclaration: Node | undefined;
+
+  for (const node of walk(ast)) {
+    if (node.type === 'ImportDeclaration' && (node.specifiers as { local: { name: string } }[]).some((spec) => spec.local.name === PLACEHOLDER)) {
+      importDeclaration = node;
+    }
+    if (node.type !== 'Component' || node.name !== PLACEHOLDER) continue;
+    const component = node as unknown as AST.Component;
+    const attributes = component.attributes.filter((a): a is AST.Attribute => a.type === 'Attribute');
+    const value = attributes.find((a) => a.name === ctx.iconLibrary)?.value;
+    const name = Array.isArray(value) && value.length === 1 && value[0]?.type === 'Text' ? value[0].data : undefined;
+    if (!name) throw new CliError(`${file.target}: an <${PLACEHOLDER}> has no static "${ctx.iconLibrary}" attribute, so it cannot become a ${ctx.iconLibrary} icon.`);
+    if (!icons.includes(name)) icons.push(name);
+
+    const tag = library.tag(name);
+    s.overwrite(component.start + 1, component.start + 1 + PLACEHOLDER.length, tag);
+    for (const attribute of attributes) {
+      if (!(iconLibraryNames as readonly string[]).includes(attribute.name)) continue;
+      let start = attribute.start;
+      while (/\s/.test(file.content[start - 1] ?? '')) start--;
+      s.remove(start, attribute.end);
+    }
+    if (!file.content.slice(0, component.end).endsWith('/>')) {
+      const close = file.content.lastIndexOf(`</${PLACEHOLDER}`, component.end);
+      s.overwrite(close + 2, close + 2 + PLACEHOLDER.length, tag.split(' ')[0]!);
+    }
+  }
+
+  if (importDeclaration) {
+    const lineStart = file.content.lastIndexOf('\n', importDeclaration.start) + 1;
+    const indent = file.content.slice(lineStart, importDeclaration.start);
+    const imports = icons.length > 0 ? [...library.sharedImports, ...icons.map(library.importIcon)] : [];
+    s.overwrite(importDeclaration.start, importDeclaration.end, imports.join(`\n${indent}`));
+  }
+  if (!s.hasChanged()) return { content: file.content };
+  return { content: s.toString(), dependencies: library.packages };
+};
+
+/** Class markers that `add` resolves: each maps to its replacement token, or '' to drop it. */
+const markers = new Map<string, (ctx: TransformContext) => string>([
+  // v1 supports only `menuColor: 'default'`, which uses neither menu marker.
+  ['cn-menu-target', () => ''],
+  ['cn-menu-translucent', () => ''],
+  // v1 has no RTL transform.
+  ['cn-rtl-flip', () => ''],
+  ['cn-font-heading', (ctx) => (ctx.fontHeading ? 'font-heading' : '')],
+]);
+
+function replaceMarkers(text: string, ctx: TransformContext): string | undefined {
+  const tokens = text.split(/\s+/).filter(Boolean);
+  if (!tokens.some((token) => markers.has(token))) return undefined;
+  const kept = tokens.map((token) => markers.get(token)?.(ctx) ?? token).filter(Boolean);
+  if (kept.length === 0) return '';
+  return `${/^\s/.test(text) ? ' ' : ''}${kept.join(' ')}${/\s$/.test(text) ? ' ' : ''}`;
+}
+
+const SCRIPT_OPEN = '<script lang="ts">';
+
+/** Resolves the class markers in string literals, template literal parts and static `class` attribute text. */
+export const transformMarkers: Transform = (file, ctx) => {
+  const isSvelte = file.target.endsWith('.svelte');
+  if (!isSvelte && !/\.[cm]?[jt]s$/.test(file.target)) return { content: file.content };
+  if (![...markers.keys()].some((marker) => file.content.includes(marker))) return { content: file.content };
+  // svelte/compiler parses a plain TypeScript module as the body of a script tag.
+  const offset = isSvelte ? 0 : SCRIPT_OPEN.length;
+  const ast = parse(isSvelte ? file.content : `${SCRIPT_OPEN}${file.content}</script>`, { filename: file.target, modern: true });
+  const s = new MagicString(file.content);
+  const edit = (start: number, end: number) => {
+    const replacement = replaceMarkers(file.content.slice(start, end), ctx);
+    if (replacement === undefined) return;
+    if (replacement === '') s.remove(start, end);
+    else s.overwrite(start, end, replacement);
+  };
+  for (const node of walk(ast)) {
+    const start = node.start - offset;
+    const end = node.end - offset;
+    if (node.type === 'Literal' && typeof node.value === 'string') edit(start + 1, end - 1);
+    else if (node.type === 'TemplateElement') edit(start, end);
+    else if (node.type === 'Attribute' && node.name === 'class' && Array.isArray(node.value)) {
+      for (const part of node.value as Node[]) if (part.type === 'Text') edit(part.start, part.end);
+    }
+  }
+  return { content: s.toString() };
+};
+
+const transforms: Transform[] = [transformIcons, transformMarkers];
+
+export function applyTransforms(file: SourceFile, ctx: TransformContext): Required<TransformResult> {
+  let content = file.content;
+  const dependencies = new Set<string>();
+  for (const transform of transforms) {
+    const result = transform({ target: file.target, content }, ctx);
+    content = result.content;
+    for (const dependency of result.dependencies ?? []) dependencies.add(dependency);
+  }
+  return { content, dependencies: [...dependencies] };
+}
