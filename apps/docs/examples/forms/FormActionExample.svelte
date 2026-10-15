@@ -2,7 +2,7 @@
   import { enhance } from '$app/forms';
   import { page } from '$app/state';
   import { fromAction } from 'svelte/attachments';
-  import { Form } from '@sveltery/base/form';
+  import { Form, isSubmitBlocked } from '@sveltery/base/form';
   import { Button } from '@sveltery/ui/button';
   import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@sveltery/ui/field';
   import { Input } from '@sveltery/ui/input';
@@ -11,7 +11,14 @@
   const errors = (messages: string[] | undefined) => messages?.map((message) => ({ message }));
 </script>
 
-<Form method="POST" errors={form?.errors} {@attach fromAction(enhance)} class="w-full max-w-sm">
+<Form
+  method="POST"
+  errors={form?.errors}
+  {@attach fromAction(enhance, () => ({ formElement, cancel }) => {
+    if (isSubmitBlocked(formElement)) cancel();
+  })}
+  class="w-full max-w-sm"
+>
   <FieldGroup>
     <Field data-invalid={!!form?.errors?.name}>
       <FieldLabel for="action-name">Name</FieldLabel>

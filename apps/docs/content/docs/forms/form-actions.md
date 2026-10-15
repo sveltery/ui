@@ -39,7 +39,7 @@ Pass `form?.errors` to `errors` on `Form`. Give each field its messages, and set
 <script lang="ts">
   import { enhance } from '$app/forms';
   import { fromAction } from 'svelte/attachments';
-  import { Form } from '@sveltery/base/form';
+  import { Form, isSubmitBlocked } from '@sveltery/base/form';
   import { Button } from '$lib/components/ui/button';
   import { Field, FieldError, FieldLabel } from '$lib/components/ui/field';
   import { Input } from '$lib/components/ui/input';
@@ -48,7 +48,13 @@ Pass `form?.errors` to `errors` on `Form`. Give each field its messages, and set
   const errors = (messages: string[] | undefined) => messages?.map((message) => ({ message }));
 </script>
 
-<Form method="POST" errors={form?.errors} {@attach fromAction(enhance)}>
+<Form
+  method="POST"
+  errors={form?.errors}
+  {@attach fromAction(enhance, () => ({ formElement, cancel }) => {
+    if (isSubmitBlocked(formElement)) cancel();
+  })}
+>
   <Field data-invalid={!!form?.errors?.email}>
     <FieldLabel for="email">Email</FieldLabel>
     <Input id="email" name="email" type="email" value={form?.values?.email} aria-invalid={!!form?.errors?.email} required />
@@ -61,4 +67,4 @@ Pass `form?.errors` to `errors` on `Form`. Give each field its messages, and set
 </Form>
 ```
 
-`Form` renders a `<form>` element, so `use:enhance` goes on it as an attachment, through `fromAction`. Without JavaScript, the browser checks `required` and `type` before the submit. Once the page hydrates, `Form` turns that check off and the action validates every submit.
+`Form` renders a `<form>` element, so `use:enhance` goes on it as an attachment, through `fromAction`. Without JavaScript, the browser checks `required` and `type` before the submit. Once the page hydrates, `Form` runs those checks itself. It blocks an invalid submit with `preventDefault()` and focuses the first invalid field, as Base UI does. `use:enhance` still sees the blocked submit and would send it, so its callback cancels the submit when `isSubmitBlocked` returns `true`. Call `isSubmitBlocked` before any `await`, since the next submit replaces its answer.

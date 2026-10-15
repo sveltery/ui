@@ -2,6 +2,7 @@ import { afterEach, expect, it } from 'vitest';
 import { flushSync, mount, tick, unmount } from 'svelte';
 import FieldFixture from './FieldFixture.svelte';
 import FieldCardFixture from './FieldCardFixture.svelte';
+import FieldContextFixture from './FieldContextFixture.svelte';
 
 let instance: ReturnType<typeof mount> | undefined;
 afterEach(async () => { if (instance) await unmount(instance); document.body.replaceChildren(); });
@@ -13,7 +14,9 @@ function setup(errors?: Array<{ message?: string } | undefined>) {
   return { email: fields[0]!, name: fields[1]! };
 }
 
-it('renders plain upstream elements with their slots and orientation classes', () => {
+const describedBy = (control: Element) => (control.getAttribute('aria-describedby') ?? '').split(' ').map(id => document.getElementById(id)?.textContent);
+
+it('renders upstream elements with their slots and orientation classes', () => {
   const { email, name } = setup();
   expect([email.localName, email.getAttribute('role'), email.dataset.orientation]).toEqual(['div', 'group', 'vertical']);
   expect(email.className).toBe('cn-field group/field flex w-full cn-field-orientation-vertical flex-col *:w-full [&>.sr-only]:w-auto extra-field');
@@ -21,10 +24,11 @@ it('renders plain upstream elements with their slots and orientation classes', (
   expect(document.querySelector('[data-slot=field-set]')!.localName).toBe('fieldset');
   const legend = document.querySelector<HTMLElement>('[data-slot=field-legend]')!;
   expect([legend.localName, legend.dataset.variant, legend.textContent]).toEqual(['legend', 'label', 'Account']);
+  expect(document.querySelector('[data-slot=field-set]')!.getAttribute('aria-labelledby')).toBe(legend.id);
   expect(email.querySelector('[data-slot=field-description]')!.localName).toBe('p');
 });
 
-it('a bare data-invalid or data-disabled renders "true", which the =true field styles match', () => {
+it('keeps a hand-set data-invalid or data-disabled from upstream markup', () => {
   const { email, name } = setup();
   expect(email.getAttribute('data-invalid')).toBe('true');
   expect(email.hasAttribute('data-disabled')).toBe(false);
@@ -32,7 +36,7 @@ it('a bare data-invalid or data-disabled renders "true", which the =true field s
   expect(email.querySelector('input')!.getAttribute('aria-invalid')).toBe('true');
 });
 
-it('FieldLabel is a Label tied to its control by for', () => {
+it('FieldLabel is a Label tied to its control', () => {
   const { email } = setup();
   const label = email.querySelector<HTMLLabelElement>('[data-slot=field-label]')!;
   expect(label.localName).toBe('label');
@@ -40,11 +44,11 @@ it('FieldLabel is a Label tied to its control by for', () => {
   expect(label.control).toBe(email.querySelector('input'));
 });
 
-it('FieldError renders nothing without children or errors', () => {
+it('FieldError shows its children, and nothing without children, errors or a field error', () => {
   setup();
   expect(document.querySelector('[data-testid=errors]')).toBeNull();
   const error = document.querySelector<HTMLElement>('[data-testid=children]')!;
-  expect([error.getAttribute('role'), error.className, error.textContent]).toEqual(['alert', 'cn-field-error font-normal', 'Enter an email.']);
+  expect([error.getAttribute('role'), error.textContent]).toEqual(['alert', 'Enter an email.']);
 });
 
 it('FieldError shows one error as text and drops duplicate messages', () => {
@@ -62,6 +66,22 @@ it('FieldError lists several errors', () => {
 it('FieldError renders nothing when its only error has no message', () => {
   setup([{}]);
   expect(document.querySelector('[data-testid=errors]')).toBeNull();
+});
+
+it('a Field inside Form links its label, description and error to its control through context', () => {
+  instance = mount(FieldContextFixture, { target: document.body });
+  flushSync();
+  const fields = [...document.querySelectorAll<HTMLElement>('[data-slot=field]')];
+  expect(fields.map(field => {
+    const control = field.querySelector('input, textarea, select') as HTMLInputElement;
+    const label = field.querySelector<HTMLLabelElement>('[data-slot=field-label]')!;
+    return [label.control === control, control.name, control.getAttribute('aria-invalid'), field.getAttribute('data-invalid'), describedBy(control)];
+  })).toEqual([
+    [true, 'email', 'true', 'true', ['We send the receipt here.', 'That email is taken.']],
+    [true, 'bio', 'true', 'true', ['Write a little more.']],
+    [true, 'plan', 'true', 'true', ['Pick a paid plan.']],
+  ]);
+  expect(document.querySelector('[data-slot=form-error]')!.textContent).toBe('Signups are closed.');
 });
 
 it('a label card toggles its checkbox, and a description renders anywhere', async () => {

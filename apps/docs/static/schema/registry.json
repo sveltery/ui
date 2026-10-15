@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Sveltery registry manifest",
+  "type": "object",
+  "required": [
+    "name",
+    "registryVersion",
+    "styles",
+    "baseColors",
+    "iconLibraries",
+    "items"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "name": {
+      "const": "sveltery"
+    },
+    "registryVersion": {
+      "const": 1
+    },
+    "styles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "baseColors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "iconLibraries": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "type"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,7 +1,8 @@
 <script lang="ts">
   import { Button } from '@sveltery/ui/button';
   import { Checkbox } from '@sveltery/ui/checkbox';
-  import { Field, FieldContent, FieldDescription, FieldGroup, FieldLabel, FieldLegend, FieldSet, FieldTitle } from '@sveltery/ui/field';
+  import { Field, FieldContent, FieldDescription, FieldError, FieldGroup, FieldItem, FieldLabel, FieldLegend, FieldSet } from '@sveltery/ui/field';
+  import { Form } from '@sveltery/ui/form';
   import { RadioGroup, RadioGroupItem } from '@sveltery/ui/radio-group';
   import { Slider } from '@sveltery/ui/slider';
   import { Switch } from '@sveltery/ui/switch';
@@ -11,49 +12,47 @@
     { value: 'pro', label: 'Pro', description: 'For a growing team.' },
   ];
   let submitted = $state<Record<string, unknown> | null>(null);
-
-  function submit(event: SubmitEvent & { currentTarget: HTMLFormElement }) {
-    event.preventDefault();
-    submitted = Object.fromEntries(new FormData(event.currentTarget));
-  }
 </script>
 
-<form class="w-full max-w-sm" onsubmit={submit}>
+<Form class="w-full max-w-sm" onFormSubmit={(values) => (submitted = values)}>
   <FieldGroup>
-    <FieldSet>
-      <FieldLegend variant="label">Plan</FieldLegend>
-      <RadioGroup name="plan" defaultValue="starter">
-        {#each plans as plan (plan.value)}
-          <FieldLabel for="plan-{plan.value}">
-            <Field orientation="horizontal">
+    <Field name="plan">
+      <FieldSet>
+        <FieldLegend variant="label">Plan</FieldLegend>
+        <RadioGroup defaultValue="starter">
+          {#each plans as plan (plan.value)}
+            <FieldItem>
+              <RadioGroupItem value={plan.value} />
               <FieldContent>
-                <FieldTitle>{plan.label}</FieldTitle>
+                <FieldLabel>{plan.label}</FieldLabel>
                 <FieldDescription>{plan.description}</FieldDescription>
               </FieldContent>
-              <RadioGroupItem value={plan.value} id="plan-{plan.value}" />
-            </Field>
-          </FieldLabel>
-        {/each}
-      </RadioGroup>
-    </FieldSet>
-    <Field>
-      <FieldLabel for="seats">Seats</FieldLabel>
-      <Slider id="seats" name="seats" defaultValue={5} min={1} max={20} />
+            </FieldItem>
+          {/each}
+        </RadioGroup>
+      </FieldSet>
     </Field>
-    <Field orientation="horizontal">
+    <Field name="seats">
+      <FieldLabel>Seats</FieldLabel>
+      <Slider defaultValue={5} min={1} max={20} />
+    </Field>
+    <Field name="newsletter" orientation="horizontal">
       <FieldContent>
-        <FieldLabel for="newsletter">Newsletter</FieldLabel>
+        <FieldLabel>Newsletter</FieldLabel>
         <FieldDescription>Product news once a month.</FieldDescription>
       </FieldContent>
-      <Switch id="newsletter" name="newsletter" />
+      <Switch />
     </Field>
-    <Field orientation="horizontal">
-      <Checkbox id="terms" name="terms" required />
-      <FieldLabel for="terms">Accept the terms</FieldLabel>
+    <Field name="terms" orientation="horizontal" validate={(value) => (value ? null : 'Accept the terms to continue.')}>
+      <Checkbox />
+      <FieldContent>
+        <FieldLabel>Accept the terms</FieldLabel>
+        <FieldError />
+      </FieldContent>
     </Field>
     <Button type="submit">Continue</Button>
     {#if submitted}
       <pre class="text-xs">{JSON.stringify(submitted)}</pre>
     {/if}
   </FieldGroup>
-</form>
+</Form>
