@@ -373,7 +373,7 @@
     "embla-carousel": "8.6.0"
   },
   "devDependencies": {
-    "@sveltery/base": "github:sveltery/base#ba41b2ee4b44f33bf2d1142b01d1c91219ed02dd",
+    "@sveltery/base": "github:sveltery/base#c8416755b95dbe032701a883b7a977bfffa720d4",
     "@sveltery/command": "workspace:*",
     "@sveltery/day-picker": "workspace:*",
     "@sveltery/message-scroller": "workspace:*",
