@@ -22,7 +22,7 @@ export default defineConfig({
       extensions: ['.svelte', '.md'],
       preprocess: [
         mdsvex({ extensions: ['.md'], smartypants: false, remarkPlugins: [headings], highlight: { highlighter: highlightCodeBlock } }),
-        docsComponents({ examples: path('./examples'), ui: path('../../packages/ui/src/lib') }),
+        docsComponents({ examples: path('./examples'), repoRoot: path('../..') }),
       ],
       prerender: { handleHttpError: 'fail', handleMissingId: 'fail' },
     }),
