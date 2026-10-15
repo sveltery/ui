@@ -1,7 +1,22 @@
 {
   "name": "@sveltery/command",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.1.0",
+  "description": "A headless command menu for Svelte 5, ported from cmdk.",
+  "keywords": [
+    "svelte",
+    "svelte5",
+    "sveltery",
+    "command-menu",
+    "command-palette",
+    "cmdk",
+    "headless"
+  ],
+  "homepage": "https://github.com/sveltery/ui/tree/main/packages/command#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sveltery/ui.git",
+    "directory": "packages/command"
+  },
   "type": "module",
   "license": "MIT",
   "files": [
@@ -16,15 +31,21 @@
       "default": "./dist/index.js"
     }
   },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "svelte": "./dist/index.js",
   "scripts": {
     "build": "svelte-package",
-    "check": "svelte-check --tsconfig ./tsconfig.json"
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "prepack": "pnpm run build && publint --strict"
   },
   "peerDependencies": {
     "svelte": "^5.57.1"
   },
   "devDependencies": {
+    "publint": "0.3.25",
     "svelte": "5.57.1"
   }
 }
