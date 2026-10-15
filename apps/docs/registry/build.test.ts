@@ -10,6 +10,10 @@ import { baseColors, styleNames } from './types';
 const repoRoot = fileURLToPath(new URL('../../../', import.meta.url));
 const output = buildRegistry(readRegistryInput(repoRoot, 'https://sveltery.test/'));
 const item = (path: string) => output.get(path) as RegistryItem;
+// Releases bump these, so the expected ranges follow the manifests rather than hard-coding them.
+const ui = JSON.parse(readFileSync(`${repoRoot}packages/ui/package.json`, 'utf8'));
+const BASE = `@sveltery/base@^${ui.peerDependencies['@sveltery/base'].replace(/^\^/, '')}`;
+const HELPER_RANGE = `^${JSON.parse(readFileSync(`${repoRoot}packages/day-picker/package.json`, 'utf8')).version}`;
 const content = (path: string, target: string) => item(path).files.find((file) => file.target === target)!.content;
 
 const NOVA_BUTTON_VARIANTS = `// Adapted from shadcn-ui/ui d75a96ab; MIT: packages/ui/THIRD_PARTY_NOTICES.md.
@@ -79,14 +83,14 @@ describe('buildRegistry', () => {
 describe('items', () => {
   it('lists the npm dependencies of a component with caret ranges and its registry dependencies', () => {
     const button = item('styles/nova/button.json');
-    expect(button.dependencies).toEqual(['@sveltery/base', 'class-variance-authority@^0.7.1', 'cn@^0.2.2']);
+    expect(button.dependencies).toEqual([BASE, 'class-variance-authority@^0.7.1', 'cn@^0.2.2']);
     expect(button).not.toHaveProperty('registryDependencies');
     expect(item('styles/nova/alert-dialog.json').registryDependencies).toEqual(['button']);
     expect(item('styles/nova/sidebar.json').registryDependencies).toEqual(['button', 'input', 'separator', 'shared', 'sheet', 'skeleton', 'tooltip']);
   });
 
   it('gives a helper package its workspace version and an optional peer its peer range', () => {
-    expect(item('styles/nova/calendar.json').dependencies).toEqual(['@sveltery/day-picker@^0.0.0', 'cn@^0.2.2', 'date-fns@^4.4.0']);
+    expect(item('styles/nova/calendar.json').dependencies).toEqual([`@sveltery/day-picker@${HELPER_RANGE}`, 'cn@^0.2.2', 'date-fns@^4.4.0']);
     expect(item('styles/nova/chart.json').dependencies).toEqual(['cn@^0.2.2', 'layerchart@^2.7.0']);
   });
 
@@ -104,7 +108,7 @@ describe('items', () => {
       name: 'alert-dialog',
       type: 'registry:ui',
       title: 'Alert Dialog',
-      dependencies: ['@sveltery/base', 'cn@^0.2.2'],
+      dependencies: [BASE, 'cn@^0.2.2'],
       registryDependencies: ['button'],
     });
     expect(files.map((file) => [file.type, file.target]).slice(0, 2)).toEqual([['registry:ui', 'alert-dialog/AlertDialogAction.svelte'], ['registry:ui', 'alert-dialog/AlertDialogCancel.svelte']]);
