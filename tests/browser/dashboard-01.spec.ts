@@ -29,10 +29,12 @@ const pageLabel = (page: Page) => page.getByText(/^Page \d+ of \d+$/);
 
 const tooltip = (page: Page) => texts(page.locator('[data-slot=chart] .lc-tooltip-root'));
 
-/** The tooltip of the first day the chart shows, read by focusing the chart and pressing Home. */
-async function firstDay(page: Page) {
-  await page.locator('[data-slot=chart]').first().focus();
-  await page.keyboard.press('Home');
+/** The tooltip of the first or last day the chart shows, read by hovering the edge of the plot. */
+async function day(page: Page, edge: 'first' | 'last') {
+  const area = page.locator('[data-slot=chart] path.lc-area-path').first();
+  await area.scrollIntoViewIfNeeded();
+  const plot = (await area.boundingBox())!;
+  await page.mouse.move(edge === 'first' ? plot.x + 1 : plot.x + plot.width - 1, plot.y + plot.height / 2);
   return tooltip(page);
 }
 
@@ -73,16 +75,15 @@ test('the time range toggle group changes the days the chart shows', async ({ pa
   const ranges = page.locator('[data-slot=toggle-group-item]');
   await expect(ranges).toHaveText(['Last 3 months', 'Last 30 days', 'Last 7 days']);
   await expect(ranges.first()).toHaveAttribute('aria-pressed', 'true');
-  await expect.poll(() => firstDay(page)).toEqual(['Apr 1 Desktop 222 Mobile 150']);
+  await expect.poll(() => day(page, 'first')).toEqual(['Apr 1 Desktop 222 Mobile 150']);
 
   await page.getByRole('button', { name: 'Last 7 days' }).click();
   await expect(ranges.last()).toHaveAttribute('aria-pressed', 'true');
-  await expect.poll(() => firstDay(page)).toEqual(['Jun 23 Desktop 480 Mobile 530']);
-  await page.keyboard.press('End');
-  await expect.poll(() => tooltip(page)).toEqual(['Jun 30 Desktop 446 Mobile 400']);
+  await expect.poll(() => day(page, 'first')).toEqual(['Jun 23 Desktop 480 Mobile 530']);
+  await expect.poll(() => day(page, 'last')).toEqual(['Jun 30 Desktop 446 Mobile 400']);
 
   await page.getByRole('button', { name: 'Last 30 days' }).click();
-  await expect.poll(() => firstDay(page)).toEqual(['May 31 Desktop 178 Mobile 230']);
+  await expect.poll(() => day(page, 'first')).toEqual(['May 31 Desktop 178 Mobile 230']);
 });
 
 test('on a phone the chart starts on the last 7 days and the select changes the range', async ({ page }) => {
@@ -91,12 +92,12 @@ test('on a phone the chart starts on the last 7 days and the select changes the 
   await expect(page.locator('[data-slot=toggle-group]')).toBeHidden();
   const select = page.getByRole('combobox', { name: 'Select a value' });
   await expect(select).toHaveText('Last 7 days');
-  await expect.poll(() => firstDay(page)).toEqual(['Jun 23 Desktop 480 Mobile 530']);
+  await expect.poll(() => day(page, 'first')).toEqual(['Jun 23 Desktop 480 Mobile 530']);
 
   await select.click();
   await page.getByRole('option', { name: 'Last 30 days' }).click();
   await expect(select).toHaveText('Last 30 days');
-  await expect.poll(() => firstDay(page)).toEqual(['May 31 Desktop 178 Mobile 230']);
+  await expect.poll(() => day(page, 'first')).toEqual(['May 31 Desktop 178 Mobile 230']);
 });
 
 test('the pager moves through the pages and the page size keeps the first row in view', async ({ page }) => {

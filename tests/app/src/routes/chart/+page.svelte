@@ -1,6 +1,6 @@
 <script lang="ts">
   import { ArcChart, BarChart, PieChart } from 'layerchart';
-  import { ChartContainer, ChartLegend, ChartTooltip, type ChartConfig } from '@sveltery/ui/chart';
+  import { ChartContainer, ChartLegend, ChartTooltip, type ChartConfig, type ChartTooltipFormatterArgs, type ChartTooltipProps } from '@sveltery/ui/chart';
 
   const months = [
     { month: 'January', desktop: 186, mobile: 80 },
@@ -23,10 +23,31 @@
     safari: { label: 'Safari', color: 'rgb(168, 85, 247)' },
     firefox: { label: 'Firefox', color: 'rgb(249, 115, 22)' }
   } satisfies ChartConfig;
+
+  const twoMonths = months.slice(0, 2);
+  const series = [
+    { key: 'desktop', label: 'Desktop' },
+    { key: 'mobile', label: 'Mobile' }
+  ];
+  type Case = { id: string; style?: string; data: Record<string, unknown>[]; x?: string; series?: { key: string; label?: string }[]; config?: ChartConfig; tooltip?: ChartTooltipProps };
+  const cases: Case[] = [
+    { id: 'gaps', data: [{ month: 'January', desktop: 186, mobile: null }, months[1]] },
+    { id: 'zero', data: [{ day: 0, desktop: 186, mobile: 80 }, { day: 1, desktop: 305, mobile: 200 }], x: 'day' },
+    { id: 'dates', data: twoMonths.map((row, index) => ({ ...row, date: new Date(Date.UTC(2024, index, 1)) })), x: 'date' },
+    { id: 'formatted', data: twoMonths, tooltip: { labelFormatter: () => 0 } },
+    { id: 'unnamed', data: twoMonths, series: [{ key: 'desktop', label: '' }, series[1]], tooltip: { formatter: valueOnly } },
+    { id: 'unlisted', data: twoMonths.map((row) => ({ ...row, tablet: 50 })), series: [series[0], { key: 'tablet' }] },
+    { id: 'luma', data: twoMonths, style: 'style-luma' },
+    { id: 'plain', data: twoMonths, config: { desktop: { label: 'Desktop' }, mobile: { label: 'Mobile' } } }
+  ];
 </script>
 
+{#snippet valueOnly({ name, value }: ChartTooltipFormatterArgs)}
+  {name}={value}
+{/snippet}
+
 <div id="wrapper" style="width: 600px">
-  <ChartContainer id="bars" config={monthsConfig} aria-label="Visitors by month">
+  <ChartContainer id="bars" config={monthsConfig}>
     <BarChart
       data={months}
       x="month"
@@ -82,3 +103,18 @@
     </ArcChart>
   </ChartContainer>
 </div>
+
+{#each cases as c (c.id)}
+  <div class={c.style} style="width: 400px">
+    <ChartContainer id={c.id} config={c.config ?? monthsConfig}>
+      <BarChart data={c.data} x={c.x ?? 'month'} axis="x" rule={false} seriesLayout="group" series={c.series ?? series}>
+        {#snippet tooltip()}
+          <ChartTooltip {...c.tooltip} />
+        {/snippet}
+        {#snippet legend()}
+          <ChartLegend />
+        {/snippet}
+      </BarChart>
+    </ChartContainer>
+  </div>
+{/each}

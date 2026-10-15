@@ -21,7 +21,7 @@ export type ChartTooltipFormatterArgs = {
   value: unknown;
 };
 
-export type ChartTooltipContentProps = Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'color'> & {
+export type ChartTooltipContentProps = Pick<HTMLAttributes<HTMLDivElement>, 'class'> & {
   hideLabel?: boolean;
   hideIndicator?: boolean;
   indicator?: 'dot' | 'line' | 'dashed';
@@ -45,7 +45,7 @@ export type ChartTooltipProps = ChartTooltipContentProps & {
   children?: Snippet<[{ data: ChartRow }]>;
 };
 
-export type ChartLegendContentProps = HTMLAttributes<HTMLDivElement> & {
+export type ChartLegendContentProps = Pick<HTMLAttributes<HTMLDivElement>, 'class'> & {
   hideIcon?: boolean;
   /** Data field naming each legend item, for charts whose items are rows (pie, radial) instead of series. */
   nameKey?: string;

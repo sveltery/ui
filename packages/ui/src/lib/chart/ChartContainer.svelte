@@ -2,13 +2,14 @@
   import { on } from 'svelte/events';
   import { cn } from 'cn';
   import type { ChartState } from 'layerchart';
+  import ChartStyle from './ChartStyle.svelte';
   import { setChartContainer, type ChartRow } from './context.js';
   import type { ChartContainerProps } from './types.js';
 
   const uid = $props.id();
-  let { config, class: classProp, children, ...props }: ChartContainerProps = $props();
+  let { id, config, class: classProp, children, ...props }: ChartContainerProps = $props();
 
-  const chartId = $derived(`chart-${props.id ?? uid}`);
+  const chartId = $derived(`chart-${id ?? uid}`);
   let tooltipChart = $state.raw<ChartState<ChartRow>>();
 
   setChartContainer({
@@ -21,16 +22,6 @@
         if (tooltipChart === chart) tooltipChart = undefined;
       };
     },
-  });
-
-  const entries = $derived(Object.entries(config));
-  const css = $derived.by(() => {
-    const light = entries.flatMap(([key, item]) => {
-      const color = item.theme?.light ?? item.color;
-      return color ? [`--color-${key}: ${color};`] : [];
-    });
-    const dark = entries.flatMap(([key, item]) => (item.theme ? [`--color-${key}: ${item.theme.dark};`] : []));
-    return `[data-chart=${chartId}] { ${light.join(' ')} }\n.dark [data-chart=${chartId}] { ${dark.join(' ')} }`;
   });
 
   // LayerChart has no keyboard tooltip. The container steps through the chart's rows and shows each one through the chart's tooltip.
@@ -69,7 +60,7 @@
   role={tooltipChart ? 'application' : undefined}
   aria-roledescription={tooltipChart ? 'chart' : undefined}
   class={cn(
-    'PortalTarget flex aspect-video justify-center text-xs focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-hidden',
+    'cn-chart PortalTarget flex aspect-video justify-center text-xs focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-hidden',
     '[&_.lc-bar]:stroke-transparent [&_.lc-line]:stroke-border/50 [&_.lc-axis-tick]:stroke-0 [&_.lc-rule-y-line:not(.lc-grid-y-rule)]:stroke-0',
     '[&_.lc-highlight-point]:stroke-transparent [&_.lc-highlight-line]:stroke-0',
     '[&_.lc-text]:text-xs [&_text]:stroke-transparent [&_.lc-axis-tick-label]:fill-muted-foreground',
@@ -79,6 +70,6 @@
   {...props}
   {@attach keyboard}
 >
-  <svelte:element this={'style'}>{css}</svelte:element>
+  <ChartStyle id={chartId} {config} />
   {@render children?.()}
 </div>
