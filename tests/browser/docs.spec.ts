@@ -91,3 +91,18 @@ test('the Input Form example labels each control and describes the email field',
   await expect(form.getByRole('button', { name: 'Cancel' })).toBeVisible();
   await expect(form.getByRole('button', { name: 'Submit' })).toBeVisible();
 });
+
+test('ComponentSource shows the code that sveltery add writes', async ({ page }) => {
+  await visit(page, '/docs/components/select', 30_000);
+  const source = page.locator('[data-slot=component-source]');
+  await expect(source).toContainText("import CheckIcon from '@lucide/svelte/icons/check';");
+  await expect(source).not.toContainText('cn-select-item');
+  await expect(source).not.toContainText('IconPlaceholder');
+});
+
+test('the registry serves each style item as JSON', async ({ request }) => {
+  const response = await request.get('/r/styles/nova/button.json');
+  expect(response.headers()['content-type']).toBe('application/json');
+  const item = await response.json();
+  expect([item.name, item.type, item.files.map((file: { target: string }) => file.target)]).toEqual(['button', 'registry:ui', ['button/Button.svelte', 'button/index.ts', 'button/types.ts', 'button/variants.ts']]);
+});

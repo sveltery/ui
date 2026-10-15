@@ -1,7 +1,15 @@
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { dirname, extname, join, relative } from 'node:path';
 import type { PreprocessorGroup } from 'svelte/compiler';
+import { applyTransforms, type TransformContext } from '../../../packages/cli/src/transforms';
+import { buildRegistry } from '../registry/build';
+import { readRegistryInput } from '../registry/read';
+import type { RegistryItem, RegistryOutput } from '../registry/types';
 import { highlight, packageManagerCommands, parseMeta } from './highlight';
+
+/** The Code view shows what `npx sveltery init -y` then `add` writes: the nova style with Lucide icons. */
+const SOURCE_STYLE = 'nova';
+const SOURCE_CONFIG: TransformContext = { iconLibrary: 'lucide', fontHeading: false };
 
 /** Components every markdown page can use without importing them, like upstream's mdx-components map. */
 const GLOBAL_COMPONENTS = ['CodeBlock', 'ComponentPreview', 'ComponentSource', 'ComponentsList', 'Callout', 'Steps'];
@@ -32,7 +40,9 @@ export async function highlightCodeBlock(code: string, lang: string | null | und
  * Runs after mdsvex on `.md` pages. It imports the docs components a page uses, and resolves
  * `<ComponentPreview name>` and `<ComponentSource name>` into components plus highlighted source at build time.
  */
-export function docsComponents({ examples, ui }: { examples: string; ui: string }): PreprocessorGroup {
+export function docsComponents({ examples, repoRoot }: { examples: string; repoRoot: string }): PreprocessorGroup {
+  let built: RegistryOutput | undefined;
+  const registry = () => (built ??= buildRegistry(readRegistryInput(repoRoot, 'http://localhost')));
   return {
     name: 'docs-components',
     async markup({ content, filename }) {
@@ -53,18 +63,13 @@ export function docsComponents({ examples, ui }: { examples: string; ui: string 
 
       code = await replaceAsync(code, /<ComponentSource\b([^>]*?)\s*\/>/g, async (_tag, attrs) => {
         const name = attribute(attrs, 'name');
-        const dir = join(ui, name ?? '');
-        if (!name || !existsSync(dir)) throw new Error(`${filename}: ComponentSource "${name}" not found at ${dir}`);
-        const names = readdirSync(dir).filter((file) => LANGUAGES[extname(file)]);
-        const sources = names.map((file) => readFileSync(join(dir, file), 'utf8'));
-        // `../shared/*` helpers are copied with the component. Other `../<folder>` imports are components it needs.
-        const imports = [...new Set(sources.flatMap((raw) => [...raw.matchAll(/from '\.\.\/([^/']+)\/([^']+)'/g)].map((match) => `${match[1]}/${match[2]}`)))];
-        const shared = imports.filter((path) => path.startsWith('shared/')).map((path) => ({ path, raw: readFileSync(join(ui, path.replace(/\.js$/, existsSync(join(ui, path)) ? '.js' : '.ts')), 'utf8') }));
-        const requires = [...new Set(imports.filter((path) => !path.startsWith('shared/')).map((path) => path.split('/')[0]))].sort();
-        const entries = [
-          ...names.map((file, i) => ({ title: `src/lib/components/ui/${name}/${file}`, raw: sources[i], lang: LANGUAGES[extname(file)] })),
-          ...shared.map(({ path, raw }) => ({ title: `src/lib/components/ui/${path}`, raw, lang: 'js' })),
-        ].sort((a, b) => Number(a.title.endsWith('index.ts')) - Number(b.title.endsWith('index.ts')));
+        const item = name ? registry().get(`styles/${SOURCE_STYLE}/${name}.json`) : undefined;
+        if (!item || !('files' in item)) throw new Error(`${filename}: ComponentSource "${name}" is not a registry item`);
+        const requires = (item.registryDependencies ?? []).filter((dependency) => dependency !== 'shared');
+        const shared = item.registryDependencies?.includes('shared') ? (registry().get(`styles/${SOURCE_STYLE}/shared.json`) as RegistryItem).files : [];
+        const entries = [...item.files, ...shared]
+          .map((file) => ({ title: `src/lib/components/ui/${file.target}`, raw: applyTransforms(file, SOURCE_CONFIG).content, lang: LANGUAGES[extname(file.target)] ?? 'text' }))
+          .sort((a, b) => Number(a.title.endsWith('index.ts')) - Number(b.title.endsWith('index.ts')));
         const files = await Promise.all(entries.map(async ({ title, raw, lang }) => ({ title, raw, html: await highlight(raw, lang, { title }) })));
         return `<ComponentSource${attrs} files={${literal(files)}} requires={${literal(requires)}} />`;
       });
