@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 import { log } from '@clack/prompts';
 import { Command } from 'commander';
 import { add } from './commands/add.js';
+import { diff } from './commands/diff.js';
 import { init } from './commands/init.js';
 import { CliError } from './parse.js';
 import { version } from './version.js';
@@ -32,6 +33,13 @@ program
   .option('--no-install', 'do not install packages')
   .option('--cwd <path>', 'the project root', '.')
   .action(async (items: string[], options) => void (await add(items, { ...options, cwd: resolve(options.cwd) })));
+
+program
+  .command('diff')
+  .description('show how the registry versions of installed items differ from your files')
+  .argument('[items...]', 'item names; every installed item when omitted')
+  .option('--cwd <path>', 'the project root', '.')
+  .action(async (items: string[], options) => void (await diff(items, { cwd: resolve(options.cwd) })));
 
 try {
   await program.parseAsync();

@@ -1,6 +1,7 @@
 import { spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
+import { FILE_HEADERS_ONLY, formatPatch, structuredPatch } from 'diff';
 import { detect, resolveCommand } from 'package-manager-detector';
 import { CliError } from './parse.js';
 import { declaredPackages } from './project.js';
@@ -15,6 +16,12 @@ export function planFile(cwd: string, path: string, content: string): PlannedFil
   const absolute = join(cwd, path);
   if (!existsSync(absolute)) return { path, content, status: 'new' };
   return { path, content, status: readFileSync(absolute, 'utf8') === content ? 'identical' : 'changed' };
+}
+
+/** The unified diff from the project's copy of a `changed` file to the registry's version, with `a/` and `b/` headers. */
+export function filePatch(cwd: string, file: PlannedFile): string {
+  const path = file.path.replaceAll('\\', '/');
+  return formatPatch(structuredPatch(`a/${path}`, `b/${path}`, readFileSync(join(cwd, file.path), 'utf8'), file.content, '', '', { context: 3 }), FILE_HEADERS_ONLY);
 }
 
 /** `@scope/name@^1.0.0` → `@scope/name`. */

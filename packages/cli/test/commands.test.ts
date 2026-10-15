@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, test } from 'vitest';
 import { add } from '../src/commands/add.js';
+import { diff } from '../src/commands/diff.js';
 import { baseDependencies, init } from '../src/commands/init.js';
 
 const button = `<script lang="ts">
@@ -221,5 +222,67 @@ describe('add', () => {
     await expect(add([`${registryUrl}/styles/nova/evil.json`], options())).rejects.toThrow(
       `${registryUrl}/styles/nova/evil.json is not a valid registry response. files[0].target: expected a relative path without ".." segments, got "../../../../escape.js"`,
     );
+  });
+});
+
+describe('diff', () => {
+  const addOptions = { ...defaults, overwrite: false, all: false, dryRun: false };
+  const buttonPath = 'src/lib/components/ui/button/Button.svelte';
+  const titlePath = 'src/lib/components/ui/dialog/DialogTitle.svelte';
+  beforeEach(async () => {
+    await init({ cwd, ...defaults });
+    await add(['button', 'dialog'], { cwd, ...addOptions });
+  });
+  const editButton = () => writeFileSync(join(cwd, buttonPath), read(buttonPath).replace('px-2.5', 'px-4'));
+
+  test('prints a unified diff from your file to the registry version, and writes nothing', async () => {
+    editButton();
+    const edited = read(buttonPath);
+    expect(await diff([], { cwd })).toBe(`--- a/src/lib/components/ui/button/Button.svelte
++++ b/src/lib/components/ui/button/Button.svelte
+@@ -2,4 +2,4 @@
+   import ChevronRightIcon from '@lucide/svelte/icons/chevron-right';
+   let { children } = $props();
+ </script>
+-<button class="px-4">{@render children?.()}<ChevronRightIcon /></button>
++<button class="px-2.5">{@render children?.()}<ChevronRightIcon /></button>
+
+1 file differs in 1 item`);
+    expect(read(buttonPath)).toBe(edited);
+  });
+
+  test('counts the files and items that differ, and a named item limits the diff to itself and its dependencies', async () => {
+    editButton();
+    writeFileSync(join(cwd, titlePath), 'mine\n');
+    expect((await diff([], { cwd })).split('\n').at(-1)).toBe('2 files differ in 2 items');
+    const output = await diff(['button'], { cwd });
+    expect([output.includes(titlePath), output.split('\n').at(-1)]).toEqual([false, '1 file differs in 1 item']);
+  });
+
+  test('says when nothing differs', async () => {
+    expect(await diff([], { cwd })).toBe('Everything is up to date.');
+  });
+
+  test('mentions registry files that are missing from the project', async () => {
+    rmSync(join(cwd, 'src/lib/components/ui/shared/render.ts'));
+    expect(await diff([], { cwd })).toBe('1 file in the registry is not in your project yet. `sveltery update` adds it.');
+  });
+
+  test('skips shared unless an installed item needs it', async () => {
+    rmSync(join(cwd, 'src/lib/components/ui/dialog'), { recursive: true });
+    writeFileSync(join(cwd, 'src/lib/components/ui/shared/render.ts'), 'mine\n');
+    expect(await diff([], { cwd })).toBe('Everything is up to date.');
+  });
+
+  test('errors on an item that is not installed, not in the registry, or a URL', async () => {
+    rmSync(join(cwd, 'src/lib/components/ui/dialog'), { recursive: true });
+    await expect(diff(['dialog'], { cwd })).rejects.toThrow('dialog is not installed. Run `sveltery add dialog` first.');
+    await expect(diff(['buton'], { cwd })).rejects.toThrow('Not in the registry: buton.');
+    await expect(diff([`${registryUrl}/styles/nova/button.json`], { cwd })).rejects.toThrow('URLs only work with `add`.');
+  });
+
+  test('says so when no item is installed', async () => {
+    rmSync(join(cwd, 'src/lib'), { recursive: true });
+    expect(await diff([], { cwd })).toBe('No items are installed. Add one with `sveltery add button`.');
   });
 });
