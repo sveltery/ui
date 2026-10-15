@@ -21,8 +21,11 @@ describe('inlineStyle', () => {
     );
   });
 
-  it('escapes the quote of a single-quoted string when a utility holds it', () => {
-    expect(inline('x/v.ts', `export const v = 'cn-b';`)).toBe(`export const v = 'bg-red-500 [&_svg:not([class*=\\'size-\\'])]:size-4';`);
+  it('writes a string with the other quote when a utility holds its quote, and escapes when both appear', () => {
+    expect(inline('x/v.ts', `export const v = 'cn-b';`)).toBe(`export const v = "bg-red-500 [&_svg:not([class*='size-'])]:size-4";`);
+    expect(inline('x/v.ts', `export const v = 'cn-a [&_[title="x"]]:flex [&_[title=\\'y\\']]:flex';`)).toBe(
+      `export const v = 'p-2 text-sm [&_[title="x"]]:flex [&_[title=\\'y\\']]:flex';`,
+    );
   });
 
   it('keeps markers in place after the style utilities and drops other cn-* tokens', () => {

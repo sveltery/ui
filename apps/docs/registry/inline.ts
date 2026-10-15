@@ -29,7 +29,10 @@ function encode(classes: string, { kind, quote }: ClassLiteral, path: string) {
     return classes;
   }
   if (quote === '`') return '`' + classes.replace(/[\\`]|\$\{/g, '\\$&') + '`';
-  return quote + classes.replaceAll('\\', '\\\\').replaceAll(quote, `\\${quote}`) + quote;
+  // A utility such as `[&_svg:not([class*='size-'])]:size-4` holds a quote, so swap to the other one when that avoids escaping.
+  const other = quote === "'" ? '"' : "'";
+  const chosen = classes.includes(quote) && !classes.includes(other) ? other : quote;
+  return chosen + classes.replaceAll('\\', '\\\\').replaceAll(chosen, `\\${chosen}`) + chosen;
 }
 
 /**
