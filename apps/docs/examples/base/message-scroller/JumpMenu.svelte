@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { buttonVariants } from '@sveltery/ui/button';
+  import { Button } from '@sveltery/ui/button';
   import { useMessageScroller } from '@sveltery/ui/message-scroller';
   import { Popover, PopoverContent, PopoverTrigger } from '@sveltery/ui/popover';
   import type { ChatMessage } from './chat.svelte.js';
@@ -10,7 +10,10 @@
 </script>
 
 <Popover>
-  <PopoverTrigger class={buttonVariants({ variant: 'secondary' })}>Jump to...</PopoverTrigger>
+  <PopoverTrigger>
+    {#snippet render(props, _state, content)}<Button variant="secondary" {...props}>{@render content?.()}</Button>{/snippet}
+    Jump to...
+  </PopoverTrigger>
   <PopoverContent align="end" class="flex w-64 flex-col gap-1 p-1">
     <span class="px-2 py-1.5 text-xs text-muted-foreground">Conversations</span>
     {#each messages as message (message.id)}

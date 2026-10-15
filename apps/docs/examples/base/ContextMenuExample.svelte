@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { buttonVariants } from '@sveltery/ui/button';
+  import { Button } from '@sveltery/ui/button';
   import {
     ContextMenu,
     ContextMenuCheckboxItem,
@@ -306,7 +306,10 @@
 {#snippet ContextMenuInDialog()}
   <Example title="In Dialog">
     <Dialog>
-      <DialogTrigger class={buttonVariants({ variant: 'outline' })}>Open Dialog</DialogTrigger>
+      <DialogTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+        Open Dialog
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Context Menu Example</DialogTitle>

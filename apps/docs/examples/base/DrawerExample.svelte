@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button, buttonVariants } from '@sveltery/ui/button';
+  import { Button } from '@sveltery/ui/button';
   import {
     Drawer,
     DrawerClose,
@@ -30,7 +30,6 @@
   const DRAWER_SIDES = ['up', 'right', 'down', 'left'] as const;
   const SNAP_POINTS = ['31rem', 1];
   const panel = 'bg-muted group-data-[swipe-axis=x]/drawer-popup:size-full group-data-[swipe-axis=y]/drawer-popup:h-80 group-data-[swipe-axis=y]/drawer-popup:w-full';
-  const outline = buttonVariants({ variant: 'outline' });
 </script>
 
 {#snippet paragraphs(length: number)}
@@ -43,7 +42,10 @@
   <Example title="Demo">
     <div class="flex flex-wrap gap-2">
       <Drawer>
-        <DrawerTrigger class={outline}>Open Drawer</DrawerTrigger>
+        <DrawerTrigger>
+          {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+          Open Drawer
+        </DrawerTrigger>
         <DrawerContent>
           <div class="p-4">
             <div class="h-80 w-full bg-muted"></div>
@@ -51,31 +53,10 @@
         </DrawerContent>
       </Drawer>
       <Drawer>
-        <DrawerTrigger class={outline}>Header</DrawerTrigger>
-        <DrawerContent>
-          <DrawerHeader>
-            <DrawerTitle>Edit profile</DrawerTitle>
-            <DrawerDescription>Make changes to your profile here. Click save when you&apos;re done.</DrawerDescription>
-          </DrawerHeader>
-          <div class="p-4">
-            <div class="h-80 w-full bg-muted"></div>
-          </div>
-        </DrawerContent>
-      </Drawer>
-      <Drawer>
-        <DrawerTrigger class={outline}>Footer</DrawerTrigger>
-        <DrawerContent>
-          <div class="p-4">
-            <div class="h-80 w-full bg-muted"></div>
-          </div>
-          <DrawerFooter>
-            <Button>Submit</Button>
-            <DrawerClose class={outline}>Cancel</DrawerClose>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
-      <Drawer>
-        <DrawerTrigger class={outline}>Header and Footer</DrawerTrigger>
+        <DrawerTrigger>
+          {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+          Header
+        </DrawerTrigger>
         <DrawerContent>
           <DrawerHeader>
             <DrawerTitle>Edit profile</DrawerTitle>
@@ -84,14 +65,53 @@
           <div class="p-4">
             <div class="h-80 w-full bg-muted"></div>
           </div>
+        </DrawerContent>
+      </Drawer>
+      <Drawer>
+        <DrawerTrigger>
+          {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+          Footer
+        </DrawerTrigger>
+        <DrawerContent>
+          <div class="p-4">
+            <div class="h-80 w-full bg-muted"></div>
+          </div>
           <DrawerFooter>
             <Button>Submit</Button>
-            <DrawerClose class={outline}>Cancel</DrawerClose>
+            <DrawerClose>
+              {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+              Cancel
+            </DrawerClose>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
       <Drawer>
-        <DrawerTrigger class={outline}>Edge to Edge</DrawerTrigger>
+        <DrawerTrigger>
+          {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+          Header and Footer
+        </DrawerTrigger>
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>Edit profile</DrawerTitle>
+            <DrawerDescription>Make changes to your profile here. Click save when you&apos;re done.</DrawerDescription>
+          </DrawerHeader>
+          <div class="p-4">
+            <div class="h-80 w-full bg-muted"></div>
+          </div>
+          <DrawerFooter>
+            <Button>Submit</Button>
+            <DrawerClose>
+              {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+              Cancel
+            </DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+      <Drawer>
+        <DrawerTrigger>
+          {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+          Edge to Edge
+        </DrawerTrigger>
         <DrawerContent>
           <div class="h-80 w-full bg-blue-200"></div>
         </DrawerContent>
@@ -105,7 +125,10 @@
     <div class="flex flex-wrap gap-2">
       {#each DRAWER_SIDES as side (side)}
         <Drawer swipeDirection={side} showSwipeHandle>
-          <DrawerTrigger class={buttonVariants({ variant: 'outline', class: 'capitalize' })}>{side}</DrawerTrigger>
+          <DrawerTrigger>
+            {#snippet render(props, _state, content)}<Button variant="outline" class="capitalize" {...props}>{@render content?.()}</Button>{/snippet}
+            {side}
+          </DrawerTrigger>
           <DrawerContent>
             <DrawerHeader>
               <DrawerTitle class="capitalize">Drawer</DrawerTitle>
@@ -126,7 +149,10 @@
     <div class="flex flex-wrap gap-2">
       {#each DRAWER_SIDES as side (side)}
         <Drawer swipeDirection={side}>
-          <DrawerTrigger class={buttonVariants({ variant: 'outline', class: 'capitalize' })}>{side}</DrawerTrigger>
+          <DrawerTrigger>
+            {#snippet render(props, _state, content)}<Button variant="outline" class="capitalize" {...props}>{@render content?.()}</Button>{/snippet}
+            {side}
+          </DrawerTrigger>
           <DrawerContent>
             <DrawerHeader>
               <DrawerTitle>Move Goal</DrawerTitle>
@@ -137,7 +163,10 @@
             </div>
             <DrawerFooter>
               <Button>Submit</Button>
-              <DrawerClose class={outline}>Cancel</DrawerClose>
+              <DrawerClose>
+                {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+                Cancel
+              </DrawerClose>
             </DrawerFooter>
           </DrawerContent>
         </Drawer>
@@ -150,7 +179,10 @@
   <Example title="Custom Width and Height">
     <div class="flex flex-wrap gap-2">
       <Drawer swipeDirection="down">
-        <DrawerTrigger class={outline}>Down</DrawerTrigger>
+        <DrawerTrigger>
+          {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+          Down
+        </DrawerTrigger>
         <DrawerContent class="data-[swipe-direction=down]:h-64">
           <DrawerHeader>
             <DrawerTitle>Down drawer</DrawerTitle>
@@ -160,12 +192,18 @@
             {@render paragraphs(10)}
           </div>
           <DrawerFooter>
-            <DrawerClose class={outline}>Close</DrawerClose>
+            <DrawerClose>
+              {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+              Close
+            </DrawerClose>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
       <Drawer swipeDirection="up">
-        <DrawerTrigger class={outline}>Up</DrawerTrigger>
+        <DrawerTrigger>
+          {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+          Up
+        </DrawerTrigger>
         <DrawerContent class="data-[swipe-direction=up]:h-[50vh]">
           <DrawerHeader>
             <DrawerTitle>Up drawer</DrawerTitle>
@@ -175,12 +213,18 @@
             {@render paragraphs(10)}
           </div>
           <DrawerFooter>
-            <DrawerClose class={outline}>Close</DrawerClose>
+            <DrawerClose>
+              {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+              Close
+            </DrawerClose>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
       <Drawer swipeDirection="left">
-        <DrawerTrigger class={outline}>Left</DrawerTrigger>
+        <DrawerTrigger>
+          {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+          Left
+        </DrawerTrigger>
         <DrawerContent class="data-[swipe-direction=left]:w-xl">
           <DrawerHeader>
             <DrawerTitle>Left drawer</DrawerTitle>
@@ -190,12 +234,18 @@
             {@render paragraphs(10)}
           </div>
           <DrawerFooter>
-            <DrawerClose class={outline}>Close</DrawerClose>
+            <DrawerClose>
+              {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+              Close
+            </DrawerClose>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
       <Drawer swipeDirection="right">
-        <DrawerTrigger class={outline}>Right</DrawerTrigger>
+        <DrawerTrigger>
+          {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+          Right
+        </DrawerTrigger>
         <DrawerContent class="data-[swipe-direction=right]:w-xs">
           <DrawerHeader>
             <DrawerTitle>Right drawer</DrawerTitle>
@@ -205,7 +255,10 @@
             {@render paragraphs(10)}
           </div>
           <DrawerFooter>
-            <DrawerClose class={outline}>Close</DrawerClose>
+            <DrawerClose>
+              {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+              Close
+            </DrawerClose>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
@@ -218,7 +271,10 @@
     <div class="flex flex-wrap gap-2">
       {#each DRAWER_SIDES as side (side)}
         <Drawer swipeDirection={side}>
-          <DrawerTrigger class={buttonVariants({ variant: 'outline', class: 'capitalize' })}>{side}</DrawerTrigger>
+          <DrawerTrigger>
+            {#snippet render(props, _state, content)}<Button variant="outline" class="capitalize" {...props}>{@render content?.()}</Button>{/snippet}
+            {side}
+          </DrawerTrigger>
           <DrawerContent>
             <DrawerHeader>
               <DrawerTitle>Move Goal</DrawerTitle>
@@ -229,7 +285,10 @@
             </div>
             <DrawerFooter>
               <Button>Submit</Button>
-              <DrawerClose class={outline}>Cancel</DrawerClose>
+              <DrawerClose>
+                {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+                Cancel
+              </DrawerClose>
             </DrawerFooter>
           </DrawerContent>
         </Drawer>
@@ -241,7 +300,10 @@
 {#snippet DrawerSnapPoints()}
   <Example title="Snap Points">
     <Drawer snapPoints={SNAP_POINTS} showSwipeHandle>
-      <DrawerTrigger class={outline}>Open Snap Drawer</DrawerTrigger>
+      <DrawerTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+        Open Snap Drawer
+      </DrawerTrigger>
       <DrawerContent class="max-h-[calc(100dvh-1rem)]">
         <DrawerHeader>
           <DrawerTitle>Snap points</DrawerTitle>
@@ -262,7 +324,10 @@
     <div class="flex flex-wrap gap-2">
       {#each DRAWER_SIDES as side (side)}
         <Drawer swipeDirection={side} showSwipeHandle>
-          <DrawerTrigger class={buttonVariants({ variant: 'outline', class: 'capitalize' })}>{side}</DrawerTrigger>
+          <DrawerTrigger>
+            {#snippet render(props, _state, content)}<Button variant="outline" class="capitalize" {...props}>{@render content?.()}</Button>{/snippet}
+            {side}
+          </DrawerTrigger>
           <DrawerContent>
             <DrawerHeader>
               <DrawerTitle class="capitalize">{side} drawer</DrawerTitle>
@@ -273,7 +338,10 @@
             </div>
             <DrawerFooter>
               <Drawer swipeDirection={side}>
-                <DrawerTrigger class={buttonVariants()}>Open nested drawer</DrawerTrigger>
+                <DrawerTrigger>
+                  {#snippet render(props, _state, content)}<Button {...props}>{@render content?.()}</Button>{/snippet}
+                  Open nested drawer
+                </DrawerTrigger>
                 <DrawerContent>
                   <DrawerHeader>
                     <DrawerTitle>Nested drawer</DrawerTitle>
@@ -284,7 +352,10 @@
                   </div>
                   <DrawerFooter>
                     <Drawer swipeDirection={side}>
-                      <DrawerTrigger class={buttonVariants()}>Open third drawer</DrawerTrigger>
+                      <DrawerTrigger>
+                        {#snippet render(props, _state, content)}<Button {...props}>{@render content?.()}</Button>{/snippet}
+                        Open third drawer
+                      </DrawerTrigger>
                       <DrawerContent>
                         <DrawerHeader>
                           <DrawerTitle>Third drawer</DrawerTitle>
@@ -294,15 +365,24 @@
                           <div class={panel}></div>
                         </div>
                         <DrawerFooter>
-                          <DrawerClose class={outline}>Close</DrawerClose>
+                          <DrawerClose>
+                            {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+                            Close
+                          </DrawerClose>
                         </DrawerFooter>
                       </DrawerContent>
                     </Drawer>
-                    <DrawerClose class={outline}>Close</DrawerClose>
+                    <DrawerClose>
+                      {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+                      Close
+                    </DrawerClose>
                   </DrawerFooter>
                 </DrawerContent>
               </Drawer>
-              <DrawerClose class={outline}>Close</DrawerClose>
+              <DrawerClose>
+                {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+                Close
+              </DrawerClose>
             </DrawerFooter>
           </DrawerContent>
         </Drawer>
@@ -314,7 +394,10 @@
 {#snippet DrawerNonModal()}
   <Example title="Non Modal">
     <Drawer modal={false} disablePointerDismissal swipeDirection="right">
-      <DrawerTrigger class={outline}>Non Modal</DrawerTrigger>
+      <DrawerTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+        Non Modal
+      </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>Non Modal Drawer</DrawerTitle>
@@ -323,7 +406,10 @@
           <div class={panel}></div>
         </div>
         <DrawerFooter>
-          <DrawerClose class={outline}>Close</DrawerClose>
+          <DrawerClose>
+            {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+            Close
+          </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

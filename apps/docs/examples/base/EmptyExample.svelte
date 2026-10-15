@@ -1,16 +1,21 @@
 <script lang="ts">
-  import { cn } from 'cn';
+  import type { Snippet } from 'svelte';
+  import type { HTMLAttributes } from 'svelte/elements';
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@sveltery/ui/empty';
-  import { Button, buttonVariants } from '@sveltery/ui/button';
+  import { Button } from '@sveltery/ui/button';
   import { IconPlaceholder } from '@sveltery/ui/icons';
   import { InputGroup, InputGroupAddon, InputGroupInput } from '@sveltery/ui/input-group';
   import { Kbd } from '@sveltery/ui/kbd';
 </script>
 
-{#snippet LearnMore()}
+{#snippet link(props: HTMLAttributes<HTMLElement>, _state: unknown, content: Snippet | undefined)}
   <!-- svelte-ignore a11y_invalid_attribute -->
-  <a href="#" class={cn(buttonVariants({ variant: 'link' }), 'text-muted-foreground')}>
+  <a href="#" {...props}>{@render content?.()}</a>
+{/snippet}
+
+{#snippet LearnMore()}
+  <Button variant="link" render={link} class="text-muted-foreground" nativeButton={false}>
     Learn more
     <IconPlaceholder
       lucide="ArrowUpRightIcon"
@@ -19,7 +24,7 @@
       phosphor="ArrowUpRightIcon"
       remixicon="RiArrowRightUpLine"
     />
-  </a>
+  </Button>
 {/snippet}
 
 {#snippet EmptyBasic()}
@@ -33,8 +38,7 @@
       </EmptyHeader>
       <EmptyContent>
         <div class="flex gap-2">
-          <!-- svelte-ignore a11y_invalid_attribute -->
-          <a href="#" class={buttonVariants()}>Create project</a>
+          <Button render={link} nativeButton={false}>Create project</Button>
           <Button variant="outline">Import project</Button>
         </div>
         {@render LearnMore()}
@@ -187,8 +191,7 @@
       </EmptyHeader>
       <EmptyContent>
         <div class="flex gap-2">
-          <!-- svelte-ignore a11y_invalid_attribute -->
-          <a href="#" class={buttonVariants()}>Create project</a>
+          <Button render={link} nativeButton={false}>Create project</Button>
           <Button variant="outline">Import project</Button>
         </div>
         {@render LearnMore()}

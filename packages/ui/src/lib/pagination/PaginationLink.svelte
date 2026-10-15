@@ -1,15 +1,13 @@
 <script lang="ts">
   import type { PaginationLinkProps } from './types.js';
   import { cn } from 'cn';
-  import { buttonVariants } from '../button/index.js';
+  import { Button } from '../button/index.js';
   let { children, class: classProp, isActive, size = 'icon', ...props }: PaginationLinkProps = $props();
 </script>
-<a
-  aria-current={isActive ? 'page' : undefined}
-  data-slot="pagination-link"
-  data-active={isActive}
-  {...props}
-  class={cn(buttonVariants({ variant: isActive ? 'outline' : 'ghost', size }), 'cn-pagination-link', classProp)}
->
-  {@render children?.()}
-</a>
+<Button variant={isActive ? 'outline' : 'ghost'} {size} class={cn('cn-pagination-link', classProp)} nativeButton={false} {...props}>
+  {#snippet render(buttonProps)}
+    <a {...buttonProps} aria-current={isActive ? 'page' : undefined} data-slot="pagination-link" data-active={isActive}>
+      {@render children?.()}
+    </a>
+  {/snippet}
+</Button>
