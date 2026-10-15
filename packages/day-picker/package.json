@@ -1,11 +1,27 @@
 {
   "name": "@sveltery/day-picker",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.1.0",
+  "description": "A date picker and calendar for Svelte 5, ported from react-day-picker.",
+  "keywords": [
+    "svelte",
+    "svelte5",
+    "sveltery",
+    "date-picker",
+    "calendar",
+    "day-picker",
+    "headless"
+  ],
+  "homepage": "https://github.com/sveltery/ui/tree/main/packages/day-picker#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sveltery/ui.git",
+    "directory": "packages/day-picker"
+  },
   "type": "module",
   "license": "MIT",
   "files": [
     "dist",
+    "!dist/**/*.test.*",
     "LICENSE",
     "THIRD_PARTY_NOTICES.md"
   ],
@@ -17,6 +33,8 @@
     }
   },
   "publishConfig": {
+    "access": "public",
+    "provenance": true,
     "exports": {
       ".": {
         "types": "./dist/index.d.ts",
@@ -25,10 +43,10 @@
       }
     }
   },
-  "svelte": "./src/index.ts",
   "scripts": {
     "build": "svelte-package --input src",
-    "check": "svelte-check --tsconfig ./tsconfig.json"
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "prepack": "pnpm run build && publint --strict"
   },
   "peerDependencies": {
     "@date-fns/tz": "^1.5.0",
@@ -38,6 +56,7 @@
   "devDependencies": {
     "@date-fns/tz": "1.5.0",
     "date-fns": "4.4.0",
+    "publint": "0.3.25",
     "svelte": "5.57.1"
   }
 }

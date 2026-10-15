@@ -1,7 +1,22 @@
 {
   "name": "@sveltery/resizable",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.1.0",
+  "description": "Resizable panel groups for Svelte 5, ported from react-resizable-panels.",
+  "keywords": [
+    "svelte",
+    "svelte5",
+    "sveltery",
+    "resizable",
+    "panels",
+    "split-view",
+    "headless"
+  ],
+  "homepage": "https://github.com/sveltery/ui/tree/main/packages/resizable#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sveltery/ui.git",
+    "directory": "packages/resizable"
+  },
   "type": "module",
   "license": "MIT",
   "files": [
@@ -16,15 +31,21 @@
       "default": "./dist/index.js"
     }
   },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "svelte": "./dist/index.js",
   "scripts": {
     "build": "svelte-package",
-    "check": "svelte-check --tsconfig ./tsconfig.json"
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "prepack": "pnpm run build && publint --strict"
   },
   "peerDependencies": {
     "svelte": "^5.57.1"
   },
   "devDependencies": {
+    "publint": "0.3.25",
     "svelte": "5.57.1"
   }
 }
