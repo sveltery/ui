@@ -9,6 +9,8 @@ export SVELTERY_PNPM_VERSION
 export COREPACK_HOME="${COREPACK_HOME:-$sveltery_repo_root/.checks/corepack}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$sveltery_repo_root/.checks/cache}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$sveltery_repo_root/.checks/data}"
+# An older global pnpm would otherwise switch versions by running itself inside this repo, which recurses without end.
+export npm_config_manage_package_manager_versions=false
 if command -v pnpm >/dev/null && [[ "$(pnpm --version)" == "$SVELTERY_PNPM_VERSION" ]]; then
   :
 elif command -v corepack >/dev/null; then
