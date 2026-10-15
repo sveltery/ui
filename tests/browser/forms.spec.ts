@@ -57,23 +57,33 @@ test('the remote form demo works without JavaScript', async ({ browser }) => {
   } finally { await context.close(); }
 });
 
-test('the form action demo shows schema and server issues in their fields, then the result', async ({ page }) => {
+test('the form action demo shows schema and server errors in their fields through Form context', async ({ page }) => {
   await visit(page, '/docs/forms/form-actions');
   const demo = page.locator('[data-slot=component-preview]').first();
   const name = demo.getByRole('textbox', { name: 'Name' });
   const email = demo.getByRole('textbox', { name: 'Email' });
+  const emailField = demo.locator('[data-slot=field]').filter({ has: page.getByRole('textbox', { name: 'Email' }) });
   await name.fill('A');
   await email.fill('ada@example.com');
   await demo.getByRole('button', { name: 'Sign up' }).click();
-  await expect(demo.locator('[data-slot=field-error]')).toHaveText(['Use at least 2 characters.']);
+  await expect(demo.locator('[data-slot=field]').filter({ has: page.getByRole('textbox', { name: 'Name' }) }).locator('[data-slot=field-error]')).toHaveText('Use at least 2 characters.');
+  await expect(demo.locator('[data-slot=field-error]')).toHaveCount(1);
   await expect(name).toHaveAttribute('aria-invalid', 'true');
+  await expect(name).toHaveAccessibleDescription('Use at least 2 characters.');
 
   await name.fill('Ada');
   await email.fill('taken@example.com');
   await demo.getByRole('button', { name: 'Sign up' }).click();
-  await expect(demo.locator('[data-slot=field-error]')).toHaveText(['That email is already registered.']);
+  await expect(emailField.locator('[data-slot=field-error]')).toHaveText('That email is already registered.');
+  await expect(demo.locator('[data-slot=field-error]')).toHaveCount(1);
+  await expect(emailField).toHaveAttribute('data-invalid', 'true');
+  await expect(email).toHaveAttribute('aria-invalid', 'true');
+  await expect(email).toBeFocused();
+  await expect(name).not.toHaveAttribute('aria-invalid');
 
   await email.fill('ada@example.com');
+  await expect(demo.locator('[data-slot=field-error]')).toHaveCount(0);
+  await expect(email).not.toHaveAttribute('aria-invalid');
   await demo.getByRole('button', { name: 'Sign up' }).click();
   await expect(demo.getByText('Welcome, Ada.')).toBeVisible();
   await expect(demo.locator('[data-slot=field-error]')).toHaveCount(0);
@@ -104,8 +114,13 @@ test('the form action demo works without JavaScript', async ({ browser }) => {
     await demo.getByRole('textbox', { name: 'Name' }).fill('Ada');
     await demo.getByRole('textbox', { name: 'Email' }).fill('taken@example.com');
     await demo.getByRole('button', { name: 'Sign up' }).click();
-    await expect(page.locator('[data-slot=component-preview]').first().locator('[data-slot=field-error]')).toHaveText(['That email is already registered.']);
-    await expect(page.locator('[data-slot=component-preview]').first().getByRole('textbox', { name: 'Name' })).toHaveValue('Ada');
+    const after = page.locator('[data-slot=component-preview]').first();
+    const email = after.getByRole('textbox', { name: 'Email' });
+    await expect(after.locator('[data-slot=field]').filter({ has: page.getByRole('textbox', { name: 'Email' }) }).locator('[data-slot=field-error]')).toHaveText('That email is already registered.');
+    await expect(after.locator('[data-slot=field-error]')).toHaveCount(1);
+    await expect(email).toHaveAttribute('aria-invalid', 'true');
+    await expect(email).toHaveValue('taken@example.com');
+    await expect(after.getByRole('textbox', { name: 'Name' })).toHaveValue('Ada');
   } finally { await context.close(); }
 });
 
