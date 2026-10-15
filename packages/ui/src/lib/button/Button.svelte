@@ -5,4 +5,4 @@
   import { cn } from 'cn';
   let { children, class: classProp, variant = 'default', size = 'default', ...props }: ButtonProps = $props();
 </script>
-<Primitive data-slot="button" {...props} {children} class={cn(buttonVariants({ variant, size }), classProp)} />
+<Primitive data-slot="button" {...props} {children} class={cn(buttonVariants({ variant, size, class: classProp }))} />

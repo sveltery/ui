@@ -1,9 +1,9 @@
 <script lang="ts">
+  import type { ComponentProps } from 'svelte';
   import { Item } from '@sveltery/command';
   import { cn } from 'cn';
   import { IconPlaceholder } from '../icons/index.js';
-  import type { CommandItemProps } from './types.js';
-  let { class: classProp, children, ...props }: CommandItemProps = $props();
+  let { class: classProp, children, ...props }: ComponentProps<typeof Item> = $props();
 </script>
 <Item
   data-slot="command-item"

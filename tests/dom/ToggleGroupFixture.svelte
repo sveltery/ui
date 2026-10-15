@@ -20,3 +20,4 @@
   <ToggleGroupItem value="a" aria-label="A">A</ToggleGroupItem>
   <ToggleGroupItem value="b" aria-label="B">B</ToggleGroupItem>
 </ToggleGroup>
+<ToggleGroupItem value="solo" aria-label="Solo" variant="outline" size="lg">S</ToggleGroupItem>

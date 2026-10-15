@@ -4,6 +4,6 @@
   import { itemMediaVariants } from './variants.js';
   let { children, class: classProp, variant = 'default', ...props }: ItemMediaProps = $props();
 </script>
-<div data-slot="item-media" data-variant={variant} {...props} class={cn(itemMediaVariants({ variant }), classProp)}>
+<div data-slot="item-media" data-variant={variant} {...props} class={cn(itemMediaVariants({ variant, class: classProp }))}>
   {@render children?.()}
 </div>

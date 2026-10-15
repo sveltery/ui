@@ -9,7 +9,7 @@
   data-slot="context-menu-sub-trigger"
   data-inset={inset}
   {...props}
-  class={cn('cn-context-menu-sub-trigger flex cursor-default items-center outline-hidden select-none data-popup-open:bg-accent data-popup-open:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0', classProp)}
+  class={cn('cn-context-menu-sub-trigger flex cursor-default items-center outline-hidden select-none [&_svg]:pointer-events-none [&_svg]:shrink-0', classProp)}
 >
   {@render children?.()}
   <IconPlaceholder lucide="ChevronRightIcon" tabler="IconChevronRight" hugeicons="ArrowRight01Icon" phosphor="CaretRightIcon" remixicon="RiArrowRightSLine" class="cn-rtl-flip ml-auto" />

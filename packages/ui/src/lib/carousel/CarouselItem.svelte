@@ -1,9 +1,9 @@
 <script lang="ts">
   import { cn } from 'cn';
-  import { getCarouselContext } from './context.js';
+  import { useCarousel } from './context.js';
   import type { CarouselItemProps } from './types.js';
   let { class: classProp, children, ...props }: CarouselItemProps = $props();
-  const carousel = getCarouselContext();
+  const carousel = useCarousel();
 </script>
 <div
   role="group"
