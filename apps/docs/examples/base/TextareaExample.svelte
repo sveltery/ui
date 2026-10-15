@@ -13,21 +13,21 @@
   </Example>
   <Example title="With Label">
     <Field>
-      <FieldLabel>Message</FieldLabel>
-      <Textarea placeholder="Type your message here." rows={6} />
+      <FieldLabel for="textarea-demo-message">Message</FieldLabel>
+      <Textarea id="textarea-demo-message" placeholder="Type your message here." rows={6} />
     </Field>
   </Example>
   <Example title="With Description">
     <Field>
-      <FieldLabel>Message</FieldLabel>
-      <Textarea placeholder="Type your message here." rows={6} />
+      <FieldLabel for="textarea-demo-message-2">Message</FieldLabel>
+      <Textarea id="textarea-demo-message-2" placeholder="Type your message here." rows={6} />
       <FieldDescription>Type your message and press enter to send.</FieldDescription>
     </Field>
   </Example>
   <Example title="Disabled">
     <Field>
-      <FieldLabel>Message</FieldLabel>
-      <Textarea placeholder="Type your message here." disabled />
+      <FieldLabel for="textarea-demo-disabled">Message</FieldLabel>
+      <Textarea id="textarea-demo-disabled" placeholder="Type your message here." disabled />
     </Field>
   </Example>
 </ExampleWrapper>

@@ -23,6 +23,36 @@
       { title: 'Projects', url: '#', icon: folder },
       { title: 'Team', url: '#', icon: users },
     ],
+    navClouds: [
+      {
+        title: 'Capture',
+        icon: camera,
+        isActive: true,
+        url: '#',
+        items: [
+          { title: 'Active Proposals', url: '#' },
+          { title: 'Archived', url: '#' },
+        ],
+      },
+      {
+        title: 'Proposal',
+        icon: fileText,
+        url: '#',
+        items: [
+          { title: 'Active Proposals', url: '#' },
+          { title: 'Archived', url: '#' },
+        ],
+      },
+      {
+        title: 'Prompts',
+        icon: fileAi,
+        url: '#',
+        items: [
+          { title: 'Active Proposals', url: '#' },
+          { title: 'Archived', url: '#' },
+        ],
+      },
+    ],
     navSecondary: [
       { title: 'Settings', url: '#', icon: settings },
       { title: 'Get Help', url: '#', icon: help },
@@ -56,6 +86,18 @@
 
 {#snippet users()}
   <IconPlaceholder lucide="UsersIcon" tabler="IconUsers" hugeicons="UserGroupIcon" phosphor="UsersIcon" remixicon="RiGroupLine" />
+{/snippet}
+
+{#snippet camera()}
+  <IconPlaceholder lucide="CameraIcon" tabler="IconCamera" hugeicons="Camera01Icon" phosphor="CameraIcon" remixicon="RiCameraLine" />
+{/snippet}
+
+{#snippet fileText()}
+  <IconPlaceholder lucide="FileTextIcon" tabler="IconFileDescription" hugeicons="File01Icon" phosphor="FileTextIcon" remixicon="RiFileTextLine" />
+{/snippet}
+
+{#snippet fileAi()}
+  <IconPlaceholder lucide="FileTextIcon" tabler="IconFileAi" hugeicons="File01Icon" phosphor="FileTextIcon" remixicon="RiFileTextLine" />
 {/snippet}
 
 {#snippet settings()}

@@ -7,7 +7,6 @@
     FieldContent,
     FieldDescription,
     FieldGroup,
-    FieldItem,
     FieldLabel,
     FieldLegend,
     FieldSet,
@@ -72,44 +71,44 @@
   <Example title="Input Fields">
     <FieldGroup>
       <Field>
-        <FieldLabel>Basic Input</FieldLabel>
-        <Input placeholder="Enter text" />
+        <FieldLabel for="input-basic">Basic Input</FieldLabel>
+        <Input id="input-basic" placeholder="Enter text" />
       </Field>
       <Field>
-        <FieldLabel>Input with Description</FieldLabel>
-        <Input placeholder="Enter your username" />
+        <FieldLabel for="input-with-desc">Input with Description</FieldLabel>
+        <Input id="input-with-desc" placeholder="Enter your username" />
         <FieldDescription>Choose a unique username for your account.</FieldDescription>
       </Field>
       <Field>
-        <FieldLabel>Email Address</FieldLabel>
+        <FieldLabel for="input-desc-first">Email Address</FieldLabel>
         <FieldDescription>We&apos;ll never share your email with anyone.</FieldDescription>
-        <Input type="email" placeholder="email@example.com" />
+        <Input id="input-desc-first" type="email" placeholder="email@example.com" />
       </Field>
       <Field>
-        <FieldLabel>Required Field <span class="text-destructive">*</span></FieldLabel>
-        <Input placeholder="This field is required" required />
+        <FieldLabel for="input-required">Required Field <span class="text-destructive">*</span></FieldLabel>
+        <Input id="input-required" placeholder="This field is required" required />
         <FieldDescription>This field must be filled out.</FieldDescription>
       </Field>
       <Field>
-        <FieldLabel>Disabled Input</FieldLabel>
-        <Input placeholder="Cannot edit" disabled />
+        <FieldLabel for="input-disabled">Disabled Input</FieldLabel>
+        <Input id="input-disabled" placeholder="Cannot edit" disabled />
         <FieldDescription>This field is currently disabled.</FieldDescription>
       </Field>
       <Field>
-        <FieldLabel>
+        <FieldLabel for="input-badge">
           Input with Badge
           <Badge variant="secondary" class="ml-auto">Recommended</Badge>
         </FieldLabel>
-        <Input placeholder="Enter value" />
+        <Input id="input-badge" placeholder="Enter value" />
       </Field>
-      <Field invalid>
-        <FieldLabel>Invalid Input</FieldLabel>
-        <Input placeholder="This field has an error" />
+      <Field data-invalid>
+        <FieldLabel for="input-invalid">Invalid Input</FieldLabel>
+        <Input id="input-invalid" placeholder="This field has an error" aria-invalid />
         <FieldDescription>This field contains validation errors.</FieldDescription>
       </Field>
-      <Field disabled>
-        <FieldLabel>Disabled Field</FieldLabel>
-        <Input placeholder="Cannot edit" disabled />
+      <Field data-disabled>
+        <FieldLabel for="input-disabled-field">Disabled Field</FieldLabel>
+        <Input id="input-disabled-field" placeholder="Cannot edit" disabled />
         <FieldDescription>This field is currently disabled.</FieldDescription>
       </Field>
     </FieldGroup>
@@ -120,32 +119,32 @@
   <Example title="Textarea Fields">
     <FieldGroup>
       <Field>
-        <FieldLabel>Basic Textarea</FieldLabel>
-        <Textarea placeholder="Enter your message" />
+        <FieldLabel for="textarea-basic">Basic Textarea</FieldLabel>
+        <Textarea id="textarea-basic" placeholder="Enter your message" />
       </Field>
       <Field>
-        <FieldLabel>Comments</FieldLabel>
-        <Textarea placeholder="Share your thoughts..." class="min-h-[100px]" />
+        <FieldLabel for="textarea-comments">Comments</FieldLabel>
+        <Textarea id="textarea-comments" placeholder="Share your thoughts..." class="min-h-[100px]" />
         <FieldDescription>Maximum 500 characters allowed.</FieldDescription>
       </Field>
       <Field>
-        <FieldLabel>Bio</FieldLabel>
+        <FieldLabel for="textarea-bio">Bio</FieldLabel>
         <FieldDescription>Tell us about yourself in a few sentences.</FieldDescription>
-        <Textarea placeholder="I am a..." class="min-h-[120px]" />
+        <Textarea id="textarea-bio" placeholder="I am a..." class="min-h-[120px]" />
       </Field>
       <Field>
-        <FieldLabel>Message</FieldLabel>
-        <Textarea placeholder="Enter your message" />
+        <FieldLabel for="textarea-desc-after">Message</FieldLabel>
+        <Textarea id="textarea-desc-after" placeholder="Enter your message" />
         <FieldDescription>Enter your message so it is long enough to test the layout.</FieldDescription>
       </Field>
-      <Field invalid>
-        <FieldLabel>Invalid Textarea</FieldLabel>
-        <Textarea placeholder="This field has an error" aria-invalid="true" />
+      <Field data-invalid>
+        <FieldLabel for="textarea-invalid">Invalid Textarea</FieldLabel>
+        <Textarea id="textarea-invalid" placeholder="This field has an error" aria-invalid />
         <FieldDescription>This field contains validation errors.</FieldDescription>
       </Field>
-      <Field disabled>
-        <FieldLabel>Disabled Field</FieldLabel>
-        <Textarea placeholder="Cannot edit" disabled />
+      <Field data-disabled>
+        <FieldLabel for="textarea-disabled-field">Disabled Field</FieldLabel>
+        <Textarea id="textarea-disabled-field" placeholder="Cannot edit" disabled />
         <FieldDescription>This field is currently disabled.</FieldDescription>
       </Field>
     </FieldGroup>
@@ -156,9 +155,9 @@
   <Example title="Select Fields">
     <FieldGroup>
       <Field>
-        <FieldLabel>Basic Select</FieldLabel>
+        <FieldLabel for="select-basic">Basic Select</FieldLabel>
         <Select items={selectBasicItems}>
-          <SelectTrigger>
+          <SelectTrigger id="select-basic">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -171,9 +170,9 @@
         </Select>
       </Field>
       <Field>
-        <FieldLabel>Country</FieldLabel>
+        <FieldLabel for="select-country">Country</FieldLabel>
         <Select items={selectCountryItems}>
-          <SelectTrigger>
+          <SelectTrigger id="select-country">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -187,10 +186,10 @@
         <FieldDescription>Select the country where you currently reside.</FieldDescription>
       </Field>
       <Field>
-        <FieldLabel>Timezone</FieldLabel>
+        <FieldLabel for="select-timezone">Timezone</FieldLabel>
         <FieldDescription>Choose your local timezone for accurate scheduling.</FieldDescription>
         <Select items={selectTimezoneItems}>
-          <SelectTrigger>
+          <SelectTrigger id="select-timezone">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -202,10 +201,10 @@
           </SelectContent>
         </Select>
       </Field>
-      <Field invalid>
-        <FieldLabel>Invalid Select</FieldLabel>
+      <Field data-invalid>
+        <FieldLabel for="select-invalid">Invalid Select</FieldLabel>
         <Select items={selectInvalidItems}>
-          <SelectTrigger>
+          <SelectTrigger id="select-invalid" aria-invalid>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -218,10 +217,10 @@
         </Select>
         <FieldDescription>This field contains validation errors.</FieldDescription>
       </Field>
-      <Field disabled>
-        <FieldLabel>Disabled Field</FieldLabel>
+      <Field data-disabled>
+        <FieldLabel for="select-disabled-field">Disabled Field</FieldLabel>
         <Select items={selectDisabledItems} disabled>
-          <SelectTrigger>
+          <SelectTrigger id="select-disabled-field">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -242,23 +241,23 @@
   <Example title="Checkbox Fields">
     <FieldGroup>
       <Field orientation="horizontal">
-        <Checkbox defaultChecked />
-        <FieldLabel>I agree to the terms and conditions</FieldLabel>
+        <Checkbox id="checkbox-basic" defaultChecked />
+        <FieldLabel for="checkbox-basic">I agree to the terms and conditions</FieldLabel>
       </Field>
       <Field orientation="horizontal">
-        <FieldLabel>Accept terms and conditions</FieldLabel>
-        <Checkbox />
+        <FieldLabel for="checkbox-right">Accept terms and conditions</FieldLabel>
+        <Checkbox id="checkbox-right" />
       </Field>
       <Field orientation="horizontal">
-        <Checkbox />
+        <Checkbox id="checkbox-with-desc" />
         <FieldContent>
-          <FieldLabel>Subscribe to newsletter</FieldLabel>
+          <FieldLabel for="checkbox-with-desc">Subscribe to newsletter</FieldLabel>
           <FieldDescription>Receive weekly updates about new features and promotions.</FieldDescription>
         </FieldContent>
       </Field>
-      <FieldLabel>
+      <FieldLabel for="checkbox-with-title">
         <Field orientation="horizontal">
-          <Checkbox />
+          <Checkbox id="checkbox-with-title" />
           <FieldContent>
             <FieldTitle>Enable Touch ID</FieldTitle>
             <FieldDescription>Enable Touch ID to quickly unlock your device.</FieldDescription>
@@ -270,26 +269,26 @@
         <FieldDescription>Select all that apply to customize your experience.</FieldDescription>
         <FieldGroup class="gap-3">
           <Field orientation="horizontal">
-            <Checkbox />
-            <FieldLabel>Dark mode</FieldLabel>
+            <Checkbox id="pref-dark" />
+            <FieldLabel for="pref-dark">Dark mode</FieldLabel>
           </Field>
           <Field orientation="horizontal">
-            <Checkbox />
-            <FieldLabel>Compact view</FieldLabel>
+            <Checkbox id="pref-compact" />
+            <FieldLabel for="pref-compact">Compact view</FieldLabel>
           </Field>
           <Field orientation="horizontal">
-            <Checkbox />
-            <FieldLabel>Enable notifications</FieldLabel>
+            <Checkbox id="pref-notifications" />
+            <FieldLabel for="pref-notifications">Enable notifications</FieldLabel>
           </Field>
         </FieldGroup>
       </FieldSet>
-      <Field invalid orientation="horizontal">
-        <Checkbox />
-        <FieldLabel>Invalid checkbox</FieldLabel>
+      <Field data-invalid orientation="horizontal">
+        <Checkbox id="checkbox-invalid" aria-invalid />
+        <FieldLabel for="checkbox-invalid">Invalid checkbox</FieldLabel>
       </Field>
-      <Field disabled orientation="horizontal">
-        <Checkbox disabled />
-        <FieldLabel>Disabled checkbox</FieldLabel>
+      <Field data-disabled orientation="horizontal">
+        <Checkbox id="checkbox-disabled-field" disabled />
+        <FieldLabel for="checkbox-disabled-field">Disabled checkbox</FieldLabel>
       </Field>
     </FieldGroup>
   </Example>
@@ -298,99 +297,87 @@
 {#snippet RadioFields()}
   <Example title="Radio Fields">
     <FieldGroup>
-      <Field>
-        <FieldSet>
-          <FieldLegend variant="label">Subscription Plan</FieldLegend>
-          <RadioGroup defaultValue="free">
-            <FieldItem>
-              <RadioGroupItem value="free" />
-              <FieldLabel>Free Plan</FieldLabel>
-            </FieldItem>
-            <FieldItem>
-              <RadioGroupItem value="pro" />
-              <FieldLabel>Pro Plan</FieldLabel>
-            </FieldItem>
-            <FieldItem>
-              <RadioGroupItem value="enterprise" />
-              <FieldLabel>Enterprise</FieldLabel>
-            </FieldItem>
-          </RadioGroup>
-        </FieldSet>
-      </Field>
-      <Field>
-        <FieldSet>
-          <FieldLegend variant="label">Battery Level</FieldLegend>
-          <FieldDescription>Choose your preferred battery level.</FieldDescription>
-          <RadioGroup>
-            <FieldItem>
-              <RadioGroupItem value="high" />
-              <FieldLabel>High</FieldLabel>
-            </FieldItem>
-            <FieldItem>
-              <RadioGroupItem value="medium" />
-              <FieldLabel>Medium</FieldLabel>
-            </FieldItem>
-            <FieldItem>
-              <RadioGroupItem value="low" />
-              <FieldLabel>Low</FieldLabel>
-            </FieldItem>
-          </RadioGroup>
-        </FieldSet>
-      </Field>
-      <Field>
-        <RadioGroup class="gap-6">
-          <FieldItem>
-            <RadioGroupItem value="option1" />
+      <FieldSet>
+        <FieldLegend variant="label">Subscription Plan</FieldLegend>
+        <RadioGroup defaultValue="free">
+          <Field orientation="horizontal">
+            <RadioGroupItem value="free" id="radio-free" />
+            <FieldLabel for="radio-free">Free Plan</FieldLabel>
+          </Field>
+          <Field orientation="horizontal">
+            <RadioGroupItem value="pro" id="radio-pro" />
+            <FieldLabel for="radio-pro">Pro Plan</FieldLabel>
+          </Field>
+          <Field orientation="horizontal">
+            <RadioGroupItem value="enterprise" id="radio-enterprise" />
+            <FieldLabel for="radio-enterprise">Enterprise</FieldLabel>
+          </Field>
+        </RadioGroup>
+      </FieldSet>
+      <FieldSet>
+        <FieldLegend variant="label">Battery Level</FieldLegend>
+        <FieldDescription>Choose your preferred battery level.</FieldDescription>
+        <RadioGroup>
+          <Field orientation="horizontal">
+            <RadioGroupItem value="high" id="battery-high" />
+            <FieldLabel for="battery-high">High</FieldLabel>
+          </Field>
+          <Field orientation="horizontal">
+            <RadioGroupItem value="medium" id="battery-medium" />
+            <FieldLabel for="battery-medium">Medium</FieldLabel>
+          </Field>
+          <Field orientation="horizontal">
+            <RadioGroupItem value="low" id="battery-low" />
+            <FieldLabel for="battery-low">Low</FieldLabel>
+          </Field>
+        </RadioGroup>
+      </FieldSet>
+      <RadioGroup class="gap-6">
+        <Field orientation="horizontal">
+          <RadioGroupItem value="option1" id="radio-content-1" />
+          <FieldContent>
+            <FieldLabel for="radio-content-1">Enable Touch ID</FieldLabel>
+            <FieldDescription>Enable Touch ID to quickly unlock your device.</FieldDescription>
+          </FieldContent>
+        </Field>
+      </RadioGroup>
+      <RadioGroup class="gap-3">
+        <FieldLabel for="radio-title-1">
+          <Field orientation="horizontal">
+            <RadioGroupItem value="title1" id="radio-title-1" />
             <FieldContent>
-              <FieldLabel>Enable Touch ID</FieldLabel>
+              <FieldTitle>Enable Touch ID</FieldTitle>
               <FieldDescription>Enable Touch ID to quickly unlock your device.</FieldDescription>
             </FieldContent>
-          </FieldItem>
+          </Field>
+        </FieldLabel>
+      </RadioGroup>
+      <FieldSet>
+        <FieldLegend variant="label">Invalid Radio Group</FieldLegend>
+        <RadioGroup>
+          <Field data-invalid orientation="horizontal">
+            <RadioGroupItem value="invalid1" id="radio-invalid-1" aria-invalid />
+            <FieldLabel for="radio-invalid-1">Invalid Option 1</FieldLabel>
+          </Field>
+          <Field data-invalid orientation="horizontal">
+            <RadioGroupItem value="invalid2" id="radio-invalid-2" aria-invalid />
+            <FieldLabel for="radio-invalid-2">Invalid Option 2</FieldLabel>
+          </Field>
         </RadioGroup>
-      </Field>
-      <Field>
-        <RadioGroup class="gap-3">
-          <FieldLabel>
-            <FieldItem>
-              <RadioGroupItem value="title1" />
-              <FieldContent>
-                <FieldTitle>Enable Touch ID</FieldTitle>
-                <FieldDescription>Enable Touch ID to quickly unlock your device.</FieldDescription>
-              </FieldContent>
-            </FieldItem>
-          </FieldLabel>
+      </FieldSet>
+      <FieldSet>
+        <FieldLegend variant="label">Disabled Radio Group</FieldLegend>
+        <RadioGroup disabled>
+          <Field data-disabled orientation="horizontal">
+            <RadioGroupItem value="disabled1" id="radio-disabled-1" disabled />
+            <FieldLabel for="radio-disabled-1">Disabled Option 1</FieldLabel>
+          </Field>
+          <Field data-disabled orientation="horizontal">
+            <RadioGroupItem value="disabled2" id="radio-disabled-2" disabled />
+            <FieldLabel for="radio-disabled-2">Disabled Option 2</FieldLabel>
+          </Field>
         </RadioGroup>
-      </Field>
-      <Field invalid>
-        <FieldSet>
-          <FieldLegend variant="label">Invalid Radio Group</FieldLegend>
-          <RadioGroup>
-            <FieldItem>
-              <RadioGroupItem value="invalid1" />
-              <FieldLabel>Invalid Option 1</FieldLabel>
-            </FieldItem>
-            <FieldItem>
-              <RadioGroupItem value="invalid2" />
-              <FieldLabel>Invalid Option 2</FieldLabel>
-            </FieldItem>
-          </RadioGroup>
-        </FieldSet>
-      </Field>
-      <Field disabled>
-        <FieldSet>
-          <FieldLegend variant="label">Disabled Radio Group</FieldLegend>
-          <RadioGroup disabled>
-            <FieldItem>
-              <RadioGroupItem value="disabled1" disabled />
-              <FieldLabel>Disabled Option 1</FieldLabel>
-            </FieldItem>
-            <FieldItem>
-              <RadioGroupItem value="disabled2" disabled />
-              <FieldLabel>Disabled Option 2</FieldLabel>
-            </FieldItem>
-          </RadioGroup>
-        </FieldSet>
-      </Field>
+      </FieldSet>
     </FieldGroup>
   </Example>
 {/snippet}
@@ -400,19 +387,19 @@
     <FieldGroup>
       <Field orientation="horizontal">
         <FieldContent>
-          <FieldLabel>Airplane Mode</FieldLabel>
+          <FieldLabel for="switch-airplane">Airplane Mode</FieldLabel>
           <FieldDescription>Turn on airplane mode to disable all connections.</FieldDescription>
         </FieldContent>
-        <Switch />
+        <Switch id="switch-airplane" />
       </Field>
       <Field orientation="horizontal">
-        <FieldLabel>Dark Mode</FieldLabel>
-        <Switch />
+        <FieldLabel for="switch-dark">Dark Mode</FieldLabel>
+        <Switch id="switch-dark" />
       </Field>
       <Field orientation="horizontal">
-        <Switch />
+        <Switch id="switch-marketing" />
         <FieldContent>
-          <FieldLabel>Marketing Emails</FieldLabel>
+          <FieldLabel for="switch-marketing">Marketing Emails</FieldLabel>
           <FieldDescription>Receive emails about new products, features, and more.</FieldDescription>
         </FieldContent>
       </Field>
@@ -420,27 +407,27 @@
         <FieldLabel>Privacy Settings</FieldLabel>
         <FieldDescription>Manage your privacy preferences.</FieldDescription>
         <Field orientation="horizontal">
-          <Switch defaultChecked />
-          <FieldLabel>Make profile visible to others</FieldLabel>
+          <Switch id="switch-profile" defaultChecked />
+          <FieldLabel for="switch-profile">Make profile visible to others</FieldLabel>
         </Field>
         <Field orientation="horizontal">
-          <Switch />
-          <FieldLabel>Show email on profile</FieldLabel>
+          <Switch id="switch-email" />
+          <FieldLabel for="switch-email">Show email on profile</FieldLabel>
         </Field>
       </Field>
-      <Field invalid orientation="horizontal">
+      <Field data-invalid orientation="horizontal">
         <FieldContent>
-          <FieldLabel>Invalid Switch</FieldLabel>
+          <FieldLabel for="switch-invalid">Invalid Switch</FieldLabel>
           <FieldDescription>This switch has validation errors.</FieldDescription>
         </FieldContent>
-        <Switch />
+        <Switch id="switch-invalid" aria-invalid />
       </Field>
-      <Field disabled orientation="horizontal">
+      <Field data-disabled orientation="horizontal">
         <FieldContent>
-          <FieldLabel>Disabled Switch</FieldLabel>
+          <FieldLabel for="switch-disabled-field">Disabled Switch</FieldLabel>
           <FieldDescription>This switch is currently disabled.</FieldDescription>
         </FieldContent>
-        <Switch disabled />
+        <Switch id="switch-disabled-field" disabled />
       </Field>
     </FieldGroup>
   </Example>
@@ -450,44 +437,44 @@
   <Example title="Slider Fields">
     <FieldGroup>
       <Field>
-        <FieldLabel>Volume</FieldLabel>
-        <Slider bind:value={volume} max={100} step={1} />
+        <FieldLabel for="slider-volume">Volume</FieldLabel>
+        <Slider id="slider-volume" bind:value={volume} max={100} step={1} />
       </Field>
       <Field>
-        <FieldLabel>Screen Brightness</FieldLabel>
-        <Slider bind:value={brightness} max={100} step={5} />
+        <FieldLabel for="slider-brightness">Screen Brightness</FieldLabel>
+        <Slider id="slider-brightness" bind:value={brightness} max={100} step={5} />
         <FieldDescription>Current brightness: {brightness[0]}%</FieldDescription>
       </Field>
       <Field>
-        <FieldLabel>Video Quality</FieldLabel>
+        <FieldLabel for="slider-quality">Video Quality</FieldLabel>
         <FieldDescription>Higher quality uses more bandwidth.</FieldDescription>
-        <Slider defaultValue={[720]} max={1080} min={360} step={360} />
+        <Slider id="slider-quality" defaultValue={[720]} max={1080} min={360} step={360} />
       </Field>
       <Field>
-        <FieldLabel>Temperature Range</FieldLabel>
-        <Slider bind:value={temperature} min={0} max={1} step={0.1} />
+        <FieldLabel for="slider-temperature">Temperature Range</FieldLabel>
+        <Slider id="slider-temperature" bind:value={temperature} min={0} max={1} step={0.1} />
         <FieldDescription>Range: {temperature[0].toFixed(1)} - {temperature[1].toFixed(1)}</FieldDescription>
       </Field>
       <Field>
-        <FieldLabel>Price Range</FieldLabel>
-        <Slider bind:value={priceRange} max={100} step={5} />
+        <FieldLabel for="slider-price-range">Price Range</FieldLabel>
+        <Slider id="slider-price-range" bind:value={priceRange} max={100} step={5} />
         <FieldDescription>${priceRange[0]} - ${priceRange[1]}</FieldDescription>
       </Field>
       <Field>
-        <FieldLabel>Color Balance</FieldLabel>
-        <Slider bind:value={colorBalance} max={100} step={10} />
+        <FieldLabel for="slider-color-balance">Color Balance</FieldLabel>
+        <Slider id="slider-color-balance" bind:value={colorBalance} max={100} step={10} />
         <FieldDescription>
           Red: {colorBalance[0]}%, Green: {colorBalance[1]}%, Blue: {colorBalance[2]}%
         </FieldDescription>
       </Field>
-      <Field invalid>
-        <FieldLabel>Invalid Slider</FieldLabel>
-        <Slider defaultValue={[30]} max={100} />
+      <Field data-invalid>
+        <FieldLabel for="slider-invalid">Invalid Slider</FieldLabel>
+        <Slider id="slider-invalid" defaultValue={[30]} max={100} aria-invalid />
         <FieldDescription>This slider has validation errors.</FieldDescription>
       </Field>
-      <Field disabled>
-        <FieldLabel>Disabled Slider</FieldLabel>
-        <Slider defaultValue={[50]} max={100} disabled />
+      <Field data-disabled>
+        <FieldLabel for="slider-disabled-field">Disabled Slider</FieldLabel>
+        <Slider id="slider-disabled-field" defaultValue={[50]} max={100} disabled />
         <FieldDescription>This slider is currently disabled.</FieldDescription>
       </Field>
     </FieldGroup>
@@ -498,8 +485,8 @@
   <Example title="Native Select Fields">
     <FieldGroup>
       <Field>
-        <FieldLabel>Basic Native Select</FieldLabel>
-        <NativeSelect>
+        <FieldLabel for="native-select-basic">Basic Native Select</FieldLabel>
+        <NativeSelect id="native-select-basic">
           <NativeSelectOption value="">Choose an option</NativeSelectOption>
           <NativeSelectOption value="option1">Option 1</NativeSelectOption>
           <NativeSelectOption value="option2">Option 2</NativeSelectOption>
@@ -507,8 +494,8 @@
         </NativeSelect>
       </Field>
       <Field>
-        <FieldLabel>Country</FieldLabel>
-        <NativeSelect>
+        <FieldLabel for="native-select-country">Country</FieldLabel>
+        <NativeSelect id="native-select-country">
           <NativeSelectOption value="">Select your country</NativeSelectOption>
           <NativeSelectOption value="us">United States</NativeSelectOption>
           <NativeSelectOption value="uk">United Kingdom</NativeSelectOption>
@@ -517,9 +504,9 @@
         <FieldDescription>Select the country where you currently reside.</FieldDescription>
       </Field>
       <Field>
-        <FieldLabel>Timezone</FieldLabel>
+        <FieldLabel for="native-select-timezone">Timezone</FieldLabel>
         <FieldDescription>Choose your local timezone for accurate scheduling.</FieldDescription>
-        <NativeSelect>
+        <NativeSelect id="native-select-timezone">
           <NativeSelectOption value="">Select timezone</NativeSelectOption>
           <NativeSelectOption value="utc">UTC</NativeSelectOption>
           <NativeSelectOption value="est">Eastern Time</NativeSelectOption>
@@ -527,8 +514,8 @@
         </NativeSelect>
       </Field>
       <Field>
-        <FieldLabel>Grouped Options</FieldLabel>
-        <NativeSelect>
+        <FieldLabel for="native-select-grouped">Grouped Options</FieldLabel>
+        <NativeSelect id="native-select-grouped">
           <NativeSelectOption value="">Select a region</NativeSelectOption>
           <NativeSelectOptGroup label="North America">
             <NativeSelectOption value="us">United States</NativeSelectOption>
@@ -543,9 +530,9 @@
         </NativeSelect>
         <FieldDescription>Native select with grouped options using optgroup.</FieldDescription>
       </Field>
-      <Field invalid>
-        <FieldLabel>Invalid Native Select</FieldLabel>
-        <NativeSelect aria-invalid="true">
+      <Field data-invalid>
+        <FieldLabel for="native-select-invalid">Invalid Native Select</FieldLabel>
+        <NativeSelect id="native-select-invalid" aria-invalid>
           <NativeSelectOption value="">This field has an error</NativeSelectOption>
           <NativeSelectOption value="option1">Option 1</NativeSelectOption>
           <NativeSelectOption value="option2">Option 2</NativeSelectOption>
@@ -553,9 +540,9 @@
         </NativeSelect>
         <FieldDescription>This field contains validation errors.</FieldDescription>
       </Field>
-      <Field disabled>
-        <FieldLabel>Disabled Field</FieldLabel>
-        <NativeSelect disabled>
+      <Field data-disabled>
+        <FieldLabel for="native-select-disabled-field">Disabled Field</FieldLabel>
+        <NativeSelect id="native-select-disabled-field" disabled>
           <NativeSelectOption value="">Cannot select</NativeSelectOption>
           <NativeSelectOption value="option1">Option 1</NativeSelectOption>
           <NativeSelectOption value="option2">Option 2</NativeSelectOption>
@@ -626,21 +613,21 @@
         </InputOTP>
         <FieldDescription>Enter your 4-digit PIN (numbers only).</FieldDescription>
       </Field>
-      <Field invalid>
+      <Field data-invalid>
         <FieldLabel for="otp-invalid">Invalid OTP</FieldLabel>
         <InputOTP id="otp-invalid" length={6}>
           <InputOTPGroup>
-            <InputOTPSlot />
-            <InputOTPSlot />
-            <InputOTPSlot />
-            <InputOTPSlot />
-            <InputOTPSlot />
-            <InputOTPSlot />
+            <InputOTPSlot aria-invalid />
+            <InputOTPSlot aria-invalid />
+            <InputOTPSlot aria-invalid />
+            <InputOTPSlot aria-invalid />
+            <InputOTPSlot aria-invalid />
+            <InputOTPSlot aria-invalid />
           </InputOTPGroup>
         </InputOTP>
         <FieldDescription>This OTP field contains validation errors.</FieldDescription>
       </Field>
-      <Field disabled>
+      <Field data-disabled>
         <FieldLabel for="otp-disabled-field">Disabled OTP</FieldLabel>
         <InputOTP id="otp-disabled-field" length={6} disabled>
           <InputOTPGroup>
@@ -663,24 +650,24 @@
     <FieldGroup class="**:data-[slot=field-content]:min-w-48">
       <Field orientation="horizontal">
         <FieldContent>
-          <FieldLabel>Username</FieldLabel>
+          <FieldLabel for="horizontal-input">Username</FieldLabel>
           <FieldDescription>Enter your preferred username.</FieldDescription>
         </FieldContent>
-        <Input placeholder="johndoe" />
+        <Input id="horizontal-input" placeholder="johndoe" />
       </Field>
       <Field orientation="horizontal">
         <FieldContent>
-          <FieldLabel>Bio</FieldLabel>
+          <FieldLabel for="horizontal-textarea">Bio</FieldLabel>
           <FieldDescription>Write a short description about yourself.</FieldDescription>
         </FieldContent>
-        <Textarea placeholder="Tell us about yourself..." />
+        <Textarea id="horizontal-textarea" placeholder="Tell us about yourself..." />
       </Field>
       <Field orientation="horizontal">
         <FieldContent>
-          <FieldLabel>Email Notifications</FieldLabel>
+          <FieldLabel for="horizontal-switch">Email Notifications</FieldLabel>
           <FieldDescription>Receive email updates about your account.</FieldDescription>
         </FieldContent>
-        <Switch />
+        <Switch id="horizontal-switch" />
       </Field>
       <Field orientation="horizontal">
         <FieldContent>
@@ -702,10 +689,10 @@
       </Field>
       <Field orientation="horizontal">
         <FieldContent>
-          <FieldLabel>Country</FieldLabel>
+          <FieldLabel for="horizontal-native-select">Country</FieldLabel>
           <FieldDescription>Select your country.</FieldDescription>
         </FieldContent>
-        <NativeSelect>
+        <NativeSelect id="horizontal-native-select">
           <NativeSelectOption value="">Select a country</NativeSelectOption>
           <NativeSelectOption value="us">United States</NativeSelectOption>
           <NativeSelectOption value="uk">United Kingdom</NativeSelectOption>
@@ -714,10 +701,10 @@
       </Field>
       <Field orientation="horizontal">
         <FieldContent>
-          <FieldLabel>Volume</FieldLabel>
+          <FieldLabel for="horizontal-slider">Volume</FieldLabel>
           <FieldDescription>Adjust the volume level.</FieldDescription>
         </FieldContent>
-        <Slider defaultValue={[50]} max={100} />
+        <Slider id="horizontal-slider" defaultValue={[50]} max={100} />
       </Field>
     </FieldGroup>
   </Example>

@@ -215,7 +215,7 @@ test('a disabled select does not open', async ({ page }) => {
   await expect(options(page)).toHaveCount(0);
 });
 
-test('a select in an invalid field marks its trigger invalid', async ({ page }) => {
+test('an aria-invalid select trigger in a data-invalid field keeps its placeholder and shows the field error', async ({ page }) => {
   const trigger = page.getByTestId('invalid');
   await expect(trigger).toHaveAttribute('aria-invalid', 'true');
   await expect(trigger).toHaveText('Pick one');

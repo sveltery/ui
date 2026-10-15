@@ -1,147 +1,155 @@
 <script lang="ts">
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Field, FieldContent, FieldDescription, FieldItem, FieldLabel, FieldLegend, FieldSet } from '@sveltery/ui/field';
+  import { Field, FieldContent, FieldDescription, FieldLabel, FieldLegend, FieldSet } from '@sveltery/ui/field';
   import { RadioGroup, RadioGroupItem } from '@sveltery/ui/radio-group';
-
-  const plans = [
-    { value: 'plus', name: 'Plus', description: 'For individuals and small teams' },
-    { value: 'pro', name: 'Pro', description: 'For growing businesses' },
-    { value: 'enterprise', name: 'Enterprise', description: 'For large teams and enterprises' },
-  ];
-  const sizes = [
-    { value: 'small', name: 'Small' },
-    { value: 'medium', name: 'Medium' },
-    { value: 'large', name: 'Large' },
-    { value: 'xlarge', name: 'X-Large' },
-  ];
 </script>
 
 {#snippet RadioGroupBasic()}
   <Example title="Basic">
-    <Field>
-      <RadioGroup defaultValue="comfortable">
-        <FieldItem>
-          <RadioGroupItem value="default" />
-          <FieldLabel class="font-normal">Default</FieldLabel>
-        </FieldItem>
-        <FieldItem>
-          <RadioGroupItem value="comfortable" />
-          <FieldLabel class="font-normal">Comfortable</FieldLabel>
-        </FieldItem>
-        <FieldItem>
-          <RadioGroupItem value="compact" />
-          <FieldLabel class="font-normal">Compact</FieldLabel>
-        </FieldItem>
-      </RadioGroup>
-    </Field>
+    <RadioGroup defaultValue="comfortable">
+      <Field orientation="horizontal">
+        <RadioGroupItem value="default" id="r1" />
+        <FieldLabel for="r1" class="font-normal">Default</FieldLabel>
+      </Field>
+      <Field orientation="horizontal">
+        <RadioGroupItem value="comfortable" id="r2" />
+        <FieldLabel for="r2" class="font-normal">Comfortable</FieldLabel>
+      </Field>
+      <Field orientation="horizontal">
+        <RadioGroupItem value="compact" id="r3" />
+        <FieldLabel for="r3" class="font-normal">Compact</FieldLabel>
+      </Field>
+    </RadioGroup>
   </Example>
 {/snippet}
 
 {#snippet RadioGroupWithDescriptions()}
   <Example title="With Descriptions">
-    <Field>
-      <RadioGroup defaultValue="plus">
-        {#each plans as item (item.value)}
-          <FieldLabel>
-            <FieldItem>
-              <FieldContent>
-                <div class="font-medium">{item.name}</div>
-                <FieldDescription>{item.description}</FieldDescription>
-              </FieldContent>
-              <RadioGroupItem value={item.value} />
-            </FieldItem>
-          </FieldLabel>
-        {/each}
-      </RadioGroup>
-    </Field>
+    <RadioGroup defaultValue="plus">
+      <FieldLabel for="plus-plan">
+        <Field orientation="horizontal">
+          <FieldContent>
+            <div class="font-medium">Plus</div>
+            <FieldDescription>For individuals and small teams</FieldDescription>
+          </FieldContent>
+          <RadioGroupItem value="plus" id="plus-plan" />
+        </Field>
+      </FieldLabel>
+      <FieldLabel for="pro-plan">
+        <Field orientation="horizontal">
+          <FieldContent>
+            <div class="font-medium">Pro</div>
+            <FieldDescription>For growing businesses</FieldDescription>
+          </FieldContent>
+          <RadioGroupItem value="pro" id="pro-plan" />
+        </Field>
+      </FieldLabel>
+      <FieldLabel for="enterprise-plan">
+        <Field orientation="horizontal">
+          <FieldContent>
+            <div class="font-medium">Enterprise</div>
+            <FieldDescription>For large teams and enterprises</FieldDescription>
+          </FieldContent>
+          <RadioGroupItem value="enterprise" id="enterprise-plan" />
+        </Field>
+      </FieldLabel>
+    </RadioGroup>
   </Example>
 {/snippet}
 
 {#snippet RadioGroupWithFieldSet()}
   <Example title="With FieldSet">
-    <Field>
-      <FieldSet>
-        <FieldLegend>Battery Level</FieldLegend>
-        <FieldDescription>Choose your preferred battery level.</FieldDescription>
-        <RadioGroup defaultValue="medium">
-          <FieldItem>
-            <RadioGroupItem value="high" />
-            <FieldLabel class="font-normal">High</FieldLabel>
-          </FieldItem>
-          <FieldItem>
-            <RadioGroupItem value="medium" />
-            <FieldLabel class="font-normal">Medium</FieldLabel>
-          </FieldItem>
-          <FieldItem>
-            <RadioGroupItem value="low" />
-            <FieldLabel class="font-normal">Low</FieldLabel>
-          </FieldItem>
-        </RadioGroup>
-      </FieldSet>
-    </Field>
+    <FieldSet>
+      <FieldLegend>Battery Level</FieldLegend>
+      <FieldDescription>Choose your preferred battery level.</FieldDescription>
+      <RadioGroup defaultValue="medium">
+        <Field orientation="horizontal">
+          <RadioGroupItem value="high" id="battery-high" />
+          <FieldLabel for="battery-high" class="font-normal">High</FieldLabel>
+        </Field>
+        <Field orientation="horizontal">
+          <RadioGroupItem value="medium" id="battery-medium" />
+          <FieldLabel for="battery-medium" class="font-normal">Medium</FieldLabel>
+        </Field>
+        <Field orientation="horizontal">
+          <RadioGroupItem value="low" id="battery-low" />
+          <FieldLabel for="battery-low" class="font-normal">Low</FieldLabel>
+        </Field>
+      </RadioGroup>
+    </FieldSet>
   </Example>
 {/snippet}
 
 {#snippet RadioGroupGrid()}
   <Example title="Grid Layout">
-    <Field>
-      <RadioGroup defaultValue="medium" class="grid grid-cols-2 gap-2">
-        {#each sizes as item (item.value)}
-          <FieldLabel>
-            <FieldItem>
-              <RadioGroupItem value={item.value} />
-              <div class="font-medium">{item.name}</div>
-            </FieldItem>
-          </FieldLabel>
-        {/each}
-      </RadioGroup>
-    </Field>
+    <RadioGroup defaultValue="medium" class="grid grid-cols-2 gap-2">
+      <FieldLabel for="size-small">
+        <Field orientation="horizontal">
+          <RadioGroupItem value="small" id="size-small" />
+          <div class="font-medium">Small</div>
+        </Field>
+      </FieldLabel>
+      <FieldLabel for="size-medium">
+        <Field orientation="horizontal">
+          <RadioGroupItem value="medium" id="size-medium" />
+          <div class="font-medium">Medium</div>
+        </Field>
+      </FieldLabel>
+      <FieldLabel for="size-large">
+        <Field orientation="horizontal">
+          <RadioGroupItem value="large" id="size-large" />
+          <div class="font-medium">Large</div>
+        </Field>
+      </FieldLabel>
+      <FieldLabel for="size-xlarge">
+        <Field orientation="horizontal">
+          <RadioGroupItem value="xlarge" id="size-xlarge" />
+          <div class="font-medium">X-Large</div>
+        </Field>
+      </FieldLabel>
+    </RadioGroup>
   </Example>
 {/snippet}
 
 {#snippet RadioGroupDisabled()}
   <Example title="Disabled">
-    <Field>
-      <RadioGroup defaultValue="option2" disabled>
-        <FieldItem>
-          <RadioGroupItem value="option1" />
-          <FieldLabel class="font-normal">Option 1</FieldLabel>
-        </FieldItem>
-        <FieldItem>
-          <RadioGroupItem value="option2" />
-          <FieldLabel class="font-normal">Option 2</FieldLabel>
-        </FieldItem>
-        <FieldItem>
-          <RadioGroupItem value="option3" />
-          <FieldLabel class="font-normal">Option 3</FieldLabel>
-        </FieldItem>
-      </RadioGroup>
-    </Field>
+    <RadioGroup defaultValue="option2" disabled>
+      <Field orientation="horizontal">
+        <RadioGroupItem value="option1" id="disabled-1" />
+        <FieldLabel for="disabled-1" class="font-normal">Option 1</FieldLabel>
+      </Field>
+      <Field orientation="horizontal">
+        <RadioGroupItem value="option2" id="disabled-2" />
+        <FieldLabel for="disabled-2" class="font-normal">Option 2</FieldLabel>
+      </Field>
+      <Field orientation="horizontal">
+        <RadioGroupItem value="option3" id="disabled-3" />
+        <FieldLabel for="disabled-3" class="font-normal">Option 3</FieldLabel>
+      </Field>
+    </RadioGroup>
   </Example>
 {/snippet}
 
 {#snippet RadioGroupInvalid()}
   <Example title="Invalid">
-    <Field invalid>
-      <FieldSet>
-        <FieldLegend>Notification Preferences</FieldLegend>
-        <FieldDescription>Choose how you want to receive notifications.</FieldDescription>
-        <RadioGroup defaultValue="email">
-          <FieldItem>
-            <RadioGroupItem value="email" aria-invalid />
-            <FieldLabel class="font-normal">Email only</FieldLabel>
-          </FieldItem>
-          <FieldItem>
-            <RadioGroupItem value="sms" aria-invalid />
-            <FieldLabel class="font-normal">SMS only</FieldLabel>
-          </FieldItem>
-          <FieldItem>
-            <RadioGroupItem value="both" aria-invalid />
-            <FieldLabel class="font-normal">Both Email &amp; SMS</FieldLabel>
-          </FieldItem>
-        </RadioGroup>
-      </FieldSet>
-    </Field>
+    <FieldSet>
+      <FieldLegend>Notification Preferences</FieldLegend>
+      <FieldDescription>Choose how you want to receive notifications.</FieldDescription>
+      <RadioGroup defaultValue="email">
+        <Field orientation="horizontal" data-invalid>
+          <RadioGroupItem value="email" id="invalid-email" aria-invalid />
+          <FieldLabel for="invalid-email" class="font-normal">Email only</FieldLabel>
+        </Field>
+        <Field orientation="horizontal" data-invalid>
+          <RadioGroupItem value="sms" id="invalid-sms" aria-invalid />
+          <FieldLabel for="invalid-sms" class="font-normal">SMS only</FieldLabel>
+        </Field>
+        <Field orientation="horizontal" data-invalid>
+          <RadioGroupItem value="both" id="invalid-both" aria-invalid />
+          <FieldLabel for="invalid-both" class="font-normal">Both Email &amp; SMS</FieldLabel>
+        </Field>
+      </RadioGroup>
+    </FieldSet>
   </Example>
 {/snippet}
 

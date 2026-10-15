@@ -47,11 +47,8 @@
           <CollapsibleContent>
             <SidebarMenuSub>
               {#each item.items as subItem (subItem.title)}
-                {#snippet subLink(props: RenderProps, _state: unknown, children?: Snippet)}
-                  <a href={subItem.url} {...props}>{@render children?.()}</a>
-                {/snippet}
                 <SidebarMenuSubItem>
-                  <SidebarMenuSubButton render={subLink}>
+                  <SidebarMenuSubButton href={subItem.url}>
                     <span>{subItem.title}</span>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>

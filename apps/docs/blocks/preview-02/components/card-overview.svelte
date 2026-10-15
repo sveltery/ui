@@ -51,7 +51,7 @@
         <CardDescription>Yearly Activity</CardDescription>
         <Badge variant="secondary">+US$0.25 Daily Cash</Badge>
       </div>
-          <ChartContainer aria-label="Yearly activity by month" config={chartConfig} class="aspect-auto h-20 w-full">
+          <ChartContainer aria-label="Yearly activity by month" config={chartConfig} class="h-20 w-full">
             <BarChart
               data={activityData}
               x="month"

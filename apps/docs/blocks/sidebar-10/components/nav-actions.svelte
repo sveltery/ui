@@ -1,14 +1,9 @@
 <script lang="ts">
-  import { onMount, type Snippet } from 'svelte';
-  import type { HTMLAttributes } from 'svelte/elements';
   import { Button } from '@sveltery/ui/button';
   import { Popover, PopoverContent, PopoverTrigger } from '@sveltery/ui/popover';
   import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@sveltery/ui/sidebar';
   import { IconPlaceholder } from '@sveltery/ui/icons';
-  let isOpen = $state(false);
-  onMount(() => {
-    isOpen = true;
-  });
+  let isOpen = $state(true);
   const data = [
     [
       {
@@ -71,13 +66,7 @@
       },
     ],
   ];
-  // The host element's typed event handlers do not fit the element this snippet renders, so only `class` is typed.
-  type RenderProps = Pick<HTMLAttributes<HTMLElement>, 'class'>;
 </script>
-
-{#snippet moreButton(props: RenderProps, _state: unknown, children?: Snippet)}
-  <Button {...props} variant="ghost" size="icon" class={[props.class, 'h-7 w-7 data-open:bg-accent']}>{@render children?.()}</Button>
-{/snippet}
 
 {#snippet settings2Icon()}
   <IconPlaceholder lucide="Settings2Icon" tabler="IconSettings" hugeicons="Settings05Icon" phosphor="GearIcon" remixicon="RiSettingsLine" />
@@ -137,7 +126,10 @@
     <IconPlaceholder lucide="StarIcon" tabler="IconStar" hugeicons="StarIcon" phosphor="StarIcon" remixicon="RiStarLine" />
   </Button>
   <Popover bind:open={isOpen}>
-    <PopoverTrigger render={moreButton}>
+    <PopoverTrigger>
+      {#snippet render(props, _state, children)}
+        <Button {...props} variant="ghost" size="icon" class={[props.class, 'h-7 w-7 data-popup-open:bg-accent']}>{@render children?.()}</Button>
+      {/snippet}
       <IconPlaceholder lucide="MoreHorizontalIcon" tabler="IconDots" hugeicons="MoreHorizontalCircle01Icon" phosphor="DotsThreeOutlineIcon" remixicon="RiMoreLine" />
     </PopoverTrigger>
     <PopoverContent class="w-56 overflow-hidden rounded-lg p-0" align="end">

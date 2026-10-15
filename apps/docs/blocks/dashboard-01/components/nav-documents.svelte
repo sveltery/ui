@@ -11,10 +11,6 @@
   type RenderProps = Pick<HTMLAttributes<HTMLElement>, 'class'>;
 </script>
 
-{#snippet menuAction(props: RenderProps, _state: unknown, children?: Snippet)}
-  <SidebarMenuAction {...props} showOnHover class={[props.class, 'aria-expanded:bg-muted']}>{@render children?.()}</SidebarMenuAction>
-{/snippet}
-
 <SidebarGroup class="group-data-[collapsible=icon]:hidden">
   <SidebarGroupLabel>Documents</SidebarGroupLabel>
   <SidebarMenu>
@@ -28,7 +24,10 @@
           <span>{item.name}</span>
         </SidebarMenuButton>
         <DropdownMenu>
-          <DropdownMenuTrigger render={menuAction}>
+          <DropdownMenuTrigger>
+            {#snippet render(props, _state, children)}
+              <SidebarMenuAction {...props} showOnHover class={[props.class, 'aria-expanded:bg-muted']}>{@render children?.()}</SidebarMenuAction>
+            {/snippet}
             <IconPlaceholder lucide="MoreHorizontalIcon" tabler="IconDots" hugeicons="MoreHorizontalCircle01Icon" phosphor="DotsThreeOutlineIcon" remixicon="RiMoreLine" />
             <span class="sr-only">More</span>
           </DropdownMenuTrigger>

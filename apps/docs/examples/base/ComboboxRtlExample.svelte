@@ -63,7 +63,7 @@
     <Field>
       <FieldLabel>{t.label}</FieldLabel>
       <Combobox multiple autoHighlight items={categories} defaultValue={[categories[0]]} itemToStringLabel={label} itemToStringValue={label}>
-        <ComboboxChips bind:ref={anchor}>
+        <ComboboxChips {@attach (node) => { anchor = node; }}>
           <ComboboxValue>
             {#snippet children(values)}
               {const selected = $derived(values as string[])}

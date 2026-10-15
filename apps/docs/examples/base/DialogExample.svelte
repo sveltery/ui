@@ -218,9 +218,9 @@
                 <FieldSet>
                   <FieldGroup>
                     <Field orientation="horizontal">
-                      <FieldLabel>Theme</FieldLabel>
+                      <FieldLabel for="theme">Theme</FieldLabel>
                       <Select items={themes} bind:value={theme}>
-                    <SelectTrigger>
+                    <SelectTrigger id="theme">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent align="end">
@@ -234,9 +234,9 @@
                     </Field>
                     <FieldSeparator />
                     <Field orientation="horizontal">
-                      <FieldLabel>Accent Color</FieldLabel>
+                      <FieldLabel for="accent-color">Accent Color</FieldLabel>
                       <Select items={accents} bind:value={accentColor}>
-                    <SelectTrigger>
+                    <SelectTrigger id="accent-color">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent align="end">
@@ -251,11 +251,11 @@
                     <FieldSeparator />
                     <Field orientation="responsive">
                       <FieldContent>
-                        <FieldLabel>Spoken Language</FieldLabel>
+                        <FieldLabel for="spoken-language">Spoken Language</FieldLabel>
                         <FieldDescription>For best results, select the language you mainly speak. If it's not listed, it may still be supported via auto-detection.</FieldDescription>
                       </FieldContent>
                       <Select items={spokenLanguages} bind:value={spokenLanguage}>
-                    <SelectTrigger>
+                    <SelectTrigger id="spoken-language">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent align="end">
@@ -269,9 +269,9 @@
                     </Field>
                     <FieldSeparator />
                     <Field orientation="horizontal">
-                      <FieldLabel>Voice</FieldLabel>
+                      <FieldLabel for="voice">Voice</FieldLabel>
                       <Select items={voices} bind:value={voice}>
-                    <SelectTrigger>
+                    <SelectTrigger id="voice">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent align="end">
@@ -293,8 +293,8 @@
                     <FieldDescription>Get notified when ChatGPT responds to requests that take time, like research or image generation.</FieldDescription>
                     <FieldGroup data-slot="checkbox-group">
                       <Field orientation="horizontal">
-                        <Checkbox defaultChecked disabled />
-                        <FieldLabel class="font-normal">Push notifications</FieldLabel>
+                        <Checkbox id="push" defaultChecked disabled />
+                        <FieldLabel for="push" class="font-normal">Push notifications</FieldLabel>
                       </Field>
                     </FieldGroup>
                   </FieldSet>
@@ -304,12 +304,12 @@
                     <FieldDescription>Get notified when tasks you've created have updates. <a href="#manage-tasks">Manage tasks</a></FieldDescription>
                     <FieldGroup data-slot="checkbox-group">
                       <Field orientation="horizontal">
-                        <Checkbox />
-                        <FieldLabel class="font-normal">Push notifications</FieldLabel>
+                        <Checkbox id="push-tasks" />
+                        <FieldLabel for="push-tasks" class="font-normal">Push notifications</FieldLabel>
                       </Field>
                       <Field orientation="horizontal">
-                        <Checkbox />
-                        <FieldLabel class="font-normal">Email notifications</FieldLabel>
+                        <Checkbox id="email-tasks" />
+                        <FieldLabel for="email-tasks" class="font-normal">Email notifications</FieldLabel>
                       </Field>
                     </FieldGroup>
                   </FieldSet>
@@ -318,9 +318,9 @@
               <TabsContent value="personalization">
                 <FieldGroup>
                   <Field orientation="responsive">
-                    <FieldLabel>Nickname</FieldLabel>
+                    <FieldLabel for="nickname">Nickname</FieldLabel>
                     <InputGroup>
-                      <InputGroupInput placeholder="Broski" class="@md/field-group:max-w-[200px]" />
+                      <InputGroupInput id="nickname" placeholder="Broski" class="@md/field-group:max-w-[200px]" />
                       <InputGroupAddon align="inline-end">
                         <Tooltip>
                           <TooltipTrigger render={nicknameInfoButton}>
@@ -334,19 +334,19 @@
                   <FieldSeparator />
                   <Field orientation="responsive" class="@md/field-group:flex-col @2xl/field-group:flex-row">
                     <FieldContent>
-                      <FieldLabel>More about you</FieldLabel>
+                      <FieldLabel for="about">More about you</FieldLabel>
                       <FieldDescription>Tell us more about yourself. This will be used to help us personalize your experience.</FieldDescription>
                     </FieldContent>
-                    <Textarea placeholder="I'm a software engineer..." class="min-h-[120px] @md/field-group:min-w-full @2xl/field-group:min-w-[300px]" />
+                    <Textarea id="about" placeholder="I'm a software engineer..." class="min-h-[120px] @md/field-group:min-w-full @2xl/field-group:min-w-[300px]" />
                   </Field>
                   <FieldSeparator />
                   <FieldLabel>
                     <Field orientation="horizontal">
                       <FieldContent>
-                        <FieldLabel>Enable customizations</FieldLabel>
+                        <FieldLabel for="customization">Enable customizations</FieldLabel>
                         <FieldDescription>Enable customizations to make ChatGPT more personalized.</FieldDescription>
                       </FieldContent>
-                      <Switch defaultChecked />
+                      <Switch id="customization" defaultChecked />
                     </Field>
                   </FieldLabel>
                 </FieldGroup>
@@ -355,10 +355,10 @@
                 <FieldGroup>
                   <Field orientation="horizontal">
                     <FieldContent>
-                      <FieldLabel>Multi-factor authentication</FieldLabel>
+                      <FieldLabel for="2fa">Multi-factor authentication</FieldLabel>
                       <FieldDescription>Enable multi-factor authentication to secure your account. If you do not have a two-factor authentication device, you can use a one-time code sent to your email.</FieldDescription>
                     </FieldContent>
-                    <Switch />
+                    <Switch id="2fa" />
                   </Field>
                   <FieldSeparator />
                   <Field orientation="horizontal">

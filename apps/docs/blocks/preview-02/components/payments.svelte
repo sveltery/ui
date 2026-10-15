@@ -1,10 +1,14 @@
 <script lang="ts">
+  import type { Snippet } from 'svelte';
+  import type { HTMLAttributes } from 'svelte/elements';
   import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@sveltery/ui/breadcrumb';
   import { Button } from '@sveltery/ui/button';
   import { Card, CardContent, CardHeader } from '@sveltery/ui/card';
   import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
   import { Item, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from '@sveltery/ui/item';
   import { IconPlaceholder } from '@sveltery/ui/icons';
+  // The host element's typed event handlers do not fit the element this snippet renders, so only `class` is typed.
+  type RenderProps = Pick<HTMLAttributes<HTMLElement>, 'class'>;
 </script>
 
 <Card>
@@ -19,7 +23,7 @@
           <DropdownMenu>
             <DropdownMenuTrigger>
               {#snippet render(props, _state, content)}
-                <Button {...(props as Record<string, unknown>)} size="icon-sm" variant="ghost">{@render content?.()}</Button>
+                <Button {...props} size="icon-sm" variant="ghost">{@render content?.()}</Button>
               {/snippet}
               <IconPlaceholder lucide="MoreHorizontalIcon" tabler="IconDots" hugeicons="MoreHorizontalCircle01Icon" phosphor="DotsThreeIcon" remixicon="RiMoreLine" />
               <span class="sr-only">Account options</span>
@@ -43,8 +47,8 @@
   <CardContent>
     <ItemGroup>
       <Item variant="muted">
-        {#snippet render(props, _state, content)}
-          <a {...(props as Record<string, unknown>)} href="#">{@render content?.()}</a>
+        {#snippet render(props: RenderProps, _state: unknown, content?: Snippet)}
+          <a {...props} href="#">{@render content?.()}</a>
         {/snippet}
         <ItemMedia variant="icon">
           <IconPlaceholder lucide="GaugeIcon" tabler="IconGauge" hugeicons="Settings01Icon" phosphor="GaugeIcon" remixicon="RiDashboardLine" />
@@ -56,8 +60,8 @@
         <IconPlaceholder lucide="ChevronRightIcon" tabler="IconChevronRight" hugeicons="ArrowRight01Icon" phosphor="CaretRightIcon" remixicon="RiArrowRightSLine" class="size-4 shrink-0 text-muted-foreground" />
       </Item>
       <Item variant="muted">
-        {#snippet render(props, _state, content)}
-          <a {...(props as Record<string, unknown>)} href="#">{@render content?.()}</a>
+        {#snippet render(props: RenderProps, _state: unknown, content?: Snippet)}
+          <a {...props} href="#">{@render content?.()}</a>
         {/snippet}
         <ItemMedia variant="icon">
           <IconPlaceholder lucide="CalendarIcon" tabler="IconCalendar" hugeicons="Calendar03Icon" phosphor="CalendarIcon" remixicon="RiCalendarLine" />
@@ -69,8 +73,8 @@
         <IconPlaceholder lucide="ChevronRightIcon" tabler="IconChevronRight" hugeicons="ArrowRight01Icon" phosphor="CaretRightIcon" remixicon="RiArrowRightSLine" class="size-4 shrink-0 text-muted-foreground" />
       </Item>
       <Item variant="muted">
-        {#snippet render(props, _state, content)}
-          <a {...(props as Record<string, unknown>)} href="#">{@render content?.()}</a>
+        {#snippet render(props: RenderProps, _state: unknown, content?: Snippet)}
+          <a {...props} href="#">{@render content?.()}</a>
         {/snippet}
         <ItemMedia variant="icon">
           <IconPlaceholder lucide="RepeatIcon" tabler="IconRepeat" hugeicons="RepeatIcon" phosphor="RepeatIcon" remixicon="RiRepeatLine" />
@@ -82,8 +86,8 @@
         <IconPlaceholder lucide="ChevronRightIcon" tabler="IconChevronRight" hugeicons="ArrowRight01Icon" phosphor="CaretRightIcon" remixicon="RiArrowRightSLine" class="size-4 shrink-0 text-muted-foreground" />
       </Item>
       <Item variant="muted">
-        {#snippet render(props, _state, content)}
-          <a {...(props as Record<string, unknown>)} href="#">{@render content?.()}</a>
+        {#snippet render(props: RenderProps, _state: unknown, content?: Snippet)}
+          <a {...props} href="#">{@render content?.()}</a>
         {/snippet}
         <ItemMedia variant="icon">
           <IconPlaceholder lucide="RefreshCwIcon" tabler="IconRefresh" hugeicons="RepeatIcon" phosphor="ArrowsClockwiseIcon" remixicon="RiRefreshLine" />

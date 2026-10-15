@@ -15,7 +15,7 @@
     </InputGroupAddon>
   </InputGroup>
   <InputGroup>
-    <InputGroupAddon data-testid="vetoed" onclick={(event) => { events.push('addon'); event.preventDefault(); }}>Veto</InputGroupAddon>
+    <InputGroupAddon data-testid="replaced" onclick={() => events.push('addon')}>Veto</InputGroupAddon>
     <InputGroupInput name="other" defaultValue="Other" />
   </InputGroup>
   <InputGroup>

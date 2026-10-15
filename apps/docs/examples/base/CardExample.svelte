@@ -255,16 +255,16 @@
         <form>
           <FieldGroup>
             <Field>
-              <FieldLabel>Email</FieldLabel>
-              <Input type="email" placeholder="m@example.com" required />
+              <FieldLabel for="email">Email</FieldLabel>
+              <Input id="email" type="email" placeholder="m@example.com" required />
             </Field>
             <Field>
               <div class="flex items-center">
-                <FieldLabel>Password</FieldLabel>
+                <FieldLabel for="password">Password</FieldLabel>
                 <!-- svelte-ignore a11y_invalid_attribute -->
                 <a href="#" class="ml-auto inline-block underline-offset-4 hover:underline">Forgot your password?</a>
               </div>
-              <Input type="password" required />
+              <Input id="password" type="password" required />
             </Field>
           </FieldGroup>
         </form>

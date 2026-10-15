@@ -32,49 +32,49 @@
 <ExampleWrapper>
   <Example title="Basic">
     <Field orientation="horizontal">
-      <Checkbox />
-      <FieldLabel>Accept terms and conditions</FieldLabel>
+      <Checkbox id="terms" />
+      <FieldLabel for="terms">Accept terms and conditions</FieldLabel>
     </Field>
   </Example>
 
   <Example title="With Description">
     <Field orientation="horizontal">
-      <Checkbox defaultChecked />
+      <Checkbox id="terms-2" defaultChecked />
       <FieldContent>
-        <FieldLabel>Accept terms and conditions</FieldLabel>
+        <FieldLabel for="terms-2">Accept terms and conditions</FieldLabel>
         <FieldDescription>By clicking this checkbox, you agree to the terms and conditions.</FieldDescription>
       </FieldContent>
     </Field>
   </Example>
 
   <Example title="Invalid">
-    <Field orientation="horizontal" invalid>
-      <Checkbox aria-invalid />
-      <FieldLabel>Accept terms and conditions</FieldLabel>
+    <Field orientation="horizontal" data-invalid>
+      <Checkbox id="terms-3" aria-invalid />
+      <FieldLabel for="terms-3">Accept terms and conditions</FieldLabel>
     </Field>
   </Example>
 
   <Example title="Disabled">
     <Field orientation="horizontal">
-      <Checkbox disabled />
-      <FieldLabel>Enable notifications</FieldLabel>
+      <Checkbox id="toggle" disabled />
+      <FieldLabel for="toggle">Enable notifications</FieldLabel>
     </Field>
   </Example>
 
   <Example title="With Title">
     <FieldGroup>
-      <FieldLabel>
+      <FieldLabel for="toggle-2">
         <Field orientation="horizontal">
-          <Checkbox defaultChecked />
+          <Checkbox id="toggle-2" defaultChecked />
           <FieldContent>
             <FieldTitle>Enable notifications</FieldTitle>
             <FieldDescription>You can enable or disable notifications at any time.</FieldDescription>
           </FieldContent>
         </Field>
       </FieldLabel>
-      <FieldLabel>
-        <Field orientation="horizontal" disabled>
-          <Checkbox disabled />
+      <FieldLabel for="toggle-4">
+        <Field orientation="horizontal" data-disabled>
+          <Checkbox id="toggle-4" disabled />
           <FieldContent>
             <FieldTitle>Enable notifications</FieldTitle>
             <FieldDescription>You can enable or disable notifications at any time.</FieldDescription>
@@ -122,8 +122,8 @@
       <FieldLabel>Show these items on the desktop:</FieldLabel>
       {#each desktopItems as item (item.id)}
         <Field orientation="horizontal">
-          <Checkbox />
-          <FieldLabel class="font-normal">{item.label}</FieldLabel>
+          <Checkbox id={item.id} />
+          <FieldLabel for={item.id} class="font-normal">{item.label}</FieldLabel>
         </Field>
       {/each}
     </Field>

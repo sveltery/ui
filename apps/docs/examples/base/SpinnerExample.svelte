@@ -65,9 +65,9 @@
 {#snippet SpinnerInInputGroup()}
   <Example title="In Input Group">
     <Field>
-      <FieldLabel>Input Group</FieldLabel>
+      <FieldLabel for="input-group-spinner">Input Group</FieldLabel>
       <InputGroup>
-        <InputGroupInput />
+        <InputGroupInput id="input-group-spinner" />
         <InputGroupAddon>
           <Spinner />
         </InputGroupAddon>

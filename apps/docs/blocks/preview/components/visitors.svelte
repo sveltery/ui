@@ -38,7 +38,7 @@
     </CardAction>
   </CardHeader>
   <CardContent class="px-0">
-    <ChartContainer aria-label="Visitors by month" config={areaChartConfig} class="aspect-auto h-48 w-full">
+    <ChartContainer aria-label="Visitors by month" config={areaChartConfig} class="h-48 w-full">
       <AreaChart
         data={areaChartData}
         x="date"

@@ -1,8 +1,7 @@
 <script lang="ts">
   import { Button } from '@sveltery/ui/button';
   import { Checkbox } from '@sveltery/ui/checkbox';
-  import { Field, FieldContent, FieldDescription, FieldError, FieldGroup, FieldItem, FieldLabel, FieldLegend, FieldSet } from '@sveltery/ui/field';
-  import { Form } from '@sveltery/ui/form';
+  import { Field, FieldContent, FieldDescription, FieldGroup, FieldLabel, FieldLegend, FieldSet, FieldTitle } from '@sveltery/ui/field';
   import { RadioGroup, RadioGroupItem } from '@sveltery/ui/radio-group';
   import { Slider } from '@sveltery/ui/slider';
   import { Switch } from '@sveltery/ui/switch';
@@ -12,47 +11,49 @@
     { value: 'pro', label: 'Pro', description: 'For a growing team.' },
   ];
   let submitted = $state<Record<string, unknown> | null>(null);
+
+  function submit(event: SubmitEvent & { currentTarget: HTMLFormElement }) {
+    event.preventDefault();
+    submitted = Object.fromEntries(new FormData(event.currentTarget));
+  }
 </script>
 
-<Form class="w-full max-w-sm" onFormSubmit={(values) => (submitted = values)}>
+<form class="w-full max-w-sm" onsubmit={submit}>
   <FieldGroup>
-    <Field name="plan">
-      <FieldSet>
-        <FieldLegend variant="label">Plan</FieldLegend>
-        <RadioGroup defaultValue="starter">
-          {#each plans as plan (plan.value)}
-            <FieldItem>
-              <RadioGroupItem value={plan.value} />
+    <FieldSet>
+      <FieldLegend variant="label">Plan</FieldLegend>
+      <RadioGroup name="plan" defaultValue="starter">
+        {#each plans as plan (plan.value)}
+          <FieldLabel for="plan-{plan.value}">
+            <Field orientation="horizontal">
               <FieldContent>
-                <FieldLabel>{plan.label}</FieldLabel>
+                <FieldTitle>{plan.label}</FieldTitle>
                 <FieldDescription>{plan.description}</FieldDescription>
               </FieldContent>
-            </FieldItem>
-          {/each}
-        </RadioGroup>
-      </FieldSet>
+              <RadioGroupItem value={plan.value} id="plan-{plan.value}" />
+            </Field>
+          </FieldLabel>
+        {/each}
+      </RadioGroup>
+    </FieldSet>
+    <Field>
+      <FieldLabel for="seats">Seats</FieldLabel>
+      <Slider id="seats" name="seats" defaultValue={5} min={1} max={20} />
     </Field>
-    <Field name="seats">
-      <FieldLabel>Seats</FieldLabel>
-      <Slider defaultValue={5} min={1} max={20} />
-    </Field>
-    <Field name="newsletter" orientation="horizontal">
+    <Field orientation="horizontal">
       <FieldContent>
-        <FieldLabel>Newsletter</FieldLabel>
+        <FieldLabel for="newsletter">Newsletter</FieldLabel>
         <FieldDescription>Product news once a month.</FieldDescription>
       </FieldContent>
-      <Switch />
+      <Switch id="newsletter" name="newsletter" />
     </Field>
-    <Field name="terms" orientation="horizontal" validate={(value) => (value ? null : 'Accept the terms to continue.')}>
-      <Checkbox />
-      <FieldContent>
-        <FieldLabel>Accept the terms</FieldLabel>
-        <FieldError />
-      </FieldContent>
+    <Field orientation="horizontal">
+      <Checkbox id="terms" name="terms" required />
+      <FieldLabel for="terms">Accept the terms</FieldLabel>
     </Field>
     <Button type="submit">Continue</Button>
     {#if submitted}
       <pre class="text-xs">{JSON.stringify(submitted)}</pre>
     {/if}
   </FieldGroup>
-</Form>
+</form>
