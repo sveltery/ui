@@ -30,6 +30,9 @@
   export function toggle() {
     flag = !flag;
   }
+  export function write(next: string) {
+    text = next;
+  }
   export function preventKeydown() {
     preventKeys = true;
   }
@@ -169,6 +172,25 @@
     <Questionnaire.Skip data-testid="skip" />
     <Questionnaire.Submit data-testid="submit" />
   </Questionnaire.Root>
+{:else if scenario === 'skip-bound'}
+  <Questionnaire.Root data-testid="root" defaultItem="answer" {onsubmit}>
+    <Questionnaire.Item data-testid="answer" name="answer">
+      <Questionnaire.Title>Answer</Questionnaire.Title>
+      <Choice data-testid="bound-answer" bind:checked={flag} value="bound">Bound</Choice>
+      <Questionnaire.Input data-testid="bound-input" aria-label="Custom answer" bind:value={text} />
+    </Questionnaire.Item>
+    <TestItem name="after" />
+    <Questionnaire.Previous data-testid="previous" />
+    <Questionnaire.Skip data-testid="skip" />
+    <Questionnaire.Next data-testid="next" />
+    <Questionnaire.Submit data-testid="submit" />
+  </Questionnaire.Root>
+{:else if scenario === 'submit-earlier'}
+  <Questionnaire.Root data-testid="root" defaultItem="second" {onsubmit}>
+    <TestItem required name="first" />
+    <TestItem required name="second" />
+    <Questionnaire.Submit data-testid="submit" />
+  </Questionnaire.Root>
 {:else if scenario === 'native-input'}
   <Questionnaire.Root data-testid="root" defaultItem="answer" novalidate={false}>
     <Questionnaire.Item data-testid="answer" required name="answer">
@@ -300,6 +322,18 @@
       {#if flag}<Choice data-testid="middle-answer" value="middle">Middle</Choice>{/if}
       <Choice data-testid="last-answer" value="last">Last</Choice>
     </Questionnaire.Item>
+  </Questionnaire.Root>
+{:else if scenario === 'keyed-order'}
+  <Questionnaire.Root data-testid="root" defaultItem="first" shortcuts="letters">
+    <Questionnaire.Progress data-testid="progress" />
+    {#each flag ? ['last', 'first'] : ['first', 'last'] as name (name)}
+      <Questionnaire.Item data-testid={name} name={name}>
+        <Questionnaire.Title>{name}</Questionnaire.Title>
+        {#each flag ? ['b', 'a'] : ['a', 'b'] as value (value)}
+          <Choice data-testid="{name}-{value}" {value}>{value}</Choice>
+        {/each}
+      </Questionnaire.Item>
+    {/each}
   </Questionnaire.Root>
 {:else if scenario === 'overflow'}
   <Questionnaire.Root data-testid="root" defaultItem="answers" {shortcuts}>

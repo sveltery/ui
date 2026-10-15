@@ -20,8 +20,7 @@ describe('Questionnaire server rendering', () => {
     expect(el('root').dataset.current).toBe('1');
     expect(el('root').dataset.total).toBe('2');
     expect(el('root').hasAttribute('data-first')).toBe(true);
-    // Base Form turns native validation off once hydrated, so a page without JavaScript keeps it.
-    expect(el('root').hasAttribute('novalidate')).toBe(false);
+    expect(el('root').hasAttribute('novalidate')).toBe(true);
     expect(el('root').dataset.shortcuts).toBe('letters');
     expect(el('progress').textContent).toBe('Question 1 of 2');
     expect(el('progress').getAttribute('aria-valuenow')).toBe('1');

@@ -21,12 +21,13 @@
     "build": "svelte-package",
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
+  "dependencies": {
+    "esm-env": "^1.2.1"
+  },
   "peerDependencies": {
-    "@sveltery/base": "*",
     "svelte": "^5.57.1"
   },
   "devDependencies": {
-    "@sveltery/base": "github:sveltery/base#96c4a85856c5918bf40c0586a28e8e8ba757e717",
     "svelte": "5.57.1"
   }
 }

@@ -1,4 +1,3 @@
-import type { FormFocusInvalidDetail } from '@sveltery/base/form';
 import { createContext, flushSync, untrack } from 'svelte';
 import type { Attachment } from 'svelte/attachments';
 import {
@@ -31,6 +30,8 @@ type FocusTarget = 'item' | 'invalid';
 export class QuestionnaireModel {
   readonly #options: RootOptions;
   element = $state.raw<HTMLFormElement>();
+  /** Bumped by every child list change, so document order follows a keyed reorder that registers nothing. */
+  domVersion = $state(0);
   #registered = $state.raw<ItemModel[]>([]);
   #focusTarget: FocusTarget = 'item';
   /** The active item the last focus pass saw, undefined before the first pass. */
@@ -55,7 +56,10 @@ export class QuestionnaireModel {
 
   collection = $derived.by(() => createQuestionnaireCollection(this.#options.items));
   /** Enabled rendered items in document order. */
-  runtime = $derived(inDocumentOrder(this.#registered).filter((item) => !item.disabled));
+  runtime = $derived.by(() => {
+    void this.domVersion;
+    return inDocumentOrder(this.#registered).filter((item) => !item.disabled);
+  });
   /** Enabled item names in navigation order. `items` is authoritative when given. */
   #names = $derived(this.collection ? this.collection.enabledItems.map((item) => item.name) : this.runtime.map((item) => item.name));
   /** The requested item, or the first enabled one when the request names no enabled item. */
@@ -168,17 +172,21 @@ export class QuestionnaireModel {
     if (name) this.select(name);
   }
 
-  /** Form's reveal for an invalid answer: switch to its item, which then takes focus. */
-  focusInvalid = ({ control }: FormFocusInvalidDetail): void => {
-    const item = this.runtime.find((entry) => entry.element?.contains(control));
-    if (!item) return;
-    if (item.name === this.activeName) item.focusInvalid();
-    else this.select(item.name, 'invalid');
-  };
+  /** Validates every item in navigation order and moves to the first invalid one. Returns whether the submit may go on. */
+  submit(): boolean {
+    const invalid = this.#names.flatMap((name) => this.runtime.filter((item) => item.name === name)).find((item) => !item.validate());
+    if (!invalid) return true;
+    if (invalid.name === this.activeName) invalid.focusInvalid();
+    else this.select(invalid.name, 'invalid');
+    return false;
+  }
 
   attach: Attachment<HTMLFormElement> = (element) => {
     this.element = element;
+    const observer = new MutationObserver(() => this.domVersion++);
+    observer.observe(element, { childList: true, subtree: true });
     return () => {
+      observer.disconnect();
       this.element = undefined;
     };
   };

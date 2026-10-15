@@ -13,8 +13,6 @@ export interface ItemOptions {
   readonly disabled: boolean;
   readonly invalid: boolean;
   readonly onStatusChange: ((status: QuestionnaireItemStatus) => void) | undefined;
-  /** Runs the item's Field validation, which calls `check`. */
-  validateField(): void;
 }
 
 export type Answer = ChoiceModel | InputModel;
@@ -27,9 +25,6 @@ export class ItemModel {
   skipped = $state(false);
   /** Set once navigation or submission validated the item, so errors only show after an attempt. */
   attempted = $state(false);
-  /** Whether the item's Field is invalid, which includes Form errors and source issues on its name. */
-  fieldInvalid = $state(false);
-  #syncing = false;
   descriptions = $state.raw<string[]>([]);
   errors = $state.raw<string[]>([]);
   /** The status last reported, undefined until the first report pass records the settled status. */
@@ -56,17 +51,21 @@ export class ItemModel {
   }
 
   /** Answer controls in document order. */
-  controls = $derived(inDocumentOrder(this.#registered));
+  controls = $derived.by(() => {
+    void this.root.domVersion;
+    return inDocumentOrder(this.#registered);
+  });
   /** The enabled answer controls, the only ones that count as answers. */
   answers = $derived(this.controls.filter((answer) => !answer.disabled));
   /** The rendered choices, which the dev warnings compare with `items`. */
   choices = $derived(this.controls.flatMap((answer) => (answer.kind === 'choice' ? [{ value: answer.value, disabled: answer.ownDisabled }] : [])));
   hasInputAnswer = $derived(this.answers.some((answer) => answer.kind === 'input'));
-  status: QuestionnaireItemStatus = $derived(this.answers.some((answer) => answer.answered) ? 'answered' : this.skipped ? 'skipped' : 'unanswered');
+  #answered = $derived(this.answers.some((answer) => answer.answered));
+  status: QuestionnaireItemStatus = $derived(this.skipped ? 'skipped' : this.#answered ? 'answered' : 'unanswered');
   #skippedOptional = $derived(this.status === 'skipped' && !this.required);
   valid = $derived.by(() => this.disabled || this.#skippedOptional || (!this.#options.invalid && this.status === 'answered'));
   invalid = $derived.by(
-    () => !this.disabled && !this.#skippedOptional && (this.#options.invalid || (this.attempted && !this.valid) || this.fieldInvalid)
+    () => !this.disabled && !this.#skippedOptional && (this.#options.invalid || (this.attempted && !this.valid))
   );
   message = $derived(this.required ? 'Choose an answer to continue.' : 'Choose an answer or skip this question.');
   active = $derived.by(() => !this.disabled && this.root.activeName === this.name);
@@ -108,9 +107,8 @@ export class ItemModel {
     return () => (this.errors = this.errors.filter((entry) => entry !== id));
   }
 
-  /** Records a user's answer. A single-answer item keeps only this one. */
+  /** Keeps only the answer a user just chose in a single-answer item. */
   claim(answer: Answer): void {
-    this.skipped = false;
     if (!this.multiple) for (const entry of this.#registered) if (entry !== answer) entry.deselect();
   }
 
@@ -132,30 +130,8 @@ export class ItemModel {
     }
   }
 
-  /** The Field's `validate`. Form calls it for every item on submit, which counts as an attempt. */
-  check = (): string | null => {
-    if (!this.#syncing) this.attempted = true;
-    return this.valid ? null : this.message;
-  };
-
-  /** Keeps the Field's validity in step with the answers once an attempt or `invalid` made it matter. */
-  syncField(): void {
-    const relevant = this.attempted || this.#options.invalid;
-    void this.valid;
-    if (!relevant) return;
-    untrack(() => {
-      this.#syncing = true;
-      try {
-        this.#options.validateField();
-      } finally {
-        this.#syncing = false;
-      }
-    });
-  }
-
   validate(): boolean {
     this.attempted = true;
-    this.#options.validateField();
     if (!this.valid) return false;
     if (!this.root.nativeValidation) return true;
     const element = this.answers.find((answer) => answer.answered && answer.element?.willValidate && !answer.element.validity.valid)?.element;
@@ -212,6 +188,12 @@ export class ItemModel {
       }
       this.#wasMultiple = multiple;
     });
+  }
+
+  /** An answer clears a skip, whether a click or a bound value made it. */
+  clearSkip(): void {
+    // Losing every answer, which Skip itself causes, keeps the skip.
+    if (this.#answered) untrack(() => (this.skipped = false));
   }
 
   reportStatus(): void {
@@ -294,7 +276,6 @@ export class ChoiceModel {
     this.#options.onchange?.(event);
     this.checked = event.currentTarget.checked;
     if (this.checked) this.item.claim(this);
-    else this.item.skipped = false;
   };
 
   attach: Attachment<HTMLInputElement> = (element) => {
@@ -317,14 +298,16 @@ export class InputModel {
   readonly #options: InputOptions;
   readonly #initial: string | number | null | undefined;
   element = $state.raw<HTMLInputElement>();
-  /** Whether this input is the item's answer. A single-answer item deselects it, keeping its text as a draft. */
-  selected = $state(false);
+  /**
+   * Whether this input is the item's answer. Every value change selects a filled input, from typing or a bound value.
+   * A single-answer item deselects it, keeping its text as a draft.
+   */
+  selected = $derived(hasInputValue(this.value));
 
   constructor(item: ItemModel, options: InputOptions) {
     this.item = item;
     this.#options = options;
     this.#initial = options.value;
-    this.selected = hasInputValue(options.value);
   }
 
   get value(): string | number | null | undefined {
