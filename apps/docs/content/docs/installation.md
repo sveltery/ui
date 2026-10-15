@@ -6,12 +6,6 @@ order: 1
 
 Sveltery UI needs a Svelte 5 app with Tailwind CSS 4. These steps use SvelteKit.
 
-<Callout title="Not on npm yet">
-
-Sveltery UI and Sveltery Base are not published. The steps below install Base from GitHub and copy the UI source into your app.
-
-</Callout>
-
 <Steps>
 
 ### Create a project
@@ -26,42 +20,29 @@ npx sv create my-app
 npx sv add tailwindcss
 ```
 
-### Install the dependencies
+### Set up Sveltery UI
+
+Run `init` in the project. It asks for a style, an icon library and a base color. Pass `-y` to take the defaults.
 
 ```bash
-npm install github:sveltery/base cn class-variance-authority tw-animate-css shadcn
+npx sveltery init
 ```
 
-pnpm builds Base from source on install. If pnpm asks, allow the build with the key that it prints in `pnpm-workspace.yaml`.
+`init` changes these files and packages, so check them in your diff:
 
-### Add the styles
+- `components.json` holds your choices and the import aliases. `aliases.ui` is where components go, `src/lib/components/ui` by default.
+- Your CSS file, `src/app.css` by default, gets the `tw-animate-css` and `sveltery/tailwind.css` imports, the `dark` custom variant, and the [theme tokens](/docs/theming) for light and dark mode. It also gets a base layer that gives every border the theme's `--border` color. Without that layer, a bare `border` class draws in the text color.
+- `cn`, `class-variance-authority`, `tw-animate-css` and your icon library install as dependencies. `sveltery` installs as a dev dependency.
 
-Import the Sveltery UI theme in your global stylesheet. The `shadcn` package provides `shadcn/tailwind.css`.
-
-```css title="src/app.css"
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
-
-@custom-variant dark (&:is(.dark *));
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-```
-
-The base layer gives every border the theme's `--border` color. Without it, a bare `border` class draws in the text color.
-
-Then copy the theme tokens from the [theming page](/docs/theming) into the same file.
+Running `init` again with the same choices leaves your files unchanged.
 
 ### Add components
 
-Open a component page, for example [Button](/docs/components/button), and copy its source into `src/lib/components/ui`.
+```bash
+npx sveltery add button
+```
+
+This copies the Button source into `src/lib/components/ui/button`. It also installs the packages Button needs, such as `@sveltery/base`. A component that builds on another one copies that one too. See [Components](/docs/components) for the full list.
 
 ### Use a component
 
@@ -74,3 +55,19 @@ Open a component page, for example [Button](/docs/components/button), and copy i
 ```
 
 </Steps>
+
+## Keep components up to date
+
+The files are yours to edit. To see how they differ from the current Sveltery UI source, run `diff`. It prints a diff and writes nothing.
+
+```bash
+npx sveltery diff
+```
+
+Run `update` to apply the changes. It shows the diff for each file you changed and asks before it overwrites that file.
+
+```bash
+npx sveltery update
+```
+
+`npx sveltery list` shows every component and marks the ones in your project. Read the [CLI README](https://github.com/sveltery/ui/tree/main/packages/cli#readme) for all commands and options.
