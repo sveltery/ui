@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "components.json",
+  "description": "Configuration for the sveltery CLI. The keys match shadcn-svelte's components.json.",
+  "type": "object",
+  "required": [
+    "style",
+    "tailwind",
+    "aliases"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "style": {
+      "enum": [
+        "vega",
+        "nova",
+        "maia",
+        "lyra",
+        "mira",
+        "luma",
+        "sera",
+        "rhea"
+      ]
+    },
+    "iconLibrary": {
+      "enum": [
+        "lucide",
+        "tabler",
+        "hugeicons",
+        "phosphor",
+        "remixicon"
+      ]
+    },
+    "menuColor": {
+      "enum": [
+        "default"
+      ]
+    },
+    "tailwind": {
+      "type": "object",
+      "required": [
+        "css",
+        "baseColor"
+      ],
+      "properties": {
+        "css": {
+          "type": "string"
+        },
+        "baseColor": {
+          "enum": [
+            "neutral",
+            "stone",
+            "zinc",
+            "mauve",
+            "olive",
+            "mist",
+            "taupe"
+          ]
+        }
+      }
+    },
+    "aliases": {
+      "type": "object",
+      "required": [
+        "components",
+        "ui",
+        "utils"
+      ],
+      "properties": {
+        "components": {
+          "type": "string"
+        },
+        "ui": {
+          "type": "string"
+        },
+        "utils": {
+          "type": "string"
+        },
+        "lib": {
+          "type": "string"
+        },
+        "hooks": {
+          "type": "string"
+        }
+      }
+    },
+    "registry": {
+      "type": "string",
+      "description": "The registry root URL. SVELTERY_REGISTRY_URL overrides it."
+    },
+    "typescript": {
+      "const": true
+    }
+  }
+}
