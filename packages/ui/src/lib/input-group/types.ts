@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'svelte';
-import type { HTMLAttributes, HTMLButtonAttributes, HTMLInputAttributes, HTMLTextareaAttributes } from 'svelte/elements';
+import type { HTMLAttributes, HTMLButtonAttributes, HTMLInputAttributes } from 'svelte/elements';
+import type { TextareaProps } from '../textarea/types.js';
 import type { Button } from '../button/index.js';
 import type { InputGroupAddonVariants, InputGroupButtonVariants } from './variants.js';
 export type InputGroupProps = HTMLAttributes<HTMLDivElement>;
@@ -7,4 +8,4 @@ export type InputGroupAddonProps = HTMLAttributes<HTMLDivElement> & InputGroupAd
 export type InputGroupButtonProps = Omit<ComponentProps<typeof Button>, 'size' | 'type'> & InputGroupButtonVariants & { type?: HTMLButtonAttributes['type'] };
 export type InputGroupTextProps = HTMLAttributes<HTMLSpanElement>;
 export type InputGroupInputProps = HTMLInputAttributes;
-export type InputGroupTextareaProps = HTMLTextareaAttributes;
+export type InputGroupTextareaProps = TextareaProps;
