@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import type { HTMLAttributes, HTMLButtonAttributes } from 'svelte/elements';
+  import type { HTMLAttributes } from 'svelte/elements';
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { Button } from '@sveltery/ui/button';
   import { ButtonGroup, ButtonGroupText } from '@sveltery/ui/button-group';
@@ -29,15 +29,15 @@
 </script>
 
 {#snippet tooltipButton(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
-  <InputGroupButton {...props as HTMLButtonAttributes} class="rounded-full" size="icon-xs">{@render children?.()}</InputGroupButton>
+  <InputGroupButton {...props} class="rounded-full" size="icon-xs">{@render children?.()}</InputGroupButton>
 {/snippet}
 
 {#snippet countryButton(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
-  <InputGroupButton {...props as HTMLButtonAttributes} class="text-muted-foreground tabular-nums">{@render children?.()}</InputGroupButton>
+  <InputGroupButton {...props} class="text-muted-foreground tabular-nums">{@render children?.()}</InputGroupButton>
 {/snippet}
 
 {#snippet popoverAddon(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
-  <InputGroupAddon {...props as HTMLAttributes<HTMLDivElement>}>{@render children?.()}</InputGroupAddon>
+  <InputGroupAddon {...props}>{@render children?.()}</InputGroupAddon>
 {/snippet}
 
 {#snippet InputGroupBasic()}

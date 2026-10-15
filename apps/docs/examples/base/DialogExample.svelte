@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import type { HTMLAttributes, HTMLButtonAttributes } from 'svelte/elements';
+  import type { HTMLAttributes } from 'svelte/elements';
   import { Button } from '@sveltery/ui/button';
   import { Checkbox } from '@sveltery/ui/checkbox';
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
@@ -81,7 +81,7 @@
 </script>
 
 {#snippet nicknameInfoButton(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
-  <InputGroupButton {...props as HTMLButtonAttributes} size="icon-xs">{@render children?.()}</InputGroupButton>
+  <InputGroupButton {...props} size="icon-xs">{@render children?.()}</InputGroupButton>
 {/snippet}
 
 {#snippet LoremParagraphs()}

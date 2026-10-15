@@ -275,7 +275,7 @@
 {/snippet}
 
 {#snippet voiceAddon(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
-  <InputGroupAddon align="inline-end" {...props as HTMLAttributes<HTMLDivElement>}>{@render children?.()}</InputGroupAddon>
+  <InputGroupAddon align="inline-end" {...props}>{@render children?.()}</InputGroupAddon>
 {/snippet}
 
 {#snippet ButtonGroupWithSelectAndInput()}

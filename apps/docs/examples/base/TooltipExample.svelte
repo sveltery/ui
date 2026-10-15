@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import type { HTMLAnchorAttributes, HTMLAttributes } from 'svelte/elements';
+  import type { HTMLAttributes } from 'svelte/elements';
   import { Example, ExampleWrapper } from '@sveltery/ui/example';
   import { Button } from '@sveltery/ui/button';
   import { IconPlaceholder } from '@sveltery/ui/icons';
@@ -15,7 +15,7 @@
 {/snippet}
 
 {#snippet link(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
-  <a {...props as HTMLAnchorAttributes} href="#" class="w-fit text-sm text-primary underline-offset-4 hover:underline" onclick={event => event.preventDefault()}>{@render children?.()}</a>
+  <a {...props} href="#" class="w-fit text-sm text-primary underline-offset-4 hover:underline" onclick={event => event.preventDefault()}>{@render children?.()}</a>
 {/snippet}
 
 <ExampleWrapper>
