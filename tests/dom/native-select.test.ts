@@ -12,6 +12,7 @@ function setup() {
   const select = (name: string) => form.querySelector<HTMLSelectElement>(`select[name=${name}]`)!;
   const choose = (name: string, value: string) => {
     select(name).value = value;
+    select(name).dispatchEvent(new Event('input', { bubbles: true }));
     select(name).dispatchEvent(new Event('change', { bubbles: true }));
     flushSync();
   };
