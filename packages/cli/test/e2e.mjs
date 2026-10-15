@@ -104,7 +104,7 @@ try {
 
   step('render the Button in Chromium');
   const port = 4300 + Math.floor(Math.random() * 500);
-  preview = spawn('pnpm', ['exec', 'vite', 'preview', '--port', String(port), '--strictPort'], { cwd: app, stdio: 'inherit' });
+  preview = spawn('pnpm', ['exec', 'vite', 'preview', '--port', String(port), '--strictPort', '--host', '127.0.0.1'], { cwd: app, stdio: 'inherit' });
   const url = `http://127.0.0.1:${port}/`;
   for (let attempt = 0; ; attempt++) {
     if (await fetch(url).then((response) => response.ok, () => false)) break;
