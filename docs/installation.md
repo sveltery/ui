@@ -1,13 +1,11 @@
 # Installation
 
-Sveltery UI and Sveltery Base are not published to npm yet. Install both from GitHub, pinned to a commit.
+Sveltery Base is published to npm. Sveltery UI is not published yet, so install it from a packed archive of this repository.
 
 ## 1. Add the packages
 
-Pick a UI commit, and use the Base commit that the UI repository's `package.json` pins under `@sveltery/base`.
-
 ```sh
-pnpm add github:sveltery/base#<base-commit>
+pnpm add @sveltery/base
 pnpm add @sveltery/ui@file:<path-to-packed-ui>.tgz
 pnpm add tailwindcss tw-animate-css
 ```
@@ -18,13 +16,6 @@ Build the UI archive from a checkout of this repository:
 pnpm install
 pnpm --filter @sveltery/ui build
 pnpm --filter @sveltery/ui pack
-```
-
-pnpm builds Base from source on install. Allow it in `pnpm-workspace.yaml` with the key that pnpm prints:
-
-```yaml
-allowBuilds:
-  "@sveltery/base@https://codeload.github.com/sveltery/base/tar.gz/<base-commit>": true
 ```
 
 ## 2. Add the styles
