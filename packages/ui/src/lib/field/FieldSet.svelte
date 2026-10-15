@@ -1,8 +1,6 @@
 <script lang="ts">
-  import type { HTMLFieldsetAttributes } from 'svelte/elements';
+  import { Fieldset as Primitive, type FieldsetRootProps } from '@sveltery/base/fieldset';
   import { cn } from 'cn';
-  let { children, class: classProp, ...props }: HTMLFieldsetAttributes = $props();
+  let { children, class: classProp, ...props }: FieldsetRootProps = $props();
 </script>
-<fieldset data-slot="field-set" {...props} class={cn('cn-field-set flex flex-col', classProp)}>
-  {@render children?.()}
-</fieldset>
+<Primitive.Root data-slot="field-set" {children} {...props} class={cn('cn-field-set flex flex-col', classProp)} />
