@@ -24,6 +24,19 @@ const run = (command, args, cwd, env = {}) =>
     );
   });
 
+// Like `run`, but returns what the command printed, which is also echoed.
+const capture = (command, args, cwd, env = {}) =>
+  new Promise((done, fail) => {
+    let output = '';
+    const child = spawn(command, args, { cwd, stdio: ['inherit', 'pipe', 'inherit'], env: { ...process.env, ...env } });
+    child.stdout.on('data', (chunk) => (output += chunk));
+    child.on('close', (code) => {
+      process.stdout.write(output);
+      if (code === 0) done(output);
+      else fail(new Error(`${command} ${args.join(' ')} exited with ${code}`));
+    });
+  });
+
 step('build and serve the registry');
 const load = async (path) => (await runnerImport(join(repoRoot, path), { root: repoRoot, configFile: false, logLevel: 'error' })).module;
 const { readRegistryInput } = await load('apps/docs/registry/read.ts');
@@ -91,6 +104,17 @@ try {
 
   step('sveltery add button dialog -y');
   await run('pnpm', ['exec', 'sveltery', 'add', 'button', 'dialog', '-y'], app, env);
+  step('sveltery diff and update -y after editing Button.svelte');
+  const buttonFile = join(app, config.aliases.ui.replace(/^[$#]lib/, 'src/lib'), 'button/Button.svelte');
+  const pristine = readFileSync(buttonFile, 'utf8');
+  const [firstLine] = pristine.split('\n');
+  writeFileSync(buttonFile, pristine.replace(firstLine, `${firstLine} <!-- edited locally -->`));
+  const cli = (...args) => capture('pnpm', ['exec', 'sveltery', ...args], app, env);
+  assert.match(await cli('diff'), /^-.*edited locally/m, 'diff shows the edited line');
+  await cli('update', '-y');
+  assert.equal(readFileSync(buttonFile, 'utf8'), pristine, 'update -y restores the registry version');
+  assert.equal((await cli('diff')).trim(), 'Everything is up to date.');
+
   writeFileSync(
     join(app, 'src/routes/+page.svelte'),
     `<script lang="ts">\n  import { Button } from '${config.aliases.ui}/button/index.js';\n  import { Dialog, DialogTrigger } from '${config.aliases.ui}/dialog/index.js';\n</script>\n<Button>Click</Button>\n<Dialog><DialogTrigger>Open</DialogTrigger></Dialog>\n`,
