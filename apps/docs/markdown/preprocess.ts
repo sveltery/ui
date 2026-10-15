@@ -12,7 +12,7 @@ const SOURCE_STYLE = 'nova';
 const SOURCE_CONFIG: TransformContext = { iconLibrary: 'lucide', fontHeading: false };
 
 /** Components every markdown page can use without importing them, like upstream's mdx-components map. */
-const GLOBAL_COMPONENTS = ['CodeBlock', 'ComponentPreview', 'ComponentSource', 'ComponentsList', 'Callout', 'Steps'];
+const GLOBAL_COMPONENTS = ['CodeBlock', 'ComponentPreview', 'ComponentSource', 'ComponentsList', 'Callout', 'Steps', 'InstallTabs', 'InstallTab'];
 
 const LANGUAGES: Record<string, string> = { '.svelte': 'svelte', '.ts': 'ts', '.js': 'js', '.css': 'css', '.json': 'json' };
 

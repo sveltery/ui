@@ -14,12 +14,14 @@ export const slugify = (value: string): string =>
     .replace(/[^a-z0-9\s-]/g, '')
     .replace(/\s+/g, '-');
 
-/** Gives h2 to h4 an id and a self link, and exposes h2 and h3 as `metadata.toc`. */
+/** Gives h2 to h4 an id and a self link, and exposes h2 and h3 as `metadata.toc`. Headings inside an `<InstallTab>` get an id but no toc entry, because the inactive tab is hidden. */
 export function headings() {
   return (tree: MdNode, file: { data: { fm?: Record<string, unknown> } }) => {
     const toc: TocItem[] = [];
     const seen = new Map<string, number>();
+    let inTab = false;
     for (const node of tree.children ?? []) {
+      if (node.type === 'html') inTab = /^<InstallTab\b/.test(node.value ?? '') || (inTab && !/^<\/InstallTab>/.test(node.value ?? ''));
       if (node.type !== 'heading' || !node.depth || node.depth < 2 || node.depth > 4) continue;
       const title = text(node);
       const base = slugify(title);
@@ -29,7 +31,7 @@ export function headings() {
       node.data = { ...node.data, hProperties: { id } };
       // A link cannot contain a link, so a heading that already has one keeps its id without the self link.
       if (!hasLink(node)) node.children = [{ type: 'link', url: `#${id}`, children: node.children ?? [] }];
-      if (node.depth <= 3) toc.push({ title, url: `#${id}`, depth: node.depth });
+      if (node.depth <= 3 && !inTab) toc.push({ title, url: `#${id}`, depth: node.depth });
     }
     file.data.fm = { ...file.data.fm, toc };
   };
