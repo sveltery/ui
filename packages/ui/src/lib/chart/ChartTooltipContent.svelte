@@ -28,8 +28,10 @@
   const header = $derived.by(() => {
     if (hideLabel || data == null) return;
     const category = label ?? (chart.valueAxis === 'x' ? chart.y : chart.x)?.(data);
-    const itemConfig = config[configKey(config, data, labelKey ?? items[0]?.key ?? 'value')];
-    const text = !labelKey && typeof category === 'string' ? config[category]?.label || category : itemConfig?.label;
+    // Recharts hands upstream a string category; LayerChart's can be a Date or a number, so any category takes the string path.
+    const text = !labelKey && category != null
+      ? config[String(category)]?.label || category
+      : config[configKey(config, data, labelKey ?? items[0]?.key ?? 'value')]?.label;
     if (labelFormatter) return labelFormatter(text, items);
     if (text) return text;
   });

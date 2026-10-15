@@ -130,12 +130,15 @@ test('a series with no value at the hovered row gets no row', async ({ page }) =
   await expect(await firstTooltip(page, 'gaps')).toHaveText('January Desktop 186');
 });
 
-test('a category that is not a string shows the first series config label, as upstream', async ({ page }) => {
-  await expect(await firstTooltip(page, 'zero')).toHaveText('Desktop Desktop 186 Mobile 80');
+test('a falsy category gives no header, as upstream', async ({ page }) => {
+  await expect(await firstTooltip(page, 'zero')).toHaveText('Desktop 186 Mobile 80');
 });
 
-test('a date category shows the first series config label, as upstream', async ({ page }) => {
-  await expect(await firstTooltip(page, 'dates')).toHaveText('Desktop Desktop 186 Mobile 80');
+test.describe('in UTC', () => {
+  test.use({ timezoneId: 'UTC' });
+  test('a date category reaches the header and labelFormatter as the date itself', async ({ page }) => {
+    await expect(await firstTooltip(page, 'dates')).toHaveText('Mon Jan 01 2024 00:00:00 GMT+0000 (Coordinated Universal Time) Desktop 186 Mobile 80');
+  });
 });
 
 test('a labelFormatter result is shown even when it is falsy', async ({ page }) => {
