@@ -1,6 +1,6 @@
 import { Combobox as Primitive } from '@sveltery/base/combobox';
 
-export const Combobox = Primitive.Root;
+export const Combobox = Primitive.Root as typeof Primitive.Root;
 export const ComboboxCollection = Primitive.Collection;
 export { default as ComboboxInput } from './ComboboxInput.svelte';
 export { default as ComboboxContent } from './ComboboxContent.svelte';

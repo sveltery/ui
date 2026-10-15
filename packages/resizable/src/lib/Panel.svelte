@@ -1,6 +1,6 @@
 <script lang="ts">
   import { untrack } from 'svelte';
-  import { getGroup, PanelEntry } from './group.svelte.js';
+  import { getGroup, PanelEntry } from './group-state.svelte.js';
   import { round } from './layout.js';
   import type { PanelProps, PanelSize } from './types.js';
   import type { SizeInput } from './units.js';

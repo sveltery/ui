@@ -1,6 +1,6 @@
 import { Dialog as Primitive } from '@sveltery/base/dialog';
 
-export const Sheet = Primitive.Root;
+export const Sheet = Primitive.Root as typeof Primitive.Root;
 export { default as SheetTrigger } from './SheetTrigger.svelte';
 export { default as SheetClose } from './SheetClose.svelte';
 export { default as SheetContent } from './SheetContent.svelte';

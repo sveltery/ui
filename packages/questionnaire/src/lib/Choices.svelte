@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getItem } from './item.svelte.js';
+  import { getItem } from './item-state.svelte.js';
   import type { QuestionnaireChoicesProps } from './types.js';
   import { dataAttributes } from './utils.js';
 

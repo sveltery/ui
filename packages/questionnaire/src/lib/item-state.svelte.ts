@@ -2,7 +2,7 @@ import { createContext, untrack } from 'svelte';
 import type { Attachment } from 'svelte/attachments';
 import type { HTMLInputAttributes } from 'svelte/elements';
 import { getShortcutByChoiceValue } from './collection.js';
-import type { QuestionnaireModel } from './root.svelte.js';
+import type { QuestionnaireModel } from './root-state.svelte.js';
 import type { QuestionnaireItemStatus } from './types.js';
 import { getShortcutKeys, hasInputValue, inDocumentOrder, isEmptyNavigableInput, isRadioTarget, isTextEntryTarget } from './utils.js';
 

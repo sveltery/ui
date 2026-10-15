@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getItem } from './item.svelte.js';
+  import { getItem } from './item-state.svelte.js';
   import type { QuestionnaireDescriptionProps } from './types.js';
 
   const generatedId = $props.id();

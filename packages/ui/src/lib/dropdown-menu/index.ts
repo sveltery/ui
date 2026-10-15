@@ -1,6 +1,6 @@
 import { Menu as Primitive } from '@sveltery/base/menu';
 
-export const DropdownMenu = Primitive.Root;
+export const DropdownMenu = Primitive.Root as typeof Primitive.Root;
 export const DropdownMenuSub = Primitive.SubmenuRoot;
 export { default as DropdownMenuPortal } from './DropdownMenuPortal.svelte';
 export { default as DropdownMenuTrigger } from './DropdownMenuTrigger.svelte';

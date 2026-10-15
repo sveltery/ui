@@ -7,5 +7,5 @@ export { default as Item } from './Item.svelte';
 export { default as Separator } from './Separator.svelte';
 export { default as Loading } from './Loading.svelte';
 export { commandScore } from './command-score.js';
-export { defaultFilter, getCommandState } from './root.svelte.js';
+export { defaultFilter, getCommandState } from './root-state.svelte.js';
 export type * from './types.js';

@@ -1,6 +1,6 @@
 import { Popover as Primitive } from '@sveltery/base/popover';
 
-export const Popover = Primitive.Root;
+export const Popover = Primitive.Root as typeof Primitive.Root;
 export { default as PopoverTrigger } from './PopoverTrigger.svelte';
 export { default as PopoverContent } from './PopoverContent.svelte';
 export { default as PopoverHeader } from './PopoverHeader.svelte';

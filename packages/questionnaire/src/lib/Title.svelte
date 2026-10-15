@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getItem } from './item.svelte.js';
+  import { getItem } from './item-state.svelte.js';
   import type { QuestionnaireTitleProps } from './types.js';
 
   let { render, children, ...rest }: QuestionnaireTitleProps = $props();

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { untrack } from 'svelte';
-  import { ChoiceModel, getItem, setChoice } from './item.svelte.js';
+  import { ChoiceModel, getItem, setChoice } from './item-state.svelte.js';
   import type { QuestionnaireChoiceProps, QuestionnaireChoiceState } from './types.js';
   import { dataAttributes } from './utils.js';
 

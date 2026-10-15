@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { CommandModel, setCommand } from './root.svelte.js';
+  import { CommandModel, setCommand } from './root-state.svelte.js';
   import type { CommandRootProps } from './types.js';
   import { VISUALLY_HIDDEN_STYLE } from './utils.js';
 

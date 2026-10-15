@@ -1,6 +1,6 @@
 <script lang="ts">
   import { untrack } from 'svelte';
-  import { GroupState, setGroup } from './group.svelte.js';
+  import { GroupState, setGroup } from './group-state.svelte.js';
   import { near } from './layout.js';
   import type { GroupProps } from './types.js';
 

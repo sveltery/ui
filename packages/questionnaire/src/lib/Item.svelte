@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { ItemModel, setItem } from './item.svelte.js';
-  import { getRoot } from './root.svelte.js';
+  import { ItemModel, setItem } from './item-state.svelte.js';
+  import { getRoot } from './root-state.svelte.js';
   import type { QuestionnaireItemProps } from './types.js';
   import { dataAttributes } from './utils.js';
 

@@ -6,7 +6,7 @@ import {
   getCollectionRegistrationWarnings,
   getInitialItemName
 } from './collection.js';
-import type { ItemModel } from './item.svelte.js';
+import type { ItemModel } from './item-state.svelte.js';
 import type {
   QuestionnaireItemDefinition,
   QuestionnaireItemStatus,
