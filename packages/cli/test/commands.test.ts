@@ -128,6 +128,15 @@ describe('init', () => {
     expect([config.custom, config.style, config.iconLibrary, config.aliases.ui]).toEqual([1, 'vega', 'lucide', '$lib/ui']);
   });
 
+  test('uses #lib aliases in a SvelteKit 3 app, and add places files under src/lib', async () => {
+    const manifest = JSON.parse(read('package.json'));
+    writeFileSync(join(cwd, 'package.json'), JSON.stringify({ ...manifest, imports: { '#lib': './src/lib/index.js', '#lib/*': './src/lib/*' } }));
+    await init({ cwd, ...defaults });
+    expect(JSON.parse(read('components.json')).aliases).toEqual({ components: '#lib/components', ui: '#lib/components/ui', utils: '#lib/utils', lib: '#lib', hooks: '#lib/hooks' });
+    const plan = await add(['button'], { cwd, ...defaults, overwrite: false, all: false, dryRun: true });
+    expect(plan.files.map((file) => file.path)).toEqual(['src/lib/components/ui/button/Button.svelte']);
+  });
+
   test('stops before changing anything when Tailwind is missing', async () => {
     writeFileSync(join(cwd, 'package.json'), JSON.stringify({ devDependencies: { '@sveltejs/kit': '^2.0.0', svelte: '^5.0.0' } }));
     await expect(init({ cwd, ...defaults })).rejects.toThrow('Sveltery needs tailwindcss 4, and package.json does not list it. Run `npx sv add tailwindcss`, then run init again.');
@@ -143,7 +152,7 @@ describe('init', () => {
     const declared = { ...ui.dependencies, ...ui.peerDependencies };
     for (const spec of baseDependencies) {
       const [name, range] = spec.split('@^');
-      expect(declared[name!], name).toBe(range);
+      expect(declared[name!].replace(/^\^/, ''), name).toBe(range);
     }
   });
 });

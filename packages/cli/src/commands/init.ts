@@ -6,7 +6,7 @@ import { mergeTheme } from '../css.js';
 import { iconLibraries } from '../icons.js';
 import { CliError } from '../parse.js';
 import { executePlan, formatPlan, missingPackages, planFile, type Plan } from '../plan.js';
-import { checkProject, findCssFile, readJson } from '../project.js';
+import { checkProject, findCssFile, libAlias, readJson } from '../project.js';
 import { baseColors, fetchTheme, iconLibraryNames, openRegistry, resolveRegistryUrl, styleNames } from '../registry.js';
 import { version } from '../version.js';
 
@@ -64,7 +64,7 @@ export async function init(options: InitOptions): Promise<Plan> {
     iconLibrary,
     menuColor: 'default',
     tailwind: { css: cssPath, baseColor },
-    aliases: { ...defaultAliases, ...Object.fromEntries(Object.entries(existingAliases).filter(([, value]) => typeof value === 'string')) },
+    aliases: { ...defaultAliases(libAlias(cwd)), ...Object.fromEntries(Object.entries(existingAliases).filter(([, value]) => typeof value === 'string')) },
     registry: registry.url,
     typescript: true,
   });

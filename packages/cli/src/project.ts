@@ -59,9 +59,15 @@ export function findCssFile(cwd: string, flag: string | undefined): string {
   return relative(cwd, found);
 }
 
+/** `#lib` when package.json maps it through `imports`, as SvelteKit 3 apps do, else `$lib`. */
+export function libAlias(cwd: string): '$lib' | '#lib' {
+  const manifest = readJson(join(cwd, 'package.json')) as { imports?: Record<string, unknown> };
+  return manifest.imports?.['#lib/*'] !== undefined ? '#lib' : '$lib';
+}
+
 /** The directory an alias such as `$lib/components/ui` names, relative to `cwd`. */
 export function aliasPath(alias: string): string {
-  if (alias === '$lib' || alias.startsWith('$lib/')) return join('src/lib', alias.slice('$lib'.length));
+  if (/^[$#]lib(\/|$)/.test(alias)) return join('src/lib', alias.slice('$lib'.length));
   if (alias.startsWith('./') || alias.startsWith('../')) return join(alias);
-  throw new CliError(`Cannot place files for the alias "${alias}". Use a path under $lib, such as $lib/components/ui, or one relative to the project root, such as ./src/ui.`);
+  throw new CliError(`Cannot place files for the alias "${alias}". Use a path under $lib or #lib, such as $lib/components/ui, or one relative to the project root, such as ./src/ui.`);
 }

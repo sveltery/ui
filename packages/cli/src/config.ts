@@ -15,13 +15,14 @@ export const stylePresets: Record<StyleName, { title: string; hint: string; icon
   rhea: { title: 'Rhea', hint: 'Like Luma but compact.', iconLibrary: 'lucide', baseColor: 'neutral' },
 };
 
-export const defaultAliases = {
-  components: '$lib/components',
-  ui: '$lib/components/ui',
-  utils: '$lib/utils',
-  lib: '$lib',
-  hooks: '$lib/hooks',
-};
+/** `lib` is `#lib` in SvelteKit 3 apps, which map it through package.json `imports`, and `$lib` before that. */
+export const defaultAliases = (lib: '$lib' | '#lib') => ({
+  components: `${lib}/components`,
+  ui: `${lib}/components/ui`,
+  utils: `${lib}/utils`,
+  lib,
+  hooks: `${lib}/hooks`,
+});
 
 const configShape = {
   $schema: optional(string),
