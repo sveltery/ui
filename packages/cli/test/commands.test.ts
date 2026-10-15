@@ -3,10 +3,14 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync, existsSync
 import { createServer, type Server } from 'node:http';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, test } from 'vitest';
+import { confirm } from '@clack/prompts';
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, test, vi } from 'vitest';
 import { add } from '../src/commands/add.js';
 import { diff } from '../src/commands/diff.js';
 import { baseDependencies, init } from '../src/commands/init.js';
+import { update } from '../src/commands/update.js';
+
+vi.mock('@clack/prompts', async (importOriginal) => ({ ...(await importOriginal<typeof import('@clack/prompts')>()), confirm: vi.fn() }));
 
 const button = `<script lang="ts">
   import { IconPlaceholder } from '../icons/index.js';
@@ -284,5 +288,66 @@ describe('diff', () => {
   test('says so when no item is installed', async () => {
     rmSync(join(cwd, 'src/lib'), { recursive: true });
     expect(await diff([], { cwd })).toBe('No items are installed. Add one with `sveltery add button`.');
+  });
+});
+
+describe('update', () => {
+  const addOptions = { ...defaults, overwrite: false, all: false, dryRun: false };
+  const buttonPath = 'src/lib/components/ui/button/Button.svelte';
+  const titlePath = 'src/lib/components/ui/dialog/DialogTitle.svelte';
+  const renderPath = 'src/lib/components/ui/shared/render.ts';
+  beforeEach(async () => {
+    vi.mocked(confirm).mockReset();
+    await init({ cwd, ...defaults });
+    await add(['button', 'dialog'], { cwd, ...addOptions });
+  });
+
+  test('-y overwrites changed files and adds missing ones, and a second diff finds nothing', async () => {
+    writeFileSync(join(cwd, buttonPath), 'mine\n');
+    rmSync(join(cwd, renderPath));
+    const plan = await update([], { cwd, ...defaults });
+    expect(plan.files.map((file) => [file.path, file.status])).toEqual([
+      [buttonPath, 'changed'],
+      [renderPath, 'new'],
+    ]);
+    expect(read(buttonPath)).toContain('<ChevronRightIcon />');
+    expect(read(renderPath)).toBe('export const render = () => {};\n');
+    expect(confirm).not.toHaveBeenCalled();
+    expect(await diff([], { cwd })).toBe('Everything is up to date.');
+  });
+
+  test('asks per changed file, defaulting to no', async () => {
+    writeFileSync(join(cwd, buttonPath), 'my button\n');
+    writeFileSync(join(cwd, titlePath), 'my title\n');
+    vi.mocked(confirm).mockResolvedValueOnce(false).mockResolvedValueOnce(true);
+    const plan = await update([], { cwd, ...defaults, yes: false });
+    expect(vi.mocked(confirm).mock.calls.map(([options]) => options)).toEqual([
+      { message: `Overwrite ${buttonPath} with the registry version?`, initialValue: false },
+      { message: `Overwrite ${titlePath} with the registry version?`, initialValue: false },
+    ]);
+    expect(plan.files.map((file) => file.path)).toEqual([titlePath]);
+    expect(read(buttonPath)).toBe('my button\n');
+    expect(read(titlePath)).toContain('<h2 class="text-base">');
+  });
+
+  test('a name limits the update to that item and its dependencies', async () => {
+    writeFileSync(join(cwd, buttonPath), 'my button\n');
+    writeFileSync(join(cwd, titlePath), 'my title\n');
+    const plan = await update(['button'], { cwd, ...defaults });
+    expect(plan.files.map((file) => file.path)).toEqual([buttonPath]);
+    expect(read(titlePath)).toBe('my title\n');
+    await expect(update(['nope'], { cwd, ...defaults })).rejects.toThrow('Not in the registry: nope.');
+  });
+
+  test('reports the packages an item now needs', async () => {
+    writeFileSync(join(cwd, 'package.json'), JSON.stringify({ devDependencies: { '@sveltejs/kit': '^2.0.0', svelte: '^5.0.0', tailwindcss: '^4.0.0' } }));
+    const plan = await update(['button'], { cwd, ...defaults });
+    expect([plan.files, plan.dependencies]).toEqual([[], ['cn@^0.2.2', '@lucide/svelte@^1.48.0']]);
+  });
+
+  test('does nothing when no item is installed', async () => {
+    rmSync(join(cwd, 'src/lib'), { recursive: true });
+    expect((await update([], { cwd, ...defaults })).files).toEqual([]);
+    expect(existsSync(join(cwd, 'src/lib'))).toBe(false);
   });
 });

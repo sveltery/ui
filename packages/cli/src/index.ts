@@ -5,6 +5,7 @@ import { Command } from 'commander';
 import { add } from './commands/add.js';
 import { diff } from './commands/diff.js';
 import { init } from './commands/init.js';
+import { update } from './commands/update.js';
 import { CliError } from './parse.js';
 import { version } from './version.js';
 
@@ -40,6 +41,15 @@ program
   .argument('[items...]', 'item names; every installed item when omitted')
   .option('--cwd <path>', 'the project root', '.')
   .action(async (items: string[], options) => void (await diff(items, { cwd: resolve(options.cwd) })));
+
+program
+  .command('update')
+  .description('re-add installed items, showing each changed file\'s diff and asking before it overwrites')
+  .argument('[items...]', 'item names; every installed item when omitted')
+  .option('-y, --yes', 'overwrite changed files without asking', false)
+  .option('--no-install', 'do not install packages')
+  .option('--cwd <path>', 'the project root', '.')
+  .action(async (items: string[], options) => void (await update(items, { ...options, cwd: resolve(options.cwd) })));
 
 try {
   await program.parseAsync();
