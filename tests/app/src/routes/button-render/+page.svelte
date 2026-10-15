@@ -35,5 +35,6 @@
       <MessageScrollerContent><div style="height: 400px">Messages</div></MessageScrollerContent>
     </MessageScrollerViewport>
     <MessageScrollerButton render={plainScroller} />
+    <MessageScrollerButton data-testid="scroller-undefined" direction="start" render={undefined} />
   </MessageScroller>
 </MessageScrollerProvider>

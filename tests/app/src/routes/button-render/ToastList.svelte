@@ -18,6 +18,8 @@
           <ToastTitle />
           <ToastAction render={plain} />
           <ToastClose render={plain} />
+          <ToastAction data-testid="action-undefined" render={undefined} />
+          <ToastClose data-testid="close-undefined" render={undefined} />
         </ToastContent>
       </Toast>
     {/each}

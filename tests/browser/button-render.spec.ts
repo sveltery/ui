@@ -14,19 +14,23 @@ test('a caller render replaces the default Button of AlertDialogCancel', async (
 });
 
 test('a caller render replaces the default Button of ToastAction', async ({ page }) => {
-  const action = page.locator('[data-slot=toast-action]');
+  const action = page.locator('[data-slot=toast-action]:not([data-testid])');
   await expect(action).toHaveText('Undo');
   await expect(action).toHaveAttribute('class', 'shrink-0');
 });
 
 test('a caller render replaces the default Button of ToastClose', async ({ page }) => {
-  const close = page.locator('[data-slot=toast-close]');
+  const close = page.locator('[data-slot=toast-close]:not([data-testid])');
   await expect(close).toHaveAttribute('aria-label', 'Close toast');
   await expect(close).toHaveAttribute('class', "relative shrink-0 text-muted-foreground after:absolute after:-inset-2 after:content-[''] hover:text-foreground");
 });
 
 test('a caller render replaces the default Button of MessageScrollerButton', async ({ page }) => {
-  const scroller = page.locator('[data-slot=message-scroller-button]');
+  const scroller = page.locator('[data-slot=message-scroller-button]:not([data-testid])');
   await expect(scroller).toHaveText('Jump');
   expect(cnClasses(await scroller.getAttribute('class'))).toEqual(['cn-message-scroller-button']);
+});
+
+for (const id of ['action-undefined', 'close-undefined', 'scroller-undefined']) test(`render={undefined} keeps the default Button (${id})`, async ({ page }) => {
+  await expect(page.getByTestId(id)).toHaveClass(/cn-button /);
 });
