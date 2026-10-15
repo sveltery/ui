@@ -38,6 +38,8 @@ const capture = (command, args, cwd, env = {}) =>
   });
 
 step('build and serve the registry');
+// The docs tsconfig extends the one `svelte-kit sync` generates, and the registry modules are compiled with it.
+await run('pnpm', ['exec', 'svelte-kit', 'sync'], join(repoRoot, 'apps/docs'));
 const load = async (path) => (await runnerImport(join(repoRoot, path), { root: repoRoot, configFile: false, logLevel: 'error' })).module;
 const { readRegistryInput } = await load('apps/docs/registry/read.ts');
 const { buildRegistry } = await load('apps/docs/registry/build.ts');
