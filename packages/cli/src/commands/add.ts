@@ -1,47 +1,19 @@
-import { existsSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
-import { confirm, isCancel, log } from '@clack/prompts';
-import { CONFIG_FILE, parseConfig } from '../config.js';
+import { log } from '@clack/prompts';
+import { openProject, planItems } from '../items.js';
 import { CliError } from '../parse.js';
-import { executePlan, formatPlan, missingPackages, planFile, type Plan, type PlannedFile } from '../plan.js';
-import { aliasPath, readJson } from '../project.js';
-import { openRegistry, parseItemRef, resolveItems, resolveRegistryUrl } from '../registry.js';
-import { applyTransforms, type TransformContext } from '../transforms.js';
+import { executePlan, formatPlan, type Plan, type PlannedFile } from '../plan.js';
+import { ask } from '../prompt.js';
+import { parseItemRef, resolveItems } from '../registry.js';
 
 export type AddOptions = { cwd: string; yes: boolean; overwrite: boolean; all: boolean; dryRun: boolean; install: boolean };
 
-async function ask(message: string, initialValue: boolean): Promise<boolean> {
-  const answer = await confirm({ message, initialValue });
-  if (isCancel(answer)) throw new CliError('Cancelled.');
-  return answer;
-}
-
 export async function add(args: string[], options: AddOptions): Promise<Plan> {
-  const { cwd } = options;
-  const configPath = join(cwd, CONFIG_FILE);
-  if (!existsSync(configPath)) throw new CliError(`No ${CONFIG_FILE} in ${cwd}. Run \`npx sveltery init\` first.`);
-  const config = parseConfig(readJson(configPath));
-
-  const registry = await openRegistry(resolveRegistryUrl(config.registry));
+  const project = await openProject(options.cwd);
+  const { cwd, config, registry } = project;
   if (!options.all && args.length === 0) throw new CliError('Name the items to add, such as `sveltery add button`, or pass --all.');
   const refs = options.all ? registry.manifest.items.map((item) => parseItemRef(item.name)) : args.map(parseItemRef);
   const items = await resolveItems(registry, config.style, refs);
-
-  const cssPath = join(cwd, config.tailwind.css);
-  const ctx: TransformContext = { iconLibrary: config.iconLibrary, fontHeading: existsSync(cssPath) && readFileSync(cssPath, 'utf8').includes('--font-heading') };
-  const uiDir = aliasPath(config.aliases.ui);
-  const files = new Map<string, PlannedFile>();
-  const dependencies: string[] = [];
-  for (const item of items) {
-    dependencies.push(...(item.dependencies ?? []));
-    for (const file of item.files) {
-      const result = applyTransforms(file, ctx);
-      dependencies.push(...result.dependencies);
-      const path = join(uiDir, file.target);
-      files.set(path, planFile(cwd, path, result.content));
-    }
-  }
-  const plan: Plan = { files: [...files.values()], dependencies: missingPackages(cwd, dependencies), devDependencies: [] };
+  const plan = planItems(project, items);
 
   if (options.dryRun) {
     console.log(formatPlan(plan, { showIdentical: true }));

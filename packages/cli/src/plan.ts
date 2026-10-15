@@ -6,8 +6,8 @@ import { CliError } from './parse.js';
 import { declaredPackages } from './project.js';
 
 export type FileStatus = 'new' | 'identical' | 'changed';
-/** `path` is relative to the project root. */
-export type PlannedFile = { path: string; content: string; status: FileStatus };
+/** `path` is relative to the project root. `item` names the registry item the file belongs to. */
+export type PlannedFile = { path: string; content: string; status: FileStatus; item?: string };
 /** Everything a command will change. Commands build one, then `executePlan` applies it. */
 export type Plan = { files: PlannedFile[]; dependencies: string[]; devDependencies: string[] };
 
