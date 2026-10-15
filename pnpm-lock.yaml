@@ -372,6 +372,9 @@ importers:
       '@types/node':
         specifier: 26.6.3
         version: 26.6.3
+      publint:
+        specifier: 0.3.25
+        version: 0.3.25
       typescript:
         specifier: 6.0.3
         version: 6.0.3

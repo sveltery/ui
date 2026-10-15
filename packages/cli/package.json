@@ -2,6 +2,16 @@
   "name": "sveltery",
   "version": "0.1.0",
   "description": "Add Sveltery UI components to a Svelte app.",
+  "keywords": [
+    "svelte",
+    "svelte5",
+    "sveltery",
+    "shadcn",
+    "tailwindcss",
+    "cli",
+    "components"
+  ],
+  "homepage": "https://github.com/sveltery/ui/tree/main/packages/cli#readme",
   "type": "module",
   "license": "MIT",
   "repository": {
@@ -33,7 +43,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "check": "tsc --noEmit",
-    "prepack": "pnpm run build",
+    "prepack": "pnpm run build && publint --strict",
     "test:e2e": "node test/e2e.mjs"
   },
   "dependencies": {
@@ -47,6 +57,7 @@
   "devDependencies": {
     "@playwright/test": "1.63.0",
     "@types/node": "26.6.3",
+    "publint": "0.3.25",
     "typescript": "6.0.3",
     "vite": "8.3.1"
   }
