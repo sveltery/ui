@@ -27,11 +27,9 @@
 
   const header = $derived.by(() => {
     if (hideLabel || data == null) return;
-    const category = chart.valueAxis === 'x' ? chart.y : chart.x;
-    const value = labelKey
-      ? config[configKey(config, data, labelKey)]?.label
-      : (label ?? category?.(data));
-    const text = typeof value === 'string' ? (config[value]?.label ?? value) : value;
+    const category = label ?? (chart.valueAxis === 'x' ? chart.y : chart.x)?.(data);
+    const itemConfig = config[configKey(config, data, labelKey ?? items[0]?.key ?? 'value')];
+    const text = !labelKey && typeof category === 'string' ? config[category]?.label || category : itemConfig?.label;
     if (labelFormatter) return labelFormatter(text, items);
     if (text) return text;
   });

@@ -1,4 +1,5 @@
 import { createContext, type Component } from 'svelte';
+import type { ChartState } from 'layerchart';
 
 export type ChartConfig = Record<
   string,
@@ -12,6 +13,8 @@ export type ChartRow = Record<string, unknown>;
 
 export type ChartContainerContext = {
   readonly config: ChartConfig;
+  /** Called by `ChartTooltip` so the container can drive its tooltip from the keyboard. Returns the cleanup. */
+  registerTooltip(chart: ChartState<ChartRow>): () => void;
 };
 
 export const [getChartContainer, setChartContainer] = createContext<ChartContainerContext>();

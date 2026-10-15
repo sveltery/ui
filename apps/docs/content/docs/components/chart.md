@@ -520,6 +520,15 @@ The legend names the items Chrome and Safari.
 
 A LayerChart chart is an SVG, and the marks of the chart have no text alternative. Describe what the chart shows with `aria-label` on the `ChartContainer`, and give a table or text version when readers need the exact values.
 
+A chart that has a `ChartTooltip` is reachable with the keyboard. The container becomes a focusable element with `role="application"` and `aria-roledescription="chart"`, and it steps through the rows of the chart. The tooltip hides when the chart loses focus.
+
+| Key | Action |
+| --- | --- |
+| Arrow Right, Arrow Down | Show the tooltip of the next row |
+| Arrow Left, Arrow Up | Show the tooltip of the previous row |
+| Home, End | Show the tooltip of the first or the last row |
+| Escape | Hide the tooltip |
+
 ## API reference
 
 ### ChartContainer

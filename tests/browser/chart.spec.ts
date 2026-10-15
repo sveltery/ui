@@ -48,6 +48,35 @@ test('hovering a radial arc shows only that arc, though every arc is its own ser
   await expect(page.locator('[data-chart=chart-radial] .lc-tooltip-root')).toHaveText(/^\s*(Chrome 275|Safari 200|Firefox 187)$/);
 });
 
+test('arrow keys, Home and End step through the data points and Escape or blur hides the tooltip', async ({ page }) => {
+  await open(page);
+  const bars = chart(page, 'bars');
+  const tooltip = bars.locator('.lc-tooltip-root');
+  await expect(bars).toHaveAttribute('tabindex', '0');
+  await bars.focus();
+  await expect(tooltip).toHaveCount(0);
+  await page.keyboard.press('ArrowRight');
+  await expect(tooltip).toHaveText('January Desktop 186 Mobile 80');
+  await page.keyboard.press('ArrowDown');
+  await expect(tooltip).toHaveText('February Desktop 305 Mobile 200');
+  await page.keyboard.press('ArrowLeft');
+  await expect(tooltip).toHaveText('January Desktop 186 Mobile 80');
+  await page.keyboard.press('ArrowLeft');
+  await expect(tooltip).toHaveText('January Desktop 186 Mobile 80');
+  await page.keyboard.press('End');
+  await expect(tooltip).toHaveText('April Desktop 73 Mobile 190');
+  await page.keyboard.press('ArrowUp');
+  await expect(tooltip).toHaveText('March Desktop 237 Mobile 120');
+  await page.keyboard.press('Home');
+  await expect(tooltip).toHaveText('January Desktop 186 Mobile 80');
+  await page.keyboard.press('Escape');
+  await expect(tooltip).toHaveCount(0);
+  await page.keyboard.press('End');
+  await expect(tooltip).toHaveText('April Desktop 73 Mobile 190');
+  await bars.blur();
+  await expect(tooltip).toHaveCount(0);
+});
+
 test('the legend lists the config labels in order with their colors, below the plot', async ({ page }) => {
   await open(page);
   const items = page.locator('[data-chart=chart-bars]').getByText('Desktop').locator('..').locator('> div');
@@ -101,15 +130,12 @@ test('a series with no value at the hovered row gets no row', async ({ page }) =
   await expect(await firstTooltip(page, 'gaps')).toHaveText('January Desktop 186');
 });
 
-test('a falsy category gives no header', async ({ page }) => {
-  await expect(await firstTooltip(page, 'zero')).toHaveText('Desktop 186 Mobile 80');
+test('a category that is not a string shows the first series config label, as upstream', async ({ page }) => {
+  await expect(await firstTooltip(page, 'zero')).toHaveText('Desktop Desktop 186 Mobile 80');
 });
 
-test.describe('in UTC', () => {
-  test.use({ timezoneId: 'UTC' });
-  test('a date category is shown as the date itself', async ({ page }) => {
-    await expect(await firstTooltip(page, 'dates')).toHaveText('Mon Jan 01 2024 00:00:00 GMT+0000 (Coordinated Universal Time) Desktop 186 Mobile 80');
-  });
+test('a date category shows the first series config label, as upstream', async ({ page }) => {
+  await expect(await firstTooltip(page, 'dates')).toHaveText('Desktop Desktop 186 Mobile 80');
 });
 
 test('a labelFormatter result is shown even when it is falsy', async ({ page }) => {
