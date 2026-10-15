@@ -1,4 +1,5 @@
-import { parseForm } from '@sveltery/base/form/kit';
+import { fail } from '@sveltejs/kit';
+import * as v from 'valibot';
 import { signupSchema, takenEmail } from '$lib/forms/signup';
 import type { Actions } from './$types';
 
@@ -7,9 +8,11 @@ export const prerender = false;
 
 export const actions = {
   default: async ({ request }) => {
-    const submission = await parseForm(request, signupSchema);
-    if (!submission.ok) return submission.fail();
-    if (submission.data.email === takenEmail) return submission.fail(submission.issue.email('That email is already registered.'));
-    return { welcome: submission.data.name };
+    const data = await request.formData();
+    const values = { name: String(data.get('name') ?? ''), email: String(data.get('email') ?? '') };
+    const result = v.safeParse(signupSchema, values);
+    if (!result.success) return fail(400, { values, errors: v.flatten<typeof signupSchema>(result.issues).nested });
+    if (result.output.email === takenEmail) return fail(400, { values, errors: { email: ['That email is already registered.'] } });
+    return { welcome: result.output.name };
   },
 } satisfies Actions;
