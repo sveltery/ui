@@ -71,3 +71,9 @@ test('a nested drawer opens over the first and closes back to it', async ({ page
   await expect(parent).toBeVisible();
   await expect(parent).not.toHaveAttribute('data-nested-drawer-open', '');
 });
+
+test('bind:triggerId reports which trigger opened the drawer', async ({ page }) => {
+  await page.getByRole('button', { name: 'Open from second' }).click();
+  await expect(page.getByRole('dialog', { name: 'Shared drawer' })).toBeVisible();
+  await expect(page.getByTestId('opened-by')).toHaveText('second-trigger');
+});

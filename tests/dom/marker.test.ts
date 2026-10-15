@@ -71,3 +71,9 @@ it('MarkerContent is a span that wraps long text', () => {
   expect(content.className).toBe('cn-marker-content min-w-0 wrap-break-word shimmer');
   expect(content.textContent).toBe('Worked for 42s');
 });
+
+it('a null variant adds no variant class or attribute', () => {
+  const marker = render(Marker, { children: text, variant: null }).firstElementChild!;
+  expect(marker.hasAttribute('data-variant')).toBe(false);
+  expect(marker.className).toBe(base);
+});

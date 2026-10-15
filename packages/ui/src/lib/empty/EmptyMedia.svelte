@@ -1,13 +1,9 @@
 <script lang="ts">
-  import { cva } from 'class-variance-authority';
   import type { EmptyMediaProps } from './types.js';
   import { cn } from 'cn';
-  const emptyMediaVariants = cva('cn-empty-media flex shrink-0 items-center justify-center [&_svg]:pointer-events-none [&_svg]:shrink-0', {
-    variants: { variant: { default: 'cn-empty-media-default', icon: 'cn-empty-media-icon' } },
-    defaultVariants: { variant: 'default' },
-  });
+  import { emptyMediaVariants } from './variants.js';
   let { children, class: classProp, variant = 'default', ...props }: EmptyMediaProps = $props();
 </script>
-<div data-slot="empty-icon" data-variant={variant} {...props} class={cn(emptyMediaVariants({ variant }), classProp)}>
+<div data-slot="empty-icon" data-variant={variant} {...props} class={cn(emptyMediaVariants({ variant, class: classProp }))}>
   {@render children?.()}
 </div>

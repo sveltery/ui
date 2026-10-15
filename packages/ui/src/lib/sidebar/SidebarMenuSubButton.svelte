@@ -2,10 +2,10 @@
   import { cn } from 'cn';
   import type { SidebarMenuSubButtonProps, SidebarMenuSubButtonState } from './types.js';
   let { children, class: classProp, render, size = 'md', isActive = false, ...props }: SidebarMenuSubButtonProps = $props();
-  const state: SidebarMenuSubButtonState = $derived({ slot: 'sidebar-menu-sub-button', size, active: isActive });
+  const state: SidebarMenuSubButtonState = $derived({ slot: 'sidebar-menu-sub-button', sidebar: 'menu-sub-button', size, active: isActive });
   const hostProps = $derived({
     'data-slot': state.slot,
-    'data-sidebar': 'menu-sub-button',
+    'data-sidebar': state.sidebar,
     'data-size': size,
     'data-active': isActive || undefined,
     ...props,

@@ -9,4 +9,3 @@ export { default as DrawerHeader } from './DrawerHeader.svelte';
 export { default as DrawerFooter } from './DrawerFooter.svelte';
 export { default as DrawerTitle } from './DrawerTitle.svelte';
 export { default as DrawerDescription } from './DrawerDescription.svelte';
-export type { DrawerProps } from './types.js';

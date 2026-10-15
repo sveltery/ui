@@ -2,10 +2,10 @@
   import { cn } from 'cn';
   import { Button } from '../button/index.js';
   import { IconPlaceholder } from '../icons/index.js';
-  import { getCarouselContext } from './context.js';
+  import { useCarousel } from './context.js';
   import type { CarouselPreviousProps } from './types.js';
   let { class: classProp, variant = 'outline', size = 'icon-sm', ...props }: CarouselPreviousProps = $props();
-  const carousel = getCarouselContext();
+  const carousel = useCarousel();
 </script>
 <Button
   data-slot="carousel-previous"
