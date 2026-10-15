@@ -2,7 +2,7 @@ import { createContext, untrack } from 'svelte';
 import type { Attachment } from 'svelte/attachments';
 import { SvelteMap } from 'svelte/reactivity';
 import { commandScore } from './command-score.js';
-import type { GroupModel, ItemModel } from './item.svelte.js';
+import type { GroupModel, ItemModel } from './item-state.svelte.js';
 import { rank, step, stepGroup, type CommandFilter, type View } from './rank.js';
 import type { CommandState } from './types.js';
 import { inDocumentOrder } from './utils.js';

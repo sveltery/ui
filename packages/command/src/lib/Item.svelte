@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { getGroup, hasGroup, ItemModel } from './item.svelte.js';
-  import { getCommand } from './root.svelte.js';
+  import { getGroup, hasGroup, ItemModel } from './item-state.svelte.js';
+  import { getCommand } from './root-state.svelte.js';
   import type { CommandItemProps } from './types.js';
 
   let { id, value, keywords, disabled = false, forceMount, onSelect, onclick, onpointermove, children, ...rest }: CommandItemProps = $props();

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { DEV } from 'esm-env';
-  import { QuestionnaireModel, setRoot } from './root.svelte.js';
+  import { QuestionnaireModel, setRoot } from './root-state.svelte.js';
   import type { QuestionnaireRootProps } from './types.js';
   import { dataAttributes } from './utils.js';
 

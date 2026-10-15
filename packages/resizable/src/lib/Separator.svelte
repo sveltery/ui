@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getGroup, SeparatorEntry } from './group.svelte.js';
+  import { getGroup, SeparatorEntry } from './group-state.svelte.js';
   import type { SeparatorProps } from './types.js';
 
   let { disabled = false, disableDoubleClick = false, children, style, ...rest }: SeparatorProps = $props();

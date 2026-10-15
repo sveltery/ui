@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getRoot } from './root.svelte.js';
+  import { getRoot } from './root-state.svelte.js';
   import type { QuestionnaireProgressProps } from './types.js';
   import { dataAttributes } from './utils.js';
 

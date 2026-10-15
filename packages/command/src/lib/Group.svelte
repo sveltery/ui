@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { GroupModel, setGroup } from './item.svelte.js';
-  import { getCommand } from './root.svelte.js';
+  import { GroupModel, setGroup } from './item-state.svelte.js';
+  import { getCommand } from './root-state.svelte.js';
   import type { CommandGroupProps } from './types.js';
 
   let { heading, value, forceMount = false, children, ...rest }: CommandGroupProps = $props();

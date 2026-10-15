@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getCommand } from './root.svelte.js';
+  import { getCommand } from './root-state.svelte.js';
   import type { CommandListProps } from './types.js';
   import { trackListHeight } from './utils.js';
 

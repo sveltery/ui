@@ -1,6 +1,6 @@
 import { AlertDialog as Primitive } from '@sveltery/base/alert-dialog';
 
-export const AlertDialog = Primitive.Root;
+export const AlertDialog = Primitive.Root as typeof Primitive.Root;
 export { default as AlertDialogTrigger } from './AlertDialogTrigger.svelte';
 export { default as AlertDialogPortal } from './AlertDialogPortal.svelte';
 export { default as AlertDialogOverlay } from './AlertDialogOverlay.svelte';

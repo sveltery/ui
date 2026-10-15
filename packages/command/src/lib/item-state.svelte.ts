@@ -1,7 +1,7 @@
 import { createContext } from 'svelte';
 import type { Attachment } from 'svelte/attachments';
 import type { GroupEntry, ItemEntry } from './rank.js';
-import type { CommandModel } from './root.svelte.js';
+import type { CommandModel } from './root-state.svelte.js';
 
 export interface ItemOptions {
   readonly id: string;

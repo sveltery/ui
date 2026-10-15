@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createAttachmentKey } from 'svelte/attachments';
-  import { getChoice } from './item.svelte.js';
+  import { getChoice } from './item-state.svelte.js';
   import type { QuestionnaireChoiceInputProps, QuestionnaireChoiceState } from './types.js';
   import { dataAttributes, getAnswerKeyShortcuts } from './utils.js';
 

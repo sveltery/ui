@@ -1,6 +1,6 @@
 import { Select as Primitive } from '@sveltery/base/select';
 
-export const Select = Primitive.Root;
+export const Select = Primitive.Root as typeof Primitive.Root;
 export { default as SelectGroup } from './SelectGroup.svelte';
 export { default as SelectValue } from './SelectValue.svelte';
 export { default as SelectTrigger } from './SelectTrigger.svelte';

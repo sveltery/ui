@@ -1,7 +1,7 @@
 <script lang="ts">
   import { untrack } from 'svelte';
   import { createAttachmentKey } from 'svelte/attachments';
-  import { getItem, InputModel } from './item.svelte.js';
+  import { getItem, InputModel } from './item-state.svelte.js';
   import type { QuestionnaireInputProps, QuestionnaireInputState } from './types.js';
   import { dataAttributes, getAnswerKeyShortcuts } from './utils.js';
 

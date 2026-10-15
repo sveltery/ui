@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { actions, getRoot, type ActionName } from './root.svelte.js';
+  import { actions, getRoot, type ActionName } from './root-state.svelte.js';
   import type { QuestionnaireNavigationProps, QuestionnaireNavigationState } from './types.js';
   import { dataAttributes } from './utils.js';
 
