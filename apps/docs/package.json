@@ -32,7 +32,7 @@
     "@sveltejs/adapter-auto": "8.0.0",
     "@sveltejs/adapter-cloudflare": "8.0.0",
     "@sveltejs/kit": "3.0.1",
-    "@sveltery/base": "github:sveltery/base#4ad68a8a4e4eb5e1e8c56bbaa72bb635d2c91e43",
+    "@sveltery/base": "github:sveltery/base#45c497dfc80a51c15e504c54be2c17afb536a5c7",
     "@types/d3-scale": "4.0.9",
     "@types/d3-shape": "3.2.0",
     "embla-carousel": "8.6.0",
