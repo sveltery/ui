@@ -8,7 +8,7 @@ const raw = (files: Record<string, string>, prefix: string) => Object.fromEntrie
 const sources = import.meta.glob<string>(['../../../../packages/ui/src/lib/*/*.{svelte,ts}', '!../../../../packages/ui/src/lib/{icons,example}/*'], { query: '?raw', import: 'default', eager: true });
 const styles = import.meta.glob<string>('../../../../packages/ui/src/lib/styles/scoped/*.css', { query: '?raw', import: 'default', eager: true });
 const themes = import.meta.glob<string>('../../../../packages/ui/src/lib/styles/themes.css', { query: '?raw', import: 'default', eager: true });
-const manifests = import.meta.glob<{ name: string; version: string }>('../../../../packages/*/package.json', { import: 'default', eager: true });
+const manifests = import.meta.glob<{ name: string; version: string } & RegistryInput['uiManifest']>('../../../../packages/*/package.json', { import: 'default', eager: true });
 
 const input: RegistryInput = {
   sources: raw(sources, LIB),
