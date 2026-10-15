@@ -80,14 +80,19 @@ test('the form action demo shows schema and server issues in their fields, then 
 });
 
 test('the form action demo sends no request when Form blocks an invalid submit', async ({ page }) => {
-  const posts: string[] = [];
-  page.on('request', request => { if (request.method() === 'POST') posts.push(request.url()); });
+  const posts: (string | null)[] = [];
+  page.on('request', request => { if (request.method() === 'POST') posts.push(request.postData()); });
   await visit(page, '/docs/forms/form-actions');
   const demo = page.locator('[data-slot=component-preview]').first();
+  const name = demo.getByRole('textbox', { name: 'Name' });
   await demo.getByRole('button', { name: 'Sign up' }).click();
-  await expect(demo.getByRole('textbox', { name: 'Name' })).toBeFocused();
-  await page.waitForTimeout(500);
-  expect(posts).toEqual([]);
+  await expect(name).toBeFocused();
+
+  await name.fill('Ada');
+  await demo.getByRole('textbox', { name: 'Email' }).fill('ada@example.com');
+  await demo.getByRole('button', { name: 'Sign up' }).click();
+  await expect(demo.getByText('Welcome, Ada.')).toBeVisible();
+  expect(posts).toEqual(['name=Ada&email=ada%40example.com']);
 });
 
 test('the form action demo works without JavaScript', async ({ browser }) => {
