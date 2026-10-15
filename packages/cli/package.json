@@ -49,6 +49,7 @@
   "dependencies": {
     "@clack/prompts": "1.8.1",
     "commander": "14.0.3",
+    "diff": "9.0.0",
     "magic-string": "0.30.21",
     "package-manager-detector": "1.8.0",
     "postcss": "8.5.28",

@@ -52,6 +52,28 @@ If a file already exists and differs, `add` asks before it overwrites it. Identi
 
 An argument that is a URL is fetched as is, so you can add an item from another registry that uses the same format.
 
+## See and apply upstream changes
+
+```sh
+npx sveltery diff
+npx sveltery update
+npx sveltery list
+```
+
+An item counts as installed when any of its files exists under `aliases.ui`. With no names, `diff` and `update` act on every installed item and the items they depend on. A named item that is not installed is an error.
+
+`diff [items...]` prints a unified diff for each file that differs from the registry. Your file is the `a/` side and the registry version is the `b/` side, so `+` lines are what `update` would write. It ends with a count such as `3 files differ in 2 items`, or `Everything is up to date.`. It never writes anything.
+
+`update [items...]` plans the same files as `add`, including new files, new items an item now depends on and missing packages. For each changed file it shows the diff and asks whether to overwrite it. The default is no. New files are written without asking.
+
+| Option | Description |
+| --- | --- |
+| `-y, --yes` | Overwrite changed files without asking. This discards your edits to them. |
+| `--no-install` | Do not install packages. |
+| `--cwd <path>` | The project root. Defaults to the current directory. |
+
+`list` prints one line per item in the registry with its type, and `installed` when the item is in your project. Pass `--json` for an array of `{ name, type, installed }`.
+
 ## Use another registry
 
 Set `SVELTERY_REGISTRY_URL` to the registry root, for example a preview deploy's `/r` URL. It takes precedence over the `registry` key in `components.json`.

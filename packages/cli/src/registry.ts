@@ -53,7 +53,8 @@ const registryManifest = object({
 });
 export type RegistryManifest = ReturnType<typeof registryManifest>;
 
-export type Registry = { url: string; manifest: RegistryManifest };
+/** `items` memoizes fetched items by URL, so a command that looks at every item and then resolves some of them asks the server once. */
+export type Registry = { url: string; manifest: RegistryManifest; items: Map<string, Promise<RegistryItem>> };
 
 /** `SVELTERY_REGISTRY_URL`, then components.json's `registry`, then the production registry. */
 export function resolveRegistryUrl(configured: string | undefined): string {
@@ -88,7 +89,7 @@ export async function openRegistry(url: string): Promise<Registry> {
   if (registryVersion > REGISTRY_VERSION) {
     throw new CliError(`The registry at ${url} uses format version ${registryVersion}, and this CLI reads version ${REGISTRY_VERSION}. Update it with \`npx sveltery@latest\`.`);
   }
-  return { url, manifest: await fetchJson(indexUrl, registryManifest) };
+  return { url, manifest: await fetchJson(indexUrl, registryManifest), items: new Map() };
 }
 
 export function fetchTheme(registry: Registry, baseColor: BaseColor): Promise<RegistryItem> {
@@ -108,6 +109,15 @@ function itemUrl(registry: Registry, style: StyleName, ref: ItemRef): string {
   return ref.kind === 'url' ? ref.url : `${registry.url}/styles/${style}/${ref.name}.json`;
 }
 
+export function fetchItem(registry: Registry, style: StyleName, ref: ItemRef): Promise<RegistryItem> {
+  const url = itemUrl(registry, style, ref);
+  const cached = registry.items.get(url);
+  if (cached) return cached;
+  const fetched = fetchJson(url, registryItem);
+  registry.items.set(url, fetched);
+  return fetched;
+}
+
 /** Fetches `refs` and their registry dependencies, each item once, dependencies before the items that need them. */
 export async function resolveItems(registry: Registry, style: StyleName, refs: ItemRef[]): Promise<RegistryItem[]> {
   const known = new Set(registry.manifest.items.map((item) => item.name));
@@ -121,7 +131,7 @@ export async function resolveItems(registry: Registry, style: StyleName, refs: I
     const url = itemUrl(registry, style, ref);
     if (visited.has(url)) return;
     visited.add(url);
-    const item = await fetchJson(url, registryItem);
+    const item = await fetchItem(registry, style, ref);
     for (const dependency of item.registryDependencies ?? []) await visit(parseItemRef(dependency));
     if (!ordered.some((other) => other.name === item.name)) ordered.push(item);
   };

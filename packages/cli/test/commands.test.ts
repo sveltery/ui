@@ -3,9 +3,15 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync, existsSync
 import { createServer, type Server } from 'node:http';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, test } from 'vitest';
+import { confirm } from '@clack/prompts';
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, test, vi } from 'vitest';
 import { add } from '../src/commands/add.js';
+import { diff } from '../src/commands/diff.js';
 import { baseDependencies, init } from '../src/commands/init.js';
+import { list } from '../src/commands/list.js';
+import { update } from '../src/commands/update.js';
+
+vi.mock('@clack/prompts', async (importOriginal) => ({ ...(await importOriginal<typeof import('@clack/prompts')>()), confirm: vi.fn() }));
 
 const button = `<script lang="ts">
   import { IconPlaceholder } from '../icons/index.js';
@@ -221,5 +227,162 @@ describe('add', () => {
     await expect(add([`${registryUrl}/styles/nova/evil.json`], options())).rejects.toThrow(
       `${registryUrl}/styles/nova/evil.json is not a valid registry response. files[0].target: expected a relative path without ".." segments, got "../../../../escape.js"`,
     );
+  });
+});
+
+describe('diff', () => {
+  const addOptions = { ...defaults, overwrite: false, all: false, dryRun: false };
+  const buttonPath = 'src/lib/components/ui/button/Button.svelte';
+  const titlePath = 'src/lib/components/ui/dialog/DialogTitle.svelte';
+  beforeEach(async () => {
+    await init({ cwd, ...defaults });
+    await add(['button', 'dialog'], { cwd, ...addOptions });
+  });
+  const editButton = () => writeFileSync(join(cwd, buttonPath), read(buttonPath).replace('px-2.5', 'px-4'));
+
+  test('prints a unified diff from your file to the registry version, and writes nothing', async () => {
+    editButton();
+    const edited = read(buttonPath);
+    expect(await diff([], { cwd })).toBe(`--- a/src/lib/components/ui/button/Button.svelte
++++ b/src/lib/components/ui/button/Button.svelte
+@@ -2,4 +2,4 @@
+   import ChevronRightIcon from '@lucide/svelte/icons/chevron-right';
+   let { children } = $props();
+ </script>
+-<button class="px-4">{@render children?.()}<ChevronRightIcon /></button>
++<button class="px-2.5">{@render children?.()}<ChevronRightIcon /></button>
+
+1 file differs in 1 item`);
+    expect(read(buttonPath)).toBe(edited);
+  });
+
+  test('counts the files and items that differ, and a named item limits the diff to itself and its dependencies', async () => {
+    editButton();
+    writeFileSync(join(cwd, titlePath), 'mine\n');
+    expect((await diff([], { cwd })).split('\n').at(-1)).toBe('2 files differ in 2 items');
+    const output = await diff(['button'], { cwd });
+    expect([output.includes(titlePath), output.split('\n').at(-1)]).toEqual([false, '1 file differs in 1 item']);
+  });
+
+  test('says when nothing differs', async () => {
+    expect(await diff([], { cwd })).toBe('Everything is up to date.');
+  });
+
+  test('mentions registry files that are missing from the project', async () => {
+    rmSync(join(cwd, 'src/lib/components/ui/shared/render.ts'));
+    expect(await diff([], { cwd })).toBe('1 file in the registry is not in your project yet. `sveltery update` adds it.');
+  });
+
+  test('skips shared unless an installed item needs it', async () => {
+    rmSync(join(cwd, 'src/lib/components/ui/dialog'), { recursive: true });
+    writeFileSync(join(cwd, 'src/lib/components/ui/shared/render.ts'), 'mine\n');
+    expect(await diff([], { cwd })).toBe('Everything is up to date.');
+  });
+
+  test('errors on an item that is not installed, not in the registry, or a URL', async () => {
+    rmSync(join(cwd, 'src/lib/components/ui/dialog'), { recursive: true });
+    await expect(diff(['dialog'], { cwd })).rejects.toThrow('dialog is not installed. Run `sveltery add dialog` first.');
+    await expect(diff(['buton'], { cwd })).rejects.toThrow('Not in the registry: buton.');
+    await expect(diff([`${registryUrl}/styles/nova/button.json`], { cwd })).rejects.toThrow('URLs only work with `add`.');
+  });
+
+  test('says so when no item is installed', async () => {
+    rmSync(join(cwd, 'src/lib'), { recursive: true });
+    expect(await diff([], { cwd })).toBe('No items are installed. Add one with `sveltery add button`.');
+  });
+});
+
+describe('update', () => {
+  const addOptions = { ...defaults, overwrite: false, all: false, dryRun: false };
+  const buttonPath = 'src/lib/components/ui/button/Button.svelte';
+  const titlePath = 'src/lib/components/ui/dialog/DialogTitle.svelte';
+  const renderPath = 'src/lib/components/ui/shared/render.ts';
+  beforeEach(async () => {
+    vi.mocked(confirm).mockReset();
+    await init({ cwd, ...defaults });
+    await add(['button', 'dialog'], { cwd, ...addOptions });
+  });
+
+  test('-y overwrites changed files and adds missing ones, and a second diff finds nothing', async () => {
+    writeFileSync(join(cwd, buttonPath), 'mine\n');
+    rmSync(join(cwd, renderPath));
+    const plan = await update([], { cwd, ...defaults });
+    expect(plan.files.map((file) => [file.path, file.status])).toEqual([
+      [buttonPath, 'changed'],
+      [renderPath, 'new'],
+    ]);
+    expect(read(buttonPath)).toContain('<ChevronRightIcon />');
+    expect(read(renderPath)).toBe('export const render = () => {};\n');
+    expect(confirm).not.toHaveBeenCalled();
+    expect(await diff([], { cwd })).toBe('Everything is up to date.');
+  });
+
+  test('asks per changed file, defaulting to no', async () => {
+    writeFileSync(join(cwd, buttonPath), 'my button\n');
+    writeFileSync(join(cwd, titlePath), 'my title\n');
+    vi.mocked(confirm).mockResolvedValueOnce(false).mockResolvedValueOnce(true);
+    const plan = await update([], { cwd, ...defaults, yes: false });
+    expect(vi.mocked(confirm).mock.calls.map(([options]) => options)).toEqual([
+      { message: `Overwrite ${buttonPath} with the registry version?`, initialValue: false },
+      { message: `Overwrite ${titlePath} with the registry version?`, initialValue: false },
+    ]);
+    expect(plan.files.map((file) => file.path)).toEqual([titlePath]);
+    expect(read(buttonPath)).toBe('my button\n');
+    expect(read(titlePath)).toContain('<h2 class="text-base">');
+  });
+
+  test('a name limits the update to that item and its dependencies', async () => {
+    writeFileSync(join(cwd, buttonPath), 'my button\n');
+    writeFileSync(join(cwd, titlePath), 'my title\n');
+    const plan = await update(['button'], { cwd, ...defaults });
+    expect(plan.files.map((file) => file.path)).toEqual([buttonPath]);
+    expect(read(titlePath)).toBe('my title\n');
+    await expect(update(['nope'], { cwd, ...defaults })).rejects.toThrow('Not in the registry: nope.');
+  });
+
+  test('reports the packages an item now needs', async () => {
+    writeFileSync(join(cwd, 'package.json'), JSON.stringify({ devDependencies: { '@sveltejs/kit': '^2.0.0', svelte: '^5.0.0', tailwindcss: '^4.0.0' } }));
+    const plan = await update(['button'], { cwd, ...defaults });
+    expect([plan.files, plan.dependencies]).toEqual([[], ['cn@^0.2.2', '@lucide/svelte@^1.48.0']]);
+  });
+
+  test('does nothing when no item is installed', async () => {
+    rmSync(join(cwd, 'src/lib'), { recursive: true });
+    expect((await update([], { cwd, ...defaults })).files).toEqual([]);
+    expect(existsSync(join(cwd, 'src/lib'))).toBe(false);
+  });
+});
+
+describe('list', () => {
+  const print = async (json: boolean) => {
+    const log = vi.spyOn(console, 'log').mockImplementation(() => {});
+    try {
+      await list({ cwd, json });
+      return log.mock.calls.map(([line]) => line).join('\n');
+    } finally {
+      log.mockRestore();
+    }
+  };
+  beforeEach(() => init({ cwd, ...defaults }));
+
+  test('prints every item with its type, and marks the installed ones', async () => {
+    expect(await print(false)).toBe(`button  registry:ui
+dialog  registry:ui`);
+    await add(['button'], { cwd, ...defaults, overwrite: false, all: false, dryRun: false });
+    expect(await print(false)).toBe(`button  registry:ui  installed
+dialog  registry:ui`);
+  });
+
+  test('--json prints the entries', async () => {
+    await add(['dialog'], { cwd, ...defaults, overwrite: false, all: false, dryRun: false });
+    expect(JSON.parse(await print(true))).toEqual([
+      { name: 'button', type: 'registry:ui', installed: true },
+      { name: 'dialog', type: 'registry:ui', installed: true },
+    ]);
+  });
+
+  test('asks for init when there is no components.json', async () => {
+    rmSync(join(cwd, 'components.json'));
+    await expect(list({ cwd, json: false })).rejects.toThrow('Run `npx sveltery init` first.');
   });
 });

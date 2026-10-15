@@ -3,7 +3,10 @@ import { resolve } from 'node:path';
 import { log } from '@clack/prompts';
 import { Command } from 'commander';
 import { add } from './commands/add.js';
+import { diff } from './commands/diff.js';
 import { init } from './commands/init.js';
+import { list } from './commands/list.js';
+import { update } from './commands/update.js';
 import { CliError } from './parse.js';
 import { version } from './version.js';
 
@@ -32,6 +35,29 @@ program
   .option('--no-install', 'do not install packages')
   .option('--cwd <path>', 'the project root', '.')
   .action(async (items: string[], options) => void (await add(items, { ...options, cwd: resolve(options.cwd) })));
+
+program
+  .command('diff')
+  .description('show how the registry versions of installed items differ from your files')
+  .argument('[items...]', 'item names; every installed item when omitted')
+  .option('--cwd <path>', 'the project root', '.')
+  .action(async (items: string[], options) => void (await diff(items, { cwd: resolve(options.cwd) })));
+
+program
+  .command('update')
+  .description('re-add installed items, showing each changed file\'s diff and asking before it overwrites')
+  .argument('[items...]', 'item names; every installed item when omitted')
+  .option('-y, --yes', 'overwrite changed files without asking', false)
+  .option('--no-install', 'do not install packages')
+  .option('--cwd <path>', 'the project root', '.')
+  .action(async (items: string[], options) => void (await update(items, { ...options, cwd: resolve(options.cwd) })));
+
+program
+  .command('list')
+  .description('list the registry\'s items and mark the installed ones')
+  .option('--json', 'print the items as JSON', false)
+  .option('--cwd <path>', 'the project root', '.')
+  .action(async (options) => void (await list({ ...options, cwd: resolve(options.cwd) })));
 
 try {
   await program.parseAsync();
