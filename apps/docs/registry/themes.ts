@@ -3,6 +3,9 @@ import { baseColors, type BaseColor, type CssVars } from './types';
 
 const FILE = 'styles/themes.css';
 
+// shadcn's cssVars keys leave out the leading `--`; the installer adds it back.
+const unprefixed = (vars: Record<string, string>) => Object.fromEntries(Object.entries(vars).map(([name, value]) => [name.replace(/^--/, ''), value]));
+
 const vars = (nodes: CssNode[]) => Object.fromEntries(declarations(nodes).map((decl) => [decl.prop, decl.value]));
 
 /**
@@ -35,7 +38,7 @@ export function parseThemes(css: string, radii: ReadonlyMap<string, string>): Re
     baseColors.map((color) => {
       const light = block(`.theme-${color}`);
       light['--radius'] ??= rootRadius;
-      return [color, { theme: { ...theme }, light, dark: block(`.dark.theme-${color}, .dark .theme-${color}`) }];
+      return [color, { theme: unprefixed(theme), light: unprefixed(light), dark: unprefixed(block(`.dark.theme-${color}, .dark .theme-${color}`)) }];
     }),
   ) as Record<BaseColor, CssVars>;
 }

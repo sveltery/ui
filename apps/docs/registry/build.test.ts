@@ -159,9 +159,9 @@ describe('themes', () => {
       files: [],
       cssVars: undefined,
     });
-    expect(neutral.cssVars?.light?.['--background']).toBe('oklch(1 0 0)');
-    expect(neutral.cssVars?.dark?.['--background']).toBe('oklch(0.145 0 0)');
-    expect(neutral.cssVars?.theme?.['--radius-sm']).toBe('calc(var(--radius) * 0.6)');
-    expect(neutral.cssVars?.theme?.['--color-background']).toBe('var(--background)');
+    expect(neutral.cssVars?.light?.['background']).toBe('oklch(1 0 0)');
+    expect(neutral.cssVars?.dark?.['background']).toBe('oklch(0.145 0 0)');
+    expect(neutral.cssVars?.theme?.['radius-sm']).toBe('calc(var(--radius) * 0.6)');
+    expect(neutral.cssVars?.theme?.['color-background']).toBe('var(--background)');
   });
 });
