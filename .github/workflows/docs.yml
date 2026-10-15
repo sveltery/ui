@@ -29,4 +29,4 @@ jobs:
         with:
           node-version-file: .node-version
       - name: Build the site and its search index
-        run: bash scripts/build-docs.sh
+        run: bash -c 'bash scripts/bootstrap.sh && source scripts/toolchain.sh && pnpm build'
