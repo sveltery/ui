@@ -79,6 +79,17 @@ test('the form action demo shows schema and server issues in their fields, then 
   await expect(demo.locator('[data-slot=field-error]')).toHaveCount(0);
 });
 
+test('the form action demo sends no request when Form blocks an invalid submit', async ({ page }) => {
+  const posts: string[] = [];
+  page.on('request', request => { if (request.method() === 'POST') posts.push(request.url()); });
+  await visit(page, '/docs/forms/form-actions');
+  const demo = page.locator('[data-slot=component-preview]').first();
+  await demo.getByRole('button', { name: 'Sign up' }).click();
+  await expect(demo.getByRole('textbox', { name: 'Name' })).toBeFocused();
+  await page.waitForTimeout(500);
+  expect(posts).toEqual([]);
+});
+
 test('the form action demo works without JavaScript', async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
