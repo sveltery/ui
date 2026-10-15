@@ -11,12 +11,24 @@ Toast is the shadcn/ui Toast, built on the Sveltery Base `Toast` parts. `Toaster
 
 ## Installation
 
+<InstallTabs>
+
+<InstallTab value="cli">
+
+```bash
+npx sveltery add toast
+```
+
+</InstallTab>
+
+<InstallTab value="manual">
+
 <Steps>
 
 ### Install the dependencies
 
 ```bash
-npm install cn class-variance-authority github:sveltery/base
+npm install cn class-variance-authority @sveltery/base @lucide/svelte
 ```
 
 ### Copy the component
@@ -27,9 +39,13 @@ Copy the following files into `src/lib/components/ui/toast`. The toast action an
 
 ### Update the import paths
 
-Change the imports to match your project setup.
+The component folders import each other with relative paths, so keep them side by side. If you place them elsewhere, change the imports to match your project setup.
 
 </Steps>
+
+</InstallTab>
+
+</InstallTabs>
 
 ## Usage
 

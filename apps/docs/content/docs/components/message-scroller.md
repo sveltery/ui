@@ -59,12 +59,24 @@ Message Scroller is built on `@sveltery/message-scroller`, a Svelte package that
 
 ## Installation
 
+<InstallTabs>
+
+<InstallTab value="cli">
+
+```bash
+npx sveltery add message-scroller
+```
+
+</InstallTab>
+
+<InstallTab value="manual">
+
 <Steps>
 
 ### Install the dependencies
 
 ```bash
-npm install cn class-variance-authority @sveltery/message-scroller
+npm install cn class-variance-authority @sveltery/message-scroller @lucide/svelte
 ```
 
 ### Copy the component
@@ -75,9 +87,13 @@ Copy the following files into `src/lib/components/ui/message-scroller`.
 
 ### Update the import paths
 
-Change the imports to match your project setup.
+The component folders import each other with relative paths, so keep them side by side. If you place them elsewhere, change the imports to match your project setup.
 
 </Steps>
+
+</InstallTab>
+
+</InstallTabs>
 
 ## Usage
 

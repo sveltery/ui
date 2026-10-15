@@ -7,12 +7,24 @@ description: Add addons, buttons, and helper content to inputs and textareas.
 
 ## Installation
 
+<InstallTabs>
+
+<InstallTab value="cli">
+
+```bash
+npx sveltery add input-group
+```
+
+</InstallTab>
+
+<InstallTab value="manual">
+
 <Steps>
 
 ### Install the dependencies
 
 ```bash
-npm install cn class-variance-authority github:sveltery/base
+npm install cn class-variance-authority @sveltery/base
 ```
 
 ### Copy the component
@@ -23,9 +35,13 @@ Copy the following files into `src/lib/components/ui/input-group`. It builds on 
 
 ### Update the import paths
 
-Change the imports to match your project setup.
+The component folders import each other with relative paths, so keep them side by side. If you place them elsewhere, change the imports to match your project setup.
 
 </Steps>
+
+</InstallTab>
+
+</InstallTabs>
 
 ## Usage
 

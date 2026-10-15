@@ -8,7 +8,7 @@ Pages are [mdsvex](https://github.com/pngwn/MDsveX) markdown, so they can use Sv
 
 1. Add the component to `packages/ui/src/lib/<name>`.
 2. Add a preview to `apps/docs/examples`.
-3. Create `components/<name>.md` from the template below.
+3. Create `components/<name>.md` from the template below. The `npx sveltery add` name and the `<ComponentSource>` name are the folder name. List `@lucide/svelte` in the manual `npm install` line when the component imports icons.
 
 The sidebar, search, previous and next links, `llms.txt` and the sitemap pick the page up. You do not edit a nav file.
 
@@ -22,12 +22,24 @@ description: Displays a button or a component that looks like a button.
 
 ## Installation
 
+<InstallTabs>
+
+<InstallTab value="cli">
+
+```bash
+npx sveltery add button
+```
+
+</InstallTab>
+
+<InstallTab value="manual">
+
 <Steps>
 
 ### Install the dependencies
 
 ```bash
-npm install cn class-variance-authority github:sveltery/base
+npm install cn class-variance-authority @sveltery/base
 ```
 
 ### Copy the component
@@ -38,9 +50,13 @@ Copy the following files into `src/lib/components/ui/button`.
 
 ### Update the import paths
 
-Change the imports to match your project setup.
+The component folders import each other with relative paths, so keep them side by side. If you place them elsewhere, change the imports to match your project setup.
 
 </Steps>
+
+</InstallTab>
+
+</InstallTabs>
 
 ## Usage
 
@@ -74,6 +90,7 @@ These need no import:
 | `<ComponentPreview name="base/ButtonExample" />` | A live preview of `apps/docs/examples/<name>.svelte` with its source under **View Code**. Props: `align` (`center`, `start` or `end`), `hideCode` |
 | `<ComponentSource name="button" />` | Every source file in `packages/ui/src/lib/<name>` and the `shared/` helpers it imports, highlighted, with a copy button. It also names the other component folders the component imports |
 | `<Steps>` | Numbers each `###` heading inside it |
+| `<InstallTabs>` and `<InstallTab value="cli">`, `<InstallTab value="manual">` | The Installation section's CLI and Manual tabs. Put a blank line around each tag so the markdown inside renders |
 | `<Callout title="...">` | A highlighted note |
 | `<ComponentsList />` | Links to every component page |
 

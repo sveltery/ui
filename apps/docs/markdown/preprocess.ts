@@ -65,6 +65,7 @@ export function docsComponents({ examples, repoRoot }: { examples: string; repoR
         const name = attribute(attrs, 'name');
         const item = name ? registry().get(`styles/${SOURCE_STYLE}/${name}.json`) : undefined;
         if (!item || !('files' in item)) throw new Error(`${filename}: ComponentSource "${name}" is not a registry item`);
+        if (!content.includes(`npx sveltery add ${name}`)) throw new Error(`${filename}: ComponentSource "${name}" needs the CLI tab: add \`npx sveltery add ${name}\` to an <InstallTab value="cli">`);
         const requires = (item.registryDependencies ?? []).filter((dependency) => dependency !== 'shared');
         const shared = item.registryDependencies?.includes('shared') ? (registry().get(`styles/${SOURCE_STYLE}/shared.json`) as RegistryItem).files : [];
         const entries = [...item.files, ...shared]

@@ -7,12 +7,24 @@ description: For sighted users to preview content available behind a link.
 
 ## Installation
 
+<InstallTabs>
+
+<InstallTab value="cli">
+
+```bash
+npx sveltery add hover-card
+```
+
+</InstallTab>
+
+<InstallTab value="manual">
+
 <Steps>
 
 ### Install the dependencies
 
 ```bash
-npm install cn github:sveltery/base
+npm install cn @sveltery/base
 ```
 
 ### Copy the component
@@ -23,9 +35,13 @@ Copy the following files into `src/lib/components/ui/hover-card`.
 
 ### Update the import paths
 
-Change the imports to match your project setup.
+The component folders import each other with relative paths, so keep them side by side. If you place them elsewhere, change the imports to match your project setup.
 
 </Steps>
+
+</InstallTab>
+
+</InstallTabs>
 
 ## Usage
 

@@ -7,12 +7,24 @@ description: A panel that slides in from an edge of the screen and can be swiped
 
 ## Installation
 
+<InstallTabs>
+
+<InstallTab value="cli">
+
+```bash
+npx sveltery add drawer
+```
+
+</InstallTab>
+
+<InstallTab value="manual">
+
 <Steps>
 
 ### Install the dependencies
 
 ```bash
-npm install cn github:sveltery/base
+npm install cn @sveltery/base
 ```
 
 ### Copy the component
@@ -23,9 +35,13 @@ Copy the following files into `src/lib/components/ui/drawer`.
 
 ### Update the import paths
 
-Change the imports to match your project setup.
+The component folders import each other with relative paths, so keep them side by side. If you place them elsewhere, change the imports to match your project setup.
 
 </Steps>
+
+</InstallTab>
+
+</InstallTabs>
 
 ## Usage
 

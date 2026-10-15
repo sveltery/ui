@@ -7,12 +7,24 @@ description: A window overlaid on either the primary window or another dialog wi
 
 ## Installation
 
+<InstallTabs>
+
+<InstallTab value="cli">
+
+```bash
+npx sveltery add dialog
+```
+
+</InstallTab>
+
+<InstallTab value="manual">
+
 <Steps>
 
 ### Install the dependencies
 
 ```bash
-npm install cn class-variance-authority github:sveltery/base
+npm install cn class-variance-authority @sveltery/base @lucide/svelte
 ```
 
 ### Copy the component
@@ -23,9 +35,13 @@ Copy the following files into `src/lib/components/ui/dialog`.
 
 ### Update the import paths
 
-Change the imports to match your project setup.
+The component folders import each other with relative paths, so keep them side by side. If you place them elsewhere, change the imports to match your project setup.
 
 </Steps>
+
+</InstallTab>
+
+</InstallTabs>
 
 ## Usage
 

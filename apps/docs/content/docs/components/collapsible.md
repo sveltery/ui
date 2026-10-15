@@ -7,12 +7,24 @@ description: An interactive component which expands and collapses a panel.
 
 ## Installation
 
+<InstallTabs>
+
+<InstallTab value="cli">
+
+```bash
+npx sveltery add collapsible
+```
+
+</InstallTab>
+
+<InstallTab value="manual">
+
 <Steps>
 
 ### Install the dependencies
 
 ```bash
-npm install github:sveltery/base
+npm install @sveltery/base
 ```
 
 ### Copy the component
@@ -23,9 +35,13 @@ Copy the following files into `src/lib/components/ui/collapsible`.
 
 ### Update the import paths
 
-Change the imports to match your project setup.
+The component folders import each other with relative paths, so keep them side by side. If you place them elsewhere, change the imports to match your project setup.
 
 </Steps>
+
+</InstallTab>
+
+</InstallTabs>
 
 ## Usage
 
