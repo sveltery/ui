@@ -13,5 +13,5 @@ export default defineConfig({
     ],
     conditions: ['browser'],
   },
-  test: { environment: 'jsdom', include: ['tests/dom/*.test.ts', 'packages/day-picker/src/**/*.test.ts'] },
+  test: { environment: 'jsdom', include: ['tests/dom/*.test.ts', 'packages/day-picker/src/**/*.test.ts', 'apps/docs/registry/*.test.ts'] },
 });
