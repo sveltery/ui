@@ -7,7 +7,7 @@
     "node": ">=24.15.0 <25"
   },
   "scripts": {
-    "build": "pnpm --filter @sveltery/ui build && pnpm --filter @sveltery/docs build",
+    "build": "pnpm --filter @sveltery/docs build",
     "check": "pnpm -r check",
     "test": "vitest run",
     "test:browser": "playwright test",
