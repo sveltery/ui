@@ -14,7 +14,7 @@ test('--check passes for the tag of the version every package has', () => {
 test('--check names each package whose version differs from the tag', () => {
   const result = run('--check', 'v99.0.0');
   assert.equal(result.status, 1);
-  assert.match(result.stderr, new RegExp(`Expected every package at 99\\.0\\.0, but sveltery is ${version.replaceAll('.', '\\.')}, @sveltery/command is`));
+  assert.match(result.stderr, new RegExp(`Expected every package at 99\\.0\\.0, but @sveltery/cli is ${version.replaceAll('.', '\\.')}, @sveltery/command is`));
   assert.match(result.stderr, /@sveltery\/ui is/);
 });
 

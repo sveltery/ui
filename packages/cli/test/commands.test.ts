@@ -95,7 +95,7 @@ describe('init', () => {
     });
     expect(read('src/app.css')).toBe(`@import 'tailwindcss';
 @import 'tw-animate-css';
-@import 'sveltery/tailwind.css';
+@import '@sveltery/cli/tailwind.css';
 @custom-variant dark (&:is(.dark *));
 :root {
   --background: oklch(1 0 0);
@@ -117,7 +117,7 @@ describe('init', () => {
 `);
     expect(first.files.map((file) => file.status)).toEqual(['new', 'changed']);
     expect(first.dependencies).toEqual(['class-variance-authority@^0.7.1', 'tw-animate-css@^1.4.0', '@tabler/icons-svelte@^3.48.0']);
-    expect(first.devDependencies).toEqual(['sveltery@^0.1.0']);
+    expect(first.devDependencies).toEqual(['@sveltery/cli@^0.1.0']);
 
     const config = read('components.json');
     const css = read('src/app.css');
@@ -216,7 +216,7 @@ describe('add', () => {
     await expect(add([`${registryUrl}/styles/nova/missing.json`], options())).rejects.toThrow(`GET ${registryUrl}/styles/nova/missing.json failed with 404 Not Found`);
     registryFiles['index.json'] = { ...(registryFiles['index.json'] as object), registryVersion: 2 };
     try {
-      await expect(add(['button'], options())).rejects.toThrow(`The registry at ${registryUrl} uses format version 2, and this CLI reads version 1. Update it with \`npx sveltery@latest\`.`);
+      await expect(add(['button'], options())).rejects.toThrow(`The registry at ${registryUrl} uses format version 2, and this CLI reads version 1. Update it with \`npx @sveltery/cli@latest\`.`);
     } finally {
       registryFiles['index.json'] = { ...(registryFiles['index.json'] as object), registryVersion: 1 };
     }
@@ -270,7 +270,7 @@ describe('diff', () => {
 
   test('mentions registry files that are missing from the project', async () => {
     rmSync(join(cwd, 'src/lib/components/ui/shared/render.ts'));
-    expect(await diff([], { cwd })).toBe('1 file in the registry is not in your project yet. `sveltery update` adds it.');
+    expect(await diff([], { cwd })).toBe('1 file in the registry is not in your project yet. `npx @sveltery/cli@latest update` adds it.');
   });
 
   test('skips shared unless an installed item needs it', async () => {
@@ -281,14 +281,14 @@ describe('diff', () => {
 
   test('errors on an item that is not installed, not in the registry, or a URL', async () => {
     rmSync(join(cwd, 'src/lib/components/ui/dialog'), { recursive: true });
-    await expect(diff(['dialog'], { cwd })).rejects.toThrow('dialog is not installed. Run `sveltery add dialog` first.');
+    await expect(diff(['dialog'], { cwd })).rejects.toThrow('dialog is not installed. Run `npx @sveltery/cli@latest add dialog` first.');
     await expect(diff(['buton'], { cwd })).rejects.toThrow('Not in the registry: buton.');
     await expect(diff([`${registryUrl}/styles/nova/button.json`], { cwd })).rejects.toThrow('URLs only work with `add`.');
   });
 
   test('says so when no item is installed', async () => {
     rmSync(join(cwd, 'src/lib'), { recursive: true });
-    expect(await diff([], { cwd })).toBe('No items are installed. Add one with `sveltery add button`.');
+    expect(await diff([], { cwd })).toBe('No items are installed. Add one with `npx @sveltery/cli@latest add button`.');
   });
 });
 
@@ -383,6 +383,6 @@ dialog  registry:ui`);
 
   test('asks for init when there is no components.json', async () => {
     rmSync(join(cwd, 'components.json'));
-    await expect(list({ cwd, json: false })).rejects.toThrow('Run `npx sveltery init` first.');
+    await expect(list({ cwd, json: false })).rejects.toThrow('Run `npx @sveltery/cli@latest init` first.');
   });
 });

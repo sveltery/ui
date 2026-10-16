@@ -12,7 +12,7 @@ export async function update(names: string[], options: UpdateOptions): Promise<P
   const full = planItems(project, items);
   const plan = { ...full, files: full.files.filter((file) => file.status !== 'identical') };
   if (plan.files.length === 0 && plan.dependencies.length === 0) {
-    log.success(items.length === 0 ? 'No items are installed. Add one with `sveltery add button`.' : 'Everything is up to date.');
+    log.success(items.length === 0 ? 'No items are installed. Add one with `npx @sveltery/cli@latest add button`.' : 'Everything is up to date.');
     return plan;
   }
   log.info(formatPlan(plan, { showIdentical: false }));

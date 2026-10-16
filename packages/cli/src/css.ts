@@ -71,7 +71,7 @@ export function mergeTheme(css: string, cssVars: CssVars): string {
   const quote = tailwind.params.trim().startsWith("'") ? "'" : '"';
 
   let anchor: ChildNode = tailwind;
-  for (const target of ['tw-animate-css', 'sveltery/tailwind.css']) {
+  for (const target of ['tw-animate-css', '@sveltery/cli/tailwind.css']) {
     const existing = root.nodes.find((node) => importTarget(node) === target);
     if (existing) {
       anchor = existing;
