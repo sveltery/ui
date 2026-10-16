@@ -1,38 +1,49 @@
 <script lang="ts">
   import { page } from '$app/state';
   import { Separator } from '$registry/bases/base/ui/separator';
+  import { buttonVariants } from '$registry/bases/base/ui/button';
+  import { cn } from 'cn';
   import { site } from '$lib/site';
   import CommandMenu from './CommandMenu.svelte';
+  import GitHubLink from './GitHubLink.svelte';
   import MobileNav from './MobileNav.svelte';
   import ModeToggle from './ModeToggle.svelte';
 
-  // "Docs" covers every docs page that another header link does not.
-  const active = $derived(site.nav.findLast((item) => page.url.pathname.startsWith(item.href))?.href);
+  const designer = $derived(page.route.id === '/(site)/create');
 </script>
 
 <header class="sticky top-0 z-50 w-full bg-background">
-  <div class="container-wrapper px-6">
-    <div class="flex h-(--header-height) items-center gap-2 **:data-[slot=separator]:h-4!">
+  <div class={['container-wrapper px-6', designer && 'max-w-none']}>
+    <div class="flex h-(--header-height) items-center **:data-[slot=separator]:h-4! **:data-[slot=separator]:self-center">
       <MobileNav class="flex lg:hidden" />
-      <a href="/" class="hidden items-center gap-2 px-2 font-semibold lg:flex">
-        <span class="flex size-6 items-center justify-center rounded-md bg-primary text-xs text-primary-foreground" aria-hidden="true">S</span>
-        <span>{site.name}</span>
-      </a>
-      <nav aria-label="Main" class="hidden items-center lg:flex">
+      <nav aria-label="Main" class="hidden items-center gap-0 lg:flex">
         {#each site.nav as item (item.href)}
-          <a href={item.href} data-active={active === item.href} class="rounded-md px-2.5 py-1.5 text-sm font-medium text-foreground/70 transition-colors hover:text-foreground data-[active=true]:text-foreground">{item.label}</a>
+          <a
+            href={item.href}
+            data-active={page.url.pathname === item.href}
+            class="relative inline-flex h-8 shrink-0 items-center justify-center gap-1.5 rounded-md px-2.5 text-sm font-medium whitespace-nowrap transition-all outline-none hover:bg-accent hover:text-accent-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 dark:hover:bg-accent/50"
+          >
+            {item.label}
+          </a>
         {/each}
       </nav>
       <div class="ml-auto flex items-center gap-2 md:flex-1 md:justify-end">
-        <div class="flex w-full flex-1 md:w-auto md:flex-none">
+        <div class="hidden w-full flex-1 md:flex md:w-auto md:flex-none">
           <CommandMenu />
         </div>
         <Separator orientation="vertical" class="ml-2 hidden lg:block" />
-        <a href={site.github} target="_blank" rel="noreferrer" class="inline-flex size-8 items-center justify-center rounded-md hover:bg-muted" aria-label="GitHub">
-          <svg viewBox="0 0 24 24" class="size-4" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6 0-3.2 0 0 1-.3 3.4 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.2.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1.1.9 2.2v3.3c0 .3.1.7.8.6A12 12 0 0 0 12 .3" /></svg>
-        </a>
+        <GitHubLink />
         <Separator orientation="vertical" />
         <ModeToggle />
+        {#if !designer}
+          <div class="flex items-center gap-2">
+            <Separator orientation="vertical" />
+            <a href="/create" class={cn(buttonVariants({ size: 'sm' }), 'h-[31px] rounded-lg')}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4V20M20 12H4" /></svg>
+              New
+            </a>
+          </div>
+        {/if}
       </div>
     </div>
   </div>
