@@ -69,7 +69,7 @@ export const signup = form(signupSchema, async (data, issue) => {
 
 `Form` spreads the remote form onto its `<form>`, and each `Field` gives its control the field's `name`, `type`, value and `aria-invalid`, so do not set them on the control. The label, the description and `FieldError` link to the control without `for` or `id`. `FormError` shows the issues on the whole form. `type` on `Field` is the input type of its control, and TypeScript checks it against the field's value: a `number` field needs `type="number"` or `type="range"`, and a `boolean` field `type="checkbox"` or `type="switch"`.
 
-A submit checks the native constraints first, then the preflight schema, then the handler on the server. Each issue shows in its field, and `Form` focuses the first invalid field. When the handler returns, `f.result` holds its return value and the form resets.
+A submit checks the native constraints and the preflight schema, then runs the handler on the server. When a constraint fails, `Form` blocks the submit and no request is sent, but the preflight still runs, so the schema's message shows in the field. Each issue shows in its field, and `Form` focuses the first invalid field. When the handler returns, `f.result` holds its return value and the form resets.
 
 The form also works before the page hydrates and with JavaScript off: the browser checks the constraints, the form posts to the server, and the page renders again with the issues.
 

@@ -397,7 +397,7 @@
     "embla-carousel": "8.6.0"
   },
   "devDependencies": {
-    "@sveltery/base": "github:sveltery/base#c8416755b95dbe032701a883b7a977bfffa720d4",
+    "@sveltery/base": "^0.1.0",
     "@sveltery/day-picker": "workspace:*",
     "date-fns": "4.4.0",
     "layerchart": "2.7.0",
