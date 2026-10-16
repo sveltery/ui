@@ -35,17 +35,9 @@
   --color-selection-foreground: var(--selection-foreground);
 }
 
-/* The site's own palette and radius scale, as upstream's globals.css. Style scopes such as .style-nova set their own --ui-radius-*. */
+/* The site's own palette, as upstream's globals.css. */
 :root {
   --header-height: calc(var(--spacing) * 14);
-  --radius: 0.625rem;
-  --ui-radius-sm: calc(var(--radius) * 0.6);
-  --ui-radius-md: calc(var(--radius) * 0.8);
-  --ui-radius-lg: var(--radius);
-  --ui-radius-xl: calc(var(--radius) * 1.4);
-  --ui-radius-2xl: calc(var(--radius) * 1.8);
-  --ui-radius-3xl: calc(var(--radius) * 2.2);
-  --ui-radius-4xl: calc(var(--radius) * 2.6);
   --background: oklch(1 0 0);
   --foreground: oklch(0% 0 0);
   --card: oklch(1 0 0);
