@@ -76,10 +76,10 @@ test('the preview applies each posted config without a reload', async ({ page })
   expect(await menuClasses(frame)).toEqual(['dark']);
   expect(await frame.evaluate(() => document.fonts.check('1em "Playfair Display Variable"'))).toBe(true);
 
-  await post(page, { ...DEFAULT_PRESETS.maia, baseColor: 'zinc', theme: 'zinc', chartColor: 'zinc', radius: 'large', menuColor: 'default-translucent' });
+  await post(page, { ...DEFAULT_PRESETS.maia, baseColor: 'zinc', theme: 'blue', chartColor: 'blue', radius: 'large', menuColor: 'default-translucent' });
   await expect.poll(() => computed(frame)).toEqual({
     style: ['style-maia'],
-    primary: 'oklch(0.21 0.006 285.885)',
+    primary: 'oklch(0.488 0.243 264.376)',
     radius: '0.875rem',
     body: '"Figtree Variable", sans-serif',
     heading: '"Figtree Variable", sans-serif',
