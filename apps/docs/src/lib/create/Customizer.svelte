@@ -6,12 +6,12 @@
   import { onMount } from 'svelte';
   import { MediaQuery } from 'svelte/reactivity';
   import { Menu } from '@sveltery/base/menu';
-  import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@sveltery/ui/alert-dialog';
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardContent, CardFooter, CardHeader } from '@sveltery/ui/card';
-  import { FieldGroup, FieldSeparator } from '@sveltery/ui/field';
+  import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@sveltery/components/alert-dialog';
+  import { Button } from '@sveltery/components/button';
+  import { Card, CardContent, CardFooter, CardHeader } from '@sveltery/components/card';
+  import { FieldGroup, FieldSeparator } from '@sveltery/components/field';
   import { mode } from '$lib/theme.svelte';
-  import { PRESET_FONT_DEFINITIONS, PRESET_MENU_ACCENTS, PRESET_RADII, type PresetFont, type PresetTheme } from 'sveltery/preset';
+  import { PRESET_FONT_DEFINITIONS, PRESET_MENU_ACCENTS, PRESET_RADII, type PresetFont, type PresetTheme } from '@sveltery/ui/preset';
   import { loadFont } from './preview/fonts';
   import { BASE_COLORS, isTranslucent, themesForBaseColor, type DesignConfig } from './config';
   import { getDesigner } from './designer.svelte';

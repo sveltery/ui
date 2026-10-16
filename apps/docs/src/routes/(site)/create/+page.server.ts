@@ -1,5 +1,5 @@
-import { name as cli } from 'sveltery/package.json';
-import { PRESET_THEMES, type PresetTheme } from 'sveltery/preset';
+import { name as cli } from '@sveltery/ui/package.json';
+import { PRESET_THEMES, type PresetTheme } from '@sveltery/ui/preset';
 import { registry } from '$lib/registry.server';
 import { BASE_COLORS } from '$lib/create/config';
 import type { PageServerLoad } from './$types';

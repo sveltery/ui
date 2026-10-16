@@ -1,6 +1,6 @@
 // Labels and icons from shadcn's apps/v4/registry (styles.tsx, themes.ts, config.ts), packages/registry/src/icons/libraries.ts and
 // apps/v4/app/(app)/(create)/components at af983e8.
-import { PRESET_FONT_DEFINITIONS, type PresetFont, type PresetIconLibrary, type PresetMenuAccent, type PresetMenuColor, type PresetRadius, type PresetStyle, type PresetTheme } from 'sveltery/preset';
+import { PRESET_FONT_DEFINITIONS, type PresetFont, type PresetIconLibrary, type PresetMenuAccent, type PresetMenuColor, type PresetRadius, type PresetStyle, type PresetTheme } from '@sveltery/ui/preset';
 
 /** The markup inside a 24 by 24 (or `viewBox`) SVG. Static and authored here, so rendering it with `{@html}` is safe. */
 export type Icon = { viewBox: string; body: string };

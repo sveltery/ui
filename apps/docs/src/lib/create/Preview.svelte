@@ -1,7 +1,7 @@
 <!-- Port of shadcn's apps/v4/app/(app)/(create)/components/preview.tsx and preview-switcher.tsx at af983e8. -->
 <script lang="ts">
   import { untrack } from 'svelte';
-  import { Button } from '@sveltery/ui/button';
+  import { Button } from '@sveltery/components/button';
   import { previewSrc, sendPreviewConfig } from './preview/message';
   import { getDesigner, PREVIEW_ITEMS } from './designer.svelte';
 

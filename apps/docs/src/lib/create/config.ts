@@ -1,6 +1,6 @@
 // Ported from shadcn's apps/v4/app/(app)/(create)/lib (search-params.ts, parse-preset-input.ts, shuffle-presets.ts) and hooks
 // (use-random.tsx, use-reset.tsx) at af983e8.
-import { DEFAULT_PRESET_CONFIG, DEFAULT_PRESETS, decodePreset, encodePreset, isPresetCode, type PresetBaseColor, type PresetCode, type PresetConfig, type PresetTheme } from 'sveltery/preset';
+import { DEFAULT_PRESET_CONFIG, DEFAULT_PRESETS, decodePreset, encodePreset, isPresetCode, type PresetBaseColor, type PresetCode, type PresetConfig, type PresetTheme } from '@sveltery/ui/preset';
 import type { PackageManager } from '$lib/package-manager.svelte';
 
 /** Every field the Create page edits. A decoded v1 code has no `chartColor`, so `normalizeConfig` fills it. */
