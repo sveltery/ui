@@ -14,7 +14,6 @@ const EXAMPLE = `${REGISTRY}/bases/base/components/example`;
 const STYLES = `${REGISTRY}/styles`;
 const NOTICES = `${REGISTRY}/THIRD_PARTY_NOTICES.md`;
 const DOCS_MANIFEST = 'apps/docs/package.json';
-const PACKAGE_NAMES = ['@sveltery/ui', '@sveltery/components'];
 const at = (path) => join(root, path);
 
 /** Moves `from` onto `to`, replacing files `to` already has. */
@@ -44,7 +43,7 @@ function movePackage() {
     if (docs.dependencies[name] || docs.devDependencies[name]) continue;
     docs.dependencies[name] = range.startsWith('workspace:') ? 'workspace:*' : range;
   }
-  for (const name of PACKAGE_NAMES) delete docs.dependencies[name];
+  delete docs.dependencies[manifest.name];
   docs.dependencies = Object.fromEntries(Object.entries(docs.dependencies).sort(([a], [b]) => a.localeCompare(b)));
   writeFileSync(at(DOCS_MANIFEST), `${JSON.stringify(docs, null, 2)}\n`);
 
