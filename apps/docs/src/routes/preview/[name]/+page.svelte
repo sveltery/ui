@@ -1,6 +1,8 @@
 <script lang="ts">
   import { IconLibraryProvider } from '$registry/bases/base/ui/icons';
+  import { Toaster as Sonner } from '$registry/bases/base/ui/sonner';
   import { Toaster } from '$registry/bases/base/ui/toast';
+  import { mode } from '$lib/theme.svelte';
   import { prepareDesignSystem, syncMenuColor } from '$lib/create/preview/design-system';
   import { parsePreviewMessage, parsePreviewParams } from '$lib/create/preview/message';
   import { site } from '$lib/site';
@@ -40,7 +42,9 @@
 
   // The Create page around the iframe writes the theme; follow it without a reload.
   function syncTheme(event: StorageEvent) {
-    if (event.key === 'theme') document.documentElement.classList.toggle('dark', event.newValue === 'dark');
+    if (event.key !== 'theme') return;
+    mode.current = event.newValue === 'dark' ? 'dark' : 'light';
+    document.documentElement.classList.toggle('dark', mode.current === 'dark');
   }
 </script>
 
@@ -57,6 +61,7 @@
     </IconLibraryProvider>
   {/if}
 </div>
+<Sonner position="top-center" theme={mode.current} />
 <Toaster />
 
 <style>

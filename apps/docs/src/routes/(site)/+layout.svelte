@@ -2,6 +2,8 @@
   import SiteFooter from '$lib/components/site/SiteFooter.svelte';
   import SiteHeader from '$lib/components/site/SiteHeader.svelte';
   import { page } from '$app/state';
+  import { mode } from '$lib/theme.svelte';
+  import { Toaster as Sonner } from '$registry/bases/base/ui/sonner';
   import { Toaster } from '$registry/bases/base/ui/toast';
   let { children } = $props();
 
@@ -18,4 +20,5 @@
     <SiteFooter />
   {/if}
 </div>
+<Sonner position="top-center" theme={mode.current} />
 <Toaster />

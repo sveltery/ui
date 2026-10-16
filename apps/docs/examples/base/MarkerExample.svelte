@@ -15,6 +15,7 @@
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';
   import { Spinner } from '$registry/bases/base/ui/spinner';
   import { Marker, MarkerContent, MarkerIcon } from '$registry/bases/base/ui/marker';
+  import { toast } from 'svelte-sonner';
 
   const drawerFiles = ['app/chat/page.tsx', 'components/message.tsx', 'lib/ai.ts'];
 </script>
@@ -69,7 +70,7 @@
     </Marker>
     <Marker>
       {#snippet render(props, _state, children)}
-        <button {...props} type="button" class={[props.class, 'transition-colors hover:text-foreground']}>
+        <button {...props} type="button" class={[props.class, 'transition-colors hover:text-foreground']} onclick={() => toast('You clicked the button')}>
           {@render children?.()}
         </button>
       {/snippet}

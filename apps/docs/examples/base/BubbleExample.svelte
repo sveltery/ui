@@ -5,6 +5,7 @@
   import { Collapsible, CollapsibleTrigger } from '$registry/bases/base/ui/collapsible';
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';
   import { Marker, MarkerContent } from '$registry/bases/base/ui/marker';
+  import { toast } from 'svelte-sonner';
 
   const collapsibleText = `The accessibility review found two focus states that were visually too subtle in dark mode.
 
@@ -19,9 +20,9 @@ I also recommend keeping the change in the style file instead of the primitive s
   let collapsibleOpen = $state(false);
 
   const quickReplies = [
-    'I need help with my account.',
-    'I forgot my password.',
-    "I have another question. I'd like to talk to a human. Can you help me?",
+    { label: 'I need help with my account.', message: 'I need help with my account.' },
+    { label: 'I forgot my password.', message: 'I forgot my password.' },
+    { label: "I have another question. I'd like to talk to a human. Can you help me?", message: 'I have another question.' },
   ];
 </script>
 
@@ -236,13 +237,13 @@ Use this for content that needs the whole row.`}</span>
         <BubbleContent>How can I help you today?</BubbleContent>
       </Bubble>
       <BubbleGroup>
-        {#each quickReplies as reply (reply)}
+        {#each quickReplies as reply (reply.label)}
           <Bubble variant="outline" align="end">
             <BubbleContent class="border-dashed border-primary">
               {#snippet render(props, _state, children)}
-                <button {...props} type="button">{@render children?.()}</button>
+                <button {...props} type="button" onclick={() => toast(reply.message)}>{@render children?.()}</button>
               {/snippet}
-              {reply}
+              {reply.label}
             </BubbleContent>
           </Bubble>
         {/each}
@@ -404,13 +405,13 @@ Use this for content that needs the whole row.`}</span>
       <Bubble>
         <BubbleContent>This is a one line message.</BubbleContent>
         <BubbleReactions>
-          <Button variant="outline" size="xs">Button</Button>
+          <Button variant="outline" size="xs" onclick={() => toast('You clicked the button in the bubble reaction')}>Button</Button>
         </BubbleReactions>
       </Bubble>
       <Bubble align="end">
         <BubbleContent>This is a one line message.</BubbleContent>
         <BubbleReactions align="start">
-          <Button variant="ghost" size="icon-xs">🎉</Button>
+          <Button variant="ghost" size="icon-xs" onclick={() => toast('Confetti!')}>🎉</Button>
         </BubbleReactions>
       </Bubble>
       <Bubble variant="tinted">
@@ -418,7 +419,7 @@ Use this for content that needs the whole row.`}</span>
           We are going to the movies first then dinner. Are you in?
         </BubbleContent>
         <BubbleReactions class="gap-1 bg-background">
-          <Button variant="secondary" size="icon-xs" aria-label="Thumbs up">
+          <Button variant="secondary" size="icon-xs" aria-label="Thumbs up" onclick={() => toast('You agree!')}>
             <IconPlaceholder
               lucide="ThumbsUpIcon"
               tabler="IconThumbUp"
@@ -427,7 +428,7 @@ Use this for content that needs the whole row.`}</span>
               remixicon="RiThumbUpLine"
             />
           </Button>
-          <Button variant="secondary" size="icon-xs" aria-label="Thumbs down">
+          <Button variant="secondary" size="icon-xs" aria-label="Thumbs down" onclick={() => toast('You disagree!')}>
             <IconPlaceholder
               lucide="ThumbsDownIcon"
               tabler="IconThumbDown"
