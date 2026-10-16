@@ -63,7 +63,7 @@ test('ComponentPreview renders the example and reveals its source', async ({ pag
   await expect(preview.getByRole('button', { name: 'Copy' })).toBeVisible();
 });
 
-test('docs tooltips open without the default delay, as upstream's site does', async ({ page }) => {
+test('docs tooltips open without the default delay, like the upstream site', async ({ page }) => {
   await visit(page, '/docs/components/tooltip');
   await page.getByRole('button', { name: 'Show Tooltip' }).first().hover();
   await expect(page.locator('[data-slot=tooltip-content]')).toBeVisible({ timeout: 400 });
