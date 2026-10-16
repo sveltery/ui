@@ -48,6 +48,7 @@
         seriesLayout="stack"
         props={{
           xAxis: {
+            tickLength: 14,
             format: (v: Date) => v.toLocaleDateString('en-US', { month: 'short' }),
           },
           yAxis: { format: () => '' },

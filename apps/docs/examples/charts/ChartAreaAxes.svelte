@@ -54,9 +54,10 @@
             motion: 'tween',
           },
           xAxis: {
+            tickLength: 14,
             format: (v: Date) => v.toLocaleDateString('en-US', { month: 'short' }),
           },
-          yAxis: { ticks: [0, 300, 600] },
+          yAxis: { tickLength: 14, ticks: [0, 300, 600] },
         }}
       >
         {#snippet tooltip()}

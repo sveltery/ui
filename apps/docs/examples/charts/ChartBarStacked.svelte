@@ -62,7 +62,7 @@
             },
           },
           highlight: { area: false },
-          xAxis: { format: (d) => d.slice(0, 3) },
+          xAxis: { tickLength: 16, format: (d) => d.slice(0, 3) },
         }}
       >
         {#snippet belowMarks()}

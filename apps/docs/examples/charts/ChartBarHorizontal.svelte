@@ -41,9 +41,6 @@
           bars: {
             stroke: 'none',
             radius: 5,
-            insets: {
-              left: 24,
-            },
             rounded: 'all',
             initialWidth: 0,
             initialX: 0,
@@ -53,7 +50,7 @@
             },
           },
           highlight: { area: { fill: 'none' } },
-          yAxis: { format: (d) => d.slice(0, 3) },
+          yAxis: { tickLength: 16, format: (d) => d.slice(0, 3) },
         }}
       >
         {#snippet tooltip()}
