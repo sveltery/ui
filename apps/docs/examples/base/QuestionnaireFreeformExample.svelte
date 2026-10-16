@@ -10,7 +10,7 @@
     QuestionnaireItem,
     QuestionnaireSubmit,
     QuestionnaireTitle,
-  } from '@sveltery/components/questionnaire';
+  } from '$registry/bases/base/ui/questionnaire';
 
   const items = [{ choices: [{ value: 'incremental' }, { value: 'module' }, { value: 'rewrite' }], name: 'approach', required: true }];
 

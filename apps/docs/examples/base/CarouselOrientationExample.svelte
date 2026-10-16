@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Card, CardContent } from '@sveltery/components/card';
-  import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@sveltery/components/carousel';
+  import { Card, CardContent } from '$registry/bases/base/ui/card';
+  import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '$registry/bases/base/ui/carousel';
 </script>
 
 <Carousel opts={{ align: 'start' }} orientation="vertical" class="my-12 w-full max-w-xs">

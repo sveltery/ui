@@ -1,8 +1,8 @@
 import { analyzeSource, type SourceFile } from './source';
 import type { RegistryItem } from './types';
 
-/** Folders of `packages/ui/src/lib` that are not registry items: the CLI replaces icons, and the rest is not component source. */
-const NOT_ITEMS = new Set(['icons', 'styles', 'example']);
+/** Folders of `bases/base/ui` that are not registry items: the CLI replaces icons. */
+const NOT_ITEMS = new Set(['icons']);
 
 export type UiManifest = {
   dependencies?: Record<string, string>;

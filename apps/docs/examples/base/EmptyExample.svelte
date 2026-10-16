@@ -1,12 +1,12 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { Example, ExampleWrapper } from '@sveltery/components/example';
-  import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@sveltery/components/empty';
-  import { Button } from '@sveltery/components/button';
-  import { IconPlaceholder } from '@sveltery/components/icons';
-  import { InputGroup, InputGroupAddon, InputGroupInput } from '@sveltery/components/input-group';
-  import { Kbd } from '@sveltery/components/kbd';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '$registry/bases/base/ui/empty';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { InputGroup, InputGroupAddon, InputGroupInput } from '$registry/bases/base/ui/input-group';
+  import { Kbd } from '$registry/bases/base/ui/kbd';
 </script>
 
 {#snippet link(props: HTMLAttributes<HTMLElement>, _state: unknown, content: Snippet | undefined)}

@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { Bubble, BubbleContent } from '@sveltery/components/bubble';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
-  import { Message, MessageContent } from '@sveltery/components/message';
-  import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerItem, MessageScrollerProvider, MessageScrollerViewport } from '@sveltery/components/message-scroller';
-  import { Tabs, TabsList, TabsTrigger } from '@sveltery/components/tabs';
+  import { Bubble, BubbleContent } from '$registry/bases/base/ui/bubble';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { Message, MessageContent } from '$registry/bases/base/ui/message';
+  import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerItem, MessageScrollerProvider, MessageScrollerViewport } from '$registry/bases/base/ui/message-scroller';
+  import { Tabs, TabsList, TabsTrigger } from '$registry/bases/base/ui/tabs';
   import MessageText from './message-scroller/MessageText.svelte';
 
   const messages = [

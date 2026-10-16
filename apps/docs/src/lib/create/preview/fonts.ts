@@ -1,4 +1,4 @@
-import { PRESET_FONT_DEFINITIONS, type PresetFont } from '@sveltery/ui/preset';
+import { PRESET_FONT_DEFINITIONS, type PresetFont } from '../../../../../../packages/cli/src/preset/index.js';
 
 // Each stylesheet is its own chunk, so the preview downloads only the fonts a config names.
 const FONT_STYLESHEETS: Record<PresetFont, () => Promise<unknown>> = {

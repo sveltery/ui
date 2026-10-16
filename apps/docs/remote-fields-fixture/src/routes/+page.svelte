@@ -1,8 +1,8 @@
 <script lang="ts">
   import { onMount, tick, untrack } from 'svelte';
   import { Button as BaseButton } from '@sveltery/base/button';
-  import { Button } from '@sveltery/components/button';
-  import { Textarea } from '@sveltery/components/textarea';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Textarea } from '$registry/bases/base/ui/textarea';
   import { probe } from './form.remote';
   const current = probe.for('core');
   let mode = $state('default');

@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from '@sveltery/components/avatar';
-  import { Button } from '@sveltery/components/button';
-  import { Example, ExampleWrapper } from '@sveltery/components/example';
-  import { Card, CardAction, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@sveltery/components/card';
-  import { Field, FieldGroup, FieldLabel } from '@sveltery/components/field';
-  import { IconPlaceholder } from '@sveltery/components/icons';
-  import { Input } from '@sveltery/components/input';
-  import { ToggleGroup, ToggleGroupItem } from '@sveltery/components/toggle-group';
+  import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from '$registry/bases/base/ui/avatar';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Card, CardAction, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '$registry/bases/base/ui/card';
+  import { Field, FieldGroup, FieldLabel } from '$registry/bases/base/ui/field';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { Input } from '$registry/bases/base/ui/input';
+  import { ToggleGroup, ToggleGroupItem } from '$registry/bases/base/ui/toggle-group';
 
   const spacingOptions = [
     { class: '[--card-spacing:--spacing(4)]', label: '16px', value: '4' },

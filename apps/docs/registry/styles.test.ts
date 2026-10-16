@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { parseStyleSheet } from './styles';
 import { styleNames } from './types';
 
-const read = (style: string) => readFileSync(new URL(`../../../packages/ui/src/lib/styles/scoped/${style}.css`, import.meta.url), 'utf8');
+const read = (style: string) => readFileSync(new URL(`./styles/scoped/${style}.css`, import.meta.url), 'utf8');
 
 describe('parseStyleSheet', () => {
   it('maps a token to the utilities of its @apply rule', () => {

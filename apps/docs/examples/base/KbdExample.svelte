@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/components/example';
-  import { InputGroup, InputGroupAddon, InputGroupInput } from '@sveltery/components/input-group';
-  import { Kbd, KbdGroup } from '@sveltery/components/kbd';
-  import { IconPlaceholder } from '@sveltery/components/icons';
-  import { Button } from '@sveltery/components/button';
-  import { Tooltip, TooltipContent, TooltipTrigger } from '@sveltery/components/tooltip';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { InputGroup, InputGroupAddon, InputGroupInput } from '$registry/bases/base/ui/input-group';
+  import { Kbd, KbdGroup } from '$registry/bases/base/ui/kbd';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Tooltip, TooltipContent, TooltipTrigger } from '$registry/bases/base/ui/tooltip';
 </script>
 
 {#snippet KbdBasic()}

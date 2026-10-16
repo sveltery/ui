@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { NativeSelect, NativeSelectOption } from '@sveltery/components/native-select';
+  import { NativeSelect, NativeSelectOption } from '$registry/bases/base/ui/native-select';
   import {
     Questionnaire,
     QuestionnaireActions,
@@ -10,7 +10,7 @@
     QuestionnaireItem,
     QuestionnaireSubmit,
     QuestionnaireTitle,
-  } from '@sveltery/components/questionnaire';
+  } from '$registry/bases/base/ui/questionnaire';
 
   const items = [{ choices: [{ value: 'inspect' }, { value: 'tests' }, { value: 'patch' }], name: 'action', required: true }];
 

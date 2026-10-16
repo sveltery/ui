@@ -4,7 +4,7 @@ import { describe, expect, test } from 'vitest';
 import type { IconLibraryName } from '../src/registry.js';
 import { transformIcons, transformMarkers, type TransformContext } from '../src/transforms.js';
 
-const read = (path: string) => ({ target: path, content: readFileSync(new URL(`../../ui/src/lib/${path}`, import.meta.url), 'utf8') });
+const read = (path: string) => ({ target: path, content: readFileSync(new URL(`../../../apps/docs/registry/bases/base/ui/${path}`, import.meta.url), 'utf8') });
 
 /** The source with each literal `from` (which must occur exactly once) replaced by `to`. */
 function swap(source: string, edits: [from: string, to: string][]): string {

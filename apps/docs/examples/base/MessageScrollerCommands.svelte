@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Bubble, BubbleContent } from '@sveltery/components/bubble';
-  import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/components/card';
-  import { Message, MessageContent } from '@sveltery/components/message';
-  import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerItem, MessageScrollerProvider, MessageScrollerViewport } from '@sveltery/components/message-scroller';
+  import { Bubble, BubbleContent } from '$registry/bases/base/ui/bubble';
+  import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { Message, MessageContent } from '$registry/bases/base/ui/message';
+  import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerItem, MessageScrollerProvider, MessageScrollerViewport } from '$registry/bases/base/ui/message-scroller';
   import { createChat } from './message-scroller/chat.svelte.js';
   import JumpMenu from './message-scroller/JumpMenu.svelte';
   import MessageText from './message-scroller/MessageText.svelte';

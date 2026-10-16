@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/components/example';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
   import {
     Attachment,
     AttachmentAction,
@@ -10,8 +10,8 @@
     AttachmentMedia,
     AttachmentTitle,
     AttachmentTrigger,
-  } from '@sveltery/components/attachment';
-  import { Button } from '@sveltery/components/button';
+  } from '$registry/bases/base/ui/attachment';
+  import { Button } from '$registry/bases/base/ui/button';
   import {
     Dialog,
     DialogContent,
@@ -19,9 +19,9 @@
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-  } from '@sveltery/components/dialog';
-  import { IconPlaceholder } from '@sveltery/components/icons';
-  import { Spinner } from '@sveltery/components/spinner';
+  } from '$registry/bases/base/ui/dialog';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { Spinner } from '$registry/bases/base/ui/spinner';
 
   let isVisible = $state(true);
 </script>

@@ -89,6 +89,18 @@ test('the preview applies each posted config without a reload', async ({ page })
   expect(await frame.evaluate(() => document.fonts.check('1em "Figtree Variable"'))).toBe(true);
 });
 
+test('the preview switches icon libraries without a reload', async ({ page }) => {
+  const frame = await embed(page, DEFAULT_PRESETS.nova);
+  const chevron = () => frame.locator('[data-slot=select-trigger] svg').first().innerHTML();
+  const lucide = await chevron();
+
+  await post(page, { ...DEFAULT_PRESETS.nova, iconLibrary: 'phosphor' });
+  await expect.poll(chevron).not.toBe(lucide);
+
+  await post(page, DEFAULT_PRESETS.nova);
+  await expect.poll(chevron).toBe(lucide);
+});
+
 test('the preview follows the color mode of the page around it', async ({ page }) => {
   const frame = await embed(page, DEFAULT_PRESETS.nova);
   const background = () => frame.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--background'));

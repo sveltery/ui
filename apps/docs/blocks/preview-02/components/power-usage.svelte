@@ -1,10 +1,10 @@
 <script lang="ts">
   import { scaleBand } from 'd3-scale';
   import { BarChart } from 'layerchart';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '@sveltery/components/chart';
-  import { Progress } from '@sveltery/components/progress';
-  import { Separator } from '@sveltery/components/separator';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
+  import { Progress } from '$registry/bases/base/ui/progress';
+  import { Separator } from '$registry/bases/base/ui/separator';
 
   const chartData = [
     { hour: '6a', usage: 1.2 },

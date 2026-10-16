@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { HoverCard, HoverCardContent, HoverCardTrigger } from '@sveltery/components/hover-card';
-  import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@sveltery/components/tooltip';
+  import { HoverCard, HoverCardContent, HoverCardTrigger } from '$registry/bases/base/ui/hover-card';
+  import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '$registry/bases/base/ui/tooltip';
 </script>
 <div class="flex gap-8 p-16">
   <TooltipProvider>

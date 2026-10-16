@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/components/card';
-  import { Item, ItemActions, ItemContent, ItemGroup, ItemMedia, ItemTitle } from '@sveltery/components/item';
-  import { Slider } from '@sveltery/components/slider';
-  import { Switch } from '@sveltery/components/switch';
-  import { ToggleGroup, ToggleGroupItem } from '@sveltery/components/toggle-group';
-  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { Item, ItemActions, ItemContent, ItemGroup, ItemMedia, ItemTitle } from '$registry/bases/base/ui/item';
+  import { Slider } from '$registry/bases/base/ui/slider';
+  import { Switch } from '$registry/bases/base/ui/switch';
+  import { ToggleGroup, ToggleGroupItem } from '$registry/bases/base/ui/toggle-group';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
   const SCENES = {
     cooking: { brightness: [90], colorTemp: [70], volume: [30], fade: [0] },
