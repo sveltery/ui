@@ -20,19 +20,6 @@ describe('parseStyleSheet', () => {
     );
   });
 
-  it('reads the radius scale', () => {
-    const { radii } = parseStyleSheet(read('luma'), 'luma');
-    expect([...radii]).toEqual([
-      ['sm', 'calc(var(--radius) * 0.6)'],
-      ['md', 'calc(var(--radius) * 0.8)'],
-      ['lg', 'calc(var(--radius) * 1)'],
-      ['xl', 'calc(var(--radius) * 1.4)'],
-      ['2xl', 'calc(var(--radius) * 1.8)'],
-      ['3xl', 'calc(var(--radius) * 2.2)'],
-      ['4xl', 'calc(var(--radius) * 2.6)'],
-    ]);
-  });
-
   it('ignores a commented-out rule', () => {
     const css = read('sera');
     expect(css).toContain('/* .cn-input-group-addon-align-inline-start {');
@@ -44,12 +31,17 @@ describe('parseStyleSheet', () => {
   });
 
   it('throws on a selector shape it does not know, naming the file and selector', () => {
-    const css = '@layer components {\n.style-nova.style-nova {\n  .cn-a .cn-b { @apply flex; }\n}\n}';
+    const css = '.style-nova {\n  .cn-a .cn-b { @apply flex; }\n}';
     expect(() => parseStyleSheet(css, 'nova')).toThrow('styles/scoped/nova.css: unsupported selector .cn-a .cn-b');
   });
 
   it('throws on a rule body that is more than one @apply', () => {
-    const css = '@layer components {\n.style-nova.style-nova {\n  .cn-a { @apply flex; color: red; }\n}\n}';
+    const css = '.style-nova {\n  .cn-a { @apply flex; color: red; }\n}';
     expect(() => parseStyleSheet(css, 'nova')).toThrow('unsupported rule body for .cn-a');
+  });
+
+  it('throws on anything outside the one .style-<name> scope', () => {
+    expect(() => parseStyleSheet('.style-vega {\n  .cn-a { @apply flex; }\n}', 'nova')).toThrow('unsupported top-level rule .style-vega');
+    expect(() => parseStyleSheet('.style-nova {\n  --x: 1;\n}', 'nova')).toThrow('unsupported declaration --x');
   });
 });
