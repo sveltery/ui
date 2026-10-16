@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Card } from '@sveltery/ui/card';
-  import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarSeparator } from '@sveltery/ui/sidebar';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Card } from '$registry/bases/base/ui/card';
+  import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarSeparator } from '$registry/bases/base/ui/sidebar';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 </script>
 
 <div class="grid grid-cols-2 items-start gap-6">

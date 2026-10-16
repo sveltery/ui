@@ -1,10 +1,10 @@
 <script lang="ts">
   import { scaleBand } from 'd3-scale';
   import { BarChart } from 'layerchart';
-  import { Badge } from '@sveltery/ui/badge';
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { type ChartConfig, ChartContainer } from '@sveltery/ui/chart';
+  import { Badge } from '$registry/bases/base/ui/badge';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { type ChartConfig, ChartContainer } from '$registry/bases/base/ui/chart';
 
   const sleepChartData = [
     { hour: '10pm', deep: 0, light: 30, rem: 0 },

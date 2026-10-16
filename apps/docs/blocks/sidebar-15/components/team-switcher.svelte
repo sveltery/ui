@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@sveltery/ui/sidebar';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from '$registry/bases/base/ui/dropdown-menu';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '$registry/bases/base/ui/sidebar';
 
   let { teams }: { teams: { name: string; logo: Snippet; plan: string }[] } = $props();
   let activeTeam = $state.raw(teams[0]);

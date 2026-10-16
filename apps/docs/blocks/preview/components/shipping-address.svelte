@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { Checkbox } from '@sveltery/ui/checkbox';
-  import { Field, FieldGroup, FieldLabel } from '@sveltery/ui/field';
-  import { Input } from '@sveltery/ui/input';
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { Checkbox } from '$registry/bases/base/ui/checkbox';
+  import { Field, FieldGroup, FieldLabel } from '$registry/bases/base/ui/field';
+  import { Input } from '$registry/bases/base/ui/input';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '$registry/bases/base/ui/select';
 </script>
 
 <Card>

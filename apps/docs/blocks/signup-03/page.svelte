@@ -1,6 +1,6 @@
 <script lang="ts">
   import SignupForm from './components/signup-form.svelte';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 </script>
 
 <div class="flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10">

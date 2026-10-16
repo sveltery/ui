@@ -1,7 +1,7 @@
 <script lang="ts">
   import { renderSVG } from 'uqr';
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
 
   const qrCode = renderSVG('https://ledger.app/connect/jd-4829', { ecc: 'M', border: 0 });
 </script>

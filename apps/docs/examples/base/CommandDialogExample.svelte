@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from '@sveltery/ui/command';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from '$registry/bases/base/ui/command';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
   let open = $state(false);
 

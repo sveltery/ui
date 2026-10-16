@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Badge } from '@sveltery/ui/badge';
-  import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Badge } from '$registry/bases/base/ui/badge';
+  import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 </script>
 
 <Card>

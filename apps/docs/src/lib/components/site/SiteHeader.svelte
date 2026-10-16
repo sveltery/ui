@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/state';
-  import { Separator } from '@sveltery/ui/separator';
+  import { Separator } from '$registry/bases/base/ui/separator';
   import { site } from '$lib/site';
   import CommandMenu from './CommandMenu.svelte';
   import MobileNav from './MobileNav.svelte';

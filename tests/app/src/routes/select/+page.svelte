@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@sveltery/ui/dialog';
-  import { Field, FieldError, FieldLabel } from '@sveltery/ui/field';
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from '@sveltery/ui/select';
+  import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '$registry/bases/base/ui/dialog';
+  import { Field, FieldError, FieldLabel } from '$registry/bases/base/ui/field';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from '$registry/bases/base/ui/select';
 
   const fruits = [
     { label: 'Select a fruit', value: null },

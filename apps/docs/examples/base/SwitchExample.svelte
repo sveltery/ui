@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Field, FieldContent, FieldDescription, FieldLabel, FieldTitle } from '@sveltery/ui/field';
-  import { Label } from '@sveltery/ui/label';
-  import { Switch } from '@sveltery/ui/switch';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Field, FieldContent, FieldDescription, FieldLabel, FieldTitle } from '$registry/bases/base/ui/field';
+  import { Label } from '$registry/bases/base/ui/label';
+  import { Switch } from '$registry/bases/base/ui/switch';
 </script>
 
 {#snippet SwitchBasic()}

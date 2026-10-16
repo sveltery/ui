@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Card, CardContent } from '@sveltery/ui/card';
-  import { Skeleton } from '@sveltery/ui/skeleton';
+  import { Card, CardContent } from '$registry/bases/base/ui/card';
+  import { Skeleton } from '$registry/bases/base/ui/skeleton';
 </script>
 
 <Card>

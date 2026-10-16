@@ -1,13 +1,13 @@
 <script lang="ts">
   import { addDays, format } from 'date-fns';
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button } from '@sveltery/ui/button';
-  import { Calendar, type DateRange } from '@sveltery/ui/calendar';
-  import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@sveltery/ui/field';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { Input } from '@sveltery/ui/input';
-  import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '@sveltery/ui/input-group';
-  import { Popover, PopoverContent, PopoverTrigger } from '@sveltery/ui/popover';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Calendar, type DateRange } from '$registry/bases/base/ui/calendar';
+  import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '$registry/bases/base/ui/field';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { Input } from '$registry/bases/base/ui/input';
+  import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '$registry/bases/base/ui/input-group';
+  import { Popover, PopoverContent, PopoverTrigger } from '$registry/bases/base/ui/popover';
 
   const year = new Date().getFullYear();
 

@@ -2,9 +2,9 @@
   import { scaleUtc } from 'd3-scale';
   import { curveNatural } from 'd3-shape';
   import { AreaChart } from 'layerchart';
-  import { Badge } from '@sveltery/ui/badge';
-  import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '@sveltery/ui/chart';
+  import { Badge } from '$registry/bases/base/ui/badge';
+  import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
 
   const areaChartData = [
     { month: 'January', desktop: 186 },

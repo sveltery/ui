@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { Badge } from '@sveltery/ui/badge';
-  import { Card, CardContent, CardHeader } from '@sveltery/ui/card';
-  import { InputGroup, InputGroupAddon, InputGroupInput } from '@sveltery/ui/input-group';
-  import { Item, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from '@sveltery/ui/item';
-  import { ToggleGroup, ToggleGroupItem } from '@sveltery/ui/toggle-group';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Badge } from '$registry/bases/base/ui/badge';
+  import { Card, CardContent, CardHeader } from '$registry/bases/base/ui/card';
+  import { InputGroup, InputGroupAddon, InputGroupInput } from '$registry/bases/base/ui/input-group';
+  import { Item, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from '$registry/bases/base/ui/item';
+  import { ToggleGroup, ToggleGroupItem } from '$registry/bases/base/ui/toggle-group';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
   const HOLDINGS = [
     {

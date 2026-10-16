@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Toast, ToastClose, ToastContent, ToastDescription, ToastPortal, ToastTitle, ToastViewport, getToastManager } from '@sveltery/ui/toast';
+  import { Toast, ToastClose, ToastContent, ToastDescription, ToastPortal, ToastTitle, ToastViewport, getToastManager } from '$registry/bases/base/ui/toast';
 
   const manager = getToastManager();
 </script>

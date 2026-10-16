@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@sveltery/ui/empty';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerProvider, MessageScrollerViewport } from '@sveltery/ui/message-scroller';
-  import { ToggleGroup, ToggleGroupItem } from '@sveltery/ui/toggle-group';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '$registry/bases/base/ui/empty';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerProvider, MessageScrollerViewport } from '$registry/bases/base/ui/message-scroller';
+  import { ToggleGroup, ToggleGroupItem } from '$registry/bases/base/ui/toggle-group';
   import type { ChatMessage } from './message-scroller/chat.svelte.js';
   import MessageAnimated from './message-scroller/MessageAnimated.svelte';
 

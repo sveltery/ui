@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@sveltery/ui/resizable';
+  import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '$registry/bases/base/ui/resizable';
   import { savedLayout } from '@sveltery/resizable';
 
   let bound = $state<Record<string, number>>();

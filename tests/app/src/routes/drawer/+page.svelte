@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '@sveltery/ui/drawer';
+  import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '$registry/bases/base/ui/drawer';
   let openedBy = $state<string | null>();
 </script>
 <div class="flex flex-wrap gap-2 p-8">

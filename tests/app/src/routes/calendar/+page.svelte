@@ -1,6 +1,6 @@
 <script lang="ts">
   import { format } from 'date-fns';
-  import { Calendar, type DateRange } from '@sveltery/ui/calendar';
+  import { Calendar, type DateRange } from '$registry/bases/base/ui/calendar';
   const today = new Date(2025, 5, 18);
   let single = $state<Date | undefined>(new Date(2025, 5, 18));
   let range = $state<DateRange | undefined>();

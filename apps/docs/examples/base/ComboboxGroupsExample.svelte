@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Combobox, ComboboxCollection, ComboboxContent, ComboboxEmpty, ComboboxGroup, ComboboxInput, ComboboxItem, ComboboxLabel, ComboboxList, ComboboxSeparator } from '@sveltery/ui/combobox';
+  import { Combobox, ComboboxCollection, ComboboxContent, ComboboxEmpty, ComboboxGroup, ComboboxInput, ComboboxItem, ComboboxLabel, ComboboxList, ComboboxSeparator } from '$registry/bases/base/ui/combobox';
 
   type Timezones = { value: string; items: string[] };
 

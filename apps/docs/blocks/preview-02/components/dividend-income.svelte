@@ -1,11 +1,11 @@
 <script lang="ts">
   import { scaleBand } from 'd3-scale';
   import { BarChart } from 'layerchart';
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '@sveltery/ui/chart';
-  import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@sveltery/ui/item';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
+  import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '$registry/bases/base/ui/item';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
   const HOLDINGS = [
     {

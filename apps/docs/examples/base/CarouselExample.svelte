@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Card, CardContent } from '@sveltery/ui/card';
-  import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@sveltery/ui/carousel';
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
+  import { Card, CardContent } from '$registry/bases/base/ui/card';
+  import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '$registry/bases/base/ui/carousel';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
 </script>
 
 <ExampleWrapper class="lg:grid-cols-1">

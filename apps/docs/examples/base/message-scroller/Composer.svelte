@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { InputGroup, InputGroupAddon, InputGroupButton } from '@sveltery/ui/input-group';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { InputGroup, InputGroupAddon, InputGroupButton } from '$registry/bases/base/ui/input-group';
   import type { Chat } from './chat.svelte.js';
 
   let { chat, empty, children }: { chat: Chat; empty: string; children?: Snippet } = $props();

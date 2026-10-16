@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button } from '@sveltery/ui/button';
-  import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@sveltery/ui/dialog';
-  import { Field, FieldGroup, FieldLabel } from '@sveltery/ui/field';
-  import { Input } from '@sveltery/ui/input';
-  import { Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger } from '@sveltery/ui/popover';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '$registry/bases/base/ui/dialog';
+  import { Field, FieldGroup, FieldLabel } from '$registry/bases/base/ui/field';
+  import { Input } from '$registry/bases/base/ui/input';
+  import { Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger } from '$registry/bases/base/ui/popover';
 
   const topSides = ['inline-start', 'left', 'top'] as const;
   const bottomSides = ['bottom', 'right', 'inline-end'] as const;

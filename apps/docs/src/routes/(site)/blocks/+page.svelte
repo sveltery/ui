@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { buttonVariants } from '@sveltery/ui/button';
+  import { buttonVariants } from '$registry/bases/base/ui/button';
   import { featured, navCategories } from '#blocks/registry';
   import BlockViewer from '$lib/components/blocks/BlockViewer.svelte';
 </script>

@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Badge } from '@sveltery/ui/badge';
-  import { Calendar } from '@sveltery/ui/calendar';
-  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@sveltery/ui/item';
+  import { Badge } from '$registry/bases/base/ui/badge';
+  import { Calendar } from '$registry/bases/base/ui/calendar';
+  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '$registry/bases/base/ui/item';
 
   let date = $state<Date | undefined>(new Date());
 </script>

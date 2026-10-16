@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@sveltery/ui/accordion';
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '$registry/bases/base/ui/accordion';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
   const basicItems = [
     { value: 'item-1', trigger: 'Is it accessible?', content: 'Yes. It adheres to the WAI-ARIA design pattern.' },

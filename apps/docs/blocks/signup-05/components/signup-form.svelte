@@ -1,10 +1,10 @@
 <script lang="ts">
   import type { HTMLAttributes } from 'svelte/elements';
-  import { Button } from '@sveltery/ui/button';
-  import { Field, FieldDescription, FieldGroup, FieldLabel, FieldSeparator } from '@sveltery/ui/field';
-  import { Input } from '@sveltery/ui/input';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Field, FieldDescription, FieldGroup, FieldLabel, FieldSeparator } from '$registry/bases/base/ui/field';
+  import { Input } from '$registry/bases/base/ui/input';
   import { cn } from 'cn';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
   let { class: className, ...props }: HTMLAttributes<HTMLDivElement> = $props();
 </script>
 

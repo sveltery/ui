@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Badge } from '@sveltery/ui/badge';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { Item, ItemContent } from '@sveltery/ui/item';
-  import { Separator } from '@sveltery/ui/separator';
+  import { Badge } from '$registry/bases/base/ui/badge';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { Item, ItemContent } from '$registry/bases/base/ui/item';
+  import { Separator } from '$registry/bases/base/ui/separator';
 </script>
 
 <Card>

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { AspectRatio } from '@sveltery/ui/aspect-ratio';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { AspectRatio } from '$registry/bases/base/ui/aspect-ratio';
 
   const examples = [
     { title: '16:9', ratio: 16 / 9, class: 'items-center justify-center' },

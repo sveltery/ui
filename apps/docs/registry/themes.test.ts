@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { parseStyleSheet } from './styles';
 import { parseThemes } from './themes';
 
-const lib = new URL('../../../packages/ui/src/lib/styles/', import.meta.url);
+const lib = new URL('./styles/', import.meta.url);
 const radii = parseStyleSheet(readFileSync(new URL('scoped/nova.css', lib), 'utf8'), 'nova').radii;
 const themes = parseThemes(readFileSync(new URL('themes.css', lib), 'utf8'), radii);
 

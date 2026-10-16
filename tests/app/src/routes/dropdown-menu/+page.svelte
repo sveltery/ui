@@ -15,7 +15,7 @@
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
     DropdownMenuTrigger
-  } from '@sveltery/ui/dropdown-menu';
+  } from '$registry/bases/base/ui/dropdown-menu';
 
   let last = $state('none');
   let statusBar = $state(true);

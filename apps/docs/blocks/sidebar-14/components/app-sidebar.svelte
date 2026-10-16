@@ -15,7 +15,7 @@
     SidebarMenuSubItem,
     SidebarRail,
     type SidebarProps,
-  } from '@sveltery/ui/sidebar';
+  } from '$registry/bases/base/ui/sidebar';
   let { ...props }: SidebarProps = $props();
   const data = {
     navMain: [

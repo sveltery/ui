@@ -1,8 +1,8 @@
 <script lang="ts">
   import { PieChart, Text } from 'layerchart';
-  import { Card, CardContent, CardFooter } from '@sveltery/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '@sveltery/ui/chart';
-  import { Separator } from '@sveltery/ui/separator';
+  import { Card, CardContent, CardFooter } from '$registry/bases/base/ui/card';
+  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
+  import { Separator } from '$registry/bases/base/ui/separator';
 
   const chartData = [
     { name: 'saved', value: 24000, color: 'var(--color-saved)' },

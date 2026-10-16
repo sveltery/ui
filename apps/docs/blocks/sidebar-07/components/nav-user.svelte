@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Avatar, AvatarFallback, AvatarImage } from '@sveltery/ui/avatar';
-  import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@sveltery/ui/sidebar';
+  import { Avatar, AvatarFallback, AvatarImage } from '$registry/bases/base/ui/avatar';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '$registry/bases/base/ui/dropdown-menu';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '$registry/bases/base/ui/sidebar';
 
   let {
     user,

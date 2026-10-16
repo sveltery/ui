@@ -1,17 +1,17 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button } from '@sveltery/ui/button';
-  import { ButtonGroup, ButtonGroupText } from '@sveltery/ui/button-group';
-  import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
-  import { Field, FieldGroup } from '@sveltery/ui/field';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { Input } from '@sveltery/ui/input';
-  import { InputGroup, InputGroupAddon, InputGroupInput } from '@sveltery/ui/input-group';
-  import { Label } from '@sveltery/ui/label';
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
-  import { Tooltip, TooltipContent, TooltipTrigger } from '@sveltery/ui/tooltip';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { ButtonGroup, ButtonGroupText } from '$registry/bases/base/ui/button-group';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '$registry/bases/base/ui/dropdown-menu';
+  import { Field, FieldGroup } from '$registry/bases/base/ui/field';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { Input } from '$registry/bases/base/ui/input';
+  import { InputGroup, InputGroupAddon, InputGroupInput } from '$registry/bases/base/ui/input-group';
+  import { Label } from '$registry/bases/base/ui/label';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '$registry/bases/base/ui/select';
+  import { Tooltip, TooltipContent, TooltipTrigger } from '$registry/bases/base/ui/tooltip';
 
   const currencyItems = [
     { label: '$', value: '$' },

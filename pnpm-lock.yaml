@@ -259,15 +259,27 @@ importers:
       '@dnd-kit/svelte':
         specifier: 0.5.0
         version: 0.5.0(svelte@5.57.1(@typescript-eslint/types@8.71.0))
+      '@sveltery/command':
+        specifier: workspace:*
+        version: link:../../packages/command
       '@sveltery/day-picker':
         specifier: workspace:*
         version: link:../../packages/day-picker
-      '@sveltery/ui':
+      '@sveltery/message-scroller':
         specifier: workspace:*
-        version: link:../../packages/ui
+        version: link:../../packages/message-scroller
+      '@sveltery/questionnaire':
+        specifier: workspace:*
+        version: link:../../packages/questionnaire
+      '@sveltery/resizable':
+        specifier: workspace:*
+        version: link:../../packages/resizable
       '@tanstack/svelte-table':
         specifier: 9.3.1
         version: 9.3.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))
+      class-variance-authority:
+        specifier: 0.7.1
+        version: 0.7.1
       cn:
         specifier: 0.2.2
         version: 0.2.2
@@ -326,9 +338,6 @@ importers:
       pagefind:
         specifier: 1.5.2
         version: 1.5.2
-      shadcn:
-        specifier: 4.21.1
-        version: 4.21.1(supports-color@10.2.2)(typescript@6.0.3)
       shiki:
         specifier: 4.4.3
         version: 4.4.3
@@ -446,55 +455,6 @@ importers:
         specifier: 5.57.1
         version: 5.57.1(@typescript-eslint/types@8.71.0)
 
-  packages/ui:
-    dependencies:
-      '@sveltery/command':
-        specifier: workspace:^
-        version: link:../command
-      '@sveltery/message-scroller':
-        specifier: workspace:^
-        version: link:../message-scroller
-      '@sveltery/questionnaire':
-        specifier: workspace:^
-        version: link:../questionnaire
-      '@sveltery/resizable':
-        specifier: workspace:^
-        version: link:../resizable
-      class-variance-authority:
-        specifier: 0.7.1
-        version: 0.7.1
-      cn:
-        specifier: 0.2.2
-        version: 0.2.2
-      embla-carousel:
-        specifier: 8.6.0
-        version: 8.6.0
-    devDependencies:
-      '@sveltery/base':
-        specifier: ^0.1.0
-        version: 0.1.0(svelte@5.57.1(@typescript-eslint/types@8.71.0))
-      '@sveltery/day-picker':
-        specifier: workspace:*
-        version: link:../day-picker
-      date-fns:
-        specifier: 4.4.0
-        version: 4.4.0
-      layerchart:
-        specifier: 2.7.0
-        version: 2.7.0(@sveltejs/kit@3.0.1(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))(typescript@6.0.3)(vite@8.3.1(@types/node@26.6.3)(esbuild@0.28.1)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.71.0))
-      publint:
-        specifier: 0.3.25
-        version: 0.3.25
-      svelte:
-        specifier: 5.57.1
-        version: 5.57.1(@typescript-eslint/types@8.71.0)
-      tailwindcss:
-        specifier: 4.3.0
-        version: 4.3.0
-      tw-animate-css:
-        specifier: 1.4.0
-        version: 1.4.0
-
   tests/app:
     devDependencies:
       '@sveltejs/adapter-auto':
@@ -521,9 +481,6 @@ importers:
       '@sveltery/resizable':
         specifier: workspace:*
         version: link:../../packages/resizable
-      '@sveltery/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
       date-fns:
         specifier: 4.4.0
         version: 4.4.0

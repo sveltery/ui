@@ -3,10 +3,10 @@
   import { curveNatural } from 'd3-shape';
   import { Area, AreaChart } from 'layerchart';
   import { MediaQuery } from 'svelte/reactivity';
-  import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '@sveltery/ui/chart';
-  import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
-  import { ToggleGroup, ToggleGroupItem } from '@sveltery/ui/toggle-group';
+  import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
+  import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '$registry/bases/base/ui/select';
+  import { ToggleGroup, ToggleGroupItem } from '$registry/bases/base/ui/toggle-group';
 
   const chartData = [
     { date: new Date('2024-04-01'), desktop: 222, mobile: 150 },

@@ -1,11 +1,11 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button } from '@sveltery/ui/button';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { Kbd } from '@sveltery/ui/kbd';
-  import { Tooltip, TooltipContent, TooltipTrigger } from '@sveltery/ui/tooltip';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { Kbd } from '$registry/bases/base/ui/kbd';
+  import { Tooltip, TooltipContent, TooltipTrigger } from '$registry/bases/base/ui/tooltip';
 
   const sides = ['inline-start', 'left', 'top', 'bottom', 'right', 'inline-end'] as const;
 </script>

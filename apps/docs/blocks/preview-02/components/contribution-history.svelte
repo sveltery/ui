@@ -1,10 +1,10 @@
 <script lang="ts">
   import { scaleBand } from 'd3-scale';
   import { BarChart } from 'layerchart';
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '@sveltery/ui/chart';
-  import { Item, ItemContent, ItemDescription } from '@sveltery/ui/item';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
+  import { Item, ItemContent, ItemDescription } from '$registry/bases/base/ui/item';
 
   const chartData = [
     { month: 'Dec', amount: 800 },

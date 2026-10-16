@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Avatar, AvatarFallback, AvatarGroup, AvatarImage } from '@sveltery/ui/avatar';
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardContent } from '@sveltery/ui/card';
-  import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@sveltery/ui/empty';
+  import { Avatar, AvatarFallback, AvatarGroup, AvatarImage } from '$registry/bases/base/ui/avatar';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardContent } from '$registry/bases/base/ui/card';
+  import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '$registry/bases/base/ui/empty';
 </script>
 
 <Card>

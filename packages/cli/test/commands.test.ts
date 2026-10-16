@@ -153,9 +153,9 @@ describe('init', () => {
     await expect(init({ cwd, ...defaults, style: 'nebula' })).rejects.toThrow('Unknown style "nebula". Choose one of: vega, nova, maia, lyra, mira, luma, sera, rhea.');
   });
 
-  test('installs the base packages at the ranges packages/ui uses', () => {
-    const ui = JSON.parse(readFileSync(new URL('../../ui/package.json', import.meta.url), 'utf8'));
-    const declared = { ...ui.dependencies, ...ui.peerDependencies };
+  test('installs the base packages at the ranges the registry source uses', () => {
+    const docs = JSON.parse(readFileSync(new URL('../../../apps/docs/package.json', import.meta.url), 'utf8'));
+    const declared = { ...docs.dependencies, ...docs.devDependencies };
     for (const spec of baseDependencies) {
       const [name, range] = spec.split('@^');
       expect(declared[name!].replace(/^\^/, ''), name).toBe(range);

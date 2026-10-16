@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@sveltery/ui/breadcrumb';
-  import { Button } from '@sveltery/ui/button';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { Separator } from '@sveltery/ui/separator';
-  import { useSidebar } from '@sveltery/ui/sidebar';
+  import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '$registry/bases/base/ui/breadcrumb';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { Separator } from '$registry/bases/base/ui/separator';
+  import { useSidebar } from '$registry/bases/base/ui/sidebar';
   import SearchForm from './search-form.svelte';
 
   const sidebar = useSidebar();

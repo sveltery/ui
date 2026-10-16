@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button } from '@sveltery/ui/button';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Button } from '$registry/bases/base/ui/button';
   import {
     Breadcrumb,
     BreadcrumbEllipsis,
@@ -9,8 +9,8 @@
     BreadcrumbList,
     BreadcrumbPage,
     BreadcrumbSeparator,
-  } from '@sveltery/ui/breadcrumb';
-  import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
+  } from '$registry/bases/base/ui/breadcrumb';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '$registry/bases/base/ui/dropdown-menu';
 </script>
 
 {#snippet BreadcrumbBasic()}

@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { Button } from '@sveltery/ui/button';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@sveltery/ui/sidebar';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '$registry/bases/base/ui/sidebar';
 
   let { items }: { items: { title: string; url: string; icon?: Snippet }[] } = $props();
 </script>

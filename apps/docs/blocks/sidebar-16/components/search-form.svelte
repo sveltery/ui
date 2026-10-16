@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { HTMLFormAttributes } from 'svelte/elements';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { Label } from '@sveltery/ui/label';
-  import { SidebarInput } from '@sveltery/ui/sidebar';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { Label } from '$registry/bases/base/ui/label';
+  import { SidebarInput } from '$registry/bases/base/ui/sidebar';
 
   let { ...props }: HTMLFormAttributes = $props();
 </script>

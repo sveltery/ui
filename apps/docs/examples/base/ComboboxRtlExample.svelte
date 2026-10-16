@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { Combobox, ComboboxChip, ComboboxChips, ComboboxChipsInput, ComboboxCollection, ComboboxContent, ComboboxEmpty, ComboboxItem, ComboboxList, ComboboxValue } from '@sveltery/ui/combobox';
-  import { DirectionProvider } from '@sveltery/ui/direction';
-  import { Field, FieldLabel } from '@sveltery/ui/field';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Combobox, ComboboxChip, ComboboxChips, ComboboxChipsInput, ComboboxCollection, ComboboxContent, ComboboxEmpty, ComboboxItem, ComboboxList, ComboboxValue } from '$registry/bases/base/ui/combobox';
+  import { DirectionProvider } from '$registry/bases/base/ui/direction';
+  import { Field, FieldLabel } from '$registry/bases/base/ui/field';
 
   const categories = ['technology', 'design', 'business', 'marketing', 'education', 'health'] as const;
 

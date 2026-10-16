@@ -2,10 +2,10 @@
   import { scaleUtc } from 'd3-scale';
   import { curveLinear } from 'd3-shape';
   import { AreaChart } from 'layerchart';
-  import { Badge } from '@sveltery/ui/badge';
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardAction, CardDescription, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '@sveltery/ui/chart';
+  import { Badge } from '$registry/bases/base/ui/badge';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardAction, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
 
   const chartData = [
     { month: 'January', visitors: 186 },

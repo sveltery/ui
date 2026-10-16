@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@sveltery/ui/field';
-  import { Form, FormError } from '@sveltery/ui/form';
-  import { Input } from '@sveltery/ui/input';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '$registry/bases/base/ui/field';
+  import { Form, FormError } from '$registry/bases/base/ui/form';
+  import { Input } from '$registry/bases/base/ui/input';
   import { signupSchema } from '$lib/forms/signup';
   import { signup } from '$lib/forms/signup.remote';
 

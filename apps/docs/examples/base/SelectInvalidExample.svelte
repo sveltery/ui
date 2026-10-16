@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Field, FieldError, FieldLabel } from '@sveltery/ui/field';
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
+  import { Field, FieldError, FieldLabel } from '$registry/bases/base/ui/field';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '$registry/bases/base/ui/select';
 
   const items = [
     { label: 'Select a fruit', value: null },

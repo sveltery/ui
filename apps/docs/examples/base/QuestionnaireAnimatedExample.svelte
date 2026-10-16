@@ -14,7 +14,7 @@
     QuestionnaireProgress,
     QuestionnaireSubmit,
     QuestionnaireTitle,
-  } from '@sveltery/ui/questionnaire';
+  } from '$registry/bases/base/ui/questionnaire';
 
   const items = [
     { name: 'task', required: true },

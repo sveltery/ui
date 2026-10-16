@@ -1,14 +1,14 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button } from '@sveltery/ui/button';
-  import { ButtonGroup, ButtonGroupText } from '@sveltery/ui/button-group';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
-  import { Field, FieldDescription, FieldGroup, FieldLabel } from '@sveltery/ui/field';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { Input } from '@sveltery/ui/input';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { ButtonGroup, ButtonGroupText } from '$registry/bases/base/ui/button-group';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '$registry/bases/base/ui/dropdown-menu';
+  import { Field, FieldDescription, FieldGroup, FieldLabel } from '$registry/bases/base/ui/field';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { Input } from '$registry/bases/base/ui/input';
   import {
     InputGroup,
     InputGroupAddon,
@@ -16,13 +16,13 @@
     InputGroupInput,
     InputGroupText,
     InputGroupTextarea,
-  } from '@sveltery/ui/input-group';
-  import { Kbd, KbdGroup } from '@sveltery/ui/kbd';
-  import { Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger } from '@sveltery/ui/popover';
-  import { toast } from '@sveltery/ui/toast';
-  import { Spinner } from '@sveltery/ui/spinner';
-  import { Textarea } from '@sveltery/ui/textarea';
-  import { Tooltip, TooltipContent, TooltipTrigger } from '@sveltery/ui/tooltip';
+  } from '$registry/bases/base/ui/input-group';
+  import { Kbd, KbdGroup } from '$registry/bases/base/ui/kbd';
+  import { Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger } from '$registry/bases/base/ui/popover';
+  import { toast } from '$registry/bases/base/ui/toast';
+  import { Spinner } from '$registry/bases/base/ui/spinner';
+  import { Textarea } from '$registry/bases/base/ui/textarea';
+  import { Tooltip, TooltipContent, TooltipTrigger } from '$registry/bases/base/ui/tooltip';
 
   const countries = ['+1', '+44', '+46'];
   let country = $state('+1');

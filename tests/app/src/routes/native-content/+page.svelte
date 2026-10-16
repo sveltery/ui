@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription, DialogClose } from '@sveltery/ui/dialog';
+  import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription, DialogClose } from '$registry/bases/base/ui/dialog';
   let { data } = $props();
   const kind = $derived(data.kind);
   // HTML accepts the empty value; Svelte's attribute union omits it. The emitted value stays empty.

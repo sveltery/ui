@@ -1,11 +1,11 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { Alert, AlertDescription } from '@sveltery/ui/alert';
-  import { Badge } from '@sveltery/ui/badge';
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { Item, ItemContent, ItemGroup, ItemMedia, ItemTitle } from '@sveltery/ui/item';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Alert, AlertDescription } from '$registry/bases/base/ui/alert';
+  import { Badge } from '$registry/bases/base/ui/badge';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { Item, ItemContent, ItemGroup, ItemMedia, ItemTitle } from '$registry/bases/base/ui/item';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 </script>
 
 {#snippet feature(content: Snippet)}

@@ -11,12 +11,12 @@ const repoRoot = fileURLToPath(new URL('../../../', import.meta.url));
 const output = buildRegistry(readRegistryInput(repoRoot, 'https://sveltery.test/'));
 const item = (path: string) => output.get(path) as RegistryItem;
 // Releases bump these, so the expected ranges follow the manifests rather than hard-coding them.
-const ui = JSON.parse(readFileSync(`${repoRoot}packages/ui/package.json`, 'utf8'));
-const BASE = `@sveltery/base@^${ui.peerDependencies['@sveltery/base'].replace(/^\^/, '')}`;
+const docs = JSON.parse(readFileSync(`${repoRoot}apps/docs/package.json`, 'utf8'));
+const BASE = `@sveltery/base@^${docs.devDependencies['@sveltery/base'].replace(/^\^/, '')}`;
 const HELPER_RANGE = `^${JSON.parse(readFileSync(`${repoRoot}packages/day-picker/package.json`, 'utf8')).version}`;
 const content = (path: string, target: string) => item(path).files.find((file) => file.target === target)!.content;
 
-const NOVA_BUTTON_VARIANTS = `// Adapted from shadcn-ui/ui d75a96ab; MIT: packages/ui/THIRD_PARTY_NOTICES.md.
+const NOVA_BUTTON_VARIANTS = `// Adapted from shadcn-ui/ui d75a96ab; MIT: apps/docs/registry/THIRD_PARTY_NOTICES.md.
 import { cva } from 'class-variance-authority';
 import type { VariantProps } from 'class-variance-authority';
 export const buttonVariants = cva("focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0", {
@@ -47,7 +47,7 @@ describe('buildRegistry', () => {
   });
 
   it('leaves a file without cn-* tokens byte for byte as it is', () => {
-    const source = readFileSync(`${repoRoot}packages/ui/src/lib/button/Button.svelte`, 'utf8');
+    const source = readFileSync(`${repoRoot}apps/docs/registry/bases/base/ui/button/Button.svelte`, 'utf8');
     expect(content('styles/nova/button.json', 'button/Button.svelte')).toBe(source);
   });
 
@@ -98,7 +98,7 @@ describe('items', () => {
     expect(item('styles/nova/badge.json').registryDependencies).toEqual(['shared']);
     const shared = item('styles/nova/shared.json');
     expect([shared.type, shared.files.map((file) => file.target)]).toEqual(['registry:lib', ['shared/render.ts']]);
-    expect(shared.files[0]!.content).toBe(readFileSync(`${repoRoot}packages/ui/src/lib/shared/render.ts`, 'utf8'));
+    expect(shared.files[0]!.content).toBe(readFileSync(`${repoRoot}apps/docs/registry/bases/base/ui/shared/render.ts`, 'utf8'));
   });
 
   it('writes the item header', () => {

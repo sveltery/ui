@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { SidebarInset, SidebarProvider } from '@sveltery/ui/sidebar';
+  import { SidebarInset, SidebarProvider } from '$registry/bases/base/ui/sidebar';
   import AppSidebar from './components/app-sidebar.svelte';
   import SiteHeader from './components/site-header.svelte';
 </script>

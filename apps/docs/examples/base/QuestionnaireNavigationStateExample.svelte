@@ -13,7 +13,7 @@
     QuestionnaireSubmit,
     QuestionnaireTitle,
     type QuestionnaireItemStatus,
-  } from '@sveltery/ui/questionnaire';
+  } from '$registry/bases/base/ui/questionnaire';
 
   const items = [
     { name: 'permission', required: true },

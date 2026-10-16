@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardContent } from '@sveltery/ui/card';
-  import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
-  import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@sveltery/ui/empty';
-  import { Field, FieldDescription, FieldLabel } from '@sveltery/ui/field';
-  import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '@sveltery/ui/input-group';
-  import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from '@sveltery/ui/item';
-  import { Separator } from '@sveltery/ui/separator';
-  import { Spinner } from '@sveltery/ui/spinner';
-  import { Tabs, TabsContent, TabsList, TabsTrigger } from '@sveltery/ui/tabs';
-  import { Tooltip, TooltipContent, TooltipTrigger } from '@sveltery/ui/tooltip';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardContent } from '$registry/bases/base/ui/card';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '$registry/bases/base/ui/dropdown-menu';
+  import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '$registry/bases/base/ui/empty';
+  import { Field, FieldDescription, FieldLabel } from '$registry/bases/base/ui/field';
+  import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '$registry/bases/base/ui/input-group';
+  import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from '$registry/bases/base/ui/item';
+  import { Separator } from '$registry/bases/base/ui/separator';
+  import { Spinner } from '$registry/bases/base/ui/spinner';
+  import { Tabs, TabsContent, TabsList, TabsTrigger } from '$registry/bases/base/ui/tabs';
+  import { Tooltip, TooltipContent, TooltipTrigger } from '$registry/bases/base/ui/tooltip';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
   let isCreatingCodespace = $state(false);
 

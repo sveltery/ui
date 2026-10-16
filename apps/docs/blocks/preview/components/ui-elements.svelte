@@ -1,19 +1,19 @@
 <script lang="ts">
-  import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@sveltery/ui/alert-dialog';
-  import { Badge } from '@sveltery/ui/badge';
-  import { Button } from '@sveltery/ui/button';
-  import { ButtonGroup } from '@sveltery/ui/button-group';
-  import { Card, CardContent } from '@sveltery/ui/card';
-  import { Checkbox } from '@sveltery/ui/checkbox';
-  import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
-  import { Field, FieldGroup } from '@sveltery/ui/field';
-  import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from '@sveltery/ui/input-group';
-  import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from '@sveltery/ui/item';
-  import { RadioGroup, RadioGroupItem } from '@sveltery/ui/radio-group';
-  import { Slider } from '@sveltery/ui/slider';
-  import { Switch } from '@sveltery/ui/switch';
-  import { Textarea } from '@sveltery/ui/textarea';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '$registry/bases/base/ui/alert-dialog';
+  import { Badge } from '$registry/bases/base/ui/badge';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { ButtonGroup } from '$registry/bases/base/ui/button-group';
+  import { Card, CardContent } from '$registry/bases/base/ui/card';
+  import { Checkbox } from '$registry/bases/base/ui/checkbox';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '$registry/bases/base/ui/dropdown-menu';
+  import { Field, FieldGroup } from '$registry/bases/base/ui/field';
+  import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from '$registry/bases/base/ui/input-group';
+  import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from '$registry/bases/base/ui/item';
+  import { RadioGroup, RadioGroupItem } from '$registry/bases/base/ui/radio-group';
+  import { Slider } from '$registry/bases/base/ui/slider';
+  import { Switch } from '$registry/bases/base/ui/switch';
+  import { Textarea } from '$registry/bases/base/ui/textarea';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
   let sliderValue = $state<number[]>([500]);
 </script>

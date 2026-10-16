@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button } from '@sveltery/ui/button';
-  import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@sveltery/ui/dialog';
-  import { Field, FieldDescription, FieldError, FieldLabel } from '@sveltery/ui/field';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { Input } from '@sveltery/ui/input';
-  import { Item, ItemContent, ItemDescription, ItemTitle } from '@sveltery/ui/item';
-  import { NativeSelect, NativeSelectOption } from '@sveltery/ui/native-select';
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from '@sveltery/ui/select';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '$registry/bases/base/ui/dialog';
+  import { Field, FieldDescription, FieldError, FieldLabel } from '$registry/bases/base/ui/field';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { Input } from '$registry/bases/base/ui/input';
+  import { Item, ItemContent, ItemDescription, ItemTitle } from '$registry/bases/base/ui/item';
+  import { NativeSelect, NativeSelectOption } from '$registry/bases/base/ui/native-select';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from '$registry/bases/base/ui/select';
 
   const sides = ['inline-start', 'left', 'top', 'bottom', 'right', 'inline-end'] as const;
 

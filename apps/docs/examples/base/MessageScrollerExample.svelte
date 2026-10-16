@@ -1,14 +1,14 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
-  import { Bubble, BubbleContent } from '@sveltery/ui/bubble';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea } from '@sveltery/ui/input-group';
-  import { Marker, MarkerContent, MarkerIcon } from '@sveltery/ui/marker';
-  import { Message, MessageContent } from '@sveltery/ui/message';
-  import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerItem, MessageScrollerProvider, MessageScrollerViewport } from '@sveltery/ui/message-scroller';
-  import { Spinner } from '@sveltery/ui/spinner';
+  import { Bubble, BubbleContent } from '$registry/bases/base/ui/bubble';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea } from '$registry/bases/base/ui/input-group';
+  import { Marker, MarkerContent, MarkerIcon } from '$registry/bases/base/ui/marker';
+  import { Message, MessageContent } from '$registry/bases/base/ui/message';
+  import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerItem, MessageScrollerProvider, MessageScrollerViewport } from '$registry/bases/base/ui/message-scroller';
+  import { Spinner } from '$registry/bases/base/ui/spinner';
   import { Chat, createChat } from './message-scroller/chat.svelte.js';
 
   const script = createChat()

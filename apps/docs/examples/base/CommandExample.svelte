@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardContent } from '@sveltery/ui/card';
-  import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from '@sveltery/ui/command';
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardContent } from '$registry/bases/base/ui/card';
+  import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from '$registry/bases/base/ui/command';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
   let basicOpen = $state(false);
   let shortcutsOpen = $state(false);

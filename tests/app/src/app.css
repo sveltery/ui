@@ -1,8 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "@sveltery/ui/themes.css";
-@import "@sveltery/ui/nova.css";
-@import "@sveltery/ui/styles.css";
-@source "../../../packages/ui/dist";
+@import "../../../apps/docs/registry/styles/themes.css";
+@import "../../../apps/docs/registry/styles/style-nova.css";
+@import "../../../apps/docs/registry/styles/styles.css";
+@source "../../../apps/docs/registry/bases";
 @layer base { * { border-color: var(--border); } }
 body { margin: 0; background: var(--background); color: var(--foreground); font-family: Arial, sans-serif; }

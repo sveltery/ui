@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { Field, FieldDescription, FieldGroup, FieldLabel } from '@sveltery/ui/field';
-  import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from '@sveltery/ui/input-group';
-  import { Item, ItemContent, ItemDescription, ItemFooter, ItemGroup } from '@sveltery/ui/item';
-  import { NativeSelect, NativeSelectOption } from '@sveltery/ui/native-select';
-  import { Progress } from '@sveltery/ui/progress';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { Field, FieldDescription, FieldGroup, FieldLabel } from '$registry/bases/base/ui/field';
+  import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from '$registry/bases/base/ui/input-group';
+  import { Item, ItemContent, ItemDescription, ItemFooter, ItemGroup } from '$registry/bases/base/ui/item';
+  import { NativeSelect, NativeSelectOption } from '$registry/bases/base/ui/native-select';
+  import { Progress } from '$registry/bases/base/ui/progress';
 </script>
 
 <div class="grid grid-cols-2 gap-(--gap)">

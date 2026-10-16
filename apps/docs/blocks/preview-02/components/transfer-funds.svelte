@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { Field, FieldGroup, FieldLabel } from '@sveltery/ui/field';
-  import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from '@sveltery/ui/input-group';
-  import { Item, ItemContent } from '@sveltery/ui/item';
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
-  import { Separator } from '@sveltery/ui/separator';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { Field, FieldGroup, FieldLabel } from '$registry/bases/base/ui/field';
+  import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from '$registry/bases/base/ui/input-group';
+  import { Item, ItemContent } from '$registry/bases/base/ui/item';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '$registry/bases/base/ui/select';
+  import { Separator } from '$registry/bases/base/ui/separator';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
   const FROM_ACCOUNTS = [
     { label: 'Main Checking (··8402) — $12,450.00', value: 'checking' },

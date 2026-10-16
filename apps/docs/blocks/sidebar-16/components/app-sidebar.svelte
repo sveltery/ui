@@ -10,12 +10,12 @@
     SidebarMenuButton,
     SidebarMenuItem,
     type SidebarProps,
-  } from '@sveltery/ui/sidebar';
+  } from '$registry/bases/base/ui/sidebar';
   import NavMain from './nav-main.svelte';
   import NavProjects from './nav-projects.svelte';
   import NavSecondary from './nav-secondary.svelte';
   import NavUser from './nav-user.svelte';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
   let { ...props }: SidebarProps = $props();
   const data = {
     user: {

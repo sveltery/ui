@@ -1,9 +1,9 @@
 <script lang="ts">
   import { PieChart, Text } from 'layerchart';
-  import { Badge } from '@sveltery/ui/badge';
-  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { type ChartConfig, ChartContainer, ChartLegend, ChartTooltip } from '@sveltery/ui/chart';
-  import { Progress } from '@sveltery/ui/progress';
+  import { Badge } from '$registry/bases/base/ui/badge';
+  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { type ChartConfig, ChartContainer, ChartLegend, ChartTooltip } from '$registry/bases/base/ui/chart';
+  import { Progress } from '$registry/bases/base/ui/progress';
 
   const pieChartData = [
     { browser: 'chrome', visitors: 275, color: 'var(--color-chrome)' },

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '@sveltery/ui/chart';
+  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
   import FootprintsIcon from './icons/FootprintsIcon.svelte';
   import WavesIcon from './icons/WavesIcon.svelte';
   import { scaleBand } from 'd3-scale';

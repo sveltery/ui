@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button } from '@sveltery/ui/button';
-  import { Field, FieldDescription, FieldGroup, FieldLabel } from '@sveltery/ui/field';
-  import { Input } from '@sveltery/ui/input';
-  import { NativeSelect, NativeSelectOption } from '@sveltery/ui/native-select';
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Field, FieldDescription, FieldGroup, FieldLabel } from '$registry/bases/base/ui/field';
+  import { Input } from '$registry/bases/base/ui/input';
+  import { NativeSelect, NativeSelectOption } from '$registry/bases/base/ui/native-select';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '$registry/bases/base/ui/select';
 </script>
 
 {#snippet InputBasic()}

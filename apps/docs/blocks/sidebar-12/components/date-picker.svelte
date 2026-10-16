@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Calendar } from '@sveltery/ui/calendar';
-  import { SidebarGroup, SidebarGroupContent } from '@sveltery/ui/sidebar';
+  import { Calendar } from '$registry/bases/base/ui/calendar';
+  import { SidebarGroup, SidebarGroupContent } from '$registry/bases/base/ui/sidebar';
 
   let date = $state<Date | undefined>(new Date(new Date().getFullYear(), new Date().getMonth(), 12));
 </script>

@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button } from '@sveltery/ui/button';
-  import { Toggle } from '@sveltery/ui/toggle';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Toggle } from '$registry/bases/base/ui/toggle';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 </script>
 
 {#snippet ToggleBasic()}

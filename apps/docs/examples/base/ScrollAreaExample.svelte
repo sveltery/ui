@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { ScrollArea, ScrollBar } from '@sveltery/ui/scroll-area';
-  import { Separator } from '@sveltery/ui/separator';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { ScrollArea, ScrollBar } from '$registry/bases/base/ui/scroll-area';
+  import { Separator } from '$registry/bases/base/ui/separator';
 
   const tags = Array.from({ length: 50 }).map((_, i, a) => `v1.2.0-beta.${a.length - i}`);
 

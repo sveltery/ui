@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Avatar, AvatarFallback, AvatarImage } from '@sveltery/ui/avatar';
-  import { Badge } from '@sveltery/ui/badge';
-  import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
+  import { Avatar, AvatarFallback, AvatarImage } from '$registry/bases/base/ui/avatar';
+  import { Badge } from '$registry/bases/base/ui/badge';
+  import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
 
   const usernames = [
     'shadcn',

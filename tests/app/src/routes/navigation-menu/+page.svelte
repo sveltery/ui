@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from '@sveltery/ui/navigation-menu';
+  import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from '$registry/bases/base/ui/navigation-menu';
   let value = $state<string | null>(null);
   let menu: ReturnType<typeof NavigationMenu>;
 </script>

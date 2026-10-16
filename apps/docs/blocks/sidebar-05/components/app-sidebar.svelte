@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { ComponentProps, Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@sveltery/ui/collapsible';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '$registry/bases/base/ui/collapsible';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
   import {
     Sidebar,
     SidebarContent,
@@ -15,7 +15,7 @@
     SidebarMenuSubButton,
     SidebarMenuSubItem,
     SidebarRail,
-  } from '@sveltery/ui/sidebar';
+  } from '$registry/bases/base/ui/sidebar';
   import SearchForm from './search-form.svelte';
 
   let { ...props }: ComponentProps<typeof Sidebar> = $props();

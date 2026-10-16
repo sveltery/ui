@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@sveltery/ui/accordion';
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardContent, CardFooter } from '@sveltery/ui/card';
-  import { Tabs, TabsContent, TabsList, TabsTrigger } from '@sveltery/ui/tabs';
+  import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '$registry/bases/base/ui/accordion';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardContent, CardFooter } from '$registry/bases/base/ui/card';
+  import { Tabs, TabsContent, TabsList, TabsTrigger } from '$registry/bases/base/ui/tabs';
 
   const GENERAL_QUESTIONS = [
     {

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
   import {
     Attachment,
     AttachmentAction,
@@ -9,12 +9,12 @@
     AttachmentGroup,
     AttachmentMedia,
     AttachmentTitle,
-  } from '@sveltery/ui/attachment';
-  import { Avatar, AvatarFallback, AvatarImage } from '@sveltery/ui/avatar';
-  import { Bubble, BubbleContent, BubbleGroup, BubbleReactions } from '@sveltery/ui/bubble';
-  import { Button } from '@sveltery/ui/button';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { Marker, MarkerContent, MarkerIcon } from '@sveltery/ui/marker';
+  } from '$registry/bases/base/ui/attachment';
+  import { Avatar, AvatarFallback, AvatarImage } from '$registry/bases/base/ui/avatar';
+  import { Bubble, BubbleContent, BubbleGroup, BubbleReactions } from '$registry/bases/base/ui/bubble';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { Marker, MarkerContent, MarkerIcon } from '$registry/bases/base/ui/marker';
   import {
     Message,
     MessageAvatar,
@@ -22,8 +22,8 @@
     MessageFooter,
     MessageGroup,
     MessageHeader,
-  } from '@sveltery/ui/message';
-  import { Spinner } from '@sveltery/ui/spinner';
+  } from '$registry/bases/base/ui/message';
+  import { Spinner } from '$registry/bases/base/ui/spinner';
 </script>
 
 {#snippet MessageDefault()}

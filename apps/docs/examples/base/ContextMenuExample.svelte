@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button } from '@sveltery/ui/button';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Button } from '$registry/bases/base/ui/button';
   import {
     ContextMenu,
     ContextMenuCheckboxItem,
@@ -16,9 +16,9 @@
     ContextMenuSubContent,
     ContextMenuSubTrigger,
     ContextMenuTrigger
-  } from '@sveltery/ui/context-menu';
-  import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@sveltery/ui/dialog';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  } from '$registry/bases/base/ui/context-menu';
+  import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '$registry/bases/base/ui/dialog';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
   const sides = ['inline-start', 'left', 'top', 'bottom', 'right', 'inline-end'] as const;
 

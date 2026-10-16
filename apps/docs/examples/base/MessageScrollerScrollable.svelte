@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerProvider, MessageScrollerViewport } from '@sveltery/ui/message-scroller';
+  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerProvider, MessageScrollerViewport } from '$registry/bases/base/ui/message-scroller';
   import type { ChatMessage } from './message-scroller/chat.svelte.js';
   import MessageAnimated from './message-scroller/MessageAnimated.svelte';
   import ScrollStateFooter from './message-scroller/ScrollStateFooter.svelte';

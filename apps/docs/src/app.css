@@ -1,13 +1,13 @@
 /* Site styles derived from shadcn-ui/ui apps/v4 (app/globals.css and typeset.css) at d75a96ab781f3d659be1ad287347d5887ce9f2fc; MIT. */
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "@sveltery/ui/themes.css";
-@import "@sveltery/ui/nova.css";
-@import "@sveltery/ui/styles.css";
+@import "../registry/styles/themes.css";
+@import "../registry/styles/style-nova.css";
+@import "../registry/styles/styles.css";
 @import "@fontsource-variable/geist";
 @import "@fontsource-variable/geist-mono";
 
-@source "../../../packages/ui/dist";
+@source "../registry/bases";
 @source "../content";
 @source "../examples";
 

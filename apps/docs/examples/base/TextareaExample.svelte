@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Field, FieldDescription, FieldLabel } from '@sveltery/ui/field';
-  import { Textarea } from '@sveltery/ui/textarea';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Field, FieldDescription, FieldLabel } from '$registry/bases/base/ui/field';
+  import { Textarea } from '$registry/bases/base/ui/textarea';
 </script>
 
 <ExampleWrapper>

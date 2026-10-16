@@ -14,8 +14,8 @@
     ContextMenuSubContent,
     ContextMenuSubTrigger,
     ContextMenuTrigger
-  } from '@sveltery/ui/context-menu';
-  import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@sveltery/ui/dialog';
+  } from '$registry/bases/base/ui/context-menu';
+  import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '$registry/bases/base/ui/dialog';
 
   let last = $state('none');
   let bookmarks = $state(true);

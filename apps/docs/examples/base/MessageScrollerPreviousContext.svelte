@@ -1,10 +1,10 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerProvider, MessageScrollerViewport } from '@sveltery/ui/message-scroller';
-  import { Slider } from '@sveltery/ui/slider';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerProvider, MessageScrollerViewport } from '$registry/bases/base/ui/message-scroller';
+  import { Slider } from '$registry/bases/base/ui/slider';
   import { Chat } from './message-scroller/chat.svelte.js';
   import Composer from './message-scroller/Composer.svelte';
   import MessageAnimated from './message-scroller/MessageAnimated.svelte';

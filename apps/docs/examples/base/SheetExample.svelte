@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button } from '@sveltery/ui/button';
-  import { Field, FieldGroup, FieldLabel } from '@sveltery/ui/field';
-  import { Input } from '@sveltery/ui/input';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Field, FieldGroup, FieldLabel } from '$registry/bases/base/ui/field';
+  import { Input } from '$registry/bases/base/ui/input';
   import {
     Sheet,
     SheetClose,
@@ -12,7 +12,7 @@
     SheetHeader,
     SheetTitle,
     SheetTrigger,
-  } from '@sveltery/ui/sheet';
+  } from '$registry/bases/base/ui/sheet';
 
   const sides = ['top', 'right', 'bottom', 'left'] as const;
 </script>

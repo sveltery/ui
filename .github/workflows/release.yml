@@ -42,17 +42,16 @@ jobs:
       - run: bash scripts/verify.sh
 
       - name: Publish
-        # The CLI has no workspace dependencies. Helpers go before @sveltery/ui, which depends on
-        # them. Versions already on npm are skipped, so a re-run after a partial failure is safe.
+        # Versions already on npm are skipped, so a re-run after a partial failure is safe.
         # Trusted publishing needs npm 11.5.1+.
         run: |
           source scripts/toolchain.sh
           npm install --global npm@11.6.2
-          if [[ "$(ls packages | xargs)" != "cli command day-picker message-scroller questionnaire resizable ui" ]]; then
+          if [[ "$(ls packages | xargs)" != "cli command day-picker message-scroller questionnaire resizable" ]]; then
             echo "::error::packages/ changed. Add the new package to the publish order below."
             exit 1
           fi
-          for dir in cli command day-picker message-scroller questionnaire resizable ui; do
+          for dir in cli command day-picker message-scroller questionnaire resizable; do
             name="$(node -p "require('./packages/$dir/package.json').name")"
             version="$(node -p "require('./packages/$dir/package.json').version")"
             if [[ "$(node -p "require('./packages/$dir/package.json').private === true")" == true ]]; then

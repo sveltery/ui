@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { toast } from '@sveltery/ui/toast';
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@sveltery/ui/dialog';
+  import { toast } from '$registry/bases/base/ui/toast';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '$registry/bases/base/ui/dialog';
   import {
     Questionnaire,
     QuestionnaireActions,
@@ -20,7 +20,7 @@
     QuestionnaireSkip,
     QuestionnaireSubmit,
     QuestionnaireTitle,
-  } from '@sveltery/ui/questionnaire';
+  } from '$registry/bases/base/ui/questionnaire';
 
   const questionnaireItems = [
     { choices: [{ value: 'delegation' }, { value: 'questions' }, { value: 'both' }], name: 'direction', required: true },

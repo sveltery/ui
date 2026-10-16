@@ -12,7 +12,7 @@ import { version } from '../version.js';
 
 export type InitOptions = { cwd: string; yes: boolean; install: boolean; style?: string; icons?: string; baseColor?: string; css?: string };
 
-/** Packages every copied component relies on, at the ranges packages/ui uses. */
+/** Packages every copied component relies on, at the ranges the registry source uses. */
 export const baseDependencies = ['cn@^0.2.2', 'class-variance-authority@^0.7.1', 'tw-animate-css@^1.4.0'];
 
 function pick<T extends string>(flag: string, value: string | undefined, options: readonly T[]): T | undefined {

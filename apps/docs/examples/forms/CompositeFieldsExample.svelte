@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { Checkbox } from '@sveltery/ui/checkbox';
-  import { Field, FieldContent, FieldDescription, FieldError, FieldGroup, FieldItem, FieldLabel, FieldLegend, FieldSet } from '@sveltery/ui/field';
-  import { Form } from '@sveltery/ui/form';
-  import { RadioGroup, RadioGroupItem } from '@sveltery/ui/radio-group';
-  import { Slider } from '@sveltery/ui/slider';
-  import { Switch } from '@sveltery/ui/switch';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Checkbox } from '$registry/bases/base/ui/checkbox';
+  import { Field, FieldContent, FieldDescription, FieldError, FieldGroup, FieldItem, FieldLabel, FieldLegend, FieldSet } from '$registry/bases/base/ui/field';
+  import { Form } from '$registry/bases/base/ui/form';
+  import { RadioGroup, RadioGroupItem } from '$registry/bases/base/ui/radio-group';
+  import { Slider } from '$registry/bases/base/ui/slider';
+  import { Switch } from '$registry/bases/base/ui/switch';
 
   const plans = [
     { value: 'starter', label: 'Starter', description: 'For one project.' },

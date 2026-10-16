@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { Alert, AlertDescription, AlertTitle } from '@sveltery/ui/alert';
+  import { Alert, AlertDescription, AlertTitle } from '$registry/bases/base/ui/alert';
   let { title, children }: { title?: string; children: Snippet } = $props();
 </script>
 

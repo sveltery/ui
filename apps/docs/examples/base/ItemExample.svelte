@@ -1,10 +1,10 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button } from '@sveltery/ui/button';
-  import { Item, ItemActions, ItemContent, ItemDescription, ItemFooter, ItemGroup, ItemHeader, ItemMedia, ItemSeparator, ItemTitle } from '@sveltery/ui/item';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Item, ItemActions, ItemContent, ItemDescription, ItemFooter, ItemGroup, ItemHeader, ItemMedia, ItemSeparator, ItemTitle } from '$registry/bases/base/ui/item';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 </script>
 
 {#snippet link(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}

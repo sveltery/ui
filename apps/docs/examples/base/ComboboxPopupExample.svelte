@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { Combobox, ComboboxCollection, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList, ComboboxTrigger, ComboboxValue } from '@sveltery/ui/combobox';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Combobox, ComboboxCollection, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList, ComboboxTrigger, ComboboxValue } from '$registry/bases/base/ui/combobox';
 
   type Country = { code: string; value: string; label: string; continent: string };
 

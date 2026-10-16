@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@sveltery/ui/collapsible';
-  import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@sveltery/ui/resizable';
-  import { Separator } from '@sveltery/ui/separator';
-  import { Sidebar, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarProvider } from '@sveltery/ui/sidebar';
-  import { Tabs, TabsList, TabsTrigger } from '@sveltery/ui/tabs';
-  import { ToggleGroup, ToggleGroupItem } from '@sveltery/ui/toggle-group';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '$registry/bases/base/ui/collapsible';
+  import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '$registry/bases/base/ui/resizable';
+  import { Separator } from '$registry/bases/base/ui/separator';
+  import { Sidebar, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarProvider } from '$registry/bases/base/ui/sidebar';
+  import { Tabs, TabsList, TabsTrigger } from '$registry/bases/base/ui/tabs';
+  import { ToggleGroup, ToggleGroupItem } from '$registry/bases/base/ui/toggle-group';
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
   import type { Block } from '#blocks/registry';

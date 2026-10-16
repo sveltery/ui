@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Badge } from '@sveltery/ui/badge';
-  import { Checkbox } from '@sveltery/ui/checkbox';
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
+  import { Badge } from '$registry/bases/base/ui/badge';
+  import { Checkbox } from '$registry/bases/base/ui/checkbox';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
   import {
     Field,
     FieldContent,
@@ -11,15 +11,15 @@
     FieldLegend,
     FieldSet,
     FieldTitle,
-  } from '@sveltery/ui/field';
-  import { Input } from '@sveltery/ui/input';
-  import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '@sveltery/ui/input-otp';
-  import { NativeSelect, NativeSelectOptGroup, NativeSelectOption } from '@sveltery/ui/native-select';
-  import { RadioGroup, RadioGroupItem } from '@sveltery/ui/radio-group';
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
-  import { Slider } from '@sveltery/ui/slider';
-  import { Switch } from '@sveltery/ui/switch';
-  import { Textarea } from '@sveltery/ui/textarea';
+  } from '$registry/bases/base/ui/field';
+  import { Input } from '$registry/bases/base/ui/input';
+  import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '$registry/bases/base/ui/input-otp';
+  import { NativeSelect, NativeSelectOptGroup, NativeSelectOption } from '$registry/bases/base/ui/native-select';
+  import { RadioGroup, RadioGroupItem } from '$registry/bases/base/ui/radio-group';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '$registry/bases/base/ui/select';
+  import { Slider } from '$registry/bases/base/ui/slider';
+  import { Switch } from '$registry/bases/base/ui/switch';
+  import { Textarea } from '$registry/bases/base/ui/textarea';
 
   let volume = $state([50]);
   let brightness = $state([75]);

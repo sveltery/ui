@@ -1,9 +1,9 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { Button } from '@sveltery/ui/button';
-  import { Checkbox } from '@sveltery/ui/checkbox';
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Checkbox } from '$registry/bases/base/ui/checkbox';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
   import {
     Dialog,
     DialogClose,
@@ -13,18 +13,18 @@
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-  } from '@sveltery/ui/dialog';
-  import { Field, FieldContent, FieldDescription, FieldGroup, FieldLabel, FieldSeparator, FieldSet, FieldTitle } from '@sveltery/ui/field';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { Input } from '@sveltery/ui/input';
-  import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '@sveltery/ui/input-group';
-  import { Kbd } from '@sveltery/ui/kbd';
-  import { NativeSelect, NativeSelectOption } from '@sveltery/ui/native-select';
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
-  import { Switch } from '@sveltery/ui/switch';
-  import { Tabs, TabsContent, TabsList, TabsTrigger } from '@sveltery/ui/tabs';
-  import { Textarea } from '@sveltery/ui/textarea';
-  import { Tooltip, TooltipContent, TooltipTrigger } from '@sveltery/ui/tooltip';
+  } from '$registry/bases/base/ui/dialog';
+  import { Field, FieldContent, FieldDescription, FieldGroup, FieldLabel, FieldSeparator, FieldSet, FieldTitle } from '$registry/bases/base/ui/field';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { Input } from '$registry/bases/base/ui/input';
+  import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '$registry/bases/base/ui/input-group';
+  import { Kbd } from '$registry/bases/base/ui/kbd';
+  import { NativeSelect, NativeSelectOption } from '$registry/bases/base/ui/native-select';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '$registry/bases/base/ui/select';
+  import { Switch } from '$registry/bases/base/ui/switch';
+  import { Tabs, TabsContent, TabsList, TabsTrigger } from '$registry/bases/base/ui/tabs';
+  import { Textarea } from '$registry/bases/base/ui/textarea';
+  import { Tooltip, TooltipContent, TooltipTrigger } from '$registry/bases/base/ui/tooltip';
 
   let open = $state(false);
   let name = $state('Pedro Duarte');

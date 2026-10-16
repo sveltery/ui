@@ -1,7 +1,7 @@
 <script lang="ts">
   import SiteFooter from '$lib/components/site/SiteFooter.svelte';
   import SiteHeader from '$lib/components/site/SiteHeader.svelte';
-  import { Toaster } from '@sveltery/ui/toast';
+  import { Toaster } from '$registry/bases/base/ui/toast';
   let { children } = $props();
 </script>
 

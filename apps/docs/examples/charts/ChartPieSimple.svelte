@@ -1,8 +1,8 @@
 <script lang="ts">
   import { PieChart } from 'layerchart';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '@sveltery/ui/chart';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
   const chartData = [
     { browser: 'chrome', visitors: 275, color: 'var(--color-chrome)' },
