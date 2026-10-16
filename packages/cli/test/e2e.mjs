@@ -1,7 +1,7 @@
 // Builds the registry from this checkout, serves it, and drives the packed CLI through a fresh SvelteKit app.
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
-import { mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
@@ -43,8 +43,21 @@ await run('pnpm', ['exec', 'svelte-kit', 'sync'], join(repoRoot, 'apps/docs'));
 const load = async (path) => (await runnerImport(join(repoRoot, path), { root: repoRoot, configFile: false, logLevel: 'error' })).module;
 const { readRegistryInput } = await load('apps/docs/registry/read.ts');
 const { buildRegistry } = await load('apps/docs/registry/build.ts');
+const { respondInit } = await load('apps/docs/src/routes/init/handler.ts');
 const registryDir = join(work, 'r');
-const server = createServer((request, response) => {
+const readServed = async (path) => {
+  try {
+    return new Response(readFileSync(join(registryDir, path.replace(/^\/r\//, ''))), { headers: { 'content-type': 'application/json' } });
+  } catch {
+    return new Response(null, { status: 404 });
+  }
+};
+const server = createServer(async (request, response) => {
+  if (request.url?.startsWith('/init')) {
+    const init = await respondInit(new URL(request.url, origin), readServed);
+    response.writeHead(init.status, { 'content-type': 'application/json' }).end(await init.text());
+    return;
+  }
   try {
     const body = readFileSync(join(registryDir, decodeURIComponent(new URL(request.url ?? '/', 'http://x').pathname.replace(/^\/r\//, ''))));
     response.writeHead(200, { 'content-type': 'application/json' }).end(body);
@@ -95,6 +108,39 @@ try {
   appManifest.dependencies = { ...appManifest.dependencies, ...runtime };
   writeFileSync(join(app, 'package.json'), JSON.stringify(appManifest, null, 2));
   await run('pnpm', ['install'], app);
+
+  const cliExec = ['exec', '--yes', `--package=${overrides['@sveltery/ui']}`, '--', 'sveltery'];
+  // Each preset runs in its own copy of the app, made before any init.
+  for (const [code, expected] of [
+    ['b0', { style: 'nova', baseColor: 'neutral', imports: ['@fontsource-variable/inter'], primary: 'oklch(0.205 0 0)', fonts: ["--font-sans: 'Inter Variable', sans-serif;", '--font-heading: var(--font-sans);'] }],
+    [
+      'b4xFeBLg4O',
+      {
+        style: 'sera',
+        baseColor: 'taupe',
+        imports: ['@fontsource-variable/noto-sans', '@fontsource-variable/playfair-display'],
+        primary: 'oklch(0.214 0.009 43.1)',
+        fonts: ["--font-sans: 'Noto Sans Variable', sans-serif;", "--font-heading: 'Playfair Display Variable', serif;"],
+      },
+    ],
+  ]) {
+    step(`sveltery init --preset ${code}`);
+    const presetApp = join(work, `preset-${code}`);
+    mkdirSync(presetApp);
+    for (const file of ['package.json', 'src']) cpSync(join(app, file), join(presetApp, file), { recursive: true });
+    await run('npm', [...cliExec, 'init', '--preset', code, '--no-install'], presetApp, env);
+    const presetConfig = JSON.parse(readFileSync(join(presetApp, 'components.json'), 'utf8'));
+    // The values shadcn@4.21.1 writes for the same code.
+    assert.deepEqual(
+      [presetConfig.style, presetConfig.tailwind.baseColor, presetConfig.iconLibrary, presetConfig.menuColor, presetConfig.menuAccent],
+      [expected.style, expected.baseColor, 'lucide', 'default', 'subtle'],
+      `${code} writes its settings to components.json`,
+    );
+    const presetCss = readFileSync(join(presetApp, presetConfig.tailwind.css), 'utf8');
+    for (const target of expected.imports) assert.match(presetCss, new RegExp(`@import ['"]${target}['"];`), `${code} imports ${target}`);
+    for (const line of [`--primary: ${expected.primary};`, ...expected.fonts]) assert.ok(presetCss.includes(line), `${code} writes ${line}`);
+    assert.match(presetCss, /html \{\s*@apply font-sans;/, `${code} applies the body font to html`);
+  }
 
   step('sveltery init -y');
   await run('npm', ['exec', '--yes', `--package=${overrides['@sveltery/ui']}`, '--', 'sveltery', 'init', '-y'], app, env);

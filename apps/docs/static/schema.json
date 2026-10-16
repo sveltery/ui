@@ -35,7 +35,16 @@
     },
     "menuColor": {
       "enum": [
-        "default"
+        "default",
+        "inverted",
+        "default-translucent",
+        "inverted-translucent"
+      ]
+    },
+    "menuAccent": {
+      "enum": [
+        "subtle",
+        "bold"
       ]
     },
     "tailwind": {

@@ -16,6 +16,7 @@ program
   .command('init')
   .description('set up components.json, the theme and the base packages')
   .option('-y, --yes', 'use the defaults without prompting', false)
+  .option('-p, --preset [preset]', 'use a preset: a name such as nova, a preset code, or an /init URL')
   .option('--style <name>', 'the component style')
   .option('--icons <library>', 'the icon library')
   .option('--base-color <name>', 'the base color of the theme')

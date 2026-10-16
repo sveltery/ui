@@ -27,10 +27,12 @@ export function filePatch(cwd: string, file: PlannedFile): string {
 /** `@scope/name@^1.0.0` → `@scope/name`. */
 export const packageName = (spec: string) => (spec.lastIndexOf('@') > 0 ? spec.slice(0, spec.lastIndexOf('@')) : spec);
 
-/** The specs whose package the project does not declare yet. */
+/** The specs whose package the project does not declare yet. A package listed twice keeps its first spec. */
 export function missingPackages(cwd: string, specs: string[]): string[] {
   const declared = declaredPackages(cwd);
-  return [...new Set(specs)].filter((spec) => !declared.has(packageName(spec)));
+  const byName = new Map<string, string>();
+  for (const spec of specs) if (!byName.has(packageName(spec))) byName.set(packageName(spec), spec);
+  return [...byName].filter(([name]) => !declared.has(name)).map(([, spec]) => spec);
 }
 
 const marks: Record<FileStatus, string> = { new: '+', changed: '~', identical: '=' };

@@ -18,10 +18,14 @@ export async function openProject(cwd: string): Promise<Project> {
   return { cwd, config, registry, uiDir: aliasPath(config.aliases.ui) };
 }
 
-/** What writing `items` into the project would do: every file transformed for this project, and the packages it lacks. */
-export function planItems({ cwd, config, uiDir }: Project, items: RegistryItem[]): Plan {
+/** What writing `items` into the project would do: every file transformed for this project, and the packages it lacks. `css` is the stylesheet as it will be, when it is not the one on disk. */
+export function planItems({ cwd, config, uiDir }: Project, items: RegistryItem[], css?: string): Plan {
   const cssPath = join(cwd, config.tailwind.css);
-  const ctx: TransformContext = { iconLibrary: config.iconLibrary, fontHeading: existsSync(cssPath) && readFileSync(cssPath, 'utf8').includes('--font-heading') };
+  const ctx: TransformContext = {
+    iconLibrary: config.iconLibrary,
+    menuColor: config.menuColor,
+    fontHeading: (css ?? (existsSync(cssPath) ? readFileSync(cssPath, 'utf8') : '')).includes('--font-heading'),
+  };
   const files = new Map<string, PlannedFile>();
   const dependencies: string[] = [];
   for (const item of items) {
