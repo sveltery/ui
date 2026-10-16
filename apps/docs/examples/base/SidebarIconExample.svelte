@@ -26,7 +26,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
     SidebarTrigger,
   } from '$registry/bases/base/ui/sidebar';
 
-  const user = { name: 'shadcn', email: 'm@example.com', avatar: 'https://github.com/shadcn.png' };
+  const user = { name: 'shadcn', email: 'm@example.com', avatar: '/avatars/shadcn.jpg' };
   const teams = [
     { name: 'Acme Inc', plan: 'Enterprise' },
     { name: 'Acme Corp.', plan: 'Startup' },
