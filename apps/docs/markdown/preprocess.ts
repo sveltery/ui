@@ -7,7 +7,7 @@ import { readRegistryInput } from '../registry/read';
 import type { RegistryItem, RegistryOutput } from '../registry/types';
 import { highlight, packageManagerCommands, parseMeta } from './highlight';
 
-/** The Code view shows what `npx sveltery init -y` then `add` writes: the nova style with Lucide icons. */
+/** The Code view shows what `npx @sveltery/cli@latest init -y` then `add` writes: the nova style with Lucide icons. */
 const SOURCE_STYLE = 'nova';
 const SOURCE_CONFIG: TransformContext = { iconLibrary: 'lucide', fontHeading: false };
 

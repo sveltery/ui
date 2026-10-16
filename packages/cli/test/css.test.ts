@@ -11,7 +11,7 @@ const vars = {
 test('sets up a stylesheet that only imports Tailwind, in its quote style', () => {
   expect(mergeTheme("@import 'tailwindcss';\n", vars)).toBe(`@import 'tailwindcss';
 @import 'tw-animate-css';
-@import 'sveltery/tailwind.css';
+@import '@sveltery/cli/tailwind.css';
 @custom-variant dark (&:is(.dark *));
 :root {
   --background: oklch(1 0 0);
@@ -55,7 +55,7 @@ test('updates values in place, adds what is missing and keeps everything else', 
   expect(mergeTheme(partial, vars)).toBe(`@import "tailwindcss";
 @plugin "@tailwindcss/forms";
 @import "tw-animate-css";
-@import "sveltery/tailwind.css";
+@import "@sveltery/cli/tailwind.css";
 @custom-variant dark (&:is(.dark *));
 
 :root {
