@@ -1,3 +1,3 @@
-import { nav } from '$lib/docs/content.server';
+import { nav, sections } from '$lib/docs/content.server';
 
-export const load = () => ({ nav });
+export const load = () => ({ nav, sections });
