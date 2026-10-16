@@ -32,7 +32,7 @@ test('add() shows the title and description with no icon, and closes after 5 sec
   await expect(toast.locator('[data-slot=toast-icon]')).toHaveCount(0);
   await expect(toast.locator('[data-slot=toast-action]')).toHaveCount(0);
   await expect(toast).toHaveClass(/\bcn-toast\b/);
-  await expect(toast).toHaveCSS('border-radius', '16px');
+  await expect(toast).toHaveCSS('border-radius', '18px');
 
   await page.clock.runFor(4900);
   await expect(toast).not.toHaveAttribute('data-ending-style');
