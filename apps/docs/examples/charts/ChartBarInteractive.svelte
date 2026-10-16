@@ -168,6 +168,7 @@
           },
           highlight: { area: { fill: 'none' } },
           xAxis: {
+            tickLength: 14,
             format: (d: Date) => {
               return d.toLocaleDateString('en-US', {
                 month: 'short',
