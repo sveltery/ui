@@ -1,6 +1,6 @@
 <script lang="ts">
-  import * as Questionnaire from '@sveltery/questionnaire';
-  import type { QuestionnaireItemProps } from '@sveltery/questionnaire';
+  import * as Questionnaire from '@sveltery/svelte/questionnaire';
+  import type { QuestionnaireItemProps } from '@sveltery/svelte/questionnaire';
   import Choice from './QuestionnaireChoice.svelte';
   let props: QuestionnaireItemProps = $props();
 </script>

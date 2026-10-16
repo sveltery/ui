@@ -265,15 +265,12 @@ importers:
       '@sveltery/day-picker':
         specifier: workspace:*
         version: link:../../packages/day-picker
-      '@sveltery/message-scroller':
-        specifier: workspace:*
-        version: link:../../packages/message-scroller
-      '@sveltery/questionnaire':
-        specifier: workspace:*
-        version: link:../../packages/questionnaire
       '@sveltery/resizable':
         specifier: workspace:*
         version: link:../../packages/resizable
+      '@sveltery/svelte':
+        specifier: workspace:*
+        version: link:../../packages/svelte
       '@sveltery/ui':
         specifier: workspace:*
         version: link:../../packages/cli
@@ -499,7 +496,7 @@ importers:
         specifier: 5.57.1
         version: 5.57.1(@typescript-eslint/types@8.71.0)
 
-  packages/message-scroller:
+  packages/resizable:
     devDependencies:
       publint:
         specifier: 0.3.25
@@ -508,20 +505,11 @@ importers:
         specifier: 5.57.1
         version: 5.57.1(@typescript-eslint/types@8.71.0)
 
-  packages/questionnaire:
+  packages/svelte:
     dependencies:
       esm-env:
         specifier: ^1.2.1
         version: 1.2.2
-    devDependencies:
-      publint:
-        specifier: 0.3.25
-        version: 0.3.25
-      svelte:
-        specifier: 5.57.1
-        version: 5.57.1(@typescript-eslint/types@8.71.0)
-
-  packages/resizable:
     devDependencies:
       publint:
         specifier: 0.3.25
@@ -547,15 +535,12 @@ importers:
       '@sveltery/day-picker':
         specifier: workspace:*
         version: link:../../packages/day-picker
-      '@sveltery/message-scroller':
-        specifier: workspace:*
-        version: link:../../packages/message-scroller
-      '@sveltery/questionnaire':
-        specifier: workspace:*
-        version: link:../../packages/questionnaire
       '@sveltery/resizable':
         specifier: workspace:*
         version: link:../../packages/resizable
+      '@sveltery/svelte':
+        specifier: workspace:*
+        version: link:../../packages/svelte
       date-fns:
         specifier: 4.4.0
         version: 4.4.0

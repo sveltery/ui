@@ -1,6 +1,6 @@
 <script lang="ts">
-  import * as Questionnaire from '@sveltery/questionnaire';
-  import type { QuestionnaireItemDefinition } from '@sveltery/questionnaire';
+  import * as Questionnaire from '@sveltery/svelte/questionnaire';
+  import type { QuestionnaireItemDefinition } from '@sveltery/svelte/questionnaire';
   import Choice from './QuestionnaireChoice.svelte';
 
   const scopeItems = [

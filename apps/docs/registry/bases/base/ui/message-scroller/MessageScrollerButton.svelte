@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { HTMLButtonAttributes } from 'svelte/elements';
-  import { Button } from '@sveltery/message-scroller';
+  import { Button } from '@sveltery/svelte/message-scroller';
   import { cn } from 'cn';
   import { Button as UIButton } from '../button/index.js';
   import { IconPlaceholder } from '../icons/index.js';

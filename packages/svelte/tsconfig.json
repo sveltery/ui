@@ -12,6 +12,6 @@
     "noEmit": true
   },
   "include": [
-    "src/lib/**/*"
+    "src/**/*"
   ]
 }

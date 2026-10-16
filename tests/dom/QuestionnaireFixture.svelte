@@ -1,6 +1,6 @@
 <script lang="ts">
-  import * as Questionnaire from '@sveltery/questionnaire';
-  import type { QuestionnaireInputType, QuestionnaireItemStatus, QuestionnaireShortcutMode } from '@sveltery/questionnaire';
+  import * as Questionnaire from '@sveltery/svelte/questionnaire';
+  import type { QuestionnaireInputType, QuestionnaireItemStatus, QuestionnaireShortcutMode } from '@sveltery/svelte/questionnaire';
   import Choice from './QuestionnaireChoice.svelte';
   import TestItem from './QuestionnaireItem.svelte';
 

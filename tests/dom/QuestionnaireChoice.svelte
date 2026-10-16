@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import * as Questionnaire from '@sveltery/questionnaire';
-  import type { QuestionnaireChoiceProps } from '@sveltery/questionnaire';
+  import * as Questionnaire from '@sveltery/svelte/questionnaire';
+  import type { QuestionnaireChoiceProps } from '@sveltery/svelte/questionnaire';
   let { checked = $bindable(), children, ...props }: QuestionnaireChoiceProps & { children?: Snippet } = $props();
 </script>
 <Questionnaire.Choice data-testid="choice-{props.value}" bind:checked {...props}>

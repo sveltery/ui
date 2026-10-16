@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Viewport } from '@sveltery/message-scroller';
+  import { Viewport } from '@sveltery/svelte/message-scroller';
   import { cn } from 'cn';
   import type { MessageScrollerViewportProps } from './types.js';
   let { class: classProp, children, ...props }: MessageScrollerViewportProps = $props();

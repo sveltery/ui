@@ -3,7 +3,7 @@ import { flushSync, mount, unmount } from 'svelte';
 import QuestionnaireCollectionFixture from './QuestionnaireCollectionFixture.svelte';
 
 // The questionnaire package owns the esm-env dependency, so the mock names its copy.
-vi.mock('../../packages/questionnaire/node_modules/esm-env/index.js', () => ({ BROWSER: true, DEV: false, NODE: false }));
+vi.mock('../../packages/svelte/node_modules/esm-env/index.js', () => ({ BROWSER: true, DEV: false, NODE: false }));
 
 let instance: ReturnType<typeof mount> | undefined;
 afterEach(async () => {
