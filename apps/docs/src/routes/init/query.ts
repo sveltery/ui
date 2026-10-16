@@ -1,4 +1,4 @@
-import { decodePreset, isPresetCode, PRESET_FONT_HEADINGS, PRESET_FONTS, PRESET_MENU_ACCENTS, PRESET_MENU_COLORS, PRESET_RADII, V1_CHART_COLOR_MAP, type PresetConfig } from 'sveltery/preset';
+import { decodePreset, isPresetCode, PRESET_FONT_HEADINGS, PRESET_FONTS, PRESET_MENU_ACCENTS, PRESET_MENU_COLORS, PRESET_RADII, V1_CHART_COLOR_MAP, type PresetConfig } from '../../../../../packages/cli/src/preset/index.js';
 import { accentColors, baseColors, iconLibraries, styleNames, type AccentColor, type BaseColor } from '../../../registry/types';
 
 /** A theme the registry serves at `/r/themes/<name>.json`. */

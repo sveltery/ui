@@ -1,4 +1,4 @@
-import { buildTheme, PRESET_FONT_DEFINITIONS, type PresetCssVars, type ThemeColors } from 'sveltery/preset';
+import { buildTheme, PRESET_FONT_DEFINITIONS, type PresetCssVars, type ThemeColors } from '../../../../../packages/cli/src/preset/index.js';
 import cli from '../../../../../packages/cli/package.json';
 import { iconLibraries } from '../../../../../packages/cli/src/icons';
 import type { CssTree, RegistryItem } from '../../../registry/types';
