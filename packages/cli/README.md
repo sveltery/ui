@@ -1,6 +1,6 @@
 # sveltery
 
-Add [Sveltery UI](https://github.com/sveltery/ui) components to a Svelte 5 app. The CLI copies each component's source into your project, so you own and edit it.
+Add [Sveltery UI](https://ui.sveltery.dev) components to a Svelte 5 app. The CLI copies each component's source into your project, so you own and edit it.
 
 ## Requirements
 

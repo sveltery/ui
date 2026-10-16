@@ -2,6 +2,8 @@
 
 Resizable panel groups for Svelte 5. The layout algorithm is ported from [react-resizable-panels](https://github.com/bvaughn/react-resizable-panels): panels clamp to their minimum and maximum sizes, collapse past a threshold, and resize with the pointer or the keyboard. It renders plain elements and ships no styles.
 
+The styled [Resizable](https://ui.sveltery.dev/docs/components/resizable) component in Sveltery UI is built on it.
+
 ## Install
 
 ```sh

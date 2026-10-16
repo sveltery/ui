@@ -11,7 +11,7 @@
     "split-view",
     "headless"
   ],
-  "homepage": "https://github.com/sveltery/ui/tree/main/packages/resizable#readme",
+  "homepage": "https://ui.sveltery.dev/docs/components/resizable",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sveltery/ui.git",

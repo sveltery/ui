@@ -11,7 +11,7 @@
     "cli",
     "components"
   ],
-  "homepage": "https://github.com/sveltery/ui/tree/main/packages/cli#readme",
+  "homepage": "https://ui.sveltery.dev",
   "type": "module",
   "license": "MIT",
   "repository": {
