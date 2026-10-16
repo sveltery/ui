@@ -1,4 +1,5 @@
 import { CliError, literal, object, optional, ParseError, string, type InferShape } from './parse.js';
+import { PRESET_MENU_ACCENTS, PRESET_MENU_COLORS } from './preset/preset.js';
 import { baseColors, iconLibraryNames, styleNames, type BaseColor, type IconLibraryName, type StyleName } from './registry.js';
 
 export const CONFIG_FILE = 'components.json';
@@ -28,7 +29,8 @@ const configShape = {
   $schema: optional(string),
   style: literal(...styleNames),
   iconLibrary: literal(...iconLibraryNames),
-  menuColor: literal('default'),
+  menuColor: literal(...PRESET_MENU_COLORS),
+  menuAccent: optional(literal(...PRESET_MENU_ACCENTS)),
   tailwind: object({ css: string, baseColor: literal(...baseColors) }),
   aliases: object({ components: string, ui: string, utils: string, lib: string, hooks: string }),
   registry: optional(string),
@@ -39,7 +41,6 @@ const configShape = {
 export type Config = InferShape<typeof configShape>;
 
 const hints: Record<string, string> = {
-  menuColor: 'Only "default" is supported.',
   typescript: 'Only TypeScript projects are supported.',
 };
 

@@ -21,7 +21,7 @@ export async function openProject(cwd: string): Promise<Project> {
 /** What writing `items` into the project would do: every file transformed for this project, and the packages it lacks. */
 export function planItems({ cwd, config, uiDir }: Project, items: RegistryItem[]): Plan {
   const cssPath = join(cwd, config.tailwind.css);
-  const ctx: TransformContext = { iconLibrary: config.iconLibrary, fontHeading: existsSync(cssPath) && readFileSync(cssPath, 'utf8').includes('--font-heading') };
+  const ctx: TransformContext = { iconLibrary: config.iconLibrary, menuColor: config.menuColor, fontHeading: existsSync(cssPath) && readFileSync(cssPath, 'utf8').includes('--font-heading') };
   const files = new Map<string, PlannedFile>();
   const dependencies: string[] = [];
   for (const item of items) {
