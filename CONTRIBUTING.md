@@ -7,7 +7,7 @@ Use Node 24 and pnpm 12. Then run `pnpm install`.
 ## Layout
 
 - `apps/docs/registry/bases/base/ui/<component>` holds each component, its variants and its types. This is registry source: users get it through the CLI (`npx @sveltery/ui@latest init`, then `add`), not from npm. Inside `apps/docs`, the `$registry` alias points at `apps/docs/registry`.
-- `apps/docs/registry/styles` holds the Nova and scoped style sheets.
+- `apps/docs/registry/styles` holds one sheet per style, scoped by `.style-<name>` as upstream does, and the shared themes. The docs site renders Nova by setting `style-nova` on `<body>`.
 - `apps/docs` is the docs site. It serves the registry and hosts the examples. Its pages live in `apps/docs/content/docs`, and [its README](apps/docs/content/docs/README.md) shows how to add one.
 - `tests/dom` holds vitest behavior tests, `tests/browser` holds Playwright tests, and `tests/installation` holds the packaging smoke test.
 

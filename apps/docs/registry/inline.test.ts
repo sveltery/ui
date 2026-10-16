@@ -9,7 +9,6 @@ const sheet: StyleSheet = {
     ['cn-a', 'p-2 text-sm'],
     ['cn-b', "bg-red-500 [&_svg:not([class*='size-'])]:size-4"],
   ]),
-  radii: new Map(),
 };
 const inline = (path: string, text: string) => inlineStyle(analyzeSource(path, text), sheet, 'nova');
 
