@@ -13,11 +13,15 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@theme inline {
-  --breakpoint-3xl: 1600px;
+/* Not inline, so the utilities read the variables and the Create page preview can set them. */
+@theme {
   --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-sans);
   --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@theme inline {
+  --breakpoint-3xl: 1600px;
   --color-surface: var(--surface);
   --color-surface-foreground: var(--surface-foreground);
   --color-code: var(--code);
