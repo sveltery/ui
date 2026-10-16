@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { IconPlaceholder } from '@sveltery/components/icons';
 </script>
 
 <IconPlaceholder

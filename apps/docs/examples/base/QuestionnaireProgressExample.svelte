@@ -11,7 +11,7 @@
     QuestionnaireProgress,
     QuestionnaireSubmit,
     QuestionnaireTitle,
-  } from '@sveltery/ui/questionnaire';
+  } from '@sveltery/components/questionnaire';
 
   const items = [{ name: 'scope', required: true }, { name: 'strategy', required: true }, { name: 'tests', required: true }, { name: 'delivery', required: true }];
 

@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { Label } from '@sveltery/ui/label';
+  import { Label } from '@sveltery/components/label';
   import {
     Sidebar,
     SidebarContent,
@@ -15,10 +15,10 @@
     SidebarMenuItem,
     useSidebar,
     type SidebarProps,
-  } from '@sveltery/ui/sidebar';
-  import { Switch } from '@sveltery/ui/switch';
+  } from '@sveltery/components/sidebar';
+  import { Switch } from '@sveltery/components/switch';
   import NavUser from './nav-user.svelte';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { IconPlaceholder } from '@sveltery/components/icons';
   let { ...props }: SidebarProps = $props();
   const data = {
     user: {

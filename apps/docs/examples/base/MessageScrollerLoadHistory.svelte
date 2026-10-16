@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { Bubble, BubbleContent } from '@sveltery/ui/bubble';
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { Marker, MarkerContent } from '@sveltery/ui/marker';
-  import { Message, MessageContent } from '@sveltery/ui/message';
-  import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerItem, MessageScrollerProvider, MessageScrollerViewport } from '@sveltery/ui/message-scroller';
+  import { Bubble, BubbleContent } from '@sveltery/components/bubble';
+  import { Button } from '@sveltery/components/button';
+  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Marker, MarkerContent } from '@sveltery/components/marker';
+  import { Message, MessageContent } from '@sveltery/components/message';
+  import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerItem, MessageScrollerProvider, MessageScrollerViewport } from '@sveltery/components/message-scroller';
   import { createChat } from './message-scroller/chat.svelte.js';
   import MessageText from './message-scroller/MessageText.svelte';
 

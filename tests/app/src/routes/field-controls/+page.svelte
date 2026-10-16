@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Field, FieldDescription, FieldLabel } from '@sveltery/ui/field';
-  import { NativeSelect, NativeSelectOption } from '@sveltery/ui/native-select';
-  import { Textarea } from '@sveltery/ui/textarea';
+  import { Field, FieldDescription, FieldLabel } from '@sveltery/components/field';
+  import { NativeSelect, NativeSelectOption } from '@sveltery/components/native-select';
+  import { Textarea } from '@sveltery/components/textarea';
   let country = $state('');
 </script>
 <form>

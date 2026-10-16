@@ -2,6 +2,8 @@
 
 A chat transcript scroller for Svelte 5. It follows new messages while the reader is at the bottom, anchors a new turn to the top of the viewport, keeps the scroll position when older messages are prepended, and opens at the end of the transcript. It ports the behavior of the message scroller in [shadcn/ui](https://github.com/shadcn-ui/ui), renders plain elements and ships no styles.
 
+The styled [Message Scroller](https://ui.sveltery.dev/docs/components/message-scroller) component in Sveltery UI is built on it.
+
 ## Install
 
 ```sh
@@ -35,7 +37,7 @@ npm install @sveltery/message-scroller
 
 `useMessageScroller()` returns the scroller to any component inside `Provider`. Call its `scrollToEnd()`, `scrollToStart()` or `scrollToMessage(id)` to move the transcript.
 
-The styled version lives in `@sveltery/ui/message-scroller`.
+Add the styled version to your app with `npx @sveltery/ui@latest add message-scroller`.
 
 ## License
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/components/select';
 
   const items = [
     { label: 'Select a fruit', value: null },

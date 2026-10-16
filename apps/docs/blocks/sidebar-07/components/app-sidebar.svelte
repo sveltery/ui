@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { ComponentProps } from 'svelte';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@sveltery/ui/sidebar';
+  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@sveltery/components/sidebar';
   import NavMain from './nav-main.svelte';
   import NavProjects from './nav-projects.svelte';
   import NavUser from './nav-user.svelte';

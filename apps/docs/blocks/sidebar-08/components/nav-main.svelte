@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@sveltery/ui/collapsible';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@sveltery/components/collapsible';
+  import { IconPlaceholder } from '@sveltery/components/icons';
   import {
     SidebarGroup,
     SidebarGroupLabel,
@@ -13,7 +13,7 @@
     SidebarMenuSub,
     SidebarMenuSubButton,
     SidebarMenuSubItem,
-  } from '@sveltery/ui/sidebar';
+  } from '@sveltery/components/sidebar';
 
   let {
     items,

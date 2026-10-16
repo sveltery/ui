@@ -11,7 +11,7 @@
     "survey",
     "headless"
   ],
-  "homepage": "https://github.com/sveltery/ui/tree/main/packages/questionnaire#readme",
+  "homepage": "https://ui.sveltery.dev/docs/components/questionnaire",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sveltery/ui.git",

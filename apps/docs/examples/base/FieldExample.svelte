@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Badge } from '@sveltery/ui/badge';
-  import { Checkbox } from '@sveltery/ui/checkbox';
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
+  import { Badge } from '@sveltery/components/badge';
+  import { Checkbox } from '@sveltery/components/checkbox';
+  import { Example, ExampleWrapper } from '@sveltery/components/example';
   import {
     Field,
     FieldContent,
@@ -11,15 +11,15 @@
     FieldLegend,
     FieldSet,
     FieldTitle,
-  } from '@sveltery/ui/field';
-  import { Input } from '@sveltery/ui/input';
-  import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '@sveltery/ui/input-otp';
-  import { NativeSelect, NativeSelectOptGroup, NativeSelectOption } from '@sveltery/ui/native-select';
-  import { RadioGroup, RadioGroupItem } from '@sveltery/ui/radio-group';
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
-  import { Slider } from '@sveltery/ui/slider';
-  import { Switch } from '@sveltery/ui/switch';
-  import { Textarea } from '@sveltery/ui/textarea';
+  } from '@sveltery/components/field';
+  import { Input } from '@sveltery/components/input';
+  import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '@sveltery/components/input-otp';
+  import { NativeSelect, NativeSelectOptGroup, NativeSelectOption } from '@sveltery/components/native-select';
+  import { RadioGroup, RadioGroupItem } from '@sveltery/components/radio-group';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/components/select';
+  import { Slider } from '@sveltery/components/slider';
+  import { Switch } from '@sveltery/components/switch';
+  import { Textarea } from '@sveltery/components/textarea';
 
   let volume = $state([50]);
   let brightness = $state([75]);
