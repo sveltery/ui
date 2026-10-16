@@ -175,7 +175,7 @@
               phosphor="StarIcon"
               remixicon="RiStarLine"
             />
-            <InputGroupButton size="icon-xs">
+            <InputGroupButton size="icon-xs" onclick={() => toast.add({ title: 'Copied to clipboard' })}>
               <IconPlaceholder
                 lucide="CopyIcon"
                 tabler="IconCopy"

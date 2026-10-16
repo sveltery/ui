@@ -26,7 +26,8 @@ export function parseStyleSheet(css: string, style: StyleName): StyleSheet {
 
   function applied(selector: string, nodes: CssNode[]) {
     const [only, ...extra] = nodes;
-    if (only?.kind !== 'at' || only.name !== 'apply' || only.children || extra.length) reject(`rule body for ${selector}`);
+    if (!only) return [];
+    if (only.kind !== 'at' || only.name !== 'apply' || only.children || extra.length) reject(`rule body for ${selector}`);
     return only.prelude.split(/\s+/).filter(Boolean);
   }
 
