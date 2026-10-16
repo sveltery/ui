@@ -2,13 +2,13 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { isCancel, log, select } from '@clack/prompts';
 import { CONFIG_FILE, defaultAliases, parseConfig, stylePresets, type Config } from '../config.js';
-import { mergeTheme } from '../css.js';
+import { DEFAULT_CSS, mergeTheme } from '../css.js';
 import { iconLibraries } from '../icons.js';
 import { CliError } from '../parse.js';
 import { executePlan, formatPlan, missingPackages, planFile, type Plan } from '../plan.js';
 import { checkProject, findCssFile, libAlias, readJson } from '../project.js';
 import { baseColors, fetchTheme, iconLibraryNames, openRegistry, resolveRegistryUrl, styleNames } from '../registry.js';
-import { version } from '../version.js';
+import { cliPackage, version } from '../version.js';
 
 export type InitOptions = { cwd: string; yes: boolean; install: boolean; style?: string; icons?: string; baseColor?: string; css?: string };
 
@@ -79,10 +79,10 @@ export async function init(options: InitOptions): Promise<Plan> {
   const plan: Plan = {
     files: [
       planFile(cwd, CONFIG_FILE, `${JSON.stringify(written, null, 2)}\n`),
-      planFile(cwd, cssPath, mergeTheme(readFileSync(join(cwd, cssPath), 'utf8'), theme.cssVars ?? {})),
+      planFile(cwd, cssPath, mergeTheme(readFileSync(join(cwd, cssPath), 'utf8'), theme.cssVars ?? {}, [DEFAULT_CSS])),
     ],
     dependencies: missingPackages(cwd, [...baseDependencies, ...iconLibraries[iconLibrary].packages]),
-    devDependencies: missingPackages(cwd, [`sveltery@^${version}`]),
+    devDependencies: missingPackages(cwd, [`${cliPackage}@^${version}`]),
   };
   log.info(formatPlan(plan, { showIdentical: false }));
   await executePlan(plan, { cwd, install: options.install });
