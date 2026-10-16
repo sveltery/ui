@@ -1,5 +1,6 @@
 import { DEFAULT_REGISTRY_URL } from './constants.js';
 import { array, CliError, literal, number, object, optional, ParseError, record, refine, string, type Parser } from './parse.js';
+import { PRESET_MENU_ACCENTS, PRESET_MENU_COLORS } from './preset/preset.js';
 
 // The served JSON contract, mirrored from apps/docs/registry/types.ts. test/registry-contract.ts fails `check` if they drift.
 
@@ -9,12 +10,13 @@ export type StyleName = (typeof styleNames)[number];
 export const baseColors = ['neutral', 'stone', 'zinc', 'mauve', 'olive', 'mist', 'taupe'] as const;
 export type BaseColor = (typeof baseColors)[number];
 
+export const accentColors = ['amber', 'blue', 'cyan', 'emerald', 'fuchsia', 'green', 'indigo', 'lime', 'orange', 'pink', 'purple', 'red', 'rose', 'sky', 'teal', 'violet', 'yellow'] as const;
+export type AccentColor = (typeof accentColors)[number];
+
 export const iconLibraryNames = ['lucide', 'tabler', 'hugeicons', 'phosphor', 'remixicon'] as const;
 export type IconLibraryName = (typeof iconLibraryNames)[number];
 
 export const REGISTRY_VERSION = 1;
-
-const itemType = literal('registry:ui', 'registry:lib', 'registry:theme');
 
 /** A registry writes only inside the project's ui directory. */
 const isContainedPath = (target: string) => target !== '' && !/^([a-zA-Z]:)?[\\/]/.test(target) && !target.split(/[\\/]/).includes('..');
@@ -29,18 +31,62 @@ export type RegistryFile = ReturnType<typeof registryFile>;
 const cssVars = object({ theme: optional(record(string)), light: optional(record(string)), dark: optional(record(string)) });
 export type CssVars = ReturnType<typeof cssVars>;
 
-const registryItem = object({
+export type CssTree = { [key: string]: CssValue };
+export type CssValue = string | (string | Record<string, string>)[] | CssTree;
+
+const cssValue: Parser<CssValue> = (value, path) => {
+  if (typeof value === 'string') return value;
+  if (Array.isArray(value)) return array((entry, at) => (typeof entry === 'string' ? entry : record(string)(entry, at)))(value, path);
+  return cssTree(value, path);
+};
+const cssTree: Parser<CssTree> = record(cssValue);
+
+const registryBaseConfig = object({
+  style: optional(literal(...styleNames)),
+  iconLibrary: optional(literal(...iconLibraryNames)),
+  menuColor: optional(literal(...PRESET_MENU_COLORS)),
+  menuAccent: optional(literal(...PRESET_MENU_ACCENTS)),
+  tailwind: optional(object({ baseColor: optional(literal(...baseColors)) })),
+});
+export type RegistryBaseConfig = ReturnType<typeof registryBaseConfig>;
+
+const registryFont = object({
+  family: string,
+  provider: literal('google'),
+  import: string,
+  variable: string,
+  weight: optional(array(string)),
+  subsets: optional(array(string)),
+  selector: optional(string),
+  dependency: optional(string),
+});
+export type RegistryFont = ReturnType<typeof registryFont>;
+
+const itemCommon = {
   $schema: string,
   name: string,
-  type: itemType,
   title: optional(string),
   description: optional(string),
   dependencies: optional(array(string)),
   registryDependencies: optional(array(string)),
   files: array(registryFile),
   cssVars: optional(cssVars),
-});
-export type RegistryItem = ReturnType<typeof registryItem>;
+  css: optional(cssTree),
+};
+
+const plainItem = object({ ...itemCommon, type: literal('registry:ui', 'registry:lib', 'registry:theme') });
+const itemByType = {
+  'registry:ui': plainItem,
+  'registry:lib': plainItem,
+  'registry:theme': plainItem,
+  'registry:base': object({ ...itemCommon, type: literal('registry:base'), config: optional(registryBaseConfig) }),
+  'registry:font': object({ ...itemCommon, type: literal('registry:font'), font: registryFont }),
+};
+type ItemType = keyof typeof itemByType;
+const itemType = literal(...(Object.keys(itemByType) as ItemType[]));
+export type RegistryItem = ReturnType<(typeof itemByType)[ItemType]>;
+
+const registryItem: Parser<RegistryItem> = (value, path) => itemByType[object({ type: itemType })(value, path).type](value, path);
 
 const registryManifest = object({
   $schema: string,
