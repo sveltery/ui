@@ -2,7 +2,7 @@
   import { site } from '$lib/site';
 </script>
 
-<footer class="py-6 group-has-data-[slot=designer]/layout:hidden md:py-0">
+<footer class="py-6 md:py-0">
   <div class="container-wrapper px-4 xl:px-6">
     <div class="flex h-(--footer-height,4rem) items-center justify-between">
       <p class="w-full px-1 text-center text-xs leading-loose text-muted-foreground sm:text-sm">
