@@ -19,7 +19,7 @@
   } from '$registry/bases/base/ui/input-group';
   import { Kbd, KbdGroup } from '$registry/bases/base/ui/kbd';
   import { Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger } from '$registry/bases/base/ui/popover';
-  import { toast } from 'svelte-sonner';
+  import { toast } from '$registry/bases/base/ui/toast';
   import { Spinner } from '$registry/bases/base/ui/spinner';
   import { Textarea } from '$registry/bases/base/ui/textarea';
   import { Tooltip, TooltipContent, TooltipTrigger } from '$registry/bases/base/ui/tooltip';
@@ -175,7 +175,7 @@
               phosphor="StarIcon"
               remixicon="RiStarLine"
             />
-            <InputGroupButton size="icon-xs" onclick={() => toast('Copied to clipboard')}>
+            <InputGroupButton size="icon-xs" onclick={() => toast.add({ title: 'Copied to clipboard' })}>
               <IconPlaceholder
                 lucide="CopyIcon"
                 tabler="IconCopy"
@@ -351,7 +351,7 @@
           <InputGroupAddon class="pl-1 text-muted-foreground">https://</InputGroupAddon>
           <InputGroupInput id="input-secure-19" />
           <InputGroupAddon align="inline-end">
-            <InputGroupButton size="icon-xs" onclick={() => toast('Added to favorites')}>
+            <InputGroupButton size="icon-xs" onclick={() => toast.add({ title: 'Added to favorites' })}>
               <IconPlaceholder lucide="StarIcon" tabler="IconStar" hugeicons="StarIcon" phosphor="StarIcon" remixicon="RiStarLine" />
             </InputGroupButton>
           </InputGroupAddon>

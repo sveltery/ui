@@ -45,7 +45,7 @@
   import { Label } from '$registry/bases/base/ui/label';
   import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '$registry/bases/base/ui/select';
   import { Separator } from '$registry/bases/base/ui/separator';
-  import { toast } from 'svelte-sonner';
+  import { toast } from '$registry/bases/base/ui/toast';
   import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '$registry/bases/base/ui/table';
   import { Tabs, TabsContent, TabsList, TabsTrigger } from '$registry/bases/base/ui/tabs';
   import DragHandle from './drag-handle.svelte';
@@ -117,7 +117,7 @@
 
   function save(event: SubmitEvent, item: Section) {
     event.preventDefault();
-    toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), { loading: `Saving ${item.header}`, success: 'Done', error: 'Error' });
+    toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), { loading: { title: `Saving ${item.header}` }, success: { title: 'Done' }, error: { title: 'Error' } });
   }
 
   const chartData = [

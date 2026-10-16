@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { toast } from 'svelte-sonner';
+  import { toast } from '$registry/bases/base/ui/toast';
   import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
   import { Button } from '$registry/bases/base/ui/button';
   import { Card, CardContent, CardFooter } from '$registry/bases/base/ui/card';
@@ -237,7 +237,7 @@
   function submitFramework(event: SubmitEvent) {
     event.preventDefault();
     const framework = new FormData(event.currentTarget as HTMLFormElement).get('framework') as string;
-    toast(`You selected ${framework} as your framework.`);
+    toast.add({ title: `You selected ${framework} as your framework.` });
   }
 </script>
 
@@ -666,7 +666,7 @@
           <Button
             type="button"
             onclick={() => {
-              toast('Framework selected.');
+              toast.add({ title: 'Framework selected.' });
               dialogOpen = false;
             }}
           >

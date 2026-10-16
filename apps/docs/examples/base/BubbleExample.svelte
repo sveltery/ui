@@ -5,7 +5,7 @@
   import { Collapsible, CollapsibleTrigger } from '$registry/bases/base/ui/collapsible';
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';
   import { Marker, MarkerContent } from '$registry/bases/base/ui/marker';
-  import { toast } from 'svelte-sonner';
+  import { toast } from '$registry/bases/base/ui/toast';
 
   const collapsibleText = `The accessibility review found two focus states that were visually too subtle in dark mode.
 
@@ -241,7 +241,7 @@ Use this for content that needs the whole row.`}</span>
           <Bubble variant="outline" align="end">
             <BubbleContent class="border-dashed border-primary">
               {#snippet render(props, _state, children)}
-                <button {...props} type="button" onclick={() => toast(reply.message)}>{@render children?.()}</button>
+                <button {...props} type="button" onclick={() => toast.add({ title: reply.message })}>{@render children?.()}</button>
               {/snippet}
               {reply.label}
             </BubbleContent>
@@ -405,13 +405,13 @@ Use this for content that needs the whole row.`}</span>
       <Bubble>
         <BubbleContent>This is a one line message.</BubbleContent>
         <BubbleReactions>
-          <Button variant="outline" size="xs" onclick={() => toast('You clicked the button in the bubble reaction')}>Button</Button>
+          <Button variant="outline" size="xs" onclick={() => toast.add({ title: 'You clicked the button in the bubble reaction' })}>Button</Button>
         </BubbleReactions>
       </Bubble>
       <Bubble align="end">
         <BubbleContent>This is a one line message.</BubbleContent>
         <BubbleReactions align="start">
-          <Button variant="ghost" size="icon-xs" onclick={() => toast('Confetti!')}>🎉</Button>
+          <Button variant="ghost" size="icon-xs" onclick={() => toast.add({ title: 'Confetti!' })}>🎉</Button>
         </BubbleReactions>
       </Bubble>
       <Bubble variant="tinted">
@@ -419,7 +419,7 @@ Use this for content that needs the whole row.`}</span>
           We are going to the movies first then dinner. Are you in?
         </BubbleContent>
         <BubbleReactions class="gap-1 bg-background">
-          <Button variant="secondary" size="icon-xs" aria-label="Thumbs up" onclick={() => toast('You agree!')}>
+          <Button variant="secondary" size="icon-xs" aria-label="Thumbs up" onclick={() => toast.add({ title: 'You agree!' })}>
             <IconPlaceholder
               lucide="ThumbsUpIcon"
               tabler="IconThumbUp"
@@ -428,7 +428,7 @@ Use this for content that needs the whole row.`}</span>
               remixicon="RiThumbUpLine"
             />
           </Button>
-          <Button variant="secondary" size="icon-xs" aria-label="Thumbs down" onclick={() => toast('You disagree!')}>
+          <Button variant="secondary" size="icon-xs" aria-label="Thumbs down" onclick={() => toast.add({ title: 'You disagree!' })}>
             <IconPlaceholder
               lucide="ThumbsDownIcon"
               tabler="IconThumbDown"

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { toast } from 'svelte-sonner';
+  import { toast } from '$registry/bases/base/ui/toast';
   import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
   import { Button } from '$registry/bases/base/ui/button';
   import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
@@ -47,7 +47,8 @@
       timing: formData.get('timing'),
     };
 
-    toast('Questionnaire submitted', {
+    toast.add({
+      title: 'Questionnaire submitted',
       description: `Direction: ${values.direction ?? 'None'} · Progress signals: ${values.signals.join(', ') || 'None'} · Timing: ${values.timing ?? 'None'}`,
     });
   }
