@@ -37,6 +37,9 @@ const configShape = {
   typescript: literal(true),
 };
 
+/** The keys `init` owns in components.json; it keeps any others. */
+export const configKeys = Object.keys(configShape);
+
 /** components.json, in shadcn-svelte's format, limited to what this CLI supports. */
 export type Config = InferShape<typeof configShape>;
 
