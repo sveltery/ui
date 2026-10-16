@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { IconLibraryProvider } from '@sveltery/components/icons';
   import { Toaster } from '@sveltery/components/toast';
   import { prepareDesignSystem, syncMenuColor } from '$lib/create/preview/design-system';
   import { parsePreviewMessage, parsePreviewParams } from '$lib/create/preview/message';
@@ -51,7 +52,9 @@
 
 <div class="relative bg-background">
   {#if ready}
-    <data.component />
+    <IconLibraryProvider library={config.iconLibrary}>
+      <data.component />
+    </IconLibraryProvider>
   {/if}
 </div>
 <Toaster />
