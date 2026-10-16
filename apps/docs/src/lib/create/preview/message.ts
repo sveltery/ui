@@ -1,4 +1,4 @@
-import { DEFAULT_PRESET_CONFIG, decodePreset, encodePreset, type PresetCode, type PresetConfig } from 'sveltery/preset';
+import { DEFAULT_PRESET_CONFIG, decodePreset, encodePreset, type PresetCode, type PresetConfig } from '@sveltery/ui/preset';
 
 /** The block the Create page shows until the user picks another, as upstream. */
 export const DEFAULT_PREVIEW_ITEM = 'preview-02';

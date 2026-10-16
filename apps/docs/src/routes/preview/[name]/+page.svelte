@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { Toaster } from '@sveltery/ui/toast';
+  import { Toaster } from '@sveltery/components/toast';
   import { prepareDesignSystem, syncMenuColor } from '$lib/create/preview/design-system';
   import { parsePreviewMessage, parsePreviewParams } from '$lib/create/preview/message';
   import { site } from '$lib/site';
-  import { DEFAULT_PRESET_CONFIG } from 'sveltery/preset';
+  import { DEFAULT_PRESET_CONFIG } from '@sveltery/ui/preset';
 
   let { data } = $props();
   const browser = typeof window !== 'undefined';
