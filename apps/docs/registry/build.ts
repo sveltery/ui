@@ -42,16 +42,6 @@ function renderItem(plan: ItemPlan, sheet: StyleSheet, style: StyleName, origin:
   };
 }
 
-/** Every style must set the same `--ui-radius-*` scale, because the theme items carry one scale for all of them. */
-function sharedRadii(sheets: Record<StyleName, StyleSheet>) {
-  const [first, ...rest] = styleNames;
-  const expected = JSON.stringify([...sheets[first].radii]);
-  for (const style of rest) {
-    if (JSON.stringify([...sheets[style].radii]) !== expected) throw new Error(`styles/scoped/${style}.css sets a different --ui-radius scale than ${first}.css`);
-  }
-  return sheets[first].radii;
-}
-
 export function buildRegistry(input: RegistryInput): RegistryOutput {
   const origin = input.origin.replace(/\/+$/, '');
   const plans = planItems(input.sources, input.uiManifest, input.workspaceVersions);
@@ -78,7 +68,7 @@ export function buildRegistry(input: RegistryInput): RegistryOutput {
     for (const font of fonts) output.set(`styles/${style}/${font.name}.json`, font);
   }
 
-  const themes = parseThemes(input.themes, sharedRadii(sheets));
+  const themes = parseThemes(input.themes);
   for (const color of [...baseColors, ...accentColors]) {
     output.set(`themes/${color}.json`, {
       $schema: `${origin}/schema/registry-item.json`,
