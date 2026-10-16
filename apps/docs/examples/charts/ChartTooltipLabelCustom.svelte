@@ -64,15 +64,11 @@
             },
           },
           xAxis: {
+            tickLength: 16,
             format: (d) =>
               new Date(d).toLocaleDateString('en-US', {
                 weekday: 'short',
               }),
-            tickLabelProps: {
-              svgProps: {
-                y: 13,
-              },
-            },
           },
         }}
       >

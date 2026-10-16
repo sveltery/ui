@@ -80,6 +80,12 @@ test('the Drawer page renders its examples in the Rhea style, and other pages st
   await expect(button).toHaveCSS('border-radius', '8px');
 });
 
+test('docs tooltips open without the default delay, like the upstream site', async ({ page }) => {
+  await visit(page, '/docs/components/tooltip');
+  await page.getByRole('button', { name: 'Show Tooltip' }).first().hover();
+  await expect(page.locator('[data-slot=tooltip-content]')).toBeVisible({ timeout: 400 });
+});
+
 test('the mobile menu opens as a popover and closes on navigation', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await visit(page, '/docs');
@@ -135,4 +141,14 @@ test('the registry serves each style item as JSON', async ({ request }) => {
   expect(response.headers()['content-type']).toBe('application/json');
   const item = await response.json();
   expect([item.name, item.type, item.files.map((file: { target: string }) => file.target)]).toEqual(['button', 'registry:ui', ['button/Button.svelte', 'button/index.ts', 'button/types.ts', 'button/variants.ts']]);
+});
+
+test('a docs page links to its markdown and keeps step titles out of the TOC', async ({ page, request }) => {
+  await visit(page, '/docs/components/button');
+  await expect(page.getByRole('navigation', { name: 'On this page' }).getByRole('link')).toHaveText(['Installation', 'Usage', 'API reference']);
+  await page.getByRole('button', { name: 'More page actions' }).click();
+  await expect(page.getByRole('menuitem', { name: 'View as Markdown' })).toHaveAttribute('href', /\/docs\/components\/button\.md$/);
+  const response = await request.get('/docs/components/button.md');
+  expect(response.headers()['content-type']).toBe('text/markdown; charset=utf-8');
+  expect(await response.text()).toMatch(/^---\ntitle: Button\n/);
 });

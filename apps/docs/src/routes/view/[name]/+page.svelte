@@ -16,7 +16,7 @@
   <meta name="description" content={data.block.description} />
 </svelte:head>
 
-<div class="bg-background">
+<div class="bg-background *:data-[slot=card]:has-[[data-slot=chart]]:shadow-none">
   <data.component />
 </div>
 <!-- Upstream's root layout holds a Toaster, so blocks call toast without one of their own. -->
