@@ -3,7 +3,6 @@
 @import "tw-animate-css";
 @import "@sveltery/ui/tailwind.css";
 @import "../registry/styles/themes.css";
-@import "../registry/styles/style-nova.css";
 @import "../registry/styles/styles.css";
 @import "@fontsource-variable/geist";
 @import "@fontsource-variable/geist-mono";
