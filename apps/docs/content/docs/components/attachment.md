@@ -1,6 +1,7 @@
 ---
 title: Attachment
 description: Displays a file or image attachment with media, metadata, upload state, and actions.
+style: rhea
 ---
 
 <ComponentPreview name="base/AttachmentExample" />
