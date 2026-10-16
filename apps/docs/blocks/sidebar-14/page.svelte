@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@sveltery/components/breadcrumb';
-  import { SidebarInset, SidebarProvider, SidebarTrigger } from '@sveltery/components/sidebar';
+  import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '$registry/bases/base/ui/breadcrumb';
+  import { SidebarInset, SidebarProvider, SidebarTrigger } from '$registry/bases/base/ui/sidebar';
   import AppSidebar from './components/app-sidebar.svelte';
 </script>
 

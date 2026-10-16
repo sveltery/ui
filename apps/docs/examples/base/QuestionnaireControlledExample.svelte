@@ -12,7 +12,7 @@
     QuestionnaireProgress,
     QuestionnaireSubmit,
     QuestionnaireTitle,
-  } from '@sveltery/components/questionnaire';
+  } from '$registry/bases/base/ui/questionnaire';
 
   const items = [
     { name: 'scope', required: true },

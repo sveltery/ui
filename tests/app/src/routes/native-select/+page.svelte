@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { NativeSelect, NativeSelectOption } from '@sveltery/components/native-select';
+  import { NativeSelect, NativeSelectOption } from '$registry/bases/base/ui/native-select';
   let bound = $state('banana');
   let many = $state(['a', 'c']);
   let submitted = $state('');

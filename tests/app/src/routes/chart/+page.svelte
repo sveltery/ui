@@ -1,6 +1,6 @@
 <script lang="ts">
   import { ArcChart, BarChart, PieChart } from 'layerchart';
-  import { ChartContainer, ChartLegend, ChartTooltip, type ChartConfig, type ChartTooltipFormatterArgs, type ChartTooltipProps } from '@sveltery/components/chart';
+  import { ChartContainer, ChartLegend, ChartTooltip, type ChartConfig, type ChartTooltipFormatterArgs, type ChartTooltipProps } from '$registry/bases/base/ui/chart';
 
   const months = [
     { month: 'January', desktop: 186, mobile: 80 },

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Badge } from '@sveltery/components/badge';
-  import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
-  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Badge } from '$registry/bases/base/ui/badge';
+  import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 </script>
 
 {#snippet trendingUp(className?: string)}

@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/components/example';
-  import { Bubble, BubbleContent, BubbleGroup, BubbleReactions } from '@sveltery/components/bubble';
-  import { Button } from '@sveltery/components/button';
-  import { Collapsible, CollapsibleTrigger } from '@sveltery/components/collapsible';
-  import { IconPlaceholder } from '@sveltery/components/icons';
-  import { Marker, MarkerContent } from '@sveltery/components/marker';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Bubble, BubbleContent, BubbleGroup, BubbleReactions } from '$registry/bases/base/ui/bubble';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Collapsible, CollapsibleTrigger } from '$registry/bases/base/ui/collapsible';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { Marker, MarkerContent } from '$registry/bases/base/ui/marker';
 
   const collapsibleText = `The accessibility review found two focus states that were visually too subtle in dark mode.
 

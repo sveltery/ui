@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Button } from '@sveltery/components/button';
+  import { Button } from '$registry/bases/base/ui/button';
   import {
     Questionnaire,
     QuestionnaireActions,
@@ -14,7 +14,7 @@
     QuestionnaireProgress,
     QuestionnaireSubmit,
     QuestionnaireTitle,
-  } from '@sveltery/components/questionnaire';
+  } from '$registry/bases/base/ui/questionnaire';
 
   const items = [{ name: 'change', required: true }, { name: 'verification', required: true }, { name: 'notes' }];
 

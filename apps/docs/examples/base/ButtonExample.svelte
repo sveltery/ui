@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/components/example';
-  import { Button, buttonVariants } from '@sveltery/components/button';
-  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Button, buttonVariants } from '$registry/bases/base/ui/button';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
   const variants = [
     { variant: 'default', label: 'Default' },

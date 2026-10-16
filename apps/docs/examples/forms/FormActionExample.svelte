@@ -3,9 +3,9 @@
   import { page } from '$app/state';
   import { fromAction } from 'svelte/attachments';
   import { Form, isSubmitBlocked } from '@sveltery/base/form';
-  import { Button } from '@sveltery/components/button';
-  import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@sveltery/components/field';
-  import { Input } from '@sveltery/components/input';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '$registry/bases/base/ui/field';
+  import { Input } from '$registry/bases/base/ui/input';
 
   const form = $derived(page.form);
 </script>

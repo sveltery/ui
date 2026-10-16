@@ -19,7 +19,7 @@ registerHooks({
 const { render } = await import('svelte/server');
 const { default: App } = await import('./App.svelte');
 const { body } = render(App);
-for (const slot of ['alert', 'alert-title', 'alert-description', 'alert-action', 'aspect-ratio', 'avatar', 'button', 'card', 'card-header', 'card-title', 'card-content', 'carousel', 'carousel-content', 'carousel-item', 'carousel-previous', 'carousel-next', 'chart', 'command', 'command-input', 'command-list', 'command-group', 'command-item', 'dialog-trigger', 'empty', 'empty-title', 'kbd', 'label', 'message-scroller', 'message-scroller-viewport', 'message-scroller-content', 'message-scroller-item', 'message-scroller-button', 'questionnaire', 'questionnaire-progress', 'questionnaire-item', 'questionnaire-title', 'questionnaire-choice', 'questionnaire-next', 'questionnaire-submit', 'resizable-panel-group', 'resizable-panel', 'resizable-handle', 'separator', 'skeleton', 'table-container', 'table', 'table-body', 'table-row', 'table-cell', 'textarea']) {
+for (const slot of ['command', 'command-input', 'command-list', 'command-group', 'command-item', 'message-scroller', 'message-scroller-viewport', 'message-scroller-content', 'message-scroller-item', 'message-scroller-button', 'questionnaire', 'questionnaire-progress', 'questionnaire-item', 'questionnaire-title', 'questionnaire-choice', 'questionnaire-next', 'questionnaire-submit', 'resizable-panel-group', 'resizable-panel', 'resizable-handle']) {
   assert(body.includes(`data-slot="${slot}"`), `server markup renders ${slot}`);
 }
 assert.match(body, /data-slot="resizable-panel"[^>]*style="flex: 30 1 0px/, 'percentage default sizes render on the server');
@@ -36,10 +36,4 @@ assert(tag('command-input').includes('role="combobox"'), 'the command input is a
 assert(tag('command-list').includes('role="listbox"'), 'the command list is a listbox');
 assert.match(body, /data-slot="command-item"[^>]*data-value="calc"|data-value="calc"[^>]*data-slot="command-item"/, 'command items render their value on the server');
 assert(!body.includes('data-slot="command-empty"'), 'the empty state waits for the client');
-assert(!body.includes('role="dialog"'), 'closed dialog content stays out of server markup');
-assert(body.includes('--color-visits: red;') && body.includes('--color-visits: blue;'), 'chart config renders its color variables on the server');
-assert.match(body, /<textarea[^>]*>Draft<\/textarea>/);
-for (const file of ['nova.css', 'themes.css', 'styles.css', 'styles/nova.css']) {
-  assert(readFileSync(fileURLToPath(import.meta.resolve(`@sveltery/components/${file}`)), 'utf8').length > 0, `${file} ships`);
-}
-console.log('Packed @sveltery/components installs and renders every component on the server');
+console.log('Packed helpers install and render on the server');

@@ -1,8 +1,8 @@
 import type { ComponentProps } from 'svelte';
 import type { HTMLTextareaAttributes } from 'svelte/elements';
 import { Button as BaseButton } from '@sveltery/base/button';
-import { Button } from '@sveltery/components/button';
-import { Textarea } from '@sveltery/components/textarea';
+import { Button } from '$registry/bases/base/ui/button';
+import { Textarea } from '$registry/bases/base/ui/textarea';
 import { probe } from './form.remote';
 import type { Input } from './schema';
 const current = probe.for('type-contract');

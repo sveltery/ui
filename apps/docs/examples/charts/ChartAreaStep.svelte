@@ -2,9 +2,9 @@
   import { AreaChart } from 'layerchart';
   import { curveStep } from 'd3-shape';
   import { scaleUtc } from 'd3-scale';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '@sveltery/components/chart';
-  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
   import ActivityIcon from './icons/ActivityIcon.svelte';
 
   const chartData = [

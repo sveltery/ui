@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Button } from '@sveltery/components/button';
-  import { Card, CardContent, CardDescription, CardHeader, CardTitle, type CardProps } from '@sveltery/components/card';
-  import { Field, FieldDescription, FieldGroup, FieldLabel } from '@sveltery/components/field';
-  import { Input } from '@sveltery/components/input';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardContent, CardDescription, CardHeader, CardTitle, type CardProps } from '$registry/bases/base/ui/card';
+  import { Field, FieldDescription, FieldGroup, FieldLabel } from '$registry/bases/base/ui/field';
+  import { Input } from '$registry/bases/base/ui/input';
   let { ...props }: CardProps = $props();
 </script>
 

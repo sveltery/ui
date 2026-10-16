@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/components/example';
-  import { Badge } from '@sveltery/components/badge';
-  import { Spinner } from '@sveltery/components/spinner';
-  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Badge } from '$registry/bases/base/ui/badge';
+  import { Spinner } from '$registry/bases/base/ui/spinner';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
   const variants = [
     { variant: 'default', label: 'Default' },

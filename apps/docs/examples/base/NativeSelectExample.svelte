@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/components/example';
-  import { Field, FieldDescription, FieldLabel } from '@sveltery/components/field';
-  import { NativeSelect, NativeSelectOptGroup, NativeSelectOption } from '@sveltery/components/native-select';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Field, FieldDescription, FieldLabel } from '$registry/bases/base/ui/field';
+  import { NativeSelect, NativeSelectOptGroup, NativeSelectOption } from '$registry/bases/base/ui/native-select';
 </script>
 
 {#snippet NativeSelectBasic()}

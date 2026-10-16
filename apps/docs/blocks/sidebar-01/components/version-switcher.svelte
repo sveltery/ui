@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@sveltery/components/dropdown-menu';
-  import { IconPlaceholder } from '@sveltery/components/icons';
-  import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@sveltery/components/sidebar';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '$registry/bases/base/ui/dropdown-menu';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '$registry/bases/base/ui/sidebar';
 
   let { versions, defaultVersion }: { versions: string[]; defaultVersion: string } = $props();
   // svelte-ignore state_referenced_locally

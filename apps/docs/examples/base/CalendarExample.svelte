@@ -1,14 +1,14 @@
 <script lang="ts">
   import { addDays, format } from 'date-fns';
   import { es } from 'date-fns/locale';
-  import { Example, ExampleWrapper } from '@sveltery/components/example';
-  import { Button } from '@sveltery/components/button';
-  import { Calendar, CalendarDayButton, type DateRange } from '@sveltery/components/calendar';
-  import { Card, CardContent, CardFooter } from '@sveltery/components/card';
-  import { Field, FieldGroup, FieldLabel } from '@sveltery/components/field';
-  import { IconPlaceholder } from '@sveltery/components/icons';
-  import { InputGroup, InputGroupAddon, InputGroupInput } from '@sveltery/components/input-group';
-  import { Popover, PopoverContent, PopoverTrigger } from '@sveltery/components/popover';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Calendar, CalendarDayButton, type DateRange } from '$registry/bases/base/ui/calendar';
+  import { Card, CardContent, CardFooter } from '$registry/bases/base/ui/card';
+  import { Field, FieldGroup, FieldLabel } from '$registry/bases/base/ui/field';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { InputGroup, InputGroupAddon, InputGroupInput } from '$registry/bases/base/ui/input-group';
+  import { Popover, PopoverContent, PopoverTrigger } from '$registry/bases/base/ui/popover';
 
   const year = new Date().getFullYear();
   const thisMonth = new Date().getMonth();
