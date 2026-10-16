@@ -7,14 +7,14 @@ import cli from '../../../../../packages/cli/package.json';
 import { fetchItem, openRegistry, type Registry } from '../../../../../packages/cli/src/registry.js';
 import { buildRegistry } from '../../../registry/build';
 import { readRegistryInput } from '../../../registry/read';
-import { GET } from './+server';
+import { respondInit } from './handler';
 
 const repoRoot = fileURLToPath(new URL('../../../../../', import.meta.url));
 let server: Server;
 let origin: string;
 let registry: Registry;
 
-// Serves the built registry under /r and the real handler under /init, as the docs site does.
+// Serves the built registry under /r and the route's handler under /init, as the docs site does.
 beforeAll(async () => {
   server = createServer();
   await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
@@ -26,7 +26,7 @@ beforeAll(async () => {
   };
   server.on('request', async (request, response) => {
     const url = new URL(request.url!, origin);
-    const result = url.pathname === '/init' ? await GET({ url, fetch: serveRegistry, platform: undefined } as never) : serveRegistry(url.pathname);
+    const result = url.pathname === '/init' ? await respondInit(url, async (path) => serveRegistry(path)) : serveRegistry(url.pathname);
     response.writeHead(result.status, Object.fromEntries(result.headers)).end(await result.text());
   });
   registry = await openRegistry(`${origin}/r`);
@@ -104,6 +104,12 @@ describe('/init', () => {
     const { status, body } = await initError(query);
     expect(status).toBe(400);
     expect(body.error).toContain(message);
+  });
+
+  it('answers a 500 when a theme file is missing', async () => {
+    const response = await respondInit(new URL(`${origin}/init?preset=b0`), async () => new Response('', { status: 404 }));
+    expect(response.status).toBe(500);
+    expect(((await response.json()) as { error: string }).error).toBe('Could not read the neutral theme (404)');
   });
 
   it('rejects a theme that belongs to another base color', async () => {
