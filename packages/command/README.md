@@ -2,6 +2,8 @@
 
 A headless command menu for Svelte 5. It ports the behavior of [cmdk](https://github.com/pacocoursey/cmdk), which is React-only: fuzzy filtering and ranking, keyboard navigation, selection, and the `cmdk-*` attributes, roles and ARIA that upstream styles and screen readers rely on. It renders plain elements and ships no styles.
 
+The styled [Command](https://ui.sveltery.dev/docs/components/command) component in Sveltery UI is built on it.
+
 ## Usage
 
 ```svelte
@@ -114,7 +116,7 @@ The package has no Dialog part. Put Root inside a dialog, for example `@sveltery
 </Dialog.Root>
 ```
 
-The menu resets its search and selection each time the popup content mounts again. Bind `value` on Root and Input to keep them across openings. With `@sveltery/ui`, compose its `Dialog` and `DialogContent` the same way.
+The menu resets its search and selection each time the popup content mounts again. Bind `value` on Root and Input to keep them across openings. With the styled components from `npx @sveltery/ui@latest add command dialog`, compose `Dialog` and `DialogContent` the same way.
 
 ## Differences from cmdk
 

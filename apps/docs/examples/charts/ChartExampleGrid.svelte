@@ -1,6 +1,6 @@
 <script lang="ts">
   import { BarChart } from 'layerchart';
-  import { type ChartConfig, ChartContainer } from '@sveltery/ui/chart';
+  import { type ChartConfig, ChartContainer } from '@sveltery/components/chart';
 
   const chartData = [
     { month: 'January', desktop: 186, mobile: 80 },

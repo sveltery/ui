@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
+  import { Example, ExampleWrapper } from '@sveltery/components/example';
   import {
     AlertDialog,
     AlertDialogAction,
@@ -11,11 +11,11 @@
     AlertDialogMedia,
     AlertDialogTitle,
     AlertDialogTrigger,
-  } from '@sveltery/ui/alert-dialog';
-  import { Badge } from '@sveltery/ui/badge';
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { Combobox, ComboboxCollection, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from '@sveltery/ui/combobox';
+  } from '@sveltery/components/alert-dialog';
+  import { Badge } from '@sveltery/components/badge';
+  import { Button } from '@sveltery/components/button';
+  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { Combobox, ComboboxCollection, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from '@sveltery/components/combobox';
   import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -32,12 +32,12 @@
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
-  } from '@sveltery/ui/dropdown-menu';
-  import { Field, FieldGroup, FieldLabel } from '@sveltery/ui/field';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { Input } from '@sveltery/ui/input';
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
-  import { Textarea } from '@sveltery/ui/textarea';
+  } from '@sveltery/components/dropdown-menu';
+  import { Field, FieldGroup, FieldLabel } from '@sveltery/components/field';
+  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Input } from '@sveltery/components/input';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/components/select';
+  import { Textarea } from '@sveltery/components/textarea';
 
   const frameworks = ['Next.js', 'SvelteKit', 'Nuxt.js', 'Remix', 'Astro'] as const;
   const roleItems = [

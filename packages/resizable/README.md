@@ -2,6 +2,8 @@
 
 Resizable panel groups for Svelte 5. The layout algorithm is ported from [react-resizable-panels](https://github.com/bvaughn/react-resizable-panels): panels clamp to their minimum and maximum sizes, collapse past a threshold, and resize with the pointer or the keyboard. It renders plain elements and ships no styles.
 
+The styled [Resizable](https://ui.sveltery.dev/docs/components/resizable) component in Sveltery UI is built on it.
+
 ## Install
 
 ```sh
@@ -24,7 +26,7 @@ npm install @sveltery/resizable
 
 A size is a string with a unit (`"30%"`, `"240px"`, `"2rem"`, `"50vh"`; a bare `"25"` means percent) or a number of pixels. Bind `layout` on `Group` to read or set every panel's size, and spread `savedLayout({ id })` onto `Group` to keep the layout in `localStorage`.
 
-The styled version lives in `@sveltery/ui/resizable`.
+Add the styled version to your app with `npx @sveltery/ui@latest add resizable`.
 
 ## License
 

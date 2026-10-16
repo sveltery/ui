@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardContent } from '@sveltery/ui/card';
-  import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@sveltery/ui/empty';
-  import { Spinner } from '@sveltery/ui/spinner';
+  import { Button } from '@sveltery/components/button';
+  import { Card, CardContent } from '@sveltery/components/card';
+  import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@sveltery/components/empty';
+  import { Spinner } from '@sveltery/components/spinner';
 </script>
 
 <Card>

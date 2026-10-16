@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { Checkbox } from '@sveltery/ui/checkbox';
-  import { Field, FieldContent, FieldDescription, FieldGroup, FieldLabel } from '@sveltery/ui/field';
+  import { Button } from '@sveltery/components/button';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { Checkbox } from '@sveltery/components/checkbox';
+  import { Field, FieldContent, FieldDescription, FieldGroup, FieldLabel } from '@sveltery/components/field';
 
   const NOTIFICATIONS = [
     {

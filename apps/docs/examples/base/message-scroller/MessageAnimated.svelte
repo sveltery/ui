@@ -1,10 +1,10 @@
 <script lang="ts">
   import { MediaQuery } from 'svelte/reactivity';
   import { fly } from 'svelte/transition';
-  import { Bubble, BubbleContent } from '@sveltery/ui/bubble';
-  import type { BubbleProps } from '@sveltery/ui/bubble';
-  import { Message, MessageContent } from '@sveltery/ui/message';
-  import { MessageScrollerItem } from '@sveltery/ui/message-scroller';
+  import { Bubble, BubbleContent } from '@sveltery/components/bubble';
+  import type { BubbleProps } from '@sveltery/components/bubble';
+  import { Message, MessageContent } from '@sveltery/components/message';
+  import { MessageScrollerItem } from '@sveltery/components/message-scroller';
   import { animations, type AnimationId } from './animations.js';
   import type { ChatMessage } from './chat.svelte.js';
   import MessageText from './MessageText.svelte';

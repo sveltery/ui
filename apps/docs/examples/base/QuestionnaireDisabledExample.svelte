@@ -13,7 +13,7 @@
     QuestionnaireSkip,
     QuestionnaireSubmit,
     QuestionnaireTitle,
-  } from '@sveltery/ui/questionnaire';
+  } from '@sveltery/components/questionnaire';
 
   const items = [{ choices: [{ value: 'plus' }, { value: 'pro' }, { disabled: true, value: 'enterprise' }], name: 'plan', required: true }];
 

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { CardFooter } from '@sveltery/ui/card';
-  import { useMessageScroller } from '@sveltery/ui/message-scroller';
+  import { CardFooter } from '@sveltery/components/card';
+  import { useMessageScroller } from '@sveltery/components/message-scroller';
 
   const scroller = useMessageScroller();
   const status = $derived.by(() => {

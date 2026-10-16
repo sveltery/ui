@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
+  import { Example, ExampleWrapper } from '@sveltery/components/example';
   import {
     AlertDialog,
     AlertDialogAction,
@@ -11,8 +11,8 @@
     AlertDialogMedia,
     AlertDialogTitle,
     AlertDialogTrigger,
-  } from '@sveltery/ui/alert-dialog';
-  import { Button } from '@sveltery/ui/button';
+  } from '@sveltery/components/alert-dialog';
+  import { Button } from '@sveltery/components/button';
   import {
     Dialog,
     DialogContent,
@@ -21,8 +21,8 @@
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-  } from '@sveltery/ui/dialog';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  } from '@sveltery/components/dialog';
+  import { IconPlaceholder } from '@sveltery/components/icons';
 </script>
 
 {#snippet AlertDialogBasic()}

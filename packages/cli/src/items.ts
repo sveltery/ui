@@ -12,7 +12,7 @@ export type Project = { cwd: string; config: Config; registry: Registry; uiDir: 
 
 export async function openProject(cwd: string): Promise<Project> {
   const configPath = join(cwd, CONFIG_FILE);
-  if (!existsSync(configPath)) throw new CliError(`No ${CONFIG_FILE} in ${cwd}. Run \`npx sveltery init\` first.`);
+  if (!existsSync(configPath)) throw new CliError(`No ${CONFIG_FILE} in ${cwd}. Run \`npx @sveltery/ui@latest init\` first.`);
   const config = parseConfig(readJson(configPath));
   const registry = await openRegistry(resolveRegistryUrl(config.registry));
   return { cwd, config, registry, uiDir: aliasPath(config.aliases.ui) };
@@ -58,10 +58,10 @@ export async function selectInstalled(project: Project, names: string[]): Promis
   const { registry, config } = project;
   if (names.length > 0) {
     const refs = names.map(parseItemRef);
-    if (refs.some((ref) => ref.kind === 'url')) throw new CliError('Name installed items, such as `sveltery diff button`. URLs only work with `add`.');
+    if (refs.some((ref) => ref.kind === 'url')) throw new CliError('Name installed items, such as `npx @sveltery/ui@latest diff button`. URLs only work with `add`.');
     const items = await resolveItems(registry, config.style, refs);
     for (const name of names) {
-      if (!isInstalled(project, items.find((item) => item.name === name)!)) throw new CliError(`${name} is not installed. Run \`sveltery add ${name}\` first.`);
+      if (!isInstalled(project, items.find((item) => item.name === name)!)) throw new CliError(`${name} is not installed. Run \`npx @sveltery/ui@latest add ${name}\` first.`);
     }
     return items;
   }

@@ -1,5 +1,5 @@
 {
-  "name": "sveltery",
+  "name": "@sveltery/ui",
   "version": "0.1.0",
   "description": "Add Sveltery UI components to a Svelte app.",
   "keywords": [
@@ -11,7 +11,7 @@
     "cli",
     "components"
   ],
-  "homepage": "https://github.com/sveltery/ui/tree/main/packages/cli#readme",
+  "homepage": "https://ui.sveltery.dev",
   "type": "module",
   "license": "MIT",
   "repository": {

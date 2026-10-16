@@ -1,4 +1,4 @@
-# @sveltery/ui
+# @sveltery/components
 
 Styled Svelte 5 components built on [Sveltery Base](https://github.com/sveltery/base) and Tailwind CSS 4, following the shadcn/ui designs.
 

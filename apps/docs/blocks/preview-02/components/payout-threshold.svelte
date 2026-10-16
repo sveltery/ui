@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { Field, FieldDescription, FieldGroup, FieldLabel } from '@sveltery/ui/field';
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
-  import { Slider } from '@sveltery/ui/slider';
-  import { Textarea } from '@sveltery/ui/textarea';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Button } from '@sveltery/components/button';
+  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { Field, FieldDescription, FieldGroup, FieldLabel } from '@sveltery/components/field';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/components/select';
+  import { Slider } from '@sveltery/components/slider';
+  import { Textarea } from '@sveltery/components/textarea';
+  import { IconPlaceholder } from '@sveltery/components/icons';
 
   const CURRENCIES = [
     { label: 'USD — United States Dollar', value: 'usd' },

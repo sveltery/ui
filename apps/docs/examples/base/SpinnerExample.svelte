@@ -1,14 +1,14 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Badge } from '@sveltery/ui/badge';
-  import { Button } from '@sveltery/ui/button';
-  import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@sveltery/ui/empty';
-  import { Field, FieldLabel } from '@sveltery/ui/field';
-  import { InputGroup, InputGroupAddon, InputGroupInput } from '@sveltery/ui/input-group';
-  import { Spinner } from '@sveltery/ui/spinner';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Example, ExampleWrapper } from '@sveltery/components/example';
+  import { Badge } from '@sveltery/components/badge';
+  import { Button } from '@sveltery/components/button';
+  import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@sveltery/components/empty';
+  import { Field, FieldLabel } from '@sveltery/components/field';
+  import { InputGroup, InputGroupAddon, InputGroupInput } from '@sveltery/components/input-group';
+  import { Spinner } from '@sveltery/components/spinner';
+  import { IconPlaceholder } from '@sveltery/components/icons';
 </script>
 
 {#snippet link(props: HTMLAttributes<HTMLElement>, _state: unknown, content: Snippet | undefined)}

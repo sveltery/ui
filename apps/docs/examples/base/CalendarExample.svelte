@@ -1,14 +1,14 @@
 <script lang="ts">
   import { addDays, format } from 'date-fns';
   import { es } from 'date-fns/locale';
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button } from '@sveltery/ui/button';
-  import { Calendar, CalendarDayButton, type DateRange } from '@sveltery/ui/calendar';
-  import { Card, CardContent, CardFooter } from '@sveltery/ui/card';
-  import { Field, FieldGroup, FieldLabel } from '@sveltery/ui/field';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { InputGroup, InputGroupAddon, InputGroupInput } from '@sveltery/ui/input-group';
-  import { Popover, PopoverContent, PopoverTrigger } from '@sveltery/ui/popover';
+  import { Example, ExampleWrapper } from '@sveltery/components/example';
+  import { Button } from '@sveltery/components/button';
+  import { Calendar, CalendarDayButton, type DateRange } from '@sveltery/components/calendar';
+  import { Card, CardContent, CardFooter } from '@sveltery/components/card';
+  import { Field, FieldGroup, FieldLabel } from '@sveltery/components/field';
+  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { InputGroup, InputGroupAddon, InputGroupInput } from '@sveltery/components/input-group';
+  import { Popover, PopoverContent, PopoverTrigger } from '@sveltery/components/popover';
 
   const year = new Date().getFullYear();
   const thisMonth = new Date().getMonth();

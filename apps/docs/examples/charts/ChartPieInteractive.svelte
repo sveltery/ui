@@ -1,9 +1,9 @@
 <script lang="ts">
   import { Arc, PieChart, Text } from 'layerchart';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '@sveltery/ui/chart';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { NativeSelect, NativeSelectOption } from '@sveltery/ui/native-select';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { type ChartConfig, ChartContainer, ChartTooltip } from '@sveltery/components/chart';
+  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { NativeSelect, NativeSelectOption } from '@sveltery/components/native-select';
 
   const desktopData = [
     { month: 'january', desktop: 186, color: 'var(--color-january)' },
