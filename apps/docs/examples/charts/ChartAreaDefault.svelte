@@ -47,6 +47,7 @@
             motion: 'tween',
           },
           xAxis: {
+            tickLength: 14,
             format: (v: Date) => v.toLocaleDateString('en-US', { month: 'short' }),
           },
         }}

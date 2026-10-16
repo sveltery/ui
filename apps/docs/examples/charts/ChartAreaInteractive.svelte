@@ -158,6 +158,7 @@
         seriesLayout="stack"
         props={{
           xAxis: {
+            tickLength: 14,
             ticks: timeRange === '7d' ? 7 : undefined,
             format: (v) => {
               return v.toLocaleDateString('en-US', {

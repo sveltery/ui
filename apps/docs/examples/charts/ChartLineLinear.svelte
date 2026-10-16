@@ -42,6 +42,7 @@
         props={{
           spline: { curve: curveLinear, motion: 'tween', strokeWidth: 2 },
           xAxis: {
+            tickLength: 14,
             format: (v: Date) => v.toLocaleDateString('en-US', { month: 'short' }),
           },
           highlight: { points: { r: 4 } },

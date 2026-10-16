@@ -27,7 +27,7 @@
       { key: 'mobile', color: 'var(--color-mobile)' },
     ]}
     axis="x"
-    props={{ xAxis: { format: (value: string) => value.slice(0, 3) } }}
+    props={{ xAxis: { tickLength: 16, format: (value: string) => value.slice(0, 3) } }}
     rule={false}
     tooltipContext={false}
   />

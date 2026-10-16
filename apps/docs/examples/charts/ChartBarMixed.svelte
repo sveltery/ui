@@ -57,12 +57,8 @@
           },
           highlight: { area: { fill: 'none' } },
           yAxis: {
+            tickLength: 16,
             format: (d) => chartConfig[d as keyof typeof chartConfig].label,
-            tickLabelProps: {
-              svgProps: {
-                x: -16,
-              },
-            },
           },
         }}
       >

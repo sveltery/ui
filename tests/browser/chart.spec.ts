@@ -162,3 +162,19 @@ test('the tooltip takes its look from the style', async ({ page }) => {
   await expect(tooltip).toHaveCSS('border-top-width', '0px');
   await expect(tooltip).toHaveCSS('border-top-left-radius', '14px');
 });
+
+test.describe('docs blocks', () => {
+  test.use({ baseURL: 'http://127.0.0.1:5175' });
+
+  test('x-axis labels sit as far below the bars as upstream tickMargin puts them', async ({ page }) => {
+    await page.goto('/view/preview-02');
+    await expect(page.locator('html')).toHaveAttribute('data-ready', { timeout: 30_000 });
+    const gap = (title: string) =>
+      page.locator('[data-slot=card]', { hasText: title }).locator('[data-slot=chart]').evaluate((chart) => {
+        const bottom = Math.max(...[...chart.querySelectorAll('.lc-bar')].map((bar) => bar.getBoundingClientRect().bottom));
+        const top = Math.min(...[...chart.querySelectorAll('.placement-bottom text')].map((label) => label.getBoundingClientRect().top));
+        return top - bottom;
+      });
+    await expect.poll(async () => [Math.round(await gap('Contribution History')), Math.round(await gap('Power Usage'))]).toEqual([11, 9]);
+  });
+});

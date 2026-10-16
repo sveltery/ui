@@ -57,7 +57,7 @@
         props={{
           bars: { stroke: 'none', strokeWidth: 0, rounded: 'edge' },
           highlight: { area: { fill: 'none' } },
-          xAxis: { format: (month: string) => month.slice(0, 3), tickLength: 0 },
+          xAxis: { format: (month: string) => month.slice(0, 3), tickLength: 14 },
           grid: { y: true, x: false, class: 'stroke-border/60 [stroke-dasharray:3_3]' }
         }}
       >
