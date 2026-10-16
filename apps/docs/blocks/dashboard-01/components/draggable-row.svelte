@@ -7,7 +7,7 @@
 
 <script lang="ts">
   import { FlexRender, type Row } from '@tanstack/svelte-table';
-  import { TableCell, TableRow } from '@sveltery/ui/table';
+  import { TableCell, TableRow } from '@sveltery/components/table';
   import type { Section, features } from './data-table.svelte';
 
   let { row }: { row: Row<typeof features, Section> } = $props();

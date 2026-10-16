@@ -9,9 +9,9 @@
     DropdownMenuSeparator,
     DropdownMenuShortcut,
     DropdownMenuTrigger,
-  } from '@sveltery/ui/dropdown-menu';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@sveltery/ui/sidebar';
+  } from '@sveltery/components/dropdown-menu';
+  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@sveltery/components/sidebar';
 
   let {
     teams,

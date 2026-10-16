@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Avatar, AvatarFallback, AvatarImage } from '@sveltery/ui/avatar';
-  import { Button } from '@sveltery/ui/button';
-  import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@sveltery/ui/dialog';
+  import { Example, ExampleWrapper } from '@sveltery/components/example';
+  import { Avatar, AvatarFallback, AvatarImage } from '@sveltery/components/avatar';
+  import { Button } from '@sveltery/components/button';
+  import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@sveltery/components/dialog';
   import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -19,8 +19,8 @@
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
     DropdownMenuTrigger
-  } from '@sveltery/ui/dropdown-menu';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  } from '@sveltery/components/dropdown-menu';
+  import { IconPlaceholder } from '@sveltery/components/icons';
 
   const sides = ['inline-start', 'left', 'top', 'bottom', 'right', 'inline-end'] as const;
 

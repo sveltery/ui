@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardContent } from '@sveltery/ui/card';
-  import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
-  import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@sveltery/ui/empty';
-  import { Field, FieldDescription, FieldLabel } from '@sveltery/ui/field';
-  import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '@sveltery/ui/input-group';
-  import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from '@sveltery/ui/item';
-  import { Separator } from '@sveltery/ui/separator';
-  import { Spinner } from '@sveltery/ui/spinner';
-  import { Tabs, TabsContent, TabsList, TabsTrigger } from '@sveltery/ui/tabs';
-  import { Tooltip, TooltipContent, TooltipTrigger } from '@sveltery/ui/tooltip';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Button } from '@sveltery/components/button';
+  import { Card, CardContent } from '@sveltery/components/card';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@sveltery/components/dropdown-menu';
+  import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@sveltery/components/empty';
+  import { Field, FieldDescription, FieldLabel } from '@sveltery/components/field';
+  import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '@sveltery/components/input-group';
+  import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from '@sveltery/components/item';
+  import { Separator } from '@sveltery/components/separator';
+  import { Spinner } from '@sveltery/components/spinner';
+  import { Tabs, TabsContent, TabsList, TabsTrigger } from '@sveltery/components/tabs';
+  import { Tooltip, TooltipContent, TooltipTrigger } from '@sveltery/components/tooltip';
+  import { IconPlaceholder } from '@sveltery/components/icons';
 
   let isCreatingCodespace = $state(false);
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Card, CardContent } from '@sveltery/ui/card';
+  import { Card, CardContent } from '@sveltery/components/card';
 
   const styleTitle = 'Nova';
   const fontName = 'Geist';

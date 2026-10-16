@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from '@sveltery/ui/command';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from '@sveltery/components/command';
+  import { IconPlaceholder } from '@sveltery/components/icons';
 </script>
 
 <Command class="max-w-sm rounded-lg border">

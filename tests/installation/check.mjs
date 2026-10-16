@@ -40,6 +40,6 @@ assert(!body.includes('role="dialog"'), 'closed dialog content stays out of serv
 assert(body.includes('--color-visits: red;') && body.includes('--color-visits: blue;'), 'chart config renders its color variables on the server');
 assert.match(body, /<textarea[^>]*>Draft<\/textarea>/);
 for (const file of ['nova.css', 'themes.css', 'styles.css', 'styles/nova.css']) {
-  assert(readFileSync(fileURLToPath(import.meta.resolve(`@sveltery/ui/${file}`)), 'utf8').length > 0, `${file} ships`);
+  assert(readFileSync(fileURLToPath(import.meta.resolve(`@sveltery/components/${file}`)), 'utf8').length > 0, `${file} ships`);
 }
-console.log('Packed @sveltery/ui installs and renders every component on the server');
+console.log('Packed @sveltery/components installs and renders every component on the server');

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { useMessageScroller } from '@sveltery/ui/message-scroller';
+  import { useMessageScroller } from '@sveltery/components/message-scroller';
 
   const scroller = useMessageScroller();
   const states = $derived([

@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { Item, ItemActions, ItemContent, ItemGroup, ItemMedia, ItemTitle } from '@sveltery/ui/item';
-  import { Progress, ProgressLabel, ProgressValue } from '@sveltery/ui/progress';
-  import { Slider } from '@sveltery/ui/slider';
+  import { Example, ExampleWrapper } from '@sveltery/components/example';
+  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Item, ItemActions, ItemContent, ItemGroup, ItemMedia, ItemTitle } from '@sveltery/components/item';
+  import { Progress, ProgressLabel, ProgressValue } from '@sveltery/components/progress';
+  import { Slider } from '@sveltery/components/slider';
 
   let value = $state(50);
 

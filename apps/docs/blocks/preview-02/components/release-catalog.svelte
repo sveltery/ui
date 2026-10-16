@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { Badge } from '@sveltery/ui/badge';
-  import { Card, CardContent, CardHeader } from '@sveltery/ui/card';
-  import { InputGroup, InputGroupAddon, InputGroupInput } from '@sveltery/ui/input-group';
-  import { Item, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from '@sveltery/ui/item';
-  import { ToggleGroup, ToggleGroupItem } from '@sveltery/ui/toggle-group';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Badge } from '@sveltery/components/badge';
+  import { Card, CardContent, CardHeader } from '@sveltery/components/card';
+  import { InputGroup, InputGroupAddon, InputGroupInput } from '@sveltery/components/input-group';
+  import { Item, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from '@sveltery/components/item';
+  import { ToggleGroup, ToggleGroupItem } from '@sveltery/components/toggle-group';
+  import { IconPlaceholder } from '@sveltery/components/icons';
 
   const HOLDINGS = [
     {

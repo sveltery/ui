@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
+  import { Button } from '@sveltery/components/button';
   import {
     Questionnaire,
     QuestionnaireActions,
@@ -14,7 +14,7 @@
     QuestionnaireProgress,
     QuestionnaireSubmit,
     QuestionnaireTitle,
-  } from '@sveltery/ui/questionnaire';
+  } from '@sveltery/components/questionnaire';
 
   const items = [{ name: 'change', required: true }, { name: 'verification', required: true }, { name: 'notes' }];
 

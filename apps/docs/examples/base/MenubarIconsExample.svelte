@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { Menubar, MenubarContent, MenubarGroup, MenubarItem, MenubarMenu, MenubarSeparator, MenubarShortcut, MenubarTrigger } from '@sveltery/ui/menubar';
+  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Menubar, MenubarContent, MenubarGroup, MenubarItem, MenubarMenu, MenubarSeparator, MenubarShortcut, MenubarTrigger } from '@sveltery/components/menubar';
 </script>
 
 <Menubar class="w-72">

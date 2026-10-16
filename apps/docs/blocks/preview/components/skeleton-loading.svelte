@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Card, CardContent } from '@sveltery/ui/card';
-  import { Skeleton } from '@sveltery/ui/skeleton';
+  import { Card, CardContent } from '@sveltery/components/card';
+  import { Skeleton } from '@sveltery/components/skeleton';
 </script>
 
 <Card>

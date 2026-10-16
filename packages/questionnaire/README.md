@@ -39,7 +39,7 @@ npm install @sveltery/questionnaire
 
 `Root` renders a `<form>`, so the answers submit with it like any other form fields.
 
-The styled version lives in `@sveltery/ui/questionnaire`.
+Add the styled version to your app with `npx @sveltery/ui@latest add questionnaire`.
 
 ## License
 

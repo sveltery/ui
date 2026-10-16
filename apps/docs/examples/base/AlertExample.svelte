@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { Alert, AlertAction, AlertTitle, AlertDescription } from '@sveltery/ui/alert';
-  import { Badge } from '@sveltery/ui/badge';
-  import { Button } from '@sveltery/ui/button';
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Alert, AlertAction, AlertTitle, AlertDescription } from '@sveltery/components/alert';
+  import { Badge } from '@sveltery/components/badge';
+  import { Button } from '@sveltery/components/button';
+  import { Example, ExampleWrapper } from '@sveltery/components/example';
+  import { IconPlaceholder } from '@sveltery/components/icons';
 </script>
 
 {#snippet AlertBasic()}
