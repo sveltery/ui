@@ -1,5 +1,5 @@
 {
-  "name": "@sveltery/ui",
+  "name": "@sveltery/components",
   "version": "0.1.0",
   "description": "Styled Svelte 5 components built on Sveltery Base and Tailwind CSS.",
   "keywords": [

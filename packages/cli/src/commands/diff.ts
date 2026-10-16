@@ -17,8 +17,8 @@ export async function diff(names: string[], options: { cwd: string }): Promise<s
     const owners = new Set(changed.map((file) => file.item));
     lines.push(`${count(changed.length, 'file differs', 'files differ')} in ${count(owners.size, 'item', 'items')}`);
   }
-  if (added.length > 0) lines.push(`${count(added.length, 'file', 'files')} in the registry ${added.length === 1 ? 'is' : 'are'} not in your project yet. \`sveltery update\` adds ${added.length === 1 ? 'it' : 'them'}.`);
-  if (lines.length === 0) lines.push(items.length === 0 ? 'No items are installed. Add one with `sveltery add button`.' : 'Everything is up to date.');
+  if (added.length > 0) lines.push(`${count(added.length, 'file', 'files')} in the registry ${added.length === 1 ? 'is' : 'are'} not in your project yet. \`npx @sveltery/ui@latest update\` adds ${added.length === 1 ? 'it' : 'them'}.`);
+  if (lines.length === 0) lines.push(items.length === 0 ? 'No items are installed. Add one with `npx @sveltery/ui@latest add button`.' : 'Everything is up to date.');
   const output = lines.join('\n');
   console.log(output);
   return output;

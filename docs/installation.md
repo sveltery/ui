@@ -6,7 +6,7 @@ Sveltery Base is published to npm. Sveltery UI is not published yet, so install 
 
 ```sh
 pnpm add @sveltery/base
-pnpm add @sveltery/ui@file:<path-to-packed-ui>.tgz
+pnpm add @sveltery/components@file:<path-to-packed-ui>.tgz
 pnpm add tailwindcss tw-animate-css
 ```
 
@@ -14,8 +14,8 @@ Build the UI archive from a checkout of this repository:
 
 ```sh
 pnpm install
-pnpm --filter @sveltery/ui build
-pnpm --filter @sveltery/ui pack
+pnpm --filter @sveltery/components build
+pnpm --filter @sveltery/components pack
 ```
 
 ## 2. Add the styles
@@ -25,17 +25,17 @@ Import Tailwind and the Sveltery UI styles in your global CSS, and let Tailwind 
 ```css
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "@sveltery/ui/themes.css";
-@import "@sveltery/ui/nova.css";
-@source "../node_modules/@sveltery/ui/dist";
+@import "@sveltery/components/themes.css";
+@import "@sveltery/components/nova.css";
+@source "../node_modules/@sveltery/components/dist";
 ```
 
 ## 3. Use a component
 
 ```svelte
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@sveltery/ui/dialog';
+  import { Button } from '@sveltery/components/button';
+  import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@sveltery/components/dialog';
   let open = $state(false);
 </script>
 

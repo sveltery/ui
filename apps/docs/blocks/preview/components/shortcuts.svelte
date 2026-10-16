@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Card, CardContent } from '@sveltery/ui/card';
-  import { Item, ItemActions, ItemGroup, ItemHeader, ItemSeparator, ItemTitle } from '@sveltery/ui/item';
-  import { Kbd } from '@sveltery/ui/kbd';
+  import { Card, CardContent } from '@sveltery/components/card';
+  import { Item, ItemActions, ItemGroup, ItemHeader, ItemSeparator, ItemTitle } from '@sveltery/components/item';
+  import { Kbd } from '@sveltery/components/kbd';
 
   const shortcuts = [
     { label: 'Search', keys: ['⌘', 'K'] },

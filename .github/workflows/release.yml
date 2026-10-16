@@ -42,7 +42,7 @@ jobs:
       - run: bash scripts/verify.sh
 
       - name: Publish
-        # The CLI has no workspace dependencies. Helpers go before @sveltery/ui, which depends on
+        # The CLI has no workspace dependencies. Helpers go before @sveltery/components, which depends on
         # them. Versions already on npm are skipped, so a re-run after a partial failure is safe.
         # Trusted publishing needs npm 11.5.1+.
         run: |

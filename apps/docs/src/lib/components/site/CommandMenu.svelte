@@ -1,8 +1,8 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   import { page } from '$app/state';
-  import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@sveltery/ui/dialog';
-  import { Kbd, KbdGroup } from '@sveltery/ui/kbd';
+  import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@sveltery/components/dialog';
+  import { Kbd, KbdGroup } from '@sveltery/components/kbd';
   import { cn } from 'cn';
   import type { NavSection } from '$lib/docs/types';
   import { FullTextSearch, type Hit } from '$lib/search.svelte';

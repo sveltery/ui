@@ -2,11 +2,11 @@
   import { scaleUtc } from 'd3-scale';
   import { curveMonotoneX } from 'd3-shape';
   import { Area, AreaChart, LinearGradient } from 'layerchart';
-  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '@sveltery/ui/chart';
-  import { Combobox, ComboboxCollection, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from '@sveltery/ui/combobox';
-  import { Field, FieldGroup, FieldLabel } from '@sveltery/ui/field';
-  import { Separator } from '@sveltery/ui/separator';
+  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { type ChartConfig, ChartContainer, ChartTooltip } from '@sveltery/components/chart';
+  import { Combobox, ComboboxCollection, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from '@sveltery/components/combobox';
+  import { Field, FieldGroup, FieldLabel } from '@sveltery/components/field';
+  import { Separator } from '@sveltery/components/separator';
 
   const TICKERS = ['VOO', 'VIG', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA'];
   const CHART_DATA: Record<string, { month: string; price: number }[]> = {

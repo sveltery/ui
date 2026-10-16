@@ -1,19 +1,19 @@
 <script lang="ts">
-  import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@sveltery/ui/alert-dialog';
-  import { Badge } from '@sveltery/ui/badge';
-  import { Button } from '@sveltery/ui/button';
-  import { ButtonGroup } from '@sveltery/ui/button-group';
-  import { Card, CardContent } from '@sveltery/ui/card';
-  import { Checkbox } from '@sveltery/ui/checkbox';
-  import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
-  import { Field, FieldGroup } from '@sveltery/ui/field';
-  import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from '@sveltery/ui/input-group';
-  import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from '@sveltery/ui/item';
-  import { RadioGroup, RadioGroupItem } from '@sveltery/ui/radio-group';
-  import { Slider } from '@sveltery/ui/slider';
-  import { Switch } from '@sveltery/ui/switch';
-  import { Textarea } from '@sveltery/ui/textarea';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@sveltery/components/alert-dialog';
+  import { Badge } from '@sveltery/components/badge';
+  import { Button } from '@sveltery/components/button';
+  import { ButtonGroup } from '@sveltery/components/button-group';
+  import { Card, CardContent } from '@sveltery/components/card';
+  import { Checkbox } from '@sveltery/components/checkbox';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@sveltery/components/dropdown-menu';
+  import { Field, FieldGroup } from '@sveltery/components/field';
+  import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from '@sveltery/components/input-group';
+  import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from '@sveltery/components/item';
+  import { RadioGroup, RadioGroupItem } from '@sveltery/components/radio-group';
+  import { Slider } from '@sveltery/components/slider';
+  import { Switch } from '@sveltery/components/switch';
+  import { Textarea } from '@sveltery/components/textarea';
+  import { IconPlaceholder } from '@sveltery/components/icons';
 
   let sliderValue = $state<number[]>([500]);
 </script>

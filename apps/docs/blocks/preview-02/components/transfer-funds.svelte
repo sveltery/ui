@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { Field, FieldGroup, FieldLabel } from '@sveltery/ui/field';
-  import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from '@sveltery/ui/input-group';
-  import { Item, ItemContent } from '@sveltery/ui/item';
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
-  import { Separator } from '@sveltery/ui/separator';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Button } from '@sveltery/components/button';
+  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { Field, FieldGroup, FieldLabel } from '@sveltery/components/field';
+  import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from '@sveltery/components/input-group';
+  import { Item, ItemContent } from '@sveltery/components/item';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/components/select';
+  import { Separator } from '@sveltery/components/separator';
+  import { IconPlaceholder } from '@sveltery/components/icons';
 
   const FROM_ACCOUNTS = [
     { label: 'Main Checking (··8402) — $12,450.00', value: 'checking' },

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { untrack } from 'svelte';
   import { page } from '$app/state';
-  import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, DialogClose } from '@sveltery/ui/dialog';
+  import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, DialogClose } from '@sveltery/components/dialog';
   const scenario = page.url.searchParams.get('scenario') ?? 'ordinary';
   let open = $state(untrack(() => scenario === 'initial'));
   let cancelNext = $state(false);

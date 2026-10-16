@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Field, FieldDescription, FieldLabel } from '@sveltery/ui/field';
-  import { Input } from '@sveltery/ui/input';
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
-  import { ToggleGroup, ToggleGroupItem } from '@sveltery/ui/toggle-group';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Example, ExampleWrapper } from '@sveltery/components/example';
+  import { Field, FieldDescription, FieldLabel } from '@sveltery/components/field';
+  import { Input } from '@sveltery/components/input';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/components/select';
+  import { ToggleGroup, ToggleGroupItem } from '@sveltery/components/toggle-group';
+  import { IconPlaceholder } from '@sveltery/components/icons';
 
   const fontWeights = [
     { value: 'light', label: 'Light', weight: 'font-light' },

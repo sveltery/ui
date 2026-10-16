@@ -2,6 +2,8 @@
 
 A step-by-step questionnaire for Svelte 5. It shows one question at a time inside a form, tracks answers and validation, and supports skipping, previous and next, and keyboard shortcuts for choices. It ports the behavior of the questionnaire in [shadcn/ui](https://github.com/shadcn-ui/ui), renders plain elements and ships no styles.
 
+The styled [Questionnaire](https://ui.sveltery.dev/docs/components/questionnaire) component in Sveltery UI is built on it.
+
 ## Install
 
 ```sh
@@ -37,7 +39,7 @@ npm install @sveltery/questionnaire
 
 `Root` renders a `<form>`, so the answers submit with it like any other form fields.
 
-The styled version lives in `@sveltery/ui/questionnaire`.
+Add the styled version to your app with `npx @sveltery/ui@latest add questionnaire`.
 
 ## License
 

@@ -13,7 +13,7 @@
     MenubarSubContent,
     MenubarSubTrigger,
     MenubarTrigger
-  } from '@sveltery/ui/menubar';
+  } from '@sveltery/components/menubar';
 
   let last = $state('none');
   let grid = $state(true);

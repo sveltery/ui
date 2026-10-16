@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Field, FieldLabel } from '@sveltery/ui/field';
+  import { Example, ExampleWrapper } from '@sveltery/components/example';
+  import { Field, FieldLabel } from '@sveltery/components/field';
   import {
     Pagination,
     PaginationContent,
@@ -9,8 +9,8 @@
     PaginationLink,
     PaginationNext,
     PaginationPrevious,
-  } from '@sveltery/ui/pagination';
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
+  } from '@sveltery/components/pagination';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/components/select';
 </script>
 
 {#snippet PaginationBasic()}

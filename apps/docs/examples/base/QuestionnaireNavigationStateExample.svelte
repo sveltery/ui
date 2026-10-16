@@ -13,7 +13,7 @@
     QuestionnaireSubmit,
     QuestionnaireTitle,
     type QuestionnaireItemStatus,
-  } from '@sveltery/ui/questionnaire';
+  } from '@sveltery/components/questionnaire';
 
   const items = [
     { name: 'permission', required: true },

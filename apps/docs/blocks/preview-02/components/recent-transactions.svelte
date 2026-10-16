@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
-  import { Table, TableBody, TableCell, TableRow } from '@sveltery/ui/table';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Button } from '@sveltery/components/button';
+  import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@sveltery/components/dropdown-menu';
+  import { Table, TableBody, TableCell, TableRow } from '@sveltery/components/table';
+  import { IconPlaceholder } from '@sveltery/components/icons';
 </script>
 
 <Card>

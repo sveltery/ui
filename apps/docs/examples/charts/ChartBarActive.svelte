@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '@sveltery/ui/chart';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { type ChartConfig, ChartContainer, ChartTooltip } from '@sveltery/components/chart';
+  import { IconPlaceholder } from '@sveltery/components/icons';
   import { scaleBand } from 'd3-scale';
   import { Bar, BarChart } from 'layerchart';
   import { cubicInOut } from 'svelte/easing';

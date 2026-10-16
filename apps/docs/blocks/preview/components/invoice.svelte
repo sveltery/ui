@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Badge } from '@sveltery/ui/badge';
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@sveltery/ui/table';
+  import { Badge } from '@sveltery/components/badge';
+  import { Button } from '@sveltery/components/button';
+  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@sveltery/components/table';
 
   const INVOICE_ITEMS = [
     { item: 'Design System License', qty: 1, unitPrice: 499 },
