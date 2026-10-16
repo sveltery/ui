@@ -10,4 +10,4 @@ pnpm verify
 pnpm --filter @sveltery/docs dev
 ```
 
-The docs are at [ui.sveltery.dev](https://ui.sveltery.dev). See [installation](docs/installation.md) to use it in an app and [CONTRIBUTING.md](CONTRIBUTING.md) for the layout and checks. Original code is [MIT](LICENSE); derived code keeps its [upstream notices](apps/docs/registry/THIRD_PARTY_NOTICES.md).
+The docs are at [ui.sveltery.dev](https://ui.sveltery.dev). See [installation](https://ui.sveltery.dev/docs/installation) to add it to an app with the CLI and [CONTRIBUTING.md](CONTRIBUTING.md) for the layout and checks. Original code is [MIT](LICENSE); derived code keeps its [upstream notices](apps/docs/registry/THIRD_PARTY_NOTICES.md).
