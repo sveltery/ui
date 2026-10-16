@@ -9,5 +9,6 @@ export const site = {
     { href: '/docs/components', label: 'Components' },
     { href: '/docs/forms', label: 'Forms' },
     { href: '/blocks', label: 'Blocks' },
+    { href: '/create', label: 'Create' },
   ],
 } as const;
