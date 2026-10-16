@@ -1,9 +1,9 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { Button } from '@sveltery/ui/button';
-  import { Checkbox } from '@sveltery/ui/checkbox';
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
+  import { Button } from '@sveltery/components/button';
+  import { Checkbox } from '@sveltery/components/checkbox';
+  import { Example, ExampleWrapper } from '@sveltery/components/example';
   import {
     Dialog,
     DialogClose,
@@ -13,18 +13,18 @@
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-  } from '@sveltery/ui/dialog';
-  import { Field, FieldContent, FieldDescription, FieldGroup, FieldLabel, FieldSeparator, FieldSet, FieldTitle } from '@sveltery/ui/field';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { Input } from '@sveltery/ui/input';
-  import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '@sveltery/ui/input-group';
-  import { Kbd } from '@sveltery/ui/kbd';
-  import { NativeSelect, NativeSelectOption } from '@sveltery/ui/native-select';
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
-  import { Switch } from '@sveltery/ui/switch';
-  import { Tabs, TabsContent, TabsList, TabsTrigger } from '@sveltery/ui/tabs';
-  import { Textarea } from '@sveltery/ui/textarea';
-  import { Tooltip, TooltipContent, TooltipTrigger } from '@sveltery/ui/tooltip';
+  } from '@sveltery/components/dialog';
+  import { Field, FieldContent, FieldDescription, FieldGroup, FieldLabel, FieldSeparator, FieldSet, FieldTitle } from '@sveltery/components/field';
+  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Input } from '@sveltery/components/input';
+  import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '@sveltery/components/input-group';
+  import { Kbd } from '@sveltery/components/kbd';
+  import { NativeSelect, NativeSelectOption } from '@sveltery/components/native-select';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/components/select';
+  import { Switch } from '@sveltery/components/switch';
+  import { Tabs, TabsContent, TabsList, TabsTrigger } from '@sveltery/components/tabs';
+  import { Textarea } from '@sveltery/components/textarea';
+  import { Tooltip, TooltipContent, TooltipTrigger } from '@sveltery/components/tooltip';
 
   let open = $state(false);
   let name = $state('Pedro Duarte');

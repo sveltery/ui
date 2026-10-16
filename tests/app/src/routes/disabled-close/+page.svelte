@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { DialogCloseState, DialogTriggerHostProps } from '@sveltery/base/dialog';
-  import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogClose } from '@sveltery/ui/dialog';
+  import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogClose } from '@sveltery/components/dialog';
   let { data } = $props();
 </script>
 {#snippet anchor(props: DialogTriggerHostProps, _state: DialogCloseState, children: Snippet | undefined)}

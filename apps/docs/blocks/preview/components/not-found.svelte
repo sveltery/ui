@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardContent } from '@sveltery/ui/card';
-  import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from '@sveltery/ui/empty';
-  import { InputGroup, InputGroupAddon, InputGroupInput } from '@sveltery/ui/input-group';
-  import { Kbd } from '@sveltery/ui/kbd';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Button } from '@sveltery/components/button';
+  import { Card, CardContent } from '@sveltery/components/card';
+  import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from '@sveltery/components/empty';
+  import { InputGroup, InputGroupAddon, InputGroupInput } from '@sveltery/components/input-group';
+  import { Kbd } from '@sveltery/components/kbd';
+  import { IconPlaceholder } from '@sveltery/components/icons';
 </script>
 
 <Card>

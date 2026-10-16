@@ -1,10 +1,10 @@
 <script lang="ts">
   import { scaleBand } from 'd3-scale';
   import { BarChart } from 'layerchart';
-  import { Badge } from '@sveltery/ui/badge';
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardContent, CardDescription, CardTitle } from '@sveltery/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '@sveltery/ui/chart';
+  import { Badge } from '@sveltery/components/badge';
+  import { Button } from '@sveltery/components/button';
+  import { Card, CardContent, CardDescription, CardTitle } from '@sveltery/components/card';
+  import { type ChartConfig, ChartContainer, ChartTooltip } from '@sveltery/components/chart';
 
   const activityData = [
     { month: 'Jan', amount: 40 },

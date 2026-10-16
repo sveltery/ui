@@ -14,7 +14,7 @@
     MenubarSubContent,
     MenubarSubTrigger,
     MenubarTrigger
-  } from '@sveltery/ui/menubar';
+  } from '@sveltery/components/menubar';
   let profile = $state('benoit');
 </script>
 

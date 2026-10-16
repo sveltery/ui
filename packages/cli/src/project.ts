@@ -14,7 +14,7 @@ export function readJson(path: string): unknown {
 /** Every package the project's package.json declares, in any dependency field, with its range. */
 export function declaredPackages(cwd: string): Map<string, string> {
   const path = join(cwd, 'package.json');
-  if (!existsSync(path)) throw new CliError(`No package.json in ${cwd}. Run sveltery in your app's root, or pass --cwd.`);
+  if (!existsSync(path)) throw new CliError(`No package.json in ${cwd}. Run the CLI in your app's root, or pass --cwd.`);
   const manifest = readJson(path) as Record<string, unknown>;
   const fields = ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies'];
   return new Map(fields.flatMap((field) => Object.entries((manifest[field] ?? {}) as Record<string, unknown>).map(([name, range]) => [name, String(range)] as const)));

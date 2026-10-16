@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "vite dev --host 127.0.0.1",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-    "build": "pnpm --filter @sveltery/ui build && vite build && pagefind --site .svelte-kit/cloudflare",
+    "build": "pnpm --filter @sveltery/components build && vite build && pagefind --site .svelte-kit/cloudflare",
     "preview": "wrangler dev --port 4173",
     "deploy": "wrangler deploy"
   },
@@ -17,7 +17,7 @@
     "@dnd-kit/helpers": "0.5.0",
     "@dnd-kit/svelte": "0.5.0",
     "@sveltery/day-picker": "workspace:*",
-    "@sveltery/ui": "workspace:*",
+    "@sveltery/components": "workspace:*",
     "@tanstack/svelte-table": "9.3.1",
     "cn": "0.2.2",
     "d3-scale": "4.0.2",

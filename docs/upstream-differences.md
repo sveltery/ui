@@ -6,7 +6,7 @@ Sveltery UI mirrors shadcn/ui. This file lists the deliberate differences that a
 
 shadcn/ui ships both Sonner (`sonner.tsx`, on the `sonner` library) and Toast (on Base UI Toast). Sveltery UI ships only Toast. Toast already has sonner's behavior (stacking, swipe to dismiss, typed toasts, promise toasts), so a second toast system would be redundant. This is Hugo Hsi's decision of 2026-10-14.
 
-Where upstream code imports `toast` from `sonner`, Sveltery UI imports `toast` from `@sveltery/ui/toast` and calls `toast.add({ title, description })` or `toast.promise()`. This covers the docs examples and blocks too.
+Where upstream code imports `toast` from `sonner`, Sveltery UI imports `toast` from `@sveltery/components/toast` and calls `toast.add({ title, description })` or `toast.promise()`. This covers the docs examples and blocks too.
 
 ## Field and Form compose Sveltery Base
 

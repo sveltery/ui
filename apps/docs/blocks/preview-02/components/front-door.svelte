@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Badge } from '@sveltery/ui/badge';
-  import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Badge } from '@sveltery/components/badge';
+  import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { IconPlaceholder } from '@sveltery/components/icons';
 </script>
 
 <Card>

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { DirectionProvider } from '@sveltery/ui/direction';
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from '@sveltery/ui/select';
+  import { Button } from '@sveltery/components/button';
+  import { DirectionProvider } from '@sveltery/components/direction';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from '@sveltery/components/select';
 
   const translations = {
     en: {

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button, buttonVariants } from '@sveltery/ui/button';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Example, ExampleWrapper } from '@sveltery/components/example';
+  import { Button, buttonVariants } from '@sveltery/components/button';
+  import { IconPlaceholder } from '@sveltery/components/icons';
 
   const variants = [
     { variant: 'default', label: 'Default' },

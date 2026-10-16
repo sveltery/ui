@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Button } from '@sveltery/components/button';
+  import { IconPlaceholder } from '@sveltery/components/icons';
   import { getSortable } from './draggable-row.svelte';
 
   const sortable = getSortable();

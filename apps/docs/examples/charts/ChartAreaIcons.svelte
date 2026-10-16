@@ -2,9 +2,9 @@
   import { AreaChart } from 'layerchart';
   import { curveNatural } from 'd3-shape';
   import { scaleUtc } from 'd3-scale';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { type ChartConfig, ChartContainer, ChartLegend, ChartTooltip } from '@sveltery/ui/chart';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { type ChartConfig, ChartContainer, ChartLegend, ChartTooltip } from '@sveltery/components/chart';
+  import { IconPlaceholder } from '@sveltery/components/icons';
   import TrendingDownIcon from './icons/TrendingDownIcon.svelte';
   import TrendingUpIcon from './icons/TrendingUpIcon.svelte';
 

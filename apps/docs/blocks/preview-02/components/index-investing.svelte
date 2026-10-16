@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/ui/card';
+  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/components/card';
 </script>
 
 <Card>

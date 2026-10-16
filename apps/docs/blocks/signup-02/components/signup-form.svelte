@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { HTMLFormAttributes } from 'svelte/elements';
-  import { Button } from '@sveltery/ui/button';
-  import { Field, FieldDescription, FieldGroup, FieldLabel, FieldSeparator } from '@sveltery/ui/field';
-  import { Input } from '@sveltery/ui/input';
+  import { Button } from '@sveltery/components/button';
+  import { Field, FieldDescription, FieldGroup, FieldLabel, FieldSeparator } from '@sveltery/components/field';
+  import { Input } from '@sveltery/components/input';
   import { cn } from 'cn';
   let { class: className, ...props }: HTMLFormAttributes = $props();
 </script>

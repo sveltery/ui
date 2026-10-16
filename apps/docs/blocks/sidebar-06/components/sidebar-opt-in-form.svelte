@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { SidebarInput } from '@sveltery/ui/sidebar';
+  import { Button } from '@sveltery/components/button';
+  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { SidebarInput } from '@sveltery/components/sidebar';
 </script>
 
 <Card class="gap-2 py-4 shadow-none">

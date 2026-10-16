@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from '@sveltery/ui/navigation-menu';
+  import { Example, ExampleWrapper } from '@sveltery/components/example';
+  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from '@sveltery/components/navigation-menu';
 
   const components: { title: string; description: string }[] = [
     { title: 'Alert Dialog', description: 'A modal dialog that interrupts the user with important content and expects a response.' },

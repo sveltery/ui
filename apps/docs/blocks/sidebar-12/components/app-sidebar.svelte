@@ -10,11 +10,11 @@
     SidebarRail,
     SidebarSeparator,
     type SidebarProps,
-  } from '@sveltery/ui/sidebar';
+  } from '@sveltery/components/sidebar';
   import Calendars from './calendars.svelte';
   import DatePicker from './date-picker.svelte';
   import NavUser from './nav-user.svelte';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { IconPlaceholder } from '@sveltery/components/icons';
   let { ...props }: SidebarProps = $props();
   const data = {
     user: {

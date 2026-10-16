@@ -259,12 +259,12 @@ importers:
       '@dnd-kit/svelte':
         specifier: 0.5.0
         version: 0.5.0(svelte@5.57.1(@typescript-eslint/types@8.71.0))
+      '@sveltery/components':
+        specifier: workspace:*
+        version: link:../../packages/ui
       '@sveltery/day-picker':
         specifier: workspace:*
         version: link:../../packages/day-picker
-      '@sveltery/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
       '@tanstack/svelte-table':
         specifier: 9.3.1
         version: 9.3.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))
@@ -581,6 +581,9 @@ importers:
       '@sveltery/command':
         specifier: workspace:*
         version: link:../../packages/command
+      '@sveltery/components':
+        specifier: workspace:*
+        version: link:../../packages/ui
       '@sveltery/day-picker':
         specifier: workspace:*
         version: link:../../packages/day-picker
@@ -593,9 +596,6 @@ importers:
       '@sveltery/resizable':
         specifier: workspace:*
         version: link:../../packages/resizable
-      '@sveltery/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
       date-fns:
         specifier: 4.4.0
         version: 4.4.0

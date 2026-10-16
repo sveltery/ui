@@ -1,14 +1,14 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
-  import { Bubble, BubbleContent } from '@sveltery/ui/bubble';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea } from '@sveltery/ui/input-group';
-  import { Marker, MarkerContent, MarkerIcon } from '@sveltery/ui/marker';
-  import { Message, MessageContent } from '@sveltery/ui/message';
-  import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerItem, MessageScrollerProvider, MessageScrollerViewport } from '@sveltery/ui/message-scroller';
-  import { Spinner } from '@sveltery/ui/spinner';
+  import { Bubble, BubbleContent } from '@sveltery/components/bubble';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { Example, ExampleWrapper } from '@sveltery/components/example';
+  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea } from '@sveltery/components/input-group';
+  import { Marker, MarkerContent, MarkerIcon } from '@sveltery/components/marker';
+  import { Message, MessageContent } from '@sveltery/components/message';
+  import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerItem, MessageScrollerProvider, MessageScrollerViewport } from '@sveltery/components/message-scroller';
+  import { Spinner } from '@sveltery/components/spinner';
   import { Chat, createChat } from './message-scroller/chat.svelte.js';
 
   const script = createChat()
