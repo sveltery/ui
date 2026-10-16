@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLButtonAttributes } from 'svelte/elements';
-  import { Toast, ToastAction, ToastClose, ToastContent, ToastPortal, ToastTitle, ToastViewport, getToastManager } from '@sveltery/ui/toast';
+  import { Toast, ToastAction, ToastClose, ToastContent, ToastPortal, ToastTitle, ToastViewport, getToastManager } from '@sveltery/components/toast';
 
   const manager = getToastManager();
 </script>

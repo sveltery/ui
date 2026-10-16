@@ -2,9 +2,9 @@
   import { LineChart } from 'layerchart';
   import { scaleUtc } from 'd3-scale';
   import { curveNatural } from 'd3-shape';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '@sveltery/ui/chart';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { type ChartConfig, ChartContainer, ChartTooltip } from '@sveltery/components/chart';
+  import { IconPlaceholder } from '@sveltery/components/icons';
 
   const chartData = [
     { date: new Date('2024-01-01'), desktop: 186, mobile: 80 },

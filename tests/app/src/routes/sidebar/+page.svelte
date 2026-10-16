@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Sidebar, SidebarContent, SidebarGroup, SidebarInset, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@sveltery/ui/sidebar';
+  import { Sidebar, SidebarContent, SidebarGroup, SidebarInset, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@sveltery/components/sidebar';
   let { data } = $props();
 </script>
 <SidebarProvider defaultOpen={data.open}>

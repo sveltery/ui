@@ -1,9 +1,9 @@
 <script lang="ts">
   import { onMount, type Snippet } from 'svelte';
   import type { HTMLAttributes, HTMLButtonAttributes } from 'svelte/elements';
-  import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogTitle } from '@sveltery/ui/alert-dialog';
-  import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerProvider, MessageScrollerViewport } from '@sveltery/ui/message-scroller';
-  import { ToastProvider, createToastManager } from '@sveltery/ui/toast';
+  import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogTitle } from '@sveltery/components/alert-dialog';
+  import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerProvider, MessageScrollerViewport } from '@sveltery/components/message-scroller';
+  import { ToastProvider, createToastManager } from '@sveltery/components/toast';
   import ToastList from './ToastList.svelte';
 
   const manager = createToastManager();

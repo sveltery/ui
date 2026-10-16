@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { Slider } from '@sveltery/ui/slider';
-  import { ToggleGroup, ToggleGroupItem } from '@sveltery/ui/toggle-group';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { Slider } from '@sveltery/components/slider';
+  import { ToggleGroup, ToggleGroupItem } from '@sveltery/components/toggle-group';
 
   let position = $state([50]);
   const preset = $derived(position[0] <= 10 ? 'open' : position[0] >= 90 ? 'closed' : 'half');

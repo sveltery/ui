@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Field, FieldLabel } from '@sveltery/ui/field';
-  import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '@sveltery/ui/input-otp';
+  import { Field, FieldLabel } from '@sveltery/components/field';
+  import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '@sveltery/components/input-otp';
   let value = $state<string>();
   let submitted = $state('');
 </script>

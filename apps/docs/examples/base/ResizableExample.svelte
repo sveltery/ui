@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@sveltery/ui/resizable';
+  import { Button } from '@sveltery/components/button';
+  import { Example, ExampleWrapper } from '@sveltery/components/example';
+  import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@sveltery/components/resizable';
 
   let layout = $state<Record<string, number>>({ sidebar: 25, content: 75 });
 </script>

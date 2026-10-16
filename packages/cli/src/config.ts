@@ -49,6 +49,6 @@ export function parseConfig(json: unknown): Config {
   } catch (error) {
     if (!(error instanceof ParseError)) throw error;
     const key = error.message.split(/[.:[]/)[0] ?? '';
-    throw new CliError(`${CONFIG_FILE} is invalid. ${error.message}. ${hints[key] ?? 'Run `npx @sveltery/cli@latest init` to repair it.'}`.trimEnd());
+    throw new CliError(`${CONFIG_FILE} is invalid. ${error.message}. ${hints[key] ?? 'Run `npx @sveltery/ui@latest init` to repair it.'}`.trimEnd());
   }
 }

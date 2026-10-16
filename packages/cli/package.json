@@ -1,5 +1,5 @@
 {
-  "name": "@sveltery/cli",
+  "name": "@sveltery/ui",
   "version": "0.1.0",
   "description": "Add Sveltery UI components to a Svelte app.",
   "keywords": [

@@ -12,7 +12,7 @@
     QuestionnaireProgress,
     QuestionnaireSubmit,
     QuestionnaireTitle,
-  } from '@sveltery/ui/questionnaire';
+  } from '@sveltery/components/questionnaire';
 
   let runtime = $state('local');
   const items = $derived([{ name: 'runtime', required: true }, { disabled: runtime !== 'cloud', name: 'environment', required: true }, { name: 'approval', required: true }]);

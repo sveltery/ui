@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Pagination, PaginationContent, PaginationItem, PaginationLink } from '@sveltery/ui/pagination';
+  import { Pagination, PaginationContent, PaginationItem, PaginationLink } from '@sveltery/components/pagination';
   let keys = $state(0);
 </script>
 

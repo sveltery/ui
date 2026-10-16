@@ -1,10 +1,10 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from '@sveltery/ui/item';
-  import { Label } from '@sveltery/ui/label';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@sveltery/components/dropdown-menu';
+  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from '@sveltery/components/item';
+  import { Label } from '@sveltery/components/label';
   import {
     Sidebar,
     SidebarContent,
@@ -20,7 +20,7 @@
     SidebarProvider,
     SidebarRail,
     SidebarTrigger,
-  } from '@sveltery/ui/sidebar';
+  } from '@sveltery/components/sidebar';
 
   const versions = ['1.0.1', '1.1.0-alpha', '2.0.0-beta1'];
   let selectedVersion = $state(versions[0]);

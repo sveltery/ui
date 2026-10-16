@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@sveltery/ui/collapsible';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@sveltery/components/collapsible';
+  import { IconPlaceholder } from '@sveltery/components/icons';
   import {
     SidebarGroup,
     SidebarGroupContent,
@@ -14,7 +14,7 @@
     SidebarMenuSub,
     SidebarMenuSubButton,
     SidebarMenuSubItem,
-  } from '@sveltery/ui/sidebar';
+  } from '@sveltery/components/sidebar';
 
   let { workspaces }: { workspaces: { name: string; emoji: string; pages: { name: string; emoji: string }[] }[] } = $props();
   // The host element's typed event handlers do not fit the element this snippet renders, so only `class` is typed.

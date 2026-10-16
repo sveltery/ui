@@ -1,7 +1,7 @@
 <script lang="ts">
   import Autoplay from 'embla-carousel-autoplay';
-  import { Card, CardContent } from '@sveltery/ui/card';
-  import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@sveltery/ui/carousel';
+  import { Card, CardContent } from '@sveltery/components/card';
+  import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@sveltery/components/carousel';
 
   const plugin = Autoplay({ delay: 2000, stopOnInteraction: true });
 </script>

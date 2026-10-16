@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardContent, CardFooter } from '@sveltery/ui/card';
-  import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@sveltery/ui/dialog';
-  import { Field, FieldGroup, FieldLabel } from '@sveltery/ui/field';
-  import { Input } from '@sveltery/ui/input';
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/ui/select';
-  import { Textarea } from '@sveltery/ui/textarea';
+  import { Button } from '@sveltery/components/button';
+  import { Card, CardContent, CardFooter } from '@sveltery/components/card';
+  import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@sveltery/components/dialog';
+  import { Field, FieldGroup, FieldLabel } from '@sveltery/components/field';
+  import { Input } from '@sveltery/components/input';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/components/select';
+  import { Textarea } from '@sveltery/components/textarea';
 
   const headingLabel = 'Inherit';
   const bodyLabel = 'Geist';

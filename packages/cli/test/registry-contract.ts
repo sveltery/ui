@@ -1,4 +1,4 @@
-// Type-only: `pnpm --filter @sveltery/cli check` fails when the CLI's parsed shapes and the registry's served shapes drift apart.
+// Type-only: `pnpm --filter @sveltery/ui check` fails when the CLI's parsed shapes and the registry's served shapes drift apart.
 import type * as Served from '../../../apps/docs/registry/types.js';
 import type * as Parsed from '../src/registry.js';
 

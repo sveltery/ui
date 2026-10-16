@@ -24,7 +24,7 @@ npm install @sveltery/resizable
 
 A size is a string with a unit (`"30%"`, `"240px"`, `"2rem"`, `"50vh"`; a bare `"25"` means percent) or a number of pixels. Bind `layout` on `Group` to read or set every panel's size, and spread `savedLayout({ id })` onto `Group` to keep the layout in `localStorage`.
 
-The styled version lives in `@sveltery/ui/resizable`.
+Add the styled version to your app with `npx @sveltery/ui@latest add resizable`.
 
 ## License
 

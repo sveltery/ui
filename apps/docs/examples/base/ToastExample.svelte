@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { toast } from '@sveltery/ui/toast';
+  import { Button } from '@sveltery/components/button';
+  import { Example, ExampleWrapper } from '@sveltery/components/example';
+  import { toast } from '@sveltery/components/toast';
 
   function showActionToast() {
     const id = toast.add({

@@ -114,7 +114,7 @@ The package has no Dialog part. Put Root inside a dialog, for example `@sveltery
 </Dialog.Root>
 ```
 
-The menu resets its search and selection each time the popup content mounts again. Bind `value` on Root and Input to keep them across openings. With `@sveltery/ui`, compose its `Dialog` and `DialogContent` the same way.
+The menu resets its search and selection each time the popup content mounts again. Bind `value` on Root and Input to keep them across openings. With the styled components from `npx @sveltery/ui@latest add command dialog`, compose `Dialog` and `DialogContent` the same way.
 
 ## Differences from cmdk
 

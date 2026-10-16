@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { Field, FieldDescription, FieldGroup, FieldLabel } from '@sveltery/ui/field';
-  import { Input } from '@sveltery/ui/input';
-  import { NativeSelect, NativeSelectOption } from '@sveltery/ui/native-select';
-  import { Textarea } from '@sveltery/ui/textarea';
+  import { Button } from '@sveltery/components/button';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { Field, FieldDescription, FieldGroup, FieldLabel } from '@sveltery/components/field';
+  import { Input } from '@sveltery/components/input';
+  import { NativeSelect, NativeSelectOption } from '@sveltery/components/native-select';
+  import { Textarea } from '@sveltery/components/textarea';
 </script>
 
 <Card class="mx-auto w-full max-w-md">

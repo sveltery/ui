@@ -5,14 +5,14 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@sveltery/ui/collapsible';
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Field, FieldGroup, FieldLabel } from '@sveltery/ui/field';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { Input } from '@sveltery/ui/input';
-  import { Tabs, TabsList, TabsTrigger } from '@sveltery/ui/tabs';
+  import { Button } from '@sveltery/components/button';
+  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@sveltery/components/collapsible';
+  import { Example, ExampleWrapper } from '@sveltery/components/example';
+  import { Field, FieldGroup, FieldLabel } from '@sveltery/components/field';
+  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Input } from '@sveltery/components/input';
+  import { Tabs, TabsList, TabsTrigger } from '@sveltery/components/tabs';
 
   const fileTree: FileTreeItem[] = [
     {

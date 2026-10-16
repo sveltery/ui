@@ -12,7 +12,7 @@
     QuestionnaireSkip,
     QuestionnaireSubmit,
     QuestionnaireTitle,
-  } from '@sveltery/ui/questionnaire';
+  } from '@sveltery/components/questionnaire';
 
   const items = [{ choices: [{ value: 'inspect' }, { value: 'implement' }, { value: 'review' }], name: 'task', required: true }];
 

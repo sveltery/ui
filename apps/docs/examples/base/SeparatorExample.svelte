@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Separator } from '@sveltery/ui/separator';
+  import { Example, ExampleWrapper } from '@sveltery/components/example';
+  import { Separator } from '@sveltery/components/separator';
 </script>
 
 {#snippet SeparatorHorizontal()}

@@ -1,12 +1,12 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { Avatar, AvatarFallback, AvatarImage } from '@sveltery/ui/avatar';
-  import { Button } from '@sveltery/ui/button';
-  import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@sveltery/ui/collapsible';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@sveltery/ui/item';
+  import { Avatar, AvatarFallback, AvatarImage } from '@sveltery/components/avatar';
+  import { Button } from '@sveltery/components/button';
+  import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@sveltery/components/collapsible';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@sveltery/components/dropdown-menu';
+  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@sveltery/components/item';
   import {
     Sidebar,
     SidebarContent,
@@ -24,7 +24,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
     SidebarProvider,
     SidebarRail,
     SidebarTrigger,
-  } from '@sveltery/ui/sidebar';
+  } from '@sveltery/components/sidebar';
 
   const user = { name: 'shadcn', email: 'm@example.com', avatar: 'https://github.com/shadcn.png' };
   const teams = [

@@ -10,7 +10,7 @@
     QuestionnaireItem,
     QuestionnaireSubmit,
     QuestionnaireTitle,
-  } from '@sveltery/ui/questionnaire';
+  } from '@sveltery/components/questionnaire';
 
   const items = [{ choices: [{ value: 'incremental' }, { value: 'module' }, { value: 'rewrite' }], name: 'approach', required: true }];
 

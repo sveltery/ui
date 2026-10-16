@@ -9,7 +9,7 @@
     QuestionnaireItem,
     QuestionnaireSubmit,
     QuestionnaireTitle,
-  } from '@sveltery/ui/questionnaire';
+  } from '@sveltery/components/questionnaire';
 
   const items = [{ choices: [{ value: 'source' }, { value: 'tests' }, { value: 'docs' }, { value: 'history' }], name: 'context', required: true }];
 

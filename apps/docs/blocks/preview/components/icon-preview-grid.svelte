@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Card, CardContent } from '@sveltery/ui/card';
-  import { IconPlaceholder, type IconLibraryName } from '@sveltery/ui/icons';
+  import { Card, CardContent } from '@sveltery/components/card';
+  import { IconPlaceholder, type IconLibraryName } from '@sveltery/components/icons';
 
   const PREVIEW_ICONS = [
     { lucide: 'CopyIcon', tabler: 'IconCopy', hugeicons: 'Copy01Icon', phosphor: 'CopyIcon', remixicon: 'RiFileCopyLine' },

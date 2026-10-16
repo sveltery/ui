@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { DirectionProvider } from '@sveltery/ui/direction';
-  import { Label } from '@sveltery/ui/label';
+  import { Button } from '@sveltery/components/button';
+  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { DirectionProvider } from '@sveltery/components/direction';
+  import { Label } from '@sveltery/components/label';
 
   const translations = {
     en: {

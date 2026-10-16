@@ -1,14 +1,14 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button } from '@sveltery/ui/button';
-  import { ButtonGroup, ButtonGroupText } from '@sveltery/ui/button-group';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
-  import { Field, FieldDescription, FieldGroup, FieldLabel } from '@sveltery/ui/field';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { Input } from '@sveltery/ui/input';
+  import { Example, ExampleWrapper } from '@sveltery/components/example';
+  import { Button } from '@sveltery/components/button';
+  import { ButtonGroup, ButtonGroupText } from '@sveltery/components/button-group';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@sveltery/components/dropdown-menu';
+  import { Field, FieldDescription, FieldGroup, FieldLabel } from '@sveltery/components/field';
+  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Input } from '@sveltery/components/input';
   import {
     InputGroup,
     InputGroupAddon,
@@ -16,13 +16,13 @@
     InputGroupInput,
     InputGroupText,
     InputGroupTextarea,
-  } from '@sveltery/ui/input-group';
-  import { Kbd, KbdGroup } from '@sveltery/ui/kbd';
-  import { Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger } from '@sveltery/ui/popover';
-  import { toast } from '@sveltery/ui/toast';
-  import { Spinner } from '@sveltery/ui/spinner';
-  import { Textarea } from '@sveltery/ui/textarea';
-  import { Tooltip, TooltipContent, TooltipTrigger } from '@sveltery/ui/tooltip';
+  } from '@sveltery/components/input-group';
+  import { Kbd, KbdGroup } from '@sveltery/components/kbd';
+  import { Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger } from '@sveltery/components/popover';
+  import { toast } from '@sveltery/components/toast';
+  import { Spinner } from '@sveltery/components/spinner';
+  import { Textarea } from '@sveltery/components/textarea';
+  import { Tooltip, TooltipContent, TooltipTrigger } from '@sveltery/components/tooltip';
 
   const countries = ['+1', '+44', '+46'];
   let country = $state('+1');

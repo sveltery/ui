@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '@sveltery/ui/carousel';
+  import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '@sveltery/components/carousel';
   import Probe from './Probe.svelte';
   let api = $state.raw<CarouselApi>();
   let selected = $state(-1);
