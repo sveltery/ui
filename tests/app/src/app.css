@@ -2,7 +2,6 @@
 @import "tw-animate-css";
 @import "../../../packages/cli/tailwind.css";
 @import "../../../apps/docs/registry/styles/themes.css";
-@import "../../../apps/docs/registry/styles/style-nova.css";
 @import "../../../apps/docs/registry/styles/styles.css";
 @source "../../../apps/docs/registry/bases";
 @layer base { * { border-color: var(--border); } }

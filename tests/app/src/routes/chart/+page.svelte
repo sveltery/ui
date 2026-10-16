@@ -29,7 +29,7 @@
     { key: 'desktop', label: 'Desktop' },
     { key: 'mobile', label: 'Mobile' }
   ];
-  type Case = { id: string; style?: string; data: Record<string, unknown>[]; x?: string; series?: { key: string; label?: string }[]; config?: ChartConfig; tooltip?: ChartTooltipProps };
+  type Case = { id: string; data: Record<string, unknown>[]; x?: string; series?: { key: string; label?: string }[]; config?: ChartConfig; tooltip?: ChartTooltipProps };
   const cases: Case[] = [
     { id: 'gaps', data: [{ month: 'January', desktop: 186, mobile: null }, months[1]] },
     { id: 'zero', data: [{ day: 0, desktop: 186, mobile: 80 }, { day: 1, desktop: 305, mobile: 200 }], x: 'day' },
@@ -37,7 +37,6 @@
     { id: 'formatted', data: twoMonths, tooltip: { labelFormatter: () => 0 } },
     { id: 'unnamed', data: twoMonths, series: [{ key: 'desktop', label: '' }, series[1]], tooltip: { formatter: valueOnly } },
     { id: 'unlisted', data: twoMonths.map((row) => ({ ...row, tablet: 50 })), series: [series[0], { key: 'tablet' }] },
-    { id: 'luma', data: twoMonths, style: 'style-luma' },
     { id: 'plain', data: twoMonths, config: { desktop: { label: 'Desktop' }, mobile: { label: 'Mobile' } } }
   ];
 </script>
@@ -105,7 +104,7 @@
 </div>
 
 {#each cases as c (c.id)}
-  <div class={c.style} style="width: 400px">
+  <div style="width: 400px">
     <ChartContainer id={c.id} config={c.config ?? monthsConfig}>
       <BarChart data={c.data} x={c.x ?? 'month'} axis="x" rule={false} seriesLayout="group" series={c.series ?? series}>
         {#snippet tooltip()}
