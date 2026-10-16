@@ -16,7 +16,7 @@ Questionnaire is built on `@sveltery/questionnaire`, a Svelte package that takes
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add questionnaire
+npx @sveltery/ui@latest add questionnaire
 ```
 
 </InstallTab>

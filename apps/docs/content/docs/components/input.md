@@ -12,7 +12,7 @@ description: A text input component for forms and user data entry with built-in 
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add input
+npx @sveltery/ui@latest add input
 ```
 
 </InstallTab>

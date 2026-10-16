@@ -12,7 +12,7 @@ description: Displays rich content in a portal, triggered by a button.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add popover
+npx @sveltery/ui@latest add popover
 ```
 
 </InstallTab>

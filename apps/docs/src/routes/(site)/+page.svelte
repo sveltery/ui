@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { Alert, AlertDescription, AlertTitle } from '@sveltery/ui/alert';
-  import { Avatar, AvatarFallback } from '@sveltery/ui/avatar';
-  import { Button, buttonVariants } from '@sveltery/ui/button';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { Kbd, KbdGroup } from '@sveltery/ui/kbd';
-  import { Label } from '@sveltery/ui/label';
-  import { Separator } from '@sveltery/ui/separator';
-  import { Skeleton } from '@sveltery/ui/skeleton';
-  import { Textarea } from '@sveltery/ui/textarea';
+  import { Alert, AlertDescription, AlertTitle } from '@sveltery/components/alert';
+  import { Avatar, AvatarFallback } from '@sveltery/components/avatar';
+  import { Button, buttonVariants } from '@sveltery/components/button';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { Kbd, KbdGroup } from '@sveltery/components/kbd';
+  import { Label } from '@sveltery/components/label';
+  import { Separator } from '@sveltery/components/separator';
+  import { Skeleton } from '@sveltery/components/skeleton';
+  import { Textarea } from '@sveltery/components/textarea';
   import { site } from '$lib/site';
 </script>
 

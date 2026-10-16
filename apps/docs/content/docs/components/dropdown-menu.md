@@ -12,7 +12,7 @@ description: Displays a menu to the user, such as a set of actions or functions,
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add dropdown-menu
+npx @sveltery/ui@latest add dropdown-menu
 ```
 
 </InstallTab>

@@ -12,7 +12,7 @@ description: Displays a message in a conversation, with optional avatar, header,
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add message
+npx @sveltery/ui@latest add message
 ```
 
 </InstallTab>

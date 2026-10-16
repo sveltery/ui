@@ -12,7 +12,7 @@ description: Displays a form textarea or a component that looks like a textarea.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add textarea
+npx @sveltery/ui@latest add textarea
 ```
 
 </InstallTab>

@@ -12,7 +12,7 @@ description: Combine labels, controls, and help text to compose accessible form 
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add field
+npx @sveltery/ui@latest add field
 ```
 
 </InstallTab>

@@ -12,7 +12,7 @@ description: Displays a list of options for the user to pick from, triggered by 
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add select
+npx @sveltery/ui@latest add select
 ```
 
 </InstallTab>

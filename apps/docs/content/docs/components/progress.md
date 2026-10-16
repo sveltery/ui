@@ -12,7 +12,7 @@ description: Displays an indicator showing the completion progress of a task, ty
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add progress
+npx @sveltery/ui@latest add progress
 ```
 
 </InstallTab>

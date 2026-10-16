@@ -12,7 +12,7 @@ description: Use to show a placeholder while content is loading.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add skeleton
+npx @sveltery/ui@latest add skeleton
 ```
 
 </InstallTab>

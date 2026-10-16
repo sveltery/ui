@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@sveltery/ui/sidebar';
+  import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@sveltery/components/sidebar';
 
   let { items }: { items: { title: string; url: string; icon: Snippet; isActive?: boolean }[] } = $props();
   // The host element's typed event handlers do not fit the element this snippet renders, so only `class` is typed.

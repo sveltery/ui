@@ -12,7 +12,7 @@ description: A popup that displays information related to an element when the el
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add tooltip
+npx @sveltery/ui@latest add tooltip
 ```
 
 </InstallTab>

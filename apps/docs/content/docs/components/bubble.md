@@ -12,7 +12,7 @@ description: Displays conversational content in a message bubble. Supports varia
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add bubble
+npx @sveltery/ui@latest add bubble
 ```
 
 </InstallTab>

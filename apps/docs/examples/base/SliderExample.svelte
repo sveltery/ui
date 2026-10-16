@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Label } from '@sveltery/ui/label';
-  import { Slider } from '@sveltery/ui/slider';
+  import { Example, ExampleWrapper } from '@sveltery/components/example';
+  import { Label } from '@sveltery/components/label';
+  import { Slider } from '@sveltery/components/slider';
 
   let temperature = $state([0.3, 0.7]);
 </script>

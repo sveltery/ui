@@ -16,7 +16,7 @@ The carousel component is built using the [Embla Carousel](https://www.embla-car
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add carousel
+npx @sveltery/ui@latest add carousel
 ```
 
 </InstallTab>

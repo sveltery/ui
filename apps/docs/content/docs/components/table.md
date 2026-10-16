@@ -12,7 +12,7 @@ description: A responsive table component.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add table
+npx @sveltery/ui@latest add table
 ```
 
 </InstallTab>

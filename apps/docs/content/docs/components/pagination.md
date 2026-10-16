@@ -12,7 +12,7 @@ description: Pagination with page navigation, next and previous links.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add pagination
+npx @sveltery/ui@latest add pagination
 ```
 
 </InstallTab>

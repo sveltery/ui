@@ -16,7 +16,7 @@ Resizable is built on `@sveltery/resizable`, a Svelte package that takes its des
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add resizable
+npx @sveltery/ui@latest add resizable
 ```
 
 </InstallTab>

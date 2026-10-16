@@ -12,7 +12,7 @@ description: Accessible one-time password component with copy paste functionalit
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add input-otp
+npx @sveltery/ui@latest add input-otp
 ```
 
 </InstallTab>

@@ -1,23 +1,23 @@
 <script lang="ts">
-  import { Alert, AlertAction, AlertDescription, AlertTitle } from '@sveltery/ui/alert';
-  import { AspectRatio } from '@sveltery/ui/aspect-ratio';
-  import { Avatar, AvatarFallback, AvatarImage } from '@sveltery/ui/avatar';
-  import { Button } from '@sveltery/ui/button';
-  import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@sveltery/ui/carousel';
-  import { Card, CardContent, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { ChartContainer } from '@sveltery/ui/chart';
-  import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@sveltery/ui/command';
-  import { Dialog, DialogContent, DialogTrigger } from '@sveltery/ui/dialog';
-  import { Empty, EmptyTitle } from '@sveltery/ui/empty';
-  import { Kbd } from '@sveltery/ui/kbd';
-  import { Label } from '@sveltery/ui/label';
-  import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerItem, MessageScrollerProvider, MessageScrollerViewport } from '@sveltery/ui/message-scroller';
-  import { Questionnaire, QuestionnaireChoice, QuestionnaireChoices, QuestionnaireItem, QuestionnaireNext, QuestionnaireProgress, QuestionnaireSubmit, QuestionnaireTitle } from '@sveltery/ui/questionnaire';
-  import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@sveltery/ui/resizable';
-  import { Separator } from '@sveltery/ui/separator';
-  import { Skeleton } from '@sveltery/ui/skeleton';
-  import { Table, TableBody, TableCell, TableRow } from '@sveltery/ui/table';
-  import { Textarea } from '@sveltery/ui/textarea';
+  import { Alert, AlertAction, AlertDescription, AlertTitle } from '@sveltery/components/alert';
+  import { AspectRatio } from '@sveltery/components/aspect-ratio';
+  import { Avatar, AvatarFallback, AvatarImage } from '@sveltery/components/avatar';
+  import { Button } from '@sveltery/components/button';
+  import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@sveltery/components/carousel';
+  import { Card, CardContent, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { ChartContainer } from '@sveltery/components/chart';
+  import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@sveltery/components/command';
+  import { Dialog, DialogContent, DialogTrigger } from '@sveltery/components/dialog';
+  import { Empty, EmptyTitle } from '@sveltery/components/empty';
+  import { Kbd } from '@sveltery/components/kbd';
+  import { Label } from '@sveltery/components/label';
+  import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerItem, MessageScrollerProvider, MessageScrollerViewport } from '@sveltery/components/message-scroller';
+  import { Questionnaire, QuestionnaireChoice, QuestionnaireChoices, QuestionnaireItem, QuestionnaireNext, QuestionnaireProgress, QuestionnaireSubmit, QuestionnaireTitle } from '@sveltery/components/questionnaire';
+  import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@sveltery/components/resizable';
+  import { Separator } from '@sveltery/components/separator';
+  import { Skeleton } from '@sveltery/components/skeleton';
+  import { Table, TableBody, TableCell, TableRow } from '@sveltery/components/table';
+  import { Textarea } from '@sveltery/components/textarea';
 </script>
 <Alert><AlertTitle>Title</AlertTitle><AlertDescription>Description</AlertDescription><AlertAction>Action</AlertAction></Alert>
 <AspectRatio ratio={2}>Ratio</AspectRatio>

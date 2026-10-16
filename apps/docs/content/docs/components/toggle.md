@@ -12,7 +12,7 @@ description: A two-state button that can be either on or off.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add toggle
+npx @sveltery/ui@latest add toggle
 ```
 
 </InstallTab>

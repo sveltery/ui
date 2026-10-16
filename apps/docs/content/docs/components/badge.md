@@ -12,7 +12,7 @@ description: Displays a badge or a component that looks like a badge.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add badge
+npx @sveltery/ui@latest add badge
 ```
 
 </InstallTab>

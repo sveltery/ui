@@ -12,7 +12,7 @@ description: An image element with a fallback for representing the user.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add avatar
+npx @sveltery/ui@latest add avatar
 ```
 
 </InstallTab>

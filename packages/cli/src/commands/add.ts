@@ -10,7 +10,7 @@ export type AddOptions = { cwd: string; yes: boolean; overwrite: boolean; all: b
 export async function add(args: string[], options: AddOptions): Promise<Plan> {
   const project = await openProject(options.cwd);
   const { cwd, config, registry } = project;
-  if (!options.all && args.length === 0) throw new CliError('Name the items to add, such as `npx @sveltery/cli@latest add button`, or pass --all.');
+  if (!options.all && args.length === 0) throw new CliError('Name the items to add, such as `npx @sveltery/ui@latest add button`, or pass --all.');
   const refs = options.all ? registry.manifest.items.map((item) => parseItemRef(item.name)) : args.map(parseItemRef);
   const items = await resolveItems(registry, config.style, refs);
   const plan = planItems(project, items);

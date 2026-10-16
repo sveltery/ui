@@ -12,7 +12,7 @@ description: A date picker component with range and presets.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add popover calendar
+npx @sveltery/ui@latest add popover calendar
 ```
 
 </InstallTab>

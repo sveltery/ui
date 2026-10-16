@@ -12,7 +12,7 @@ description: Displays a callout for user attention.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add alert
+npx @sveltery/ui@latest add alert
 ```
 
 </InstallTab>

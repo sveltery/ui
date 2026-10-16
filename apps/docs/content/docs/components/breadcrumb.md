@@ -12,7 +12,7 @@ description: Displays the path to the current resource using a hierarchy of link
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add breadcrumb
+npx @sveltery/ui@latest add breadcrumb
 ```
 
 </InstallTab>

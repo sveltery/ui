@@ -12,7 +12,7 @@ description: A calendar component that allows users to select a date or a range 
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add calendar
+npx @sveltery/ui@latest add calendar
 ```
 
 </InstallTab>

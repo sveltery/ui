@@ -12,7 +12,7 @@ description: A visually persistent menu common in desktop applications that prov
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add menubar
+npx @sveltery/ui@latest add menubar
 ```
 
 </InstallTab>

@@ -12,7 +12,7 @@ description: A set of checkable buttons, known as radio buttons, where no more t
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add radio-group
+npx @sveltery/ui@latest add radio-group
 ```
 
 </InstallTab>

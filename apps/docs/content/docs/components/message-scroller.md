@@ -64,7 +64,7 @@ Message Scroller is built on `@sveltery/message-scroller`, a Svelte package that
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add message-scroller
+npx @sveltery/ui@latest add message-scroller
 ```
 
 </InstallTab>

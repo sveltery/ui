@@ -12,7 +12,7 @@ description: Renders an accessible label associated with controls.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add label
+npx @sveltery/ui@latest add label
 ```
 
 </InstallTab>

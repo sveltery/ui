@@ -1,12 +1,12 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from '@sveltery/ui/dropdown-menu';
-  import { Field } from '@sveltery/ui/field';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { Item, ItemContent, ItemDescription, ItemTitle } from '@sveltery/ui/item';
+  import { Button } from '@sveltery/components/button';
+  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from '@sveltery/components/dropdown-menu';
+  import { Field } from '@sveltery/components/field';
+  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Item, ItemContent, ItemDescription, ItemTitle } from '@sveltery/components/item';
   import {
     Sidebar,
     SidebarContent,
@@ -21,7 +21,7 @@
     SidebarProvider,
     SidebarRail,
     SidebarTrigger,
-  } from '@sveltery/ui/sidebar';
+  } from '@sveltery/components/sidebar';
 
   const navMain = [
     { title: 'Getting Started', items: ['Installation', 'Project Structure'] },

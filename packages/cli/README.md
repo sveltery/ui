@@ -1,4 +1,4 @@
-# @sveltery/cli
+# @sveltery/ui
 
 Add [Sveltery UI](https://github.com/sveltery/ui) components to a Svelte 5 app. The CLI copies each component's source into your project, so you own and edit it.
 
@@ -10,14 +10,14 @@ Add [Sveltery UI](https://github.com/sveltery/ui) components to a Svelte 5 app. 
 ## Set up a project
 
 ```sh
-npx @sveltery/cli@latest init
+npx @sveltery/ui@latest init
 ```
 
 `init` asks for a style, an icon library and a base color. Then it:
 
 - writes `components.json`,
-- adds the theme tokens and the `@sveltery/cli/tailwind.css` import to your CSS file,
-- installs `cn`, `class-variance-authority`, `tw-animate-css`, the icon package and `@sveltery/cli`, which ships the `tailwind.css` that your CSS imports.
+- adds the theme tokens and the `@sveltery/ui/tailwind.css` import to your CSS file,
+- installs `cn`, `class-variance-authority`, `tw-animate-css`, the icon package and `@sveltery/ui`, which ships the `tailwind.css` that your CSS imports.
 
 Run it again at any time. A second run with the same choices leaves your files unchanged.
 
@@ -34,7 +34,7 @@ Run it again at any time. A second run with the same choices leaves your files u
 ## Add components
 
 ```sh
-npx @sveltery/cli@latest add button dialog
+npx @sveltery/ui@latest add button dialog
 ```
 
 `add` fetches each component and the components it depends on. It shows the files it will write and the packages it will install, then asks you to continue. Files go to the `aliases.ui` directory in `components.json`, which is `src/lib/components/ui` by default.
@@ -55,9 +55,9 @@ An argument that is a URL is fetched as is, so you can add an item from another 
 ## See and apply upstream changes
 
 ```sh
-npx @sveltery/cli@latest diff
-npx @sveltery/cli@latest update
-npx @sveltery/cli@latest list
+npx @sveltery/ui@latest diff
+npx @sveltery/ui@latest update
+npx @sveltery/ui@latest list
 ```
 
 An item counts as installed when any of its files exists under `aliases.ui`. With no names, `diff` and `update` act on every installed item and the items they depend on. A named item that is not installed is an error.

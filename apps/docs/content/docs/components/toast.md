@@ -16,7 +16,7 @@ Toast is the shadcn/ui Toast, built on the Sveltery Base `Toast` parts. `Toaster
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add toast
+npx @sveltery/ui@latest add toast
 ```
 
 </InstallTab>

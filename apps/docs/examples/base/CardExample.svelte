@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from '@sveltery/ui/avatar';
-  import { Button } from '@sveltery/ui/button';
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Card, CardAction, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@sveltery/ui/card';
-  import { Field, FieldGroup, FieldLabel } from '@sveltery/ui/field';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { Input } from '@sveltery/ui/input';
-  import { ToggleGroup, ToggleGroupItem } from '@sveltery/ui/toggle-group';
+  import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from '@sveltery/components/avatar';
+  import { Button } from '@sveltery/components/button';
+  import { Example, ExampleWrapper } from '@sveltery/components/example';
+  import { Card, CardAction, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@sveltery/components/card';
+  import { Field, FieldGroup, FieldLabel } from '@sveltery/components/field';
+  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Input } from '@sveltery/components/input';
+  import { ToggleGroup, ToggleGroupItem } from '@sveltery/components/toggle-group';
 
   const spacingOptions = [
     { class: '[--card-spacing:--spacing(4)]', label: '16px', value: '4' },

@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Badge } from '@sveltery/ui/badge';
-  import { Calendar } from '@sveltery/ui/calendar';
-  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@sveltery/ui/item';
+  import { Badge } from '@sveltery/components/badge';
+  import { Calendar } from '@sveltery/components/calendar';
+  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@sveltery/components/item';
 
   let date = $state<Date | undefined>(new Date());
 </script>

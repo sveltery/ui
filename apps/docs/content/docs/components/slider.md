@@ -12,7 +12,7 @@ description: An input where the user selects a value from within a given range.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add slider
+npx @sveltery/ui@latest add slider
 ```
 
 </InstallTab>

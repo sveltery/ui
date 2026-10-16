@@ -14,7 +14,7 @@ description: A provider component that sets the text direction for your applicat
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add direction
+npx @sveltery/ui@latest add direction
 ```
 
 </InstallTab>

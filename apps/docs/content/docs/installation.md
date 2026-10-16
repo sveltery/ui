@@ -25,21 +25,21 @@ npx sv add tailwindcss
 Run `init` in the project. It asks for a style, an icon library and a base color. Pass `-y` to take the defaults.
 
 ```bash
-npx sveltery init
+npx @sveltery/ui@latest init
 ```
 
 `init` changes these files and packages, so check them in your diff:
 
 - `components.json` holds your choices and the import aliases. `aliases.ui` is where components go, `src/lib/components/ui` by default.
-- Your CSS file, `src/app.css` by default, gets the `tw-animate-css` and `sveltery/tailwind.css` imports, the `dark` custom variant, and the [theme tokens](/docs/theming) for light and dark mode. It also gets a base layer that gives every border the theme's `--border` color. Without that layer, a bare `border` class draws in the text color.
-- `cn`, `class-variance-authority`, `tw-animate-css` and your icon library install as dependencies. `sveltery` installs as a dev dependency.
+- Your CSS file, `src/app.css` by default, gets the `tw-animate-css` and `@sveltery/ui/tailwind.css` imports, the `dark` custom variant, and the [theme tokens](/docs/theming) for light and dark mode. It also gets a base layer that gives every border the theme's `--border` color. Without that layer, a bare `border` class draws in the text color.
+- `cn`, `class-variance-authority`, `tw-animate-css` and your icon library install as dependencies. `@sveltery/ui` installs as a dev dependency, because your CSS imports its `tailwind.css`.
 
 Running `init` again with the same choices leaves your files unchanged.
 
 ### Add components
 
 ```bash
-npx sveltery add button
+npx @sveltery/ui@latest add button
 ```
 
 This copies the Button source into `src/lib/components/ui/button`. It also installs the packages Button needs, such as `@sveltery/base`. A component that builds on another one copies that one too. See [Components](/docs/components) for the full list.
@@ -61,13 +61,13 @@ This copies the Button source into `src/lib/components/ui/button`. It also insta
 The files are yours to edit. To see how they differ from the current Sveltery UI source, run `diff`. It prints a diff and writes nothing.
 
 ```bash
-npx sveltery diff
+npx @sveltery/ui@latest diff
 ```
 
 Run `update` to apply the changes. It shows the diff for each file you changed and asks before it overwrites that file.
 
 ```bash
-npx sveltery update
+npx @sveltery/ui@latest update
 ```
 
-`npx sveltery list` shows every component and marks the ones in your project. Read the [CLI README](https://github.com/sveltery/ui/tree/main/packages/cli#readme) for all commands and options.
+`npx @sveltery/ui@latest list` shows every component and marks the ones in your project. Read the [CLI README](https://github.com/sveltery/ui/tree/main/packages/cli#readme) for all commands and options.

@@ -12,7 +12,7 @@ description: A panel that slides in from an edge of the screen and can be swiped
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add drawer
+npx @sveltery/ui@latest add drawer
 ```
 
 </InstallTab>

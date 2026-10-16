@@ -12,7 +12,7 @@ description: Used to display textual user input from keyboard.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add kbd
+npx @sveltery/ui@latest add kbd
 ```
 
 </InstallTab>

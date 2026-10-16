@@ -12,7 +12,7 @@ description: A vertically stacked set of interactive headings that each reveal a
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add accordion
+npx @sveltery/ui@latest add accordion
 ```
 
 </InstallTab>

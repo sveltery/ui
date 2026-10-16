@@ -12,7 +12,7 @@ description: Use the Empty component to display an empty state.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add empty
+npx @sveltery/ui@latest add empty
 ```
 
 </InstallTab>

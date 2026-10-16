@@ -16,7 +16,7 @@ Command is built on `@sveltery/command`, a Svelte port of [cmdk](https://github.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add command
+npx @sveltery/ui@latest add command
 ```
 
 </InstallTab>

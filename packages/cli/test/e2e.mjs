@@ -70,10 +70,10 @@ try {
   await run('npx', ['--yes', SV, 'create', 'app', '--template', 'minimal', '--types', 'ts', '--no-add-ons', '--no-install'], work);
   await run('npx', ['--yes', SV, 'add', 'tailwindcss=plugins:none', '--no-git-check', '--no-install', '-C', app], work);
 
-  step('pack @sveltery/cli and the helper packages');
+  step('pack @sveltery/ui and the helper packages');
   const helpers = ['@sveltery/command', '@sveltery/day-picker', '@sveltery/message-scroller', '@sveltery/questionnaire', '@sveltery/resizable'];
   await run('pnpm', [...helpers.flatMap((name) => ['--filter', name]), 'build'], repoRoot);
-  await run('pnpm', [...['@sveltery/cli', ...helpers].flatMap((name) => ['--filter', name]), 'pack', '--pack-destination', tarballs], repoRoot);
+  await run('pnpm', [...['@sveltery/ui', ...helpers].flatMap((name) => ['--filter', name]), 'pack', '--pack-destination', tarballs], repoRoot);
   const tarball = (name) => {
     const prefix = `${name.replace('@', '').replace('/', '-')}-`;
     const file = readdirSync(tarballs).find((entry) => entry.startsWith(prefix) && /^\d/.test(entry.slice(prefix.length)));
@@ -82,7 +82,7 @@ try {
   };
   const rootManifest = JSON.parse(readFileSync(join(repoRoot, 'package.json'), 'utf8'));
   const overrides = {
-    '@sveltery/cli': tarball('@sveltery/cli'),
+    '@sveltery/ui': tarball('@sveltery/ui'),
     '@sveltery/base': rootManifest.devDependencies['@sveltery/base'],
     ...Object.fromEntries(helpers.map((name) => [name, tarball(name)])),
   };
@@ -90,18 +90,18 @@ try {
   writeFileSync(join(app, 'pnpm-workspace.yaml'), `${allowBuilds}overrides:\n${Object.entries(overrides).map(([name, spec]) => `  ${JSON.stringify(name)}: ${JSON.stringify(spec)}\n`).join('')}`);
   // Nothing is on npm yet, and `pnpm add` asks the registry before it applies an override, so the app declares the packed packages up front.
   const appManifest = JSON.parse(readFileSync(join(app, 'package.json'), 'utf8'));
-  const { '@sveltery/cli': cliTarball, ...runtime } = overrides;
-  appManifest.devDependencies = { ...appManifest.devDependencies, '@sveltery/cli': cliTarball };
+  const { '@sveltery/ui': cliTarball, ...runtime } = overrides;
+  appManifest.devDependencies = { ...appManifest.devDependencies, '@sveltery/ui': cliTarball };
   appManifest.dependencies = { ...appManifest.dependencies, ...runtime };
   writeFileSync(join(app, 'package.json'), JSON.stringify(appManifest, null, 2));
   await run('pnpm', ['install'], app);
 
   step('sveltery init -y');
-  await run('npm', ['exec', '--yes', `--package=${overrides['@sveltery/cli']}`, '--', 'sveltery', 'init', '-y'], app, env);
+  await run('npm', ['exec', '--yes', `--package=${overrides['@sveltery/ui']}`, '--', 'sveltery', 'init', '-y'], app, env);
   const config = JSON.parse(readFileSync(join(app, 'components.json'), 'utf8'));
   assert.equal(config.registry, env.SVELTERY_REGISTRY_URL, 'init writes the registry it used');
   const css = readFileSync(join(app, config.tailwind.css), 'utf8');
-  await run('npm', ['exec', '--yes', `--package=${overrides['@sveltery/cli']}`, '--', 'sveltery', 'init', '-y'], app, env);
+  await run('npm', ['exec', '--yes', `--package=${overrides['@sveltery/ui']}`, '--', 'sveltery', 'init', '-y'], app, env);
   assert.equal(readFileSync(join(app, config.tailwind.css), 'utf8'), css, 'a second init leaves the CSS byte-identical');
 
   step('sveltery add button dialog -y');

@@ -8,7 +8,7 @@ Pages are [mdsvex](https://github.com/pngwn/MDsveX) markdown, so they can use Sv
 
 1. Add the component to `packages/ui/src/lib/<name>`.
 2. Add a preview to `apps/docs/examples`.
-3. Create `components/<name>.md` from the template below. The `npx sveltery add` name and the `<ComponentSource>` name are the folder name. List `@lucide/svelte` in the manual `npm install` line when the component imports icons.
+3. Create `components/<name>.md` from the template below. The `npx @sveltery/ui@latest add` name and the `<ComponentSource>` name are the folder name. List `@lucide/svelte` in the manual `npm install` line when the component imports icons.
 
 The sidebar, search, previous and next links, `llms.txt` and the sitemap pick the page up. You do not edit a nav file.
 
@@ -27,7 +27,7 @@ description: Displays a button or a component that looks like a button.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add button
+npx @sveltery/ui@latest add button
 ```
 
 </InstallTab>

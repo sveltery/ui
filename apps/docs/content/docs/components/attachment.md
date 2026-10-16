@@ -12,7 +12,7 @@ description: Displays a file or image attachment with media, metadata, upload st
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add attachment
+npx @sveltery/ui@latest add attachment
 ```
 
 </InstallTab>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Card, CardAction, CardContent, CardFooter, CardHeader } from '@sveltery/ui/card';
+  import { Card, CardAction, CardContent, CardFooter, CardHeader } from '@sveltery/components/card';
   import {
     Questionnaire,
     QuestionnaireActions,
@@ -13,7 +13,7 @@
     QuestionnaireProgress,
     QuestionnaireSubmit,
     QuestionnaireTitle,
-  } from '@sveltery/ui/questionnaire';
+  } from '@sveltery/components/questionnaire';
 
   const items = [
     { name: 'detail', required: true },

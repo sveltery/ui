@@ -51,7 +51,7 @@ We do not wrap LayerChart. You are not locked into an abstraction, and when Laye
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add chart
+npx @sveltery/ui@latest add chart
 ```
 
 </InstallTab>

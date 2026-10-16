@@ -12,7 +12,7 @@ description: Add addons, buttons, and helper content to inputs and textareas.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add input-group
+npx @sveltery/ui@latest add input-group
 ```
 
 </InstallTab>

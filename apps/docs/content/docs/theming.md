@@ -42,7 +42,7 @@ Each surface token has a `-foreground` token for the text and icons on that surf
 
 ## Default theme
 
-`npx sveltery init` adds these tokens to your global stylesheet. To set them by hand, copy them in. The `.dark` block overrides them for [dark mode](/docs/dark-mode).
+`npx @sveltery/ui@latest init` adds these tokens to your global stylesheet. To set them by hand, copy them in. The `.dark` block overrides them for [dark mode](/docs/dark-mode).
 
 ```css title="src/app.css" showLineNumbers
 :root {
@@ -91,7 +91,7 @@ Each surface token has a `-foreground` token for the text and icons on that surf
 
 ## Base colors
 
-The `@sveltery/ui/themes.css` stylesheet also ships the shadcn/ui base colors as classes, from `theme-neutral` to `theme-zinc`. Add one to an element to recolor everything inside it.
+The `@sveltery/components/themes.css` stylesheet also ships the shadcn/ui base colors as classes, from `theme-neutral` to `theme-zinc`. Add one to an element to recolor everything inside it.
 
 ```svelte
 <div class="theme-blue">

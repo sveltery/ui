@@ -12,7 +12,7 @@ description: Extends the Dialog component to display content that complements th
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add sheet
+npx @sveltery/ui@latest add sheet
 ```
 
 </InstallTab>

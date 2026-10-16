@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
+  import { Example, ExampleWrapper } from '@sveltery/components/example';
   import {
     Attachment,
     AttachmentAction,
@@ -9,12 +9,12 @@
     AttachmentGroup,
     AttachmentMedia,
     AttachmentTitle,
-  } from '@sveltery/ui/attachment';
-  import { Avatar, AvatarFallback, AvatarImage } from '@sveltery/ui/avatar';
-  import { Bubble, BubbleContent, BubbleGroup, BubbleReactions } from '@sveltery/ui/bubble';
-  import { Button } from '@sveltery/ui/button';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { Marker, MarkerContent, MarkerIcon } from '@sveltery/ui/marker';
+  } from '@sveltery/components/attachment';
+  import { Avatar, AvatarFallback, AvatarImage } from '@sveltery/components/avatar';
+  import { Bubble, BubbleContent, BubbleGroup, BubbleReactions } from '@sveltery/components/bubble';
+  import { Button } from '@sveltery/components/button';
+  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Marker, MarkerContent, MarkerIcon } from '@sveltery/components/marker';
   import {
     Message,
     MessageAvatar,
@@ -22,8 +22,8 @@
     MessageFooter,
     MessageGroup,
     MessageHeader,
-  } from '@sveltery/ui/message';
-  import { Spinner } from '@sveltery/ui/spinner';
+  } from '@sveltery/components/message';
+  import { Spinner } from '@sveltery/components/spinner';
 </script>
 
 {#snippet MessageDefault()}

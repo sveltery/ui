@@ -12,7 +12,7 @@ description: Displays a card with header, content, and footer.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add card
+npx @sveltery/ui@latest add card
 ```
 
 </InstallTab>

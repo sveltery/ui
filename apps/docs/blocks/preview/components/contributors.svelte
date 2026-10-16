@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Avatar, AvatarFallback, AvatarImage } from '@sveltery/ui/avatar';
-  import { Badge } from '@sveltery/ui/badge';
-  import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
+  import { Avatar, AvatarFallback, AvatarImage } from '@sveltery/components/avatar';
+  import { Badge } from '@sveltery/components/badge';
+  import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
 
   const usernames = [
     'shadcn',

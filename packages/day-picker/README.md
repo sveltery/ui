@@ -22,7 +22,7 @@ npm install @sveltery/day-picker date-fns @date-fns/tz
 
 Use `mode="multiple"` or `mode="range"` for the other selection modes. `classNames` replaces the class on each part, starting from `defaultClassNames`.
 
-The styled version lives in `@sveltery/ui/calendar`.
+The styled version lives in `@sveltery/components/calendar`.
 
 ## License
 

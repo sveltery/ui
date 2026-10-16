@@ -12,7 +12,7 @@ description: A set of layered sections of content, known as tab panels, that are
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add tabs
+npx @sveltery/ui@latest add tabs
 ```
 
 </InstallTab>

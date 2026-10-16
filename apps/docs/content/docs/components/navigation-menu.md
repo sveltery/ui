@@ -12,7 +12,7 @@ description: A collection of links for navigating websites.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add navigation-menu
+npx @sveltery/ui@latest add navigation-menu
 ```
 
 </InstallTab>

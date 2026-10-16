@@ -12,7 +12,7 @@ description: A control that allows the user to toggle between checked and not ch
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add switch
+npx @sveltery/ui@latest add switch
 ```
 
 </InstallTab>

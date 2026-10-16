@@ -12,7 +12,7 @@ description: Displays an inline status, system note, bordered row, or labeled se
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add marker
+npx @sveltery/ui@latest add marker
 ```
 
 </InstallTab>

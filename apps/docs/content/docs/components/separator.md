@@ -12,7 +12,7 @@ description: Visually or semantically separates content.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add separator
+npx @sveltery/ui@latest add separator
 ```
 
 </InstallTab>

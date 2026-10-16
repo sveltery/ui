@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { Tabs, TabsList, TabsTrigger } from '@sveltery/ui/tabs';
+  import { Tabs, TabsList, TabsTrigger } from '@sveltery/components/tabs';
 
   // Holds two `<InstallTab>` panels, `cli` and `manual`, like upstream's Installation tabs.
   let { children }: { children: Snippet } = $props();

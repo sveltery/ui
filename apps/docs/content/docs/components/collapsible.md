@@ -12,7 +12,7 @@ description: An interactive component which expands and collapses a panel.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add collapsible
+npx @sveltery/ui@latest add collapsible
 ```
 
 </InstallTab>

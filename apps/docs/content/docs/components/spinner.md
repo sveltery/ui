@@ -12,7 +12,7 @@ description: An indicator that can be used to show a loading state.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add spinner
+npx @sveltery/ui@latest add spinner
 ```
 
 </InstallTab>

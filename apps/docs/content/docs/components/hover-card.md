@@ -12,7 +12,7 @@ description: For sighted users to preview content available behind a link.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add hover-card
+npx @sveltery/ui@latest add hover-card
 ```
 
 </InstallTab>

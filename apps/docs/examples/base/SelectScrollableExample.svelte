@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@sveltery/ui/select';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@sveltery/components/select';
 
   const regions = [
     {

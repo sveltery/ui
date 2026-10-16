@@ -12,7 +12,7 @@ description: Displays content within a desired ratio.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add aspect-ratio
+npx @sveltery/ui@latest add aspect-ratio
 ```
 
 </InstallTab>

@@ -12,7 +12,7 @@ description: Displays a menu of actions triggered by a right click.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add context-menu
+npx @sveltery/ui@latest add context-menu
 ```
 
 </InstallTab>

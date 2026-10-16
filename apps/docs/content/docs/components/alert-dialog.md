@@ -12,7 +12,7 @@ description: A modal dialog that interrupts the user with important content and 
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add alert-dialog
+npx @sveltery/ui@latest add alert-dialog
 ```
 
 </InstallTab>

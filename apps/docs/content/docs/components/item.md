@@ -12,7 +12,7 @@ description: A versatile component for displaying content with media, title, des
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add item
+npx @sveltery/ui@latest add item
 ```
 
 </InstallTab>

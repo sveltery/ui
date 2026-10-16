@@ -46,7 +46,7 @@ test('ComponentPreview renders the example and reveals its source', async ({ pag
   const preview = page.locator('[data-slot=component-preview]').first();
   await expect(preview.getByRole('button', { name: 'Secondary' }).first()).toBeVisible();
   await preview.getByRole('button', { name: 'View Code' }).click();
-  await expect(preview.locator('[data-slot=code] pre')).toContainText("import { Button, buttonVariants } from '@sveltery/ui/button';");
+  await expect(preview.locator('[data-slot=code] pre')).toContainText("import { Button, buttonVariants } from '@sveltery/components/button';");
   await expect(preview.getByRole('button', { name: 'Copy' })).toBeVisible();
 });
 
@@ -55,7 +55,7 @@ test('the Installation section shows the CLI command first and the manual steps 
   const cli = page.getByRole('tab', { name: 'CLI', exact: true });
   const manual = page.getByRole('tab', { name: 'Manual', exact: true });
   await expect(cli).toHaveAttribute('aria-selected', 'true');
-  await expect(page.getByRole('tabpanel').filter({ hasText: 'sveltery add button' }).first()).toBeVisible();
+  await expect(page.getByRole('tabpanel').filter({ hasText: '@sveltery/ui@latest add button' }).first()).toBeVisible();
   await expect(page.locator('[data-slot=component-source]')).toBeHidden();
   await manual.click();
   await expect(manual).toHaveAttribute('aria-selected', 'true');

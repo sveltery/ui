@@ -12,7 +12,7 @@ description: A styled native HTML select element with consistent design system i
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add native-select
+npx @sveltery/ui@latest add native-select
 ```
 
 </InstallTab>

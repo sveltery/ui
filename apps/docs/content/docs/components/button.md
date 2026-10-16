@@ -12,7 +12,7 @@ description: Displays a button or a component that looks like a button.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add button
+npx @sveltery/ui@latest add button
 ```
 
 </InstallTab>

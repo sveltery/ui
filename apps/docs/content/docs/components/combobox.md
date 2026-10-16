@@ -12,7 +12,7 @@ description: Autocomplete input with a list of suggestions.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add combobox
+npx @sveltery/ui@latest add combobox
 ```
 
 </InstallTab>

@@ -12,7 +12,7 @@ description: Augments native scroll functionality for custom, cross-browser styl
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add scroll-area
+npx @sveltery/ui@latest add scroll-area
 ```
 
 </InstallTab>

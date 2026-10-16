@@ -12,7 +12,7 @@ description: A container that groups related buttons together with consistent st
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add button-group
+npx @sveltery/ui@latest add button-group
 ```
 
 </InstallTab>

@@ -12,7 +12,7 @@ description: A composable, themeable and customizable sidebar component.
 <InstallTab value="cli">
 
 ```bash
-npx sveltery add sidebar
+npx @sveltery/ui@latest add sidebar
 ```
 
 </InstallTab>
