@@ -8,17 +8,9 @@ shadcn/ui ships both Sonner (`sonner.tsx`, on the `sonner` library) and Toast (o
 
 Where upstream code imports `toast` from `sonner`, Sveltery UI imports `toast` from `$lib/components/ui/toast` and calls `toast.add({ title, description })` or `toast.promise()`. This covers the docs examples and blocks too.
 
-## Field and Form compose Sveltery Base
+## Form and FormError
 
-shadcn/ui's Base UI `Field` parts are plain elements that you wire by hand: `data-invalid` on `Field`, `htmlFor` and `id`, `aria-invalid` on the control, and the messages in `errors` on `FieldError`. Sveltery UI keeps their markup, classes and `data-slot` values, and renders each part through its Sveltery Base part, as Base UI composes `Field.Root`. `Field` is `Field.Root`, `FieldLabel`, `FieldDescription` and `FieldError` are `Field.Label`, `Field.Description` and `Field.Error`, `FieldSet` and `FieldLegend` are `Fieldset.Root` and `Fieldset.Legend`, and `Input`, `Textarea` and `NativeSelect` are `Field.Control`. `Form` is Base `Form`, and `FormError` is `Form.Error`. Hugo Hsi asked for this on 2026-10-12: a SvelteKit remote form goes to `Form`, and the rest reaches the parts through context.
-
-- `<Form form={f}>` and `<Field field={f.fields.email} type="email">` bind a SvelteKit remote form, and `<Form errors>` with `<Field name>` takes form action errors. The label, description, error and `aria-invalid` then link up without `for`, `id` or `errors`.
-- The hand-wired upstream markup still works. A `FieldError` with children or `errors` shows them, and a bare `FieldError` shows the field's own error.
-- shadcn's styles match `data-invalid="true"` and `data-disabled="true"`. Base marks state with empty attributes, so `Field` and `FieldItem` write `"true"` when Base marks the field invalid or disabled.
-- `FieldItem` is Base `Field.Item`. It gives each radio or checkbox of a group its own label while the group stays one field. shadcn/ui has no such part.
-- A `NativeSelect` with `multiple` stays a native `<select>`, because Base's control holds one value.
-
-shadcn/ui's form pages build on React Hook Form and TanStack Form. Sveltery UI's form pages use SvelteKit remote forms and form actions through Base `Form` instead.
+`Field` and its parts are plain elements, as in shadcn/ui, and you wire them by hand. Sveltery UI also ships `Form`, which is Base `Form`, and `FormError`, which is Base `Form.Error`. shadcn/ui has neither. shadcn/ui's form pages build on React Hook Form and TanStack Form. Sveltery UI's form pages use SvelteKit remote forms and form actions with a plain `<form>`.
 
 ## Upstream bugs fixed on Base
 
