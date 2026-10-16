@@ -70,7 +70,7 @@
     </Marker>
     <Marker>
       {#snippet render(props, _state, children)}
-        <button {...props} type="button" class={[props.class, 'transition-colors hover:text-foreground']} onclick={() => toast.add({ title: 'You clicked the button' })}>
+        <button {...props} class={[props.class, 'transition-colors hover:text-foreground']} onclick={() => toast.add({ title: 'You clicked the button' })}>
           {@render children?.()}
         </button>
       {/snippet}
