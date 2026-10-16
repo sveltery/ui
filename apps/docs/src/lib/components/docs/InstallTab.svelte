@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { TabsContent } from '@sveltery/components/tabs';
+  import { TabsContent } from '$registry/bases/base/ui/tabs';
 
   let { value, children }: { value: 'cli' | 'manual'; children: Snippet } = $props();
 </script>

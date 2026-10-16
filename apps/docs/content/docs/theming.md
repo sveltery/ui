@@ -44,6 +44,8 @@ Each surface token has a `-foreground` token for the text and icons on that surf
 
 `npx @sveltery/ui@latest init` adds these tokens to your global stylesheet. To set them by hand, copy them in. The `.dark` block overrides them for [dark mode](/docs/dark-mode).
 
+To pick a theme, fonts and radius visually, use the [Create page](/create). It gives you a preset code to pass to `init`, as in `npx @sveltery/ui@latest init --preset <code>`.
+
 ```css title="src/app.css" showLineNumbers
 :root {
   --radius: 0.625rem;

@@ -36,6 +36,12 @@ npx @sveltery/ui@latest init
 
 Running `init` again with the same choices leaves your files unchanged.
 
+To start from a preset instead, pass `--preset`. It takes a preset name such as `nova` or a preset code from the [Create page](/create). A preset sets the style, icon library, base color, theme, fonts, radius and menu look.
+
+```bash
+npx @sveltery/ui@latest init --preset <code>
+```
+
 ### Add components
 
 ```bash
