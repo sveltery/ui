@@ -1,9 +1,9 @@
 /* Site styles derived from shadcn-ui/ui apps/v4 (app/globals.css and typeset.css) at d75a96ab781f3d659be1ad287347d5887ce9f2fc; MIT. */
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "@sveltery/ui/themes.css";
-@import "@sveltery/ui/nova.css";
-@import "@sveltery/ui/styles.css";
+@import "@sveltery/components/themes.css";
+@import "@sveltery/components/nova.css";
+@import "@sveltery/components/styles.css";
 @import "@fontsource-variable/geist";
 @import "@fontsource-variable/geist-mono";
 

@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button } from '@sveltery/ui/button';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { Field, FieldDescription, FieldError, FieldLabel } from '@sveltery/ui/field';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '@sveltery/ui/input-otp';
+  import { Example, ExampleWrapper } from '@sveltery/components/example';
+  import { Button } from '@sveltery/components/button';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { Field, FieldDescription, FieldError, FieldLabel } from '@sveltery/components/field';
+  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '@sveltery/components/input-otp';
   let separated = $state('123456');
   let invalid = $state('000000');
 </script>

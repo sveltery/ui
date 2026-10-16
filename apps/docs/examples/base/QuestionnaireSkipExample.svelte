@@ -15,7 +15,7 @@
     QuestionnaireSubmit,
     QuestionnaireTitle,
     type QuestionnaireItemStatus,
-  } from '@sveltery/ui/questionnaire';
+  } from '@sveltery/components/questionnaire';
 
   const items = [{ name: 'task', required: true }, { name: 'constraints' }, { name: 'review', required: true }];
 

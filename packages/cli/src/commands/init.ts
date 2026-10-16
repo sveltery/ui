@@ -82,10 +82,10 @@ export async function init(options: InitOptions): Promise<Plan> {
       planFile(cwd, cssPath, mergeTheme(readFileSync(join(cwd, cssPath), 'utf8'), theme.cssVars ?? {})),
     ],
     dependencies: missingPackages(cwd, [...baseDependencies, ...iconLibraries[iconLibrary].packages]),
-    devDependencies: missingPackages(cwd, [`sveltery@^${version}`]),
+    devDependencies: missingPackages(cwd, [`@sveltery/ui@^${version}`]),
   };
   log.info(formatPlan(plan, { showIdentical: false }));
   await executePlan(plan, { cwd, install: options.install });
-  log.success(`Ready. Add a component with \`npx sveltery add button\`.`);
+  log.success(`Ready. Add a component with \`npx @sveltery/ui@latest add button\`.`);
   return plan;
 }

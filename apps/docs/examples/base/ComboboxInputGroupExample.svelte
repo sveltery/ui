@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Combobox, ComboboxCollection, ComboboxContent, ComboboxEmpty, ComboboxGroup, ComboboxInput, ComboboxItem, ComboboxLabel, ComboboxList } from '@sveltery/ui/combobox';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { InputGroupAddon } from '@sveltery/ui/input-group';
+  import { Combobox, ComboboxCollection, ComboboxContent, ComboboxEmpty, ComboboxGroup, ComboboxInput, ComboboxItem, ComboboxLabel, ComboboxList } from '@sveltery/components/combobox';
+  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { InputGroupAddon } from '@sveltery/components/input-group';
 
   type Timezones = { value: string; items: string[] };
 

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Card, CardContent } from '@sveltery/ui/card';
-  import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '@sveltery/ui/carousel';
+  import { Card, CardContent } from '@sveltery/components/card';
+  import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '@sveltery/components/carousel';
 
   let api = $state.raw<CarouselApi>();
   let current = $state(0);

@@ -133,7 +133,7 @@ export async function openRegistry(url: string): Promise<Registry> {
   const indexUrl = `${url}/index.json`;
   const { registryVersion } = await fetchJson(indexUrl, object({ registryVersion: number }));
   if (registryVersion > REGISTRY_VERSION) {
-    throw new CliError(`The registry at ${url} uses format version ${registryVersion}, and this CLI reads version ${REGISTRY_VERSION}. Update it with \`npx sveltery@latest\`.`);
+    throw new CliError(`The registry at ${url} uses format version ${registryVersion}, and this CLI reads version ${REGISTRY_VERSION}. Update it with \`npx @sveltery/ui@latest\`.`);
   }
   return { url, manifest: await fetchJson(indexUrl, registryManifest), items: new Map() };
 }

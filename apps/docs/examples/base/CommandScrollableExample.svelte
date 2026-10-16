@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Button } from '@sveltery/ui/button';
-  import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from '@sveltery/ui/command';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
+  import { Button } from '@sveltery/components/button';
+  import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from '@sveltery/components/command';
+  import { IconPlaceholder } from '@sveltery/components/icons';
 
   let open = $state(false);
 </script>

@@ -91,7 +91,7 @@ Add the tokens to your global stylesheet. The `.dark` block overrides them for [
 
 ## Base colors
 
-The `@sveltery/ui/themes.css` stylesheet also ships the shadcn/ui base colors as classes, from `theme-neutral` to `theme-zinc`. Add one to an element to recolor everything inside it.
+The `@sveltery/components/themes.css` stylesheet also ships the shadcn/ui base colors as classes, from `theme-neutral` to `theme-zinc`. Add one to an element to recolor everything inside it.
 
 ```svelte
 <div class="theme-blue">

@@ -37,7 +37,7 @@ npm install @sveltery/message-scroller
 
 `useMessageScroller()` returns the scroller to any component inside `Provider`. Call its `scrollToEnd()`, `scrollToStart()` or `scrollToMessage(id)` to move the transcript.
 
-The styled version lives in `@sveltery/ui/message-scroller`.
+Add the styled version to your app with `npx @sveltery/ui@latest add message-scroller`.
 
 ## License
 

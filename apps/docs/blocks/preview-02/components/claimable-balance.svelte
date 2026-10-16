@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Badge } from '@sveltery/ui/badge';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/ui/card';
-  import { Item, ItemContent } from '@sveltery/ui/item';
-  import { Separator } from '@sveltery/ui/separator';
+  import { Badge } from '@sveltery/components/badge';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { Item, ItemContent } from '@sveltery/components/item';
+  import { Separator } from '@sveltery/components/separator';
 </script>
 
 <Card>

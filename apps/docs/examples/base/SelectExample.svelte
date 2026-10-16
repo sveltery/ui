@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/ui/example';
-  import { Button } from '@sveltery/ui/button';
-  import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@sveltery/ui/dialog';
-  import { Field, FieldDescription, FieldError, FieldLabel } from '@sveltery/ui/field';
-  import { IconPlaceholder } from '@sveltery/ui/icons';
-  import { Input } from '@sveltery/ui/input';
-  import { Item, ItemContent, ItemDescription, ItemTitle } from '@sveltery/ui/item';
-  import { NativeSelect, NativeSelectOption } from '@sveltery/ui/native-select';
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from '@sveltery/ui/select';
+  import { Example, ExampleWrapper } from '@sveltery/components/example';
+  import { Button } from '@sveltery/components/button';
+  import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@sveltery/components/dialog';
+  import { Field, FieldDescription, FieldError, FieldLabel } from '@sveltery/components/field';
+  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Input } from '@sveltery/components/input';
+  import { Item, ItemContent, ItemDescription, ItemTitle } from '@sveltery/components/item';
+  import { NativeSelect, NativeSelectOption } from '@sveltery/components/native-select';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from '@sveltery/components/select';
 
   const sides = ['inline-start', 'left', 'top', 'bottom', 'right', 'inline-end'] as const;
 
