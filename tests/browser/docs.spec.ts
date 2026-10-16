@@ -39,6 +39,19 @@ test('the theme toggle switches dark mode and remembers it', async ({ page }) =>
   await page.reload();
   await expect(html).toHaveAttribute('data-ready');
   await expect(html).toHaveClass(/dark/);
+  await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute('content', '#09090b');
+});
+
+test('the D key toggles dark mode outside text fields', async ({ page }) => {
+  await visit(page, '/');
+  const html = page.locator('html');
+  const themeColor = page.locator('meta[name="theme-color"]');
+  await page.keyboard.press('d');
+  await expect(html).toHaveClass(/dark/);
+  await expect(themeColor).toHaveAttribute('content', '#09090b');
+  await page.keyboard.press('d');
+  await expect(html).not.toHaveClass(/dark/);
+  await expect(themeColor).toHaveAttribute('content', '#ffffff');
 });
 
 test('ComponentPreview renders the example and reveals its source', async ({ page }) => {
