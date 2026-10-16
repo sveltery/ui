@@ -11,7 +11,7 @@
     "messages",
     "headless"
   ],
-  "homepage": "https://github.com/sveltery/ui/tree/main/packages/message-scroller#readme",
+  "homepage": "https://ui.sveltery.dev/docs/components/message-scroller",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sveltery/ui.git",
