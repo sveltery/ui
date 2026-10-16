@@ -18,7 +18,9 @@
   const triggerClass = $derived(`touch-manipulation bg-transparent! px-2! py-0! text-sm! transition-none select-none hover:bg-muted! pointer-coarse:h-10! ${className ?? ''}`);
 
   // A closed dialog forgets what was typed, as upstream.
-  const clear = (next: boolean) => next || (input = '');
+  const clear = (next: boolean) => {
+    if (!next) input = '';
+  };
 
   function submit(event: SubmitEvent) {
     event.preventDefault();

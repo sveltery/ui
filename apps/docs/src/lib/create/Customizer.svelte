@@ -3,7 +3,7 @@
   copy-preset.tsx, random-button.tsx and reset-button.tsx at af983e8.
 -->
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   import { MediaQuery } from 'svelte/reactivity';
   import { Menu } from '@sveltery/base/menu';
   import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@sveltery/components/alert-dialog';
@@ -20,24 +20,23 @@
   import OpenPreset from './OpenPreset.svelte';
   import Picker from './Picker.svelte';
   import PickerOptions from './PickerOptions.svelte';
-  import { FONT_GROUPS, ICON_LIBRARIES, ICON_LIBRARY_ORDER, MENU_ACCENT_LABELS, MENU_COLOR_LABELS, PICKER_ICONS, RADIUS_LABELS, STYLES, THEME_LABELS, type OptionGroup } from './options';
+  import { FONT_GROUPS, ICON_LIBRARIES, MENU_ACCENT_LABELS, MENU_COLOR_LABELS, PICKER_ICONS, RADIUS_LABELS, STYLES, THEME_LABELS, type OptionGroup } from './options';
 
   let { cli, swatches }: { cli: string; swatches: Partial<Record<PresetTheme, string>> } = $props();
 
   const designer = getDesigner();
   const config = $derived(designer.config);
   const phone = new MediaQuery('max-width: 767px', false);
-  const mobile = $derived(phone.current);
   let card = $state<HTMLElement>();
   let openPreset = $state(false);
   let resetOpen = $state(false);
   let copied = $state(false);
   let copiedTimer: ReturnType<typeof setTimeout> | undefined;
 
-  const STYLE_ORDER = ['vega', 'nova', 'maia', 'lyra', 'mira', 'luma', 'sera', 'rhea'] as const;
-  const styleGroups = [{ options: STYLE_ORDER.map((style) => ({ value: style, label: STYLES[style].label })) }];
+  const options = <Value extends string>(entries: Record<Value, { label: string }>) => [{ options: (Object.keys(entries) as Value[]).map((value) => ({ value, label: entries[value].label })) }];
+  const styleGroups = options(STYLES);
   const baseColorGroups = [{ options: BASE_COLORS.map((color) => ({ value: color, label: THEME_LABELS[color] })) }];
-  const iconLibraryGroups = [{ options: ICON_LIBRARY_ORDER.map((library) => ({ value: library, label: ICON_LIBRARIES[library].label })) }];
+  const iconLibraryGroups = options(ICON_LIBRARIES);
 
   /** The base color first, then the accents, as upstream's theme and chart color menus. */
   const themeGroups = $derived.by((): OptionGroup<PresetTheme>[] => {
@@ -59,16 +58,11 @@
 
   const menuInverted = $derived(config.menuColor === 'inverted' || config.menuColor === 'inverted-translucent');
   const menuTranslucent = $derived(isTranslucent(config.menuColor));
-  // Going back to a solid menu restores the accent it had before it turned translucent.
-  let solidMenuAccent = $state(designer.config.menuAccent);
-  $effect(() => {
-    if (!menuTranslucent) solidMenuAccent = config.menuAccent;
-  });
   const menuColor = (inverted: boolean, translucent: boolean): DesignConfig['menuColor'] => `${inverted ? 'inverted' : 'default'}${translucent ? '-translucent' : ''}` as DesignConfig['menuColor'];
   const menuColorPatch = (choice: 'default' | 'inverted') => ({ menuColor: menuColor(choice === 'inverted', menuTranslucent) });
   const menuSurfacePatch = (choice: 'solid' | 'translucent') => {
     const translucent = choice === 'translucent';
-    return { menuColor: menuColor(menuInverted, translucent), menuAccent: translucent ? ('subtle' as const) : solidMenuAccent };
+    return { menuColor: menuColor(menuInverted, translucent), menuAccent: translucent ? ('subtle' as const) : designer.solidMenuAccent };
   };
 
   const menuAccentGroups = $derived([{ options: PRESET_MENU_ACCENTS.map((accent) => ({ value: accent, label: MENU_ACCENT_LABELS[accent], disabled: accent === 'bold' && menuTranslucent })) }]);
@@ -85,6 +79,8 @@
     clearTimeout(copiedTimer);
     copiedTimer = setTimeout(() => (copied = false), 2000);
   }
+
+  onDestroy(() => clearTimeout(copiedTimer));
 
   function confirmReset() {
     designer.reset();
@@ -152,48 +148,48 @@
   </CardHeader>
   <CardContent class="no-scrollbar min-h-0 flex-1 overflow-x-auto overflow-y-hidden md:overflow-y-auto">
     <FieldGroup class="flex-row gap-2.5 py-px **:data-[slot=field-separator]:-mx-4 **:data-[slot=field-separator]:w-auto md:flex-col md:gap-3.25">
-      <Picker label="Style" field="style" display={STYLES[config.style].label} {mobile} anchor={card}>
+      <Picker label="Style" field="style" display={STYLES[config.style].label} mobile={phone.current} anchor={card}>
         {#snippet icon()}<IconSvg icon={STYLES[config.style].icon} class="size-4" />{/snippet}
-        <PickerOptions value={config.style} groups={styleGroups} {mobile} onselect={(style) => designer.set({ style })} onpreview={(style) => designer.preview({ style })} />
+        <PickerOptions value={config.style} groups={styleGroups} mobile={phone.current} onselect={(style) => designer.set({ style })} onpreview={(style) => designer.preview({ style })} />
       </Picker>
       <FieldSeparator class="hidden md:block" />
-      <Picker label="Base Color" field="baseColor" display={THEME_LABELS[config.baseColor]} {mobile} anchor={card}>
+      <Picker label="Base Color" field="baseColor" display={THEME_LABELS[config.baseColor]} mobile={phone.current} anchor={card}>
         {#snippet icon()}{@render swatch(swatches[config.baseColor])}{/snippet}
-        <PickerOptions value={config.baseColor as (typeof BASE_COLORS)[number]} groups={baseColorGroups} {mobile} onselect={(baseColor) => designer.set({ baseColor })} onpreview={(baseColor) => designer.preview({ baseColor })} />
+        <PickerOptions value={config.baseColor as (typeof BASE_COLORS)[number]} groups={baseColorGroups} mobile={phone.current} onselect={(baseColor) => designer.set({ baseColor })} onpreview={(baseColor) => designer.preview({ baseColor })} />
       </Picker>
-      <Picker label="Theme" field="theme" display={THEME_LABELS[config.theme]} {mobile} anchor={card} class="max-h-92">
+      <Picker label="Theme" field="theme" display={THEME_LABELS[config.theme]} mobile={phone.current} anchor={card} class="max-h-92">
         {#snippet icon()}{@render swatch(swatches[config.theme])}{/snippet}
-        <PickerOptions value={config.theme} groups={themeGroups} {mobile} onselect={(theme) => designer.set({ theme })} onpreview={(theme) => designer.preview({ theme })} />
+        <PickerOptions value={config.theme} groups={themeGroups} mobile={phone.current} onselect={(theme) => designer.set({ theme })} onpreview={(theme) => designer.preview({ theme })} />
       </Picker>
-      <Picker label="Chart Color" field="chartColor" display={THEME_LABELS[config.chartColor]} {mobile} anchor={card} class="max-h-92">
+      <Picker label="Chart Color" field="chartColor" display={THEME_LABELS[config.chartColor]} mobile={phone.current} anchor={card} class="max-h-92">
         {#snippet icon()}{@render swatch(swatches[config.chartColor])}{/snippet}
-        <PickerOptions value={config.chartColor} groups={themeGroups} {mobile} onselect={(chartColor) => designer.set({ chartColor })} onpreview={(chartColor) => designer.preview({ chartColor })} />
+        <PickerOptions value={config.chartColor} groups={themeGroups} mobile={phone.current} onselect={(chartColor) => designer.set({ chartColor })} onpreview={(chartColor) => designer.preview({ chartColor })} />
       </Picker>
       <FieldSeparator class="hidden md:block" />
-      <Picker label="Heading" field="fontHeading" display={headingFont.title} {mobile} anchor={card} class="max-h-96">
+      <Picker label="Heading" field="fontHeading" display={headingFont.title} mobile={phone.current} anchor={card} class="max-h-96">
         {#snippet icon()}<span style:font-family={headingFont.family}>Aa</span>{/snippet}
-        <PickerOptions value={config.fontHeading} groups={headingGroups} {mobile} onselect={(fontHeading) => designer.set({ fontHeading })} onpreview={(fontHeading) => designer.preview({ fontHeading })} />
+        <PickerOptions value={config.fontHeading} groups={headingGroups} mobile={phone.current} onselect={(fontHeading) => designer.set({ fontHeading })} onpreview={(fontHeading) => designer.preview({ fontHeading })} />
       </Picker>
-      <Picker label="Font" field="font" display={bodyFont.title} {mobile} anchor={card} class="max-h-96">
+      <Picker label="Font" field="font" display={bodyFont.title} mobile={phone.current} anchor={card} class="max-h-96">
         {#snippet icon()}<span style:font-family={bodyFont.family}>Aa</span>{/snippet}
-        <PickerOptions value={config.font} groups={FONT_GROUPS} {mobile} onselect={(font) => designer.set({ font })} onpreview={(font) => designer.preview({ font })} />
+        <PickerOptions value={config.font} groups={FONT_GROUPS} mobile={phone.current} onselect={(font) => designer.set({ font })} onpreview={(font) => designer.preview({ font })} />
       </Picker>
       <FieldSeparator class="hidden md:block" />
-      <Picker label="Icon Library" field="iconLibrary" display={ICON_LIBRARIES[config.iconLibrary].label} {mobile} anchor={card}>
+      <Picker label="Icon Library" field="iconLibrary" display={ICON_LIBRARIES[config.iconLibrary].label} mobile={phone.current} anchor={card}>
         {#snippet icon()}<IconSvg icon={ICON_LIBRARIES[config.iconLibrary].icon} class="size-4" />{/snippet}
-        <PickerOptions value={config.iconLibrary} groups={iconLibraryGroups} {mobile} onselect={(iconLibrary) => designer.set({ iconLibrary })} onpreview={(iconLibrary) => designer.preview({ iconLibrary })} />
+        <PickerOptions value={config.iconLibrary} groups={iconLibraryGroups} mobile={phone.current} onselect={(iconLibrary) => designer.set({ iconLibrary })} onpreview={(iconLibrary) => designer.preview({ iconLibrary })} />
       </Picker>
-      <Picker label="Radius" field="radius" display={RADIUS_LABELS[radiusLocked ? 'none' : config.radius]} disabled={radiusLocked} {mobile} anchor={card}>
+      <Picker label="Radius" field="radius" display={RADIUS_LABELS[radiusLocked ? 'none' : config.radius]} disabled={radiusLocked} mobile={phone.current} anchor={card}>
         {#snippet icon()}<IconSvg icon={PICKER_ICONS.radius} class="size-4 rotate-90" />{/snippet}
-        <PickerOptions value={radiusLocked ? 'none' : config.radius} groups={radiusGroups} {mobile} onselect={(radius) => designer.set({ radius })} onpreview={(radius) => designer.preview({ radius })} />
+        <PickerOptions value={radiusLocked ? 'none' : config.radius} groups={radiusGroups} mobile={phone.current} onselect={(radius) => designer.set({ radius })} onpreview={(radius) => designer.preview({ radius })} />
       </Picker>
       <FieldSeparator class="hidden md:block" />
-      <Picker label="Menu" field="menuColor" display={MENU_COLOR_LABELS[config.menuColor]} {mobile} anchor={card}>
+      <Picker label="Menu" field="menuColor" display={MENU_COLOR_LABELS[config.menuColor]} mobile={phone.current} anchor={card}>
         {#snippet icon()}<IconSvg icon={PICKER_ICONS.menu} class="size-4" />{/snippet}
         <PickerOptions
           value={menuInverted ? 'inverted' : 'default'}
           groups={[{ label: 'Color', options: [{ value: 'default', label: 'Default' }, { value: 'inverted', label: 'Inverted', disabled: mode.current === 'dark' }] }]}
-          {mobile}
+          mobile={phone.current}
           onselect={(choice) => designer.set(menuColorPatch(choice))}
           onpreview={(choice) => designer.preview(menuColorPatch(choice))}
         />
@@ -201,29 +197,31 @@
         <PickerOptions
           value={menuTranslucent ? 'translucent' : 'solid'}
           groups={[{ label: 'Appearance', options: [{ value: 'solid', label: 'Solid' }, { value: 'translucent', label: 'Translucent' }] }]}
-          {mobile}
+          mobile={phone.current}
           onselect={(choice) => designer.set(menuSurfacePatch(choice))}
           onpreview={(choice) => designer.preview(menuSurfacePatch(choice))}
         />
       </Picker>
-      <Picker label="Menu Accent" field="menuAccent" display={MENU_ACCENT_LABELS[config.menuAccent]} {mobile} anchor={card}>
-        {#snippet icon()}
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="size-4 text-foreground" aria-hidden="true">
-            <g stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-accent={config.menuAccent} class="fill-muted-foreground/30 data-[accent=bold]:fill-foreground">
-              <path d="M19 12.1294L12.9388 18.207C11.1557 19.9949 10.2641 20.8889 9.16993 20.9877C8.98904 21.0041 8.80705 21.0041 8.62616 20.9877C7.53195 20.8889 6.64039 19.9949 4.85726 18.207L2.83687 16.1811C1.72104 15.0622 1.72104 13.2482 2.83687 12.1294M19 12.1294L10.9184 4.02587M19 12.1294H2.83687M10.9184 4.02587L2.83687 12.1294M10.9184 4.02587L8.89805 2" />
-              <path d="M22 20C22 21.1046 21.1046 22 20 22C18.8954 22 18 21.1046 18 20C18 18.8954 20 17 20 17C20 17 22 18.8954 22 20Z" />
-            </g>
-          </svg>
-        {/snippet}
-        <PickerOptions value={config.menuAccent} groups={menuAccentGroups} {mobile} onselect={(menuAccent) => designer.set({ menuAccent })} onpreview={(menuAccent) => designer.preview({ menuAccent })} />
-      </Picker>
+      <div class="pr-3 md:pr-0">
+        <Picker label="Menu Accent" field="menuAccent" display={MENU_ACCENT_LABELS[config.menuAccent]} mobile={phone.current} anchor={card}>
+          {#snippet icon()}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="size-4 text-foreground" aria-hidden="true">
+              <g stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-accent={config.menuAccent} class="fill-muted-foreground/30 data-[accent=bold]:fill-foreground">
+                <path d="M19 12.1294L12.9388 18.207C11.1557 19.9949 10.2641 20.8889 9.16993 20.9877C8.98904 21.0041 8.80705 21.0041 8.62616 20.9877C7.53195 20.8889 6.64039 19.9949 4.85726 18.207L2.83687 16.1811C1.72104 15.0622 1.72104 13.2482 2.83687 12.1294M19 12.1294L10.9184 4.02587M19 12.1294H2.83687M10.9184 4.02587L2.83687 12.1294M10.9184 4.02587L8.89805 2" />
+                <path d="M22 20C22 21.1046 21.1046 22 20 22C18.8954 22 18 21.1046 18 20C18 18.8954 20 17 20 17C20 17 22 18.8954 22 20Z" />
+              </g>
+            </svg>
+          {/snippet}
+          <PickerOptions value={config.menuAccent} groups={menuAccentGroups} mobile={phone.current} onselect={(menuAccent) => designer.set({ menuAccent })} onpreview={(menuAccent) => designer.preview({ menuAccent })} />
+        </Picker>
+      </div>
     </FieldGroup>
   </CardContent>
   <CardFooter class="flex min-w-0 gap-2 md:flex-col md:rounded-b-none md:**:[button,a]:w-full">
     <Button variant="outline" onclick={copyPreset} title={copied ? 'Copied' : `--preset ${designer.code}`} class="{footerButton} min-w-0 flex-1 md:flex-none">
       <span class="block min-w-0 truncate">{copied ? 'Copied' : `--preset ${designer.code}`}</span>
     </Button>
-    <OpenPreset bind:open={openPreset} {mobile} class="max-w-20 min-w-0 flex-1 sm:max-w-none md:flex-none" />
+    <OpenPreset bind:open={openPreset} mobile={phone.current} class="max-w-20 min-w-0 flex-1 sm:max-w-none md:flex-none" />
     <Button variant="outline" onclick={() => designer.shuffle()} class="{footerButton} max-w-20 min-w-0 flex-1 sm:max-w-none md:flex-none">
       <span class="w-full truncate text-center font-medium">Shuffle</span>
     </Button>

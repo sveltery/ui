@@ -37,7 +37,11 @@
 </script>
 
 <div class="group/picker relative">
-  <Menu.Root onOpenChange={(open) => open || designer.clearPreview()}>
+  <Menu.Root
+    onOpenChange={(open) => {
+      if (!open) designer.clearPreview();
+    }}
+  >
     <Menu.Trigger
       data-slot="picker-trigger"
       {disabled}
@@ -70,7 +74,7 @@
   <button
     type="button"
     title={locked ? 'Unlock' : 'Lock'}
-    aria-label={locked ? `Unlock ${label}` : `Lock ${label}`}
+    aria-label={`Lock ${label}`}
     aria-pressed={locked}
     data-locked={locked}
     onclick={() => designer.toggleLock(field)}

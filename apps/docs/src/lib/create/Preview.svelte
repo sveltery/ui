@@ -17,9 +17,7 @@
 <div class="relative flex flex-1 flex-col justify-center overflow-hidden rounded-2xl ring ring-foreground/10 md:ring-muted dark:ring-foreground/10">
   <div class="relative z-0 mx-auto flex w-full flex-1 flex-col overflow-hidden">
     <div class="absolute inset-0 bg-muted dark:bg-muted/30"></div>
-    {#key designer.item}
-      <iframe bind:this={iframe} {src} title="Preview" class="z-10 size-full flex-1" onload={() => sendPreviewConfig(iframe ?? null, designer.previewed)}></iframe>
-    {/key}
+    <iframe bind:this={iframe} {src} title="Preview" class="z-10 size-full flex-1" onload={() => sendPreviewConfig(iframe ?? null, designer.previewed)}></iframe>
   </div>
   <div class="dark absolute right-3 bottom-3 z-20 flex items-center gap-1 rounded-xl bg-card/90 p-1 shadow-xl backdrop-blur-xl">
     {#each PREVIEW_ITEMS as item (item.value)}

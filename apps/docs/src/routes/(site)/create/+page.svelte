@@ -1,7 +1,7 @@
 <!-- Port of shadcn's apps/v4/app/(app)/(create)/create/page.tsx at af983e8. -->
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { goto } from '$app/navigation';
+  import { onDestroy } from 'svelte';
+  import { afterNavigate, goto } from '$app/navigation';
   import Customizer from '$lib/create/Customizer.svelte';
   import { Designer, setDesigner } from '$lib/create/designer.svelte';
   import Preview from '$lib/create/Preview.svelte';
@@ -12,16 +12,26 @@
   const designer = setDesigner(new Designer());
   // The page is prerendered without a query, so the config is read in the browser before anything shows.
   let ready = $state(false);
+  // The first write after a navigation only fills in the URL it landed on, so it replaces instead of adding an entry.
+  let landed = true;
 
-  onMount(() => {
-    designer.load(new URLSearchParams(location.search));
+  // A link or Back to another `?preset=` keeps this component, so every navigation reads the URL again.
+  afterNavigate(({ to }) => {
+    // The URL writes below come back here too; only a URL that differs from the config is a new place.
+    if (to && to.url.search !== designer.search(to.url.search)) {
+      designer.load(to.url.searchParams);
+      landed = true;
+    }
     ready = true;
   });
+  onDestroy(() => designer.destroy());
 
-  // The URL follows the config, so a copied link reopens the same setup.
+  // The URL follows the config, so a copied link reopens the same setup. Each change is a history entry, as upstream.
   $effect(() => {
-    const search = designer.search;
-    if (ready && location.search !== search) goto(search, { replace: true, shallow: true });
+    const search = designer.search(location.search);
+    if (!ready) return;
+    if (location.search !== search) goto(search, { replace: landed, shallow: true });
+    landed = false;
   });
 </script>
 

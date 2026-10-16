@@ -26,7 +26,7 @@
 
 <Menu.RadioGroup {value} onValueChange={(next) => onselect(next as Value)}>
   {#each groups as group, index (index)}
-    {#if index > 0}
+    {#if index > 0 && !(group.label && groups[index - 1]!.label)}
       <Menu.Separator class="-mx-1.5 my-1.5 h-px bg-neutral-600 dark:bg-neutral-700" />
     {/if}
     <Menu.Group>

@@ -84,8 +84,8 @@ test('every picker updates the URL code and the preview without a reload, and th
 
   const shared = page.url();
   await page.reload();
-  expect(page.url()).toBe(shared);
   const reopened = await preview(page);
+  await expect.poll(() => page.url(), 'the reopened page keeps the shared link').toBe(shared);
   for (const [label, display] of [
     ['Style', 'Maia'],
     ['Base Color', 'Zinc'],
@@ -123,14 +123,15 @@ test('Shuffle keeps locked fields, Reset restores the style preset, and Open loa
   await page.getByRole('button', { name: 'Lock Style' }).click();
   await page.getByRole('button', { name: 'Lock Font' }).click();
   // A curated preset can match the locked fields, so one shuffle may leave the code as it was.
-  const codes = new Set([code(page)]);
-  for (let i = 0; i < 5; i++) {
-    await page.getByRole('button', { name: 'Shuffle' }).click();
-    await expect(trigger(page, 'Style')).toHaveText(/Lyra/);
-    await expect(trigger(page, 'Font')).toHaveText(/Geist Mono/);
-    codes.add(code(page));
-  }
-  expect(codes.size).toBeGreaterThan(1);
+  const before = code(page);
+  await expect
+    .poll(async () => {
+      await page.getByRole('button', { name: 'Shuffle' }).click();
+      await expect(trigger(page, 'Style')).toHaveText(/Lyra/);
+      await expect(trigger(page, 'Font')).toHaveText(/Geist Mono/);
+      return code(page);
+    })
+    .not.toBe(before);
 
   await page.getByRole('button', { name: 'Menu', exact: true }).click();
   await page.getByRole('menuitem', { name: /Reset/ }).click();
@@ -150,7 +151,69 @@ test('the preview switcher changes the block and keeps it in the URL', async ({ 
   await preview(page);
   await page.getByRole('button', { name: 'Preview 03' }).click();
   await expect.poll(() => new URL(page.url()).searchParams.get('item')).toBe('preview-03');
-  await expect.poll(() => page.locator('iframe[title=Preview]').getAttribute('src')).toMatch(/^\/preview\/preview-03\?preset=/);
+  await expect.poll(() => page.locator('iframe[title=Preview]').getAttribute('src')).toBe(`/preview/preview-03?preset=${code(page)}`);
+});
+
+test('hovering an option previews it without committing, and leaving the menu reverts it', async ({ page }) => {
+  await page.goto('/create');
+  const frame = await preview(page);
+  await trigger(page, 'Style').click();
+  await page.getByRole('menuitemradio', { name: 'Lyra', exact: true }).hover();
+  await expect.poll(() => received(frame)).toBe(encodePreset({ ...DEFAULT, style: 'lyra' }));
+  expect(code(page)).toBe(encodePreset(DEFAULT));
+  await page.keyboard.press('Escape');
+  await expect.poll(() => received(frame)).toBe(encodePreset(DEFAULT));
+});
+
+test('style and menu rules hold the options upstream allows', async ({ page }) => {
+  await page.goto(`/create?preset=${encodePreset({ ...DEFAULT, radius: 'large' })}`);
+  await pick(page, 'Style', 'Sera');
+  await expect(trigger(page, 'Radius')).toBeDisabled();
+  await expect(trigger(page, 'Radius')).toHaveText(/None/);
+  await pick(page, 'Style', 'Rhea');
+  await trigger(page, 'Radius').click();
+  await expect(page.getByRole('menuitemradio', { name: 'Large' })).toHaveAttribute('aria-disabled', 'true');
+  await page.keyboard.press('Escape');
+
+  await pick(page, 'Menu Accent', 'Bold');
+  await pick(page, 'Menu', 'Translucent');
+  await expect(trigger(page, 'Menu Accent')).toHaveText(/Subtle/);
+  await pick(page, 'Menu', 'Solid');
+  await expect(trigger(page, 'Menu Accent')).toHaveText(/Bold/);
+
+  await pick(page, 'Heading', 'Figtree');
+  await pick(page, 'Font', 'Figtree');
+  await expect(trigger(page, 'Heading')).toHaveText(/Figtree/);
+  await expect.poll(() => code(page)).toBe(encodePreset({ ...DEFAULT, style: 'rhea', radius: 'large', menuAccent: 'bold', font: 'figtree' }));
+});
+
+test('links and Back to another preset load it into the pickers', async ({ page }) => {
+  await page.goto('/create');
+  await preview(page);
+  await pick(page, 'Style', 'Maia');
+  await pick(page, 'Style', 'Lyra');
+  await page.goBack();
+  await expect(trigger(page, 'Style')).toHaveText(/Maia/);
+  await expect.poll(() => code(page)).toBe(encodePreset({ ...DEFAULT, style: 'maia' }));
+  await page.getByRole('link', { name: 'Create', exact: true }).click();
+  await expect(trigger(page, 'Style')).toHaveText(/Nova/);
+  await expect.poll(() => code(page)).toBe(encodePreset(DEFAULT));
+});
+
+test('the keyboard shortcuts shuffle, reset and open a preset', async ({ page }) => {
+  await page.goto(`/create?preset=${encodePreset({ ...DEFAULT, style: 'maia' })}`);
+  await preview(page);
+  await page.getByRole('button', { name: 'Lock Style' }).click();
+  const before = code(page);
+  await page.keyboard.press('r');
+  await expect.poll(() => code(page)).not.toBe(before);
+  await page.keyboard.press('Shift+R');
+  await expect(page.getByRole('alertdialog')).toBeVisible();
+  await page.keyboard.press('Shift+R');
+  await expect(page.getByRole('alertdialog')).toBeHidden();
+  await expect.poll(() => code(page)).toBe(encodePreset(DEFAULT_PRESETS.maia));
+  await page.keyboard.press('o');
+  await expect(page.getByLabel('Preset code')).toBeVisible();
 });
 
 test('on a phone the pickers scroll in a row and open above the card', async ({ page }) => {
@@ -162,6 +225,9 @@ test('on a phone the pickers scroll in a row and open above the card', async ({ 
   const base = await trigger(page, 'Base Color').boundingBox();
   expect(base!.y).toBe(style!.y);
   await trigger(page, 'Style').click();
+  const popup = await page.getByRole('menu').boundingBox();
+  const card = await page.locator('[data-slot=card]').filter({ has: trigger(page, 'Style') }).boundingBox();
+  expect(popup!.y + popup!.height).toBeLessThanOrEqual(card!.y);
   await page.getByRole('menuitemradio', { name: 'Luma' }).click();
   await expect(page.getByRole('menu')).toBeHidden();
   await expect.poll(() => code(page)).toBe(encodePreset({ ...DEFAULT, style: 'luma' }));

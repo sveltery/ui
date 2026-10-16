@@ -4,7 +4,7 @@ import { createContext } from 'svelte';
 import { SvelteSet } from 'svelte/reactivity';
 import { encodePreset, type PresetCode } from '@sveltery/ui/preset';
 import { DEFAULT_PREVIEW_ITEM } from './preview/message';
-import { configFromCode, DEFAULT_CONFIG, normalizeConfig, resetConfig, shuffleConfig, type DesignConfig, type DesignField } from './config';
+import { configFromCode, DEFAULT_CONFIG, isTranslucent, normalizeConfig, resetConfig, shuffleConfig, type DesignConfig, type DesignField } from './config';
 
 /** The blocks the preview can show, with upstream's switcher labels. */
 export const PREVIEW_ITEMS = [
@@ -22,37 +22,55 @@ const PREVIEW_DELAY_MS = 50;
 export class Designer {
   /** The committed config. The URL's `preset` and the CLI command both derive from it. */
   config = $state.raw<DesignConfig>(DEFAULT_CONFIG);
-  item = $state<PreviewItem>(DEFAULT_PREVIEW_ITEM as PreviewItem);
+  item = $state<PreviewItem>(DEFAULT_PREVIEW_ITEM);
   /** Fields that Shuffle leaves alone. */
   readonly locks = new SvelteSet<DesignField>();
   /** A hovered option, shown in the preview only. It never reaches the URL. */
   hovered = $state.raw<Partial<DesignConfig> | null>(null);
 
   readonly code: PresetCode = $derived(encodePreset(this.config));
+  // Kept as a code so a hover that lands on the shown config is equal and does not post to the frame again.
+  readonly #previewCode: PresetCode = $derived(this.hovered ? encodePreset(normalizeConfig({ ...this.config, ...this.hovered })) : this.code);
   /** What the preview shows: the config with any hovered option on top. */
-  readonly previewed: DesignConfig = $derived(this.hovered ? normalizeConfig({ ...this.config, ...this.hovered }) : this.config);
+  readonly previewed: DesignConfig = $derived(configFromCode(this.#previewCode)!);
 
   #previewTimer: ReturnType<typeof setTimeout> | undefined;
+  #solidMenuAccent: DesignConfig['menuAccent'] = DEFAULT_CONFIG.menuAccent;
 
   /** Reads `?preset=` and `?item=`. A missing or unreadable code keeps the default, as upstream's `b0`. */
   load(params: URLSearchParams) {
-    this.config = configFromCode(params.get('preset') ?? '') ?? DEFAULT_CONFIG;
+    this.#commit(configFromCode(params.get('preset') ?? '') ?? DEFAULT_CONFIG);
     const item = params.get('item');
-    if (isPreviewItem(item)) this.item = item;
+    this.item = isPreviewItem(item) ? item : DEFAULT_PREVIEW_ITEM;
   }
 
-  /** The query that reopens this setup. The item is left out when it is the default, as upstream. */
-  get search(): string {
-    return this.item === DEFAULT_PREVIEW_ITEM ? `?preset=${this.code}` : `?preset=${this.code}&item=${this.item}`;
+  /** `current` with `preset` and `item` set to this setup. Other parameters stay. The item is left out when it is the default, as upstream. */
+  search(current: string): string {
+    // eslint-disable-next-line svelte/prefer-svelte-reactivity -- a local copy built and read in one call
+    const params = new URLSearchParams(current);
+    params.set('preset', this.code);
+    if (this.item === DEFAULT_PREVIEW_ITEM) params.delete('item');
+    else params.set('item', this.item);
+    return `?${params}`;
   }
 
   set(patch: Partial<DesignConfig>) {
     this.clearPreview();
-    this.config = normalizeConfig({ ...this.config, ...patch });
+    this.#commit(normalizeConfig({ ...this.config, ...patch }));
+  }
+
+  /** The accent a translucent menu goes back to when it turns solid again. */
+  get solidMenuAccent() {
+    return this.#solidMenuAccent;
+  }
+
+  #commit(config: DesignConfig) {
+    this.config = config;
+    if (!isTranslucent(config.menuColor)) this.#solidMenuAccent = config.menuAccent;
   }
 
   open(code: PresetCode) {
-    this.set(configFromCode(code) ?? this.config);
+    this.set(configFromCode(code)!);
   }
 
   shuffle() {
@@ -76,6 +94,10 @@ export class Designer {
   clearPreview() {
     clearTimeout(this.#previewTimer);
     this.hovered = null;
+  }
+
+  destroy() {
+    clearTimeout(this.#previewTimer);
   }
 }
 

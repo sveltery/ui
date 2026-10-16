@@ -52,7 +52,7 @@ export const THEME_LABELS: Record<PresetTheme, string> = {
 };
 
 /** Upstream's picker order, which differs from the codec's order. */
-export const FONTS: readonly PresetFont[] = [
+const FONTS: readonly PresetFont[] = [
   'geist',
   'inter',
   'noto-sans',
@@ -87,6 +87,7 @@ export const FONT_GROUPS: OptionGroup<PresetFont>[] = (['sans', 'mono', 'serif']
   options: FONTS.filter((font) => PRESET_FONT_DEFINITIONS[font].type === type).map((font) => ({ value: font, label: PRESET_FONT_DEFINITIONS[font].title })),
 }));
 
+/** In upstream's picker order, which differs from the codec's order. */
 export const ICON_LIBRARIES: Record<PresetIconLibrary, { label: string; icon: Icon }> = {
   lucide: { label: 'Lucide', icon: { viewBox: '0 0 24 24', body: stroke('<path d="M14 12a4 4 0 0 0-8 0 8 8 0 1 0 16 0 11.97 11.97 0 0 0-4-8.944" /><path d="M10 12a4 4 0 0 0 8 0 8 8 0 1 0-16 0 11.97 11.97 0 0 0 4.063 9" />') } },
   tabler: { label: 'Tabler Icons', icon: { viewBox: '0 0 32 32', body: '<path fill="currentColor" d="M31.288 7.107A8.83 8.83 0 0 0 24.893.712a55.9 55.9 0 0 0-17.786 0A8.83 8.83 0 0 0 .712 7.107a55.9 55.9 0 0 0 0 17.786 8.83 8.83 0 0 0 6.395 6.395c5.895.95 11.89.95 17.786 0a8.83 8.83 0 0 0 6.395-6.395c.95-5.895.95-11.89 0-17.786" /><path fill="#fff" d="m17.884 9.076 1.5-2.488 6.97 6.977-2.492 1.494zm-7.96 3.127 7.814-.909 3.91 3.66-.974 7.287-9.582 2.159a3.06 3.06 0 0 1-2.17-.329l5.244-4.897c.91.407 2.003.142 2.587-.626.584-.77.488-1.818-.226-2.484s-1.84-.755-2.664-.21c-.823.543-1.107 1.562-.67 2.412l-5.245 4.89a2.53 2.53 0 0 1-.339-2.017z" />' } },
@@ -94,9 +95,6 @@ export const ICON_LIBRARIES: Record<PresetIconLibrary, { label: string; icon: Ic
   phosphor: { label: 'Phosphor Icons', icon: { viewBox: '0 0 32 32', body: stroke('<path d="M9 5h9v16H9zm9 16v9a9 9 0 0 1-9-9M9 5l9 16m0 0h1a8 8 0 0 0 0-16h-1" />') } },
   remixicon: { label: 'Remix Icon', icon: { viewBox: '0 0 24 24', body: '<path fill="currentColor" d="M12 2C17.5228 2 22 6.47715 22 12C22 15.3137 19.3137 18 16 18C12.6863 18 10 15.3137 10 12C10 11.4477 9.55228 11 9 11C8.44772 11 8 11.4477 8 12C8 16.4183 11.5817 20 16 20C16.8708 20 17.7084 19.8588 18.4932 19.6016C16.7458 21.0956 14.4792 22 12 22C6.6689 22 2.3127 17.8283 2.0166 12.5713C2.23647 9.45772 4.83048 7 8 7C11.3137 7 14 9.68629 14 13C14 13.5523 14.4477 14 15 14C15.5523 14 16 13.5523 16 13C16 8.58172 12.4183 5 8 5C6.50513 5 5.1062 5.41032 3.90918 6.12402C5.72712 3.62515 8.67334 2 12 2Z" />' } },
 };
-
-/** Upstream's picker order, which differs from the codec's order. */
-export const ICON_LIBRARY_ORDER: readonly PresetIconLibrary[] = ['lucide', 'tabler', 'hugeicons', 'phosphor', 'remixicon'];
 
 export const RADIUS_LABELS: Record<PresetRadius, string> = { default: 'Default', none: 'None', small: 'Small', medium: 'Medium', large: 'Large' };
 

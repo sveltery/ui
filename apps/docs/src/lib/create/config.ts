@@ -1,6 +1,6 @@
 // Ported from shadcn's apps/v4/app/(app)/(create)/lib (search-params.ts, parse-preset-input.ts, shuffle-presets.ts) and hooks
 // (use-random.tsx, use-reset.tsx) at af983e8.
-import { DEFAULT_PRESET_CONFIG, DEFAULT_PRESETS, decodePreset, encodePreset, isPresetCode, type PresetBaseColor, type PresetCode, type PresetConfig, type PresetTheme } from '@sveltery/ui/preset';
+import { DEFAULT_PRESET_CONFIG, DEFAULT_PRESETS, decodePreset, encodePreset, isPresetCode, V1_CHART_COLOR_MAP, type PresetBaseColor, type PresetCode, type PresetConfig, type PresetTheme } from '@sveltery/ui/preset';
 import type { PackageManager } from '$lib/package-manager.svelte';
 
 /** Every field the Create page edits. A decoded v1 code has no `chartColor`, so `normalizeConfig` fills it. */
@@ -9,10 +9,9 @@ export type DesignField = keyof DesignConfig;
 
 /** The base colors the page offers. `gray` stays in the codec only. */
 export const BASE_COLORS = ['neutral', 'stone', 'zinc', 'mauve', 'olive', 'mist', 'taupe'] as const satisfies readonly PresetBaseColor[];
-export type BaseColor = (typeof BASE_COLORS)[number];
 
 /** The accents, in upstream's picker order. Each base color adds itself to the front of this list. */
-export const ACCENTS = ['amber', 'blue', 'cyan', 'emerald', 'fuchsia', 'green', 'indigo', 'lime', 'orange', 'pink', 'purple', 'red', 'rose', 'sky', 'teal', 'violet', 'yellow'] as const satisfies readonly PresetTheme[];
+const ACCENTS = ['amber', 'blue', 'cyan', 'emerald', 'fuchsia', 'green', 'indigo', 'lime', 'orange', 'pink', 'purple', 'red', 'rose', 'sky', 'teal', 'violet', 'yellow'] as const satisfies readonly PresetTheme[];
 
 /** The theme and chart colors a base color allows: itself, then every accent. */
 export function themesForBaseColor(baseColor: PresetBaseColor): PresetTheme[] {
@@ -31,7 +30,7 @@ export function normalizeConfig(config: PresetConfig): DesignConfig {
   const baseColor = config.baseColor === 'gray' ? 'neutral' : config.baseColor;
   const themes = themesForBaseColor(baseColor);
   const theme = themes.includes(config.theme) ? config.theme : baseColor;
-  const chartColor = config.chartColor ?? theme;
+  const chartColor = config.chartColor ?? (V1_CHART_COLOR_MAP[config.theme] as PresetTheme | undefined) ?? theme;
   return {
     ...config,
     baseColor,
@@ -63,7 +62,7 @@ export function parsePresetInput(value: string): PresetCode | null {
 }
 
 // Curated codes that upstream's Shuffle picks from, from https://dialectcn.xyz.
-export const SHUFFLE_PRESETS = [
+const SHUFFLE_PRESETS = [
   'b6sUj34d9',
   'b2tqYzpa88',
   'b1W4tDrk',
