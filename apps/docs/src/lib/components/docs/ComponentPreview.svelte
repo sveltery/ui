@@ -1,9 +1,8 @@
 <script lang="ts">
   import type { Component } from 'svelte';
   import { cn } from 'cn';
-  import CopyButton from './CopyButton.svelte';
+  import CodeFigure from './CodeFigure.svelte';
 
-  // `component` and `source` come from the markdown pipeline, which resolves `name` at build time.
   let {
     name,
     component: Example,
@@ -14,7 +13,7 @@
   }: {
     name: string;
     component: Component;
-    source: { html: string; raw: string };
+    source: { html: string; peek: string; raw: string };
     align?: 'center' | 'start' | 'end';
     hideCode?: boolean;
     class?: string;
@@ -23,7 +22,7 @@
   let codeVisible = $state(false);
 </script>
 
-<div data-slot="component-preview" data-name={name} data-not-typeset class={cn('group relative mt-4 mb-12 flex flex-col overflow-hidden rounded-xl border', className)}>
+<div data-slot="component-preview" data-name={name} data-not-typeset class={cn('group relative mt-4 mb-12 flex flex-col overflow-hidden rounded-2xl border', className)}>
   <div
     data-slot="preview"
     data-align={align}
@@ -33,18 +32,24 @@
     <Example />
   </div>
   {#if !hideCode}
-    <div data-slot="code" class="relative overflow-hidden border-t [&_[data-rehype-pretty-code-figure]]:m-0 [&_[data-rehype-pretty-code-figure]]:rounded-none">
+    <div
+      data-slot="code"
+      data-code-visible={codeVisible}
+      class="relative overflow-hidden **:data-[slot=copy-button]:right-4 **:data-[slot=copy-button]:hidden data-[code-visible=true]:**:data-[slot=copy-button]:flex [&_[data-rehype-pretty-code-figure]]:m-0! [&_[data-rehype-pretty-code-figure]]:rounded-t-none [&_[data-rehype-pretty-code-figure]]:border-t [&_pre]:max-h-72"
+    >
       {#if codeVisible}
-        <div class="[&_pre]:max-h-96">{@html source.html}</div>
-        <CopyButton value={source.raw} class="right-4" />
+        <CodeFigure html={source.html} raw={source.raw} />
       {:else}
-        <div class="relative max-h-24 overflow-hidden" aria-hidden="true">{@html source.html}</div>
-        <div class="absolute inset-0 flex items-center justify-center bg-linear-to-t from-code via-code/60 to-transparent pt-6">
-          <button
-            type="button"
-            class="rounded-lg border bg-background px-3 py-1.5 text-sm font-medium shadow-none hover:bg-muted"
-            onclick={() => (codeVisible = true)}>View Code</button
-          >
+        <div class="relative">
+          <CodeFigure html={source.peek} raw={source.raw} />
+          <div class="absolute inset-0 flex items-center justify-center pb-4">
+            <div class="absolute inset-0" style="background: linear-gradient(to top, var(--color-code), color-mix(in oklab, var(--color-code) 60%, transparent), transparent)"></div>
+            <button
+              type="button"
+              class="relative z-10 inline-flex h-8 shrink-0 items-center justify-center gap-1.5 rounded-lg border bg-background px-3 text-sm font-medium whitespace-nowrap text-foreground shadow-none transition-all outline-none hover:bg-muted focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 dark:border-input dark:bg-background dark:text-foreground dark:hover:bg-muted"
+              onclick={() => (codeVisible = true)}>View Code</button
+            >
+          </div>
         </div>
       {/if}
     </div>
