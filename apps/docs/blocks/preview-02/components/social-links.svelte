@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { Button } from '@sveltery/components/button';
-  import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
-  import { Field, FieldGroup, FieldLabel } from '@sveltery/components/field';
-  import { InputGroup, InputGroupAddon, InputGroupInput } from '@sveltery/components/input-group';
-  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { Field, FieldGroup, FieldLabel } from '$registry/bases/base/ui/field';
+  import { InputGroup, InputGroupAddon, InputGroupInput } from '$registry/bases/base/ui/input-group';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 </script>
 
 <Card>

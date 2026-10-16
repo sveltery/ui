@@ -1,9 +1,9 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@sveltery/components/collapsible';
-  import { IconPlaceholder } from '@sveltery/components/icons';
-  import { SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarSeparator } from '@sveltery/components/sidebar';
+  import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '$registry/bases/base/ui/collapsible';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarSeparator } from '$registry/bases/base/ui/sidebar';
 
   let { calendars }: { calendars: { name: string; items: string[] }[] } = $props();
   // The host element's typed event handlers do not fit the element this snippet renders, so only `class` is typed.

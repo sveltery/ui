@@ -5,7 +5,7 @@ source scripts/toolchain.sh
 node --test scripts/tests/*.test.mjs
 node scripts/generate-icons.mjs --check
 pnpm lint
-pnpm --filter @sveltery/components build
+pnpm --filter @sveltery/resizable --filter @sveltery/message-scroller --filter @sveltery/questionnaire --filter @sveltery/command build
 pnpm check
 pnpm test
 pnpm --filter @sveltery/docs build

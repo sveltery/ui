@@ -3,10 +3,10 @@
   import { curveLinearClosed, curveNatural } from 'd3-shape';
   import { cubicInOut } from 'svelte/easing';
   import { AreaChart, ArcChart, BarChart, LineChart, PieChart, Text, type ChartContextValue } from 'layerchart';
-  import { Example, ExampleWrapper } from '@sveltery/components/example';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '@sveltery/components/chart';
-  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
   const monthly = [
     { month: 'January', desktop: 186, mobile: 80 },

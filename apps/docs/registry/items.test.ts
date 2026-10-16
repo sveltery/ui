@@ -26,8 +26,6 @@ const sources = {
   'bar/Bar.svelte': `<div></div>`,
   'shared/render.ts': `export const render = 1;`,
   'icons/generated.ts': `export const x = 1;`,
-  'styles/themes.ts': `export const x = 1;`,
-  'example/Example.svelte': `<script>import { y } from '../nothing/y.js';</script>`,
   'index.ts': `export * from './foo/index.js';`,
 };
 

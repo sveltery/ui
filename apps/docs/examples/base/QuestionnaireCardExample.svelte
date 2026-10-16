@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
+  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
   import {
     Questionnaire,
     QuestionnaireActions,
@@ -13,7 +13,7 @@
     QuestionnaireProgress,
     QuestionnaireSubmit,
     QuestionnaireTitle,
-  } from '@sveltery/components/questionnaire';
+  } from '$registry/bases/base/ui/questionnaire';
 
   const items = [
     { choices: [{ value: 'fix' }, { value: 'refactor' }, { value: 'docs' }], name: 'task', required: true },

@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Checkbox } from '@sveltery/components/checkbox';
-  import { Example, ExampleWrapper } from '@sveltery/components/example';
-  import { Field, FieldContent, FieldDescription, FieldGroup, FieldLabel, FieldTitle } from '@sveltery/components/field';
-  import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@sveltery/components/table';
+  import { Checkbox } from '$registry/bases/base/ui/checkbox';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Field, FieldContent, FieldDescription, FieldGroup, FieldLabel, FieldTitle } from '$registry/bases/base/ui/field';
+  import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '$registry/bases/base/ui/table';
 
   const tableData = [
     { id: '1', name: 'Sarah Chen', email: 'sarah.chen@example.com', role: 'Admin' },

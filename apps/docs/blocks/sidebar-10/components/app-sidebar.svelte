@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { Sidebar, SidebarContent, SidebarHeader, SidebarRail, type SidebarProps } from '@sveltery/components/sidebar';
+  import { Sidebar, SidebarContent, SidebarHeader, SidebarRail, type SidebarProps } from '$registry/bases/base/ui/sidebar';
   import NavFavorites from './nav-favorites.svelte';
   import NavMain from './nav-main.svelte';
   import NavSecondary from './nav-secondary.svelte';
   import NavWorkspaces from './nav-workspaces.svelte';
   import TeamSwitcher from './team-switcher.svelte';
-  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
   let { ...props }: SidebarProps = $props();
   const data = {
     teams: [

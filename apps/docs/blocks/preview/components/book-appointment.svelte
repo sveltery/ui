@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { Alert, AlertDescription, AlertTitle } from '@sveltery/components/alert';
-  import { Button } from '@sveltery/components/button';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
-  import { Field, FieldGroup, FieldLabel } from '@sveltery/components/field';
-  import { ToggleGroup, ToggleGroupItem } from '@sveltery/components/toggle-group';
+  import { Alert, AlertDescription, AlertTitle } from '$registry/bases/base/ui/alert';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { Field, FieldGroup, FieldLabel } from '$registry/bases/base/ui/field';
+  import { ToggleGroup, ToggleGroupItem } from '$registry/bases/base/ui/toggle-group';
 </script>
 
 <Card>

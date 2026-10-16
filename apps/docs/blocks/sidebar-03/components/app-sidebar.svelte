@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { ComponentProps, Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
   import {
     Sidebar,
     SidebarContent,
@@ -14,7 +14,7 @@
     SidebarMenuSubButton,
     SidebarMenuSubItem,
     SidebarRail,
-  } from '@sveltery/components/sidebar';
+  } from '$registry/bases/base/ui/sidebar';
 
   let { ...props }: ComponentProps<typeof Sidebar> = $props();
 

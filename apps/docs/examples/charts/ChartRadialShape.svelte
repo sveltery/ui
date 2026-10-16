@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
-  import { type ChartConfig, ChartContainer } from '@sveltery/components/chart';
-  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { type ChartConfig, ChartContainer } from '$registry/bases/base/ui/chart';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
   import { ArcChart, Text } from 'layerchart';
 
   const chartData = [{ browser: 'safari', visitors: 1260, color: 'var(--color-safari)' }];

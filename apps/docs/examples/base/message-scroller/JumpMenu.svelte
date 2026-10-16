@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Button } from '@sveltery/components/button';
-  import { useMessageScroller } from '@sveltery/components/message-scroller';
-  import { Popover, PopoverContent, PopoverTrigger } from '@sveltery/components/popover';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { useMessageScroller } from '$registry/bases/base/ui/message-scroller';
+  import { Popover, PopoverContent, PopoverTrigger } from '$registry/bases/base/ui/popover';
   import type { ChatMessage } from './chat.svelte.js';
 
   let { messages }: { messages: ChatMessage[] } = $props();

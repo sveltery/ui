@@ -7,7 +7,7 @@ const sources = import.meta.glob<string>(['/blocks/**/*.svelte', '/blocks/*/*.js
 /** Writes the code the way an app that copied the components and the block has it. */
 const asCopied = (raw: string) =>
   raw
-    .replace(/'@sveltery\/components\/([^']+)'/g, "'$lib/components/ui/$1'")
+    .replace(/'\$registry\/bases\/base\/ui\/([^']+)'/g, "'$lib/components/ui/$1'")
     .replace(/'\.\/components\//g, "'$lib/components/")
     .replace(/[ \t]*<!-- svelte-ignore [^>]*-->\n?/g, '');
 

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/components/example';
-  import { Skeleton } from '@sveltery/components/skeleton';
-  import { Card, CardHeader, CardContent } from '@sveltery/components/card';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Skeleton } from '$registry/bases/base/ui/skeleton';
+  import { Card, CardHeader, CardContent } from '$registry/bases/base/ui/card';
 </script>
 
 <ExampleWrapper>

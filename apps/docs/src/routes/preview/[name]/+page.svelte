@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { IconLibraryProvider } from '@sveltery/components/icons';
-  import { Toaster } from '@sveltery/components/toast';
+  import { IconLibraryProvider } from '$registry/bases/base/ui/icons';
+  import { Toaster } from '$registry/bases/base/ui/toast';
   import { prepareDesignSystem, syncMenuColor } from '$lib/create/preview/design-system';
   import { parsePreviewMessage, parsePreviewParams } from '$lib/create/preview/message';
   import { site } from '$lib/site';
-  import { DEFAULT_PRESET_CONFIG } from '@sveltery/ui/preset';
+  import { DEFAULT_PRESET_CONFIG } from '../../../../../../packages/cli/src/preset/index.js';
 
   let { data } = $props();
   const browser = typeof window !== 'undefined';

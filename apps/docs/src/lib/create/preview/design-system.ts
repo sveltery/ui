@@ -1,5 +1,5 @@
 // Port of shadcn's apps/v4/app/(app)/(create)/components/design-system-provider.tsx at af983e8.
-import { buildTheme, PRESET_FONT_DEFINITIONS, type PresetConfig, type PresetCssVars, type PresetMenuColor, type PresetRadius, type PresetTheme, type ThemeColors } from '@sveltery/ui/preset';
+import { buildTheme, PRESET_FONT_DEFINITIONS, type PresetConfig, type PresetCssVars, type PresetMenuColor, type PresetRadius, type PresetTheme, type ThemeColors } from '../../../../../../packages/cli/src/preset/index.js';
 import { loadFont } from './fonts';
 
 type ColorVars = NonNullable<ThemeColors[PresetTheme]>;

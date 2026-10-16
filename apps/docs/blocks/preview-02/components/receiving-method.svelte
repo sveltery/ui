@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { Button } from '@sveltery/components/button';
-  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
-  import { Field, FieldContent, FieldDescription, FieldGroup, FieldLabel, FieldLegend, FieldSet, FieldTitle } from '@sveltery/components/field';
-  import { Input } from '@sveltery/components/input';
-  import { RadioGroup, RadioGroupItem } from '@sveltery/components/radio-group';
-  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { Field, FieldContent, FieldDescription, FieldGroup, FieldLabel, FieldLegend, FieldSet, FieldTitle } from '$registry/bases/base/ui/field';
+  import { Input } from '$registry/bases/base/ui/input';
+  import { RadioGroup, RadioGroupItem } from '$registry/bases/base/ui/radio-group';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 </script>
 
 <Card>

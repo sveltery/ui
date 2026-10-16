@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Avatar, AvatarFallback, AvatarImage } from '@sveltery/components/avatar';
-  import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@sveltery/components/dropdown-menu';
-  import { IconPlaceholder } from '@sveltery/components/icons';
-  import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@sveltery/components/sidebar';
+  import { Avatar, AvatarFallback, AvatarImage } from '$registry/bases/base/ui/avatar';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '$registry/bases/base/ui/dropdown-menu';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '$registry/bases/base/ui/sidebar';
 
   let { user }: { user: { name: string; email: string; avatar: string } } = $props();
   const sidebar = useSidebar();

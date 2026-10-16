@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { Button } from '@sveltery/components/button';
-  import { Card, CardContent, CardFooter } from '@sveltery/components/card';
-  import { Field, FieldGroup, FieldLabel } from '@sveltery/components/field';
-  import { NativeSelect, NativeSelectOption } from '@sveltery/components/native-select';
-  import { Textarea } from '@sveltery/components/textarea';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardContent, CardFooter } from '$registry/bases/base/ui/card';
+  import { Field, FieldGroup, FieldLabel } from '$registry/bases/base/ui/field';
+  import { NativeSelect, NativeSelectOption } from '$registry/bases/base/ui/native-select';
+  import { Textarea } from '$registry/bases/base/ui/textarea';
 </script>
 
 <Card>

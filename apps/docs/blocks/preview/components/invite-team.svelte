@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { Button } from '@sveltery/components/button';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
-  import { Field, FieldLabel } from '@sveltery/components/field';
-  import { Input } from '@sveltery/components/input';
-  import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '@sveltery/components/input-group';
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/components/select';
-  import { Separator } from '@sveltery/components/separator';
-  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { Field, FieldLabel } from '$registry/bases/base/ui/field';
+  import { Input } from '$registry/bases/base/ui/input';
+  import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '$registry/bases/base/ui/input-group';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '$registry/bases/base/ui/select';
+  import { Separator } from '$registry/bases/base/ui/separator';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 </script>
 
 <Card>

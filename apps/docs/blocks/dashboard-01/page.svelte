@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { SidebarInset, SidebarProvider } from '@sveltery/components/sidebar';
+  import { SidebarInset, SidebarProvider } from '$registry/bases/base/ui/sidebar';
   import AppSidebar from './components/app-sidebar.svelte';
   import ChartAreaInteractive from './components/chart-area-interactive.svelte';
   import DataTable from './components/data-table.svelte';

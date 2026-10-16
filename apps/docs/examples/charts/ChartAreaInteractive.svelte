@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/components/card';
-  import { type ChartConfig, ChartContainer, ChartLegend, ChartTooltip } from '@sveltery/components/chart';
+  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { type ChartConfig, ChartContainer, ChartLegend, ChartTooltip } from '$registry/bases/base/ui/chart';
   import { scaleUtc } from 'd3-scale';
-  import { NativeSelect, NativeSelectOption } from '@sveltery/components/native-select';
+  import { NativeSelect, NativeSelectOption } from '$registry/bases/base/ui/native-select';
   import { Area, AreaChart, ChartClipPath } from 'layerchart';
   import { curveNatural } from 'd3-shape';
   import { cubicInOut } from 'svelte/easing';

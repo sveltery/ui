@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { ComponentProps, Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem } from '@sveltery/components/sidebar';
+  import { SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem } from '$registry/bases/base/ui/sidebar';
 
   let { items, ...props }: { items: { title: string; url: string; icon: Snippet; badge?: string }[] } & ComponentProps<typeof SidebarGroup> = $props();
   // The host element's typed event handlers do not fit the element this snippet renders, so only `class` is typed.

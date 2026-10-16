@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/components/example';
-  import { Field, FieldContent, FieldDescription, FieldLabel, FieldLegend, FieldSet } from '@sveltery/components/field';
-  import { RadioGroup, RadioGroupItem } from '@sveltery/components/radio-group';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Field, FieldContent, FieldDescription, FieldLabel, FieldLegend, FieldSet } from '$registry/bases/base/ui/field';
+  import { RadioGroup, RadioGroupItem } from '$registry/bases/base/ui/radio-group';
 </script>
 
 {#snippet RadioGroupBasic()}
