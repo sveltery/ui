@@ -109,6 +109,7 @@
       </DialogTrigger>
       <DialogContent>
         <form
+          class="contents"
           onsubmit={(event) => {
             event.preventDefault();
             open = false;
@@ -121,7 +122,7 @@
               immediately.
             </DialogDescription>
           </DialogHeader>
-          <FieldGroup class="py-4">
+          <FieldGroup>
             <Field>
               <FieldLabel for="name-1">Name</FieldLabel>
               <Input id="name-1" name="name" bind:value={name} />
@@ -325,7 +326,11 @@
                   <FieldSeparator />
                   <FieldSet>
                     <FieldLabel>Tasks</FieldLabel>
-                    <FieldDescription>Get notified when tasks you've created have updates. <a href="#manage-tasks">Manage tasks</a></FieldDescription>
+                    <FieldDescription>
+                      Get notified when tasks you've created have updates.
+                      <!-- svelte-ignore a11y_invalid_attribute -->
+                      <a href="#">Manage tasks</a>
+                    </FieldDescription>
                     <FieldGroup data-slot="checkbox-group">
                       <Field orientation="horizontal">
                         <Checkbox id="push-tasks" />
