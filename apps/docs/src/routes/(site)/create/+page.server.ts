@@ -1,5 +1,5 @@
-import { name as cli } from '@sveltery/ui/package.json';
-import { PRESET_THEMES, type PresetTheme } from '@sveltery/ui/preset';
+import cliPackage from '../../../../../../packages/cli/package.json';
+import { PRESET_THEMES, type PresetTheme } from '../../../../../../packages/cli/src/preset/index.js';
 import { registry } from '$lib/registry.server';
 import { BASE_COLORS } from '$lib/create/config';
 import type { PageServerLoad } from './$types';
@@ -13,6 +13,6 @@ function swatch(theme: PresetTheme): string | undefined {
 }
 
 export const load: PageServerLoad = () => ({
-  cli,
+  cli: cliPackage.name,
   swatches: Object.fromEntries(PRESET_THEMES.map((theme) => [theme, swatch(theme)])) as Partial<Record<PresetTheme, string>>,
 });

@@ -1,10 +1,10 @@
 <!-- Port of shadcn's apps/v4/app/(app)/(create)/components/open-preset.tsx at af983e8. -->
 <script lang="ts">
-  import { Button } from '@sveltery/components/button';
-  import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@sveltery/components/dialog';
-  import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '@sveltery/components/drawer';
-  import { Field, FieldContent, FieldLabel } from '@sveltery/components/field';
-  import { Input } from '@sveltery/components/input';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '$registry/bases/base/ui/dialog';
+  import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '$registry/bases/base/ui/drawer';
+  import { Field, FieldContent, FieldLabel } from '$registry/bases/base/ui/field';
+  import { Input } from '$registry/bases/base/ui/input';
   import { parsePresetInput } from './config';
   import { getDesigner } from './designer.svelte';
 

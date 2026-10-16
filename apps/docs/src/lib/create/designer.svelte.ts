@@ -2,7 +2,7 @@
 // context (hooks/use-locks.tsx) and a preview override context (components/preview-override.tsx) at af983e8.
 import { createContext } from 'svelte';
 import { SvelteSet } from 'svelte/reactivity';
-import { encodePreset, type PresetCode } from '@sveltery/ui/preset';
+import { encodePreset, type PresetCode } from '../../../../../packages/cli/src/preset/index.js';
 import { DEFAULT_PREVIEW_ITEM } from './preview/message';
 import { configFromCode, DEFAULT_CONFIG, isTranslucent, normalizeConfig, resetConfig, shuffleConfig, type DesignConfig, type DesignField } from './config';
 

@@ -6,12 +6,12 @@
   import { onDestroy, onMount } from 'svelte';
   import { MediaQuery } from 'svelte/reactivity';
   import { Menu } from '@sveltery/base/menu';
-  import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@sveltery/components/alert-dialog';
-  import { Button } from '@sveltery/components/button';
-  import { Card, CardContent, CardFooter, CardHeader } from '@sveltery/components/card';
-  import { FieldGroup, FieldSeparator } from '@sveltery/components/field';
+  import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '$registry/bases/base/ui/alert-dialog';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardContent, CardFooter, CardHeader } from '$registry/bases/base/ui/card';
+  import { FieldGroup, FieldSeparator } from '$registry/bases/base/ui/field';
   import { mode } from '$lib/theme.svelte';
-  import { PRESET_FONT_DEFINITIONS, PRESET_MENU_ACCENTS, PRESET_RADII, type PresetTheme } from '@sveltery/ui/preset';
+  import { PRESET_FONT_DEFINITIONS, PRESET_MENU_ACCENTS, PRESET_RADII, type PresetTheme } from '../../../../../packages/cli/src/preset/index.js';
   import { loadFont } from './preview/fonts';
   import { BASE_COLORS, isTranslucent, themesForBaseColor, type DesignConfig } from './config';
   import { getDesigner } from './designer.svelte';

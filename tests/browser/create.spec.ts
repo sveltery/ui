@@ -34,6 +34,8 @@ async function pick(page: Page, label: string, option: string) {
   await expect(page.getByRole('menu')).toBeHidden();
 }
 
+const chevron = (frame: Frame) => frame.locator('[data-slot=select-trigger] svg').first().innerHTML();
+
 const frameStyle = (frame: Frame) =>
   frame.evaluate(() => {
     const root = getComputedStyle(document.documentElement);
@@ -51,6 +53,7 @@ test('every picker updates the URL code and the preview without a reload, and th
   await expect(page.getByRole('link', { name: 'Create', exact: true })).toHaveAttribute('data-active', 'true');
   const frame = await preview(page);
   await expect.poll(() => code(page)).toBe(encodePreset(DEFAULT));
+  const lucide = await chevron(frame);
 
   const pickAll = async (steps: [label: string, option: string, patch: Partial<PresetConfig>][]) => {
     for (const [label, option, patch] of steps) {
@@ -73,6 +76,8 @@ test('every picker updates the URL code and the preview without a reload, and th
   await expect
     .poll(() => frameStyle(frame))
     .toEqual({ style: ['style-maia'], primary: 'oklch(0.21 0.006 285.885)', radius: '0.875rem', body: '"Figtree Variable", sans-serif', heading: '"Playfair Display Variable", serif' });
+  await expect.poll(() => chevron(frame), 'the preview icons follow the icon library').not.toBe(lucide);
+  const phosphor = await chevron(frame);
 
   await pickAll([
     ['Theme', 'Blue', { theme: 'blue' }],
@@ -100,6 +105,7 @@ test('every picker updates the URL code and the preview without a reload, and th
   ]) {
     await expect(trigger(page, label!)).toHaveText(new RegExp(`${label}\\s*${display}`));
   }
+  await expect.poll(() => chevron(reopened)).toBe(phosphor);
   await expect.poll(() => frameStyle(reopened)).toMatchObject({ style: ['style-maia'], body: '"Figtree Variable", sans-serif', heading: '"Playfair Display Variable", serif' });
   await expect(page.getByRole('button', { name: `--preset ${encodePreset(config)}` })).toBeVisible();
 });

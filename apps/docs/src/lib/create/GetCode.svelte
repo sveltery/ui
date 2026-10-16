@@ -1,9 +1,9 @@
 <!-- Port of the New Project tab of shadcn's apps/v4/app/(app)/(create)/components/project-form.tsx at af983e8. -->
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte';
-  import { Button } from '@sveltery/components/button';
-  import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@sveltery/components/dialog';
-  import { Tabs, TabsContent, TabsList, TabsTrigger } from '@sveltery/components/tabs';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '$registry/bases/base/ui/dialog';
+  import { Tabs, TabsContent, TabsList, TabsTrigger } from '$registry/bases/base/ui/tabs';
   import { PACKAGE_MANAGERS, packageManager, type PackageManager } from '$lib/package-manager.svelte';
   import { initCommand } from './config';
   import { getDesigner } from './designer.svelte';
