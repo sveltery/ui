@@ -36,6 +36,7 @@ const lineAttributes = (meta: CodeMeta): ShikiTransformer => ({
   pre(node) {
     delete node.properties.style;
     delete node.properties.tabindex;
+    node.properties['data-language'] = this.options.lang;
     if (meta.prompt) node.properties['data-prompt'] = '';
   },
   code(node) {
