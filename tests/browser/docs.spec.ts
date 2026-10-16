@@ -63,6 +63,12 @@ test('ComponentPreview renders the example and reveals its source', async ({ pag
   await expect(preview.getByRole('button', { name: 'Copy' })).toBeVisible();
 });
 
+test('docs tooltips open without the default delay, as upstream's site does', async ({ page }) => {
+  await visit(page, '/docs/components/tooltip');
+  await page.getByRole('button', { name: 'Show Tooltip' }).first().hover();
+  await expect(page.locator('[data-slot=tooltip-content]')).toBeVisible({ timeout: 400 });
+});
+
 test('the mobile menu opens as a popover and closes on navigation', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await visit(page, '/docs');
