@@ -39,6 +39,19 @@ test('the theme toggle switches dark mode and remembers it', async ({ page }) =>
   await page.reload();
   await expect(html).toHaveAttribute('data-ready');
   await expect(html).toHaveClass(/dark/);
+  await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute('content', '#09090b');
+});
+
+test('the D key toggles dark mode outside text fields', async ({ page }) => {
+  await visit(page, '/');
+  const html = page.locator('html');
+  const themeColor = page.locator('meta[name="theme-color"]');
+  await page.keyboard.press('d');
+  await expect(html).toHaveClass(/dark/);
+  await expect(themeColor).toHaveAttribute('content', '#09090b');
+  await page.keyboard.press('d');
+  await expect(html).not.toHaveClass(/dark/);
+  await expect(themeColor).toHaveAttribute('content', '#ffffff');
 });
 
 test('ComponentPreview renders the example and reveals its source', async ({ page }) => {
@@ -73,7 +86,7 @@ test('the mobile menu opens as a popover and closes on navigation', async ({ pag
   await page.getByRole('button', { name: 'Menu' }).click();
   const menu = page.getByRole('navigation', { name: 'Site' });
   await expect(menu).toBeVisible();
-  await menu.getByRole('link', { name: 'Theming' }).click();
+  await menu.getByRole('link', { name: 'Theming' }).first().click();
   await expect(page).toHaveURL('/docs/theming');
   await expect(menu).toBeHidden();
 });

@@ -155,9 +155,10 @@ test('the legend shows nothing for a series with no config or series label', asy
 });
 
 test('the tooltip takes its look from the style', async ({ page }) => {
-  const nova = (await firstTooltip(page, 'bars')).locator('.lc-tooltip-content > div');
-  await expect(nova).toHaveCSS('border-top-width', '1px');
-  const luma = (await firstTooltip(page, 'luma')).locator('.lc-tooltip-content > div');
-  await expect(luma).toHaveCSS('border-top-width', '0px');
-  await expect(luma).toHaveCSS('border-top-left-radius', '14px');
+  const tooltip = (await firstTooltip(page, 'bars')).locator('.lc-tooltip-content > div');
+  await expect(tooltip).toHaveCSS('border-top-width', '1px');
+  // One style per document, as the Create preview switches it on <body>.
+  await page.evaluate(() => document.body.classList.replace('style-nova', 'style-luma'));
+  await expect(tooltip).toHaveCSS('border-top-width', '0px');
+  await expect(tooltip).toHaveCSS('border-top-left-radius', '14px');
 });
