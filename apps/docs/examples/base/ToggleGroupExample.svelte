@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/components/example';
-  import { Field, FieldDescription, FieldLabel } from '@sveltery/components/field';
-  import { Input } from '@sveltery/components/input';
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/components/select';
-  import { ToggleGroup, ToggleGroupItem } from '@sveltery/components/toggle-group';
-  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Field, FieldDescription, FieldLabel } from '$registry/bases/base/ui/field';
+  import { Input } from '$registry/bases/base/ui/input';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '$registry/bases/base/ui/select';
+  import { ToggleGroup, ToggleGroupItem } from '$registry/bases/base/ui/toggle-group';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
   const fontWeights = [
     { value: 'light', label: 'Light', weight: 'font-light' },

@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@sveltery/components/collapsible';
+  import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '$registry/bases/base/ui/collapsible';
   import {
     Sidebar,
     SidebarContent,
@@ -15,8 +15,8 @@
     SidebarMenuSub,
     SidebarRail,
     type SidebarProps,
-  } from '@sveltery/components/sidebar';
-  import { IconPlaceholder } from '@sveltery/components/icons';
+  } from '$registry/bases/base/ui/sidebar';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
   let { ...props }: SidebarProps = $props();
   type TreeItem = string | TreeBranch;
   interface TreeBranch extends Array<TreeItem> {

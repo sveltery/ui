@@ -10,14 +10,14 @@ import { docsComponents, highlightCodeBlock } from './markdown/preprocess';
 const path = (relative: string) => fileURLToPath(new URL(relative, import.meta.url));
 
 export default defineConfig({
-  server: { fs: { allow: ['blocks', 'content', 'examples'] } },
+  server: { fs: { allow: ['blocks', 'content', 'examples', 'registry'] } },
   // Examples load through a glob, so the dependency scan has to be pointed at them or a first visit reloads the page.
   optimizeDeps: { entries: ['blocks/**/*.svelte', 'examples/**/*.svelte'] },
   plugins: [
     tailwindcss(),
     sveltekit({
       adapter: adapter(),
-      alias: { $lib: 'src/lib' },
+      alias: { $lib: 'src/lib', $registry: 'registry' },
       experimental: { remoteFunctions: true },
       extensions: ['.svelte', '.md'],
       preprocess: [

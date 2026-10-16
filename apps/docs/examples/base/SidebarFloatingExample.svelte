@@ -1,12 +1,12 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { Button } from '@sveltery/components/button';
-  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/components/card';
-  import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from '@sveltery/components/dropdown-menu';
-  import { Field } from '@sveltery/components/field';
-  import { IconPlaceholder } from '@sveltery/components/icons';
-  import { Item, ItemContent, ItemDescription, ItemTitle } from '@sveltery/components/item';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from '$registry/bases/base/ui/dropdown-menu';
+  import { Field } from '$registry/bases/base/ui/field';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { Item, ItemContent, ItemDescription, ItemTitle } from '$registry/bases/base/ui/item';
   import {
     Sidebar,
     SidebarContent,
@@ -21,7 +21,7 @@
     SidebarProvider,
     SidebarRail,
     SidebarTrigger,
-  } from '@sveltery/components/sidebar';
+  } from '$registry/bases/base/ui/sidebar';
 
   const navMain = [
     { title: 'Getting Started', items: ['Installation', 'Project Structure'] },

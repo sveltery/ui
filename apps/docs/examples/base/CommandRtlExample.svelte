@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Button } from '@sveltery/components/button';
-  import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from '@sveltery/components/command';
-  import { DirectionProvider } from '@sveltery/components/direction';
-  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from '$registry/bases/base/ui/command';
+  import { DirectionProvider } from '$registry/bases/base/ui/direction';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
   const translations = {
     en: {

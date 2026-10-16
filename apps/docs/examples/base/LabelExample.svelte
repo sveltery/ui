@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { Checkbox } from '@sveltery/components/checkbox';
-  import { Example, ExampleWrapper } from '@sveltery/components/example';
-  import { Field } from '@sveltery/components/field';
-  import { Input } from '@sveltery/components/input';
-  import { Label } from '@sveltery/components/label';
-  import { Textarea } from '@sveltery/components/textarea';
+  import { Checkbox } from '$registry/bases/base/ui/checkbox';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Field } from '$registry/bases/base/ui/field';
+  import { Input } from '$registry/bases/base/ui/input';
+  import { Label } from '$registry/bases/base/ui/label';
+  import { Textarea } from '$registry/bases/base/ui/textarea';
 </script>
 
 <ExampleWrapper>

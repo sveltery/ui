@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { Button } from '@sveltery/components/button';
-  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
-  import { Field, FieldGroup, FieldLabel } from '@sveltery/components/field';
-  import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from '@sveltery/components/input-group';
-  import { Item, ItemContent } from '@sveltery/components/item';
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/components/select';
-  import { Separator } from '@sveltery/components/separator';
-  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { Field, FieldGroup, FieldLabel } from '$registry/bases/base/ui/field';
+  import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from '$registry/bases/base/ui/input-group';
+  import { Item, ItemContent } from '$registry/bases/base/ui/item';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '$registry/bases/base/ui/select';
+  import { Separator } from '$registry/bases/base/ui/separator';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
   const FROM_ACCOUNTS = [
     { label: 'Main Checking (··8402) — $12,450.00', value: 'checking' },

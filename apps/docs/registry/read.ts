@@ -5,8 +5,8 @@ import { styleNames, type StyleName } from './types';
 
 /** Reads the inputs of `buildRegistry` from a checkout of the repository. */
 export function readRegistryInput(repoRoot: string, origin: string): RegistryInput {
-  const ui = join(repoRoot, 'packages/ui');
-  const lib = join(ui, 'src/lib');
+  const registry = join(repoRoot, 'apps/docs/registry');
+  const lib = join(registry, 'bases/base/ui');
   const text = (path: string) => readFileSync(path, 'utf8');
 
   const sources: RegistryInput['sources'] = {};
@@ -25,9 +25,9 @@ export function readRegistryInput(repoRoot: string, origin: string): RegistryInp
 
   return {
     sources,
-    styles: Object.fromEntries(styleNames.map((style) => [style, text(join(lib, 'styles/scoped', `${style}.css`))])) as Record<StyleName, string>,
-    themes: text(join(lib, 'styles/themes.css')),
-    uiManifest: JSON.parse(text(join(ui, 'package.json'))),
+    styles: Object.fromEntries(styleNames.map((style) => [style, text(join(registry, 'styles/scoped', `${style}.css`))])) as Record<StyleName, string>,
+    themes: text(join(registry, 'styles/themes.css')),
+    uiManifest: JSON.parse(text(join(repoRoot, 'apps/docs/package.json'))),
     workspaceVersions,
     origin,
   };

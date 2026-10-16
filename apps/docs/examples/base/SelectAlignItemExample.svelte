@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Field, FieldContent, FieldDescription, FieldGroup, FieldLabel } from '@sveltery/components/field';
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/components/select';
-  import { Switch } from '@sveltery/components/switch';
+  import { Field, FieldContent, FieldDescription, FieldGroup, FieldLabel } from '$registry/bases/base/ui/field';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '$registry/bases/base/ui/select';
+  import { Switch } from '$registry/bases/base/ui/switch';
 
   const items = [
     { label: 'Select a fruit', value: null },

@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Badge } from '@sveltery/components/badge';
-  import { Button } from '@sveltery/components/button';
-  import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
-  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Badge } from '$registry/bases/base/ui/badge';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 </script>
 
 <Card class="relative w-full max-w-md overflow-hidden pt-0">

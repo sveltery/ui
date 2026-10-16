@@ -1,9 +1,9 @@
 <script lang="ts">
   import type { HTMLAttributes } from 'svelte/elements';
-  import { Button } from '@sveltery/components/button';
-  import { Card, CardContent } from '@sveltery/components/card';
-  import { Field, FieldDescription, FieldGroup, FieldLabel, FieldSeparator } from '@sveltery/components/field';
-  import { Input } from '@sveltery/components/input';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardContent } from '$registry/bases/base/ui/card';
+  import { Field, FieldDescription, FieldGroup, FieldLabel, FieldSeparator } from '$registry/bases/base/ui/field';
+  import { Input } from '$registry/bases/base/ui/input';
   import { cn } from 'cn';
   let { class: className, ...props }: HTMLAttributes<HTMLDivElement> = $props();
 </script>

@@ -1,6 +1,6 @@
 <script lang="ts">
   import LoginForm from './components/login-form.svelte';
-  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 </script>
 
 <div class="flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10">

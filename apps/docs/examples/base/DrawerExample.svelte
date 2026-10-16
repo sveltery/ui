@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/components/example';
-  import { Button } from '@sveltery/components/button';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Button } from '$registry/bases/base/ui/button';
   import {
     Drawer,
     DrawerClose,
@@ -10,7 +10,7 @@
     DrawerHeader,
     DrawerTitle,
     DrawerTrigger,
-  } from '@sveltery/components/drawer';
+  } from '$registry/bases/base/ui/drawer';
 
   const PARAGRAPHS = [
     "Your changes are saved automatically as you type.",

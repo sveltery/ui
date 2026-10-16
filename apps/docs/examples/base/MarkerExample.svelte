@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Example, ExampleWrapper } from '@sveltery/components/example';
-  import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@sveltery/components/accordion';
-  import { Button } from '@sveltery/components/button';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '$registry/bases/base/ui/accordion';
+  import { Button } from '$registry/bases/base/ui/button';
   import {
     Drawer,
     DrawerClose,
@@ -11,10 +11,10 @@
     DrawerHeader,
     DrawerTitle,
     DrawerTrigger,
-  } from '@sveltery/components/drawer';
-  import { IconPlaceholder } from '@sveltery/components/icons';
-  import { Spinner } from '@sveltery/components/spinner';
-  import { Marker, MarkerContent, MarkerIcon } from '@sveltery/components/marker';
+  } from '$registry/bases/base/ui/drawer';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { Spinner } from '$registry/bases/base/ui/spinner';
+  import { Marker, MarkerContent, MarkerIcon } from '$registry/bases/base/ui/marker';
 
   const drawerFiles = ['app/chat/page.tsx', 'components/message.tsx', 'lib/ai.ts'];
 </script>

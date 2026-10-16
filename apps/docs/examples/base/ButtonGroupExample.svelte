@@ -1,17 +1,17 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { Example, ExampleWrapper } from '@sveltery/components/example';
-  import { Button } from '@sveltery/components/button';
-  import { ButtonGroup, ButtonGroupText } from '@sveltery/components/button-group';
-  import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@sveltery/components/dropdown-menu';
-  import { Field, FieldGroup } from '@sveltery/components/field';
-  import { IconPlaceholder } from '@sveltery/components/icons';
-  import { Input } from '@sveltery/components/input';
-  import { InputGroup, InputGroupAddon, InputGroupInput } from '@sveltery/components/input-group';
-  import { Label } from '@sveltery/components/label';
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@sveltery/components/select';
-  import { Tooltip, TooltipContent, TooltipTrigger } from '@sveltery/components/tooltip';
+  import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { ButtonGroup, ButtonGroupText } from '$registry/bases/base/ui/button-group';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '$registry/bases/base/ui/dropdown-menu';
+  import { Field, FieldGroup } from '$registry/bases/base/ui/field';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { Input } from '$registry/bases/base/ui/input';
+  import { InputGroup, InputGroupAddon, InputGroupInput } from '$registry/bases/base/ui/input-group';
+  import { Label } from '$registry/bases/base/ui/label';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '$registry/bases/base/ui/select';
+  import { Tooltip, TooltipContent, TooltipTrigger } from '$registry/bases/base/ui/tooltip';
 
   const currencyItems = [
     { label: '$', value: '$' },

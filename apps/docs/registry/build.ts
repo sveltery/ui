@@ -17,13 +17,13 @@ import {
 } from './types';
 
 export type RegistryInput = {
-  /** `packages/ui/src/lib/<folder>/<file>` contents keyed by path relative to `packages/ui/src/lib`, e.g. `button/variants.ts`. Includes every folder; the build skips `icons`, `styles`, `example` and the root `index.ts`. */
+  /** `apps/docs/registry/bases/base/ui/<folder>/<file>` contents keyed by path relative to `bases/base/ui`, e.g. `button/variants.ts`. Includes every folder; the build skips `icons`. */
   sources: Record<string, string>;
   /** `styles/scoped/<style>.css` contents per style. */
   styles: Record<StyleName, string>;
   /** `styles/themes.css`. */
   themes: string;
-  /** `packages/ui/package.json` parsed, plus each workspace helper's `package.json` version by package name. */
+  /** `apps/docs/package.json` parsed, plus each workspace helper's `package.json` version by package name. */
   uiManifest: UiManifest;
   workspaceVersions: Record<string, string>;
   /** Absolute origin of the docs site, for `$schema` URLs. */
