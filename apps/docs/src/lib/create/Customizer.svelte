@@ -11,7 +11,7 @@
   import { Card, CardContent, CardFooter, CardHeader } from '@sveltery/components/card';
   import { FieldGroup, FieldSeparator } from '@sveltery/components/field';
   import { mode } from '$lib/theme.svelte';
-  import { PRESET_FONT_DEFINITIONS, PRESET_MENU_ACCENTS, PRESET_RADII, type PresetFont, type PresetTheme } from '@sveltery/ui/preset';
+  import { PRESET_FONT_DEFINITIONS, PRESET_MENU_ACCENTS, PRESET_RADII, type PresetTheme } from '@sveltery/ui/preset';
   import { loadFont } from './preview/fonts';
   import { BASE_COLORS, isTranslucent, themesForBaseColor, type DesignConfig } from './config';
   import { getDesigner } from './designer.svelte';
@@ -75,9 +75,8 @@
 
   // The triggers show each font in its own face, so load the faces they name.
   $effect(() => {
-    const fonts = new Set<PresetFont>([config.font]);
-    if (config.fontHeading !== 'inherit') fonts.add(config.fontHeading);
-    for (const font of fonts) loadFont(font).catch(console.error);
+    loadFont(config.font).catch(console.error);
+    if (config.fontHeading !== 'inherit') loadFont(config.fontHeading).catch(console.error);
   });
 
   async function copyPreset() {

@@ -43,9 +43,7 @@ export class Designer {
 
   /** The query that reopens this setup. The item is left out when it is the default, as upstream. */
   get search(): string {
-    const params = new URLSearchParams({ preset: this.code });
-    if (this.item !== DEFAULT_PREVIEW_ITEM) params.set('item', this.item);
-    return `?${params}`;
+    return this.item === DEFAULT_PREVIEW_ITEM ? `?preset=${this.code}` : `?preset=${this.code}&item=${this.item}`;
   }
 
   set(patch: Partial<DesignConfig>) {
