@@ -70,7 +70,7 @@ test('the mobile menu opens as a popover and closes on navigation', async ({ pag
   await page.getByRole('button', { name: 'Menu' }).click();
   const menu = page.getByRole('navigation', { name: 'Site' });
   await expect(menu).toBeVisible();
-  await menu.getByRole('link', { name: 'Theming' }).click();
+  await menu.getByRole('link', { name: 'Theming' }).first().click();
   await expect(page).toHaveURL('/docs/theming');
   await expect(menu).toBeHidden();
 });
