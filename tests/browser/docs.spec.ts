@@ -119,3 +119,13 @@ test('the registry serves each style item as JSON', async ({ request }) => {
   const item = await response.json();
   expect([item.name, item.type, item.files.map((file: { target: string }) => file.target)]).toEqual(['button', 'registry:ui', ['button/Button.svelte', 'button/index.ts', 'button/types.ts', 'button/variants.ts']]);
 });
+
+test('a docs page links to its markdown and keeps step titles out of the TOC', async ({ page, request }) => {
+  await visit(page, '/docs/components/button');
+  await expect(page.getByRole('navigation', { name: 'On this page' }).getByRole('link')).toHaveText(['Installation', 'Usage', 'API reference']);
+  await page.getByRole('button', { name: 'More page actions' }).click();
+  await expect(page.getByRole('menuitem', { name: 'View as Markdown' })).toHaveAttribute('href', /\/docs\/components\/button\.md$/);
+  const response = await request.get('/docs/components/button.md');
+  expect(response.headers()['content-type']).toBe('text/markdown; charset=utf-8');
+  expect(await response.text()).toMatch(/^---\ntitle: Button\n/);
+});

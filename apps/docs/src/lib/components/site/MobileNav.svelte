@@ -1,21 +1,14 @@
 <script lang="ts">
   import { afterNavigate } from '$app/navigation';
   import { page } from '$app/state';
-  import type { NavSection } from '$lib/docs/types';
+  import type { DocPage, NavSection } from '$lib/docs/types';
   import { site } from '$lib/site';
 
   let { class: className }: { class?: string } = $props();
   let panel: HTMLElement;
   let open = $state(false);
   const nav = $derived((page.data.nav ?? []) as NavSection[]);
-
-  const sections = [
-    { label: 'Introduction', href: '/docs' },
-    { label: 'Components', href: '/docs/components' },
-    { label: 'Installation', href: '/docs/installation' },
-    { label: 'Theming', href: '/docs/theming' },
-    { label: 'Forms', href: '/docs/forms' },
-  ];
+  const sections = $derived(((page.data.sections ?? []) as DocPage[]).map((section) => ({ href: section.href, label: section.title })));
 
   afterNavigate(() => panel?.hidePopover());
 </script>
