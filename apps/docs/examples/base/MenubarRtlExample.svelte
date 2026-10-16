@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Button } from '@sveltery/components/button';
-  import { DirectionProvider } from '@sveltery/components/direction';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { DirectionProvider } from '$registry/bases/base/ui/direction';
   import {
     Menubar,
     MenubarCheckboxItem,
@@ -16,7 +16,7 @@
     MenubarSubContent,
     MenubarSubTrigger,
     MenubarTrigger
-  } from '@sveltery/components/menubar';
+  } from '$registry/bases/base/ui/menubar';
 
   const translations = {
     en: {

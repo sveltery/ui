@@ -12,7 +12,7 @@
     QuestionnaireSkip,
     QuestionnaireSubmit,
     QuestionnaireTitle,
-  } from '@sveltery/components/questionnaire';
+  } from '$registry/bases/base/ui/questionnaire';
 
   const items = [{ choices: [{ value: 'inspect' }, { value: 'implement' }, { value: 'review' }], name: 'task', required: true }];
 

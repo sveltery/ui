@@ -5,18 +5,19 @@ import { describe, expect, it } from 'vitest';
 import { buildRegistry } from './build';
 import { readRegistryInput } from './read';
 import type { RegistryItem, RegistryManifest, StyleIndexEntry } from './types';
-import { baseColors, styleNames } from './types';
+import { PRESET_FONTS, PRESET_THEMES, buildTheme, type PresetConfig } from '../../../packages/cli/src/preset/index.js';
+import { accentColors, baseColors, styleNames } from './types';
 
 const repoRoot = fileURLToPath(new URL('../../../', import.meta.url));
 const output = buildRegistry(readRegistryInput(repoRoot, 'https://sveltery.test/'));
 const item = (path: string) => output.get(path) as RegistryItem;
 // Releases bump these, so the expected ranges follow the manifests rather than hard-coding them.
-const ui = JSON.parse(readFileSync(`${repoRoot}packages/ui/package.json`, 'utf8'));
-const BASE = `@sveltery/base@^${ui.peerDependencies['@sveltery/base'].replace(/^\^/, '')}`;
+const docs = JSON.parse(readFileSync(`${repoRoot}apps/docs/package.json`, 'utf8'));
+const BASE = `@sveltery/base@^${docs.devDependencies['@sveltery/base'].replace(/^\^/, '')}`;
 const HELPER_RANGE = `^${JSON.parse(readFileSync(`${repoRoot}packages/day-picker/package.json`, 'utf8')).version}`;
 const content = (path: string, target: string) => item(path).files.find((file) => file.target === target)!.content;
 
-const NOVA_BUTTON_VARIANTS = `// Adapted from shadcn-ui/ui d75a96ab; MIT: packages/ui/THIRD_PARTY_NOTICES.md.
+const NOVA_BUTTON_VARIANTS = `// Adapted from shadcn-ui/ui d75a96ab; MIT: apps/docs/registry/THIRD_PARTY_NOTICES.md.
 import { cva } from 'class-variance-authority';
 import type { VariantProps } from 'class-variance-authority';
 export const buttonVariants = cva("focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-3 aria-invalid:ring-3 active:not-aria-[haspopup]:translate-y-px [&_svg:not([class*='size-'])]:size-4 group/button inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0", {
@@ -47,7 +48,7 @@ describe('buildRegistry', () => {
   });
 
   it('leaves a file without cn-* tokens byte for byte as it is', () => {
-    const source = readFileSync(`${repoRoot}packages/ui/src/lib/button/Button.svelte`, 'utf8');
+    const source = readFileSync(`${repoRoot}apps/docs/registry/bases/base/ui/button/Button.svelte`, 'utf8');
     expect(content('styles/nova/button.json', 'button/Button.svelte')).toBe(source);
   });
 
@@ -98,7 +99,7 @@ describe('items', () => {
     expect(item('styles/nova/badge.json').registryDependencies).toEqual(['shared']);
     const shared = item('styles/nova/shared.json');
     expect([shared.type, shared.files.map((file) => file.target)]).toEqual(['registry:lib', ['shared/render.ts']]);
-    expect(shared.files[0]!.content).toBe(readFileSync(`${repoRoot}packages/ui/src/lib/shared/render.ts`, 'utf8'));
+    expect(shared.files[0]!.content).toBe(readFileSync(`${repoRoot}apps/docs/registry/bases/base/ui/shared/render.ts`, 'utf8'));
   });
 
   it('writes the item header', () => {
@@ -142,13 +143,13 @@ describe('index files', () => {
     expect(index.find((entry) => entry.name === 'shared')).toEqual({ name: 'shared', type: 'registry:lib', registryDependencies: [], relativeUrl: 'shared.json' });
   });
 
-  it('serves every item of every style and one theme per base color', () => {
+  it('serves every item of every style and one theme per base color and accent', () => {
     const manifest = output.get('index.json') as RegistryManifest;
     for (const style of styleNames) {
       for (const { name } of manifest.items) expect(output.has(`styles/${style}/${name}.json`)).toBe(true);
       expect(output.has(`styles/${style}/shared.json`)).toBe(true);
     }
-    expect([...output.keys()].filter((path) => path.startsWith('themes/'))).toEqual(baseColors.map((color) => `themes/${color}.json`));
+    expect([...output.keys()].filter((path) => path.startsWith('themes/'))).toEqual([...baseColors, ...accentColors].map((color) => `themes/${color}.json`));
   });
 });
 
@@ -167,5 +168,84 @@ describe('themes', () => {
     expect(neutral.cssVars?.dark?.['background']).toBe('oklch(0.145 0 0)');
     expect(neutral.cssVars?.theme?.['radius-sm']).toBe('calc(var(--radius) * 0.6)');
     expect(neutral.cssVars?.theme?.['color-background']).toBe('var(--background)');
+  });
+
+  it('serves the amber accent with only the variables it overrides', () => {
+    expect(item('themes/amber.json')).toEqual({
+      $schema: 'https://sveltery.test/schema/registry-item.json',
+      name: 'amber',
+      type: 'registry:theme',
+      title: 'Amber',
+      files: [],
+      cssVars: {
+        light: {
+          'primary': 'oklch(0.555 0.163 48.998)',
+          'primary-foreground': 'oklch(0.987 0.022 95.277)',
+          'secondary': 'oklch(0.967 0.001 286.375)',
+          'secondary-foreground': 'oklch(0.21 0.006 285.885)',
+          'chart-1': 'oklch(0.879 0.169 91.605)',
+          'chart-2': 'oklch(0.769 0.188 70.08)',
+          'chart-3': 'oklch(0.666 0.179 58.318)',
+          'chart-4': 'oklch(0.555 0.163 48.998)',
+          'chart-5': 'oklch(0.473 0.137 46.201)',
+          'sidebar-primary': 'oklch(0.666 0.179 58.318)',
+          'sidebar-primary-foreground': 'oklch(0.987 0.022 95.277)',
+        },
+        dark: {
+          'primary': 'oklch(0.473 0.137 46.201)',
+          'primary-foreground': 'oklch(0.987 0.022 95.277)',
+          'secondary': 'oklch(0.274 0.006 286.033)',
+          'secondary-foreground': 'oklch(0.985 0 0)',
+          'chart-1': 'oklch(0.879 0.169 91.605)',
+          'chart-2': 'oklch(0.769 0.188 70.08)',
+          'chart-3': 'oklch(0.666 0.179 58.318)',
+          'chart-4': 'oklch(0.555 0.163 48.998)',
+          'chart-5': 'oklch(0.473 0.137 46.201)',
+          'sidebar-primary': 'oklch(0.769 0.188 70.08)',
+          'sidebar-primary-foreground': 'oklch(0.279 0.077 45.635)',
+        },
+      },
+    });
+  });
+
+  it('serves every theme a preset can name, so buildTheme can layer any accent over a base color', () => {
+    const colors = Object.fromEntries(PRESET_THEMES.filter((name) => name !== 'gray').map((name) => [name, item(`themes/${name}.json`).cssVars]));
+    const config: PresetConfig = { style: 'nova', baseColor: 'stone', theme: 'rose', iconLibrary: 'lucide', font: 'inter', fontHeading: 'inherit', radius: 'default', menuAccent: 'subtle', menuColor: 'default' };
+    const theme = buildTheme(config, colors);
+    expect(theme.light['primary']).toBe('oklch(0.514 0.222 16.935)');
+    expect(theme.light['background']).toBe(item('themes/stone.json').cssVars?.light?.['background']);
+  });
+});
+
+describe('fonts', () => {
+  it('serves a body font item in upstream\'s shape', () => {
+    expect(item('styles/nova/font-geist.json')).toEqual({
+      $schema: 'https://sveltery.test/schema/registry-item.json',
+      name: 'font-geist',
+      title: 'Geist',
+      type: 'registry:font',
+      font: { family: "'Geist Variable', sans-serif", provider: 'google', import: 'Geist', variable: '--font-sans', subsets: ['latin'], dependency: '@fontsource-variable/geist' },
+      files: [],
+    });
+  });
+
+  it('serves a heading variant that sets --font-heading and keeps a static font\'s weight', () => {
+    expect(item('styles/nova/font-heading-instrument-serif.json')).toMatchObject({
+      name: 'font-heading-instrument-serif',
+      title: 'Instrument Serif (Heading)',
+      type: 'registry:font',
+      font: { family: "'Instrument Serif', serif", import: 'Instrument_Serif', variable: '--font-heading', weight: ['400'], dependency: '@fontsource/instrument-serif' },
+    });
+  });
+
+  it('serves a body and a heading item for every preset font under every style, and keeps them out of the manifest', () => {
+    for (const style of styleNames) {
+      for (const font of PRESET_FONTS) {
+        expect(item(`styles/${style}/font-${font}.json`).type).toBe('registry:font');
+        expect(item(`styles/${style}/font-heading-${font}.json`).type).toBe('registry:font');
+      }
+    }
+    const manifest = output.get('index.json') as RegistryManifest;
+    expect(manifest.items.filter((entry) => entry.name.startsWith('font-'))).toEqual([]);
   });
 });

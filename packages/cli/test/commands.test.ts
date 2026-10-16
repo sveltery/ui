@@ -3,15 +3,16 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync, existsSync
 import { createServer, type Server } from 'node:http';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { confirm } from '@clack/prompts';
+import { confirm, log, select } from '@clack/prompts';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, test, vi } from 'vitest';
 import { add } from '../src/commands/add.js';
 import { diff } from '../src/commands/diff.js';
 import { baseDependencies, init } from '../src/commands/init.js';
 import { list } from '../src/commands/list.js';
 import { update } from '../src/commands/update.js';
+import { cliPackage } from '../src/version.js';
 
-vi.mock('@clack/prompts', async (importOriginal) => ({ ...(await importOriginal<typeof import('@clack/prompts')>()), confirm: vi.fn() }));
+vi.mock('@clack/prompts', async (importOriginal) => ({ ...(await importOriginal<typeof import('@clack/prompts')>()), confirm: vi.fn(), select: vi.fn() }));
 
 const button = `<script lang="ts">
   import { IconPlaceholder } from '../icons/index.js';
@@ -53,22 +54,49 @@ const registryFiles: Record<string, unknown> = {
   }),
 };
 
+const font = (name: string, variable: string, family: string, dependency: string) =>
+  item(name, { type: 'registry:font', files: [], font: { family, provider: 'google', import: name, variable, dependency } });
+registryFiles['styles/vega/font-inter.json'] = font('font-inter', '--font-sans', "'Inter Variable', sans-serif", '@fontsource-variable/inter');
+registryFiles['styles/vega/font-heading-playfair-display.json'] = font('font-heading-playfair-display', '--font-heading', "'Playfair Display Variable', serif", '@fontsource-variable/playfair-display');
+
+const initDependencies = ['font-inter', 'font-heading-playfair-display'];
+const initItem = item('init', {
+  type: 'registry:base',
+  config: { style: 'vega', iconLibrary: 'tabler', menuColor: 'inverted-translucent', menuAccent: 'bold', tailwind: { baseColor: 'neutral' } },
+  dependencies: [`${cliPackage}@latest`, 'cn@^0.2.2'],
+  registryDependencies: initDependencies,
+  files: [],
+  cssVars: { theme: { 'color-background': 'var(--background)' }, light: { background: 'oklch(1 0 0)', radius: '0.875rem' }, dark: { background: 'oklch(0.145 0 0)' } },
+  css: {
+    '@import "tw-animate-css"': {},
+    [`@import "${cliPackage}/tailwind.css"`]: {},
+    '@layer base': { '*': { '@apply border-border outline-ring/50': {} }, body: { '@apply bg-background text-foreground': {} } },
+  },
+});
+
 let server: Server;
 let registryUrl: string;
+let origin: string;
 let cwd: string;
+let initRequests: string[];
 
 beforeAll(async () => {
   server = createServer((request, response) => {
-    const body = registryFiles[(request.url ?? '').replace(/^\/r\//, '')];
+    const path = request.url ?? '';
+    if (path.startsWith('/init')) initRequests.push(path);
+    const body = path.startsWith('/init') ? initItem : registryFiles[path.replace(/^\/r\//, '')];
     response.writeHead(body ? 200 : 404, { 'content-type': 'application/json' }).end(body ? JSON.stringify(body) : '{}');
   });
   await new Promise<void>((done) => server.listen(0, '127.0.0.1', done));
   const address = server.address();
-  registryUrl = `http://127.0.0.1:${typeof address === 'object' && address ? address.port : 0}/r`;
+  origin = `http://127.0.0.1:${typeof address === 'object' && address ? address.port : 0}`;
+  registryUrl = `${origin}/r`;
 });
 afterAll(() => void server.close());
 
 beforeEach(() => {
+  initRequests = [];
+  vi.mocked(select).mockReset();
   process.env.SVELTERY_REGISTRY_URL = registryUrl;
   cwd = mkdtempSync(join(tmpdir(), 'sveltery-cli-'));
   writeFileSync(join(cwd, 'package.json'), JSON.stringify({ devDependencies: { '@sveltejs/kit': '^2.0.0', svelte: '^5.0.0', tailwindcss: '^4.0.0', cn: '^0.2.2' } }));
@@ -153,13 +181,149 @@ describe('init', () => {
     await expect(init({ cwd, ...defaults, style: 'nebula' })).rejects.toThrow('Unknown style "nebula". Choose one of: vega, nova, maia, lyra, mira, luma, sera, rhea.');
   });
 
-  test('installs the base packages at the ranges packages/ui uses', () => {
-    const ui = JSON.parse(readFileSync(new URL('../../ui/package.json', import.meta.url), 'utf8'));
-    const declared = { ...ui.dependencies, ...ui.peerDependencies };
+  test('installs the base packages at the ranges the registry source uses', () => {
+    const docs = JSON.parse(readFileSync(new URL('../../../apps/docs/package.json', import.meta.url), 'utf8'));
+    const declared = { ...docs.dependencies, ...docs.devDependencies };
     for (const spec of baseDependencies) {
       const [name, range] = spec.split('@^');
       expect(declared[name!].replace(/^\^/, ''), name).toBe(range);
     }
+  });
+
+  test('keeps the menu settings of an existing components.json when the flags path runs', async () => {
+    writeFileSync(join(cwd, 'components.json'), JSON.stringify({ menuColor: 'inverted', menuAccent: 'bold' }));
+    await init({ cwd, ...defaults });
+    expect(JSON.parse(read('components.json'))).toMatchObject({ menuColor: 'inverted', menuAccent: 'bold' });
+  });
+
+  describe('--preset', () => {
+    const b0Url = '/init?style=nova&baseColor=neutral&theme=neutral&iconLibrary=lucide&font=inter&menuAccent=subtle&menuColor=default&radius=default&preset=b0';
+
+    test('a preset code fetches the init item and writes its settings, fonts and packages, the same way twice', async () => {
+      const first = await init({ cwd, ...defaults, preset: 'b0' });
+      expect(initRequests).toEqual([b0Url]);
+      expect(JSON.parse(read('components.json'))).toEqual({
+        $schema: new URL('/schema.json', registryUrl).href,
+        style: 'vega',
+        iconLibrary: 'tabler',
+        menuColor: 'inverted-translucent',
+        menuAccent: 'bold',
+        tailwind: { css: 'src/app.css', baseColor: 'neutral' },
+        aliases: { components: '$lib/components', ui: '$lib/components/ui', utils: '$lib/utils', lib: '$lib', hooks: '$lib/hooks' },
+        registry: registryUrl,
+        typescript: true,
+      });
+      expect(Object.keys(JSON.parse(read('components.json'))).slice(2, 5)).toEqual(['iconLibrary', 'menuColor', 'menuAccent']);
+      expect(read('src/app.css')).toBe(`@import 'tailwindcss';
+@import 'tw-animate-css';
+@import '${cliPackage}/tailwind.css';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/playfair-display';
+@custom-variant dark (&:is(.dark *));
+:root {
+  --background: oklch(1 0 0);
+  --radius: 0.875rem;
+}
+.dark {
+  --background: oklch(0.145 0 0);
+}
+@theme inline {
+  --color-background: var(--background);
+  --font-sans: 'Inter Variable', sans-serif;
+  --font-heading: 'Playfair Display Variable', serif;
+}
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+`);
+      expect(first.dependencies).toEqual(['class-variance-authority@^0.7.1', 'tw-animate-css@^1.4.0', '@tabler/icons-svelte@^3.48.0', '@fontsource-variable/inter', '@fontsource-variable/playfair-display']);
+      expect(first.devDependencies).toEqual([`${cliPackage}@^0.1.0`]);
+
+      const config = read('components.json');
+      const css = read('src/app.css');
+      const second = await init({ cwd, ...defaults, preset: 'b0' });
+      expect(second.files.map((file) => file.status)).toEqual(['identical', 'identical']);
+      expect([read('components.json'), read('src/app.css')]).toEqual([config, css]);
+    });
+
+    test('a named preset sends its heading font, and an init URL passes through unchanged', async () => {
+      await init({ cwd, ...defaults, preset: 'sera' });
+      await init({ cwd, ...defaults, preset: `${origin}/init?style=nova&font=inter` });
+      expect(initRequests).toEqual([
+        '/init?style=sera&baseColor=taupe&theme=taupe&iconLibrary=lucide&font=noto-sans&menuAccent=subtle&menuColor=default&radius=default&chartColor=taupe&fontHeading=playfair-display',
+        '/init?style=nova&font=inter',
+      ]);
+    });
+
+    test('a code with a chart color keeps it, and neutral is left out', async () => {
+      await init({ cwd, ...defaults, preset: 'b4rwZGojoh' });
+      expect(initRequests[0]).toBe(
+        '/init?style=sera&baseColor=taupe&theme=blue&iconLibrary=lucide&font=noto-sans&menuAccent=bold&menuColor=inverted-translucent&radius=large&chartColor=emerald&fontHeading=playfair-display&preset=b4rwZGojoh',
+      );
+    });
+
+    test('writes the files of items the preset depends on, with this project\'s transforms', async () => {
+      initDependencies.push(`${registryUrl}/styles/nova/button.json`);
+      try {
+        const plan = await init({ cwd, ...defaults, preset: 'b0' });
+        expect(plan.files.map((file) => [file.path, file.status])).toEqual([
+          ['components.json', 'new'],
+          ['src/app.css', 'changed'],
+          ['src/lib/components/ui/button/Button.svelte', 'new'],
+        ]);
+        expect(read('src/lib/components/ui/button/Button.svelte')).toContain("import { IconChevronRight } from '@tabler/icons-svelte';");
+        expect(plan.dependencies).toContain('@tabler/icons-svelte@^3.48.0');
+      } finally {
+        initDependencies.pop();
+      }
+    });
+
+    test('rejects an unknown name, a bad code, a conflicting flag and an item that is not a base', async () => {
+      await expect(init({ cwd, ...defaults, preset: 'nebula' })).rejects.toThrow('Unknown preset "nebula". Use one of nova, vega, maia, lyra, mira, luma, sera, rhea, a preset code, or the URL of an /init item.');
+      await expect(init({ cwd, ...defaults, preset: 'b!!' })).rejects.toThrow('Unknown preset "b!!".');
+      await expect(init({ cwd, ...defaults, preset: 'b0', style: 'nova' })).rejects.toThrow('--preset sets the style, icon library and base color.');
+      const url = `${registryUrl}/styles/nova/button.json`;
+      await expect(init({ cwd, ...defaults, preset: url })).rejects.toThrow(`${url} is a registry:ui item, and a preset must be a registry:base item.`);
+      expect([initRequests, existsSync(join(cwd, 'components.json'))]).toEqual([[], false]);
+    });
+
+    test('--preset without a value uses nova with --yes', async () => {
+      await init({ cwd, ...defaults, preset: true });
+      expect(initRequests[0]).toContain('/init?style=nova&');
+      expect(select).not.toHaveBeenCalled();
+    });
+
+    test('--preset without a value asks, and Custom writes nothing and points at the create page', async () => {
+      vi.mocked(select).mockResolvedValueOnce('custom');
+      const info = vi.spyOn(log, 'info').mockImplementation(() => {});
+      try {
+        const plan = await init({ cwd, ...defaults, yes: false, preset: true });
+        expect(plan).toEqual({ files: [], dependencies: [], devDependencies: [] });
+        expect(info).toHaveBeenCalledWith(`Build your custom preset on ${origin}/create, then copy and run the command from the page.`);
+      } finally {
+        info.mockRestore();
+      }
+      expect([initRequests, existsSync(join(cwd, 'components.json'))]).toEqual([[], false]);
+      const options = vi.mocked(select).mock.calls[0]![0].options as { value: string; label: string; hint?: string }[];
+      expect([options[0], options.at(-1)]).toEqual([
+        { value: 'nova', label: 'Nova', hint: 'Lucide / Geist' },
+        { value: 'custom', label: 'Custom', hint: `Build your own at ${origin}/create` },
+      ]);
+    });
+
+    test('choosing a preset from the prompt fetches it', async () => {
+      vi.mocked(select).mockResolvedValueOnce('maia');
+      await init({ cwd, ...defaults, yes: false, preset: true });
+      expect(initRequests[0]).toContain('/init?style=maia&');
+    });
   });
 });
 

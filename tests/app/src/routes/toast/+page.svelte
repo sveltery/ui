@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ToastProvider, Toaster, createToastManager, toast } from '@sveltery/components/toast';
+  import { ToastProvider, Toaster, createToastManager, toast } from '$registry/bases/base/ui/toast';
   import CustomList from './CustomList.svelte';
 
   const custom = createToastManager();

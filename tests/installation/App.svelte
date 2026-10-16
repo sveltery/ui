@@ -1,45 +1,15 @@
 <script lang="ts">
-  import { Alert, AlertAction, AlertDescription, AlertTitle } from '@sveltery/components/alert';
-  import { AspectRatio } from '@sveltery/components/aspect-ratio';
-  import { Avatar, AvatarFallback, AvatarImage } from '@sveltery/components/avatar';
-  import { Button } from '@sveltery/components/button';
-  import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@sveltery/components/carousel';
-  import { Card, CardContent, CardHeader, CardTitle } from '@sveltery/components/card';
-  import { ChartContainer } from '@sveltery/components/chart';
-  import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@sveltery/components/command';
-  import { Dialog, DialogContent, DialogTrigger } from '@sveltery/components/dialog';
-  import { Empty, EmptyTitle } from '@sveltery/components/empty';
-  import { Kbd } from '@sveltery/components/kbd';
-  import { Label } from '@sveltery/components/label';
-  import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerItem, MessageScrollerProvider, MessageScrollerViewport } from '@sveltery/components/message-scroller';
-  import { Questionnaire, QuestionnaireChoice, QuestionnaireChoices, QuestionnaireItem, QuestionnaireNext, QuestionnaireProgress, QuestionnaireSubmit, QuestionnaireTitle } from '@sveltery/components/questionnaire';
-  import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@sveltery/components/resizable';
-  import { Separator } from '@sveltery/components/separator';
-  import { Skeleton } from '@sveltery/components/skeleton';
-  import { Table, TableBody, TableCell, TableRow } from '@sveltery/components/table';
-  import { Textarea } from '@sveltery/components/textarea';
+  import * as Command from '@sveltery/command';
+  import * as MessageScroller from '@sveltery/message-scroller';
+  import * as Questionnaire from '@sveltery/questionnaire';
+  import * as Resizable from '@sveltery/resizable';
 </script>
-<Alert><AlertTitle>Title</AlertTitle><AlertDescription>Description</AlertDescription><AlertAction>Action</AlertAction></Alert>
-<AspectRatio ratio={2}>Ratio</AspectRatio>
-<Avatar><AvatarImage src="/a.png" alt="" /><AvatarFallback>CN</AvatarFallback></Avatar>
-<Button>Save</Button>
-<Card><CardHeader><CardTitle>Card</CardTitle></CardHeader><CardContent>Body</CardContent></Card>
-<ChartContainer config={{ visits: { label: 'Visits', theme: { light: 'red', dark: 'blue' } } }}>Chart</ChartContainer>
-<Carousel><CarouselContent><CarouselItem>Slide</CarouselItem></CarouselContent><CarouselPrevious /><CarouselNext /></Carousel>
-<Command><CommandInput placeholder="Search" /><CommandList><CommandEmpty>No results.</CommandEmpty><CommandGroup heading="Suggestions"><CommandItem>Calendar</CommandItem><CommandItem value="calc">Calculator</CommandItem></CommandGroup></CommandList></Command>
-<Dialog><DialogTrigger>Open</DialogTrigger><DialogContent>Content</DialogContent></Dialog>
-<Empty><EmptyTitle>Nothing</EmptyTitle></Empty>
-<Kbd>K</Kbd>
-<Label for="notes">Notes</Label>
-<MessageScrollerProvider><MessageScroller><MessageScrollerViewport><MessageScrollerContent><MessageScrollerItem messageId="m1" scrollAnchor>Hello</MessageScrollerItem></MessageScrollerContent></MessageScrollerViewport><MessageScrollerButton /></MessageScroller></MessageScrollerProvider>
-<Questionnaire items={[{ name: 'size', choices: [{ value: 'small' }, { value: 'large' }] }, { name: 'color' }]} shortcuts="letters">
-  <QuestionnaireProgress />
-  <QuestionnaireItem name="size"><QuestionnaireTitle>Size</QuestionnaireTitle><QuestionnaireChoices><QuestionnaireChoice value="small">Small</QuestionnaireChoice><QuestionnaireChoice value="large">Large</QuestionnaireChoice></QuestionnaireChoices></QuestionnaireItem>
-  <QuestionnaireItem name="color"><QuestionnaireTitle>Color</QuestionnaireTitle></QuestionnaireItem>
-  <QuestionnaireNext /><QuestionnaireSubmit />
-</Questionnaire>
-<ResizablePanelGroup><ResizablePanel defaultSize="30%">One</ResizablePanel><ResizableHandle withHandle /><ResizablePanel>Two</ResizablePanel></ResizablePanelGroup>
-<Separator />
-<Skeleton />
-<Table><TableBody><TableRow><TableCell>Cell</TableCell></TableRow></TableBody></Table>
-<Textarea id="notes" name="notes" value="Draft" />
+<Command.Root data-slot="command"><Command.Input data-slot="command-input" placeholder="Search" /><Command.List data-slot="command-list"><Command.Empty data-slot="command-empty">No results.</Command.Empty><Command.Group data-slot="command-group" heading="Suggestions"><Command.Item data-slot="command-item">Calendar</Command.Item><Command.Item data-slot="command-item" value="calc">Calculator</Command.Item></Command.Group></Command.List></Command.Root>
+<MessageScroller.Provider><MessageScroller.Root data-slot="message-scroller"><MessageScroller.Viewport data-slot="message-scroller-viewport"><MessageScroller.Content data-slot="message-scroller-content"><MessageScroller.Item data-slot="message-scroller-item" messageId="m1" scrollAnchor>Hello</MessageScroller.Item></MessageScroller.Content></MessageScroller.Viewport><MessageScroller.Button data-slot="message-scroller-button" /></MessageScroller.Root></MessageScroller.Provider>
+<Questionnaire.Root data-slot="questionnaire" items={[{ name: 'size', choices: [{ value: 'small' }, { value: 'large' }] }, { name: 'color' }]} shortcuts="letters">
+  <Questionnaire.Progress data-slot="questionnaire-progress" />
+  <Questionnaire.Item data-slot="questionnaire-item" name="size"><Questionnaire.Title data-slot="questionnaire-title">Size</Questionnaire.Title><Questionnaire.Choices><Questionnaire.Choice data-slot="questionnaire-choice" value="small"><Questionnaire.ChoiceInput /><Questionnaire.ChoiceLabel>Small</Questionnaire.ChoiceLabel></Questionnaire.Choice><Questionnaire.Choice data-slot="questionnaire-choice" value="large"><Questionnaire.ChoiceInput /><Questionnaire.ChoiceLabel>Large</Questionnaire.ChoiceLabel></Questionnaire.Choice></Questionnaire.Choices></Questionnaire.Item>
+  <Questionnaire.Item data-slot="questionnaire-item" name="color"><Questionnaire.Title data-slot="questionnaire-title">Color</Questionnaire.Title></Questionnaire.Item>
+  <Questionnaire.Next data-slot="questionnaire-next" /><Questionnaire.Submit data-slot="questionnaire-submit" />
+</Questionnaire.Root>
+<Resizable.Group data-slot="resizable-panel-group"><Resizable.Panel data-slot="resizable-panel" defaultSize="30%">One</Resizable.Panel><Resizable.Separator data-slot="resizable-handle" /><Resizable.Panel data-slot="resizable-panel">Two</Resizable.Panel></Resizable.Group>

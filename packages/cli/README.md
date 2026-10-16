@@ -1,6 +1,6 @@
 # @sveltery/ui
 
-Add [Sveltery UI](https://github.com/sveltery/ui) components to a Svelte 5 app. The CLI copies each component's source into your project, so you own and edit it.
+Add [Sveltery UI](https://ui.sveltery.dev) components to a Svelte 5 app. The CLI copies each component's source into your project, so you own and edit it.
 
 ## Requirements
 
@@ -21,9 +21,16 @@ npx @sveltery/ui@latest init
 
 Run it again at any time. A second run with the same choices leaves your files unchanged.
 
+To start from a preset instead, pass `--preset`. It takes a preset name such as `nova`, a preset code from the [Create page](https://ui.sveltery.dev/create), or the URL of an `/init` item. A preset sets the style, icon library, base color, theme, fonts, radius and menu look, and its fonts install as fontsource packages. `--preset` with no value lists the presets, and **Custom** prints the Create page link.
+
+```sh
+npx @sveltery/ui@latest init --preset b0
+```
+
 | Option | Description |
 | --- | --- |
 | `-y, --yes` | Use the defaults (or the flags) without prompting. |
+| `-p, --preset [name\|code\|url]` | Use a preset. Cannot be combined with `--style`, `--icons` or `--base-color`. With `-y` and no value, uses `nova`. |
 | `--style <name>` | `nova`, `vega`, `maia`, `lyra`, `mira`, `luma`, `sera` or `rhea`. |
 | `--icons <library>` | `lucide`, `tabler`, `hugeicons`, `phosphor` or `remixicon`. |
 | `--base-color <name>` | `neutral`, `stone`, `zinc`, `mauve`, `olive`, `mist` or `taupe`. |

@@ -1,11 +1,13 @@
+import { twMerge } from 'cn';
 import MagicString from 'magic-string';
 import { parse, type AST } from 'svelte/compiler';
 import { iconLibraries } from './icons.js';
 import { CliError } from './parse.js';
+import type { PresetMenuColor } from './preset/preset.js';
 import { iconLibraryNames, type IconLibraryName } from './registry.js';
 
 export type SourceFile = { target: string; content: string };
-export type TransformContext = { iconLibrary: IconLibraryName; /** The project CSS defines `--font-heading`. */ fontHeading: boolean };
+export type TransformContext = { iconLibrary: IconLibraryName; /** Upstream treats a missing menuColor as `default`. */ menuColor?: PresetMenuColor; /** The project CSS defines `--font-heading`. */ fontHeading: boolean };
 export type TransformResult = { content: string; dependencies?: string[] };
 export type Transform = (file: SourceFile, ctx: TransformContext) => TransformResult;
 
@@ -65,10 +67,16 @@ export const transformIcons: Transform = (file, ctx) => {
   return { content: s.toString(), dependencies: library.packages };
 };
 
+// Copied from shadcn's transform-menu.ts.
+const TRANSLUCENT_CLASSES =
+  'animate-none! relative bg-popover/70 before:pointer-events-none before:absolute before:inset-0 before:-z-1 before:rounded-[inherit] before:backdrop-blur-2xl before:backdrop-saturate-150 **:data-[slot$=-item]:focus:bg-foreground/10 **:data-[slot$=-item]:data-highlighted:bg-foreground/10 **:data-[slot$=-separator]:bg-foreground/5 **:data-[slot$=-trigger]:focus:bg-foreground/10 **:data-[slot$=-trigger]:aria-expanded:bg-foreground/10! **:data-[variant=destructive]:focus:bg-foreground/10! **:data-[variant=destructive]:text-accent-foreground! **:data-[variant=destructive]:**:text-accent-foreground!';
+
+const isTranslucent = (menuColor: PresetMenuColor | undefined) => menuColor?.endsWith('-translucent') ?? false;
+
 /** Class markers that `add` resolves: each maps to its replacement token, or '' to drop it. */
 const markers = new Map<string, (ctx: TransformContext) => string>([
-  // v1 supports only `menuColor: 'default'`, which uses neither menu marker.
-  ['cn-menu-target', () => ''],
+  ['cn-menu-target', (ctx) => (ctx.menuColor?.startsWith('inverted') ? 'dark' : '')],
+  // The translucent classes replace the string that holds the marker, in replaceMarkers.
   ['cn-menu-translucent', () => ''],
   // v1 has no RTL transform.
   ['cn-rtl-flip', () => ''],
@@ -78,7 +86,8 @@ const markers = new Map<string, (ctx: TransformContext) => string>([
 function replaceMarkers(text: string, ctx: TransformContext): string | undefined {
   const tokens = text.split(/\s+/).filter(Boolean);
   if (!tokens.some((token) => markers.has(token))) return undefined;
-  const kept = tokens.map((token) => markers.get(token)?.(ctx) ?? token).filter(Boolean);
+  let kept = tokens.map((token) => markers.get(token)?.(ctx) ?? token).filter(Boolean);
+  if (tokens.includes('cn-menu-translucent') && isTranslucent(ctx.menuColor)) kept = [twMerge(kept.join(' '), TRANSLUCENT_CLASSES)];
   if (kept.length === 0) return '';
   return `${/^\s/.test(text) ? ' ' : ''}${kept.join(' ')}${/\s$/.test(text) ? ' ' : ''}`;
 }

@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Button } from '@sveltery/components/button';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
-  import { Checkbox } from '@sveltery/components/checkbox';
-  import { Field, FieldContent, FieldDescription, FieldGroup, FieldLabel } from '@sveltery/components/field';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { Checkbox } from '$registry/bases/base/ui/checkbox';
+  import { Field, FieldContent, FieldDescription, FieldGroup, FieldLabel } from '$registry/bases/base/ui/field';
 
   const NOTIFICATIONS = [
     {

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Button } from '@sveltery/components/button';
-  import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@sveltery/components/dialog';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '$registry/bases/base/ui/dialog';
   import {
     Questionnaire,
     QuestionnaireActions,
@@ -14,7 +14,7 @@
     QuestionnaireProgress,
     QuestionnaireSubmit,
     QuestionnaireTitle,
-  } from '@sveltery/components/questionnaire';
+  } from '$registry/bases/base/ui/questionnaire';
 
   const items = [
     { name: 'scope', required: true },

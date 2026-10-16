@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarSeparator, MenubarShortcut, MenubarSub, MenubarSubContent, MenubarSubTrigger, MenubarTrigger } from '@sveltery/components/menubar';
+  import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarSeparator, MenubarShortcut, MenubarSub, MenubarSubContent, MenubarSubTrigger, MenubarTrigger } from '$registry/bases/base/ui/menubar';
 </script>
 
 <Menubar class="w-72">

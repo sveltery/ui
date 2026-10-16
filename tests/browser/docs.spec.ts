@@ -46,7 +46,7 @@ test('ComponentPreview renders the example and reveals its source', async ({ pag
   const preview = page.locator('[data-slot=component-preview]').first();
   await expect(preview.getByRole('button', { name: 'Secondary' }).first()).toBeVisible();
   await preview.getByRole('button', { name: 'View Code' }).click();
-  await expect(preview.locator('[data-slot=code] pre')).toContainText("import { Button, buttonVariants } from '@sveltery/components/button';");
+  await expect(preview.locator('[data-slot=code] pre')).toContainText("import { Button, buttonVariants } from '$registry/bases/base/ui/button';");
   await expect(preview.getByRole('button', { name: 'Copy' })).toBeVisible();
 });
 

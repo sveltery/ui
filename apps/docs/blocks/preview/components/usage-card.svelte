@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { Card, CardContent, CardHeader, CardTitle } from '@sveltery/components/card';
-  import { Item, ItemActions, ItemContent, ItemGroup, ItemMedia, ItemTitle } from '@sveltery/components/item';
+  import { Card, CardContent, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { Item, ItemActions, ItemContent, ItemGroup, ItemMedia, ItemTitle } from '$registry/bases/base/ui/item';
 
   const items = [
     {

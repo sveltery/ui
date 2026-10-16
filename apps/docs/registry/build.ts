@@ -1,9 +1,11 @@
+import { fontItems } from './fonts';
 import { inlineStyle } from './inline';
 import { planItems, type ItemPlan, type UiManifest } from './items';
 import { parseStyleSheet, type StyleSheet } from './styles';
 import { parseThemes } from './themes';
 import {
   REGISTRY_VERSION,
+  accentColors,
   baseColors,
   iconLibraries,
   styleNames,
@@ -15,13 +17,13 @@ import {
 } from './types';
 
 export type RegistryInput = {
-  /** `packages/ui/src/lib/<folder>/<file>` contents keyed by path relative to `packages/ui/src/lib`, e.g. `button/variants.ts`. Includes every folder; the build skips `icons`, `styles`, `example` and the root `index.ts`. */
+  /** `apps/docs/registry/bases/base/ui/<folder>/<file>` contents keyed by path relative to `bases/base/ui`, e.g. `button/variants.ts`. Includes every folder; the build skips `icons`. */
   sources: Record<string, string>;
   /** `styles/scoped/<style>.css` contents per style. */
   styles: Record<StyleName, string>;
   /** `styles/themes.css`. */
   themes: string;
-  /** `packages/ui/package.json` parsed, plus each workspace helper's `package.json` version by package name. */
+  /** `apps/docs/package.json` parsed, plus each workspace helper's `package.json` version by package name. */
   uiManifest: UiManifest;
   workspaceVersions: Record<string, string>;
   /** Absolute origin of the docs site, for `$schema` URLs. */
@@ -67,14 +69,17 @@ export function buildRegistry(input: RegistryInput): RegistryOutput {
   };
   output.set('index.json', manifest);
 
+  // Upstream serves fonts under each style and leaves them out of the indexes, which a 0.1 CLI would reject for their type.
+  const fonts = fontItems(origin);
   for (const style of styleNames) {
     const index: StyleIndexEntry[] = plans.map(({ name, type, registryDependencies }) => ({ name, type, registryDependencies, relativeUrl: `${name}.json` }));
     output.set(`styles/${style}/index.json`, index);
     for (const plan of plans) output.set(`styles/${style}/${plan.name}.json`, renderItem(plan, sheets[style], style, origin));
+    for (const font of fonts) output.set(`styles/${style}/${font.name}.json`, font);
   }
 
   const themes = parseThemes(input.themes, sharedRadii(sheets));
-  for (const color of baseColors) {
+  for (const color of [...baseColors, ...accentColors]) {
     output.set(`themes/${color}.json`, {
       $schema: `${origin}/schema/registry-item.json`,
       name: color,

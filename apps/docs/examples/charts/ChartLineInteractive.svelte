@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@sveltery/components/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '@sveltery/components/chart';
+  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
   import { scaleUtc } from 'd3-scale';
   import { LineChart } from 'layerchart';
   import { curveMonotoneX } from 'd3-shape';

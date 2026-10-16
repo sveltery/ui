@@ -1,11 +1,11 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
-  import { Button } from '@sveltery/components/button';
-  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@sveltery/components/card';
-  import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@sveltery/components/empty';
-  import { IconPlaceholder } from '@sveltery/components/icons';
-  import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerProvider, MessageScrollerViewport } from '@sveltery/components/message-scroller';
-  import { NativeSelect, NativeSelectOption } from '@sveltery/components/native-select';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '$registry/bases/base/ui/empty';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerProvider, MessageScrollerViewport } from '$registry/bases/base/ui/message-scroller';
+  import { NativeSelect, NativeSelectOption } from '$registry/bases/base/ui/native-select';
   import { animations, type AnimationId } from './message-scroller/animations.js';
   import { Chat, createChat } from './message-scroller/chat.svelte.js';
   import MessageAnimated from './message-scroller/MessageAnimated.svelte';

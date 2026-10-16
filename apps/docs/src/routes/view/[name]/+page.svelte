@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Toaster } from '@sveltery/components/toast';
+  import { Toaster } from '$registry/bases/base/ui/toast';
   import { site } from '$lib/site';
   let { data } = $props();
 

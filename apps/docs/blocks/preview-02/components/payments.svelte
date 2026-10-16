@@ -1,12 +1,12 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@sveltery/components/breadcrumb';
-  import { Button } from '@sveltery/components/button';
-  import { Card, CardContent, CardHeader } from '@sveltery/components/card';
-  import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from '@sveltery/components/dropdown-menu';
-  import { Item, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from '@sveltery/components/item';
-  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '$registry/bases/base/ui/breadcrumb';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Card, CardContent, CardHeader } from '$registry/bases/base/ui/card';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from '$registry/bases/base/ui/dropdown-menu';
+  import { Item, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from '$registry/bases/base/ui/item';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
   // The host element's typed event handlers do not fit the element this snippet renders, so only `class` is typed.
   type RenderProps = Pick<HTMLAttributes<HTMLElement>, 'class'>;
 </script>

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Button } from '@sveltery/components/button';
-  import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@sveltery/components/command';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '$registry/bases/base/ui/command';
 
   let open = $state(false);
 </script>

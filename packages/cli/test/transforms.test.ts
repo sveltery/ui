@@ -1,10 +1,11 @@
 // @vitest-environment node
 import { readFileSync } from 'node:fs';
 import { describe, expect, test } from 'vitest';
+import type { PresetMenuColor } from '../src/preset/preset.js';
 import type { IconLibraryName } from '../src/registry.js';
 import { transformIcons, transformMarkers, type TransformContext } from '../src/transforms.js';
 
-const read = (path: string) => ({ target: path, content: readFileSync(new URL(`../../ui/src/lib/${path}`, import.meta.url), 'utf8') });
+const read = (path: string) => ({ target: path, content: readFileSync(new URL(`../../../apps/docs/registry/bases/base/ui/${path}`, import.meta.url), 'utf8') });
 
 /** The source with each literal `from` (which must occur exactly once) replaced by `to`. */
 function swap(source: string, edits: [from: string, to: string][]): string {
@@ -15,7 +16,7 @@ function swap(source: string, edits: [from: string, to: string][]): string {
   return source;
 }
 
-const ctx = (iconLibrary: IconLibraryName, fontHeading = false): TransformContext => ({ iconLibrary, fontHeading });
+const ctx = (iconLibrary: IconLibraryName, fontHeading = false, menuColor: PresetMenuColor = 'default'): TransformContext => ({ iconLibrary, menuColor, fontHeading });
 const placeholderImport = "import { IconPlaceholder } from '../icons/index.js';";
 const selectIcon = '<IconPlaceholder lucide="CheckIcon" tabler="IconCheck" hugeicons="Tick02Icon" phosphor="CheckIcon" remixicon="RiCheckLine" class="cn-select-item-indicator-icon pointer-events-none" />';
 const spinnerOpen = `<IconPlaceholder
@@ -130,5 +131,29 @@ describe('transformMarkers', () => {
     );
     const module = "export const x = cva('cn-rtl-flip size-4', { variants: { a: { b: 'cn-menu-translucent' } } });\n";
     expect(transformMarkers({ target: 'x/variants.ts', content: module }, ctx('lucide')).content).toBe("export const x = cva('size-4', { variants: { a: { b: '' } } });\n");
+  });
+
+  describe('menu colors', () => {
+    const translucent =
+      'animate-none! relative bg-popover/70 before:pointer-events-none before:absolute before:inset-0 before:-z-1 before:rounded-[inherit] before:backdrop-blur-2xl before:backdrop-saturate-150 **:data-[slot$=-item]:focus:bg-foreground/10 **:data-[slot$=-item]:data-highlighted:bg-foreground/10 **:data-[slot$=-separator]:bg-foreground/5 **:data-[slot$=-trigger]:focus:bg-foreground/10 **:data-[slot$=-trigger]:aria-expanded:bg-foreground/10! **:data-[variant=destructive]:focus:bg-foreground/10! **:data-[variant=destructive]:text-accent-foreground! **:data-[variant=destructive]:**:text-accent-foreground!';
+    const content = `<script lang="ts">\n  import { cn } from 'cn';\n</script>\n<div class={cn('cn-menu-target cn-menu-translucent z-50 bg-popover text-sm', classProp)}></div>\n`;
+    const menu = (menuColor: PresetMenuColor) => transformMarkers({ target: 'menu/MenuContent.svelte', content }, ctx('lucide', false, menuColor)).content;
+    const wrap = (classes: string) => `<script lang="ts">\n  import { cn } from 'cn';\n</script>\n<div class={cn('${classes}', classProp)}></div>\n`;
+
+    test('default drops both markers', () => {
+      expect(menu('default')).toBe(wrap('z-50 bg-popover text-sm'));
+    });
+
+    test('inverted makes the menu dark', () => {
+      expect(menu('inverted')).toBe(wrap('dark z-50 bg-popover text-sm'));
+    });
+
+    test('default-translucent merges the translucent classes over the menu classes', () => {
+      expect(menu('default-translucent')).toBe(wrap(`z-50 text-sm ${translucent}`));
+    });
+
+    test('inverted-translucent does both', () => {
+      expect(menu('inverted-translucent')).toBe(wrap(`dark z-50 text-sm ${translucent}`));
+    });
   });
 });

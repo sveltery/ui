@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Button } from '@sveltery/components/button';
-  import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from '@sveltery/components/command';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from '$registry/bases/base/ui/command';
 
   let value = $state('');
   let search = $state('');

@@ -2,6 +2,8 @@
 
 A headless command menu for Svelte 5. It ports the behavior of [cmdk](https://github.com/pacocoursey/cmdk), which is React-only: fuzzy filtering and ranking, keyboard navigation, selection, and the `cmdk-*` attributes, roles and ARIA that upstream styles and screen readers rely on. It renders plain elements and ships no styles.
 
+The styled [Command](https://ui.sveltery.dev/docs/components/command) component in Sveltery UI is built on it.
+
 ## Usage
 
 ```svelte

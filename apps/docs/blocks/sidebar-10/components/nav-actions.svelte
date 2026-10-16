@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Button } from '@sveltery/components/button';
-  import { Popover, PopoverContent, PopoverTrigger } from '@sveltery/components/popover';
-  import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@sveltery/components/sidebar';
-  import { IconPlaceholder } from '@sveltery/components/icons';
+  import { Button } from '$registry/bases/base/ui/button';
+  import { Popover, PopoverContent, PopoverTrigger } from '$registry/bases/base/ui/popover';
+  import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '$registry/bases/base/ui/sidebar';
+  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
   let isOpen = $state(true);
   const data = [
     [

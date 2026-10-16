@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarRadioGroup, MenubarRadioItem, MenubarSeparator, MenubarTrigger } from '@sveltery/components/menubar';
+  import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarRadioGroup, MenubarRadioItem, MenubarSeparator, MenubarTrigger } from '$registry/bases/base/ui/menubar';
 
   let user = $state('benoit');
   let theme = $state('system');

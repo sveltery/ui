@@ -15,7 +15,6 @@
     "@sveltery/message-scroller": "workspace:*",
     "@sveltery/questionnaire": "workspace:*",
     "@sveltery/resizable": "workspace:*",
-    "@sveltery/components": "workspace:*",
     "date-fns": "4.4.0",
     "layerchart": "2.7.0",
     "svelte": "5.57.1",
