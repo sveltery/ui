@@ -37,6 +37,13 @@ Where upstream code misbehaves on Base UI, Sveltery UI fixes it instead of copyi
 | `ui/slider.tsx:12-17,39` | One thumb is rendered per entry of the array `value`, else the array `defaultValue`, else `[min, max]`. A number value, or no value, renders two thumbs at the same index, so the slider has two tab stops and a form posts the name twice. | Renders one thumb per entry of an array value, and one thumb for a number value or no value. |
 | `blocks/dashboard-01/components/chart-area-interactive.tsx:191` | The time-range Select has no `items`, so Base shows the raw value ("7d") instead of its label. | Passes `items`. |
 | `blocks/dashboard-01/components/data-table.tsx:402` | A reorder replaces the table's data, and the table then resets to page 1, so a row moved on page 2 jumps the view to page 1. | Sets `autoResetPageIndex: false`. |
+| `ui/combobox.tsx:85-88` (at d2fba50) | `InputGroupButton render={<ComboboxTrigger />}` passes Base's `Button` props to the combobox trigger, and its `tabIndex={0}` overrides the trigger's own `tabIndex={-1}` (Base UI `combobox/trigger/ComboboxTrigger.tsx:157`). The trigger becomes a second tab stop after the input. shadcn's Radix variant (`bases/radix/ui/combobox.tsx`, `asChild`) keeps `-1`. | Keeps the trigger out of the tab order, as Base UI and shadcn's Radix variant do. |
+
+## Server Component render output
+
+shadcn/ui's `ui/button.tsx` has no `"use client"`, and its docs examples are Server Components. Next.js renders `<Button>` on the server, so a trigger's `render={<Button />}` arrives as the finished `<ButtonPrimitive data-slot="button">`, and Base UI's `mergeProps(props, render.props)` (`internals/useRenderElement.tsx:171`) lets `data-slot="button"` win. In a Client Component, the same code ends with the trigger's slot, because `Button` spreads its props after `data-slot="button"` (`ui/button.tsx:43`). Upstream shows both: the sheet's corner close button, in the client file `ui/sheet.tsx:63-71`, is `data-slot="sheet-close"`, and the footer close in the example `examples/sheet-example.tsx:56` is `data-slot="button"`.
+
+Sveltery UI has no Server Components, so an element rendered through a trigger keeps the trigger's `data-slot` (`dialog-trigger`, `popover-trigger`, `sheet-close` and so on), as Base UI does in client code. Only shadcn/ui's rhea and luma `cn-code-block-actions` rule selects `data-slot=button`, and no code block example puts a trigger there. Paths are in shadcn-ui/ui at d2fba50 and Base UI 1.9.0.
 
 ## Svelte adapter differences
 
