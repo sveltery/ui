@@ -1,4 +1,4 @@
-// A relative path, not `sveltery/preset`: vite.config.ts builds the registry, and Vite leaves package imports of a config to Node, which cannot load the package's .ts source.
+// A relative path, not `@sveltery/ui/preset`: vite.config.ts builds the registry, and Vite leaves package imports of a config to Node, which cannot load the package's .ts source.
 import { PRESET_FONT_DEFINITIONS, type PresetFont, type PresetFontDefinition } from '../../../packages/cli/src/preset/index.js';
 import type { RegistryItem } from './types';
 
