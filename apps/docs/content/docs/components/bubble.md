@@ -1,6 +1,7 @@
 ---
 title: Bubble
 description: Displays conversational content in a message bubble. Supports variants, alignment, grouping, and reactions.
+style: rhea
 ---
 
 <ComponentPreview name="base/BubbleExample" />

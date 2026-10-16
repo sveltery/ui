@@ -25,3 +25,8 @@ export async function loadDoc(slug: string) {
   const [module, raw] = await Promise.all([modules[file(slug)](), loadSource(slug)]);
   return { content: module.default, metadata: module.metadata, raw };
 }
+
+export async function docStyle(slug: string) {
+  const path = file(slug);
+  return path ? (await modules[path]()).metadata.style : undefined;
+}

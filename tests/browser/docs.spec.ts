@@ -63,6 +63,29 @@ test('ComponentPreview renders the example and reveals its source', async ({ pag
   await expect(preview.getByRole('button', { name: 'Copy' })).toBeVisible();
 });
 
+test('the Drawer page renders its examples in the Rhea style, and other pages stay in Nova', async ({ page }) => {
+  await visit(page, '/docs/components/drawer');
+  await page.locator('[data-slot=component-preview]').first().getByRole('button', { name: 'right', exact: true }).first().click();
+  const drawer = page.locator('[data-slot=drawer-popup]');
+  await expect.poll(() => drawer.evaluate((node) => {
+    const box = node.getBoundingClientRect();
+    return { left: Math.round(box.left), right: Math.round(box.right), top: Math.round(box.top), bottom: Math.round(box.bottom), radius: getComputedStyle(node).borderRadius };
+  })).toEqual({ left: 1280 - 8 - 384, right: 1280 - 8, top: 8, bottom: 900 - 8, radius: '24px' });
+  await page.keyboard.press('Escape');
+  await expect(drawer).toHaveCount(0);
+
+  await page.getByRole('navigation', { name: 'Docs' }).getByRole('link', { name: 'Button', exact: true }).click();
+  await expect(page.getByRole('heading', { level: 1, name: 'Button' })).toBeVisible();
+  const button = page.locator('[data-slot=component-preview]').first().getByRole('button', { name: 'Secondary' }).first();
+  await expect(button).toHaveCSS('border-radius', '8px');
+});
+
+test('docs tooltips open without the default delay, like the upstream site', async ({ page }) => {
+  await visit(page, '/docs/components/tooltip');
+  await page.getByRole('button', { name: 'Show Tooltip' }).first().hover();
+  await expect(page.locator('[data-slot=tooltip-content]')).toBeVisible({ timeout: 400 });
+});
+
 test('the mobile menu opens as a popover and closes on navigation', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await visit(page, '/docs');
