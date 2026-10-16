@@ -1,8 +1,11 @@
 <script lang="ts">
-  import { buttonVariants } from '$registry/bases/base/ui/button';
   import { cn } from 'cn';
   import { navCategories } from '#blocks/registry';
   import BlocksNav from '$lib/components/blocks/BlocksNav.svelte';
+  import Announcement from '$lib/components/site/Announcement.svelte';
+  import PageHeader from '$lib/components/site/PageHeader.svelte';
+  import PageNav from '$lib/components/site/PageNav.svelte';
+  import { lumaButtonVariants } from '$lib/components/site/luma-button';
   import { site } from '$lib/site';
   let { children } = $props();
 
@@ -15,20 +18,15 @@
   <meta name="description" content={description} />
 </svelte:head>
 
-<section class="container-wrapper flex flex-col items-center gap-2 px-6 py-8 text-center md:py-16 lg:py-20 xl:gap-4">
-  <h1 class="max-w-3xl text-3xl font-semibold tracking-tight text-balance text-primary lg:leading-[1.1] xl:text-5xl xl:tracking-tighter">{title}</h1>
-  <p class="max-w-4xl text-base text-balance text-foreground sm:text-lg">{description}</p>
-  <div class="flex w-full items-center justify-center gap-2 pt-2">
-    <a href="#blocks" class={cn(buttonVariants(), 'h-[35px] shadow-none')}>Browse Blocks</a>
-    <a href="/docs/components" class={cn(buttonVariants({ variant: 'secondary' }), 'shadow-none')}>View Components</a>
-  </div>
-</section>
-<div id="blocks" class="container-wrapper scroll-mt-24 px-6">
-  <div class="flex items-center justify-between gap-4 py-4">
-    <BlocksNav />
-    <a href="/blocks/{navCategories[0].slug}" class={cn(buttonVariants({ variant: 'secondary', size: 'sm' }), 'mr-7 hidden shadow-none lg:flex')}>Browse all blocks</a>
-  </div>
-</div>
-<div class="container-wrapper flex-1 bg-muted/30 px-6 md:py-12">
-  {@render children()}
+<PageHeader {title} {description}>
+  {#snippet announcement()}<Announcement />{/snippet}
+  <a href="#blocks" data-slot="button" class={cn(lumaButtonVariants(), 'h-[35px]')}>Browse Blocks</a>
+  <a href="/docs/components" data-slot="button" class={lumaButtonVariants({ variant: 'secondary' })}>View Components</a>
+</PageHeader>
+<PageNav id="blocks">
+  <BlocksNav />
+  <a href="/blocks/{navCategories[0].slug}" data-slot="button" class={cn(lumaButtonVariants({ variant: 'secondary', size: 'sm' }), 'mr-7 hidden shadow-none lg:flex')}>Browse all blocks</a>
+</PageNav>
+<div class="container-wrapper flex-1 section-soft md:py-12">
+  <div class="container">{@render children()}</div>
 </div>

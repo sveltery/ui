@@ -39,6 +39,6 @@ export async function blockFiles(block: Block): Promise<BlockFiles> {
     })
     .sort((a, b) => Number(b.target.startsWith('src/routes/')) - Number(a.target.startsWith('src/routes/')) || a.target.localeCompare(b.target));
   // The viewer draws its own figure and caption, so keep only the highlighted <pre>.
-  const files = await Promise.all(entries.map(async (file) => ({ ...file, html: (await highlight(file.raw, file.target.split('.').pop())).match(/<pre[\s\S]*<\/pre>/)![0] })));
+  const files = await Promise.all(entries.map(async (file) => ({ ...file, html: (await highlight(file.raw, file.target.split('.').pop(), { lineNumbers: true })).match(/<pre[\s\S]*<\/pre>/)![0] })));
   return { files, tree: tree(files.map((file) => file.target)) };
 }
