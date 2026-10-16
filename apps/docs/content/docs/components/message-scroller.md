@@ -1,6 +1,7 @@
 ---
 title: Message Scroller
 description: A chat scroll container that anchors turns, opens saved transcripts, follows streamed responses, loads history without jumping, and jumps to any message.
+style: rhea
 ---
 
 <ComponentPreview name="base/MessageScrollerDemo" />

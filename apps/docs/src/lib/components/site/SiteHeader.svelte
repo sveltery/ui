@@ -1,8 +1,6 @@
 <script lang="ts">
   import { page } from '$app/state';
   import { Separator } from '$registry/bases/base/ui/separator';
-  import { buttonVariants } from '$registry/bases/base/ui/button';
-  import { cn } from 'cn';
   import { site } from '$lib/site';
   import CommandMenu from './CommandMenu.svelte';
   import GitHubLink from './GitHubLink.svelte';
@@ -38,7 +36,11 @@
         {#if !designer}
           <div class="flex items-center gap-2">
             <Separator orientation="vertical" />
-            <a href="/create" class={cn(buttonVariants({ size: 'sm' }), 'h-[31px] rounded-lg')}>
+            <!-- Nova's small button classes, written out: buttonVariants follows the page's style, and upstream pins this button to Nova. -->
+            <a
+              href="/create"
+              class="group/button inline-flex h-[31px] shrink-0 items-center justify-center gap-1 rounded-lg border border-transparent bg-primary bg-clip-padding px-2.5 text-[0.8rem] font-medium whitespace-nowrap text-primary-foreground transition-all outline-none select-none hover:bg-primary/80 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:translate-y-px [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5"
+            >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4V20M20 12H4" /></svg>
               New
             </a>
