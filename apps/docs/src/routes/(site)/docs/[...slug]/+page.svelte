@@ -11,6 +11,15 @@
   const next = $derived(current >= 0 ? pages[current + 1] : undefined);
 </script>
 
+<svelte:body
+  {@attach (body) => {
+    const style = data.metadata.style;
+    if (!style) return;
+    body.classList.replace('style-nova', `style-${style}`);
+    return () => body.classList.replace(`style-${style}`, 'style-nova');
+  }}
+/>
+
 <svelte:head>
   <title>{data.metadata.title} - {site.name}</title>
   <meta name="description" content={data.metadata.description} />
