@@ -21,6 +21,7 @@
   );
 
   $effect(() => {
+    if (!open) return;
     const current = query;
     searching = !!current.trim();
     search.run(current).then(() => {
