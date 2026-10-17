@@ -1,7 +1,7 @@
 ---
 title: Theming
 description: Change the look of every component with CSS variables.
-order: 2
+order: 3
 ---
 
 Components use semantic color tokens such as `background`, `foreground` and `primary`. Tailwind maps each token to a utility, so `bg-primary` reads `var(--primary)`. To change the look of your app, change the token values. You do not need to rewrite component classes.

@@ -3,6 +3,7 @@
   "title": "Sveltery registry manifest",
   "type": "object",
   "required": [
+    "$schema",
     "name",
     "registryVersion",
     "styles",
