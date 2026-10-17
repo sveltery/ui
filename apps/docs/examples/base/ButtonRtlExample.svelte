@@ -40,7 +40,7 @@
   const t = $derived(translations[language].values);
 </script>
 
-<div class="flex w-full max-w-sm flex-col gap-4">
+<div class="flex w-full flex-col gap-4">
   <div class="flex gap-2">
     {#each Object.keys(translations) as code (code)}
       <Button variant={language === code ? 'default' : 'outline'} size="sm" onclick={() => (language = code as keyof typeof translations)}>

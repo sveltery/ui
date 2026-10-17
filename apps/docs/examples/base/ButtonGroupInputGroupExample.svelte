@@ -20,10 +20,9 @@
       <InputGroupInput placeholder={voiceEnabled ? 'Record and send audio...' : 'Send a message...'} disabled={voiceEnabled} />
       <InputGroupAddon align="inline-end">
         <Tooltip>
-          <TooltipTrigger>
+          <TooltipTrigger onclick={() => (voiceEnabled = !voiceEnabled)}>
             {#snippet render(props, _state, content)}
               <InputGroupButton
-                onclick={() => (voiceEnabled = !voiceEnabled)}
                 size="icon-xs"
                 data-active={voiceEnabled}
                 class="data-[active=true]:bg-orange-100 data-[active=true]:text-orange-700 dark:data-[active=true]:bg-orange-800 dark:data-[active=true]:text-orange-100"

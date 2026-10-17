@@ -217,7 +217,6 @@ Use the `render` snippet to render a custom component as the text, for example a
 
 ```svelte showLineNumbers
 <script lang="ts">
-  import { Button } from '#lib/components/ui/button';
   import { ButtonGroup, ButtonGroupText } from '#lib/components/ui/button-group';
   import { Input } from '#lib/components/ui/input';
   import { Label } from '#lib/components/ui/label';
