@@ -101,7 +101,7 @@ Popover
 
 A simple popover with a header, title, and description.
 
-<ComponentPreview name="base/PopoverBasicExample" align="start" />
+<ComponentPreview name="base/PopoverBasicExample" />
 
 ## Align
 
@@ -113,7 +113,7 @@ Use the `align` prop on `PopoverContent` to control the horizontal alignment.
 
 A popover with form fields inside.
 
-<ComponentPreview name="base/PopoverFormExample" align="start" />
+<ComponentPreview name="base/PopoverFormExample" />
 
 ## RTL
 
