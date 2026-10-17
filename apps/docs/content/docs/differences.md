@@ -55,11 +55,11 @@ Base UI marks an open trigger with its own attributes. A collapsible trigger get
 
 ### Examples copied from the Radix variant use Base UI's attributes
 
-**Upstream:** The chevron in [`collapsible-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/collapsible-example.tsx#L110) rotates on `group-data-[state=open]`. The bookmark icons in [`toggle-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/toggle-example.tsx#L321) (also line 331) fill on `group-data-[state=on]/toggle`. These are Radix attributes.
+**Upstream:** The chevron in [`collapsible-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/collapsible-example.tsx#L110) rotates on `group-data-[state=open]`. The bookmark icons in [`toggle-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/toggle-example.tsx#L321) (also line 331) fill on `group-data-[state=on]/toggle`. These are Radix attributes. The menu buttons and the collapsible chevron in [`sidebar-demo.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/sidebar-demo.tsx#L223) use `data-[state=open]`, and its dropdown menus are `w-(--radix-dropdown-menu-trigger-width)`, a Radix variable.
 
-**Sveltery UI:** The [Collapsible](/docs/components/collapsible) example uses `group-data-panel-open:`, and the [Toggle](/docs/components/toggle) example uses `group-data-pressed/toggle:`.
+**Sveltery UI:** The [Collapsible](/docs/components/collapsible) example uses `group-data-panel-open:`, and the [Toggle](/docs/components/toggle) example uses `group-data-pressed/toggle:`. The [Sidebar](/docs/components/sidebar) demo uses `data-popup-open:`, `group-data-open/collapsible:` and `w-(--anchor-width)`.
 
-**Why:** Base UI never sets `data-state`, so upstream's chevron does not rotate and the bookmark does not fill when pressed.
+**Why:** Base UI never sets `data-state`, so upstream's chevron does not rotate and the bookmark does not fill when pressed. It has no `--radix-dropdown-menu-trigger-width`, so that class sets no width.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
 
@@ -362,6 +362,36 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Why:** Upstream's `/docs/primitives/*` paths do not exist on this site, so the links would return 404.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
+
+### The Sidebar page shows its RTL example inline
+
+**Upstream:** The [Sidebar page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/sidebar.mdx?plain=1#L550) links to the full-page `/view/base-nova/sidebar-rtl` instead of previewing it. Its Width section says to set `--sidebar-width-mobile` in the `style` prop, but [`sidebar.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/sidebar.tsx#L193) sets the mobile width from the `SIDEBAR_WIDTH_MOBILE` constant and never reads that variable.
+
+**Sveltery UI:** The [Sidebar](/docs/components/sidebar) page previews `SidebarRtlExample` in a frame under RTL, like the other RTL sections. The Width section names `--sidebar-width` and `--sidebar-width-icon` only, and says the mobile sheet uses `SIDEBAR_WIDTH_MOBILE`.
+
+**Why:** Sveltery UI has no `/view` page for examples, only for blocks. The variable does nothing in either port, so documenting it would mislead.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Sidebar changelog flips the trigger icon with `cn-rtl-flip`
+
+**Upstream:** The [Sidebar page changelog](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/sidebar.mdx?plain=1#L634) says to add `rtl:rotate-180` to the `SidebarTrigger` icon, but [`sidebar.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/sidebar.tsx#L280) uses `cn-rtl-flip`.
+
+**Sveltery UI:** The [Sidebar](/docs/components/sidebar#changelog) changelog says to add `class="cn-rtl-flip"`, which is what the component does.
+
+**Why:** Following upstream's prose would leave the copied icon different from the registry component.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Select Invalid snippet keeps its `Select`
+
+**Upstream:** The [Select page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/select.mdx?plain=1#L139) shows the Invalid snippet as a bare `SelectTrigger`.
+
+**Sveltery UI:** The [Select](/docs/components/select#invalid) snippet wraps the trigger in `<Select {items}>`.
+
+**Why:** A `SelectTrigger` outside a `Select` throws because it has no Select context, so the bare snippet fails when pasted.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
 ### Sidebar examples fit the preview frame
 
