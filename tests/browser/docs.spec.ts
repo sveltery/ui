@@ -110,7 +110,7 @@ test('the Drawer page renders its examples in the Rhea style, and other pages st
 
 test('docs tooltips open without the default delay, like the upstream site', async ({ page }) => {
   await visit(page, '/docs/components/tooltip');
-  await page.getByRole('button', { name: 'Show Tooltip' }).first().hover();
+  await page.getByRole('button', { name: 'Hover' }).first().hover();
   await expect(page.locator('[data-slot=tooltip-content]')).toBeVisible({ timeout: 400 });
 });
 
