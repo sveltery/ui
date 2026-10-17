@@ -2,6 +2,11 @@
   import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
   import { Field, FieldDescription, FieldLabel, FieldLegend, FieldSet } from '$registry/bases/base/ui/field';
   import { NativeRadio, NativeRadioGroup } from '$registry/bases/base/ui/native-radio-group';
+  import { toggleVariants } from '$registry/bases/base/ui/toggle';
+  import { cn } from 'cn';
+
+  // A label styled as a Toggle, around a visually hidden radio: `has-checked:` reads the radio's state.
+  const toggle = cn(toggleVariants({ variant: 'outline' }), 'cursor-pointer select-none has-checked:bg-muted has-focus-visible:border-ring has-focus-visible:ring-[3px] has-focus-visible:ring-ring/50 has-disabled:pointer-events-none has-disabled:opacity-50');
 </script>
 
 {#snippet NativeRadioGroupBasic()}
@@ -72,9 +77,22 @@
   </Example>
 {/snippet}
 
+{#snippet NativeRadioGroupToggleStyle()}
+  <Example title="Toggle Style">
+    <div role="radiogroup" aria-label="Calls" class="flex gap-2">
+      {#each [['all', 'All'], ['missed', 'Missed']] as [value, label] (value)}
+        <label class={toggle}>
+          <input class="sr-only" type="radio" name="calls" {value} checked={value === 'all'} />{label}
+        </label>
+      {/each}
+    </div>
+  </Example>
+{/snippet}
+
 <ExampleWrapper>
   {@render NativeRadioGroupBasic()}
   {@render NativeRadioGroupWithFieldSet()}
   {@render NativeRadioGroupDisabled()}
   {@render NativeRadioGroupInvalid()}
+  {@render NativeRadioGroupToggleStyle()}
 </ExampleWrapper>
