@@ -1,7 +1,9 @@
 // Converts shadcn's React chart gallery into Svelte pages on @sveltery/recharts and local shadcn helpers.
-// Usage: node scripts/convert-shadcn-charts.mjs <shadcn charts dir> <output dir> [--helpers <dir>] [--match <regex>] [--only <name>] [--check]
+// Usage: node scripts/convert-shadcn-charts.mjs <shadcn charts dir> <output dir> [--helpers <dir>] [--match <regex>] [--only <name>] [--docs [--suffix <name>]] [--check]
 // Each chart-<name>.tsx becomes <output>/chart-<name>/+page.svelte and +page.ts. The pages import the card, chart and select
 // helpers from --helpers (default <output>/shadcn), and every lucide-react icon becomes a component in <helpers>/icons/.
+// With --docs, each chart-<name>.tsx becomes <output>/Chart<Name><suffix>.svelte for the docs site: registry imports, icon
+// placeholders for lucide icons, and a component in <output>/icons/ for an icon used as a value.
 // The converter knows the JSX shapes the gallery uses and throws on anything else, so a new upstream shape fails loudly.
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { basename, dirname, join, relative } from 'node:path';
@@ -10,6 +12,25 @@ import { ATTRIBUTE_ALIASES, EVENT_ALIASES } from '../src/util/reactDomTables.ts'
 
 const RECHARTS = '@sveltery/recharts';
 const HELPER_MODULE = /^@\/registry\/new-york-v4\/ui\/(.+)$/;
+const ICONS_MODULE = '$registry/bases/base/ui/icons';
+// The docs site's registry module for each upstream module the docs examples import.
+const DOCS_MODULES = [
+  [/^@\/(?:registry\/new-york-v4|registry\/bases\/base|styles\/base-nova)\/ui\/(.+)$/, '$registry/bases/base/ui/$1'],
+  [/^@\/registry\/bases\/base\/components\/(.+)$/, '$registry/bases/base/components/$1'],
+  [/^@\/app\/\(create\)\/components\/icon-placeholder$/, ICONS_MODULE],
+  [/^cn$/, 'cn'],
+];
+// The icon placeholder names of each lucide icon the gallery uses, as the docs examples name them.
+const ICONS = {
+  Activity: { tabler: 'IconActivity', hugeicons: 'Activity01Icon', phosphor: 'PulseIcon', remixicon: 'RiPulseLine' },
+  ArrowDownFromLine: { tabler: 'IconArrowBarDown', hugeicons: 'ArrowDown01Icon', phosphor: 'ArrowLineDownIcon', remixicon: 'RiArrowDownLine' },
+  ArrowUpFromLine: { tabler: 'IconArrowBarUp', hugeicons: 'ArrowUp01Icon', phosphor: 'ArrowLineUpIcon', remixicon: 'RiArrowUpLine' },
+  Footprints: { tabler: 'IconWalk', hugeicons: 'RunningShoesIcon', phosphor: 'FootprintsIcon', remixicon: 'RiRunLine' },
+  GitCommitVertical: { tabler: 'IconGitCommit', hugeicons: 'GitCommitIcon', phosphor: 'GitCommitIcon', remixicon: 'RiGitCommitLine' },
+  TrendingDown: { tabler: 'IconTrendingDown', hugeicons: 'TradeDownIcon', phosphor: 'TrendDownIcon', remixicon: 'RiArrowRightDownLine' },
+  TrendingUp: { tabler: 'IconTrendingUp', hugeicons: 'TradeUpIcon', phosphor: 'TrendUpIcon', remixicon: 'RiLineChartLine' },
+  Waves: { tabler: 'IconWaveSine', hugeicons: 'AudioWaveIcon', phosphor: 'WavesIcon', remixicon: 'RiWaterFlashLine' },
+};
 const SELF = 'packages/recharts/scripts/convert-shadcn-charts.mjs';
 
 // Props that take an element or a render function upstream, and the types of the snippet that replaces them.
@@ -53,13 +74,24 @@ function returnsJsx(fn) {
 }
 
 class Converter {
-  constructor(path, helpers) {
+  constructor(path, helpers, docs = false) {
     this.name = basename(path, '.tsx');
     this.file = ts.createSourceFile(path, readFileSync(path, 'utf8'), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
     this.helpers = helpers;
+    this.docs = docs;
+    this.chartModule = docs ? '$registry/bases/base/ui/chart' : './chart';
     this.imports = new Map();
     this.icons = new Set();
+    this.lucide = new Set();
     this.setters = new Map();
+    // Local function components and JSX-valued constants, which become snippets.
+    this.snippets = new Set();
+  }
+
+  jsxLike(node) {
+    const n = UNWRAP(node);
+    if (ts.isIdentifier(n)) return this.snippets.has(n.text);
+    return isJsx(n) || (ts.isConditionalExpression(n) && (this.jsxLike(n.whenTrue) || this.jsxLike(n.whenFalse)));
   }
 
   fail(node, message) {
@@ -103,6 +135,13 @@ class Converter {
         edits.push({ start: n.getStart(this.file), end: n.getEnd(), text: `(value) => (${this.setters.get(n.text)} = value)` });
         return;
       }
+      if (ts.isTypeReferenceNode(n) && n.typeName.getText(this.file) === 'React.ComponentProps') {
+        if (n.typeArguments?.[0]?.getText(this.file) !== '"div"') this.fail(n, 'React.ComponentProps of something but a div');
+        this.use('svelte/elements', 'HTMLAttributes', true);
+        edits.push({ start: n.getStart(this.file), end: n.getEnd(), text: 'HTMLAttributes<HTMLDivElement>' });
+        return;
+      }
+      if (ts.isIdentifier(n) && this.lucide.has(n.text)) this.use(`./icons/${n.text}Icon.svelte`, n.text, false);
       if (ts.isPropertyAccessExpression(n) && n.expression.getText(this.file) === 'React') this.fail(n, 'a React API the converter does not know');
       ts.forEachChild(n, visit);
     };
@@ -113,33 +152,43 @@ class Converter {
 
   convert() {
     const script = [];
+    const locals = [];
     let template;
+    // The exported function is the component. Any other function is a local component and becomes a snippet.
+    const functions = this.file.statements.filter((s) => ts.isFunctionDeclaration(s) && s.body);
+    const exported = (f) => f.modifiers?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword);
+    const main = functions.length === 1 ? functions[0] : functions.find(exported);
+    for (const f of functions) if (f !== main) this.snippets.add(f.name.text);
     for (const statement of this.file.statements) {
       if (ts.isImportDeclaration(statement)) this.importDeclaration(statement);
       else if (ts.isExpressionStatement(statement) && ts.isStringLiteral(statement.expression)) continue;
       else if (ts.isVariableStatement(statement)) {
         // Exported constants are registry metadata (description, iframeHeight, containerClassName), not chart code.
-        if (statement.modifiers?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword)) continue;
+        if (exported(statement)) continue;
         script.push(`  ${this.code(statement, '  ')}`);
-      } else if (ts.isFunctionDeclaration(statement) && statement.body) {
-        template = this.component(statement.body, script);
+      } else if (statement === main) {
+        template = this.component(statement.body, script, this.docs ? '' : '  ');
+      } else if (functions.includes(statement)) {
+        locals.push(this.localSnippet(statement));
       } else this.fail(statement, 'a top-level statement the converter does not know');
     }
     if (template === undefined) throw new Error(`${this.name}.tsx has no component.`);
-    const lines = [
-      '<script lang="ts">',
-      `  // Generated by ${SELF} from shadcn's ${this.name}.tsx. Do not edit.`,
-      ...this.importLines(),
-      '',
-      script.join('\n\n'),
-      '</script>',
-      '',
-      '<div class="bg-background *:data-[slot=card]:has-[[data-slot=chart]]:shadow-none">',
-      `  ${template}`,
-      '</div>',
-      '',
-    ];
-    return lines.join('\n');
+    const head = ['<script lang="ts">', ...(this.docs ? [] : [`  // Generated by ${SELF} from shadcn's ${this.name}.tsx. Do not edit.`]), ...this.importLines()];
+    const body = this.docs
+      ? [...locals.flatMap((l) => [l, '']), template]
+      : ['<div class="bg-background *:data-[slot=card]:has-[[data-slot=chart]]:shadow-none">', `  ${template}`, '</div>'];
+    return [...head, ...(script.length ? ['', script.join('\n\n')] : []), '</script>', '', ...body, ''].join('\n');
+  }
+
+  // A local function component: its props become the snippet's one parameter.
+  localSnippet(fn) {
+    if (fn.parameters.length > 1) this.fail(fn, 'a local component with more than one parameter');
+    const [param] = fn.parameters;
+    const { template } = this.bodyTemplate(fn.body, '  ');
+    // A Svelte caller passes `class`, so a destructured `className` reads it under its React name.
+    const pattern = param && this.code(param.name).replace(/(?<![\w.:])className\b(?!\s*:)/, 'class: className');
+    const params = param ? `${pattern}${param.type ? `: ${this.code(param.type)}` : ''}` : '';
+    return `{#snippet ${fn.name.text}(${params})}\n  ${template}\n{/snippet}`;
   }
 
   importDeclaration(statement) {
@@ -150,22 +199,42 @@ class Converter {
     if (clause?.name || !named.length) this.fail(statement, 'only named imports are converted');
     for (const element of named) {
       const name = element.name.text;
+      // Upstream leaves some imports unused, and the lint rejects them.
+      if (!this.referenced(name)) continue;
       const type = clause.isTypeOnly || element.isTypeOnly;
+      const docsModule = this.docs && DOCS_MODULES.find(([pattern]) => pattern.test(source));
       if (source === 'recharts' || source.startsWith('recharts/')) this.use(RECHARTS, name, type);
-      else if (source === 'lucide-react') {
+      else if (source === 'lucide-react' && this.docs) {
+        if (!ICONS[name]) this.fail(statement, `no icon placeholder names for ${name}`);
+        this.lucide.add(name);
+      } else if (source === 'lucide-react') {
         this.icons.add(name);
         this.use(`./icons/${name}.svelte`, name, false);
-      } else if (HELPER_MODULE.test(source)) this.use(`./${HELPER_MODULE.exec(source)[1]}`, name, type);
+      } else if (docsModule) this.use(source.replace(...docsModule), name, type);
+      else if (HELPER_MODULE.test(source) && !this.docs) this.use(`./${HELPER_MODULE.exec(source)[1]}`, name, type);
       else this.fail(statement, 'an import the converter does not know');
     }
   }
 
+  referenced(name) {
+    let found = false;
+    const visit = (n) => {
+      if (found || ts.isImportDeclaration(n)) return;
+      if (ts.isIdentifier(n) && n.text === name) found = true;
+      ts.forEachChild(n, visit);
+    };
+    ts.forEachChild(this.file, visit);
+    return found;
+  }
+
   importLines() {
     const lines = [];
-    const order = [...this.imports.keys()].sort((a, b) => (a === RECHARTS ? -1 : b === RECHARTS ? 1 : a.localeCompare(b)));
+    // Recharts first, then packages and registry modules, then relative modules.
+    const rank = (module) => (module === RECHARTS ? 0 : module.startsWith('./') ? 2 : 1);
+    const order = [...this.imports.keys()].sort((a, b) => rank(a) - rank(b) || a.localeCompare(b));
     for (const module of order) {
       const names = this.imports.get(module);
-      const specifier = module.startsWith('./') ? this.helpers + module.slice(1) : module;
+      const specifier = module.startsWith('./') && !this.docs ? this.helpers + module.slice(1) : module;
       if (module.startsWith('./icons/')) {
         lines.push(`  import ${[...names.keys()][0]} from '${specifier}';`);
         continue;
@@ -176,11 +245,11 @@ class Converter {
     return lines;
   }
 
-  component(body, script) {
+  component(body, script, indent) {
     let template;
     for (const statement of body.statements) {
       if (ts.isReturnStatement(statement) && statement.expression) {
-        template = this.expressionTemplate(statement.expression, '  ');
+        template = this.expressionTemplate(statement.expression, indent);
       } else if (ts.isVariableStatement(statement)) {
         for (const declaration of statement.declarationList.declarations) script.push(this.componentDeclaration(declaration));
       } else this.fail(statement, 'a component statement the converter does not know');
@@ -206,8 +275,12 @@ class Converter {
   expressionTemplate(node, indent) {
     const n = UNWRAP(node);
     if (n.kind === ts.SyntaxKind.NullKeyword) return '';
+    if (ts.isIdentifier(n) && this.snippets.has(n.text)) return `{@render ${n.text}()}`;
     if (ts.isJsxFragment(n)) return this.children(n.children, indent).join('');
     if (isJsx(n)) return this.element(n, indent);
+    if (ts.isConditionalExpression(n) && UNWRAP(n.whenTrue).kind === ts.SyntaxKind.NullKeyword) {
+      return `{#if !(${this.code(n.condition, indent)})}${this.expressionTemplate(n.whenFalse, indent)}{/if}`;
+    }
     if (ts.isConditionalExpression(n)) {
       const whenFalse = this.expressionTemplate(n.whenFalse, indent);
       return `{#if ${this.code(n.condition, indent)}}${this.expressionTemplate(n.whenTrue, indent)}${whenFalse ? `{:else}${whenFalse}` : ''}{/if}`;
@@ -228,6 +301,12 @@ class Converter {
       } else if (ts.isVariableStatement(statement) && statement.declarationList.flags & ts.NodeFlags.Const) {
         // Declaration tags are not reactive on their own, so anything but a literal goes through $derived.
         for (const d of statement.declarationList.declarations) {
+          if (this.jsxLike(d.initializer)) {
+            const name = d.name.getText(this.file);
+            parts.push(`{#snippet ${name}()}${this.expressionTemplate(d.initializer, indent)}{/snippet}`);
+            this.snippets.add(name);
+            continue;
+          }
           const value = this.code(d.initializer, indent);
           parts.push(`{const ${d.name.getText(this.file)} = ${ts.isLiteralExpression(d.initializer) ? value : `$derived(${value})`}}`);
         }
@@ -268,11 +347,10 @@ class Converter {
 
   childExpression(node, indent) {
     const n = UNWRAP(node);
-    if (ts.isBinaryExpression(n) && n.operatorToken.kind === ts.SyntaxKind.AmpersandAmpersandToken && isJsxLike(n.right)) {
+    if (ts.isBinaryExpression(n) && n.operatorToken.kind === ts.SyntaxKind.AmpersandAmpersandToken && this.jsxLike(n.right)) {
       return `{#if ${this.code(n.left, indent)}}${this.expressionTemplate(n.right, indent)}{/if}`;
     }
-    if (ts.isConditionalExpression(n) && isJsxLike(n)) return this.expressionTemplate(n, indent);
-    if (isJsx(n)) return this.expressionTemplate(n, indent);
+    if (this.jsxLike(n)) return this.expressionTemplate(n, indent);
     if (ts.isCallExpression(n) && ts.isPropertyAccessExpression(n.expression) && n.expression.name.text === 'map') {
       const [callback] = n.arguments;
       if (callback && ts.isArrowFunction(callback) && returnsJsx(callback)) return this.each(n.expression.expression, callback, indent);
@@ -296,10 +374,16 @@ class Converter {
   element(node, indent, extra = []) {
     if (ts.isJsxFragment(node)) return this.children(node.children, indent).join('');
     const opening = ts.isJsxElement(node) ? node.openingElement : node;
-    const tag = opening.tagName.getText(this.file);
+    let tag = opening.tagName.getText(this.file);
+    if (this.snippets.has(tag)) return this.renderLocal(node, opening, tag, indent);
     const intrinsic = /^[a-z]/.test(tag);
     const attributes = [];
     const snippets = [];
+    if (this.lucide.has(tag)) {
+      attributes.push(`lucide="${tag}Icon"`, ...Object.entries(ICONS[tag]).map(([library, name]) => `${library}="${name}"`));
+      this.use(ICONS_MODULE, 'IconPlaceholder', false);
+      tag = 'IconPlaceholder';
+    }
     for (const attribute of opening.attributes.properties) {
       if (ts.isJsxSpreadAttribute(attribute)) {
         attributes.push(`{...${this.code(attribute.expression, `${indent}  `)}}`);
@@ -332,6 +416,19 @@ class Converter {
     return `${open}>${inner}</${tag}>`;
   }
 
+  // A local component's element: its attributes become the snippet's props object.
+  renderLocal(node, opening, tag, indent) {
+    if (ts.isJsxElement(node) && node.children.some((c) => !ts.isJsxText(c) || c.text.trim())) this.fail(node, 'a local component with children');
+    const props = opening.attributes.properties.map((a) => {
+      if (ts.isJsxSpreadAttribute(a)) this.fail(a, 'a spread on a local component');
+      const name = a.name.getText(this.file) === 'className' ? 'class' : a.name.getText(this.file);
+      const init = a.initializer;
+      const value = !init ? 'true' : ts.isStringLiteral(init) ? JSON.stringify(init.text) : this.code(init.expression, `${indent}  `);
+      return `${name}: ${value}`;
+    });
+    return `{@render ${tag}(${props.length ? `{ ${props.join(', ')} }` : ''})}`;
+  }
+
   // The parameter types of the snippet that replaces a prop, importing the names the first `count` of them use.
   snippetTypes(tag, prop, node, count) {
     const spec = SNIPPETS[tag]?.[prop];
@@ -339,7 +436,7 @@ class Converter {
     const types = spec.params.slice(0, count);
     const used = (name) => types.some((type) => new RegExp(`\\b${name}\\b`).test(type));
     for (const name of (spec.recharts ?? []).filter(used)) this.use(RECHARTS, name, true);
-    for (const name of (spec.chart ?? []).filter(used)) this.use('./chart', name, true);
+    for (const name of (spec.chart ?? []).filter(used)) this.use(this.chartModule, name, true);
     return types;
   }
 
@@ -423,6 +520,17 @@ function jsxText(raw) {
   return out;
 }
 
+function placeholderIcon(name) {
+  const names = [`lucide="${name}Icon"`, ...Object.entries(ICONS[name]).map(([library, value]) => `${library}="${value}"`)];
+  return `<script lang="ts">
+  import { IconPlaceholder } from '${ICONS_MODULE}';
+</script>
+
+<IconPlaceholder
+${names.map((n) => `  ${n}\n`).join('')}/>
+`;
+}
+
 function icon(name) {
   return `<script lang="ts">
   // Generated by ${SELF}: lucide-react's ${name} on the lucide icon data. Do not edit.
@@ -445,9 +553,11 @@ const option = (flag) => {
   return value;
 };
 const check = args.includes('--check');
+const docs = args.includes('--docs');
 const only = option('--only');
+const suffix = option('--suffix') ?? '';
 const match = new RegExp(option('--match') ?? '^chart-(area|bar|line|tooltip)-');
-const [chartsDir, outDir] = args.filter((a) => a !== '--check');
+const [chartsDir, outDir] = args.filter((a) => a !== '--check' && a !== '--docs');
 if (!chartsDir || !outDir) throw new Error('Pass the shadcn charts directory and the output directory.');
 const helpersDir = option('--helpers') ?? join(outDir, 'shadcn');
 
@@ -455,6 +565,16 @@ const outputs = new Map();
 for (const file of readdirSync(chartsDir).filter((f) => f.endsWith('.tsx')).sort()) {
   const name = basename(file, '.tsx');
   if (!match.test(name) || (only && name !== only)) continue;
+  if (docs) {
+    const converter = new Converter(join(chartsDir, file), '', true);
+    const pascal = name.replace(/(^|-)([a-z])/g, (_, __, c) => c.toUpperCase());
+    outputs.set(join(outDir, `${pascal}${suffix}.svelte`), converter.convert());
+    for (const [module] of converter.imports) {
+      const icon = /^\.\/icons\/(.+)Icon\.svelte$/.exec(module)?.[1];
+      if (icon) outputs.set(join(outDir, 'icons', `${icon}Icon.svelte`), placeholderIcon(icon));
+    }
+    continue;
+  }
   const pageDir = join(outDir, name);
   const helpers = relative(pageDir, helpersDir) || '.';
   const converter = new Converter(join(chartsDir, file), helpers.startsWith('.') ? helpers : `./${helpers}`);
