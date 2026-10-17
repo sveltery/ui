@@ -167,6 +167,9 @@ overrides:
   '@sveltery/recharts>@reduxjs/toolkit': 1.9.7
   victory-vendor>@types/d3-shape: 3.1.7
 
+patchedDependencies:
+  '@dnd-kit/dom@0.5.0': 006d1401b3baea1acd4dad20815784e68cfa8489ae3ae7ad8bb80c45c5a6d09b
+
 importers:
 
   .:
@@ -4509,7 +4512,7 @@ snapshots:
       '@dnd-kit/geometry': 0.5.0
       tslib: 2.8.1
 
-  '@dnd-kit/dom@0.5.0':
+  '@dnd-kit/dom@0.5.0(patch_hash=006d1401b3baea1acd4dad20815784e68cfa8489ae3ae7ad8bb80c45c5a6d09b)':
     dependencies:
       '@dnd-kit/abstract': 0.5.0
       '@dnd-kit/collision': 0.5.0
@@ -4535,7 +4538,7 @@ snapshots:
   '@dnd-kit/svelte@0.5.0(svelte@5.57.1(@typescript-eslint/types@8.71.0))':
     dependencies:
       '@dnd-kit/abstract': 0.5.0
-      '@dnd-kit/dom': 0.5.0
+      '@dnd-kit/dom': 0.5.0(patch_hash=006d1401b3baea1acd4dad20815784e68cfa8489ae3ae7ad8bb80c45c5a6d09b)
       '@dnd-kit/state': 0.5.0
       svelte: 5.57.1(@typescript-eslint/types@8.71.0)
       tslib: 2.8.1
