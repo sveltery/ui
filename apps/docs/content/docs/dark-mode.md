@@ -1,7 +1,7 @@
 ---
 title: Dark Mode
 description: Add a dark mode toggle to a SvelteKit app.
-order: 3
+order: 4
 ---
 
 The components switch to their dark tokens when an ancestor has the `dark` class. To add dark mode, set that class on `<html>`.
