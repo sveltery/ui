@@ -5,6 +5,7 @@ import { Command } from 'commander';
 import { add } from './commands/add.js';
 import { build } from './commands/build.js';
 import { diff } from './commands/diff.js';
+import { docs } from './commands/docs.js';
 import { init } from './commands/init.js';
 import { search } from './commands/search.js';
 import { migrateRtl, migrations } from './commands/migrate.js';
@@ -106,6 +107,14 @@ program
   .option('-o, --output <path>', 'destination directory for json files', './static/r')
   .option('-c, --cwd <path>', 'the working directory', '.')
   .action((registry: string, options) => void build(registry, options));
+
+program
+  .command('docs')
+  .description('get docs, api references and usage examples for components')
+  .argument('<components...>', 'component names')
+  .option('--json', 'output as JSON.', false)
+  .option('--cwd <path>', 'the project root', '.')
+  .action(async (components: string[], options) => void (await docs(components, { ...options, cwd: resolve(options.cwd) })));
 
 try {
   await program.parseAsync();

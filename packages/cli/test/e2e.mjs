@@ -233,6 +233,15 @@ try {
   assert.match(listed, new RegExp(`^Showing 2-3 of ${registry.get('index.json').blocks.length}$`, 'm'), 'list is search with paging');
   await assert.rejects(cli('search', '@acme'), (error) => /Unknown registry "@acme"/.test(error.output), 'search names the registries it does not know');
 
+  step('sveltery docs dropdown-menu');
+  const documented = JSON.parse(await cli('docs', 'dropdown-menu', 'card', '--json'));
+  assert.deepEqual(documented.results[0].links, {
+    docs: `${origin}/docs/components/dropdown-menu`,
+    examples: `${origin}/docs/components/dropdown-menu.md`,
+    api: 'https://base-ui.com/react/components/menu.md',
+  });
+  assert.deepEqual(Object.keys(documented.results[1].links), ['docs', 'examples'], 'a component with no Base UI page has no api link');
+
   writeFileSync(
     join(app, 'src/routes/+page.svelte'),
     // The import form the docs print, an explicit index, and a deep import of one file.
