@@ -54,13 +54,20 @@ test('the D key toggles dark mode outside text fields', async ({ page }) => {
   await expect(themeColor).toHaveAttribute('content', '#ffffff');
 });
 
-test('ComponentPreview renders the example and reveals its source', async ({ page }) => {
+test('ComponentPreview renders the example and reveals its source as an app that ran add imports it', async ({ page, context, browserName }) => {
   await visit(page, '/docs/components/button');
   const preview = page.locator('[data-slot=component-preview]').first();
   await expect(preview.getByRole('button', { name: 'Secondary' }).first()).toBeVisible();
   await preview.getByRole('button', { name: 'View Code' }).click();
-  await expect(preview.locator('[data-slot=code] pre')).toContainText("import { Button, buttonVariants } from '$registry/bases/base/ui/button';");
-  await expect(preview.getByRole('button', { name: 'Copy' })).toBeVisible();
+  const imports = "import { Button, buttonVariants } from '#lib/components/ui/button';";
+  await expect(preview.locator('[data-slot=code] pre')).toContainText(imports);
+  await expect(preview.locator('[data-slot=code] pre')).not.toContainText('$registry/');
+  if (browserName === 'chromium') await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+  await preview.getByRole('button', { name: 'Copy' }).click();
+  if (browserName !== 'chromium') return;
+  const copied = await page.evaluate(() => navigator.clipboard.readText());
+  expect(copied).toContain(imports);
+  expect(copied).not.toContain('$registry/');
 });
 
 test('the Installation section shows the CLI command first and the manual steps on the Manual tab', async ({ page }) => {
@@ -166,5 +173,8 @@ test('a docs page links to its markdown and keeps step titles out of the TOC', a
   await expect(page.getByRole('menuitem', { name: 'View as Markdown' })).toHaveAttribute('href', /\/docs\/components\/button\.md$/);
   const response = await request.get('/docs/components/button.md');
   expect(response.headers()['content-type']).toBe('text/markdown; charset=utf-8');
-  expect(await response.text()).toMatch(/^---\ntitle: Button\n/);
+  const markdown = await response.text();
+  expect(markdown).toMatch(/^---\ntitle: Button\n/);
+  expect(markdown).toContain("import { Button, buttonVariants } from '#lib/components/ui/button';");
+  expect(markdown).not.toContain('$registry/');
 });

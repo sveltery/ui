@@ -1,7 +1,7 @@
 import { log } from '@clack/prompts';
 import { CliError } from '../parse.js';
 import { DEFAULT_PRESETS, decodePreset, isPresetCode, type PresetConfig } from '../preset/index.js';
-import { choose } from './select.js';
+import { choose } from '../prompt.js';
 
 /** Port of shadcn's `resolveInitUrl`, without the base, rtl, template, pointer and track parameters. The URL is on the registry's origin. */
 export function initUrl(registryUrl: string, preset: PresetConfig, code?: string): string {

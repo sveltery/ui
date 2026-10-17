@@ -98,6 +98,8 @@ test('typing highlights the option that starts with the typed text', async ({ pa
 
 test('typing on the closed trigger selects the matching option', async ({ page }) => {
   await fruit(page).focus();
+  // Focus mounts the hidden items on the next task; a person cannot type before that, but a busy test runner can.
+  await expect(page.locator('[role=option]').first()).toBeAttached();
   await page.keyboard.type('pi');
   await expect(fruit(page)).toHaveText('Pineapple');
   await expect(page.getByTestId('fruit-value')).toHaveText('"pineapple"');

@@ -4,7 +4,7 @@ import { iconLibraries } from '../../../../../packages/cli/src/icons';
 import type { CssTree, RegistryItem } from '../../../registry/types';
 import type { InitConfig, InitPart, InitRequest } from './query';
 
-/** What the CLI's `init` installs for every project, at the ranges packages/ui uses. */
+/** What the CLI's `init` installs for every project, as caret ranges of the versions apps/docs/package.json pins. */
 const BASE_DEPENDENCIES = ['cn@^0.2.2', 'class-variance-authority@^0.7.1', 'tw-animate-css@^1.4.0'];
 
 const POINTER_CURSOR_SELECTOR = 'button:not(:disabled), [role="button"]:not(:disabled)';

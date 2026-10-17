@@ -32,9 +32,13 @@ jobs:
       - name: Lint, types, unit tests, docs build, remote forms and package smoke test
         run: bash scripts/verify.sh
   browser:
-    name: Chromium
+    name: Chromium (${{ matrix.shard }}/4)
     runs-on: ubuntu-24.04
     timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
@@ -46,13 +50,29 @@ jobs:
         with:
           node-version: '24'
       - run: bash scripts/bootstrap.sh
-      - run: bash -c 'source scripts/toolchain.sh; pnpm --filter @sveltery/resizable --filter @sveltery/svelte --filter @sveltery/command build && pnpm exec playwright install --with-deps chromium && pnpm test:browser --project chromium'
+      - name: Build packages
+        run: bash -c 'source scripts/toolchain.sh; pnpm --filter @sveltery/resizable --filter @sveltery/svelte --filter @sveltery/command build'
+      # The runner image already ships the system libraries Chromium needs.
+      - name: Install Chromium
+        run: bash -c 'source scripts/toolchain.sh; pnpm exec playwright install chromium'
+      # Two workers per runner: more saturates the four vCPUs and timing-sensitive tests fail.
+      - name: Browser tests
+        run: bash -c 'source scripts/toolchain.sh; pnpm test:browser --project chromium --shard ${{ matrix.shard }}/4 --workers 2'
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: failure()
         with:
-          name: chromium-results
+          name: chromium-results-${{ matrix.shard }}
           path: test-results/
           retention-days: 7
+  # One stable check name for the sharded browser suite.
+  browser-result:
+    name: Chromium
+    if: always()
+    needs: browser
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - run: test "${{ needs.browser.result }}" = success
   cli-e2e:
     name: CLI end to end
     runs-on: ubuntu-24.04

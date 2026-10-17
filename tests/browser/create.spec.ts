@@ -49,6 +49,8 @@ const frameStyle = (frame: Frame) =>
   });
 
 test('every picker updates the URL code and the preview without a reload, and the link reopens the setup', async ({ page }) => {
+  // It walks every picker and reloads the preview twice: 16s alone on one worker, and past 30s on a loaded parallel runner.
+  test.slow();
   await page.goto('/create');
   await expect(page.getByRole('link', { name: 'Create', exact: true })).toHaveAttribute('data-active', 'true');
   const frame = await preview(page);
