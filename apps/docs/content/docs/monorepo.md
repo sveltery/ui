@@ -42,7 +42,7 @@ For example, if you run `npx @sveltery/ui@latest add button`, the CLI installs t
 
 If you run `npx @sveltery/ui@latest add login-01`, the CLI installs the `button`, `card`, `field`, `input`, `label` and `separator` components under `packages/ui`, and the `login-form` component and the `/login` page under `apps/web`. The `login-form` component imports the other components from `@workspace/ui`.
 
-`diff` and `update` work in the app the same way.
+`diff` and `update` work in the app the same way. Run at the root of the monorepo, `init` and `add` list the workspaces to run them in.
 
 ### Importing components
 
@@ -149,7 +149,9 @@ turbo.json
 
 By following these requirements, the CLI can install ui components, blocks and their packages to the correct paths and handle the imports for you.
 
-`apply` changes only the workspace it runs in. To change the preset, run it in `packages/ui` and in `apps/web`, so both keep the same settings.
+To change the preset, run `apply` in `apps/web`. It writes the new settings to both `components.json` files, re-adds the ui components in `packages/ui` with them, and installs the packages of the theme and the fonts in `packages/ui`.
+
+Run `migrate` in `packages/ui`, which holds the ui components and their settings, then set the same value in `apps/web/components.json`. Run in `apps/web`, a migration such as `migrate icons` changes the ui components in `packages/ui` but writes the new setting only to `apps/web/components.json`.
 
 <Callout class="mt-6">
   `package.json#imports` works well for package-local aliases inside a workspace, such as `#lib` in the app. For shared workspace imports such as `@workspace/ui/components`, keep explicit aliases in `components.json`. The CLI uses those aliases to route files across workspace boundaries.

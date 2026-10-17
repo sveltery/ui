@@ -10,7 +10,7 @@ import { planItems, projectOf, type Project } from '../items.js';
 import { CliError } from '../parse.js';
 import { executePlan, formatPlan, missingPackages, packageName, planFile, runPackageManager, type Plan } from '../plan.js';
 import { applyMenuAccent, PRESET_MENU_ACCENTS, PRESET_MENU_COLORS, type PresetMenuAccent, type PresetMenuColor } from '../preset/index.js';
-import { checkProject, findCssFile, libAlias, readJson, withLibIndexFallback } from '../project.js';
+import { checkProject, findCssFile, formatMonorepoMessage, inspectProject, libAlias, monorepoTargets, readJson, withLibIndexFallback } from '../project.js';
 import {
   baseColors,
   fetchItem,
@@ -85,7 +85,17 @@ function assertServed(registry: Registry, style: StyleName) {
   if (!registry.manifest.styles.includes(style)) throw new CliError(`The registry at ${registry.url} does not serve the ${style} style.`);
 }
 
-async function settingsFromFlags(options: InitOptions, registry: Registry, existing: Existing): Promise<Settings> {
+/** The existing components.json at `path`, or an empty one. `name` is how errors name the file. */
+function readExisting(path: string, name: string): Existing {
+  const config = (existsSync(path) ? readJson(path) : {}) as Record<string, unknown>;
+  if (typeof config !== 'object' || config === null || Array.isArray(config)) throw new CliError(`${name} must hold a JSON object.`);
+  return { config, tailwind: (config.tailwind ?? {}) as Record<string, unknown> };
+}
+
+const registryUrlOf = (existing: Existing) => resolveRegistryUrl(typeof existing.config.registry === 'string' ? existing.config.registry : undefined);
+
+/** The style, icon library and base color: each from its flag, else its default with `--yes`, else a prompt. */
+async function chooseLook(options: InitOptions, existing: Existing): Promise<{ style: StyleName; iconLibrary: IconLibraryName; baseColor: BaseColor }> {
   const styleFlag = pick('style', options.style, styleNames);
   const iconsFlag = pick('icon library', options.icons, iconLibraryNames);
   const baseColorFlag = pick('base color', options.baseColor, baseColors);
@@ -98,7 +108,19 @@ async function settingsFromFlags(options: InitOptions, registry: Registry, exist
   const iconLibrary = iconsFlag ?? (options.yes ? iconDefault : await choose('Which icon library?', iconLibraryNames.map((name) => ({ value: name, label: name })), iconDefault));
   const baseColorDefault = valid(existing.tailwind.baseColor, baseColors) ?? stylePresets[style].baseColor;
   const baseColor = baseColorFlag ?? (options.yes ? baseColorDefault : await choose('Which base color?', baseColors.map((name) => ({ value: name, label: name })), baseColorDefault));
+  return { style, iconLibrary, baseColor };
+}
 
+/** The preset `--preset` names, `nova` with `--yes`, or the one the user picks. Undefined when they pick Custom. */
+async function choosePreset(preset: string | true, options: InitOptions, registryUrl: string): Promise<string | undefined> {
+  if (options.style !== undefined || options.icons !== undefined || options.baseColor !== undefined) {
+    throw new CliError('--preset sets the style, icon library and base color. Drop --style, --icons and --base-color, or drop --preset.');
+  }
+  return preset === true ? (options.yes ? 'nova' : await promptForPreset(registryUrl)) : preset;
+}
+
+async function settingsFromFlags(options: InitOptions, registry: Registry, existing: Existing): Promise<Settings> {
+  const { style, iconLibrary, baseColor } = await chooseLook(options, existing);
   assertServed(registry, style);
   const theme = await fetchTheme(registry, baseColor);
   const menuAccent = valid(existing.config.menuAccent, PRESET_MENU_ACCENTS);
@@ -161,25 +183,19 @@ export function configJson(config: Config, existing: Record<string, unknown>): s
 
 /**
  * What `init` would write, before anything is written, with the project as it will be. Undefined when the user picks
- * Custom to build a preset on the Create page. `components` are items to add as well, as upstream's init adds `button`
- * to a project it created from a template.
+ * Custom to build a preset on the Create page. `components` are items to add as well: the button of a new monorepo, or
+ * the installed items that `apply` re-adds.
  */
 export async function planInit(options: InitOptions, components: string[] = []): Promise<{ plan: Plan; project: Project; css: string; docs?: string } | undefined> {
   const { cwd } = options;
   checkProject(cwd);
-  const configPath = join(cwd, CONFIG_FILE);
-  const existingConfig = (existsSync(configPath) ? readJson(configPath) : {}) as Record<string, unknown>;
-  if (typeof existingConfig !== 'object' || existingConfig === null || Array.isArray(existingConfig)) throw new CliError(`${CONFIG_FILE} must hold a JSON object.`);
-  const existingTailwind = (existingConfig.tailwind ?? {}) as Record<string, unknown>;
-  const existing: Existing = { config: existingConfig, tailwind: existingTailwind };
-  const registryUrl = resolveRegistryUrl(typeof existingConfig.registry === 'string' ? existingConfig.registry : undefined);
+  const existing = readExisting(join(cwd, CONFIG_FILE), CONFIG_FILE);
+  const { config: existingConfig, tailwind: existingTailwind } = existing;
+  const registryUrl = registryUrlOf(existing);
 
   let presetUrl: string | undefined;
   if (options.preset !== undefined) {
-    if (options.style !== undefined || options.icons !== undefined || options.baseColor !== undefined) {
-      throw new CliError('--preset sets the style, icon library and base color. Drop --style, --icons and --base-color, or drop --preset.');
-    }
-    const preset = options.preset === true ? (options.yes ? 'nova' : await promptForPreset(registryUrl)) : options.preset;
+    const preset = await choosePreset(options.preset, options, registryUrl);
     if (preset === undefined) return undefined;
     presetUrl = resolvePresetUrl(registryUrl, preset, options.rtl);
   }
@@ -207,26 +223,54 @@ export async function planInit(options: InitOptions, components: string[] = []):
   });
 
   const css = mergeTheme(readFileSync(join(cwd, cssPath), 'utf8'), settings.cssVars, settings.cssTrees);
-  const project = projectOf(cwd, config, registry);
+  const linked = projectOf(cwd, config, registry);
+  // In a monorepo app, the ui package takes the same settings, and its files are transformed with them, as upstream's
+  // apply copies them into each linked workspace. A preset applied without its theme part leaves them as they are.
+  const only = presetUrl === undefined ? null : new URL(presetUrl).searchParams.get('only');
+  const synced =
+    linked.ui === undefined || (only !== null && !only.split(',').includes('theme'))
+      ? undefined
+      : { dir: linked.ui.dir, config: { ...linked.ui.config, style, iconLibrary, rtl, menuColor, ...(menuAccent ? { menuAccent } : {}), tailwind: { ...linked.ui.config.tailwind, baseColor } } };
+  const project: Project = synced === undefined ? linked : { ...linked, ui: synced };
   const added = components.length === 0 ? [] : await resolveItems(registry, style, components.map(parseItemRef));
   const items = [...new Map([...settings.items, ...added].map((item) => [item.name, item])).values()];
   const itemsPlan = planItems(project, items, css);
   const manifest = withLibIndexFallback(cwd);
-  const plan: Plan = {
-    files: [
-      planFile(cwd, CONFIG_FILE, configJson(config, existingConfig)),
-      planFile(cwd, cssPath, css),
-      ...(manifest === undefined ? [] : [planFile(cwd, 'package.json', manifest)]),
-      ...itemsPlan.files,
-    ],
-    dependencies: missingPackages(cwd, [...settings.dependencies.filter((spec) => packageName(spec) !== cliPackage), ...itemsPlan.dependencies]),
-    devDependencies: missingPackages(cwd, [`${cliPackage}@^${version}`, ...itemsPlan.devDependencies]),
-  };
+  const uiConfigPath = join(synced?.dir ?? '', CONFIG_FILE);
+  const files = [
+    planFile(cwd, CONFIG_FILE, configJson(config, existingConfig)),
+    ...(synced === undefined ? [] : [planFile(cwd, uiConfigPath, configJson(synced.config, readExisting(join(cwd, uiConfigPath), uiConfigPath).config))]),
+    planFile(cwd, cssPath, css),
+    ...(manifest === undefined ? [] : [planFile(cwd, 'package.json', manifest)]),
+    ...itemsPlan.files,
+  ];
+  const dependencies = settings.dependencies.filter((spec) => packageName(spec) !== cliPackage);
+  const devDependencies = [`${cliPackage}@^${version}`];
+  const { ui } = project;
+  // The ui package holds the stylesheet, so the packages of the theme and the fonts go there. The app gets the icon
+  // packages too, as init --monorepo installs them in both.
+  const plan: Plan =
+    ui === undefined
+      ? { files, dependencies: missingPackages(cwd, [...dependencies, ...itemsPlan.dependencies]), devDependencies: missingPackages(cwd, [...devDependencies, ...itemsPlan.devDependencies]) }
+      : {
+          files,
+          dependencies: missingPackages(cwd, [...iconLibraries[iconLibrary].packages, ...itemsPlan.dependencies]),
+          devDependencies: itemsPlan.devDependencies,
+          workspace: {
+            dir: ui.dir,
+            dependencies: missingPackages(join(cwd, ui.dir), [...dependencies, ...(itemsPlan.workspace?.dependencies ?? [])]),
+            devDependencies: missingPackages(join(cwd, ui.dir), [...devDependencies, ...(itemsPlan.workspace?.devDependencies ?? [])]),
+          },
+        };
   return { plan, project, css, docs: settings.docs };
 }
 
 export async function init(options: InitOptions): Promise<Plan> {
   if (options.name !== undefined) throw new CliError('--name names the project that --monorepo creates. Add --monorepo, or drop --name.');
+  if (!existsSync(join(options.cwd, CONFIG_FILE)) && (inspectProject(options.cwd, undefined)?.framework ?? 'Manual') === 'Manual') {
+    const targets = monorepoTargets(options.cwd);
+    if (targets.length > 0) throw new CliError(formatMonorepoMessage('init', targets));
+  }
   const planned = await planInit(options);
   if (planned === undefined) return { files: [], dependencies: [], devDependencies: [] };
   log.info(formatPlan(planned.plan, { showIdentical: false }));
@@ -255,21 +299,39 @@ function commitNewProject(root: string) {
 }
 
 /**
- * `init --monorepo`, ported from upstream's monorepo templates. In a directory without package.json, it creates the
- * monorepo in the `--name` folder and installs it. In a monorepo it created before, it sets up the workspaces again. Then it
- * runs init in packages/ui with the button, writes the same settings to apps/web/components.json, and installs the icon
- * packages in both workspaces, as upstream's `fontsourceMonorepoInit` does.
+ * `init --monorepo`, ported from upstream's monorepo templates. It asks for the settings first. In a directory without
+ * package.json, it then creates the monorepo in the `--name` folder, installs it and adds the button. In a monorepo it
+ * created before, it sets up the workspaces again and leaves the components alone. It runs init in packages/ui, writes the
+ * same settings to apps/web/components.json, and installs the icon packages in both workspaces, as upstream's
+ * `fontsourceMonorepoInit` does.
  */
 export async function initMonorepo(options: InitOptions): Promise<{ root: string; ui: Plan; app: Plan }> {
+  const create = !existsSync(join(options.cwd, 'package.json'));
   let root = options.cwd;
-  let created = false;
-  if (!existsSync(join(root, 'package.json'))) {
+  if (create) {
     const valid = (name: string) => (name === '' ? 'Enter a name.' : name.length > 128 ? 'Name should be less than 128 characters.' : undefined);
     const name = options.name ?? (options.yes ? DEFAULT_PROJECT_NAME : await input('What is your project named?', DEFAULT_PROJECT_NAME, valid));
     const invalid = valid(name);
     if (invalid) throw new CliError(invalid);
     root = join(options.cwd, name);
     if (existsSync(join(root, 'package.json'))) throw new CliError(`A project with the name ${name} already exists. Choose a different name and try again.`);
+  }
+  const uiCwd = join(root, UI_DIR);
+  const appCwd = join(root, APP_DIR);
+  const uiConfigPath = join(uiCwd, CONFIG_FILE);
+  if (!create && [join(uiCwd, 'package.json'), uiConfigPath, join(appCwd, 'package.json')].some((path) => !existsSync(path))) {
+    throw new CliError(`${root} has a package.json, and init --monorepo needs its ${UI_DIR} workspace with a ${CONFIG_FILE} and its ${APP_DIR} workspace. Run init --monorepo in an empty directory to create a monorepo, or run init in your app.`);
+  }
+
+  // Every prompt runs before the project is created, so a cancelled or failed prompt leaves nothing behind.
+  const existingUi = create ? { config: {}, tailwind: {} } : readExisting(uiConfigPath, `${UI_DIR}/${CONFIG_FILE}`);
+  const chosen = options.preset === undefined ? await chooseLook(options, existingUi) : await choosePreset(options.preset, options, registryUrlOf(existingUi));
+  const none = { files: [], dependencies: [], devDependencies: [] };
+  if (chosen === undefined) return { root, ui: none, app: none };
+  const answered: InitOptions =
+    typeof chosen === 'string' ? { ...options, cwd: uiCwd, preset: chosen } : { ...options, cwd: uiCwd, style: chosen.style, icons: chosen.iconLibrary, baseColor: chosen.baseColor };
+
+  if (create) {
     const { agent, packageManager } = await newProjectPackageManager(options.cwd);
     log.info(`Creating a new SvelteKit monorepo in ${relative(options.cwd, root)}.`);
     for (const [path, content] of Object.entries(monorepoFiles({ name: basename(root), packageManager, agent }))) {
@@ -277,23 +339,21 @@ export async function initMonorepo(options: InitOptions): Promise<{ root: string
       writeFileSync(join(root, path), content);
     }
     if (options.install) await runPackageManager(root, 'install', firstInstallArgs[agent], { fallback: `Run \`${agent} install\` in ${root} yourself.` });
-    created = true;
-  }
-  const uiCwd = join(root, UI_DIR);
-  const appCwd = join(root, APP_DIR);
-  if (!existsSync(join(uiCwd, 'package.json')) || !existsSync(join(appCwd, 'package.json'))) {
-    throw new CliError(`${root} has a package.json, and init --monorepo needs its ${UI_DIR} and ${APP_DIR} workspaces. Run init --monorepo in an empty directory to create a monorepo, or run init in your app.`);
   }
 
-  const planned = await planInit({ ...options, cwd: uiCwd }, ['button']);
-  if (planned === undefined) return { root, ui: { files: [], dependencies: [], devDependencies: [] }, app: { files: [], dependencies: [], devDependencies: [] } };
+  // As upstream's init adds the button only to a project it created from a template.
+  const planned = (await planInit(answered, create ? ['button'] : []))!;
   const { config } = planned.project;
-  const appConfigPath = join(appCwd, CONFIG_FILE);
-  const existingApp = (existsSync(appConfigPath) ? readJson(appConfigPath) : {}) as Record<string, unknown>;
-  if (typeof existingApp !== 'object' || existingApp === null || Array.isArray(existingApp)) throw new CliError(`${APP_DIR}/${CONFIG_FILE} must hold a JSON object.`);
+  const existingApp = readExisting(join(appCwd, CONFIG_FILE), `${APP_DIR}/${CONFIG_FILE}`).config;
   const strings = (value: unknown) => Object.fromEntries(Object.entries(typeof value === 'object' && value !== null ? value : {}).filter(([, entry]) => typeof entry === 'string')) as Record<string, string>;
   const appCss = strings(existingApp.tailwind).css ?? APP_CSS;
-  const appConfig = parseConfig({ ...config, tailwind: { css: appCss, baseColor: config.tailwind.baseColor }, aliases: { ...appAliases, ...strings(existingApp.aliases) } });
+  const appConfig = parseConfig({
+    ...config,
+    tailwind: { css: appCss, baseColor: config.tailwind.baseColor },
+    aliases: { ...appAliases, ...strings(existingApp.aliases) },
+    registry: typeof existingApp.registry === 'string' ? existingApp.registry : config.registry,
+    registries: existingApp.registries,
+  });
   const app: Plan = { files: [planFile(appCwd, CONFIG_FILE, configJson(appConfig, existingApp))], dependencies: missingPackages(appCwd, iconLibraries[config.iconLibrary].packages), devDependencies: [] };
 
   // Both plans shown from the root, with each one's packages under its workspace.
@@ -307,7 +367,7 @@ export async function initMonorepo(options: InitOptions): Promise<{ root: string
   log.info(formatPlan(shown(app, APP_DIR), { showIdentical: false }));
   await executePlan(planned.plan, { cwd: uiCwd, install: options.install });
   await executePlan(app, { cwd: appCwd, install: options.install });
-  if (created) commitNewProject(root);
+  if (create) commitNewProject(root);
   log.success(`Ready. Add a component in ${relative(options.cwd, appCwd)} with \`npx @sveltery/ui@latest add button\`.`);
   if (planned.docs) log.info(planned.docs);
   return { root, ui: planned.plan, app };

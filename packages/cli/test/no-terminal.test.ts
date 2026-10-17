@@ -84,6 +84,13 @@ test('init --monorepo without --yes or --name stops before creating the project'
   expect([code, output.includes(message), readdirSync(cwd)]).toEqual([1, true, []]);
 });
 
+test.each([{ flags: [] }, { flags: ['--preset'] }])('init --monorepo --name acme $flags without --yes stops before creating the project', async ({ flags }) => {
+  rmSync(join(cwd, 'package.json'));
+  rmSync(join(cwd, 'src'), { recursive: true });
+  const { code, output } = await run('init', '--monorepo', '--name', 'acme', ...flags);
+  expect([code, output.includes(message), readdirSync(cwd)]).toEqual([1, true, []]);
+});
+
 test("every usage block in cli.md is the built CLI's --help", async () => {
   const doc = readFileSync(new URL('../../../apps/docs/content/docs/cli.md', import.meta.url), 'utf8');
   const blocks = [...doc.matchAll(/```txt\n(Usage: sveltery (.*?) \[options\].*\n[\s\S]*?)```/g)].map(([, block, command]) => ({ block, command: command! }));

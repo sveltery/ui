@@ -61,6 +61,14 @@ const registryFiles: Record<string, unknown> = {
     ],
   }),
   'styles/nova/shared.json': item('shared', { type: 'registry:lib', files: [{ type: 'registry:ui', target: 'shared/render.ts', content: 'export const render = () => {};\n' }] }),
+  'elsewhere/mixed.json': item('mixed', {
+    type: 'registry:block',
+    dependencies: ['mixed-dep@^1.0.0'],
+    files: [
+      { type: 'registry:ui', target: 'mixed/Mixed.svelte', content: "<script lang=\"ts\">\n  import 'mixed-dep';\n</script>\n" },
+      { type: 'registry:component', target: 'mixed-card.svelte', content: "<script lang=\"ts\">\n  import 'mixed-dep';\n</script>\n" },
+    ],
+  }),
   'elsewhere/hello.json': item('hello', { registryDependencies: ['button'], files: [{ type: 'registry:ui', target: 'hello/Hello.svelte', content: '<p>hello</p>\n' }] }),
   'themes/neutral.json': item('neutral', {
     type: 'registry:theme',
@@ -1290,9 +1298,49 @@ describe('init --monorepo', () => {
     ]);
     const before = Object.fromEntries(files('acme').map((path) => [path, read(`acme/${path}`)]));
     const again = await initMonorepo({ cwd: join(cwd, 'acme'), ...options });
-    expect([...again.ui.files, ...again.app.files].map((file) => file.status)).toEqual(['identical', 'identical', 'identical', 'identical']);
+    expect([...again.ui.files, ...again.app.files].map((file) => [file.path, file.status])).toEqual([
+      ['components.json', 'identical'],
+      ['src/styles/globals.css', 'identical'],
+      ['components.json', 'identical'],
+    ]);
     expect(Object.fromEntries(files('acme').map((path) => [path, read(`acme/${path}`)]))).toEqual(before);
     expect(JSON.parse(read('acme/apps/web/components.json')).iconLibrary).toBe('tabler');
+  });
+
+  test('running again in the root keeps a changed component and the registry settings of apps/web', async () => {
+    await initMonorepo({ cwd, ...options, name: 'acme' });
+    const buttonFile = 'acme/packages/ui/src/components/button/Button.svelte';
+    writeFileSync(join(cwd, buttonFile), 'mine\n');
+    const appConfigFile = join(cwd, 'acme/apps/web/components.json');
+    const registries = { '@acme': 'https://acme.test/r/{name}.json' };
+    writeFileSync(appConfigFile, JSON.stringify({ ...JSON.parse(read('acme/apps/web/components.json')), registry: `${origin}/other`, registries }));
+    await initMonorepo({ cwd: join(cwd, 'acme'), ...options, style: 'vega' });
+    expect(read(buttonFile)).toBe('mine\n');
+    expect(JSON.parse(read('acme/apps/web/components.json'))).toMatchObject({ style: 'vega', registry: `${origin}/other`, registries });
+  });
+
+  test('asks for the settings before it creates the project', async () => {
+    const created: boolean[] = [];
+    vi.mocked(select).mockImplementation(async ({ initialValue }) => {
+      created.push(existsSync(join(cwd, 'acme')));
+      return initialValue;
+    });
+    await initMonorepo({ cwd, yes: false, install: false, name: 'acme' });
+    expect([created, existsSync(join(cwd, 'acme/packages/ui/components.json'))]).toEqual([[false, false, false], true]);
+  });
+
+  test('init and add in the root list the workspaces to run them in', async () => {
+    await initMonorepo({ cwd, ...options, name: 'acme' });
+    const message = (command: string) =>
+      [
+        `It looks like you are running ${command} from a monorepo root.`,
+        'To use Sveltery UI in a specific workspace, use the --cwd flag:',
+        '',
+        `  npx @sveltery/ui@latest ${command} --cwd apps/web`,
+        `  npx @sveltery/ui@latest ${command} --cwd packages/ui`,
+      ].join('\n');
+    await expect(init({ cwd: join(cwd, 'acme'), ...options })).rejects.toThrow(message('init'));
+    await expect(add(['button'], { cwd: join(cwd, 'acme'), ...addOptions })).rejects.toThrow(message('add [component]'));
   });
 
   test('with npm, lists the workspaces in package.json and depends on the ui package as *', async () => {
@@ -1306,10 +1354,19 @@ describe('init --monorepo', () => {
     mkdirSync(join(cwd, 'acme'));
     writeFileSync(join(cwd, 'acme/package.json'), '{}');
     await expect(initMonorepo({ cwd, ...options, name: 'acme' })).rejects.toThrow('A project with the name acme already exists. Choose a different name and try again.');
-    await expect(initMonorepo({ cwd: join(cwd, 'acme'), ...options })).rejects.toThrow(
-      `${join(cwd, 'acme')} has a package.json, and init --monorepo needs its packages/ui and apps/web workspaces. Run init --monorepo in an empty directory to create a monorepo, or run init in your app.`,
-    );
+    const message = `${join(cwd, 'acme')} has a package.json, and init --monorepo needs its packages/ui workspace with a components.json and its apps/web workspace. Run init --monorepo in an empty directory to create a monorepo, or run init in your app.`;
+    await expect(initMonorepo({ cwd: join(cwd, 'acme'), ...options })).rejects.toThrow(message);
     expect(files('acme')).toEqual(['package.json']);
+
+    // Workspaces that init could set up, in a monorepo that init --monorepo did not create.
+    const svelteApp = JSON.stringify({ devDependencies: { vite: '^8.0.0', svelte: '^5.0.0', tailwindcss: '^4.0.0' } });
+    for (const dir of ['acme/packages/ui', 'acme/apps/web']) {
+      mkdirSync(join(cwd, dir, 'src'), { recursive: true });
+      writeFileSync(join(cwd, dir, 'package.json'), svelteApp);
+      writeFileSync(join(cwd, dir, 'src/app.css'), "@import 'tailwindcss';\n");
+    }
+    await expect(initMonorepo({ cwd: join(cwd, 'acme'), ...options })).rejects.toThrow(message);
+    expect(files('acme')).toEqual(['apps/web/package.json', 'apps/web/src/app.css', 'package.json', 'packages/ui/package.json', 'packages/ui/src/app.css']);
   });
 
   test('--name without --monorepo stops', async () => {
@@ -1341,6 +1398,45 @@ describe('init --monorepo', () => {
 </script>
 <form class=""><Button>Login</Button></form>
 `);
+    });
+
+    test('installs the packages of an item with files in both workspaces in both', async () => {
+      const plan = await add([`${origin}/r/elsewhere/mixed.json`], { cwd: app(), ...addOptions, dryRun: true });
+      expect([plan.files.map((file) => file.path), plan.dependencies, plan.workspace?.dependencies]).toEqual([
+        ['../../packages/ui/src/components/mixed/Mixed.svelte', 'src/lib/components/mixed-card.svelte'],
+        ['mixed-dep@^1.0.0'],
+        ['mixed-dep@^1.0.0'],
+      ]);
+    });
+
+    test('apply writes the settings to both components.json files, re-adds the button with them, and installs the stylesheet packages in packages/ui', async () => {
+      const plan = await apply('b0', { cwd: app(), yes: true, silent: true, install: false });
+      const settings = { style: 'vega', iconLibrary: 'tabler', rtl: false, menuColor: 'inverted-translucent', menuAccent: 'bold' };
+      const ui = JSON.parse(read('acme/packages/ui/components.json'));
+      expect(ui).toMatchObject({ ...settings, tailwind: { css: 'src/styles/globals.css', baseColor: 'neutral' }, aliases: { ui: '@workspace/ui/components' } });
+      expect(JSON.parse(read('acme/apps/web/components.json'))).toMatchObject({ ...settings, tailwind: { css: '../../packages/ui/src/styles/globals.css' } });
+      expect(read('acme/packages/ui/src/components/button/Button.svelte')).toBe(`<script lang="ts">
+  import { IconChevronRight } from '@tabler/icons-svelte';
+  let { children } = $props();
+</script>
+<button class="px-3">{@render children?.()}<IconChevronRight /></button>
+`);
+      expect(read('acme/packages/ui/src/styles/globals.css')).toContain("@import '@fontsource-variable/inter';");
+      expect(plan.files.map((file) => file.path)).toEqual(['components.json', '../../packages/ui/components.json', '../../packages/ui/src/styles/globals.css', '../../packages/ui/src/components/button/Button.svelte']);
+      expect([plan.dependencies, plan.devDependencies, plan.workspace]).toEqual([
+        ['@tabler/icons-svelte@^3.48.0'],
+        [],
+        {
+          dir: '../../packages/ui',
+          dependencies: ['cn@^0.2.2', 'class-variance-authority@^0.7.1', 'tw-animate-css@^1.4.0', '@tabler/icons-svelte@^3.48.0', '@fontsource-variable/inter', '@fontsource-variable/playfair-display'],
+          devDependencies: [`${cliPackage}@^0.2.0`],
+        },
+      ]);
+    });
+
+    test('init --preset writes the settings to the ui package too', async () => {
+      await init({ cwd: app(), ...options, preset: 'b0' });
+      expect(JSON.parse(read('acme/packages/ui/components.json'))).toMatchObject({ style: 'vega', iconLibrary: 'tabler', menuColor: 'inverted-translucent', menuAccent: 'bold' });
     });
 
     test('diff and update find the ui files in packages/ui', async () => {

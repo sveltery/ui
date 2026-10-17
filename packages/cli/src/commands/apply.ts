@@ -2,11 +2,10 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { log } from '@clack/prompts';
 import { CONFIG_FILE } from '../config.js';
-import { installedRoots, openProject, planItems, refOf } from '../items.js';
+import { installedRoots, openProject } from '../items.js';
 import { CliError } from '../parse.js';
-import { executePlan, formatPlan, missingPackages, type Plan, type PlannedFile } from '../plan.js';
+import { executePlan, formatPlan, type Plan } from '../plan.js';
 import { ask } from '../prompt.js';
-import { resolveItems } from '../registry.js';
 import { planInit } from './init.js';
 import { createUrl, resolvePresetUrl } from './preset.js';
 
@@ -79,17 +78,7 @@ export async function apply(positional: string | undefined, options: ApplyOption
     if (!(await ask('Would you like to continue?', false))) throw new CliError('Cancelled.');
   }
 
-  const planned = (await planInit({ cwd, yes: true, install: options.install, preset: url.href }))!;
-  const next = planned.project;
-  const items = await resolveItems(next.registry, next.config.style, reinstall.map(refOf));
-  const reinstalled = planItems(next, items, planned.css);
-  const files = new Map<string, PlannedFile>([...planned.plan.files, ...reinstalled.files].map((file) => [file.path, file]));
-  const plan: Plan = {
-    files: [...files.values()],
-    dependencies: missingPackages(cwd, [...planned.plan.dependencies, ...reinstalled.dependencies]),
-    devDependencies: missingPackages(cwd, [...planned.plan.devDependencies, ...reinstalled.devDependencies]),
-    ...(reinstalled.workspace ? { workspace: reinstalled.workspace } : {}),
-  };
+  const { plan } = (await planInit({ cwd, yes: true, install: options.install, preset: url.href }, reinstall))!;
   if (!options.silent) log.info(formatPlan(plan, { showIdentical: false }));
   await executePlan(plan, { cwd, install: options.install, silent: options.silent });
   log.success('Preset applied successfully.');

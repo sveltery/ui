@@ -98,15 +98,18 @@ export function planItems(project: Project, items: RegistryItem[], css?: string)
   const files = new Map<string, PlannedFile>();
   const app = { dependencies: [] as string[], devDependencies: [] as string[] };
   const workspace = { dependencies: [] as string[], devDependencies: [] as string[] };
+  const isUi = (file: RegistryFile) => file.type === 'registry:ui';
   for (const item of items) {
-    // An item's packages are for its own files, so they go where its files go. One without files, such as a font, styles the ui package's CSS.
-    const packages = ui !== undefined && item.files.every((file) => file.type === 'registry:ui') ? workspace : app;
-    packages.dependencies.push(...(item.dependencies ?? []));
-    packages.devDependencies.push(...(item.devDependencies ?? []));
+    // An item's packages are for its own files, so they go where its files go, to both workspaces when its files go to both.
+    // One without files, such as a font, styles the ui package's CSS.
+    const targets = ui === undefined ? [app] : item.files.every(isUi) ? [workspace] : item.files.some(isUi) ? [app, workspace] : [app];
+    for (const packages of targets) {
+      packages.dependencies.push(...(item.dependencies ?? []));
+      packages.devDependencies.push(...(item.devDependencies ?? []));
+    }
     for (const file of item.files) {
-      const isUi = file.type === 'registry:ui';
-      const result = applyTransforms(file, isUi ? uiCtx : ctx);
-      (ui !== undefined && isUi ? workspace : app).dependencies.push(...result.dependencies);
+      const result = applyTransforms(file, isUi(file) ? uiCtx : ctx);
+      (ui !== undefined && isUi(file) ? workspace : app).dependencies.push(...result.dependencies);
       const path = filePath(project, file);
       files.set(path, { ...planFile(cwd, path, result.content), item: item.name });
     }
@@ -120,7 +123,7 @@ export function planItems(project: Project, items: RegistryItem[], css?: string)
   };
 }
 
-export const refOf = (name: string): ItemRef => ({ kind: 'name', name });
+const refOf = (name: string): ItemRef => ({ kind: 'name', name });
 
 /** Every item the registry lists, in manifest order. */
 export function fetchAllItems({ registry, config }: Project): Promise<RegistryItem[]> {

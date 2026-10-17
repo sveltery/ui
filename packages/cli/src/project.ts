@@ -167,6 +167,23 @@ function expandPattern(root: string, pattern: string): string[] {
   return dirs;
 }
 
+/** Files whose presence makes a workspace an app, from upstream's `getMonorepoTargets`. `*` stands for any extension. */
+const FRAMEWORK_CONFIG_FILES = ['next.config.*', 'vite.config.*', 'astro.config.*', 'remix.config.*', 'nuxt.config.*', 'svelte.config.*', 'gatsby-config.*', 'angular.json'];
+
+/** The workspaces of the monorepo at `root` that have a components.json or a framework config, relative to it, as upstream's `getMonorepoTargets` finds them. Empty when `root` declares no workspaces. */
+export function monorepoTargets(root: string): string[] {
+  const isFrameworkConfig = (name: string) => FRAMEWORK_CONFIG_FILES.some((file) => (file.endsWith('*') ? name.startsWith(file.slice(0, -1)) : name === file));
+  const dirs = new Set(workspacePatterns(root).flatMap((pattern) => expandPattern(root, pattern)));
+  return [...dirs]
+    .filter((dir) => existsSync(join(dir, 'package.json')) && (existsSync(join(dir, 'components.json')) || readdirSync(dir).some(isFrameworkConfig)))
+    .map((dir) => relative(root, dir).replaceAll('\\', '/'))
+    .sort();
+}
+
+/** Upstream's message for a command run at a monorepo root: the command to run in each workspace instead. */
+export const formatMonorepoMessage = (command: string, targets: string[]) =>
+  [`It looks like you are running ${command} from a monorepo root.`, 'To use Sveltery UI in a specific workspace, use the --cwd flag:', '', ...targets.map((target) => `  npx @sveltery/ui@latest ${command} --cwd ${target}`)].join('\n');
+
 /** The first `./` path in an `exports` value, looking through conditions and fallback arrays in order. */
 function exportTarget(value: unknown): string | undefined {
   if (typeof value === 'string') return value.startsWith('./') ? value : undefined;

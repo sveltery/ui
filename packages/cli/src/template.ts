@@ -143,8 +143,25 @@ export {};
 
 const themeProvider = `<script lang="ts">
   import type { Snippet } from 'svelte';
+  import { MediaQuery } from 'svelte/reactivity';
 
   let { children }: { children: Snippet } = $props();
+
+  const systemDark = new MediaQuery('(prefers-color-scheme: dark)');
+
+  function storedTheme() {
+    try {
+      return localStorage.getItem('theme');
+    } catch {
+      return null;
+    }
+  }
+
+  // Until the d key stores a choice, follow changes of the system color scheme while the page is open.
+  $effect(() => {
+    const dark = systemDark.current;
+    if (storedTheme() === null) document.documentElement.classList.toggle('dark', dark);
+  });
 
   function isEditable(target: EventTarget | null) {
     return target instanceof HTMLElement && (target.isContentEditable || target.closest("input, textarea, select, [contenteditable='true']") !== null);

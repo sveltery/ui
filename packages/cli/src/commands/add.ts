@@ -1,13 +1,21 @@
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { log } from '@clack/prompts';
+import { CONFIG_FILE } from '../config.js';
 import { openProject, planItems } from '../items.js';
 import { CliError } from '../parse.js';
 import { executePlan, formatDetail, formatPlan, type DryRunDetail, type Plan, type PlannedFile } from '../plan.js';
+import { formatMonorepoMessage, monorepoTargets } from '../project.js';
 import { ask } from '../prompt.js';
 import { parseItemRef, resolveItems } from '../registry.js';
 
 export type AddOptions = { cwd: string; yes: boolean; overwrite: boolean; all: boolean; dryRun: boolean; install: boolean } & DryRunDetail;
 
 export async function add(args: string[], options: AddOptions): Promise<Plan> {
+  if (!existsSync(join(options.cwd, CONFIG_FILE))) {
+    const targets = monorepoTargets(options.cwd);
+    if (targets.length > 0) throw new CliError(formatMonorepoMessage('add [component]', targets));
+  }
   const project = await openProject(options.cwd);
   const { cwd, config, registry } = project;
   if (!options.all && args.length === 0) throw new CliError('Name the items to add, such as `npx @sveltery/ui@latest add button`, or pass --all.');
