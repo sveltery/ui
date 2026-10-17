@@ -263,7 +263,7 @@ More items available. Use --offset 4 to see the next page.`);
   test('refuses a @sveltery entry in registries before any request, as add and view do', async () => {
     configure({ '@sveltery': acme(), '@acme': acme() });
     for (const registries of [['@sveltery'], ['@acme'], []]) {
-      await expect(search(registries, { cwd, json: false })).rejects.toThrow('"@sveltery" is a built-in registry and cannot be overridden.');
+      await expect(search(registries, { cwd, json: false })).rejects.toThrow('"@sveltery" is a built-in registry and cannot be overridden. Remove it from "registries" in components.json; set "registry" to install bare names from another registry.');
     }
     expect(requests).toEqual([]);
   });

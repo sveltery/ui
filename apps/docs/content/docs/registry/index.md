@@ -27,7 +27,7 @@ The format follows the shadcn registry, limited to what this CLI reads. It suppo
 - items that switch to the project's icon library,
 - a different root registry with `SVELTERY_REGISTRY_URL` or the `registry` key in `components.json`, for example a preview deploy of Sveltery UI.
 
-It does not support these shadcn registry features yet: private GitHub registries, `include` in a GitHub registry, the registry index, MCP and Open in v0. Without arguments, `diff` and `update` check only the registry's own items, so pass the URL of an item you added by URL.
+It does not support these shadcn registry features yet: private GitHub registries, `include` in a GitHub registry, the registry index, MCP and Open in v0. Without arguments, `diff` and `update` check only the registry's own items, so pass the URL or `owner/repo/item` of an item you added by URL or from GitHub.
 
 ## Next steps
 

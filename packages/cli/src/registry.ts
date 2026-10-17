@@ -120,7 +120,7 @@ export const namespaceConfigs: Parser<Record<string, NamespaceConfig>> = (value,
   )(value, path);
   const invalid = Object.keys(configs).find((name) => !new RegExp(`^${NAMESPACE}$`).test(name));
   if (invalid !== undefined) throw new ParseError(`${path}.${invalid}: registry names must start with @, such as @acme`);
-  if (BUILTIN_NAMESPACE in configs) throw new CliError(`"${BUILTIN_NAMESPACE}" is a built-in registry and cannot be overridden.`);
+  if (BUILTIN_NAMESPACE in configs) throw new CliError(`"${BUILTIN_NAMESPACE}" is a built-in registry and cannot be overridden. Remove it from "registries" in components.json; set "registry" to install bare names from another registry.`);
   return configs;
 };
 
@@ -233,7 +233,7 @@ export function parseItemRef(value: string): ItemRef {
   const [owner = '', repo = '', ...item] = (hash === -1 ? value : value.slice(0, hash)).split('/');
   const name = item.join('/');
   if (name && isGitHubRepository(owner, repo)) return { kind: 'github', source: { owner, repo, ...(hash !== -1 && { ref: gitHubRef(value, hash, 'item address') }) }, name };
-  throw new CliError(`"${value}" is neither an item name, an @namespace/item name, nor an http(s) URL.`);
+  throw new CliError(`"${value}" is neither an item name, an @namespace/item name, an owner/repo/item GitHub item, nor an http(s) URL.`);
 }
 
 const ENV_VAR = /\$\{(\w+)\}/g;
@@ -378,7 +378,7 @@ async function fetchGitHubItem<T>(registry: Registry, { source, name }: GitHubIt
   const items = ownItems(root, 'registry.json', '.');
   assertUniqueNames(items);
   const item = items.find((entry) => entry.name === name);
-  if (!item) throw new CliError(`Registry item "${name}" was not found. Check that the item name exists in the resolved registry catalog.`);
+  if (!item) throw new CliError(`Registry item "${name}" was not found in ${source.owner}/${source.repo}${source.ref === undefined ? '' : `#${source.ref}`}. Check that the item name exists in the resolved registry catalog.`);
   const contents = await Promise.all(
     rewriteFiles(item, '.').map(({ path }, index) =>
       fetchOk(gitHubFileRequest(source, path)).then(

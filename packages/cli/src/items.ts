@@ -140,12 +140,12 @@ export function fetchAllItems({ registry, config }: Project): Promise<RegistryIt
 /** An item counts as installed when any of its files exists. */
 export const isInstalled = (project: Project, item: RegistryItem) => item.files.some((file) => existsSync(join(project.cwd, filePath(project, file))));
 
-/** What `diff` and `update` say when a scan finds nothing. A scan does not see items added by URL. */
-export const NONE_INSTALLED = 'No items from the registry are installed. Name an item you added by URL, or add one with `npx @sveltery/ui@latest add button`.';
+/** What `diff` and `update` say when a scan finds nothing. A scan does not see items added by URL or from GitHub. */
+export const NONE_INSTALLED = 'No items from the registry are installed. Name an item you added by URL or from GitHub, or add one with `npx @sveltery/ui@latest add button`.';
 
 /**
  * The items `diff` and `update` act on, with their registry dependencies: the named items and URLs, which must be installed, or else the installed roots.
- * A scan cannot know which URLs were used, so it never includes an item that only a URL names.
+ * A scan cannot know which URLs or GitHub items were used, so it never includes an item that only one of them names.
  */
 export async function selectInstalled(project: Project, names: string[]): Promise<RegistryItem[]> {
   const { registry, config } = project;

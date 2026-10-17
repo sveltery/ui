@@ -68,10 +68,10 @@ To send headers or query parameters, give an object:
 `@sveltery` names the registry in the `registry` key of `components.json`, which is Sveltery UI's own registry unless you changed it. `@sveltery/button` installs the same item as `button`. `registries` cannot set `@sveltery`. Every command that reads `components.json`, `add`, `view` and `search` included, stops at a `@sveltery` entry there:
 
 ```txt
-"@sveltery" is a built-in registry and cannot be overridden.
+"@sveltery" is a built-in registry and cannot be overridden. Remove it from "registries" in components.json; set "registry" to install bare names from another registry.
 ```
 
-To install bare names from another registry, set the `registry` key instead.
+Remove the entry. To install bare names from another registry, set the `registry` key instead.
 
 ## Use namespaced items
 

@@ -226,6 +226,6 @@ Links
 
   test('rejects a @sveltery entry in registries, as upstream rejects a built-in registry there', async () => {
     write('components.json', JSON.stringify({ ...components, registries: { '@sveltery': 'https://example.test/r/{name}.json' } }));
-    await expect(info({ cwd, json: false })).rejects.toThrow('"@sveltery" is a built-in registry and cannot be overridden.');
+    await expect(info({ cwd, json: false })).rejects.toThrow('"@sveltery" is a built-in registry and cannot be overridden. Remove it from "registries" in components.json; set "registry" to install bare names from another registry.');
   });
 });

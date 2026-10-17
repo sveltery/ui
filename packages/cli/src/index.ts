@@ -66,14 +66,14 @@ program
 program
   .command('diff')
   .description('show how the registry versions of installed items differ from your files')
-  .argument('[items...]', 'item names or URLs; every installed item of the registry when omitted')
+  .argument('[items...]', 'item names, @namespace/item names, owner/repo/item GitHub items, or URLs; every installed item of the registry when omitted')
   .option('--cwd <path>', 'the project root', '.')
   .action(async (items: string[], options) => void (await diff(items, { cwd: resolve(options.cwd) })));
 
 program
   .command('update')
   .description('re-add installed items, showing each changed file\'s diff and asking before it overwrites')
-  .argument('[items...]', 'item names or URLs; every installed item of the registry when omitted')
+  .argument('[items...]', 'item names, @namespace/item names, owner/repo/item GitHub items, or URLs; every installed item of the registry when omitted')
   .option('-y, --yes', 'overwrite changed files without asking', false)
   .option('--no-install', 'do not install packages')
   .option('--cwd <path>', 'the project root', '.')

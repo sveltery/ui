@@ -114,7 +114,7 @@ The items this item builds on. The CLI installs them first.
 - A name, such as `button`, is an item of the project's registry in the project's style. It must use lowercase letters, digits and hyphens.
 - `@namespace/name`, such as `@acme/format-name`, is an item of the registry that the installing project maps to `@acme` in `components.json`. See [Namespaces](/docs/registry/namespace).
 - A URL starting with `http://` or `https://` is fetched as is.
-- `owner/repo/name`, such as `acme/ui/format-name`, is an item of the `registry.json` at the root of that public GitHub repository, at its default branch or at the ref after `#`. A plain name in a GitHub item is still an item of the project's registry, so name the items of your own repository in this form.
+- `owner/repo/name`, such as `acme/ui/format-name`, is an item of the `registry.json` at the root of that public GitHub repository, at its default branch or at the ref after `#`. A plain name in a GitHub item is still an item of the project's registry, so name the items of your own repository in this form. A `owner/repo/x` dependency without `#ref` is read from the default branch, even when the item that lists it was installed at a ref.
 
 ### files
 

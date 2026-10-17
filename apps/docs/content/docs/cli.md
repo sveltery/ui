@@ -169,7 +169,7 @@ npx @sveltery/ui@latest diff
 
 An item counts as installed when any of its files exists in the project. With no names, `diff` checks every installed item of the configured registry and the items they depend on. A named item that is not installed is an error.
 
-An argument that is a URL works like a name. `diff` fetches the item and its registry dependencies, as `add` does, and compares them with your files. The item must be installed, and the URL must be the one you added it with, because a project does not record where an item came from. An unnamed `diff` cannot know which URLs you used, so it does not check items that only a URL names. To check one, pass its URL.
+An argument that is a URL or a GitHub item (`owner/repo/item`) works like a name. `diff` fetches the item and its registry dependencies, as `add` does, and compares them with your files. The item must be installed, and the address must be the one you added it with, because a project does not record where an item came from. For a GitHub item, pass the same `#ref` to stay on the ref you added it at, or a new one to compare with that ref. An unnamed `diff` cannot know which URLs or GitHub items you used, so it does not check items that only one of them names. To check one, pass its address.
 
 ```bash
 npx @sveltery/ui@latest diff https://example.com/r/hello-card.json
@@ -185,8 +185,8 @@ Usage: sveltery diff [options] [items...]
 show how the registry versions of installed items differ from your files
 
 Arguments:
-  items         item names or URLs; every installed item of the registry when
-                omitted
+  items         item names, @namespace/item names, owner/repo/item GitHub items,
+                or URLs; every installed item of the registry when omitted
 
 Options:
   --cwd <path>  the project root (default: ".")
@@ -205,7 +205,7 @@ npx @sveltery/ui@latest update
 
 `update` plans the same files as `add`, including new files, new items an item now depends on and missing packages. For each changed file, it shows the diff and asks whether to overwrite it. The default answer is no. It writes new files without asking.
 
-Like `diff`, it takes item names and URLs, and with no arguments it updates every installed item of the configured registry, but not items that only a URL names. To update one, pass its URL. See [diff](#diff).
+Like `diff`, it takes item names, URLs and `owner/repo/item` GitHub items, and with no arguments it updates every installed item of the configured registry, but not items that only a URL or a GitHub repository names. To update one, pass its URL or `owner/repo/item`. For a GitHub item, pass the same `#ref` to stay on it, or a new one to move to it. See [diff](#diff).
 
 ```bash
 npx @sveltery/ui@latest update https://example.com/r/hello-card.json
@@ -220,8 +220,8 @@ re-add installed items, showing each changed file's diff and asking before it
 overwrites
 
 Arguments:
-  items         item names or URLs; every installed item of the registry when
-                omitted
+  items         item names, @namespace/item names, owner/repo/item GitHub items,
+                or URLs; every installed item of the registry when omitted
 
 Options:
   -y, --yes     overwrite changed files without asking (default: false)

@@ -80,7 +80,7 @@ describe('view', () => {
 
   test('refuses a @sveltery entry in registries, as add does', async () => {
     writeFileSync(join(cwd, 'components.json'), JSON.stringify({ registries: { '@sveltery': `${origin}/extra/{name}.json` } }));
-    for (const name of ['@sveltery/hello-card', 'button']) await expect(view([name], { cwd })).rejects.toThrow('"@sveltery" is a built-in registry and cannot be overridden.');
+    for (const name of ['@sveltery/hello-card', 'button']) await expect(view([name], { cwd })).rejects.toThrow('"@sveltery" is a built-in registry and cannot be overridden. Remove it from "registries" in components.json; set "registry" to install bare names from another registry.');
   });
 
   test('fetches an item URL as is', async () => {
@@ -113,7 +113,7 @@ describe('view', () => {
   });
 
   test('rejects an argument that is neither a name nor a URL', async () => {
-    await expect(view(['./local.json'], { cwd })).rejects.toThrow('"./local.json" is neither an item name, an @namespace/item name, nor an http(s) URL.');
+    await expect(view(['./local.json'], { cwd })).rejects.toThrow('"./local.json" is neither an item name, an @namespace/item name, an owner/repo/item GitHub item, nor an http(s) URL.');
   });
 
   test('rejects a components.json with an unknown style', async () => {

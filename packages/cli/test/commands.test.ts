@@ -1015,7 +1015,7 @@ describe('namespaced registries', () => {
     configure({ '@sveltery': acme(), '@acme': acme() });
     process.env.ACME_TOKEN = 's3cret';
     for (const name of ['@sveltery/button', 'button', '@acme/greet']) {
-      await expect(add([name], { ...addOptions, cwd })).rejects.toThrow('"@sveltery" is a built-in registry and cannot be overridden.');
+      await expect(add([name], { ...addOptions, cwd })).rejects.toThrow('"@sveltery" is a built-in registry and cannot be overridden. Remove it from "registries" in components.json; set "registry" to install bare names from another registry.');
     }
     expect(acmeRequests).toEqual([]);
   });
@@ -1095,7 +1095,8 @@ describe('GitHub items', () => {
   });
 
   test('names a missing item, a missing file, a repository without registry.json, and one that uses include', async () => {
-    await expect(add(['acme/ui/nope'], { ...addOptions, cwd })).rejects.toThrow('Registry item "nope" was not found. Check that the item name exists in the resolved registry catalog.');
+    await expect(add(['acme/ui/nope'], { ...addOptions, cwd })).rejects.toThrow('Registry item "nope" was not found in acme/ui. Check that the item name exists in the resolved registry catalog.');
+    await expect(add(['acme/ui/nope#v1.0'], { ...addOptions, cwd })).rejects.toThrow('Registry item "nope" was not found in acme/ui#v1.0. Check');
     await expect(add(['acme/ui/broken'], { ...addOptions, cwd })).rejects.toThrow(
       `Failed to read file "src/lib/components/ui/broken/Broken.svelte" for registry item "broken" (registry.json items[2]). Expected file at src/lib/components/ui/broken/Broken.svelte. GET ${raw}/acme/ui/HEAD/src/lib/components/ui/broken/Broken.svelte failed with 404 Not Found`,
     );
@@ -1211,7 +1212,7 @@ describe('diff', () => {
 
   test('says so when no item is installed', async () => {
     rmSync(join(cwd, 'src/lib'), { recursive: true });
-    expect(await diff([], { cwd })).toBe('No items from the registry are installed. Name an item you added by URL, or add one with `npx @sveltery/ui@latest add button`.');
+    expect(await diff([], { cwd })).toBe('No items from the registry are installed. Name an item you added by URL or from GitHub, or add one with `npx @sveltery/ui@latest add button`.');
   });
 });
 
