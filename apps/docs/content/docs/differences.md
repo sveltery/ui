@@ -941,4 +941,12 @@ The old `list` command marked the items in your project as `installed` and had n
 
 **Why:** Nothing that can fail on the network or on input runs after the first write, so a backup would guard only the install step. Restoring `components.json` there would leave the new CSS and components paired with the old settings.
 
+### `eject` at a monorepo root does not list the workspace packages
+
+**Upstream:** When the directory has no `components.json` and is a monorepo root, [`eject.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/eject.ts#L57) lists the workspace packages that have one and shows the command to run in each.
+
+**Sveltery UI:** [`eject`](/docs/cli#eject) says that the directory has no `components.json` and to run `init` first.
+
+**Why:** This CLI does not resolve workspaces yet. The [Monorepo](/docs/monorepo) page tells you to run the CLI in the package with `--cwd`.
+
 **Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
