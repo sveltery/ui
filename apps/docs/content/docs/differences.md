@@ -323,26 +323,6 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 ## Example content
 
-### The Field checkbox example checks "Sync Desktop & Documents folders" only
-
-**Upstream:** In [`field-checkbox.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/field-checkbox.tsx#L33-L40), the "Hard disks" `FieldLabel` has `defaultChecked`. A label ignores that prop, so the checkbox next to it stays unchecked.
-
-**Sveltery UI:** The [Field](/docs/components/field) example leaves `defaultChecked` off that label.
-
-**Why:** The prop does nothing on a label. The example renders the same without it, and it is not valid on a Svelte `label`.
-
-**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
-
-### The Input Group examples use a native textarea and `navigator.clipboard`
-
-**Upstream:** The [Custom Input](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/input-group-custom.tsx) example uses `react-textarea-autosize`. The [Button](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/input-group-button.tsx) example copies with a `useCopyToClipboard` hook.
-
-**Sveltery UI:** The [Input Group](/docs/components/input-group) Custom Input example is a plain `textarea` with `field-sizing-content`. The Button example calls `navigator.clipboard.writeText`.
-
-**Why:** `react-textarea-autosize` and the React hook have no Svelte build in these docs. In browsers that support `field-sizing`, `field-sizing-content` makes a native `textarea` grow with its text, which is what the library does. Elsewhere the textarea keeps its height and scrolls.
-
-**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
-
 ### The Toggle Group select starts on one of its items
 
 **Upstream:** The "With Input and Select" example in [`toggle-group-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/toggle-group-example.tsx#L343) sets `defaultValue={items[0]}`, an object, while each `SelectItem` has a string `value`.
@@ -462,6 +442,26 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Why:** Sveltery UI has no Markdown component. The preview looks the same.
 
 **Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### The Field checkbox example checks "Sync Desktop & Documents folders" only
+
+**Upstream:** In [`field-checkbox.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/field-checkbox.tsx#L33-L40), the "Hard disks" `FieldLabel` has `defaultChecked`. A label ignores that prop, so the checkbox next to it stays unchecked.
+
+**Sveltery UI:** The [Field](/docs/components/field) example leaves `defaultChecked` off that label.
+
+**Why:** The prop does nothing on a label. The example renders the same without it, and it is not valid on a Svelte `label`.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Input Group examples use a native textarea and `navigator.clipboard`
+
+**Upstream:** The [Custom Input](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/input-group-custom.tsx) example uses `react-textarea-autosize`. The [Button](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/input-group-button.tsx) example copies with a `useCopyToClipboard` hook.
+
+**Sveltery UI:** The [Input Group](/docs/components/input-group) Custom Input example is a plain `textarea` with `field-sizing-content`. The Button example calls `navigator.clipboard.writeText`.
+
+**Why:** `react-textarea-autosize` and the React hook have no Svelte build in these docs. In browsers that support `field-sizing`, `field-sizing-content` makes a native `textarea` grow with its text, which is what the library does. Elsewhere the textarea keeps its height and scrolls.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
 ### The Breadcrumb separator example links to /docs/components
 
