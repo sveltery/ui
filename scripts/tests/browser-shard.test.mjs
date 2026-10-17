@@ -34,11 +34,13 @@ test('a spec with no recorded time counts as the median spec', () => {
   assert.deepEqual(specSeconds(dir), { 'a.spec.ts': 1, 'b.spec.ts': 5, 'c.spec.ts': 9, 'new.spec.ts': 9 });
 });
 
-test('a Playwright JSON report records each spec file as the seconds its tests took', () => {
+test('Playwright JSON reports record each spec file as the seconds its tests took', () => {
   const result = (duration) => ({ results: [{ duration }] });
   const report = { suites: [
     { specs: [{ file: 'a.spec.ts', tests: [result(1200)] }], suites: [{ specs: [{ file: 'a.spec.ts', tests: [result(2400), result(300)] }] }] },
     { specs: [{ file: 'b.spec.ts', tests: [result(40)] }] },
   ] };
   assert.deepEqual(recordedSeconds(report), { 'a.spec.ts': 4, 'b.spec.ts': 1 });
+  const otherShard = { suites: [{ specs: [{ file: 'c.spec.ts', tests: [result(3000)] }] }] };
+  assert.deepEqual(recordedSeconds(report, otherShard), { 'a.spec.ts': 4, 'b.spec.ts': 1, 'c.spec.ts': 3 });
 });
