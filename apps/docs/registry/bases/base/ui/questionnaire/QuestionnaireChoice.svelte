@@ -1,5 +1,5 @@
 <script lang="ts">
-  import * as Primitive from '@sveltery/questionnaire';
+  import * as Primitive from '@sveltery/svelte/questionnaire';
   import { cn } from 'cn';
   import { IconPlaceholder } from '../icons/index.js';
   import type { QuestionnaireChoiceProps } from './types.js';

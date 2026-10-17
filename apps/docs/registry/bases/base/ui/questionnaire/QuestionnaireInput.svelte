@@ -1,5 +1,5 @@
 <script lang="ts">
-  import * as Primitive from '@sveltery/questionnaire';
+  import * as Primitive from '@sveltery/svelte/questionnaire';
   import { cn } from 'cn';
   import type { QuestionnaireInputProps } from './types.js';
   let { value = $bindable(), class: classProp, ...props }: QuestionnaireInputProps = $props();

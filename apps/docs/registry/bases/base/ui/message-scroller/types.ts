@@ -4,7 +4,7 @@ import type {
   MessageScrollerItemProps,
   MessageScrollerRootProps,
   MessageScrollerViewportProps
-} from '@sveltery/message-scroller';
+} from '@sveltery/svelte/message-scroller';
 import type { ButtonVariants } from '../button/index.js';
 
 export type MessageScrollerProps = MessageScrollerRootProps;
@@ -18,4 +18,4 @@ export type {
   MessageScrollerScrollAlign,
   MessageScrollerScrollOptions,
   MessageScrollerVisibilityState
-} from '@sveltery/message-scroller';
+} from '@sveltery/svelte/message-scroller';

@@ -77,7 +77,7 @@
         <CardDescription>Showing total visitors for the last 6 months</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer aria-label="Area Chart" config={visitorsConfig}>
+        <ChartContainer config={visitorsConfig}>
           <AreaChart
             data={dated}
             x="date"
@@ -110,7 +110,7 @@
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer aria-label="Bar Chart - Multiple" config={deviceConfig}>
+        <ChartContainer config={deviceConfig}>
           <BarChart
             bind:context={barContext}
             data={monthly}
@@ -146,7 +146,7 @@
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter class="flex-col items-start gap-2 text-sm">
+      <CardFooter class="flex-col items-start gap-2">
         {@render trend('Showing total visitors for the last 6 months')}
       </CardFooter>
     </Card>
@@ -161,7 +161,7 @@
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer aria-label="Line Chart - Multiple" config={deviceConfig}>
+        <ChartContainer config={deviceConfig}>
           <LineChart
             data={dated}
             x="date"
@@ -198,7 +198,7 @@
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent class="flex-1 pb-0">
-        <ChartContainer aria-label="Pie Chart - Donut with Text" config={pieConfig} class="mx-auto aspect-square max-h-[250px]">
+        <ChartContainer config={pieConfig} class="mx-auto aspect-square max-h-[250px]">
           <PieChart
             data={pieData}
             key="browser"
@@ -230,7 +230,7 @@
           </PieChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter class="flex-col gap-2 text-sm">
+      <CardFooter class="flex-col gap-2">
         {@render trend('Showing total visitors for the last 6 months')}
       </CardFooter>
     </Card>
@@ -245,7 +245,7 @@
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent class="flex-1 pb-0">
-        <ChartContainer aria-label="Radial Chart - Shape" config={radialConfig} class="mx-auto aspect-square max-h-[250px]">
+        <ChartContainer config={radialConfig} class="mx-auto aspect-square max-h-[210px]">
           <ArcChart
             label="browser"
             value="visitors"
@@ -279,7 +279,7 @@
           </ArcChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter class="flex-col gap-2 text-sm">
+      <CardFooter class="flex-col gap-2">
         {@render trend('Showing total visitors for the last 6 months')}
       </CardFooter>
     </Card>
@@ -294,7 +294,7 @@
         <CardDescription>Showing total visitors for the last 6 months</CardDescription>
       </CardHeader>
       <CardContent class="pb-0">
-        <ChartContainer aria-label="Radar Chart - Multiple" config={deviceConfig} class="mx-auto aspect-square max-h-[250px]">
+        <ChartContainer config={deviceConfig} class="mx-auto aspect-square max-h-[250px]">
           <LineChart
             data={monthly}
             series={[
@@ -330,14 +330,14 @@
           </LineChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter class="flex-col gap-2 text-sm">
+      <CardFooter class="flex-col gap-2">
         {@render trend('January - June 2024')}
       </CardFooter>
     </Card>
   </Example>
 {/snippet}
 
-<ExampleWrapper class="lg:grid-cols-1">
+<ExampleWrapper>
   {@render ChartAreaExample()}
   {@render ChartBarExample()}
   {@render ChartLineExample()}

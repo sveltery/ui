@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "vite dev --host 127.0.0.1",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-    "build": "pnpm --filter @sveltery/resizable --filter @sveltery/message-scroller --filter @sveltery/questionnaire --filter @sveltery/command build && vite build && pagefind --site .svelte-kit/cloudflare",
+    "build": "pnpm --filter @sveltery/resizable --filter @sveltery/svelte --filter @sveltery/command build && vite build && pagefind --site .svelte-kit/cloudflare",
     "preview": "wrangler dev --port 4173",
     "deploy": "wrangler deploy"
   },
@@ -21,9 +21,8 @@
     "@sveltery/command": "workspace:*",
     "@sveltery/day-picker": "workspace:*",
     "@sveltery/input-otp": "workspace:*",
-    "@sveltery/message-scroller": "workspace:*",
-    "@sveltery/questionnaire": "workspace:*",
     "@sveltery/resizable": "workspace:*",
+    "@sveltery/svelte": "workspace:*",
     "@sveltery/ui": "workspace:*",
     "@tanstack/svelte-table": "9.3.1",
     "class-variance-authority": "0.7.1",

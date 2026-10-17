@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushSync, mount, unmount } from 'svelte';
-import type { MessageScroller, MessageScrollerDefaultScrollPosition, MessageScrollerScrollOptions } from '@sveltery/message-scroller';
+import type { MessageScroller, MessageScrollerDefaultScrollPosition, MessageScrollerScrollOptions } from '@sveltery/svelte/message-scroller';
 import MessageScrollerFixture from './MessageScrollerFixture.svelte';
 import MessageScrollerVisibility from './MessageScrollerVisibility.svelte';
 

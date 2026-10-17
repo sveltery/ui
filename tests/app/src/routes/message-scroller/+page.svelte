@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/state';
-  import { Button, Content, Item, Provider, Root, Viewport, type MessageScrollerDefaultScrollPosition } from '@sveltery/message-scroller';
+  import { Button, Content, Item, Provider, Root, Viewport, type MessageScrollerDefaultScrollPosition } from '@sveltery/svelte/message-scroller';
   import { onMount } from 'svelte';
   import Probe from './Probe.svelte';
 

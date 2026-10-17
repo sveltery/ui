@@ -1,6 +1,6 @@
 <script lang="ts">
   import { untrack } from 'svelte';
-  import { Button, Content, Item, Provider, Root, Viewport, type MessageScroller, type MessageScrollerDefaultScrollPosition } from '@sveltery/message-scroller';
+  import { Button, Content, Item, Provider, Root, Viewport, type MessageScroller, type MessageScrollerDefaultScrollPosition } from '@sveltery/svelte/message-scroller';
   import MessageScrollerProbe from './MessageScrollerProbe.svelte';
   import MessageScrollerVisibility from './MessageScrollerVisibility.svelte';
 
