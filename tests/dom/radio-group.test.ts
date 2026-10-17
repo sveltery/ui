@@ -28,7 +28,7 @@ it('renders the group and items with the upstream slots and classes', () => {
   expect(group.className).toBe('cn-radio-group w-full grid-cols-2');
   const medium = item('Medium');
   expect(medium.dataset.slot).toBe('radio-group-item');
-  expect(medium.className).toBe('cn-radio-group-item group/radio-group-item peer relative aspect-square shrink-0 border outline-none after:absolute after:-inset-x-3 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50 extra-item');
+  expect(medium.className).toBe('cn-radio-group-item group/radio-group-item peer relative aspect-square shrink-0 border outline-none after:absolute after:-inset-x-3 after:-inset-y-2 data-disabled:cursor-not-allowed data-disabled:opacity-50 extra-item');
 });
 
 it('shows the indicator only on the checked item', () => {
