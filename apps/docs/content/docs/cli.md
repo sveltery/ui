@@ -221,6 +221,52 @@ Options:
 
 ---
 
+## apply
+
+Use the `apply` command to switch a project that ran `init` to another preset.
+
+```bash
+npx @sveltery/ui@latest apply sera
+```
+
+`apply` takes the same presets as `init --preset`: a preset name such as `nova`, a preset code from the [Create page](/create), or the URL of an `/init` item. It writes the preset's settings, theme and fonts the way `init --preset` does. Then it adds your installed items again and overwrites them, so a new style or icon library reaches your components. It lists those items and asks before it continues. The default answer is no, so commit or stash your changes first.
+
+To apply part of a preset, pass `--only` with `theme`, `font` or both. A partial apply leaves your components alone and keeps `style` and `iconLibrary` in `components.json`. With `theme`, it changes the base color, menu color and menu accent in `components.json`, and the color variables in your CSS file. With `font`, it changes only your CSS file, which gets the font imports and variables, and installs the font packages.
+
+```bash
+npx @sveltery/ui@latest apply sera --only theme,font
+```
+
+`theme` sets the base color, the theme tokens, the radius and the menu look. `font` sets the fonts. An `/init` URL with an `only` parameter applies the same parts, and `--only` overrides it.
+
+With no preset, `apply` prints a link to the Create page, where you can build one.
+
+**Options**
+
+```txt
+Usage: sveltery apply [options] [preset]
+
+apply a preset to a project that ran init
+
+Arguments:
+  preset             the preset: a name such as nova, a preset code, or an /init
+                     URL
+
+Options:
+  --preset <preset>  the preset, as an option
+  --only [parts]     apply only parts of the preset: theme, font
+  -y, --yes          do not ask to continue (default: false)
+  -s, --silent       do not print the plan or the package manager output
+                     (default: false)
+  --no-install       do not install packages
+  --cwd <path>       the project root (default: ".")
+  -h, --help         display help for command
+```
+
+The preset can be the argument or the `--preset` value. If you pass both, they must match. `--silent` hides the plan and the package manager output. Without `--yes`, `apply` still lists the items and asks.
+
+---
+
 ## preset
 
 Use the `preset` command to read, share and open [preset](/docs/cli#init) codes. None of its subcommands writes a file.
@@ -615,4 +661,4 @@ SVELTERY_REGISTRY_URL=https://preview.example.com/r npx @sveltery/ui@latest add 
 
 ## Not supported
 
-The shadcn CLI has commands and options that this CLI does not have yet: `apply`, `eject` and `registry add`, the `cn`, `icons`, `base-color` and `radix` migrations, local file paths as items and JavaScript output. See [Registry](/docs/registry) and [JavaScript](/docs/javascript) for what works today.
+The shadcn CLI has commands and options that this CLI does not have yet: `eject` and `registry add`, the `cn`, `icons`, `base-color` and `radix` migrations, local file paths as items and JavaScript output. See [Registry](/docs/registry) and [JavaScript](/docs/javascript) for what works today.
