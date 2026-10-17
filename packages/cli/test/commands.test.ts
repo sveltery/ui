@@ -39,12 +39,23 @@ const registryFiles: Record<string, unknown> = {
       { name: 'button', type: 'registry:ui' },
       { name: 'dialog', type: 'registry:ui' },
     ],
+    blocks: [{ name: 'login-01', type: 'registry:block', description: 'A simple login form.' }],
   },
   'styles/nova/button.json': item('button', { dependencies: ['cn@^0.2.2'], files: [{ type: 'registry:ui', target: 'button/Button.svelte', content: button }] }),
   'styles/nova/dialog.json': item('dialog', {
     dependencies: ['@sveltery/base'],
     registryDependencies: ['button', 'shared'],
     files: [{ type: 'registry:ui', target: 'dialog/DialogTitle.svelte', content: dialogTitle }],
+  }),
+  'styles/nova/login-01.json': item('login-01', {
+    type: 'registry:block',
+    devDependencies: ['@types/d3-scale@^4.0.9'],
+    registryDependencies: ['button'],
+    files: [
+      { type: 'registry:page', target: 'src/routes/login/+page.svelte', content: "<script lang=\"ts\">\n  import LoginForm from '$registry/bases/base/components/login-form.svelte';\n</script>\n<LoginForm />\n" },
+      { type: 'registry:component', target: 'login-form.svelte', content: "<script lang=\"ts\">\n  import { Button } from '$registry/bases/base/ui/button';\n</script>\n<form class=\"cn-font-heading\"><Button>Login</Button></form>\n" },
+      { type: 'registry:file', target: 'src/routes/login/data.json', content: '[]\n' },
+    ],
   }),
   'styles/nova/shared.json': item('shared', { type: 'registry:lib', files: [{ type: 'registry:ui', target: 'shared/render.ts', content: 'export const render = () => {};\n' }] }),
   'themes/neutral.json': item('neutral', {
@@ -84,6 +95,7 @@ beforeAll(async () => {
   server = createServer((request, response) => {
     const path = request.url ?? '';
     if (path.startsWith('/init')) initRequests.push(path);
+    if (path.includes('baseColor=gray')) return void response.writeHead(400, { 'content-type': 'application/json' }).end(JSON.stringify({ error: 'Invalid baseColor "gray"' }));
     const body = path.startsWith('/init') ? initItem : registryFiles[path.replace(/^\/r\//, '')];
     response.writeHead(body ? 200 : 404, { 'content-type': 'application/json' }).end(body ? JSON.stringify(body) : '{}');
   });
@@ -209,6 +221,22 @@ describe('init', () => {
     expect(JSON.parse(read('components.json'))).toMatchObject({ menuColor: 'inverted', menuAccent: 'bold' });
   });
 
+  test('a bold menuAccent in components.json gives the flags path theme the primary color as its accent', async () => {
+    const neutral = registryFiles['themes/neutral.json'];
+    const modes = (primary: string, foreground: string) => ({ primary, 'primary-foreground': foreground, accent: 'oklch(0.97 0 0)', 'accent-foreground': 'oklch(0.205 0 0)' });
+    registryFiles['themes/neutral.json'] = item('neutral', { type: 'registry:theme', files: [], cssVars: { light: modes('oklch(0.205 0 0)', 'oklch(0.985 0 0)'), dark: modes('oklch(0.922 0 0)', 'oklch(0.205 0 0)') } });
+    try {
+      writeFileSync(join(cwd, 'components.json'), JSON.stringify({ menuAccent: 'bold' }));
+      await init({ cwd, ...defaults });
+      const css = read('src/app.css');
+      expect(css).toContain('--accent: oklch(0.205 0 0);\n  --accent-foreground: oklch(0.985 0 0);');
+      expect(css).toContain('--accent: oklch(0.922 0 0);\n  --accent-foreground: oklch(0.205 0 0);');
+      expect(css).not.toContain('oklch(0.97 0 0)');
+    } finally {
+      registryFiles['themes/neutral.json'] = neutral;
+    }
+  });
+
   describe('--preset', () => {
     const b0Url = '/init?style=nova&baseColor=neutral&theme=neutral&iconLibrary=lucide&font=inter&menuAccent=subtle&menuColor=default&radius=default&preset=b0';
 
@@ -308,6 +336,11 @@ describe('init', () => {
       expect([initRequests, existsSync(join(cwd, 'components.json'))]).toEqual([[], false]);
     });
 
+    test('prints the reason /init gives for rejecting a preset', async () => {
+      await expect(init({ cwd, ...defaults, preset: 'btLmMa' })).rejects.toThrow(/failed with 400 Bad Request: Invalid baseColor "gray"$/);
+      expect(existsSync(join(cwd, 'components.json'))).toBe(false);
+    });
+
     test('--preset without a value uses nova with --yes', async () => {
       await init({ cwd, ...defaults, preset: true });
       expect(initRequests[0]).toContain('/init?style=nova&');
@@ -383,13 +416,27 @@ describe('add', () => {
     expect(existsSync(join(cwd, 'src/lib'))).toBe(false);
   });
 
+  test('adds a block: its page in the route, its components under the components alias, its imports on the aliases', async () => {
+    const plan = await add(['login-01'], options());
+    expect(plan.files.map((file) => file.path)).toEqual([
+      'src/lib/components/ui/button/Button.svelte',
+      'src/routes/login/+page.svelte',
+      'src/lib/components/login-form.svelte',
+      'src/routes/login/data.json',
+    ]);
+    expect(plan.devDependencies).toEqual(['@types/d3-scale@^4.0.9']);
+    expect(read('src/routes/login/+page.svelte')).toContain("import LoginForm from '$lib/components/login-form.svelte';");
+    expect(read('src/lib/components/login-form.svelte')).toBe("<script lang=\"ts\">\n  import { Button } from '$lib/components/ui/button';\n</script>\n<form class=\"\"><Button>Login</Button></form>\n");
+    expect(await diff(['login-01'], { cwd })).toBe('Everything is up to date.');
+  });
+
   test('adds an item by URL', async () => {
     const plan = await add([`${registryUrl}/styles/nova/button.json`], options());
     expect(plan.files.map((file) => file.path)).toEqual(['src/lib/components/ui/button/Button.svelte']);
   });
 
   test('names unknown items, failed requests and newer registries', async () => {
-    await expect(add(['buton'], options())).rejects.toThrow('Not in the registry: buton. Available items: button, dialog.');
+    await expect(add(['buton'], options())).rejects.toThrow('Not in the registry: buton. Available items: button, dialog, login-01.');
     await expect(add([`${registryUrl}/styles/nova/missing.json`], options())).rejects.toThrow(`GET ${registryUrl}/styles/nova/missing.json failed with 404 Not Found`);
     registryFiles['index.json'] = { ...(registryFiles['index.json'] as object), registryVersion: 2 };
     try {

@@ -317,68 +317,68 @@ test('hydrates server-rendered collection markup without warnings and navigates 
   expect(warnings).toEqual([]);
 });
 
-test.describe('registry Questionnaire example on the docs page', () => {
+test.describe('registry Questionnaire examples on the docs page', () => {
   test.use({ baseURL: 'http://127.0.0.1:5175' });
   test.describe.configure({ timeout: 120_000 });
 
-  async function example(page: Page, title: string) {
-    const section = page.locator('[data-slot=example]').filter({ has: page.getByText(title, { exact: true }) });
+  async function example(page: Page, name: string) {
+    const section = page.locator(`[data-slot=component-preview][data-name="base/${name}"]`);
     await section.scrollIntoViewIfNeeded();
     return section;
   }
 
-  async function openExample(page: Page, title: string) {
+  async function openExample(page: Page, name: string) {
     await page.goto('/docs/components/questionnaire');
     await expect(page.locator('html')).toHaveAttribute('data-ready', { timeout: 90_000 });
-    return example(page, title);
+    return example(page, name);
   }
 
-  const radio = (section: Locator, name: string) => section.getByRole('radio', { name });
+  const radio = (section: Locator, name: string | RegExp) => section.getByRole('radio', { name });
 
-  test('Standalone advances after a letter shortcut and Enter and shows the choice description, Card selects with a number shortcut and advances, and Dialog opens and shows the questionnaire', async ({ page }) => {
-    let section = await openExample(page, 'Standalone');
+  test('the demo advances after a letter shortcut and Enter and shows the choice description, Card selects with a number shortcut and advances, and Dialog opens and shows the questionnaire', async ({ page }) => {
+    let section = await openExample(page, 'QuestionnaireDemoExample');
     await expect(section.getByRole('progressbar')).toHaveText('Question 1 of 3');
-    await expect(section.getByText('Show when work is delegated and what comes back.')).toBeVisible();
+    await expect(section.getByText('Make delegated work and results easier to follow.')).toBeVisible();
     await expect(section.getByRole('button', { name: 'Skip' })).toBeHidden();
 
-    await radio(section, /Sub-agent delegation/).focus();
-    await page.keyboard.press('a');
-    await expect(radio(section, /Sub-agent delegation/)).toBeChecked();
+    await radio(section, /Tool call timeline/).focus();
+    await page.keyboard.press('c');
+    await expect(radio(section, /Sub-agent handoffs/)).toBeChecked();
     await expect(section.getByRole('progressbar')).toHaveText('Question 1 of 3');
     await page.keyboard.press('Enter');
     await expect(section.getByRole('progressbar')).toHaveText('Question 2 of 3');
     await expect(section.getByText('What should every progress update include?')).toBeVisible();
 
-    section = await example(page, 'Card');
-    await expect(section.getByRole('progressbar')).toHaveText('Question 1 of 3');
-    await expect(section.getByText('Explore one unified interaction pattern.')).toBeVisible();
+    section = await example(page, 'QuestionnaireCardExample');
+    await expect(section.getByRole('progressbar')).toHaveText('Question 1 of 2');
+    await expect(section.getByText('Choose the task that should be handled next.')).toBeVisible();
 
-    await radio(section, /Sub-agent delegation/).focus();
+    await radio(section, 'Fix the failing tests').focus();
     await page.keyboard.press('2');
-    await expect(radio(section, /Question prompts/)).toBeChecked();
+    await expect(radio(section, 'Refactor the data layer')).toBeChecked();
     await page.keyboard.press('Enter');
-    await expect(section.getByRole('progressbar')).toHaveText('Question 2 of 3');
-    await expect(section.getByText('What should every progress update include?')).toBeVisible();
+    await expect(section.getByRole('progressbar')).toHaveText('Question 2 of 2');
+    await expect(section.getByText('What should the final handoff include?')).toBeVisible();
 
-    section = await example(page, 'Dialog');
-    await section.getByRole('button', { name: 'Open questionnaire' }).click();
-    const dialog = page.getByRole('dialog', { name: 'Plan an agent interface' });
+    section = await example(page, 'QuestionnaireDialogExample');
+    await section.getByRole('button', { name: 'Open clarification' }).click();
+    const dialog = page.getByRole('dialog');
     await expect(dialog).toBeVisible();
-    await expect(dialog.getByRole('progressbar')).toHaveText('Question 1 of 3');
-    await expect(dialog.getByText('What should we prototype next?')).toBeVisible();
+    await expect(dialog.getByRole('progressbar')).toHaveText('Question 1 of 2');
+    await expect(dialog.getByText('Which files are in scope?')).toBeVisible();
     await expect(dialog.getByRole('radio')).toHaveCount(3);
   });
 
-  test('Standalone skips the optional second question', async ({ page }) => {
-    const section = await openExample(page, 'Standalone');
-    await radio(section, /Question prompts/).focus();
+  test('the demo skips the optional second question', async ({ page }) => {
+    const section = await openExample(page, 'QuestionnaireDemoExample');
+    await radio(section, /Approval checkpoints/).focus();
     await page.keyboard.press('b');
     await page.keyboard.press('Enter');
     await expect(section.getByRole('progressbar')).toHaveText('Question 2 of 3');
 
     await section.getByRole('button', { name: 'Skip' }).click();
     await expect(section.getByRole('progressbar')).toHaveText('Question 3 of 3');
-    await expect(section.getByText('When should this be revisited?')).toBeVisible();
-    await expect(section.getByRole('button', { name: 'Save answers' })).toBeVisible();
+    await expect(section.getByText('When should work begin?')).toBeVisible();
+    await expect(section.getByRole('button', { name: 'Save plan' })).toBeVisible();
   });
 });

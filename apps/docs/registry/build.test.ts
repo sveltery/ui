@@ -119,9 +119,24 @@ describe('items', () => {
 });
 
 describe('index files', () => {
+  it('serves a block with its page in its route, its components and data, and what it imports', () => {
+    const block = item('styles/vega/dashboard-01.json');
+    expect(item('styles/nova/dashboard-01.json')).toEqual(block);
+    expect([block.type, block.registryDependencies?.includes('chart'), block.registryDependencies?.includes('sidebar'), block.dependencies?.some((spec) => spec.startsWith('layerchart@^'))]).toEqual(['registry:block', true, true, true]);
+    expect(block.files).toContainEqual(expect.objectContaining({ type: 'registry:page', target: 'src/routes/dashboard/+page.svelte' }));
+    expect(block.devDependencies).toEqual(['@types/d3-scale@^4.0.9', '@types/d3-shape@^3.2.0']);
+    expect(block.files).toContainEqual(expect.objectContaining({ type: 'registry:file', target: 'src/routes/dashboard/data.json' }));
+    const page = block.files.find((file) => file.type === 'registry:page')!.content;
+    expect([page.includes("'./components/"), page.includes("'$registry/bases/base/components/app-sidebar.svelte'")]).toEqual([false, true]);
+    expect(item('styles/nova/login-01.json').files.map(({ type, target }) => [type, target])).toEqual([
+      ['registry:page', 'src/routes/login/+page.svelte'],
+      ['registry:component', 'login-form.svelte'],
+    ]);
+  });
+
   it('writes the manifest without shared', () => {
     const manifest = output.get('index.json') as RegistryManifest;
-    expect({ ...manifest, items: manifest.items.slice(0, 4) }).toEqual({
+    expect({ ...manifest, items: manifest.items.slice(0, 4), blocks: manifest.blocks.slice(0, 1) }).toEqual({
       $schema: 'https://sveltery.test/schema/registry.json',
       name: 'sveltery',
       registryVersion: 1,
@@ -134,6 +149,7 @@ describe('index files', () => {
         { name: 'alert-dialog', type: 'registry:ui' },
         { name: 'aspect-ratio', type: 'registry:ui' },
       ],
+      blocks: [{ name: 'preview', type: 'registry:block', description: 'Preview' }],
     });
     expect(manifest.items.map((entry) => entry.name)).not.toContain('shared');
     expect(manifest.items.map((entry) => entry.name)).toContain('button');
