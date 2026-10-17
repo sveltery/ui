@@ -149,7 +149,7 @@ describe('init', () => {
 `);
     expect(first.files.map((file) => file.status)).toEqual(['new', 'changed']);
     expect(first.dependencies).toEqual(['class-variance-authority@^0.7.1', 'tw-animate-css@^1.4.0', '@tabler/icons-svelte@^3.48.0']);
-    expect(first.devDependencies).toEqual(['@sveltery/ui@^0.1.0']);
+    expect(first.devDependencies).toEqual(['@sveltery/ui@^0.1.1']);
 
     const config = read('components.json');
     const css = read('src/app.css');
@@ -249,7 +249,7 @@ describe('init', () => {
 }
 `);
       expect(first.dependencies).toEqual(['class-variance-authority@^0.7.1', 'tw-animate-css@^1.4.0', '@tabler/icons-svelte@^3.48.0', '@fontsource-variable/inter', '@fontsource-variable/playfair-display']);
-      expect(first.devDependencies).toEqual([`${cliPackage}@^0.1.0`]);
+      expect(first.devDependencies).toEqual([`${cliPackage}@^0.1.1`]);
 
       const config = read('components.json');
       const css = read('src/app.css');
