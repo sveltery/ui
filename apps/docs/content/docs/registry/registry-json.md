@@ -112,3 +112,23 @@ Required. Every item the registry serves under each style, with its `name` and `
   ]
 }
 ```
+
+An item can have `meta.links`, an object from a name to a URL, which `docs` prints for the item. Sveltery UI's registry gives each component `docs`, `examples` and, when it is styled on a Base UI component, `api`.
+
+```json title="index.json"
+{
+  "items": [
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "meta": {
+        "links": {
+          "docs": "https://ui.sveltery.dev/docs/components/button",
+          "examples": "https://ui.sveltery.dev/docs/components/button.md",
+          "api": "https://base-ui.com/react/components/button.md"
+        }
+      }
+    }
+  ]
+}
+```

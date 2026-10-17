@@ -181,6 +181,48 @@ Options:
 
 ---
 
+## docs
+
+Use the `docs` command to get the links to a component's docs, its examples and its API reference. It never writes anything and needs no `components.json`.
+
+```bash
+npx @sveltery/ui@latest docs button dropdown-menu
+```
+
+```txt
+button
+  - docs      https://ui.sveltery.dev/docs/components/button
+  - examples  https://ui.sveltery.dev/docs/components/button.md
+  - api       https://base-ui.com/react/components/button.md
+
+dropdown-menu
+  - docs      https://ui.sveltery.dev/docs/components/dropdown-menu
+  - examples  https://ui.sveltery.dev/docs/components/dropdown-menu.md
+  - api       https://base-ui.com/react/components/menu.md
+```
+
+`docs` reads the links from the `meta.links` of each item in the registry's [`index.json`](/docs/registry/registry-json). `docs` is the page. `examples` is the same page as Markdown, with the source of every example inlined, so an agent can read it. `api` is the Base UI API reference as Markdown, which only a component styled on a Base UI component has. A name that is not in the registry is an error, and an item or block that has no links prints a warning.
+
+`--json` prints `{ base, results }`, where each result has `component`, `base` and `links`. `base` is always `base`, because the Base UI variant is the only one.
+
+**Options**
+
+```txt
+Usage: sveltery docs [options] <components...>
+
+get docs, api references and usage examples for components
+
+Arguments:
+  components    component names
+
+Options:
+  --json        output as JSON. (default: false)
+  --cwd <path>  the project root (default: ".")
+  -h, --help    display help for command
+```
+
+---
+
 ## list
 
 Use the `list` command to see every item in the registry. Items in your project are marked `installed`.
@@ -222,4 +264,4 @@ SVELTERY_REGISTRY_URL=https://preview.example.com/r npx @sveltery/ui@latest add 
 
 ## Not supported
 
-The shadcn CLI has commands and options that this CLI does not have yet: `apply`, `preset`, `view`, `search`, `build`, `docs`, `info`, `migrate` and `eject`, namespaced registries, local file paths as items, JavaScript output and the RTL transform. See [Registry](/docs/registry), [JavaScript](/docs/javascript) and [RTL](/docs/rtl) for what works today.
+The shadcn CLI has commands and options that this CLI does not have yet: `apply`, `preset`, `view`, `search`, `build`, `info`, `migrate` and `eject`, namespaced registries, local file paths as items, JavaScript output and the RTL transform. See [Registry](/docs/registry), [JavaScript](/docs/javascript) and [RTL](/docs/rtl) for what works today.

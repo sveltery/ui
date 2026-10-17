@@ -4,6 +4,7 @@ import { log } from '@clack/prompts';
 import { Command } from 'commander';
 import { add } from './commands/add.js';
 import { diff } from './commands/diff.js';
+import { docs } from './commands/docs.js';
 import { init } from './commands/init.js';
 import { list } from './commands/list.js';
 import { update } from './commands/update.js';
@@ -59,6 +60,14 @@ program
   .option('--json', 'print the items as JSON', false)
   .option('--cwd <path>', 'the project root', '.')
   .action(async (options) => void (await list({ ...options, cwd: resolve(options.cwd) })));
+
+program
+  .command('docs')
+  .description('get docs, api references and usage examples for components')
+  .argument('<components...>', 'component names')
+  .option('--json', 'output as JSON.', false)
+  .option('--cwd <path>', 'the project root', '.')
+  .action(async (components: string[], options) => void (await docs(components, { ...options, cwd: resolve(options.cwd) })));
 
 try {
   await program.parseAsync();
