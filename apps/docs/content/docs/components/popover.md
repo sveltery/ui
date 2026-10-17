@@ -117,6 +117,8 @@ A popover with form fields inside.
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the popover in a [DirectionProvider](/docs/components/direction) and set `dir` on `PopoverContent`. Use the language selector to switch the language.
 
 <ComponentPreview name="base/PopoverRtlExample" direction="rtl" align="start" />

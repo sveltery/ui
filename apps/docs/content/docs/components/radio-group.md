@@ -121,6 +121,8 @@ Use `aria-invalid` on `RadioGroupItem` and `data-invalid` on `Field` to show val
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the radio group in a [DirectionProvider](/docs/components/direction) and set `dir` on `RadioGroup`, `RadioGroupItem`, `FieldLabel` and `FieldDescription`. Use the language selector to switch the language.
 
 <ComponentPreview name="base/RadioGroupRtlExample" direction="rtl" align="start" />

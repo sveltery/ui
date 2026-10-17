@@ -144,6 +144,8 @@ You can use the `Avatar` component as a trigger for a dropdown menu.
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the avatars in a [DirectionProvider](/docs/components/direction) and set `dir` on their container. Use the language selector to switch the language.
 
 <ComponentPreview name="base/AvatarRtlExample" direction="rtl" />

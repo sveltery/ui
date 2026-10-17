@@ -254,6 +254,8 @@ A `CodeBlock` inside a [`typeset`](/docs/typeset) container keeps its own styles
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the content in a [DirectionProvider](/docs/components/direction) to lay it out right to left. Code always reads left to right. The header follows the page direction. Use the language selector to switch the language.
 
 <ComponentPreview name="base/CodeBlockRtlExample" direction="rtl" />

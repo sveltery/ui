@@ -147,6 +147,8 @@ Here's an example of a custom resizable textarea. It is a native `textarea` that
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the group in a [DirectionProvider](/docs/components/direction) and set `dir` on the container. Use the language selector to switch the language.
 
 <ComponentPreview name="base/InputGroupRtlExample" direction="rtl" align="start" />
