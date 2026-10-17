@@ -1,7 +1,5 @@
 import { openProject, planItems, selectInstalled } from '../items.js';
-import { filePatch } from '../plan.js';
-
-const count = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
+import { count, filePatch } from '../plan.js';
 
 /** Prints what the registry would change in the installed items, and returns the text it printed. Writes nothing. */
 export async function diff(names: string[], options: { cwd: string }): Promise<string> {
