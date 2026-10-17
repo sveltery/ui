@@ -1,20 +1,17 @@
 <script lang="ts">
-  import type { ChartConfig } from './context.js';
+  import { THEMES, type ChartConfig } from './context.js';
 
   let { id, config }: { id: string; config: ChartConfig } = $props();
 
-  // Format: { THEME_NAME: CSS_SELECTOR }
-  const THEMES = { light: '', dark: '.dark' } as const;
-
-  const colorConfig = $derived(Object.entries(config).filter(([, item]) => item.theme ?? item.color));
-  const css = $derived(
+  const colorConfig = $derived(Object.entries(config).filter(([, config]) => config.theme ?? config.color));
+  const html = $derived(
     Object.entries(THEMES)
       .map(
         ([theme, prefix]) => `
 ${prefix} [data-chart=${id}] {
 ${colorConfig
-  .map(([key, item]) => {
-    const color = item.theme?.[theme as keyof typeof THEMES] ?? item.color;
+  .map(([key, itemConfig]) => {
+    const color = itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ?? itemConfig.color;
     return color ? `  --color-${key}: ${color};` : null;
   })
   .join('\n')}
@@ -25,6 +22,4 @@ ${colorConfig
   );
 </script>
 
-{#if colorConfig.length}
-  <svelte:element this={'style'}>{css}</svelte:element>
-{/if}
+{#if colorConfig.length}<svelte:element this={'style'}>{html}</svelte:element>{/if}

@@ -4,7 +4,7 @@ import type { DocPage, Frontmatter, NavSection } from './types';
 const SECTIONS: Record<string, string> = { components: 'Components', '': 'Get Started', forms: 'Forms', registry: 'Registry' };
 
 /** The sidebar's Sections group, like upstream's `TOP_LEVEL_SECTIONS`. */
-const TOP_LEVEL = ['/docs', '/docs/components', '/docs/installation', '/docs/theming', '/docs/cli', '/docs/registry', '/docs/forms', '/docs/changelog'];
+const TOP_LEVEL = ['/docs', '/docs/components', '/docs/installation', '/docs/theming', '/docs/cli', '/docs/typeset', '/docs/registry', '/docs/forms', '/docs/changelog'];
 
 const metadata = import.meta.glob<Frontmatter>(['/content/docs/**/*.md', '!**/README.md'], { eager: true, import: 'metadata' });
 
