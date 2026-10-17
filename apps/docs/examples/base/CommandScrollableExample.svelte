@@ -16,56 +16,46 @@
         <CommandGroup heading="Navigation">
           <CommandItem>
             <IconPlaceholder lucide="HomeIcon" tabler="IconHome" hugeicons="HomeIcon" phosphor="HouseIcon" remixicon="RiHomeLine" />
-            <span>Home</span>
-            <CommandShortcut>⌘H</CommandShortcut>
+            <span>Home</span><CommandShortcut>⌘H</CommandShortcut>
           </CommandItem>
           <CommandItem>
             <IconPlaceholder lucide="InboxIcon" tabler="IconInbox" hugeicons="InboxIcon" phosphor="TrayIcon" remixicon="RiInboxLine" />
-            <span>Inbox</span>
-            <CommandShortcut>⌘I</CommandShortcut>
+            <span>Inbox</span><CommandShortcut>⌘I</CommandShortcut>
           </CommandItem>
           <CommandItem>
             <IconPlaceholder lucide="FileTextIcon" tabler="IconFileText" hugeicons="File02Icon" phosphor="FileTextIcon" remixicon="RiFileTextLine" />
-            <span>Documents</span>
-            <CommandShortcut>⌘D</CommandShortcut>
+            <span>Documents</span><CommandShortcut>⌘D</CommandShortcut>
           </CommandItem>
           <CommandItem>
             <IconPlaceholder lucide="FolderIcon" tabler="IconFolder" hugeicons="FolderIcon" phosphor="FolderIcon" remixicon="RiFolderLine" />
-            <span>Folders</span>
-            <CommandShortcut>⌘F</CommandShortcut>
+            <span>Folders</span><CommandShortcut>⌘F</CommandShortcut>
           </CommandItem>
         </CommandGroup>
         <CommandSeparator />
         <CommandGroup heading="Actions">
           <CommandItem>
             <IconPlaceholder lucide="PlusIcon" tabler="IconPlus" hugeicons="PlusSignIcon" phosphor="PlusIcon" remixicon="RiAddLine" />
-            <span>New File</span>
-            <CommandShortcut>⌘N</CommandShortcut>
+            <span>New File</span><CommandShortcut>⌘N</CommandShortcut>
           </CommandItem>
           <CommandItem>
             <IconPlaceholder lucide="FolderPlusIcon" tabler="IconFolderPlus" hugeicons="FolderAddIcon" phosphor="FolderPlusIcon" remixicon="RiFolderAddLine" />
-            <span>New Folder</span>
-            <CommandShortcut>⇧⌘N</CommandShortcut>
+            <span>New Folder</span><CommandShortcut>⇧⌘N</CommandShortcut>
           </CommandItem>
           <CommandItem>
             <IconPlaceholder lucide="CopyIcon" tabler="IconCopy" hugeicons="CopyIcon" phosphor="CopyIcon" remixicon="RiFileCopyLine" />
-            <span>Copy</span>
-            <CommandShortcut>⌘C</CommandShortcut>
+            <span>Copy</span><CommandShortcut>⌘C</CommandShortcut>
           </CommandItem>
           <CommandItem>
             <IconPlaceholder lucide="ScissorsIcon" tabler="IconCut" hugeicons="ScissorIcon" phosphor="ScissorsIcon" remixicon="RiScissorsLine" />
-            <span>Cut</span>
-            <CommandShortcut>⌘X</CommandShortcut>
+            <span>Cut</span><CommandShortcut>⌘X</CommandShortcut>
           </CommandItem>
           <CommandItem>
             <IconPlaceholder lucide="ClipboardPasteIcon" tabler="IconClipboard" hugeicons="ClipboardIcon" phosphor="ClipboardIcon" remixicon="RiClipboardLine" />
-            <span>Paste</span>
-            <CommandShortcut>⌘V</CommandShortcut>
+            <span>Paste</span><CommandShortcut>⌘V</CommandShortcut>
           </CommandItem>
           <CommandItem>
             <IconPlaceholder lucide="TrashIcon" tabler="IconTrash" hugeicons="DeleteIcon" phosphor="TrashIcon" remixicon="RiDeleteBinLine" />
-            <span>Delete</span>
-            <CommandShortcut>⌫</CommandShortcut>
+            <span>Delete</span><CommandShortcut>⌫</CommandShortcut>
           </CommandItem>
         </CommandGroup>
         <CommandSeparator />
@@ -80,31 +70,26 @@
           </CommandItem>
           <CommandItem>
             <IconPlaceholder lucide="ZoomInIcon" tabler="IconZoomIn" hugeicons="ZoomInAreaIcon" phosphor="MagnifyingGlassPlusIcon" remixicon="RiZoomInLine" />
-            <span>Zoom In</span>
-            <CommandShortcut>⌘+</CommandShortcut>
+            <span>Zoom In</span><CommandShortcut>⌘+</CommandShortcut>
           </CommandItem>
           <CommandItem>
             <IconPlaceholder lucide="ZoomOutIcon" tabler="IconZoomOut" hugeicons="ZoomOutAreaIcon" phosphor="MagnifyingGlassMinusIcon" remixicon="RiSearchEyeLine" />
-            <span>Zoom Out</span>
-            <CommandShortcut>⌘-</CommandShortcut>
+            <span>Zoom Out</span><CommandShortcut>⌘-</CommandShortcut>
           </CommandItem>
         </CommandGroup>
         <CommandSeparator />
         <CommandGroup heading="Account">
           <CommandItem>
             <IconPlaceholder lucide="UserIcon" tabler="IconUser" hugeicons="UserIcon" phosphor="UserIcon" remixicon="RiUserLine" />
-            <span>Profile</span>
-            <CommandShortcut>⌘P</CommandShortcut>
+            <span>Profile</span><CommandShortcut>⌘P</CommandShortcut>
           </CommandItem>
           <CommandItem>
             <IconPlaceholder lucide="CreditCardIcon" tabler="IconCreditCard" hugeicons="CreditCardIcon" phosphor="CreditCardIcon" remixicon="RiBankCardLine" />
-            <span>Billing</span>
-            <CommandShortcut>⌘B</CommandShortcut>
+            <span>Billing</span><CommandShortcut>⌘B</CommandShortcut>
           </CommandItem>
           <CommandItem>
             <IconPlaceholder lucide="SettingsIcon" tabler="IconSettings" hugeicons="SettingsIcon" phosphor="GearIcon" remixicon="RiSettingsLine" />
-            <span>Settings</span>
-            <CommandShortcut>⌘S</CommandShortcut>
+            <span>Settings</span><CommandShortcut>⌘S</CommandShortcut>
           </CommandItem>
           <CommandItem>
             <IconPlaceholder lucide="BellIcon" tabler="IconBell" hugeicons="NotificationIcon" phosphor="BellIcon" remixicon="RiNotificationLine" />

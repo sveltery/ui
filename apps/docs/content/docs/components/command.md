@@ -133,12 +133,6 @@ Set `shouldFilter={false}` when you filter the items yourself, for example with 
 </Command>
 ```
 
-<Callout title="Ranked order is visual">
-
-While a search is active, the menu shows results in ranked order with CSS `order`. The DOM keeps the source order, so a screen reader in browse mode reads the results in source order. The arrow keys and the announced active option follow the order on screen.
-
-</Callout>
-
 ## Basic
 
 A simple command menu in a dialog.

@@ -1,11 +1,10 @@
 import { createContext, untrack } from 'svelte';
 import type { Attachment } from 'svelte/attachments';
-import { SvelteMap } from 'svelte/reactivity';
 import { commandScore } from './command-score.js';
 import type { GroupModel, ItemModel } from './item-state.svelte.js';
+import { ANCHOR_PREFIX, type Container, type Part } from './parts.svelte.js';
 import { rank, step, stepGroup, type CommandFilter, type View } from './rank.js';
 import type { CommandState } from './types.js';
-import { inDocumentOrder } from './utils.js';
 
 /** cmdk's default filter: `commandScore` over the value and its keywords. */
 export const defaultFilter: CommandFilter = (value, search, keywords) => commandScore(value, search, keywords);
@@ -34,14 +33,18 @@ export class CommandModel {
    * markup and the first client render agree.
    */
   settled = $state(false);
-  // Maps mutate in place. Effect teardowns read state as it was before the change, so reassigning a filtered copy
-  // from an unregister would drop an entry registered in the same flush.
-  readonly #items = new SvelteMap<ItemModel, Element>();
-  readonly #groups = new SvelteMap<GroupModel, Element>();
+  // Parts register while their component initializes, which may not write state, so the sets are plain and `#layout`
+  // is bumped once they mount.
+  // eslint-disable-next-line svelte/prefer-svelte-reactivity -- see above
+  readonly #items = new Set<ItemModel>();
+  // eslint-disable-next-line svelte/prefer-svelte-reactivity -- see above
+  readonly #groups = new Set<GroupModel>();
+  #sequence = 0;
+  #element: HTMLElement | undefined;
   #search = $state.raw<SearchSource>();
   /** `#search` without reactivity, for the unlink, which runs in a teardown. */
   #linked: SearchSource | undefined;
-  /** Bumped when nodes move inside Root, since document order is not otherwise reactive. */
+  /** Bumped when parts register or nodes change inside Root, since document order is not otherwise reactive. */
   #layout = $state(0);
   #lastSearch: string | undefined;
   /** The picked item. With duplicate values, it tells which of the items that share the bound value is selected. */
@@ -70,10 +73,44 @@ export class CommandModel {
     return this.#options.disablePointerSelection;
   }
 
+  /**
+   * Each part leaves a comment at its place in the markup, since its element renders elsewhere: in the ranked list of
+   * its container. Until Root mounts, registration order stands in, which is the markup's order on a first render.
+   */
+  #anchors = $derived.by(() => {
+    void this.#layout;
+    // eslint-disable-next-line svelte/prefer-svelte-reactivity -- built and returned in one derivation
+    const anchors = new Map<string, Comment>();
+    if (!this.#element) return anchors;
+    const walker = document.createTreeWalker(this.#element, NodeFilter.SHOW_COMMENT);
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+      const text = (node as Comment).data;
+      if (text.startsWith(ANCHOR_PREFIX)) anchors.set(text.slice(ANCHOR_PREFIX.length), node as Comment);
+    }
+    return anchors;
+  });
+
+  /**
+   * Sorts parts into the order of their markup. A group's items anchor inside its rendered element, after every anchor
+   * of the list, so a grouped item is placed by its group first.
+   */
+  inMarkupOrder<T extends Part>(parts: Iterable<T>): T[] {
+    const anchors = this.#anchors;
+    const compare = (first: Part, second: Part) => {
+      const a = anchors.get(first.anchor);
+      const b = anchors.get(second.anchor);
+      if (!a || !b) return first.sequence - second.sequence;
+      const position = a.compareDocumentPosition(b);
+      return position & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : position & Node.DOCUMENT_POSITION_PRECEDING ? 1 : 0;
+    };
+    const outer = (part: Part) => (part.kind === 'item' && (part as ItemModel).group) || part;
+    return [...parts].sort((first, second) => compare(outer(first), outer(second)) || compare(first, second));
+  }
+
   // Split from the ranking so a keystroke does not sort by document position again.
   #ordered = $derived.by(() => {
     void this.#layout;
-    return { items: inDocumentOrder(this.#items), groups: inDocumentOrder(this.#groups) };
+    return { items: this.inMarkupOrder(this.#items), groups: this.inMarkupOrder(this.#groups) };
   });
   #view = $derived.by(() =>
     rank({ ...this.#ordered, search: this.search, filter: this.#options.shouldFilter ? (this.#options.filter ?? defaultFilter) : null })
@@ -96,16 +133,49 @@ export class CommandModel {
 
   readonly state: CommandState = stateOf(this);
 
-  /** Returns the unregister. */
-  register(item: ItemModel, element: Element): () => void {
-    this.#items.set(item, element);
-    return () => this.#items.delete(item);
+  /** The next registration's place, which orders parts until their anchors can be read. */
+  sequence(): number {
+    return this.#sequence++;
   }
-  /** Returns the unregister. */
-  registerGroup(group: GroupModel, element: Element): () => void {
-    this.#groups.set(group, element);
-    return () => this.#groups.delete(group);
+  /** Called while the item initializes. Returns the unregister. */
+  register(item: ItemModel): () => void {
+    this.#items.add(item);
+    return () => {
+      this.#items.delete(item);
+      this.relayout();
+    };
   }
+  /** Called while the group initializes. Returns the unregister. */
+  registerGroup(group: GroupModel): () => void {
+    this.#groups.add(group);
+    return () => {
+      this.#groups.delete(group);
+      this.relayout();
+    };
+  }
+  relayout(): void {
+    untrack(() => (this.#layout += 1));
+  }
+
+  /**
+   * The parts a container renders, in order. Unranked, that is the markup's order. Ranked, the parts that cmdk's sort
+   * leaves alone keep it, then the ones it moves follow, best first. Items the search filters out are left out, so
+   * they unmount.
+   */
+  arrange(container: Container, parts: readonly Part[]): Part[] {
+    const inOrder = this.inMarkupOrder(parts);
+    const view = this.view;
+    if (!view) return inOrder;
+    const shown = inOrder.filter((part) => part.kind !== 'item' || view.visibleItems.has(part as ItemModel));
+    if (!view.ranked) return shown;
+    const moved: readonly Part[] = container.group
+      ? (view.groupMoved.get(container.group) ?? [])
+      : [...view.looseMoved, ...view.groupOrder].filter((part) => container.has(part));
+    // eslint-disable-next-line svelte/prefer-svelte-reactivity -- a local lookup
+    const moving = new Set(moved);
+    return [...shown.filter((part) => !moving.has(part)), ...moved];
+  }
+
   /** Input's bindable value is the search. Returns the unlink. */
   linkSearch(source: SearchSource): () => void {
     this.#search = this.#linked = source;
@@ -121,6 +191,10 @@ export class CommandModel {
     if (scroll && item) this.#scrollRequest = { item };
     const value = item?.value ?? '';
     if (value === this.value) return;
+    const focused = document.activeElement;
+    if (focused?.hasAttribute('cmdk-input') || focused?.hasAttribute('cmdk-root')) {
+      (this.#element?.querySelector<HTMLElement>('[cmdk-input]') ?? this.#element?.querySelector<HTMLElement>('[cmdk-list]'))?.focus();
+    }
     this.#options.value = value;
     this.#options.onValueChange?.(value);
   }
@@ -212,13 +286,18 @@ export class CommandModel {
   }
 
   attach: Attachment<HTMLElement> = (element) => {
+    this.#element = element;
+    this.relayout();
     this.settled = true;
     const observer = new MutationObserver((records) => {
       this.#measure();
       if (records.some((record) => record.type === 'childList')) this.#layout += 1;
     });
     observer.observe(element, { childList: true, characterData: true, subtree: true });
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      this.#element = undefined;
+    };
   };
 }
 

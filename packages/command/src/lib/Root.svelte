@@ -45,6 +45,5 @@
   }}
   {@attach root.attach}
 >
-  <label cmdk-label="" for={root.ids.input} id={root.ids.label} style={VISUALLY_HIDDEN_STYLE}>{label ?? rest['aria-label']}</label>
-  {@render children?.()}
+  <label cmdk-label="" for={root.ids.input} id={root.ids.label} style={VISUALLY_HIDDEN_STYLE}>{label}</label>{@render children?.()}
 </div>
