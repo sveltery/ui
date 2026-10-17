@@ -26,6 +26,7 @@
     "@sveltery/svelte": "workspace:*",
     "@sveltery/ui": "workspace:*",
     "@tanstack/svelte-table": "9.3.1",
+    "chrono-node": "2.10.3",
     "class-variance-authority": "0.7.1",
     "cn": "0.2.2",
     "d3-scale": "4.0.2",
