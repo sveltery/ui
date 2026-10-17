@@ -178,7 +178,7 @@ The directory for `ui` components. Change it to install components somewhere els
 }
 ```
 
-The value must start with `$lib` or `#lib`, which the CLI reads as `src/lib`, or with `./` or `../`, which it reads relative to the project root. The CLI stops with `Cannot place files for the alias` for any other value.
+The value must start with `$lib` or `#lib`, which the CLI reads as `src/lib`, or with `./` or `../`, which it reads relative to the project root. In a monorepo, it can also be a path that a workspace package exports, such as `@workspace/ui/components`. The CLI then installs `ui` components in that package, with the settings of its own `components.json`. See [Monorepo](/docs/monorepo). The CLI stops with `Cannot place files for the alias` for any other value.
 
 ### aliases.components
 

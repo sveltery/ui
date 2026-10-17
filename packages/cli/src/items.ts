@@ -3,19 +3,35 @@ import { join } from 'node:path';
 import { CONFIG_FILE, parseConfig, type Config } from './config.js';
 import { CliError, literal, object, optional, ParseError, string } from './parse.js';
 import { missingPackages, planFile, type Plan, type PlannedFile } from './plan.js';
-import { aliasPath, loadEnv, readJson } from './project.js';
+import { aliasPath, loadEnv, readJson, resolveAlias } from './project.js';
 import { fetchItem, namespaceConfigs, openRegistry, parseItemRef, resolveItems, resolveRegistryUrl, styleNames, type ItemRef, type Namespaces, type Registry, type RegistryFile, type RegistryItem, type StyleName } from './registry.js';
 import { applyTransforms, type TransformContext } from './transforms.js';
 
-/** A project that ran `init`: its root, its components.json, the registry it points at, and where items are written (relative to `cwd`). */
-export type Project = { cwd: string; config: Config; registry: Registry; uiDir: string };
+/**
+ * A project that ran `init`: its root, its components.json, the registry it points at, and where ui files are written
+ * (relative to `cwd`). In a monorepo app whose `aliases.ui` names another workspace package, `ui` is that package: its
+ * root relative to `cwd` and its own components.json. Its config transforms the ui files, and its package.json gets the packages.
+ */
+export type Project = { cwd: string; config: Config; registry: Registry; uiDir: string; ui?: { dir: string; config: Config } };
+
+/** The project at `cwd` with `config`, following `aliases.ui` into another workspace package as upstream's `getWorkspaceConfig` does. */
+export function projectOf(cwd: string, config: Config, registry: Registry): Project {
+  const { path, packageDir } = resolveAlias(cwd, config.aliases.ui);
+  if (packageDir === '') return { cwd, config, registry, uiDir: path };
+  const uiConfigPath = join(cwd, packageDir, CONFIG_FILE);
+  if (!existsSync(uiConfigPath)) {
+    throw new CliError(`Could not load the workspace config in ${packageDir}. Add ${CONFIG_FILE} to this workspace and configure its aliases, then try again.`);
+  }
+  const uiConfig = parseConfig(readJson(uiConfigPath));
+  return { cwd, config, registry, uiDir: join(packageDir, aliasPath(join(cwd, packageDir), uiConfig.aliases.ui)), ui: { dir: packageDir, config: uiConfig } };
+}
 
 export async function openProject(cwd: string): Promise<Project> {
   const configPath = join(cwd, CONFIG_FILE);
   if (!existsSync(configPath)) throw new CliError(`No ${CONFIG_FILE} in ${cwd}. Run \`npx @sveltery/ui@latest init\` first.`);
   const config = parseConfig(readJson(configPath));
   const registry = await openRegistry(resolveRegistryUrl(config.registry), { configs: config.registries ?? {}, env: loadEnv(cwd) });
-  return { cwd, config, registry, uiDir: aliasPath(config.aliases.ui) };
+  return projectOf(cwd, config, registry);
 }
 
 const catalogConfig = object({ style: optional((value) => value), registry: optional(string), registries: optional(namespaceConfigs) });
@@ -56,40 +72,65 @@ export async function openCatalog(cwd: string): Promise<{ registry: Registry; st
 }
 
 /** Where a registry file goes, relative to `cwd`: by its type, under the ui or components alias, or from the project root. */
-export function filePath({ config, uiDir }: Project, file: RegistryFile): string {
+export function filePath({ cwd, config, uiDir }: Project, file: RegistryFile): string {
   if (file.type === 'registry:ui') return join(uiDir, file.target);
-  if (file.type === 'registry:component') return join(aliasPath(config.aliases.components), file.target);
+  if (file.type === 'registry:component') return join(aliasPath(cwd, config.aliases.components), file.target);
   return join(file.target);
 }
 
-/** What writing `items` into the project would do: every file transformed for this project, and the packages it lacks. `css` is the stylesheet as it will be, when it is not the one on disk. */
-export function planItems(project: Project, items: RegistryItem[], css?: string): Plan {
-  const { cwd, config } = project;
-  const cssPath = join(cwd, config.tailwind.css);
-  const ctx: TransformContext = {
+/** How files are transformed for the project at `root` with `config`. `css` is its stylesheet as it will be, when it is not the one on disk. */
+function transformContext(root: string, config: Config, css: string | undefined): TransformContext {
+  const cssPath = join(root, config.tailwind.css);
+  return {
     iconLibrary: config.iconLibrary,
     menuColor: config.menuColor,
     aliases: config.aliases,
     fontHeading: (css ?? (existsSync(cssPath) ? readFileSync(cssPath, 'utf8') : '')).includes('--font-heading'),
     rtl: config.rtl ?? false,
   };
+}
+
+/** Whether the app's components.json names the ui package's stylesheet, as the template's does, rather than a stylesheet of its own. */
+export const sharesStylesheet = ({ cwd, config, ui }: Project) => ui !== undefined && join(cwd, config.tailwind.css) === join(cwd, ui.dir, ui.config.tailwind.css);
+
+/**
+ * What writing `items` into the project would do: every file transformed for this project, and the packages it lacks.
+ * `css` is the stylesheet as it will be, when it is not the one on disk. In a monorepo app, ui files are transformed with
+ * the ui package's config, as upstream's `addWorkspaceComponents` does, and their packages go to that package.
+ */
+export function planItems(project: Project, items: RegistryItem[], css?: string): Plan {
+  const { cwd, config, ui } = project;
+  const ctx = transformContext(cwd, config, css);
+  const uiCtx = ui === undefined ? ctx : transformContext(join(cwd, ui.dir), ui.config, sharesStylesheet(project) ? css : undefined);
   const files = new Map<string, PlannedFile>();
-  const dependencies: string[] = [];
-  const devDependencies: string[] = [];
+  const app = { dependencies: [] as string[], devDependencies: [] as string[] };
+  const workspace = { dependencies: [] as string[], devDependencies: [] as string[] };
+  const isUi = (file: RegistryFile) => file.type === 'registry:ui';
   for (const item of items) {
-    dependencies.push(...(item.dependencies ?? []));
-    devDependencies.push(...(item.devDependencies ?? []));
+    // An item's packages are for its own files, so they go where its files go, to both workspaces when its files go to both.
+    // One without files, such as a font, styles the ui package's CSS.
+    const targets = ui === undefined ? [app] : item.files.every(isUi) ? [workspace] : item.files.some(isUi) ? [app, workspace] : [app];
+    for (const packages of targets) {
+      packages.dependencies.push(...(item.dependencies ?? []));
+      packages.devDependencies.push(...(item.devDependencies ?? []));
+    }
     for (const file of item.files) {
-      const result = applyTransforms(file, ctx);
-      dependencies.push(...result.dependencies);
+      const result = applyTransforms(file, isUi(file) ? uiCtx : ctx);
+      (ui !== undefined && isUi(file) ? workspace : app).dependencies.push(...result.dependencies);
       const path = filePath(project, file);
       files.set(path, { ...planFile(cwd, path, result.content), item: item.name });
     }
   }
-  return { files: [...files.values()], dependencies: missingPackages(cwd, dependencies), devDependencies: missingPackages(cwd, devDependencies) };
+  const uiRoot = join(cwd, ui?.dir ?? '');
+  return {
+    files: [...files.values()],
+    dependencies: missingPackages(cwd, app.dependencies),
+    devDependencies: missingPackages(cwd, app.devDependencies),
+    ...(ui === undefined ? {} : { workspace: { dir: ui.dir, dependencies: missingPackages(uiRoot, workspace.dependencies), devDependencies: missingPackages(uiRoot, workspace.devDependencies) } }),
+  };
 }
 
-export const refOf = (name: string): ItemRef => ({ kind: 'name', name });
+const refOf = (name: string): ItemRef => ({ kind: 'name', name });
 
 /** Every item the registry lists, in manifest order. */
 export function fetchAllItems({ registry, config }: Project): Promise<RegistryItem[]> {

@@ -35,6 +35,12 @@ npx @sveltery/ui@latest init --preset sera
 
 `--preset` with no value lists the presets. Pick **Custom** to get a link to the Create page.
 
+To create a new monorepo with a SvelteKit app in `apps/web` and the shared `@workspace/ui` package in `packages/ui`, pass `--monorepo` in an empty directory. `--name` sets the folder it creates, `sveltekit-monorepo` by default. `init` writes the theme and the button to `packages/ui`, gives `apps/web/components.json` the same settings, and installs the packages. Run in a monorepo it created, `init --monorepo` sets up both workspaces again and leaves your components alone. It adds the button again only when `packages/ui` has none, as when a first run stopped before it added the button. It asks for the settings, and checks that the registry serves the preset and the style, before it creates anything. See [Monorepo](/docs/monorepo).
+
+```bash
+npx @sveltery/ui@latest init --monorepo
+```
+
 **Options**
 
 ```txt
@@ -52,6 +58,8 @@ Options:
   --css <path>           the CSS file that imports Tailwind
   --rtl                  enable RTL support
   --no-rtl               disable RTL support
+  --monorepo             scaffold a monorepo project
+  -n, --name <name>      the name for the new project
   --cwd <path>           the project root (default: ".")
   --no-install           do not install packages
   -h, --help             display help for command
@@ -77,7 +85,7 @@ Use the `add` command to add components and their dependencies to your project.
 npx @sveltery/ui@latest add button dialog
 ```
 
-`add` fetches each item and the items it depends on. It shows the files it will write and the packages it will install, then asks you to continue. Files go to the `aliases.ui` directory in `components.json`, which is `src/lib/components/ui` by default.
+`add` fetches each item and the items it depends on. It shows the files it will write and the packages it will install, then asks you to continue. Files go to the `aliases.ui` directory in `components.json`, which is `src/lib/components/ui` by default. In a [monorepo](/docs/monorepo) app whose `aliases.ui` names another workspace package, such as `@workspace/ui/components`, the ui files and their packages go to that package.
 
 If a file already exists and differs, `add` asks before it overwrites it. It skips identical files.
 
@@ -238,6 +246,8 @@ npx @sveltery/ui@latest apply sera --only theme,font
 ```
 
 `theme` sets the base color, the theme tokens, the radius and the menu look. `font` sets the fonts. An `/init` URL with an `only` parameter applies the same parts, and `--only` overrides it.
+
+In a [monorepo](/docs/monorepo) app, `apply` also writes the style, icon library, base color, menu and RTL settings to the `components.json` of the ui package and re-adds the ui components with them. When the app uses the ui package's stylesheet, it installs the packages of the theme and the fonts in the ui package. A partial apply without `theme` leaves the ui package's `components.json` alone. Run at the root of a monorepo, `apply` lists the apps to run it in.
 
 With no preset, `apply` prints a link to the Create page, where you can build one.
 

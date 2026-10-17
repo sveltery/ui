@@ -9,7 +9,7 @@ import { diff } from './commands/diff.js';
 import { docs } from './commands/docs.js';
 import { eject } from './commands/eject.js';
 import { info } from './commands/info.js';
-import { init } from './commands/init.js';
+import { init, initMonorepo } from './commands/init.js';
 import { migrate } from './commands/migrate.js';
 import { presetDecode, presetOpen, presetResolve, presetUrl } from './commands/preset.js';
 import { search } from './commands/search.js';
@@ -31,9 +31,11 @@ program
   .option('--css <path>', 'the CSS file that imports Tailwind')
   .option('--rtl', 'enable RTL support')
   .option('--no-rtl', 'disable RTL support')
+  .option('--monorepo', 'scaffold a monorepo project')
+  .option('-n, --name <name>', 'the name for the new project')
   .option('--cwd <path>', 'the project root', '.')
   .option('--no-install', 'do not install packages')
-  .action(async (options) => void (await init({ ...options, cwd: resolve(options.cwd) })));
+  .action(async ({ monorepo, ...options }) => void (await (monorepo ? initMonorepo : init)({ ...options, cwd: resolve(options.cwd) })));
 
 program
   .command('apply')
