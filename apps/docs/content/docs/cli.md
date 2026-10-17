@@ -50,6 +50,8 @@ Options:
   --icons <library>      the icon library
   --base-color <name>    the base color of the theme
   --css <path>           the CSS file that imports Tailwind
+  --rtl                  enable RTL support
+  --no-rtl               disable RTL support
   --cwd <path>           the project root (default: ".")
   --no-install           do not install packages
   -h, --help             display help for command
@@ -62,6 +64,8 @@ Options:
 | `--base-color` | `neutral`, `stone`, `zinc`, `mauve`, `olive`, `mist` or `taupe` |
 
 `--preset` cannot be combined with `--style`, `--icons` or `--base-color`. With `-y` and no value, `--preset` uses `nova`.
+
+`--rtl` writes `rtl: true` to `components.json`, so `add` turns physical classes into logical ones. It works with or without `--preset`. See [RTL](/docs/rtl).
 
 ---
 
@@ -269,6 +273,57 @@ Options:
 
 ---
 
+## migrate
+
+Use the `migrate` command to run a migration on your project.
+
+```bash
+npx @sveltery/ui@latest migrate [migration]
+```
+
+**Available migrations**
+
+| Migration | Description |
+| --- | --- |
+| `rtl` | Migrate your components to support RTL (right-to-left). |
+
+**Options**
+
+```txt
+Usage: sveltery migrate [options] [migration] [path]
+
+run a migration
+
+Arguments:
+  migration     the migration to run
+  path          a file, directory or glob pattern to migrate; the ui directory
+                when omitted
+
+Options:
+  -l, --list    list all migrations (default: false)
+  -y, --yes     skip the confirmation prompt (default: false)
+  --cwd <path>  the project root (default: ".")
+  -h, --help    display help for command
+```
+
+### migrate rtl
+
+The `rtl` migration rewrites the components you already installed for right-to-left layouts.
+
+```bash
+npx @sveltery/ui@latest migrate rtl
+```
+
+It sets `rtl: true` in `components.json`, then changes physical classes such as `ml-2` and `left-0` to logical ones such as `ms-2` and `start-0` in each file. Pass a file, a directory or a glob pattern with `*` to migrate only those files. A glob needs Node 22 or later.
+
+```bash
+npx @sveltery/ui@latest migrate rtl "src/lib/components/ui/dropdown-menu/**"
+```
+
+It skips a file it cannot parse, with a warning, and lists the calendar, pagination and sidebar files it finds for you to check by hand. The icons that `add` would flip lose their flip marker when an LTR project adds them, so run `update` afterwards to get them back. See [Manual Migration](/docs/rtl#manual-migration-optional).
+
+---
+
 ## Environment variables
 
 `SVELTERY_REGISTRY_URL` sets the registry root, for example a preview deploy's `/r` URL. It takes precedence over the `registry` key in `components.json`. `init` writes the URL it used to that key.
@@ -279,4 +334,4 @@ SVELTERY_REGISTRY_URL=https://preview.example.com/r npx @sveltery/ui@latest add 
 
 ## Not supported
 
-The shadcn CLI has commands and options that this CLI does not have yet: `apply`, `preset`, `search`, `build`, `docs`, `info`, `migrate` and `eject`, namespaced registries, local file paths as items, JavaScript output and the RTL transform. See [Registry](/docs/registry), [JavaScript](/docs/javascript) and [RTL](/docs/rtl) for what works today.
+The shadcn CLI has commands and options that this CLI does not have yet: `apply`, `preset`, `search`, `build`, `docs`, `info` and `eject`, the `cn`, `icons`, `base-color` and `radix` migrations, namespaced registries, local file paths as items and JavaScript output. See [Registry](/docs/registry) and [JavaScript](/docs/javascript) for what works today.

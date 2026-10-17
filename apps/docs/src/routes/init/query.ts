@@ -10,7 +10,7 @@ export const INIT_PARTS = ['theme', 'font'] as const;
 export type InitPart = (typeof INIT_PARTS)[number];
 
 /** `parts` is set when `only` asks for a partial item. */
-export type InitRequest = { config: InitConfig; pointer: boolean; parts?: InitPart[] };
+export type InitRequest = { config: InitConfig; pointer: boolean; rtl: boolean; parts?: InitPart[] };
 
 export type ParseResult = { ok: true; request: InitRequest } | { ok: false; error: string };
 
@@ -67,7 +67,6 @@ export function parseInitQuery(params: URLSearchParams): ParseResult {
   try {
     const base = params.get('base');
     if (base !== null && base !== 'base') throw new QueryError(`Invalid base "${base}". Sveltery has only the base base.`);
-    if (params.get('rtl') === 'true') throw new QueryError('rtl is not supported yet.');
 
     const fields = rawFields(params);
     const baseColor = oneOf('baseColor', fields.baseColor, baseColors);
@@ -83,7 +82,7 @@ export function parseInitQuery(params: URLSearchParams): ParseResult {
       menuAccent: oneOf('menuAccent', fields.menuAccent, PRESET_MENU_ACCENTS),
       menuColor: oneOf('menuColor', fields.menuColor, PRESET_MENU_COLORS),
     };
-    return { ok: true, request: { config, pointer: params.get('pointer') === 'true', parts: parseParts(params.get('only')) } };
+    return { ok: true, request: { config, pointer: params.get('pointer') === 'true', rtl: params.get('rtl') === 'true', parts: parseParts(params.get('only')) } };
   } catch (error) {
     if (error instanceof QueryError) return { ok: false, error: error.message };
     throw error;
