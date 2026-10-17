@@ -145,5 +145,4 @@ export interface Labels {
 export interface DateLibLike {
   readonly options: DateLibOptions;
   format: (date: Date, pattern: string) => string;
-  formatMonthYear: (date: Date) => string;
 }

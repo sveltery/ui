@@ -72,7 +72,6 @@ interface CommonProps extends RootAttributes {
   /** `around` puts the buttons around the caption instead of in a shared nav. */
   navLayout?: 'around' | 'after';
   captionLayout?: CaptionLayout;
-  reverseYears?: boolean;
   /** Always render six weeks per month. */
   fixedWeeks?: boolean;
   /** Use ISO weeks: Monday first, ISO week numbers. */
@@ -122,7 +121,6 @@ interface NoSelection {
   min?: never;
   max?: never;
   excludeDisabled?: never;
-  resetOnSelect?: never;
 }
 
 export interface SingleProps extends Omit<NoSelection, 'required'> {
@@ -155,8 +153,6 @@ export interface RangeProps {
   max?: number;
   /** Restart the range when it would include a disabled day. */
   excludeDisabled?: boolean;
-  /** Start a new range on the next click once a range is complete. */
-  resetOnSelect?: boolean;
   onSelect?: SelectHandler<DateRange | undefined>;
 }
 

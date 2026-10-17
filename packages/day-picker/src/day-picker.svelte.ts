@@ -1,7 +1,7 @@
 import { DateLib } from './date-lib.js';
 import { calculateFocusTarget, getNextFocus } from './focus.js';
 import { clampMonth, getInitialMonth, getMonths, getNavMonths, getNextMonth, getPreviousMonth, isSameCalendarDay } from './grid.js';
-import { isDateRange, rangeIncludesDate, toZoneMatchers } from './matchers.js';
+import { isDateRange, rangeIncludesDate } from './matchers.js';
 import { createGetModifiers } from './modifiers.js';
 import type { DayPickerProps } from './props.js';
 import { isSelected, selectMultiple, selectRange, selectSingle } from './selection.js';
@@ -65,8 +65,6 @@ export class DayPickerState {
   readonly previousMonth = $derived(getPreviousMonth(this.firstMonth, this.navStart, this.grid, this.lib));
   readonly nextMonth = $derived(getNextMonth(this.firstMonth, this.navEnd, this.grid, this.lib));
 
-  readonly disabled = $derived.by(() => toZoneMatchers(this.input.props.disabled, this.lib));
-  readonly hidden = $derived.by(() => toZoneMatchers(this.input.props.hidden, this.lib));
 
   readonly selected: Selected = $derived.by(() => {
     const { selected } = this.input;
@@ -81,8 +79,7 @@ export class DayPickerState {
 
   readonly #getModifiers = $derived.by(() => {
     const p = this.input.props;
-    const custom = p.modifiers && Object.fromEntries(Object.entries(p.modifiers).map(([name, matcher]) => [name, toZoneMatchers(matcher, this.lib)]));
-    const context = { disabled: this.disabled, hidden: this.hidden, modifiers: custom, showOutsideDays: p.showOutsideDays, today: this.today, navStart: this.navStart, navEnd: this.navEnd };
+    const context = { disabled: p.disabled, hidden: p.hidden, modifiers: p.modifiers, showOutsideDays: p.showOutsideDays, today: this.today, navStart: this.navStart, navEnd: this.navEnd };
     return createGetModifiers(this.days, context, this.lib);
   });
 
@@ -143,10 +140,9 @@ export class DayPickerState {
     const from = this.focused;
     if (!from) return;
     const p = this.input.props;
-    const next = getNextFocus(moveBy, moveDir, from, this.navStart, this.navEnd, { disabled: this.disabled, hidden: this.hidden, ISOWeek: p.ISOWeek }, this.lib);
+    const next = getNextFocus(moveBy, moveDir, from, this.navStart, this.navEnd, { disabled: p.disabled, hidden: p.hidden, ISOWeek: p.ISOWeek }, this.lib);
     if (!next) return;
     const inCalendar = this.days.some((day) => isSameCalendarDay(day, next, this.lib));
-    if (p.disableNavigation && !inCalendar) return;
     if (!inCalendar) this.goToMonth(next.date);
     this.focused = next;
   };
@@ -162,8 +158,8 @@ export class DayPickerState {
       next = selectMultiple(current, date, { required: p.required, min: p.min, max: p.max }, this.lib);
       if (next === current) return;
     } else if (p.mode === 'range') {
-      const { required, min, max, excludeDisabled, resetOnSelect } = p;
-      next = selectRange(this.selected as DateRange | undefined, date, { required, min, max, disabled: this.disabled, excludeDisabled, resetOnSelect }, this.lib);
+      const { required, min, max, excludeDisabled } = p;
+      next = selectRange(this.selected as DateRange | undefined, date, { required, min, max, disabled: p.disabled, excludeDisabled }, this.lib);
     } else {
       return;
     }
