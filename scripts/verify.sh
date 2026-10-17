@@ -12,7 +12,10 @@ if runs static; then
   pnpm lint
 fi
 bash scripts/build-packages.sh
-if runs static; then pnpm check; fi
+if runs static; then
+  pnpm check
+  node scripts/check-published.mjs
+fi
 if runs unit; then
   # The docs registry tests extend the docs app's generated tsconfig, which check or build would otherwise create.
   pnpm --filter @sveltery/docs exec svelte-kit sync
