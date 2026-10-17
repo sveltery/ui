@@ -2,7 +2,7 @@
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
   import ArrowUpRightIcon from '@lucide/svelte/icons/arrow-up-right';
-  import FolderCodeIcon from '@lucide/svelte/icons/folder-code';
+  import IconFolderCode from '@tabler/icons-svelte-runes/icons/folder-code';
   import { Button } from '$registry/bases/base/ui/button';
   import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '$registry/bases/base/ui/empty';
 </script>
@@ -15,7 +15,7 @@
 <Empty>
   <EmptyHeader>
     <EmptyMedia variant="icon">
-      <FolderCodeIcon />
+      <IconFolderCode />
     </EmptyMedia>
     <EmptyTitle>No Projects Yet</EmptyTitle>
     <EmptyDescription>You haven't created any projects yet. Get started by creating your first project.</EmptyDescription>
