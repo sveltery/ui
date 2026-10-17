@@ -75,6 +75,10 @@ The component folders import each other with relative paths, so keep them side b
 </ToggleGroup>
 ```
 
+## Without JavaScript
+
+`ToggleGroup` needs JavaScript. To get the same look in a form that works without it, hide native checkboxes or radios inside labels that carry the Toggle's classes. See the toggle style on [Native Checkbox](/docs/components/native-checkbox#toggle-style) and its [remote form example](/docs/components/native-select#remote-forms).
+
 ## Composition
 
 Use the following composition to build a `ToggleGroup`:

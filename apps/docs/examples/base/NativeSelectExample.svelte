@@ -88,11 +88,24 @@
   </Example>
 {/snippet}
 
+{#snippet NativeSelectMultiple()}
+  <Example title="Multiple">
+    <NativeSelect multiple aria-label="Fruits" class="w-full">
+      <NativeSelectOption value="apple" selected>Apple</NativeSelectOption>
+      <NativeSelectOption value="banana">Banana</NativeSelectOption>
+      <NativeSelectOption value="blueberry">Blueberry</NativeSelectOption>
+      <NativeSelectOption value="grapes" selected>Grapes</NativeSelectOption>
+      <NativeSelectOption value="pineapple">Pineapple</NativeSelectOption>
+    </NativeSelect>
+  </Example>
+{/snippet}
+
 <ExampleWrapper>
   {@render NativeSelectBasic()}
   {@render NativeSelectWithGroups()}
   {@render NativeSelectSizes()}
   {@render NativeSelectWithField()}
+  {@render NativeSelectMultiple()}
   {@render NativeSelectDisabled()}
   {@render NativeSelectInvalid()}
 </ExampleWrapper>

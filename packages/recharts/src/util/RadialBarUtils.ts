@@ -1,4 +1,11 @@
 import { RadialBarDataItem, RadialBarProps } from '../polar/RadialBar.js';
+export function parseCornerRadius(cornerRadius: string | number | undefined): number | undefined {
+  if (typeof cornerRadius === 'string') {
+    return parseInt(cornerRadius, 10);
+  }
+
+  return cornerRadius;
+}
 export interface RadialBarSectorProps extends RadialBarDataItem {
   index: number;
   option: RadialBarProps['activeShape'];

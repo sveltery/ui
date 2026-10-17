@@ -80,6 +80,10 @@ Bind `checked` to read and write the state. `defaultChecked` is the state an unb
 </form>
 ```
 
+## Without JavaScript
+
+`Switch` needs JavaScript for the keyboard and for a remote form's `as()` spread. For a form that must work before the page hydrates, use [Native Switch](/docs/components/native-switch), a styled native input that looks the same.
+
 ## Description
 
 <ComponentPreview name="base/SwitchDescriptionExample" />
