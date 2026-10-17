@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import type { Plugin } from 'vite';
 import { renderSource } from './rtl';
+import { analyzeSource } from './source';
 import { parseStyleSheet, type StyleSheet } from './styles';
 import { styleNames, type StyleName } from './types';
 
@@ -62,7 +63,7 @@ export function registryStyles({ root, zones }: { root: string; zones: Record<st
       if (!variant || variant === 'tokens' || !id.startsWith(ui) || id.startsWith(join(ui, 'icons/'))) return;
       if (!styleNames.includes(variant)) throw new Error(`${id}: unknown style ${variant}`);
       const path = relative(ui, id.replace(TAG, ''));
-      const rendered = renderSource(path, code, sheet(variant), variant, Boolean(rtl));
+      const rendered = renderSource(analyzeSource(path, code), sheet(variant), variant, Boolean(rtl));
       if (rendered === code) return;
       this.addWatchFile(sheetPath(variant));
       return { code: rendered, map: null };
