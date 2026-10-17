@@ -1,8 +1,35 @@
 export { getRelativeCoordinate } from './util/getRelativeCoordinate.js';
 export type { CustomScaleDefinition } from './util/scale/CustomScaleDefinition.js';
 export type { Props as CellProps } from './component/Cell.js';
-export type { Props as LabelProps } from './component/Label.js';
-export type { Props as TextProps } from './component/Text.js';
+export type { LabelProps } from './component/Label.hooks.svelte.js';
+export type { LabelListProps } from './component/LabelList.hooks.svelte.js';
+export type { LabelListEntry } from './component/LabelList.js';
+export type { Props as TextProps, RenderableText, TextAnchor, TextVerticalAnchor } from './component/Text.js';
+export type { LegendProps, LegendContentProps } from './component/Legend.svelte';
+export type { Props as DefaultLegendContentProps, LegendPayload } from './component/DefaultLegendContent.js';
+export type { TooltipProps, TooltipContentProps } from './component/Tooltip.svelte';
+export type { TooltipIndex, TooltipPayload } from './state/tooltipSlice.js';
+export type {
+  Props as DefaultTooltipContentProps,
+  Payload as TooltipPayloadEntry,
+  TooltipItemSorter,
+  ValueType as TooltipValueType,
+  NameType as TooltipNameType,
+} from './component/DefaultTooltipContent.js';
+export type { Props as CurveProps } from './shape/Curve.js';
+export type { Props as RectangleProps } from './shape/Rectangle.js';
+export type { Props as DotProps } from './shape/Dot.js';
+export type { SymbolsProps } from './shape/Symbols.js';
+export type { CartesianAxisProps } from './cartesian/CartesianAxis.svelte';
+export type { CartesianGridProps } from './cartesian/CartesianGrid.svelte';
+export type { LineProps } from './cartesian/Line.svelte';
+export type { AreaProps } from './cartesian/Area.svelte';
+export type { BarProps } from './cartesian/Bar.svelte';
+export type { BarRectangleItem, BarShapeProps } from './cartesian/Bar.js';
+export type { XAxisProps } from './cartesian/XAxis.svelte';
+export type { XAxisTickContentProps, YAxisTickContentProps } from './util/types.js';
+export type { XAxisOrientation, XAxisPadding, NiceTicksAlgorithm, YAxisOrientation, YAxisPadding } from './state/cartesianAxisSlice.js';
+export type { YAxisProps } from './cartesian/YAxis.svelte';
 
 export { default as BarChart } from './chart/BarChart.svelte';
 export { default as LineChart } from './chart/LineChart.svelte';
@@ -15,8 +42,26 @@ export { default as ResponsiveContainer } from './component/ResponsiveContainer.
 export { default as Cell } from './component/Cell.svelte';
 export { default as Surface } from './container/Surface.svelte';
 export { default as Layer } from './container/Layer.svelte';
+export { default as Legend } from './component/Legend.svelte';
+export { default as DefaultLegendContent } from './component/DefaultLegendContent.svelte';
+export { default as Tooltip } from './component/Tooltip.svelte';
+export { default as DefaultTooltipContent } from './component/DefaultTooltipContent.svelte';
+export { default as Text } from './component/Text.svelte';
+export { default as Label } from './component/Label.svelte';
+export { default as LabelList } from './component/LabelList.svelte';
+export { default as Curve } from './shape/Curve.svelte';
+export { default as Rectangle } from './shape/Rectangle.svelte';
+export { default as Dot } from './shape/Dot.svelte';
+export { default as Symbols } from './shape/Symbols.svelte';
+export { default as CartesianAxis } from './cartesian/CartesianAxis.svelte';
+export { default as CartesianGrid } from './cartesian/CartesianGrid.svelte';
+export { default as Line } from './cartesian/Line.svelte';
+export { default as Area } from './cartesian/Area.svelte';
+export { default as Bar } from './cartesian/Bar.svelte';
+export { default as XAxis } from './cartesian/XAxis.svelte';
+export { default as YAxis } from './cartesian/YAxis.svelte';
 export { useChartWidth, useChartHeight, useMargin } from './context/chartLayoutContext.svelte.js';
-export { usePlotArea } from './hooks.svelte.js';
+export { usePlotArea, useActiveTooltipDataPoints } from './hooks.svelte.js';
 export { attrs } from './util/attrs.js';
 export type { Box } from './state/hooks.svelte.js';
 export type { SvelteProps, SvelteArgs } from './util/svelteProps.js';
