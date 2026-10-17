@@ -323,6 +323,16 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
 
+### The Toggle Group usage snippet has no `type`
+
+**Upstream:** The [Toggle Group](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/toggle-group.mdx) usage snippet passes `type="single"`, a Radix prop that Base UI's toggle group does not take.
+
+**Sveltery UI:** The [Toggle Group](/docs/components/toggle-group) usage snippet passes no `type`. A group is single-select until you add `multiple`.
+
+**Why:** Base UI ignores `type`, so the prop in upstream's snippet does nothing.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ### Every icon in the Button example has `data-icon`
 
 **Upstream:** In [`button-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/button-example.tsx#L186), the small outline button's trailing icon has no `data-icon`. Its sibling buttons all have `data-icon="inline-end"`.
