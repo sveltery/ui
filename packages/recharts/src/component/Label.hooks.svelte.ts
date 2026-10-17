@@ -17,9 +17,14 @@ export type LabelProps = Omit<SvelteProps<WithSnippets<Props, { content: Props }
 export type ImplicitLabelType = boolean | string | number | Snippet<[SvelteArgs<Props>]> | (LabelProps & { dataKey?: DataKey<unknown> });
 
 const [getCartesianLabelContext, setCartesianLabelContext, hasCartesianLabelContext] = createContext<Box<TrapezoidViewBox>>();
-const [getPolarLabelContext, setPolarLabelContext, hasPolarLabelContext] = createContext<Box<PolarViewBoxRequired>>();
+const [getPolarLabelContext, setPolarContext, hasPolarLabelContext] = createContext<Box<PolarViewBoxRequired>>();
 
-export { setCartesianLabelContext, setPolarLabelContext };
+export { setCartesianLabelContext };
+
+// A declared signature, so the emitted types name PolarViewBoxRequired instead of the private interface behind it.
+export function setPolarLabelContext(context: Box<PolarViewBoxRequired>): Box<PolarViewBoxRequired> {
+  return setPolarContext(context);
+}
 
 /** Must be called during component initialisation. */
 export const useCartesianLabelContext = (): Box<TrapezoidViewBox | undefined> => {

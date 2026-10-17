@@ -19,6 +19,7 @@ export type {
 export type { Props as CurveProps } from './shape/Curve.js';
 export type { Props as RectangleProps } from './shape/Rectangle.js';
 export type { Props as DotProps } from './shape/Dot.js';
+export type { ActiveDotProps, DotItemDotProps } from './util/types.js';
 export type { SymbolsProps } from './shape/Symbols.js';
 export type { CartesianAxisProps } from './cartesian/CartesianAxis.svelte';
 export type { CartesianGridProps } from './cartesian/CartesianGrid.svelte';
