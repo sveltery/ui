@@ -553,7 +553,7 @@ npx @sveltery/ui@latest info
 `info` prints these groups:
 
 - **Project.** The framework (`SvelteKit`, `Vite` or `Manual`) and its version, and the Svelte and Tailwind CSS versions. A version is the one in `node_modules` when the package is installed, else the one in `package.json`. It also shows whether the project has a `src` folder, the CSS file that imports Tailwind, and the import alias (`$lib` or `#lib`) of a SvelteKit app.
-- **Configuration.** The `style`, `iconLibrary`, `menuColor` and `menuAccent` from `components.json`, and the registry the CLI reads.
+- **Configuration.** The `style`, `iconLibrary`, `rtl`, `menuColor` and `menuAccent` from `components.json`, and the registry the CLI reads.
 - **Preset.** The preset code that your `components.json` and CSS add up to, its values, and the [Create page](/create) link for it. A `*` marks a value that the project does not show, so it takes the style's default. Use `init --preset` with the code to make the same setup in another app.
 - **Aliases** and **Resolved Paths.** Where each alias points, as absolute paths.
 - **Installed Components.** The registry items that have a folder under `aliases.ui`.
@@ -563,6 +563,7 @@ npx @sveltery/ui@latest info
 Configuration
   style        sera
   iconLibrary  lucide
+  rtl          No
   menuColor    default
   menuAccent   subtle
   registry     https://ui.sveltery.dev/r
@@ -602,17 +603,63 @@ Options:
 
 ## migrate
 
-Use the `migrate` command to run a migration on your project.
+Use the `migrate` command to change code that is already in your project.
 
 ```bash
-npx @sveltery/ui@latest migrate [migration]
+npx @sveltery/ui@latest migrate icons --to tabler
 ```
 
-**Available migrations**
+Run `migrate --list` to see the migrations. Each one asks before it writes. The default answer is yes.
 
-| Migration | Description |
+| Migration | What it changes |
 | --- | --- |
-| `rtl` | Migrate your components to support RTL (right-to-left). |
+| `icons` | Swaps the icon library in your installed components, then sets `iconLibrary` in `components.json`. |
+| `base-color` | Swaps the theme's base color in your CSS file, then sets `tailwind.baseColor` in `components.json`. |
+| `cn` | Moves `clsx`, `tailwind-merge` and `cnfast` imports in your `.svelte`, `.ts` and `.js` files to the `cn` package. |
+| `rtl` | Changes physical classes in your installed components to logical ones for right-to-left layouts, then sets `rtl: true` in `components.json`. |
+
+There is no `radix` migration. In shadcn/ui, it moves `@radix-ui/react-*` imports to the `radix-ui` package, and a Svelte project has no such imports.
+
+Pass a file, a directory or a glob pattern to migrate only those files. By default, `icons` and `rtl` migrate the `aliases.ui` directory and `cn` migrates every source file in the project. A glob pattern needs Node 22 or later. A file that does not parse, such as a module with `</script>` in a string, stays as it is, and `migrate` lists it.
+
+### icons
+
+`icons` changes each icon's import, its tags and the attributes that pass it as a value. It installs the new library's package. It maps each icon to the one the registry's components use for it. An icon with no match, or one used outside the markup, stays as it is, and `migrate` lists it. Hugeicons wraps each icon in `<HugeiconsIcon icon={...} />`, so an icon moves to or from Hugeicons only where it is a self-closing tag.
+
+```bash
+npx @sveltery/ui@latest migrate icons --from lucide --to phosphor
+```
+
+A run with a path leaves `iconLibrary` in `components.json` as it is.
+
+### base-color
+
+`base-color` changes only the theme tokens that still have the old base color's value. It keeps tokens that you changed, or that a preset's theme color set, and it lists them.
+
+```bash
+npx @sveltery/ui@latest migrate base-color --to stone
+```
+
+### cn
+
+`cn` replaces `twMerge(clsx(...))` with `cn(...)`. It replaces an exported helper that only returns `twMerge(clsx(inputs))`, such as `cn` in a shadcn-svelte `utils.ts`, with `export { cn } from 'cn'`. It does not need `components.json`.
+
+```bash
+npx @sveltery/ui@latest migrate cn
+```
+
+`cn` installs the `cn` package before it writes. After a run without a path, it removes `clsx`, `tailwind-merge` and `cnfast` if no file imports them. It lists what you must change by hand, such as a dynamic import, an `export ... from` declaration or a CommonJS `require`. It needs Tailwind CSS 4 and `tailwind-merge` 3.
+
+### rtl
+
+`rtl` rewrites the components you already installed for right-to-left layouts. It changes physical classes such as `ml-2` and `left-0` to logical ones such as `ms-2` and `start-0`, the same transform `add` applies in an RTL project.
+
+```bash
+npx @sveltery/ui@latest migrate rtl
+npx @sveltery/ui@latest migrate rtl "src/lib/components/ui/dropdown-menu/**"
+```
+
+It sets `rtl: true` in `components.json`, also after a run with a path. It lists the calendar, pagination and sidebar files it finds for you to check by hand. The icons that `add` would flip lose their flip marker when an LTR project adds them, so run `update` afterwards to get them back. See [Manual Migration](/docs/rtl#manual-migration-optional).
 
 **Options**
 
@@ -622,32 +669,50 @@ Usage: sveltery migrate [options] [migration] [path]
 run a migration
 
 Arguments:
-  migration     the migration to run
-  path          a file, directory or glob pattern to migrate; the ui directory
-                when omitted
+  migration          the migration to run
+  path               a file, directory or glob pattern to migrate
 
 Options:
-  -l, --list    list all migrations (default: false)
-  -y, --yes     skip the confirmation prompt (default: false)
+  -l, --list         list all migrations (default: false)
+  -y, --yes          skip the confirmation prompt (default: false)
+  -f, --from <name>  the base color or icon library to migrate from
+  -t, --to <name>    the base color or icon library to migrate to
+  --no-install       do not install or remove packages
+  --cwd <path>       the project root (default: ".")
+  -h, --help         display help for command
+```
+
+`icons` asks for a missing `--from` or `--to`, and offers `iconLibrary` from `components.json` as the source. `base-color` takes `tailwind.baseColor` from `components.json` as the source, and asks only for a missing `--to`. With `--yes`, neither asks, so pass `--to`. `cn` and `rtl` do not use `--from` or `--to`.
+
+---
+
+## eject
+
+Use the `eject` command to drop the `@sveltery/ui` package from your project. Your CSS file imports `@sveltery/ui/tailwind.css`, which holds the custom variants and animations the components use.
+
+```bash
+npx @sveltery/ui@latest eject
+```
+
+`eject` replaces that import with the file's contents, under a comment that names the version. Then it removes `@sveltery/ui` from `package.json` with your package manager. It asks before it changes anything. The default answer is no.
+
+After `eject`, updates to `tailwind.css` no longer reach your project. You can still run the CLI with `npx`. A later `init` or `apply` adds the import and the dev dependency again.
+
+**Options**
+
+```txt
+Usage: sveltery eject [options]
+
+inline @sveltery/ui/tailwind.css into your CSS file and remove the @sveltery/ui
+dependency
+
+Options:
+  -y, --yes     do not ask to continue (default: false)
+  -s, --silent  do not print the warnings or the package manager output
+                (default: false)
   --cwd <path>  the project root (default: ".")
   -h, --help    display help for command
 ```
-
-### migrate rtl
-
-The `rtl` migration rewrites the components you already installed for right-to-left layouts.
-
-```bash
-npx @sveltery/ui@latest migrate rtl
-```
-
-It sets `rtl: true` in `components.json`, then changes physical classes such as `ml-2` and `left-0` to logical ones such as `ms-2` and `start-0` in each file. Pass a file, a directory or a glob pattern with `*` to migrate only those files. A glob needs Node 22 or later.
-
-```bash
-npx @sveltery/ui@latest migrate rtl "src/lib/components/ui/dropdown-menu/**"
-```
-
-It skips a file it cannot parse, with a warning, and lists the calendar, pagination and sidebar files it finds for you to check by hand. The icons that `add` would flip lose their flip marker when an LTR project adds them, so run `update` afterwards to get them back. See [Manual Migration](/docs/rtl#manual-migration-optional).
 
 ---
 
@@ -661,4 +726,4 @@ SVELTERY_REGISTRY_URL=https://preview.example.com/r npx @sveltery/ui@latest add 
 
 ## Not supported
 
-The shadcn CLI has commands and options that this CLI does not have yet: `eject` and `registry add`, the `cn`, `icons`, `base-color` and `radix` migrations, local file paths as items and JavaScript output. See [Registry](/docs/registry) and [JavaScript](/docs/javascript) for what works today.
+The shadcn CLI has commands and options that this CLI does not have yet: `registry add`, local file paths as items and JavaScript output. See [Registry](/docs/registry) and [JavaScript](/docs/javascript) for what works today.

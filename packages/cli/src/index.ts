@@ -7,15 +7,16 @@ import { apply } from './commands/apply.js';
 import { build } from './commands/build.js';
 import { diff } from './commands/diff.js';
 import { docs } from './commands/docs.js';
+import { eject } from './commands/eject.js';
 import { info } from './commands/info.js';
 import { init } from './commands/init.js';
+import { migrate } from './commands/migrate.js';
 import { presetDecode, presetOpen, presetResolve, presetUrl } from './commands/preset.js';
 import { search } from './commands/search.js';
-import { migrateRtl, migrations } from './commands/migrate.js';
 import { update } from './commands/update.js';
 import { view } from './commands/view.js';
 import { CliError } from './parse.js';
-import { version } from './version.js';
+import { cliPackage, version } from './version.js';
 
 const program = new Command('sveltery').description('Add Sveltery UI components to a Svelte app.').version(version);
 
@@ -90,25 +91,6 @@ program
   .action(async (registries: string[], options) => void (await search(registries, { ...options, cwd: resolve(options.cwd) })));
 
 program
-  .command('migrate')
-  .description('run a migration')
-  .argument('[migration]', 'the migration to run')
-  .argument('[path]', 'a file, directory or glob pattern to migrate; the ui directory when omitted')
-  .option('-l, --list', 'list all migrations', false)
-  .option('-y, --yes', 'skip the confirmation prompt', false)
-  .option('--cwd <path>', 'the project root', '.')
-  .action(async (migration: string | undefined, path: string | undefined, options) => {
-    if (migration !== undefined && !options.list && !migrations.some((m) => m.name === migration)) {
-      throw new CliError(`Unknown migration "${migration}". Run \`npx @sveltery/ui@latest migrate --list\` to see the migrations.`);
-    }
-    if (options.list || migration === undefined) {
-      log.info(`Available migrations:\n${migrations.map((m) => `- ${m.name}: ${m.description}`).join('\n')}`);
-      return;
-    }
-    await migrateRtl({ cwd: resolve(options.cwd), yes: options.yes, path });
-  });
-
-program
   .command('view')
   .description('view items from the registry')
   .argument('<items...>', 'item names, or URLs of registry items')
@@ -169,6 +151,27 @@ preset
   .option('--json', 'output as JSON.', false)
   .option('--cwd <path>', 'the project root', '.')
   .action((options) => void presetResolve({ ...options, cwd: resolve(options.cwd) }));
+
+program
+  .command('eject')
+  .description(`inline ${cliPackage}/tailwind.css into your CSS file and remove the ${cliPackage} dependency`)
+  .option('-y, --yes', 'do not ask to continue', false)
+  .option('-s, --silent', 'do not print the warnings or the package manager output', false)
+  .option('--cwd <path>', 'the project root', '.')
+  .action(async (options) => void (await eject({ ...options, cwd: resolve(options.cwd) })));
+
+program
+  .command('migrate')
+  .description('run a migration')
+  .argument('[migration]', 'the migration to run')
+  .argument('[path]', 'a file, directory or glob pattern to migrate')
+  .option('-l, --list', 'list all migrations', false)
+  .option('-y, --yes', 'skip the confirmation prompt', false)
+  .option('-f, --from <name>', 'the base color or icon library to migrate from')
+  .option('-t, --to <name>', 'the base color or icon library to migrate to')
+  .option('--no-install', 'do not install or remove packages')
+  .option('--cwd <path>', 'the project root', '.')
+  .action(async (migration: string | undefined, path: string | undefined, options) => void (await migrate(migration, { ...options, path, cwd: resolve(options.cwd) })));
 
 try {
   await program.parseAsync();

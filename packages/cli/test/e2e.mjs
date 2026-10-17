@@ -216,6 +216,28 @@ try {
     if (icons === 'lucide') await run('pnpm', ['exec', 'vite', 'build'], allApp);
   }
 
+  step('sveltery migrate icons, base-color, cn and rtl in the lucide app, then check it again');
+  const lucideApp = join(work, 'all-lucide');
+  const lucideCli = (...args) => run('pnpm', ['exec', 'sveltery', ...args], lucideApp, env);
+  await lucideCli('migrate', 'icons', '--to', 'phosphor', '-y');
+  assert.equal(JSON.parse(readFileSync(join(lucideApp, 'components.json'), 'utf8')).iconLibrary, 'phosphor', 'migrate icons records the new library');
+  const uiFiles = readdirSync(join(lucideApp, 'src/lib/components/ui'), { recursive: true }).filter((file) => file.endsWith('.svelte'));
+  assert.deepEqual(uiFiles.filter((file) => readFileSync(join(lucideApp, 'src/lib/components/ui', file), 'utf8').includes('@lucide/svelte')), [], 'no ui component imports lucide');
+  await lucideCli('migrate', 'base-color', '--to', 'stone', '-y');
+  assert.ok(readFileSync(join(lucideApp, JSON.parse(readFileSync(join(lucideApp, 'components.json'), 'utf8')).tailwind.css), 'utf8').includes('--foreground: oklch(0.147 0.004 49.25);'), 'migrate base-color writes the stone tokens');
+  writeFileSync(join(lucideApp, 'src/lib/legacy.ts'), "import { clsx, type ClassValue } from 'clsx';\nimport { twMerge } from 'tailwind-merge';\n\nexport function cx(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n");
+  const html = "import { clsx } from 'clsx';\n\nexport const html = `<script>${clsx('a')}</script>`;\n";
+  writeFileSync(join(lucideApp, 'src/lib/html.ts'), html);
+  await lucideCli('migrate', 'cn', 'src/lib/*', '-y');
+  assert.equal(readFileSync(join(lucideApp, 'src/lib/legacy.ts'), 'utf8'), "export { cn as cx } from 'cn';\n", 'migrate cn re-exports the helper from cn');
+  assert.equal(readFileSync(join(lucideApp, 'src/lib/html.ts'), 'utf8'), html, 'migrate cn leaves a module it cannot parse as it is');
+  // html.ts imports clsx, which the app does not install, so it would fail the check below.
+  rmSync(join(lucideApp, 'src/lib/html.ts'));
+  await lucideCli('migrate', 'rtl', '-y');
+  assert.equal(JSON.parse(readFileSync(join(lucideApp, 'components.json'), 'utf8')).rtl, true, 'migrate rtl sets rtl: true');
+  assert.ok(readFileSync(join(lucideApp, 'src/lib/components/ui/context-menu/ContextMenuContent.svelte'), 'utf8').includes("side = 'inline-end',"), 'migrate rtl opens the context menu toward the inline end');
+  await run('pnpm', ['run', 'check'], lucideApp);
+
   step('sveltery init -y');
   await run('npm', ['exec', '--yes', `--package=${overrides['@sveltery/ui']}`, '--', 'sveltery', 'init', '-y'], app, env);
   const config = JSON.parse(readFileSync(join(app, 'components.json'), 'utf8'));
@@ -297,6 +319,13 @@ try {
   assert.equal(projectInfo.project.tailwindCss, config.tailwind.css);
   assert.deepEqual(projectInfo.components, ['button', 'chart', 'dialog'], 'info lists the items add installed');
   assert.deepEqual(projectInfo.preset.fallbacks, ['font', 'fontHeading', 'menuAccent'], 'a plain init writes no fonts or menuAccent, so info falls back for them');
+
+  step('sveltery eject -y, so the build and render below run on the inlined tailwind.css');
+  await cli('eject', '-y');
+  const ejected = readFileSync(join(app, config.tailwind.css), 'utf8');
+  assert.ok(!ejected.includes('@sveltery/ui/tailwind.css'), 'eject removes the import');
+  assert.match(ejected, /\/\* ejected from @sveltery\/ui@.*\*\/\n.*\n@theme inline \{/, 'eject inlines tailwind.css');
+  assert.equal(JSON.parse(readFileSync(join(app, 'package.json'), 'utf8')).devDependencies['@sveltery/ui'], undefined, 'eject removes the dev dependency');
 
   writeFileSync(
     join(app, 'src/routes/+page.svelte'),
