@@ -120,6 +120,10 @@ Wrap the checkboxes in a [DirectionProvider](/docs/components/direction) and set
 
 <ComponentPreview name="base/CheckboxRtlExample" />
 
+## Without JavaScript
+
+`Checkbox` needs JavaScript for the keyboard and for a remote form's `as()` spread. For a form that must work before the page hydrates, use [Native Checkbox](/docs/components/native-checkbox), a styled native input that looks the same.
+
 ## API Reference
 
 See the [Base UI Checkbox](https://base-ui.com/react/components/checkbox#api-reference) documentation.

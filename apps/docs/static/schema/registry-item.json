@@ -1,9 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Sveltery registry item",
-  "description": "One installable item of the Sveltery UI registry. The shape follows shadcn-svelte's registry-item schema.",
+  "description": "One installable item of a Sveltery UI registry. The shape follows shadcn-svelte's registry-item schema, limited to what the sveltery CLI reads.",
   "type": "object",
   "required": [
+    "$schema",
     "name",
     "type",
     "files"
@@ -13,13 +14,16 @@
       "type": "string"
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
     },
     "type": {
       "enum": [
         "registry:ui",
         "registry:lib",
-        "registry:theme"
+        "registry:theme",
+        "registry:font",
+        "registry:base"
       ]
     },
     "title": {
@@ -40,7 +44,7 @@
       "items": {
         "type": "string"
       },
-      "description": "Other items in this registry, by name."
+      "description": "Item names in the project's registry, or http(s) URLs of items."
     },
     "files": {
       "type": "array",
@@ -57,7 +61,7 @@
           },
           "target": {
             "type": "string",
-            "description": "Path below the project's ui alias."
+            "description": "Path below the project's ui alias, relative and without .. segments."
           },
           "content": {
             "type": "string"
@@ -88,6 +92,156 @@
         }
       },
       "additionalProperties": false
+    },
+    "css": {
+      "$ref": "#/$defs/cssTree",
+      "description": "CSS rules that init merges into the stylesheet, for registry:base items."
+    },
+    "config": {
+      "type": "object",
+      "description": "The components.json values a registry:base item sets.",
+      "properties": {
+        "style": {
+          "enum": [
+            "vega",
+            "nova",
+            "maia",
+            "lyra",
+            "mira",
+            "luma",
+            "sera",
+            "rhea"
+          ]
+        },
+        "iconLibrary": {
+          "enum": [
+            "lucide",
+            "tabler",
+            "hugeicons",
+            "phosphor",
+            "remixicon"
+          ]
+        },
+        "menuColor": {
+          "enum": [
+            "default",
+            "inverted",
+            "default-translucent",
+            "inverted-translucent"
+          ]
+        },
+        "menuAccent": {
+          "enum": [
+            "subtle",
+            "bold"
+          ]
+        },
+        "tailwind": {
+          "type": "object",
+          "properties": {
+            "baseColor": {
+              "enum": [
+                "neutral",
+                "stone",
+                "zinc",
+                "mauve",
+                "olive",
+                "mist",
+                "taupe"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "font": {
+      "type": "object",
+      "description": "The font of a registry:font item.",
+      "required": [
+        "family",
+        "provider",
+        "import",
+        "variable"
+      ],
+      "properties": {
+        "family": {
+          "type": "string"
+        },
+        "provider": {
+          "const": "google"
+        },
+        "import": {
+          "type": "string"
+        },
+        "variable": {
+          "type": "string"
+        },
+        "weight": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "subsets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "selector": {
+          "type": "string"
+        },
+        "dependency": {
+          "type": "string"
+        }
+      }
     }
-  }
+  },
+  "$defs": {
+    "cssTree": {
+      "type": "object",
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "$ref": "#/$defs/cssTree"
+          }
+        ]
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "registry:font"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "font"
+        ]
+      }
+    }
+  ]
 }
