@@ -122,6 +122,6 @@ You can also see an example of a data table in the [Tasks](https://ui.shadcn.com
 
 ## RTL
 
-Wrap the table in a [DirectionProvider](/docs/components/direction) and set `dir` on `Table`. Use the buttons to switch the language.
+Wrap the table in a [DirectionProvider](/docs/components/direction) and set `dir` on `Table`. Use the language selector to switch the language.
 
-<ComponentPreview name="base/TableRtlExample" align="start" />
+<ComponentPreview name="base/TableRtlExample" direction="rtl" align="start" />

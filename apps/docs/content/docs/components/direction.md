@@ -5,9 +5,9 @@ description: A provider component that sets the text direction for your applicat
 
 The `DirectionProvider` component is used to set the text direction (`ltr` or `rtl`) for your application. This is essential for supporting right-to-left languages like Arabic, Hebrew, and Persian.
 
-Here's a preview of the component in RTL mode. Use the language buttons to switch the language. To see more examples, look for the RTL section on components pages.
+Here's a preview of the component in RTL mode. Use the language selector to switch the language. To see more examples, look for the RTL section on components pages.
 
-<ComponentPreview name="base/DirectionExample" hideCode />
+<ComponentPreview name="base/CardRtlExample" direction="rtl" hideCode />
 
 ## Installation
 

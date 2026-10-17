@@ -4,7 +4,7 @@
   import ChevronsUpDownIcon from '@lucide/svelte/icons/chevrons-up-down';
   import { Button } from '$registry/bases/base/ui/button';
   import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '$registry/bases/base/ui/collapsible';
-  import { DirectionProvider } from '$registry/bases/base/ui/direction';
+  import { useLanguage } from '$lib/components/docs/language.svelte';
 
   const translations = {
     en: {
@@ -39,11 +39,9 @@
     },
   } as const;
 
-  type Language = keyof typeof translations;
-
-  let language = $state<Language>('ar');
+  const language = useLanguage();
   let isOpen = $state(false);
-  const t = $derived(translations[language]);
+  const t = $derived(translations[language.current]);
 </script>
 
 {#snippet toggle(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
@@ -53,36 +51,27 @@
 {/snippet}
 
 <div class="flex flex-col gap-4">
-  <div class="flex gap-2">
-    {#each Object.keys(translations) as code (code)}
-      <Button variant={language === code ? 'default' : 'outline'} size="sm" onclick={() => (language = code as Language)}>
-        {code}
-      </Button>
-    {/each}
-  </div>
-  <DirectionProvider direction={t.dir}>
-    <Collapsible bind:open={isOpen} class="flex w-[350px] flex-col gap-2" dir={t.dir}>
-      <div class="flex items-center justify-between gap-4 px-4">
-        <h4 class="text-sm font-semibold">{t.orderNumber}</h4>
-        <CollapsibleTrigger render={toggle}>
-          <ChevronsUpDownIcon />
-          <span class="sr-only">Toggle details</span>
-        </CollapsibleTrigger>
+  <Collapsible bind:open={isOpen} class="flex w-[350px] flex-col gap-2" dir={t.dir}>
+    <div class="flex items-center justify-between gap-4 px-4">
+      <h4 class="text-sm font-semibold">{t.orderNumber}</h4>
+      <CollapsibleTrigger render={toggle}>
+        <ChevronsUpDownIcon />
+        <span class="sr-only">Toggle details</span>
+      </CollapsibleTrigger>
+    </div>
+    <div class="flex items-center justify-between rounded-md border px-4 py-2 text-sm">
+      <span class="text-muted-foreground">{t.status}</span>
+      <span class="font-medium">{t.shipped}</span>
+    </div>
+    <CollapsibleContent class="flex flex-col gap-2">
+      <div class="rounded-md border px-4 py-2 text-sm">
+        <p class="font-medium">{t.shippingAddress}</p>
+        <p class="text-muted-foreground">{t.address}</p>
       </div>
-      <div class="flex items-center justify-between rounded-md border px-4 py-2 text-sm">
-        <span class="text-muted-foreground">{t.status}</span>
-        <span class="font-medium">{t.shipped}</span>
+      <div class="rounded-md border px-4 py-2 text-sm">
+        <p class="font-medium">{t.items}</p>
+        <p class="text-muted-foreground">{t.itemsDescription}</p>
       </div>
-      <CollapsibleContent class="flex flex-col gap-2">
-        <div class="rounded-md border px-4 py-2 text-sm">
-          <p class="font-medium">{t.shippingAddress}</p>
-          <p class="text-muted-foreground">{t.address}</p>
-        </div>
-        <div class="rounded-md border px-4 py-2 text-sm">
-          <p class="font-medium">{t.items}</p>
-          <p class="text-muted-foreground">{t.itemsDescription}</p>
-        </div>
-      </CollapsibleContent>
-    </Collapsible>
-  </DirectionProvider>
+    </CollapsibleContent>
+  </Collapsible>
 </div>

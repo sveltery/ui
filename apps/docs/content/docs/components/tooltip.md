@@ -105,9 +105,9 @@ Show a tooltip on a disabled button by wrapping it with a span. A disabled butto
 
 ## RTL
 
-Wrap the tooltips in a [DirectionProvider](/docs/components/direction) and set `dir` on `TooltipContent`. Use the buttons to switch the language.
+Wrap the tooltips in a [DirectionProvider](/docs/components/direction) and set `dir` on `TooltipContent`. Use the language selector to switch the language.
 
-<ComponentPreview name="base/TooltipRtlExample" />
+<ComponentPreview name="base/TooltipRtlExample" direction="rtl" />
 
 ## API Reference
 

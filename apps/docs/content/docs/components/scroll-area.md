@@ -76,9 +76,9 @@ Use `ScrollBar` with `orientation="horizontal"` for horizontal scrolling.
 
 ## RTL
 
-Wrap the scroll area in a [DirectionProvider](/docs/components/direction) and set `dir` on `ScrollArea`. Use the buttons to switch the language.
+Wrap the scroll area in a [DirectionProvider](/docs/components/direction) and set `dir` on `ScrollArea`. Use the language selector to switch the language.
 
-<ComponentPreview name="base/ScrollAreaRtlExample" align="start" />
+<ComponentPreview name="base/ScrollAreaRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 
