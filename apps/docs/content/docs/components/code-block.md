@@ -248,9 +248,9 @@ Put a `CodeBlock` between paragraphs inside a [Message](/docs/components/message
 
 ## RTL
 
-Wrap the content in a [DirectionProvider](/docs/components/direction) to lay it out right to left. Code always reads left to right. The header follows the page direction. Use the buttons to switch the language.
+Wrap the content in a [DirectionProvider](/docs/components/direction) to lay it out right to left. Code always reads left to right. The header follows the page direction. Use the language selector to switch the language.
 
-<ComponentPreview name="base/CodeBlockRtlExample" />
+<ComponentPreview name="base/CodeBlockRtlExample" direction="rtl" />
 
 ## Syntax Highlighting
 

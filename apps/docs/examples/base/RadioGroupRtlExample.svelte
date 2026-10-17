@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { Button } from '$registry/bases/base/ui/button';
-  import { DirectionProvider } from '$registry/bases/base/ui/direction';
   import { Field, FieldContent, FieldDescription, FieldLabel } from '$registry/bases/base/ui/field';
   import { RadioGroup, RadioGroupItem } from '$registry/bases/base/ui/radio-group';
+  import { useLanguage } from '$lib/components/docs/language.svelte';
 
   const translations = {
     en: {
@@ -40,42 +39,33 @@
     }
   } as const;
 
-  let language = $state<keyof typeof translations>('ar');
-  const dir = $derived(translations[language].dir);
-  const t = $derived(translations[language].values);
+  const language = useLanguage();
+  const dir = $derived(translations[language.current].dir);
+  const t = $derived(translations[language.current].values);
 </script>
 
 <div class="flex w-full max-w-sm flex-col gap-4">
-  <div class="flex gap-2">
-    {#each Object.keys(translations) as code (code)}
-      <Button variant={language === code ? 'default' : 'outline'} size="sm" onclick={() => (language = code as keyof typeof translations)}>
-        {code}
-      </Button>
-    {/each}
-  </div>
-  <DirectionProvider direction={dir}>
-    <RadioGroup defaultValue="comfortable" class="w-fit" {dir}>
-      <Field orientation="horizontal">
-        <RadioGroupItem value="default" id="r1-rtl" {dir} />
-        <FieldContent>
-          <FieldLabel for="r1-rtl" {dir}>{t.default}</FieldLabel>
-          <FieldDescription {dir}>{t.defaultDescription}</FieldDescription>
-        </FieldContent>
-      </Field>
-      <Field orientation="horizontal">
-        <RadioGroupItem value="comfortable" id="r2-rtl" {dir} />
-        <FieldContent>
-          <FieldLabel for="r2-rtl" {dir}>{t.comfortable}</FieldLabel>
-          <FieldDescription {dir}>{t.comfortableDescription}</FieldDescription>
-        </FieldContent>
-      </Field>
-      <Field orientation="horizontal">
-        <RadioGroupItem value="compact" id="r3-rtl" {dir} />
-        <FieldContent>
-          <FieldLabel for="r3-rtl" {dir}>{t.compact}</FieldLabel>
-          <FieldDescription {dir}>{t.compactDescription}</FieldDescription>
-        </FieldContent>
-      </Field>
-    </RadioGroup>
-  </DirectionProvider>
+  <RadioGroup defaultValue="comfortable" class="w-fit" {dir}>
+    <Field orientation="horizontal">
+      <RadioGroupItem value="default" id="r1-rtl" {dir} />
+      <FieldContent>
+        <FieldLabel for="r1-rtl" {dir}>{t.default}</FieldLabel>
+        <FieldDescription {dir}>{t.defaultDescription}</FieldDescription>
+      </FieldContent>
+    </Field>
+    <Field orientation="horizontal">
+      <RadioGroupItem value="comfortable" id="r2-rtl" {dir} />
+      <FieldContent>
+        <FieldLabel for="r2-rtl" {dir}>{t.comfortable}</FieldLabel>
+        <FieldDescription {dir}>{t.comfortableDescription}</FieldDescription>
+      </FieldContent>
+    </Field>
+    <Field orientation="horizontal">
+      <RadioGroupItem value="compact" id="r3-rtl" {dir} />
+      <FieldContent>
+        <FieldLabel for="r3-rtl" {dir}>{t.compact}</FieldLabel>
+        <FieldDescription {dir}>{t.compactDescription}</FieldDescription>
+      </FieldContent>
+    </Field>
+  </RadioGroup>
 </div>

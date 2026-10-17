@@ -875,6 +875,6 @@ A component to toggle column visibility.
 
 To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
 
-Wrap the table in a [DirectionProvider](/docs/components/direction) and set `dir` on its container and on each `DropdownMenuContent`. Use the buttons to switch the language.
+Wrap the table in a [DirectionProvider](/docs/components/direction) and set `dir` on its container and on each `DropdownMenuContent`. Use the language selector to switch the language.
 
-<ComponentPreview name="base/DataTableRtlExample" align="start" class="[&_[data-slot=preview]]:h-auto [&_[data-slot=preview]]:max-h-none [&_[data-slot=preview]]:min-h-0 [&_[data-slot=preview]]:px-4 md:[&_[data-slot=preview]]:px-8" hideCode />
+<ComponentPreview name="base/DataTableRtlExample" direction="rtl" align="start" class="[&_[data-slot=preview]]:h-auto [&_[data-slot=preview]]:max-h-none [&_[data-slot=preview]]:min-h-0 [&_[data-slot=preview]]:px-4 md:[&_[data-slot=preview]]:px-8" hideCode />

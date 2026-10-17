@@ -2,7 +2,6 @@
   import ArrowLeftIcon from '@lucide/svelte/icons/arrow-left';
   import ArrowRightIcon from '@lucide/svelte/icons/arrow-right';
   import RotateCwIcon from '@lucide/svelte/icons/rotate-cw';
-  import { Button } from '$registry/bases/base/ui/button';
   import {
     ContextMenu,
     ContextMenuCheckboxItem,
@@ -19,7 +18,7 @@
     ContextMenuSubTrigger,
     ContextMenuTrigger
   } from '$registry/bases/base/ui/context-menu';
-  import { DirectionProvider } from '$registry/bases/base/ui/direction';
+  import { useLanguage } from '$lib/components/docs/language.svelte';
 
   const translations = {
     en: {
@@ -90,84 +89,75 @@
     }
   } as const;
 
-  let language = $state<keyof typeof translations>('ar');
+  const language = useLanguage();
   let people = $state('pedro');
-  const dir = $derived(translations[language].dir);
-  const t = $derived(translations[language].values);
-  const lang = $derived(dir === 'rtl' ? language : undefined);
+  const dir = $derived(translations[language.current].dir);
+  const t = $derived(translations[language.current].values);
+  const lang = $derived(dir === 'rtl' ? language.current : undefined);
 </script>
 
 <div class="flex w-full max-w-sm flex-col gap-4">
-  <div class="flex gap-2">
-    {#each Object.keys(translations) as code (code)}
-      <Button variant={language === code ? 'default' : 'outline'} size="sm" onclick={() => (language = code as keyof typeof translations)}>
-        {code}
-      </Button>
-    {/each}
-  </div>
-  <DirectionProvider direction={dir}>
-    <ContextMenu>
-      <ContextMenuTrigger class="flex aspect-video w-full max-w-xs items-center justify-center rounded-xl border border-dashed text-sm">
-        <span class="hidden pointer-fine:inline-block">{t.rightClick}</span>
-        <span class="hidden pointer-coarse:inline-block">{t.longPress}</span>
-      </ContextMenuTrigger>
-      <ContextMenuContent class="w-48" {dir} data-lang={lang}>
-        <ContextMenuGroup>
-          <ContextMenuSub>
-            <ContextMenuSubTrigger>{t.navigation}</ContextMenuSubTrigger>
-            <ContextMenuSubContent class="w-44" {dir} data-lang={lang}>
-              <ContextMenuGroup>
-                <ContextMenuItem>
-                  <ArrowLeftIcon />
-                  {t.back}
-                  <ContextMenuShortcut>⌘[</ContextMenuShortcut>
-                </ContextMenuItem>
-                <ContextMenuItem disabled>
-                  <ArrowRightIcon />
-                  {t.forward}
-                  <ContextMenuShortcut>⌘]</ContextMenuShortcut>
-                </ContextMenuItem>
-                <ContextMenuItem>
-                  <RotateCwIcon />
-                  {t.reload}
-                  <ContextMenuShortcut>⌘R</ContextMenuShortcut>
-                </ContextMenuItem>
-              </ContextMenuGroup>
-            </ContextMenuSubContent>
-          </ContextMenuSub>
-          <ContextMenuSub>
-            <ContextMenuSubTrigger>{t.moreTools}</ContextMenuSubTrigger>
-            <ContextMenuSubContent class="w-44" {dir} data-lang={lang}>
-              <ContextMenuGroup>
-                <ContextMenuItem>{t.savePage}</ContextMenuItem>
-                <ContextMenuItem>{t.createShortcut}</ContextMenuItem>
-                <ContextMenuItem>{t.nameWindow}</ContextMenuItem>
-              </ContextMenuGroup>
-              <ContextMenuSeparator />
-              <ContextMenuGroup>
-                <ContextMenuItem>{t.developerTools}</ContextMenuItem>
-              </ContextMenuGroup>
-              <ContextMenuSeparator />
-              <ContextMenuGroup>
-                <ContextMenuItem variant="destructive">{t.delete}</ContextMenuItem>
-              </ContextMenuGroup>
-            </ContextMenuSubContent>
-          </ContextMenuSub>
-        </ContextMenuGroup>
-        <ContextMenuSeparator />
-        <ContextMenuGroup>
-          <ContextMenuCheckboxItem checked>{t.showBookmarks}</ContextMenuCheckboxItem>
-          <ContextMenuCheckboxItem>{t.showFullUrls}</ContextMenuCheckboxItem>
-        </ContextMenuGroup>
-        <ContextMenuSeparator />
-        <ContextMenuGroup>
-          <ContextMenuRadioGroup bind:value={people}>
-            <ContextMenuLabel>{t.people}</ContextMenuLabel>
-            <ContextMenuRadioItem value="pedro">{t.pedro}</ContextMenuRadioItem>
-            <ContextMenuRadioItem value="colm">{t.colm}</ContextMenuRadioItem>
-          </ContextMenuRadioGroup>
-        </ContextMenuGroup>
-      </ContextMenuContent>
-    </ContextMenu>
-  </DirectionProvider>
+  <ContextMenu>
+    <ContextMenuTrigger class="flex aspect-video w-full max-w-xs items-center justify-center rounded-xl border border-dashed text-sm">
+      <span class="hidden pointer-fine:inline-block">{t.rightClick}</span>
+      <span class="hidden pointer-coarse:inline-block">{t.longPress}</span>
+    </ContextMenuTrigger>
+    <ContextMenuContent class="w-48" {dir} data-lang={lang}>
+      <ContextMenuGroup>
+        <ContextMenuSub>
+          <ContextMenuSubTrigger>{t.navigation}</ContextMenuSubTrigger>
+          <ContextMenuSubContent class="w-44" {dir} data-lang={lang}>
+            <ContextMenuGroup>
+              <ContextMenuItem>
+                <ArrowLeftIcon />
+                {t.back}
+                <ContextMenuShortcut>⌘[</ContextMenuShortcut>
+              </ContextMenuItem>
+              <ContextMenuItem disabled>
+                <ArrowRightIcon />
+                {t.forward}
+                <ContextMenuShortcut>⌘]</ContextMenuShortcut>
+              </ContextMenuItem>
+              <ContextMenuItem>
+                <RotateCwIcon />
+                {t.reload}
+                <ContextMenuShortcut>⌘R</ContextMenuShortcut>
+              </ContextMenuItem>
+            </ContextMenuGroup>
+          </ContextMenuSubContent>
+        </ContextMenuSub>
+        <ContextMenuSub>
+          <ContextMenuSubTrigger>{t.moreTools}</ContextMenuSubTrigger>
+          <ContextMenuSubContent class="w-44" {dir} data-lang={lang}>
+            <ContextMenuGroup>
+              <ContextMenuItem>{t.savePage}</ContextMenuItem>
+              <ContextMenuItem>{t.createShortcut}</ContextMenuItem>
+              <ContextMenuItem>{t.nameWindow}</ContextMenuItem>
+            </ContextMenuGroup>
+            <ContextMenuSeparator />
+            <ContextMenuGroup>
+              <ContextMenuItem>{t.developerTools}</ContextMenuItem>
+            </ContextMenuGroup>
+            <ContextMenuSeparator />
+            <ContextMenuGroup>
+              <ContextMenuItem variant="destructive">{t.delete}</ContextMenuItem>
+            </ContextMenuGroup>
+          </ContextMenuSubContent>
+        </ContextMenuSub>
+      </ContextMenuGroup>
+      <ContextMenuSeparator />
+      <ContextMenuGroup>
+        <ContextMenuCheckboxItem checked>{t.showBookmarks}</ContextMenuCheckboxItem>
+        <ContextMenuCheckboxItem>{t.showFullUrls}</ContextMenuCheckboxItem>
+      </ContextMenuGroup>
+      <ContextMenuSeparator />
+      <ContextMenuGroup>
+        <ContextMenuRadioGroup bind:value={people}>
+          <ContextMenuLabel>{t.people}</ContextMenuLabel>
+          <ContextMenuRadioItem value="pedro">{t.pedro}</ContextMenuRadioItem>
+          <ContextMenuRadioItem value="colm">{t.colm}</ContextMenuRadioItem>
+        </ContextMenuRadioGroup>
+      </ContextMenuGroup>
+    </ContextMenuContent>
+  </ContextMenu>
 </div>

@@ -75,9 +75,9 @@ Horizontal separators between list items.
 
 ## RTL
 
-Set `dir` on the container, as the `Separator` follows the layout direction. Use the buttons to switch the language.
+Set `dir` on the container, as the `Separator` follows the layout direction. Use the language selector to switch the language.
 
-<ComponentPreview name="base/SeparatorRtlExample" align="start" />
+<ComponentPreview name="base/SeparatorRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 

@@ -101,6 +101,6 @@ Add a spinner to a badge to indicate a loading state. Place the `<Spinner />` be
 
 ## RTL
 
-Wrap the spinner in a [DirectionProvider](/docs/components/direction) and set `dir` on the container. Use the buttons to switch the language.
+Wrap the spinner in a [DirectionProvider](/docs/components/direction) and set `dir` on the container. Use the language selector to switch the language.
 
-<ComponentPreview name="base/SpinnerRtlExample" align="start" />
+<ComponentPreview name="base/SpinnerRtlExample" direction="rtl" align="start" />

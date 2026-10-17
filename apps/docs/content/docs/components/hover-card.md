@@ -102,9 +102,9 @@ Use the `side` and `align` props on `HoverCardContent` to control placement.
 
 ## RTL
 
-Wrap the hover card in a [DirectionProvider](/docs/components/direction) and set `dir` on `HoverCardContent`. Use the buttons to switch the language.
+Wrap the hover card in a [DirectionProvider](/docs/components/direction) and set `dir` on `HoverCardContent`. Use the language selector to switch the language.
 
-<ComponentPreview name="base/HoverCardRtlExample" />
+<ComponentPreview name="base/HoverCardRtlExample" direction="rtl" />
 
 ## API Reference
 

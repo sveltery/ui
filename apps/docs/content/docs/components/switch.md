@@ -114,9 +114,9 @@ Use the `size` prop to change the size of the switch.
 
 ## RTL
 
-Wrap the switch in a [DirectionProvider](/docs/components/direction) and set `dir` on the field parts and the switch. Use the buttons to switch the language.
+Wrap the switch in a [DirectionProvider](/docs/components/direction) and set `dir` on the field parts and the switch. Use the language selector to switch the language.
 
-<ComponentPreview name="base/SwitchRtlExample" align="start" />
+<ComponentPreview name="base/SwitchRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 

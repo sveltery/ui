@@ -55,13 +55,9 @@ Base UI marks an open trigger with its own attributes. A collapsible trigger get
 
 ### Examples copied from the Radix variant use Base UI's attributes
 
-**Upstream:** The chevron in [`collapsible-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/collapsible-example.tsx#L110) rotates on `group-data-[state=open]`, as does the folder chevron in [`collapsible-file-tree.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/collapsible-file-tree.tsx#L74). The bookmark icons in [`toggle-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/toggle-example.tsx#L321) (also line 331) fill on `group-data-[state=on]/toggle`. These are Radix attributes.
+**Upstream:** The chevron in [`collapsible-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/collapsible-example.tsx#L110) rotates on `group-data-[state=open]`, as does the folder chevron in [`collapsible-file-tree.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/collapsible-file-tree.tsx#L74). The bookmark icons in [`toggle-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/toggle-example.tsx#L321) (also line 331) fill on `group-data-[state=on]/toggle`. These are Radix attributes. The menu buttons and the collapsible chevron in [`sidebar-demo.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/sidebar-demo.tsx#L223) use `data-[state=open]`, and its dropdown menus are `w-(--radix-dropdown-menu-trigger-width)`, a Radix variable.
 
-**Sveltery UI:** The [Collapsible](/docs/components/collapsible) kitchen-sink and file tree examples use `group-data-panel-open:`, and the [Toggle](/docs/components/toggle) example uses `group-data-pressed/toggle:`.
-
-**Upstream:** The chevron in [`collapsible-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/collapsible-example.tsx#L110) rotates on `group-data-[state=open]`. The bookmark icons in [`toggle-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/toggle-example.tsx#L321) (also line 331) fill on `group-data-[state=on]/toggle`. These are Radix attributes. The menu buttons and the collapsible chevron in [`sidebar-demo.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/sidebar-demo.tsx#L223) use `data-[state=open]`, and its dropdown menus are `w-(--radix-dropdown-menu-trigger-width)`, a Radix variable.
-
-**Sveltery UI:** The [Collapsible](/docs/components/collapsible) example uses `group-data-panel-open:`, and the Toggle preview example (`ToggleExample.svelte`) uses `group-data-pressed/toggle:`. The [Sidebar](/docs/components/sidebar) demo uses `data-popup-open:`, `group-data-open/collapsible:` and `w-(--anchor-width)`.
+**Sveltery UI:** The [Collapsible](/docs/components/collapsible) kitchen-sink and file tree examples use `group-data-panel-open:`, and the [Toggle](/docs/components/toggle) example uses `group-data-pressed/toggle:`. The [Sidebar](/docs/components/sidebar) demo uses `data-popup-open:`, `group-data-open/collapsible:` and `w-(--anchor-width)`.
 
 **Why:** Base UI never sets `data-state`, so upstream's chevron does not rotate and the bookmark does not fill when pressed. It has no `--radix-dropdown-menu-trigger-width`, so that class sets no width.
 
@@ -799,13 +795,13 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
-### The RTL example sets its own direction
+### The RTL section says where to set `dir`
 
 **Upstream:** The [RTL section](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/data-table.mdx#L891) links the RTL configuration guide, and the preview takes `direction="rtl"` from the docs site's language selector.
 
-**Sveltery UI:** The section links the [RTL guide](/docs/rtl) too. It then names the [DirectionProvider](/docs/components/direction), and the example has its own language buttons and sets `dir` on the table and on each menu.
+**Sveltery UI:** The section links the [RTL guide](/docs/rtl) too. It then names the [DirectionProvider](/docs/components/direction) and says to set `dir` on the table and on each menu, as the example does.
 
-**Why:** These docs have no language selector that gives a preview its direction, so a Svelte example sets its own.
+**Why:** The preview hides its code, so the section names the two places a copied table needs `dir`, as the other RTL sections on these docs do.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
