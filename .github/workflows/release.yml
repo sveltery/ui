@@ -1,11 +1,13 @@
 name: Release
 
-# Pushing a v* tag publishes every non-private package in packages/ to npm through trusted
-# publishing (OIDC), so the job needs no NPM_TOKEN. Each package's first version must be
-# published by hand before npm accepts this workflow as its trusted publisher. The packages ask
-# for provenance, which only CI can generate, so that local publish needs --provenance=false:
+# Pushing a v* tag publishes to npm, through trusted publishing (OIDC) so the job needs no
+# NPM_TOKEN, each public package in packages/ whose version is not on npm yet. Every such package
+# must be at the tag's version; scripts/release-plan.mjs checks this before anything is published.
+# Each package's first version must be published by hand before npm accepts this workflow as its
+# trusted publisher. The packages ask for provenance, which only CI can generate, so that local
+# publish needs --provenance=false:
 #   npm publish <tarball> --access public --provenance=false
-# Bump all packages together with `node scripts/set-version.mjs <x.y.z>` before tagging.
+# Bump the packages to release, or all of them with `node scripts/set-version.mjs <x.y.z>`, before tagging.
 on:
   push:
     tags: ['v*']
@@ -38,32 +40,19 @@ jobs:
           node-version: '24'
       - run: bash scripts/bootstrap.sh
 
-      - name: Check the tag matches every package version
-        run: node scripts/set-version.mjs --check "$GITHUB_REF_NAME"
+      - name: Pick the packages to publish
+        run: node scripts/release-plan.mjs "$GITHUB_REF_NAME" > "$RUNNER_TEMP/publish.txt"
 
       - run: bash scripts/verify.sh
 
       - name: Publish
-        # Versions already on npm are skipped, so a re-run after a partial failure is safe.
+        # The plan skips versions already on npm, so a re-run after a partial failure is safe.
         # Trusted publishing needs npm 11.5.1+.
         run: |
           source scripts/toolchain.sh
           npm install --global npm@11.6.2
-          if [[ "$(ls packages | xargs)" != "cli command day-picker input-otp recharts resizable svelte" ]]; then
-            echo "::error::packages/ changed. Add the new package to the publish order below."
-            exit 1
-          fi
-          for dir in cli command day-picker input-otp recharts resizable svelte; do
+          for dir in $(< "$RUNNER_TEMP/publish.txt"); do
             name="$(node -p "require('./packages/$dir/package.json').name")"
-            version="$(node -p "require('./packages/$dir/package.json').version")"
-            if [[ "$(node -p "require('./packages/$dir/package.json').private === true")" == true ]]; then
-              echo "::notice::$name is private, not published."
-              continue
-            fi
-            if npm view "$name@$version" version >/dev/null 2>&1; then
-              echo "::notice::$name@$version is already on npm."
-              continue
-            fi
             pack="$RUNNER_TEMP/pack/$dir"
             mkdir -p "$pack"
             pnpm --filter "$name" pack --pack-destination "$pack"
