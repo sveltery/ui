@@ -67,8 +67,7 @@ test('updates values in place, adds what is missing and keeps everything else', 
 
 @layer base {
 \tbody {
-\t\t@apply font-sans;
-\t\t@apply bg-background text-foreground;
+\t\t@apply font-sans bg-background text-foreground;
 \t}
 \t* {
 \t\t@apply border-border outline-ring/50;
@@ -133,6 +132,11 @@ describe('css trees', () => {
 }
 `);
     expect(merge(merged, tree)).toBe(merged);
+  });
+
+  test('merges a new @apply into the rule\'s @apply, so a new font class replaces the old one', () => {
+    const css = "@import 'tailwindcss';\n@layer base {\n  html {\n    @apply font-mono antialiased;\n  }\n}\n";
+    expect(mergeTheme(css, {}, [{ '@layer base': { html: { '@apply font-sans': {} } } }])).toContain('html {\n    @apply antialiased font-sans;\n  }');
   });
 
   test('rejects an array value', () => {

@@ -81,7 +81,8 @@ export function formatPlan(plan: Plan, { showIdentical }: { showIdentical: boole
   return lines.join('\n');
 }
 
-export async function executePlan(plan: Plan, { cwd, install: shouldInstall }: { cwd: string; install: boolean }): Promise<void> {
+/** Writes the plan's files and installs its packages. `silent` hides the package manager's output. */
+export async function executePlan(plan: Plan, { cwd, install: shouldInstall, silent = false }: { cwd: string; install: boolean; silent?: boolean }): Promise<void> {
   for (const file of plan.files) {
     if (file.status === 'identical') continue;
     const absolute = join(cwd, file.path);
@@ -97,7 +98,7 @@ export async function executePlan(plan: Plan, { cwd, install: shouldInstall }: {
     if (specs.length === 0) continue;
     const resolved = resolveCommand(agent, 'add', [...(dev ? ['-D'] : []), ...specs]);
     if (!resolved) throw new CliError(`Do not know how to install packages with ${agent}. Install these yourself: ${specs.join(' ')}`);
-    const result = spawnSync(resolved.command, resolved.args, { cwd, stdio: 'inherit', shell: process.platform === 'win32' });
+    const result = spawnSync(resolved.command, resolved.args, { cwd, stdio: silent ? 'ignore' : 'inherit', shell: process.platform === 'win32' });
     if (result.status !== 0) throw new CliError(`\`${resolved.command} ${resolved.args.join(' ')}\` failed. Install these yourself: ${specs.join(' ')}`);
   }
 }

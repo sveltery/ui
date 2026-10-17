@@ -1,3 +1,4 @@
+import { twMerge } from 'cn';
 import postcss, { type AtRule, type ChildNode, type Container, type Root, type Rule } from 'postcss';
 import { CliError } from './parse.js';
 import type { CssTree, CssVars, RegistryItem } from './registry.js';
@@ -56,10 +57,11 @@ function setDecl(container: Container, prop: string, value: string) {
 const setVars = (container: Container, vars: Record<string, string> | undefined) =>
   Object.entries(vars ?? {}).forEach(([key, value]) => setDecl(container, key.startsWith('--') ? key : `--${key}`, value));
 
+/** Merges the utilities into the rule's `@apply` with twMerge, as upstream does, so a new font class replaces the old one. */
 function ensureApply(parent: Container, utilities: string) {
-  if (!parent.nodes?.some((node) => node.type === 'atrule' && node.name === 'apply' && node.params.trim() === utilities)) {
-    append(parent, postcss.atRule({ name: 'apply', params: utilities }));
-  }
+  const existing = parent.nodes?.find((node): node is AtRule => node.type === 'atrule' && node.name === 'apply');
+  if (!existing) append(parent, postcss.atRule({ name: 'apply', params: utilities }));
+  else if (existing.params.trim() !== utilities) existing.params = twMerge(existing.params, utilities);
 }
 
 /** The imports and base layer every Sveltery project needs. */
