@@ -216,6 +216,8 @@ To open a row while it streams and let the reader's click win, bind `open` to a 
 </TraceCollapsible>
 ```
 
+For a list of rows, keep each row's click in a `SvelteMap` keyed by message and position, as the [Reasoning](#reasoning) example does.
+
 ## Link
 
 Wrap the `TraceLine` in an anchor. For a new tab, use an arrow-up-right icon and sr-only "(opens in a new tab)".
@@ -374,7 +376,7 @@ A row that expands. It accepts the props of [`Collapsible`](/docs/components/col
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `open` | `boolean` | `false` | Whether the row is open. Use `bind:open` to read and set it. Without `bind:`, it sets the starting state. |
+| `open` | `boolean` | `false` | Whether the row is open. Without `bind:`, `open` sets the open state and the row can still be toggled. Use `bind:open` to keep your state in sync. |
 | `onOpenChange` | `(open: boolean) => void` | - | Called when the open state changes. |
 | `class` | `string` | - | Additional classes to apply to the row. |
 

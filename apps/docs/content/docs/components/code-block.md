@@ -218,7 +218,7 @@ To keep a long block from taking over the page, raise the cap instead of removin
 
 ## Size
 
-Use `size="sm"` for tool and [Trace](/docs/components/trace) output. It has tighter padding and `text-xs` text.
+Use `size="sm"` for tool and [Trace](#trace) output. It has tighter padding and `text-xs` text.
 
 <ComponentPreview name="base/CodeBlockSizeExample" />
 
