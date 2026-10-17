@@ -18,16 +18,20 @@ The CLI copies the item's files into the project's `ui` directory, installs its 
 The format follows the shadcn registry, limited to what this CLI reads. It supports:
 
 - adding an item by its URL,
-- `registryDependencies` by name, from the project's registry, or by URL, from any registry,
+- `registryDependencies` by name, from the project's registry, by `@namespace/name`, or by URL, from any registry,
+- [namespaced registries](/docs/registry/namespace) such as `@acme/button`, set in `components.json`,
+- [authentication](/docs/registry/authentication) with headers or query parameters that read environment variables,
 - `dependencies` on npm packages,
 - items that switch to the project's icon library,
 - a different root registry with `SVELTERY_REGISTRY_URL` or the `registry` key in `components.json`, for example a preview deploy of Sveltery UI.
 
-It does not support these shadcn registry features yet: a `build` command, namespaces such as `@acme/button`, authentication headers, GitHub registries, search, the registry index, MCP and Open in v0. `diff` and `update` do not track items added by URL.
+It does not support these shadcn registry features yet: a `build` command, GitHub registries, search, the registry index, MCP and Open in v0. `diff` and `update` do not track items added by URL.
 
 ## Next steps
 
 - [Getting Started](/docs/registry/getting-started) shows how to write and serve your own items.
 - [Examples](/docs/registry/examples) shows items of each type.
 - [registry-item.json](/docs/registry/registry-item-json) describes the fields of an item.
+- [Namespaces](/docs/registry/namespace) shows how to install with `@namespace/item` names.
+- [Authentication](/docs/registry/authentication) shows how to serve and install private items.
 - [registry.json](/docs/registry/registry-json) describes a root registry, which `SVELTERY_REGISTRY_URL` can point at.

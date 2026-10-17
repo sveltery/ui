@@ -96,7 +96,11 @@ beforeAll(async () => {
     const path = request.url ?? '';
     if (path.startsWith('/init')) initRequests.push(path);
     if (path.includes('baseColor=gray')) return void response.writeHead(400, { 'content-type': 'application/json' }).end(JSON.stringify({ error: 'Invalid baseColor "gray"' }));
-    const body = path.startsWith('/init') ? initItem : registryFiles[path.replace(/^\/r\//, '')];
+    // The @acme registry wants a bearer token, and serves its items in the style the URL names.
+    if (path.startsWith('/acme/') && request.headers.authorization !== 'Bearer s3cret') {
+      return void response.writeHead(401, { 'content-type': 'application/json' }).end(JSON.stringify({ error: 'Unauthorized', message: 'Set ACME_TOKEN.' }));
+    }
+    const body = path.startsWith('/init') ? initItem : registryFiles[path.replace(/^\/r\//, '').replace(/^\//, '')];
     response.writeHead(body ? 200 : 404, { 'content-type': 'application/json' }).end(body ? JSON.stringify(body) : '{}');
   });
   await new Promise<void>((done) => server.listen(0, '127.0.0.1', done));
@@ -435,6 +439,70 @@ describe('add', () => {
     await expect(add([`${registryUrl}/styles/nova/evil.json`], options())).rejects.toThrow(
       `${registryUrl}/styles/nova/evil.json is not a valid registry response. files[0].target: expected a relative path without ".." segments, got "../../../../escape.js"`,
     );
+  });
+});
+
+describe('namespaced registries', () => {
+  const addOptions = { ...defaults, overwrite: false, all: false, dryRun: false };
+  const hello = '<p>Hello</p>\n';
+  beforeAll(() => {
+    registryFiles['acme/nova/hello.json'] = item('hello', { registryDependencies: ['button', '@acme/greet'], files: [{ type: 'registry:ui', target: 'hello/Hello.svelte', content: hello }] });
+    registryFiles['acme/nova/greet.json'] = item('greet', { type: 'registry:lib', files: [{ type: 'registry:ui', target: 'greet/index.ts', content: 'export const greet = 1;\n' }] });
+  });
+  beforeEach(() => init({ cwd, ...defaults }));
+  afterEach(() => void delete process.env.ACME_TOKEN);
+  const configure = (registries: unknown) => writeFileSync(join(cwd, 'components.json'), JSON.stringify({ ...JSON.parse(read('components.json')), registries }));
+  const acme = () => ({ url: `${origin}/acme/{style}/{name}.json`, headers: { Authorization: 'Bearer ${ACME_TOKEN}' } });
+
+  test('adds @namespace/item with its headers, and namespaced registryDependencies', async () => {
+    configure({ '@acme': acme() });
+    process.env.ACME_TOKEN = 's3cret';
+    const plan = await add(['@acme/hello'], { ...addOptions, cwd });
+    expect(plan.files.map((file) => file.path)).toEqual([
+      'src/lib/components/ui/button/Button.svelte',
+      'src/lib/components/ui/greet/index.ts',
+      'src/lib/components/ui/hello/Hello.svelte',
+    ]);
+    expect(read('src/lib/components/ui/hello/Hello.svelte')).toBe(hello);
+    expect(await diff(['@acme/hello'], { cwd })).toBe('Everything is up to date.');
+  });
+
+  test('reads the token from .env.local, and the process environment wins', async () => {
+    configure({ '@acme': acme() });
+    writeFileSync(join(cwd, '.env'), 'ACME_TOKEN=wrong\n');
+    writeFileSync(join(cwd, '.env.local'), 'ACME_TOKEN=s3cret\n');
+    expect((await add(['@acme/greet'], { ...addOptions, cwd })).files.map((file) => file.path)).toEqual(['src/lib/components/ui/greet/index.ts']);
+    process.env.ACME_TOKEN = 'wrong';
+    await expect(add(['@acme/greet'], { ...addOptions, cwd })).rejects.toThrow(
+      `You are not authorized to access the item at ${origin}/acme/nova/greet.json. If this is a remote registry, you may need to authenticate.\n[Unauthorized] Set ACME_TOKEN.\nCheck your authentication credentials and environment variables.`,
+    );
+  });
+
+  test('sends params as a query string', async () => {
+    configure({ '@acme': { url: `${origin}/acme/{style}/{name}.json`, params: { token: '${ACME_TOKEN}' } } });
+    process.env.ACME_TOKEN = 's3cret';
+    await expect(add(['@acme/greet'], { ...addOptions, cwd })).rejects.toThrow(`the item at ${origin}/acme/nova/greet.json?token=s3cret.`);
+  });
+
+  test('names an unknown namespace, a missing variable and an invalid registries entry', async () => {
+    await expect(add(['@nope/hello'], { ...addOptions, cwd })).rejects.toThrow(
+      'Unknown registry "@nope". Make sure it is defined under "registries" in your components.json file:\n{\n  "registries": {\n    "@nope": "[URL_TO_REGISTRY]"\n  }\n}',
+    );
+    configure({ '@acme': acme() });
+    await expect(add(['@acme/hello'], { ...addOptions, cwd })).rejects.toThrow(
+      'Registry "@acme" requires the following environment variables:\n\n  • ACME_TOKEN\n\nSet the required environment variables to your .env or .env.local file.',
+    );
+    configure({ acme: `${origin}/acme/{name}.json` });
+    await expect(add(['@acme/hello'], { ...addOptions, cwd })).rejects.toThrow('components.json is invalid. registries.acme: registry names must start with @, such as @acme.');
+    configure({ '@acme': `${origin}/acme/hello.json` });
+    await expect(add(['@acme/hello'], { ...addOptions, cwd })).rejects.toThrow('registries.@acme: expected a URL with a {name} placeholder');
+  });
+
+  test('@sveltery names the project registry, and init keeps registries', async () => {
+    expect((await add(['@sveltery/button'], { ...addOptions, cwd })).files.map((file) => file.path)).toEqual(['src/lib/components/ui/button/Button.svelte']);
+    configure({ '@acme': acme() });
+    await init({ cwd, ...defaults });
+    expect(JSON.parse(read('components.json')).registries).toEqual({ '@acme': acme() });
   });
 });
 

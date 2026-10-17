@@ -58,6 +58,8 @@ const server = createServer(async (request, response) => {
     response.writeHead(init.status, { 'content-type': 'application/json' }).end(await init.text());
     return;
   }
+  // A namespaced registry that wants a bearer token.
+  if (request.url?.startsWith('/r/acme/') && request.headers.authorization !== 'Bearer s3cret') return void response.writeHead(401).end();
   try {
     const body = readFileSync(join(registryDir, decodeURIComponent(new URL(request.url ?? '/', 'http://x').pathname.replace(/^\/r\//, ''))));
     response.writeHead(200, { 'content-type': 'application/json' }).end(body);
@@ -183,6 +185,18 @@ try {
   await cli('update', '-y');
   assert.equal(readFileSync(buttonFile, 'utf8'), pristine, 'update -y restores the registry version');
   assert.equal((await cli('diff')).trim(), 'Everything is up to date.');
+
+  step('sveltery add @acme/hello from a registry that wants a bearer token');
+  const helloSource = "<script lang=\"ts\">\n  import { Button } from '../button';\n</script>\n<Button>Hello</Button>\n";
+  mkdirSync(join(registryDir, 'acme'));
+  writeFileSync(
+    join(registryDir, 'acme/hello.json'),
+    JSON.stringify({ $schema: `${origin}/schema/registry-item.json`, name: 'hello', type: 'registry:ui', registryDependencies: ['button'], files: [{ type: 'registry:ui', target: 'hello/Hello.svelte', content: helloSource }] }),
+  );
+  writeFileSync(join(app, 'components.json'), JSON.stringify({ ...config, registries: { '@acme': { url: `${origin}/r/acme/{name}.json`, headers: { Authorization: 'Bearer ${ACME_TOKEN}' } } } }, null, 2));
+  writeFileSync(join(app, '.env.local'), 'ACME_TOKEN=s3cret\n');
+  await cli('add', '@acme/hello', '-y');
+  assert.equal(readFileSync(join(app, config.aliases.ui.replace(/^[$#]lib/, 'src/lib'), 'hello/Hello.svelte'), 'utf8'), helloSource, 'add installs the namespaced item with the token from .env.local');
 
   writeFileSync(
     join(app, 'src/routes/+page.svelte'),

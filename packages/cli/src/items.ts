@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import { CONFIG_FILE, parseConfig, type Config } from './config.js';
 import { CliError } from './parse.js';
 import { missingPackages, planFile, type Plan, type PlannedFile } from './plan.js';
-import { aliasPath, readJson } from './project.js';
+import { aliasPath, loadEnv, readJson } from './project.js';
 import { fetchItem, openRegistry, parseItemRef, resolveItems, resolveRegistryUrl, type ItemRef, type Registry, type RegistryFile, type RegistryItem } from './registry.js';
 import { applyTransforms, type TransformContext } from './transforms.js';
 
@@ -14,7 +14,7 @@ export async function openProject(cwd: string): Promise<Project> {
   const configPath = join(cwd, CONFIG_FILE);
   if (!existsSync(configPath)) throw new CliError(`No ${CONFIG_FILE} in ${cwd}. Run \`npx @sveltery/ui@latest init\` first.`);
   const config = parseConfig(readJson(configPath));
-  const registry = await openRegistry(resolveRegistryUrl(config.registry));
+  const registry = await openRegistry(resolveRegistryUrl(config.registry), { configs: config.registries ?? {}, env: loadEnv(cwd) });
   return { cwd, config, registry, uiDir: aliasPath(config.aliases.ui) };
 }
 
@@ -71,8 +71,9 @@ export async function selectInstalled(project: Project, names: string[]): Promis
     const refs = names.map(parseItemRef);
     if (refs.some((ref) => ref.kind === 'url')) throw new CliError('Name installed items, such as `npx @sveltery/ui@latest diff button`. URLs only work with `add`.');
     const items = await resolveItems(registry, config.style, refs);
-    for (const name of names) {
-      if (!isInstalled(project, items.find((item) => item.name === name)!)) throw new CliError(`${name} is not installed. Run \`npx @sveltery/ui@latest add ${name}\` first.`);
+    for (const [index, ref] of refs.entries()) {
+      const name = names[index]!;
+      if (!isInstalled(project, await fetchItem(registry, config.style, ref))) throw new CliError(`${name} is not installed. Run \`npx @sveltery/ui@latest add ${name}\` first.`);
     }
     return items;
   }
