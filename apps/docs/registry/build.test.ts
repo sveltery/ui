@@ -144,10 +144,10 @@ describe('index files', () => {
       baseColors: ['neutral', 'stone', 'zinc', 'mauve', 'olive', 'mist', 'taupe'],
       iconLibraries: ['lucide', 'tabler', 'hugeicons', 'phosphor', 'remixicon'],
       items: [
-        { name: 'accordion', type: 'registry:ui', title: 'Accordion' },
-        { name: 'alert', type: 'registry:ui', title: 'Alert' },
-        { name: 'alert-dialog', type: 'registry:ui', title: 'Alert Dialog' },
-        { name: 'aspect-ratio', type: 'registry:ui', title: 'Aspect Ratio' },
+        { name: 'accordion', type: 'registry:ui', title: 'Accordion', meta: { links: { docs: 'https://sveltery.test/docs/components/accordion', examples: 'https://sveltery.test/docs/components/accordion.md', api: 'https://base-ui.com/react/components/accordion.md' } } },
+        { name: 'alert', type: 'registry:ui', title: 'Alert', meta: { links: { docs: 'https://sveltery.test/docs/components/alert', examples: 'https://sveltery.test/docs/components/alert.md' } } },
+        { name: 'alert-dialog', type: 'registry:ui', title: 'Alert Dialog', meta: { links: { docs: 'https://sveltery.test/docs/components/alert-dialog', examples: 'https://sveltery.test/docs/components/alert-dialog.md', api: 'https://base-ui.com/react/components/alert-dialog.md' } } },
+        { name: 'aspect-ratio', type: 'registry:ui', title: 'Aspect Ratio', meta: { links: { docs: 'https://sveltery.test/docs/components/aspect-ratio', examples: 'https://sveltery.test/docs/components/aspect-ratio.md' } } },
       ],
       blocks: [{ name: 'preview', type: 'registry:block', title: 'Preview', description: 'Preview' }],
     });
