@@ -373,6 +373,16 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
 
+### The Breadcrumb separator example links to /docs/components
+
+**Upstream:** The Components link in [`breadcrumb-separator.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/breadcrumb-separator.tsx#L24) points to `/components`.
+
+**Sveltery UI:** The [Breadcrumb](/docs/components/breadcrumb) Custom separator example points it to `/docs/components`, as the Collapsed example already does.
+
+**Why:** The docs site prerenders every link, and `/components` is not a page here, so the build fails on it.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ## Forms
 
 ### The Forms guides cover SvelteKit forms instead of React form libraries
