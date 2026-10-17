@@ -4,7 +4,7 @@ import { CONFIG_FILE, parseConfig, type Config } from './config.js';
 import { CliError, literal, object, optional, ParseError, string } from './parse.js';
 import { missingPackages, planFile, type Plan, type PlannedFile } from './plan.js';
 import { aliasPath, loadEnv, readJson } from './project.js';
-import { fetchItem, openRegistry, parseItemRef, resolveItems, resolveRegistryUrl, styleNames, type ItemRef, type Registry, type RegistryFile, type RegistryItem, type StyleName } from './registry.js';
+import { fetchItem, namespaceConfigs, openRegistry, parseItemRef, resolveItems, resolveRegistryUrl, styleNames, type ItemRef, type Registry, type RegistryFile, type RegistryItem, type StyleName } from './registry.js';
 import { applyTransforms, type TransformContext } from './transforms.js';
 
 /** A project that ran `init`: its root, its components.json, the registry it points at, and where items are written (relative to `cwd`). */
@@ -18,9 +18,9 @@ export async function openProject(cwd: string): Promise<Project> {
   return { cwd, config, registry, uiDir: aliasPath(config.aliases.ui) };
 }
 
-const catalogConfig = object({ style: optional((value) => value), registry: optional(string) });
+const catalogConfig = object({ style: optional((value) => value), registry: optional(string), registries: optional(namespaceConfigs) });
 
-/** The style a components.json names, as `view` needs it for a URL. `search` and `docs` never read the style, so `openCatalog` leaves it unchecked and a config written for another style set still works there. */
+/** The style a components.json names, as `view` and a namespace `search` need it for a URL. `docs` and a search of the manifest never read the style, so `openCatalog` leaves it unchecked and a config written for another style set still works there. */
 export function catalogStyle(style: unknown): StyleName {
   if (style === undefined) return 'nova';
   try {
@@ -33,7 +33,7 @@ export function catalogStyle(style: unknown): StyleName {
 
 /**
  * The registry and style that read-only commands (`view`, `search`, `docs`) use. Unlike `openProject`, it needs no `init`:
- * without a components.json it takes the default registry, and with one only `style` and `registry` count. `style` is returned unchecked: pass it to `catalogStyle` where a style is needed.
+ * without a components.json it takes the default registry, and with one only `style`, `registry` and `registries` count. `style` is returned unchecked: pass it to `catalogStyle` where a style is needed.
  */
 export async function openCatalog(cwd: string): Promise<{ registry: Registry; style: unknown }> {
   const configPath = join(cwd, CONFIG_FILE);
@@ -46,7 +46,7 @@ export async function openCatalog(cwd: string): Promise<{ registry: Registry; st
       throw new CliError(`${CONFIG_FILE} is invalid. ${error.message}.`);
     }
   }
-  return { registry: await openRegistry(resolveRegistryUrl(settings.registry)), style: settings.style };
+  return { registry: await openRegistry(resolveRegistryUrl(settings.registry), { configs: settings.registries ?? {}, env: loadEnv(cwd) }), style: settings.style };
 }
 
 /** Where a registry file goes, relative to `cwd`: by its type, under the ui or components alias, or from the project root. */

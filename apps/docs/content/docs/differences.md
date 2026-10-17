@@ -723,13 +723,23 @@ Each component page follows its [upstream page](https://github.com/shadcn-ui/ui/
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
-### The Code Block page has no Markdown or Typeset example, and its RTL example uses Rhea
+### The Code Block Markdown example renders with svelte-streamdown
 
-**Upstream:** The [Code Block page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/code-block.mdx#L355) shows a block inside a `typeset` container and a chat message rendered with Streamdown, whose `components.code` routes fenced code to a `CodeBlock`.
+**Upstream:** The [Code Block page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/code-block.mdx#L449) renders a chat message with Streamdown. Its [`code-block-markdown`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/code-block-markdown.tsx) example passes `components.code`, checks `data-block` to tell fenced code from inline code, and reads `useIsCodeFenceIncomplete` while `isAnimating` is set.
 
-**Sveltery UI:** The [Code Block](/docs/components/code-block) page leaves both out. Its RTL example renders in Rhea like the rest of the page, where upstream's [`code-block-rtl`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/code-block.mdx#L369) preview uses Nova.
+**Sveltery UI:** The [Code Block](/docs/components/code-block#markdown) Markdown example renders with [svelte-streamdown](https://github.com/beynar/svelte-streamdown). Fenced code goes to its `code` snippet and inline code to its `codespan` snippet. The snippet's `incomplete` is combined with the message's streaming state, where upstream gates it with `isAnimating`.
 
-**Why:** Streamdown is a React library, so the Markdown example needs a Svelte Markdown renderer first. The Typeset example comes with the Markdown one, which renders its message inside `typeset`. A docs page renders every preview in one style.
+**Why:** Streamdown is a React library. svelte-streamdown is a maintained Svelte 5 port that completes unfinished Markdown and code fences while a message streams.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Code Block RTL example uses Rhea
+
+**Upstream:** The [`code-block-rtl`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/code-block.mdx#L369) preview uses Nova.
+
+**Sveltery UI:** The [Code Block](/docs/components/code-block#rtl) RTL example renders in Rhea like the rest of the page.
+
+**Why:** A docs page renders every preview in one style.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
@@ -859,6 +869,18 @@ Each component page follows its [upstream page](https://github.com/shadcn-ui/ui/
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
+## Typeset
+
+### The Typeset builder installs fonts with Fontsource and has no framework picker
+
+**Upstream:** The [Get Code panel](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/app/(app)/(typeset)/components/docs-panel.tsx#L80-L95) has a framework picker that starts on Next.js. For Next.js, its font step loads the picked fonts with `next/font/google` in `app/layout.tsx`. For the other frameworks, it installs them with Fontsource. Its prompt asks the agent to look for `react-markdown`, Streamdown, MDX and `dangerouslySetInnerHTML`.
+
+**Sveltery UI:** The [Typeset builder](/typeset) always gives the Fontsource step, with a command for each package manager and the `@import` lines for `src/app.css`. The prompt asks the agent to look for mdsvex pages, Svelte markdown components and `{@html}`. The wrapper sample renders `{@html content}`.
+
+**Why:** `next/font` is part of Next.js. Fontsource works the same way in SvelteKit and in Vite, so a framework picker would offer one answer twice.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ## CLI
 
 ### `diff` and `update` stay, and `add --diff` and `add --view` print plain text
@@ -899,17 +921,19 @@ Each component page follows its [upstream page](https://github.com/shadcn-ui/ui/
 
 **Why:** An item named `../../registry` overwrote the source `registry.json`, and a path such as `/etc/hostname` put a file from outside the project into the published JSON. `add` installs only names of this form, so the check rejects no item that `add` could install by name.
 
-### Search takes one registry and no installed mark
+### Search defaults to `@sveltery` and takes namespaces only
 
-**Upstream:** [`search`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/search.ts#L37) (alias `list`) takes any number of registries: namespaces such as `@shadcn`, GitHub sources and URLs. With none, it searches every registry in `components.json` and stops when there is no `components.json`. Each result's `addCommandArgument` is the [namespaced address](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/registry/search.ts#L317) that `add` takes, and a search of several registries lists which registry a result is from.
+**Upstream:** [`search`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/search.ts#L37) (alias `list`) takes any number of registries: namespaces such as `@shadcn`, GitHub sources and URLs. With none, it searches every registry in `components.json` except the built-in ones, [stops](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/search.ts#L128) when there is no `components.json`, and [skips](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/search.ts#L209) a registry that fails, listing it under `errors`. A namespace that `components.json` does not list is [looked up](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/search.ts#L153) in shadcn's directory of registries. Each result's `addCommandArgument` is the [namespaced address](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/registry/search.ts#L317) that `add` takes, `@shadcn/button` included.
 
-**Sveltery UI:** `search` knows one registry, `@sveltery`, which is the registry `SVELTERY_REGISTRY_URL` or `components.json` points at. With no argument it searches that one, with or without a `components.json`. Any other registry is an error. `addCommandArgument` is the bare item name, because `add` takes names and URLs only, and `registry` is `@sveltery`. Results come from the manifest `index.json`, which gained an optional `title` for each item so that a search needs one request.
+**Sveltery UI:** [`search`](/docs/cli#search) takes `@sveltery` and the namespaces of `registries` in `components.json`. With no argument it searches `@sveltery`, which is the registry `SVELTERY_REGISTRY_URL` or `components.json` points at, with or without a `components.json`, and reads its manifest even when `registries` sets `@sveltery`. A URL, a GitHub source or a namespace that `registries` does not list is an error that names the registries you can search. For a namespace it does what upstream does: it [fetches the item named `registry`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/registry/api.ts#L127) with the search as query parameters, keeps the page and `pagination` of a registry that sends them, and gives `add` the `@namespace/name` form. A `@sveltery` result has the bare item name as `addCommandArgument`, and it comes from the manifest `index.json`, which gained an optional `title` for each item so that a search needs one request. A `@sveltery` entry in `registries` makes a `search @sveltery` treat it as a namespace like the others. Every registry's environment variables are checked before any request is sent, as upstream does. A registry named twice is searched once, where upstream searches it twice.
 
-`--type` accepts the six types this registry has (`ui`, `lib`, `theme`, `block`, `base`, `font`) and rejects any other, such as `hook`. Upstream accepts every type of its schema and prints "No items found of type hook" for one the registry lacks.
+`--type` accepts the six types that `add` can install (`ui`, `lib`, `theme`, `block`, `base`, `font`) and rejects any other, such as `hook`. Upstream accepts every type of its schema and prints "No items found of type hook" for one the registry lacks.
 
 The old `list` command marked the items in your project as `installed` and had no types, pagination or query. `list` is now an alias of `search`, which prints upstream's output, and the mark is gone.
 
-**Why:** The registry is the only one the CLI reads until namespaced registries land. The installed mark would need one request for each item to read its file list, and it would add a field to upstream's JSON shape.
+**Why:** Sveltery UI has no directory of namespaces to look an unknown one up in. Searching `@sveltery` with no argument keeps `npx @sveltery/ui@latest search` useful in a project without `registries`, where upstream stops. The CLI does not read GitHub registries, and `search` of a registry URL is not supported yet. A bare name installs the same item as `@sveltery/name`, so the `@sveltery` results keep the shorter form. The installed mark would need one request for each item to read its file list, and it would add a field to upstream's JSON shape. The Sveltery UI registry serves `index.json`, not a `registry.json` for each style, so the default search reads the manifest whatever `registries` says. `add` rejects an item of any other type, so a search for one would list nothing that you can install.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
 
 ### Docs links come from the registry's index and have no base
 

@@ -7,7 +7,7 @@
   import MobileNav from './MobileNav.svelte';
   import ModeToggle from './ModeToggle.svelte';
 
-  const designer = $derived(page.route.id === '/(site)/create');
+  const designer = $derived(page.route.id === '/(site)/create' || page.route.id === '/(site)/typeset');
 </script>
 
 <header class="sticky top-0 z-50 w-full bg-background">
