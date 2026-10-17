@@ -47,7 +47,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
-  import { NativeSelect, NativeSelectOption } from '$lib/components/ui/native-select';
+  import { NativeSelect, NativeSelectOption } from '#lib/components/ui/native-select';
   let status = $state('todo');
 </script>
 ```

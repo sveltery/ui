@@ -47,7 +47,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
-  import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from '$lib/components/ui/navigation-menu';
+  import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from '#lib/components/ui/navigation-menu';
 </script>
 ```
 
@@ -74,7 +74,7 @@ Use `navigationMenuTriggerStyle` to style a top-level link like a trigger.
 
 ```svelte
 <script lang="ts">
-  import { NavigationMenuItem, NavigationMenuLink, navigationMenuTriggerStyle } from '$lib/components/ui/navigation-menu';
+  import { NavigationMenuItem, NavigationMenuLink, navigationMenuTriggerStyle } from '#lib/components/ui/navigation-menu';
 </script>
 
 <NavigationMenuItem>

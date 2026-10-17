@@ -50,7 +50,7 @@ test('the D key toggles dark mode outside text fields, and the theme toggle swit
   await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute('content', '#09090b');
 });
 
-test('a docs page keeps step titles out of the TOC, the Installation section shows the CLI command first and the manual steps on the Manual tab, ComponentPreview renders the example and reveals its source, and the page links to its markdown', async ({ page, request }) => {
+test('a docs page keeps step titles out of the TOC, the Installation section shows the CLI command first and the manual steps on the Manual tab, ComponentPreview renders the example and reveals its source as an app that ran add imports it, and the page links to its markdown', async ({ page, request, context, browserName }) => {
   await visit(page, '/docs/components/button', 30_000);
   await expect(page.getByRole('navigation', { name: 'On this page' }).getByRole('link')).toHaveText(['Installation', 'Usage', 'API reference']);
 
@@ -70,14 +70,25 @@ test('a docs page keeps step titles out of the TOC, the Installation section sho
   const preview = page.locator('[data-slot=component-preview]').first();
   await expect(preview.getByRole('button', { name: 'Secondary' }).first()).toBeVisible();
   await preview.getByRole('button', { name: 'View Code' }).click();
-  await expect(preview.locator('[data-slot=code] pre')).toContainText("import { Button, buttonVariants } from '$registry/bases/base/ui/button';");
-  await expect(preview.getByRole('button', { name: 'Copy' })).toBeVisible();
+  const imports = "import { Button, buttonVariants } from '#lib/components/ui/button';";
+  await expect(preview.locator('[data-slot=code] pre')).toContainText(imports);
+  await expect(preview.locator('[data-slot=code] pre')).not.toContainText('$registry/');
+  if (browserName === 'chromium') await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+  await preview.getByRole('button', { name: 'Copy' }).click();
+  if (browserName === 'chromium') {
+    const copied = await page.evaluate(() => navigator.clipboard.readText());
+    expect(copied).toContain(imports);
+    expect(copied).not.toContain('$registry/');
+  }
 
   await page.getByRole('button', { name: 'More page actions' }).click();
   await expect(page.getByRole('menuitem', { name: 'View as Markdown' })).toHaveAttribute('href', /\/docs\/components\/button\.md$/);
   const response = await request.get('/docs/components/button.md');
   expect(response.headers()['content-type']).toBe('text/markdown; charset=utf-8');
-  expect(await response.text()).toMatch(/^---\ntitle: Button\n/);
+  const markdown = await response.text();
+  expect(markdown).toMatch(/^---\ntitle: Button\n/);
+  expect(markdown).toContain(imports);
+  expect(markdown).not.toContain('$registry/');
 });
 
 test('the Drawer page renders its examples in the Rhea style, and other pages stay in Nova', async ({ page }) => {

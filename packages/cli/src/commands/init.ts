@@ -29,7 +29,7 @@ import {
 } from '../registry.js';
 import { cliPackage, version } from '../version.js';
 import { promptForPreset, resolvePresetUrl } from './preset.js';
-import { choose } from './select.js';
+import { choose } from '../prompt.js';
 
 export type InitOptions = { cwd: string; yes: boolean; install: boolean; style?: string; icons?: string; baseColor?: string; css?: string; preset?: string | true };
 

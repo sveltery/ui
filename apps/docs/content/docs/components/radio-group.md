@@ -47,8 +47,8 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
-  import { RadioGroup, RadioGroupItem } from '$lib/components/ui/radio-group';
-  import { Label } from '$lib/components/ui/label';
+  import { RadioGroup, RadioGroupItem } from '#lib/components/ui/radio-group';
+  import { Label } from '#lib/components/ui/label';
 </script>
 ```
 

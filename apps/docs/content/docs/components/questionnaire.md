@@ -66,7 +66,7 @@ The component folders import each other with relative paths, so keep them side b
     QuestionnaireSkip,
     QuestionnaireSubmit,
     QuestionnaireTitle,
-  } from '$lib/components/ui/questionnaire';
+  } from '#lib/components/ui/questionnaire';
 </script>
 ```
 

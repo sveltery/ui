@@ -47,7 +47,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
-  import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '$lib/components/ui/accordion';
+  import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '#lib/components/ui/accordion';
 </script>
 ```
 

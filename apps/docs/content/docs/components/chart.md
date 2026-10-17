@@ -22,7 +22,7 @@ We designed the `chart` component with composition in mind. **You build your cha
 ```svelte showLineNumbers
 <script lang="ts">
   import { BarChart } from 'layerchart';
-  import { ChartContainer, ChartTooltip, type ChartConfig } from '$lib/components/ui/chart';
+  import { ChartContainer, ChartTooltip, type ChartConfig } from '#lib/components/ui/chart';
 
   const data = [
     { month: 'January', value: 186 },
@@ -141,7 +141,7 @@ The chart config holds the human-readable strings of a chart, such as labels, ic
 
 ```svelte title="src/lib/components/example-chart.svelte" showLineNumbers
 <script lang="ts">
-  import type { ChartConfig } from '$lib/components/ui/chart';
+  import type { ChartConfig } from '#lib/components/ui/chart';
 
   const chartConfig = {
     desktop: { label: 'Desktop', color: '#2563eb' },
@@ -231,7 +231,7 @@ To add a tooltip, render the `ChartTooltip` component in the `tooltip` snippet o
 
 ```svelte showLineNumbers
 <script lang="ts">
-  import { ChartContainer, ChartTooltip } from '$lib/components/ui/chart';
+  import { ChartContainer, ChartTooltip } from '#lib/components/ui/chart';
 </script>
 
 <ChartContainer config={chartConfig} class="h-[200px] w-full" aria-label="Desktop and mobile visitors by month">
@@ -261,7 +261,7 @@ Do the same for the legend. Render the `ChartLegend` component in the `legend` s
 
 ```svelte showLineNumbers
 <script lang="ts">
-  import { ChartContainer, ChartLegend, ChartTooltip } from '$lib/components/ui/chart';
+  import { ChartContainer, ChartLegend, ChartTooltip } from '#lib/components/ui/chart';
 </script>
 
 <ChartContainer config={chartConfig} class="h-[200px] w-full" aria-label="Desktop and mobile visitors by month">
@@ -301,7 +301,7 @@ It is intentionally decoupled from chart data. You can share a config and its co
 ```svelte title="src/lib/components/example-chart.svelte" showLineNumbers
 <script lang="ts">
   import MonitorIcon from '@lucide/svelte/icons/monitor';
-  import type { ChartConfig } from '$lib/components/ui/chart';
+  import type { ChartConfig } from '#lib/components/ui/chart';
 
   const chartConfig = {
     desktop: {
@@ -418,7 +418,7 @@ Turn off the label or the indicator with `hideLabel` and `hideIndicator`. Change
 
 ```svelte title="src/lib/components/example-chart.svelte"
 <script lang="ts">
-  import { ChartTooltip } from '$lib/components/ui/chart';
+  import { ChartTooltip } from '#lib/components/ui/chart';
 </script>
 
 <BarChart {data} x="month" series={series}>
@@ -482,7 +482,7 @@ Render the `ChartLegend` component in the `legend` snippet of a chart to add a l
 
 ```svelte title="src/lib/components/example-chart.svelte"
 <script lang="ts">
-  import { ChartLegend } from '$lib/components/ui/chart';
+  import { ChartLegend } from '#lib/components/ui/chart';
 </script>
 
 <BarChart {data} x="month" series={series}>

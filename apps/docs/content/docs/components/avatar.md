@@ -47,7 +47,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
-  import { Avatar, AvatarFallback, AvatarImage } from '$lib/components/ui/avatar';
+  import { Avatar, AvatarFallback, AvatarImage } from '#lib/components/ui/avatar';
 </script>
 ```
 

@@ -54,11 +54,13 @@ This copies the Button source into `src/lib/components/ui/button`. It also insta
 
 ```svelte title="src/routes/+page.svelte"
 <script lang="ts">
-  import { Button } from '$lib/components/ui/button';
+  import { Button } from '#lib/components/ui/button';
 </script>
 
 <Button onclick={() => alert('Hello')}>Click me</Button>
 ```
+
+The docs import from `#lib`. `init` writes that alias to `components.json` when your `package.json` maps `#lib/*` under `imports`, as SvelteKit 3 apps do. In a SvelteKit 2 app without that map, it writes `$lib`, so import from `$lib/components/ui/button` instead.
 
 </Steps>
 

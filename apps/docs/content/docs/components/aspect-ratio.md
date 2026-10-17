@@ -47,7 +47,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
-  import { AspectRatio } from '$lib/components/ui/aspect-ratio';
+  import { AspectRatio } from '#lib/components/ui/aspect-ratio';
 </script>
 ```
 

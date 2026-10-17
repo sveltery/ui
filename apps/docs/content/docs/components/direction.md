@@ -49,7 +49,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
-  import { DirectionProvider } from '$lib/components/ui/direction';
+  import { DirectionProvider } from '#lib/components/ui/direction';
 </script>
 ```
 
@@ -81,7 +81,7 @@ Set `dir` on the document and wrap the app in `DirectionProvider` with the same 
 
 ```svelte
 <script lang="ts">
-  import { useDirection } from '$lib/components/ui/direction';
+  import { useDirection } from '#lib/components/ui/direction';
 
   const reading = useDirection();
 </script>

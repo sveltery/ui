@@ -30,9 +30,9 @@ The Date Picker is built from the [Popover](/docs/components/popover#installatio
 ```svelte
 <script lang="ts">
   import { format } from 'date-fns';
-  import { buttonVariants } from '$lib/components/ui/button';
-  import { Calendar } from '$lib/components/ui/calendar';
-  import { Popover, PopoverContent, PopoverTrigger } from '$lib/components/ui/popover';
+  import { buttonVariants } from '#lib/components/ui/button';
+  import { Calendar } from '#lib/components/ui/calendar';
+  import { Popover, PopoverContent, PopoverTrigger } from '#lib/components/ui/popover';
 
   let date = $state<Date | undefined>();
 </script>

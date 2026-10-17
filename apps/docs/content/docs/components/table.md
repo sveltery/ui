@@ -47,7 +47,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
-  import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '$lib/components/ui/table';
+  import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '#lib/components/ui/table';
 </script>
 ```
 

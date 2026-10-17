@@ -116,11 +116,11 @@ test('the size toggles resize the preview, the Code tab shows the files in their
   await expect(viewer.locator('iframe')).toBeHidden();
   const caption = viewer.locator('figcaption');
   await expect(caption).toHaveText('src/routes/login/+page.svelte Copy');
-  await expect(viewer.locator('pre')).toContainText("import LoginForm from '$lib/components/login-form.svelte';");
+  await expect(viewer.locator('pre')).toContainText("import LoginForm from '#lib/components/login-form.svelte';");
 
   await viewer.getByRole('button', { name: 'login-form.svelte' }).click();
   await expect(caption).toHaveText('src/lib/components/login-form.svelte Copy');
-  await expect(viewer.locator('pre')).toContainText("import { Button } from '$lib/components/ui/button';");
+  await expect(viewer.locator('pre')).toContainText("import { Button } from '#lib/components/ui/button';");
   await expect(viewer.locator('pre')).not.toContainText('svelte-ignore');
 
   await viewer.getByRole('button', { name: 'components' }).click();

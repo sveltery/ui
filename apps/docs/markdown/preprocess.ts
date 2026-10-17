@@ -1,15 +1,14 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { dirname, extname, join, relative } from 'node:path';
 import type { PreprocessorGroup } from 'svelte/compiler';
-import { applyTransforms, type TransformContext } from '../../../packages/cli/src/transforms';
+import { applyTransforms } from '../../../packages/cli/src/transforms';
 import { buildRegistry } from '../registry/build';
 import { readRegistryInput } from '../registry/read';
 import type { RegistryItem, RegistryOutput } from '../registry/types';
 import { highlight, isCollapsible, packageManagerCommands, parseMeta } from './highlight';
+import { asInstalled, SOURCE_CONFIG } from './installed';
 
-/** The Code view shows what `npx @sveltery/ui@latest init -y` then `add` writes: the nova style with Lucide icons. */
 const SOURCE_STYLE = 'nova';
-const SOURCE_CONFIG: TransformContext = { iconLibrary: 'lucide', fontHeading: false };
 
 /** Components every markdown page can use without importing them, like upstream's mdx-components map. */
 const GLOBAL_COMPONENTS = ['CodeBlock', 'ComponentPreview', 'ComponentSource', 'ComponentsList', 'Callout', 'Steps', 'InstallTabs', 'InstallTab'];
@@ -62,7 +61,7 @@ export function docsComponents({ examples, repoRoot }: { examples: string; repoR
         const name = attribute(attrs, 'name');
         const file = join(examples, `${name}.svelte`);
         if (!name || !existsSync(file)) throw new Error(`${filename}: ComponentPreview example "${name}" not found at ${file}`);
-        const raw = readFileSync(file, 'utf8');
+        const raw = asInstalled(readFileSync(file, 'utf8'), file);
         const id = `__example${imports.length}`;
         imports.push(`import ${id} from ${literal(`./${relative(dirname(filename), file)}${tag}`)};`);
         const [html, peek] = await Promise.all([highlight(raw, 'svelte', {}, 'source'), highlight(raw.split('\n').slice(0, PREVIEW_PEEK_LINES).join('\n'), 'svelte', {}, 'source')]);
