@@ -42,17 +42,17 @@ test('dragging a horizontal separator moves both panels by the dragged distance'
   await expectSize(page, 'a', a + 100);
   await expectSize(page, 'b', b - 100);
   await expectValue(page, 'horizontal-handle', 62.5);
-  await expect(page.getByTestId('bound')).toHaveText('63');
+  await expect(page.getByTestId('current')).toHaveText('63');
   await drag(page, 'horizontal-handle', -250);
   await expectSize(page, 'a', a - 150);
   await expectSize(page, 'b', b + 150);
 });
 
-test('a drag settles once, as a user change', async ({ page }) => {
+test('a drag settles once', async ({ page }) => {
   await open(page);
-  await expect(page.getByTestId('changes')).toHaveText('50 false');
+  await expect(page.getByTestId('changes')).toHaveText('50');
   await drag(page, 'horizontal-handle', 100);
-  await expect(page.getByTestId('changes')).toHaveText('50 false,63 true');
+  await expect(page.getByTestId('changes')).toHaveText('50,63');
 });
 
 test('dragging a vertical separator moves the panels by the dragged distance', async ({ page }) => {
@@ -76,23 +76,20 @@ test('a drag past a minimum size stops at the minimum', async ({ page }) => {
   await expectSize(page, 'a', 699);
 });
 
-test('dragging a collapsible panel below half its minimum collapses it', async ({ page }) => {
+test('dragging a collapsible panel below half its minimum collapses it, and past its minimum expands it', async ({ page }) => {
   await open(page);
   const side = 799 * 0.3;
   const min = 799 * 0.2;
   await expectSize(page, 'side', side);
   await drag(page, 'collapsible-handle', -(side - min) - 20);
   await expectSize(page, 'side', min);
-  await expect(page.locator('#side')).not.toHaveAttribute('data-collapsed', '');
   await drag(page, 'collapsible-handle', -(min / 2) - 20);
   await expectSize(page, 'side', 0);
   await expectSize(page, 'main', 799);
-  await expect(page.locator('#side')).toHaveAttribute('data-collapsed', '');
-  await drag(page, 'collapsible-handle', 40);
-  await expectSize(page, 'side', 0);
   await drag(page, 'collapsible-handle', 100);
-  await expectSize(page, 'side', min);
-  await expect(page.locator('#side')).not.toHaveAttribute('data-collapsed', '');
+  await expectSize(page, 'side', 0);
+  await drag(page, 'collapsible-handle', 200);
+  await expectSize(page, 'side', 200);
 });
 
 test('the arrow keys, Home and End move a separator by percent', async ({ page }) => {
@@ -130,10 +127,8 @@ test('Enter collapses a collapsible panel and restores its size', async ({ page 
   await handle.focus();
   await page.keyboard.press('Enter');
   await expectSize(page, 'side', 0);
-  await expect(page.locator('#side')).toHaveAttribute('data-collapsed', '');
   await page.keyboard.press('Enter');
   await expectSize(page, 'side', 799 * 0.3);
-  await expect(page.locator('#side')).not.toHaveAttribute('data-collapsed', '');
 });
 
 test('nested groups resize independently', async ({ page }) => {
@@ -172,7 +167,7 @@ test('a saved layout survives a reload', async ({ page }) => {
   await expectSize(page, 'left', 399.5);
   await drag(page, 'persisted-handle', 100);
   await expectSize(page, 'left', 499.5);
-  await expect.poll(() => page.evaluate(() => localStorage.getItem('sveltery-resizable:resizable-fixture'))).toMatch(/"left":62\.5\d*/);
+  await expect.poll(() => page.evaluate(() => localStorage.getItem('react-resizable-panels:resizable-fixture'))).toMatch(/"left":62\.5\d*/);
   await page.reload();
   await expect(page.locator('[data-hydrated=true]')).toBeAttached();
   await expectSize(page, 'left', 499.5);
@@ -180,39 +175,31 @@ test('a saved layout survives a reload', async ({ page }) => {
   await expectValue(page, 'persisted-handle', 62.5);
 });
 
-test('a collapsedThreshold sets how far past the minimum a panel moves before it collapses', async ({ page }) => {
+test('double-clicking a handle resets the first panel beside it with a default size', async ({ page }) => {
   await open(page);
   const unit = (await measure(page, 'drawer')) / 30;
-  await drag(page, 'threshold-handle', -unit * 9);
-  await expectSize(page, 'drawer', unit * 25);
-  await drag(page, 'threshold-handle', -unit * 6);
-  await expectSize(page, 'drawer', 0);
-  await expect(page.locator('#drawer')).toHaveAttribute('data-collapsed', '');
-});
-
-test('double-clicking a handle resets the panel beside it to its default size', async ({ page }) => {
-  await open(page);
-  const unit = (await measure(page, 'drawer')) / 30;
-  await drag(page, 'threshold-handle', unit * 10);
+  await drag(page, 'three-handle', unit * 10);
   await expectSize(page, 'drawer', unit * 40);
-  await page.locator('#threshold-handle').dblclick();
+  await page.locator('#three-handle').dblclick();
   await expectSize(page, 'drawer', unit * 30);
-  await expect(page.locator('#threshold-handle')).toHaveAttribute('aria-valuenow', '30');
-  await drag(page, 'threshold-second-handle', unit * 10);
-  await page.locator('#threshold-second-handle').dblclick();
+  await expectValue(page, 'three-handle', 30);
+  await drag(page, 'three-second-handle', unit * 10);
   await expectSize(page, 'aside', unit * 20);
+  await page.locator('#three-second-handle').dblclick();
+  await expectSize(page, 'page', unit * 40);
+  await expectSize(page, 'aside', unit * 30);
 });
 
 test('F6 moves focus to the next handle in the group and Shift+F6 to the previous one', async ({ page }) => {
   await open(page);
-  await page.locator('#threshold-handle').focus();
+  await page.locator('#three-handle').focus();
   await page.keyboard.press('F6');
-  await expect(page.locator('#threshold-second-handle')).toBeFocused();
+  await expect(page.locator('#three-second-handle')).toBeFocused();
   await page.keyboard.press('F6');
-  await expect(page.locator('#threshold-handle')).toBeFocused();
+  await expect(page.locator('#three-handle')).toBeFocused();
   await page.keyboard.press('Shift+F6');
-  await expect(page.locator('#threshold-second-handle')).toBeFocused();
-  await expect(page.locator('#drawer')).not.toHaveAttribute('data-collapsed', '');
+  await expect(page.locator('#three-second-handle')).toBeFocused();
+  await expectSize(page, 'drawer', 799 * 0.3);
 });
 
 test('a pointer near a handle hovers it and sets the resize cursor on the page', async ({ page }) => {

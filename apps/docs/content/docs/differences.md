@@ -132,6 +132,16 @@ Where upstream code misbehaves on Base UI, Sveltery UI fixes it instead of copyi
 
 **Decided:** Hugo Hsi, 2026-10-14
 
+### A panel's `resize()` takes every size unit
+
+**Upstream:** shadcn d2fba50 locks react-resizable-panels 4.5.8. Its panel [`resize()`](https://github.com/bvaughn/react-resizable-panels/blob/4.5.8/lib/global/utils/getImperativePanelMethods.ts#L164-L183) reads a string with `parseFloat`, so `resize("300px")` sets the panel to 300 percent, which the layout then clamps, and `resize("10rem")` to 10 percent. Its own documentation says the method takes pixels, `rem`, `em`, `vh` and `vw`.
+
+**Sveltery UI:** `resize()` on a [Resizable](/docs/components/resizable) panel converts every unit from the measured group, with the change react-resizable-panels made in [4.7.3](https://github.com/bvaughn/react-resizable-panels/commit/e8dd4300a1db74b127d91e77fc81b16ed0bd4af8). The package otherwise runs 4.5.8's code unchanged.
+
+**Why:** A size with a unit resizes the panel to that size, as upstream documents and later fixed.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ### Arrow keys move focus in the Calendar
 
 **Upstream:** `CalendarDayButton` in [`calendar.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/calendar.tsx#L216-L218) creates a ref and focuses it when the day is focused, but never passes the ref to its `Button`. The Radix variant's [`calendar.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/radix/ui/calendar.tsx#L223) passes `ref={ref}`.
