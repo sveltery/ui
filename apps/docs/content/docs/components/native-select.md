@@ -32,12 +32,6 @@ npx @sveltery/ui@latest add native-select
 
 <Steps>
 
-### Install the dependencies
-
-```bash
-npm install cn @lucide/svelte
-```
-
 ### Copy the component
 
 Copy the following files into `src/lib/components/ui/native-select`.

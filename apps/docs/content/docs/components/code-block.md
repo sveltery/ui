@@ -29,7 +29,13 @@ npx @sveltery/ui@latest add code-block
 ### Install the dependencies
 
 ```bash
-npm install cn class-variance-authority shiki @sveltery/base
+npm install shiki
+```
+
+### Install the required Sveltery UI dependencies
+
+```bash
+npx @sveltery/ui@latest add button
 ```
 
 ### Copy the component

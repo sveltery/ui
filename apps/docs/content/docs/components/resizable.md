@@ -28,7 +28,7 @@ npx @sveltery/ui@latest add resizable
 ### Install the dependencies
 
 ```bash
-npm install cn @sveltery/resizable
+npm install @sveltery/resizable
 ```
 
 ### Copy the component

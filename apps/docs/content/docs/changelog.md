@@ -4,6 +4,10 @@ description: Releases of the Sveltery UI CLI and its packages.
 order: 10
 ---
 
+<script lang="ts">
+  import { buttonVariants } from '$registry/bases/base/ui/button';
+</script>
+
 New releases of the `@sveltery/ui` CLI and the Svelte packages that the components use. The newest release is first. The components themselves have no version: `add` and `update` always copy the current source from the registry.
 
 ## October 2026: Typeset
@@ -41,6 +45,13 @@ You can create as many typesets as you need. Use a tighter rhythm for chat and a
 ```
 
 It's also designed for streaming, so new blocks don't restyle earlier ones. The file lives in your project. There's no package or config layer to work around.
+
+Open the [typeset builder](/typeset) to create yours, or read the [Typeset docs](/docs/typeset) for the full guide.
+
+<div class="flex gap-2">
+  <a href="/typeset" data-slot="button" class="{buttonVariants({ size: 'sm' })} mt-6">Build your typeset</a>
+  <a href="/docs/typeset" data-slot="button" class="{buttonVariants({ size: 'sm', variant: 'outline' })} mt-6">Read the docs</a>
+</div>
 
 ## October 2026: @sveltery/ui 0.1.1
 
