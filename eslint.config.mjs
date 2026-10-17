@@ -18,7 +18,7 @@ export default [
   { files: [...rechartsVendored, 'packages/recharts/types.d.ts', 'packages/recharts/src/react.ts'], linterOptions: { reportUnusedDisableDirectives: 'off' }, rules: { 'no-useless-assignment': 'off', '@typescript-eslint/no-unused-vars': 'off', '@typescript-eslint/no-explicit-any': 'off' } },
   // Its inline comment disables a rule from eslint-plugin-import, which this repo does not use.
   { files: ['packages/recharts/src/animation/configUpdate.ts'], plugins: { import: { rules: { 'no-default-export': { create: () => ({}) } } } } },
-  // packages/recharts/scripts/convert-shadcn-charts.mjs converts these from shadcn's chart gallery, so their Date locals stay as upstream wrote them.
-  { files: ['tests/app/src/routes/chart/recharts/chart-*/+page.svelte'], rules: { 'svelte/prefer-svelte-reactivity': 'off' } },
+  // packages/recharts/scripts/convert-shadcn-charts.mjs converts these from shadcn's charts, so their Date locals stay as upstream wrote them.
+  { files: ['tests/app/src/routes/chart/recharts/chart-*/+page.svelte', 'apps/docs/examples/charts/Chart*.svelte', 'apps/docs/examples/base/Chart*.svelte', 'apps/docs/blocks/dashboard-01/components/chart-area-interactive.svelte'], rules: { 'svelte/prefer-svelte-reactivity': 'off' } },
   { files: ['apps/docs/src/**/*.svelte'], rules: { 'svelte/no-navigation-without-resolve': 'off', 'svelte/no-at-html-tags': 'off' } },
 ];

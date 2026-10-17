@@ -3,7 +3,7 @@ title: Field
 description: Combine labels, controls, and help text to compose accessible form fields and grouped inputs.
 ---
 
-<ComponentPreview name="base/FieldExample" />
+<ComponentPreview name="base/FieldDemoExample" class="[&_[data-slot=preview]]:max-h-none" />
 
 ## Installation
 
@@ -76,9 +76,59 @@ The component folders import each other with relative paths, so keep them side b
 </FieldSet>
 ```
 
+## Composition
+
+### Field
+
+A single control with label, helper text, and validation.
+
+```text
+Field
+├── FieldLabel
+├── Input / Textarea / Switch / Select
+├── FieldDescription
+└── FieldError
+```
+
+### FieldGroup
+
+Related fields in one group. Use `FieldSeparator` between sections when needed.
+
+```text
+FieldGroup
+├── Field
+│   ├── FieldLabel
+│   ├── Input / Textarea / Switch / Select
+│   ├── FieldDescription
+│   └── FieldError
+├── FieldSeparator
+└── Field
+    ├── FieldLabel
+    └── Input / Textarea / Switch / Select
+```
+
+### FieldSet
+
+Semantic grouping with a legend and description, usually containing a `FieldGroup`.
+
+```text
+FieldSet
+├── FieldLegend
+├── FieldDescription
+└── FieldGroup
+    ├── Field
+    │   ├── FieldLabel
+    │   ├── Input / Textarea / Switch / Select
+    │   ├── FieldDescription
+    │   └── FieldError
+    └── Field
+        ├── FieldLabel
+        └── Input / Textarea / Switch / Select
+```
+
 ## Anatomy
 
-`Field` is a `<div role="group">`, `FieldLabel` is a `<label>`, and `FieldDescription` is a `<p>`. Pair a label with its control by hand: give the control an `id` and the label a matching `for`.
+The `Field` family is designed for composing accessible forms. A typical field is structured as follows:
 
 ```svelte
 <Field>
@@ -89,20 +139,77 @@ The component folders import each other with relative paths, so keep them side b
 </Field>
 ```
 
-- `FieldSet` and `FieldLegend` render a `<fieldset>` and its `<legend>`, which group related fields under one label. `FieldLegend` takes `variant="label"` for label-sized text.
-- `FieldGroup` stacks fields, and `FieldSeparator` divides them.
-- `FieldContent` groups a label and its description next to a control in a horizontal field.
-- `FieldTitle` is a heading for a field that has no single control to label.
+- `Field` is the core wrapper for a single field.
+- `FieldContent` is a flex column that groups label and description. Not required if you have no description.
+- Wrap related fields with `FieldGroup`, and use `FieldSet` with `FieldLegend` for semantic grouping.
 
-`orientation` on `Field` is `vertical` (the default), `horizontal` or `responsive`. A responsive field is vertical until its `FieldGroup` is wide enough.
+## Form
 
-## Validation and errors
+`Field` holds no form state. Put `name` on each control, and mark errors as in [Validation and Errors](#validation-and-errors). See the [Forms](/docs/forms) documentation for building forms with the `Field` component and [SvelteKit remote forms](/docs/forms/remote-forms) or [form actions](/docs/forms/form-actions).
 
-You decide when a field is invalid and mark it:
+## Input
 
-- Set `data-invalid` on `Field` to switch the whole field into its error style.
-- Set `aria-invalid` on the control so assistive technology announces it.
-- Render `FieldError` right after the control, or inside `FieldContent`.
+<ComponentPreview name="base/FieldInputExample" />
+
+## Textarea
+
+<ComponentPreview name="base/FieldTextareaExample" />
+
+## Select
+
+<ComponentPreview name="base/FieldSelectExample" />
+
+## Slider
+
+<ComponentPreview name="base/FieldSliderExample" />
+
+## Fieldset
+
+<ComponentPreview name="base/FieldFieldsetExample" />
+
+## Checkbox
+
+<ComponentPreview name="base/FieldCheckboxExample" />
+
+## Radio
+
+<ComponentPreview name="base/FieldRadioExample" />
+
+## Switch
+
+<ComponentPreview name="base/FieldSwitchExample" />
+
+## Choice Card
+
+Wrap `Field` components inside `FieldLabel` to create selectable field groups. This works with `RadioGroupItem`, `Checkbox` and `Switch` components.
+
+<ComponentPreview name="base/FieldChoiceCardExample" />
+
+## Field Group
+
+Stack `Field` components with `FieldGroup`. Add `FieldSeparator` to divide them.
+
+<ComponentPreview name="base/FieldGroupExample" />
+
+## RTL
+
+Wrap the form in a [DirectionProvider](/docs/components/direction) and set `dir` on the container. Use the buttons to switch the language.
+
+<ComponentPreview name="base/FieldRtlExample" align="start" class="[&_[data-slot=preview]]:max-h-none" />
+
+## Responsive Layout
+
+- **Vertical fields:** Default orientation stacks label, control, and helper text, ideal for mobile-first layouts.
+- **Horizontal fields:** Set `orientation="horizontal"` on `Field` to align the label and control side-by-side. Pair with `FieldContent` to keep descriptions aligned.
+- **Responsive fields:** Set `orientation="responsive"` for automatic column layouts inside container-aware parents. Apply `@container/field-group` classes on `FieldGroup` to switch orientations at specific breakpoints.
+
+<ComponentPreview name="base/FieldResponsiveExample" />
+
+## Validation and Errors
+
+- Add `data-invalid` to `Field` to switch the entire block into an error state.
+- Add `aria-invalid` on the input itself for assistive technologies.
+- Render `FieldError` immediately after the control or inside `FieldContent` to keep error messages aligned with the field.
 
 ```svelte
 <Field data-invalid>
@@ -112,56 +219,164 @@ You decide when a field is invalid and mark it:
 </Field>
 ```
 
-`FieldError` is a `<div role="alert">`. It renders its children, or the messages in `errors`, an array of `{ message?: string }` objects. Several messages render as a list. With neither, it renders nothing.
-
-```svelte
-<FieldError errors={[{ message: 'Enter a valid email address.' }]} />
-```
-
 A disabled field works the same way. Set `data-disabled` on `Field` and `disabled` on the control.
 
-## Choice controls
+## Accessibility
 
-For a [Checkbox](/docs/components/checkbox), [Switch](/docs/components/switch) or [Radio Group](/docs/components/radio-group) option, use a horizontal `Field` and pair the label with the control's `id`:
-
-```svelte
-<FieldSet>
-  <FieldLegend variant="label">Plan</FieldLegend>
-  <RadioGroup defaultValue="starter">
-    <Field orientation="horizontal">
-      <RadioGroupItem value="starter" id="plan-starter" />
-      <FieldLabel for="plan-starter">Starter</FieldLabel>
-    </Field>
-    <Field orientation="horizontal">
-      <RadioGroupItem value="pro" id="plan-pro" />
-      <FieldLabel for="plan-pro">Pro</FieldLabel>
-    </Field>
-  </RadioGroup>
-</FieldSet>
-```
-
-To make the whole option a selectable card, wrap the `Field` in a `FieldLabel`:
-
-```svelte
-<FieldLabel for="plan-pro">
-  <Field orientation="horizontal">
-    <RadioGroupItem value="pro" id="plan-pro" />
-    <FieldContent>
-      <FieldTitle>Pro</FieldTitle>
-      <FieldDescription>For growing businesses.</FieldDescription>
-    </FieldContent>
-  </Field>
-</FieldLabel>
-```
-
-## Forms
-
-`Field` holds no form state. Put `name` on each control, and mark errors as in [Validation and errors](#validation-and-errors). See the [Forms](/docs/forms) guide for SvelteKit remote forms and form actions.
+- `FieldSet` and `FieldLegend` keep related controls grouped for keyboard and assistive tech users.
+- `Field` outputs `role="group"` so nested controls inherit labeling from `FieldLabel` and `FieldLegend` when combined.
+- Apply `FieldSeparator` sparingly to ensure screen readers encounter clear section boundaries.
 
 ## Differences from shadcn/ui
 
 - `FieldLabel` takes the HTML `for` attribute in place of React's `htmlFor`.
 
-## API reference
+## API Reference
 
-The `Field` parts take their element's attributes. `Field` adds `orientation`. `FieldLegend` adds `variant`, and `FieldError` adds `errors`. The controls you put inside a field come from their own components, such as [Input](/docs/components/input) and [Select](/docs/components/select).
+### FieldSet
+
+Container that renders a semantic `fieldset` with spacing presets.
+
+| Prop    | Type     | Default |
+| ------- | -------- | ------- |
+| `class` | `string` |         |
+
+```svelte
+<FieldSet>
+  <FieldLegend>Delivery</FieldLegend>
+  <FieldGroup><!-- Fields --></FieldGroup>
+</FieldSet>
+```
+
+### FieldLegend
+
+Legend element for a `FieldSet`. Switch to the `label` variant to align with label sizing.
+
+| Prop      | Type                  | Default    |
+| --------- | --------------------- | ---------- |
+| `variant` | `"legend"` \| `"label"` | `"legend"` |
+| `class`   | `string`              |            |
+
+```svelte
+<FieldLegend variant="label">Notification Preferences</FieldLegend>
+```
+
+The `FieldLegend` has two variants: `legend` and `label`. The `label` variant applies label sizing and alignment. Handy if you have nested `FieldSet`.
+
+### FieldGroup
+
+Layout wrapper that stacks `Field` components and enables container queries for responsive orientations.
+
+| Prop    | Type     | Default |
+| ------- | -------- | ------- |
+| `class` | `string` |         |
+
+```svelte
+<FieldGroup class="@container/field-group flex flex-col gap-6">
+  <Field><!-- ... --></Field>
+  <Field><!-- ... --></Field>
+</FieldGroup>
+```
+
+### Field
+
+The core wrapper for a single field. Provides orientation control, invalid state styling, and spacing.
+
+| Prop           | Type                                         | Default      |
+| -------------- | -------------------------------------------- | ------------ |
+| `orientation`  | `"vertical"` \| `"horizontal"` \| `"responsive"` | `"vertical"` |
+| `class`        | `string`                                     |              |
+| `data-invalid` | `boolean`                                    |              |
+
+```svelte
+<Field orientation="horizontal">
+  <FieldLabel for="remember">Remember me</FieldLabel>
+  <Switch id="remember" />
+</Field>
+```
+
+### FieldContent
+
+Flex column that groups control and descriptions when the label sits beside the control. Not required if you have no description.
+
+| Prop    | Type     | Default |
+| ------- | -------- | ------- |
+| `class` | `string` |         |
+
+```svelte
+<Field>
+  <Checkbox id="notifications" />
+  <FieldContent>
+    <FieldLabel for="notifications">Notifications</FieldLabel>
+    <FieldDescription>Email, SMS, and push options.</FieldDescription>
+  </FieldContent>
+</Field>
+```
+
+### FieldLabel
+
+Label styled for both direct inputs and nested `Field` children.
+
+| Prop    | Type     | Default |
+| ------- | -------- | ------- |
+| `class` | `string` |         |
+
+```svelte
+<FieldLabel for="email">Email</FieldLabel>
+```
+
+### FieldTitle
+
+Renders a title with label styling inside `FieldContent`.
+
+| Prop    | Type     | Default |
+| ------- | -------- | ------- |
+| `class` | `string` |         |
+
+```svelte
+<FieldContent>
+  <FieldTitle>Enable Touch ID</FieldTitle>
+  <FieldDescription>Unlock your device faster.</FieldDescription>
+</FieldContent>
+```
+
+### FieldDescription
+
+Helper text slot that automatically balances long lines in horizontal layouts.
+
+| Prop    | Type     | Default |
+| ------- | -------- | ------- |
+| `class` | `string` |         |
+
+```svelte
+<FieldDescription>We never share your email with anyone.</FieldDescription>
+```
+
+### FieldSeparator
+
+Visual divider to separate sections inside a `FieldGroup`. Accepts optional inline content.
+
+| Prop    | Type     | Default |
+| ------- | -------- | ------- |
+| `class` | `string` |         |
+
+```svelte
+<FieldSeparator>Or continue with</FieldSeparator>
+```
+
+### FieldError
+
+Accessible error container that accepts children or an `errors` array (for example, from a form library or a remote form's `issues()`).
+
+| Prop     | Type                                       | Default |
+| -------- | ------------------------------------------ | ------- |
+| `errors` | `Array<{ message?: string }>`                     |         |
+| `class`  | `string`                                   |         |
+
+```svelte
+<FieldError errors={[{ message: 'Choose another username.' }]} />
+```
+
+When the `errors` array contains multiple messages, the component renders a list automatically. With neither children nor `errors`, it renders nothing.
+
+`FieldError` also accepts issues produced by any validator that implements [Standard Schema](https://standardschema.dev/), including Zod, Valibot, and ArkType. Pass the `issues` array from the schema result directly to render a unified error list across libraries.
