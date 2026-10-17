@@ -1,5 +1,10 @@
 <script lang="ts">
-  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import FileIcon from '@lucide/svelte/icons/file';
+  import FolderIcon from '@lucide/svelte/icons/folder';
+  import HelpCircleIcon from '@lucide/svelte/icons/circle-help';
+  import SaveIcon from '@lucide/svelte/icons/save';
+  import SettingsIcon from '@lucide/svelte/icons/settings';
+  import TrashIcon from '@lucide/svelte/icons/trash';
   import { Menubar, MenubarContent, MenubarGroup, MenubarItem, MenubarMenu, MenubarSeparator, MenubarShortcut, MenubarTrigger } from '$registry/bases/base/ui/menubar';
 </script>
 
@@ -8,16 +13,16 @@
     <MenubarTrigger>File</MenubarTrigger>
     <MenubarContent>
       <MenubarItem>
-        <IconPlaceholder lucide="FileIcon" tabler="IconFile" hugeicons="FileIcon" phosphor="FileIcon" remixicon="RiFileLine" />
+        <FileIcon />
         New File <MenubarShortcut>⌘N</MenubarShortcut>
       </MenubarItem>
       <MenubarItem>
-        <IconPlaceholder lucide="FolderIcon" tabler="IconFolder" hugeicons="FolderIcon" phosphor="FolderIcon" remixicon="RiFolderLine" />
+        <FolderIcon />
         Open Folder
       </MenubarItem>
       <MenubarSeparator />
       <MenubarItem>
-        <IconPlaceholder lucide="SaveIcon" tabler="IconDeviceFloppy" hugeicons="FloppyDiskIcon" phosphor="FloppyDiskIcon" remixicon="RiSaveLine" />
+        <SaveIcon />
         Save <MenubarShortcut>⌘S</MenubarShortcut>
       </MenubarItem>
     </MenubarContent>
@@ -27,16 +32,16 @@
     <MenubarContent>
       <MenubarGroup>
         <MenubarItem>
-          <IconPlaceholder lucide="SettingsIcon" tabler="IconSettings" hugeicons="SettingsIcon" phosphor="GearIcon" remixicon="RiSettingsLine" />
+          <SettingsIcon />
           Settings
         </MenubarItem>
         <MenubarItem>
-          <IconPlaceholder lucide="HelpCircleIcon" tabler="IconHelpCircle" hugeicons="HelpCircleIcon" phosphor="QuestionIcon" remixicon="RiQuestionLine" />
+          <HelpCircleIcon />
           Help
         </MenubarItem>
         <MenubarSeparator />
         <MenubarItem variant="destructive">
-          <IconPlaceholder lucide="TrashIcon" tabler="IconTrash" hugeicons="DeleteIcon" phosphor="TrashIcon" remixicon="RiDeleteBinLine" />
+          <TrashIcon />
           Delete
         </MenubarItem>
       </MenubarGroup>

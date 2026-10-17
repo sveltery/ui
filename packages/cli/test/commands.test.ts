@@ -222,6 +222,22 @@ describe('init', () => {
     expect(JSON.parse(read('components.json'))).toMatchObject({ menuColor: 'inverted', menuAccent: 'bold' });
   });
 
+  test('a bold menuAccent in components.json gives the flags path theme the primary color as its accent', async () => {
+    const neutral = registryFiles['themes/neutral.json'];
+    const modes = (primary: string, foreground: string) => ({ primary, 'primary-foreground': foreground, accent: 'oklch(0.97 0 0)', 'accent-foreground': 'oklch(0.205 0 0)' });
+    registryFiles['themes/neutral.json'] = item('neutral', { type: 'registry:theme', files: [], cssVars: { light: modes('oklch(0.205 0 0)', 'oklch(0.985 0 0)'), dark: modes('oklch(0.922 0 0)', 'oklch(0.205 0 0)') } });
+    try {
+      writeFileSync(join(cwd, 'components.json'), JSON.stringify({ menuAccent: 'bold' }));
+      await init({ cwd, ...defaults });
+      const css = read('src/app.css');
+      expect(css).toContain('--accent: oklch(0.205 0 0);\n  --accent-foreground: oklch(0.985 0 0);');
+      expect(css).toContain('--accent: oklch(0.922 0 0);\n  --accent-foreground: oklch(0.205 0 0);');
+      expect(css).not.toContain('oklch(0.97 0 0)');
+    } finally {
+      registryFiles['themes/neutral.json'] = neutral;
+    }
+  });
+
   describe('--preset', () => {
     const b0Url = '/init?style=nova&baseColor=neutral&theme=neutral&iconLibrary=lucide&font=inter&menuAccent=subtle&menuColor=default&radius=default&preset=b0';
 
