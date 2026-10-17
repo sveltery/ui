@@ -29,7 +29,7 @@ function items(css: string, file: string) {
   return list;
 }
 
-type Patch = { selectors: string[]; edit: (utility: string) => string };
+type Patch = { selectors: string[]; styles?: string[]; edit: (utility: string) => string };
 
 const PATCHES: Patch[] = [
   {
@@ -37,6 +37,13 @@ const PATCHES: Patch[] = [
     // so upstream's `data-open:` classes on these triggers never match.
     selectors: ['.cn-context-menu-sub-trigger', '.cn-dropdown-menu-sub-trigger', '.cn-menubar-sub-trigger', '.cn-sidebar-menu-button'],
     edit: (utility) => utility.replace(/^data-open:/, 'data-popup-open:'),
+  },
+  {
+    // A fractional track height leaves the thumb a fractional inset, which the browser rounds to unequal
+    // top and bottom margins. Whole pixels keep the thumb centered at every position.
+    selectors: ['.cn-switch'],
+    styles: ['lyra', 'maia', 'mira', 'nova', 'vega'],
+    edit: (utility) => utility.replace('h-[18.4px]', 'h-[18px]').replace('h-[16.6px]', 'h-[16px]'),
   },
   {
     // A choice card highlights the checked Base UI radio or checkbox by `data-checked`. A NativeRadio
@@ -48,7 +55,7 @@ const PATCHES: Patch[] = [
 
 /** Applies PATCHES to each rule they name, dropping a utility the edit duplicates. Throws when one changes nothing. */
 function patch(item: Item, style: string): Item {
-  const found = PATCHES.find(({ selectors }) => selectors.includes(item.key));
+  const found = PATCHES.find(({ selectors, styles }) => selectors.includes(item.key) && (!styles || styles.includes(style)));
   if (!found) return item;
   const [head = '', utilities = ''] = /^([\s\S]*@apply )([^;\n]+)/.exec(item.text)?.slice(1) ?? [];
   const edited = [...new Set(utilities.split(' ').map(found.edit))].join(' ');
