@@ -1,11 +1,13 @@
 <script lang="ts">
+  import RotateCwIcon from '@lucide/svelte/icons/rotate-cw';
   import { Bubble, BubbleContent } from '$registry/bases/base/ui/bubble';
   import { Button } from '$registry/bases/base/ui/button';
   import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
   import { Marker, MarkerContent } from '$registry/bases/base/ui/marker';
   import { Message, MessageContent } from '$registry/bases/base/ui/message';
   import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerItem, MessageScrollerProvider, MessageScrollerViewport } from '$registry/bases/base/ui/message-scroller';
+  import { toast } from '$registry/bases/base/ui/toast';
+  import { Tooltip, TooltipContent, TooltipTrigger } from '$registry/bases/base/ui/tooltip';
   import { createChat } from './message-scroller/chat.svelte.js';
   import MessageText from './message-scroller/MessageText.svelte';
 
@@ -46,20 +48,30 @@
         <CardTitle>Load History</CardTitle>
         <CardDescription>Prepended messages keep your place.</CardDescription>
         <CardAction>
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            aria-label="Reset loaded messages"
-            title="Reset"
-            disabled={visibleCount === INITIAL_VISIBLE_COUNT}
-            onclick={() => {
-              visibleCount = INITIAL_VISIBLE_COUNT;
-              demoKey++;
-            }}
-          >
-            <IconPlaceholder lucide="RotateCwIcon" tabler="IconRotateClockwise" hugeicons="RotateClockwiseIcon" phosphor="ArrowClockwiseIcon" remixicon="RiRestartLine" />
-          </Button>
+          <Tooltip>
+            <TooltipTrigger>
+              {#snippet render(props, _state, content)}
+                <Button
+                  {...props}
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  aria-label="Reset loaded messages"
+                  disabled={visibleCount === INITIAL_VISIBLE_COUNT}
+                  onclick={() => {
+                    visibleCount = INITIAL_VISIBLE_COUNT;
+                    demoKey++;
+                  }}
+                >
+                  {@render content?.()}
+                </Button>
+              {/snippet}
+              <RotateCwIcon />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Reset</p>
+            </TooltipContent>
+          </Tooltip>
         </CardAction>
       </CardHeader>
       <CardContent class="flex-1 overflow-hidden p-0">
@@ -93,7 +105,10 @@
         {/key}
       </CardContent>
       <CardFooter class="flex flex-col items-center gap-2 border-t">
-        <Button type="button" disabled={!canLoadHistory} onclick={() => (visibleCount = history.length)} class="w-full" variant="secondary">
+        <Button type="button" disabled={!canLoadHistory} onclick={() => {
+            visibleCount = history.length;
+            toast.add({ title: 'History loaded', description: 'Scroll up to see earlier messages.' });
+          }} class="w-full" variant="secondary">
           {canLoadHistory ? 'Load History' : 'History Loaded'}
         </Button>
         <p class="text-xs text-muted-foreground">Restore earlier messages while keeping your place.</p>
