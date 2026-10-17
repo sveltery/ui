@@ -83,6 +83,9 @@
               "registry:base"
             ]
           },
+          "title": {
+            "type": "string"
+          },
           "description": {
             "type": "string"
           }
