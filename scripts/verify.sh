@@ -13,7 +13,11 @@ if runs static; then
 fi
 pnpm --filter @sveltery/resizable --filter @sveltery/svelte --filter @sveltery/command build
 if runs static; then pnpm check; fi
-if runs unit; then pnpm test; fi
+if runs unit; then
+  # The docs registry tests extend the docs app's generated tsconfig, which check or build would otherwise create.
+  pnpm --filter @sveltery/docs exec svelte-kit sync
+  pnpm test
+fi
 if runs build; then
   pnpm --filter @sveltery/docs build
   bash scripts/check-remote-fields.sh
