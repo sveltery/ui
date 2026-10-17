@@ -105,6 +105,10 @@ Options:
   -o, --overwrite  overwrite changed files (default: false)
   -a, --all        add every item (default: false)
   --dry-run        show the plan and stop (default: false)
+  --diff [path]    show the diff of each file that would change, or of the file
+                   matching path; implies --dry-run
+  --view [path]    show the contents of each file that would be written, or of
+                   the file matching path; implies --dry-run
   --no-install     do not install packages
   --cwd <path>     the project root (default: ".")
   -h, --help       display help for command
@@ -122,6 +126,18 @@ Packages:
   @sveltery/base@^0.2.0
 ```
 
+`--diff` and `--view` imply `--dry-run`. They show what the plan would write, for any item address, including a URL.
+
+- `--diff` prints a unified diff for each file that would change. A new file diffs from `/dev/null`. Your file is the `a/` side and the registry version is the `b/` side.
+- `--view` prints the contents each file would have, after the project's transforms, under a line such as `src/lib/components/ui/button/Button.svelte (new, 8 lines)`.
+
+Without a path, both show five files at most, and `--diff` skips identical files. Pass a path to show one file. It matches the project path exactly, or else every path that contains it. Put the item names before the flag, because the flag takes the next word as its path.
+
+```bash
+npx @sveltery/ui@latest add button --diff
+npx @sveltery/ui@latest add https://example.com/r/hello-card.json --view hello-card
+```
+
 ---
 
 ## diff
@@ -132,7 +148,13 @@ Use the `diff` command to see how the registry versions of your installed items 
 npx @sveltery/ui@latest diff
 ```
 
-An item counts as installed when any of its files exists under `aliases.ui`. With no names, `diff` checks every installed item and the items they depend on. A named item that is not installed is an error.
+An item counts as installed when any of its files exists in the project. With no names, `diff` checks every installed item of the configured registry and the items they depend on. A named item that is not installed is an error.
+
+An argument that is a URL works like a name. `diff` fetches the item and its registry dependencies, as `add` does, and compares them with your files. The item must be installed, and the URL must be the one you added it with, because a project does not record where an item came from. An unnamed `diff` cannot know which URLs you used, so it does not check items that only a URL names. To check one, pass its URL.
+
+```bash
+npx @sveltery/ui@latest diff https://example.com/r/hello-card.json
+```
 
 `diff` prints a unified diff for each file that differs. Your file is the `a/` side and the registry version is the `b/` side, so `+` lines are what `update` would write. It ends with a count such as `3 files differ in 2 items`, or `Everything is up to date.`
 
@@ -144,7 +166,8 @@ Usage: sveltery diff [options] [items...]
 show how the registry versions of installed items differ from your files
 
 Arguments:
-  items         item names; every installed item when omitted
+  items         item names or URLs; every installed item of the registry when
+                omitted
 
 Options:
   --cwd <path>  the project root (default: ".")
@@ -163,6 +186,12 @@ npx @sveltery/ui@latest update
 
 `update` plans the same files as `add`, including new files, new items an item now depends on and missing packages. For each changed file, it shows the diff and asks whether to overwrite it. The default answer is no. It writes new files without asking.
 
+Like `diff`, it takes item names and URLs, and with no arguments it updates every installed item of the configured registry, but not items that only a URL names. To update one, pass its URL. See [diff](#diff).
+
+```bash
+npx @sveltery/ui@latest update https://example.com/r/hello-card.json
+```
+
 **Options**
 
 ```txt
@@ -172,7 +201,8 @@ re-add installed items, showing each changed file's diff and asking before it
 overwrites
 
 Arguments:
-  items         item names; every installed item when omitted
+  items         item names or URLs; every installed item of the registry when
+                omitted
 
 Options:
   -y, --yes     overwrite changed files without asking (default: false)
@@ -183,7 +213,7 @@ Options:
 
 `-y` discards your edits to the changed files.
 
-`diff` and `update` take item names and `@namespace/item` names. They do not check items that you added by URL.
+`diff` and `update` also take `@namespace/item` names.
 
 ---
 
@@ -216,31 +246,148 @@ Options:
 
 ---
 
-## list
+## search
 
-Use the `list` command to see every item in the registry. Items in your project are marked `installed`.
+Use the `search` command to find items in the registry. `list` is an alias. It never writes anything and needs no `components.json`.
 
 ```bash
-npx @sveltery/ui@latest list
+npx @sveltery/ui@latest search -q dialog
 ```
 
 ```txt
-accordion           registry:ui
-alert               registry:ui
-alert-dialog        registry:ui
+Found 3 items matching "dialog" in @sveltery
+Showing 1-3 of 3
+
+- dialog (ui)
+- alert-dialog (ui)
+- sidebar-13 (block) — A sidebar in a dialog.
 ```
 
-Pass `--json` for an array of `{ name, type, installed }`.
+`search` ranks the items by how well the query matches their name, title and description, as the shadcn CLI does. With no query it prints every item in registry order: the components, then the blocks. A line shows the argument to give `add`, the item type and a shortened description.
+
+`--type` keeps items of one type. It takes `ui`, `block`, `lib`, `theme`, `base` or `font`, or the same with a `registry:` prefix, and several types separated by commas. `--limit` and `--offset` page through the results, and the last line gives the `--offset` of the next page. `--limit 0` shows everything.
+
+`--json` prints `pagination` and `items` instead. Each item has `name`, `title`, `type`, `description`, `registry` and `addCommandArgument`. This is `search -q dialog -t ui --json`:
+
+```json
+{
+  "pagination": { "total": 2, "offset": 0, "limit": 100, "hasMore": false },
+  "items": [
+    {
+      "name": "dialog",
+      "title": "Dialog",
+      "type": "registry:ui",
+      "registry": "@sveltery",
+      "addCommandArgument": "dialog"
+    },
+    {
+      "name": "alert-dialog",
+      "title": "Alert Dialog",
+      "type": "registry:ui",
+      "registry": "@sveltery",
+      "addCommandArgument": "alert-dialog"
+    }
+  ]
+}
+```
+
+The only registry is `@sveltery`, the Sveltery UI registry that `SVELTERY_REGISTRY_URL` or `components.json` points at. Pass it to be explicit. Any other registry is an error. See [differences](/docs/differences#search-takes-one-registry-and-no-installed-mark).
 
 **Options**
 
 ```txt
-Usage: sveltery list [options]
+Usage: sveltery search|list [options] [registries...]
 
-list the registry's items and mark the installed ones
+search items from registries
+
+Arguments:
+  registries             the registries to search; the only one is @sveltery,
+                         the default
 
 Options:
-  --json        print the items as JSON (default: false)
+  -q, --query <query>    query string
+  -t, --type <type>      filter by item type, e.g. ui, block. Comma-separated
+                         for multiple.
+  -l, --limit <number>   maximum number of items to display (default: "100")
+  -o, --offset <number>  number of items to skip (default: "0")
+  --json                 output as JSON. (default: false)
+  --cwd <path>           the project root (default: ".")
+  -h, --help             display help for command
+```
+
+---
+
+## build
+
+Use the `build` command to generate the JSON files of [your own registry](/docs/registry/getting-started).
+
+```bash
+npx @sveltery/ui@latest build
+```
+
+`build` reads `registry.json` and writes one item file per item to `static/r`, such as `static/r/hello-card.json`, with each file's source in `content`. It also writes `static/r/registry.json`. A SvelteKit app serves the `static` folder, so the items are at `/r/<name>.json`.
+
+**Options**
+
+```txt
+Usage: sveltery build [options] [registry]
+
+build components for a registry
+
+Arguments:
+  registry             path to registry.json file (default: "./registry.json")
+
+Options:
+  -o, --output <path>  destination directory for json files (default:
+                       "./static/r")
+  -c, --cwd <path>     the working directory (default: ".")
+  -h, --help           display help for command
+```
+
+To change the output directory, use the `--output` option. In a Vite app without SvelteKit, pass `./public/r`.
+
+```bash
+npx @sveltery/ui@latest build --output ./public/r
+```
+
+---
+
+## docs
+
+Use the `docs` command to get the links to a component's docs, its examples and its API reference. It never writes anything and needs no `components.json`.
+
+```bash
+npx @sveltery/ui@latest docs button dropdown-menu
+```
+
+```txt
+button
+  - docs      https://ui.sveltery.dev/docs/components/button
+  - examples  https://ui.sveltery.dev/docs/components/button.md
+  - api       https://base-ui.com/react/components/button.md
+
+dropdown-menu
+  - docs      https://ui.sveltery.dev/docs/components/dropdown-menu
+  - examples  https://ui.sveltery.dev/docs/components/dropdown-menu.md
+  - api       https://base-ui.com/react/components/menu.md
+```
+
+`docs` reads the links from the `meta.links` of each item in the registry's [`index.json`](/docs/registry/registry-json). `docs` is the page. `examples` is the same page as Markdown, with the source of every example inlined, so an agent can read it. `api` is the Base UI API reference as Markdown, which only a component styled on a Base UI component has. A name that is not in the registry is an error, and an item or block that has no links prints a warning.
+
+`--json` prints `{ base, results }`, where each result has `component`, `base` and `links`. `base` is always `base`, because the Base UI variant is the only one.
+
+**Options**
+
+```txt
+Usage: sveltery docs [options] <components...>
+
+get docs, api references and usage examples for components
+
+Arguments:
+  components    component names
+
+Options:
+  --json        output as JSON. (default: false)
   --cwd <path>  the project root (default: ".")
   -h, --help    display help for command
 ```
@@ -257,4 +404,4 @@ SVELTERY_REGISTRY_URL=https://preview.example.com/r npx @sveltery/ui@latest add 
 
 ## Not supported
 
-The shadcn CLI has commands and options that this CLI does not have yet: `apply`, `preset`, `search`, `build`, `docs`, `info`, `migrate`, `eject` and `registry add`, local file paths as items, JavaScript output and the RTL transform. See [Registry](/docs/registry), [JavaScript](/docs/javascript) and [RTL](/docs/rtl) for what works today.
+The shadcn CLI has commands and options that this CLI does not have yet: `apply`, `preset`, `info`, `migrate`, `eject` and `registry add`, local file paths as items, JavaScript output and the RTL transform. See [Registry](/docs/registry), [JavaScript](/docs/javascript) and [RTL](/docs/rtl) for what works today.
