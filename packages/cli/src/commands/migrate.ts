@@ -12,6 +12,7 @@ import { executePlan, missingPackages, removePackage } from '../plan.js';
 import { aliasPath, declaredPackages, readJson } from '../project.js';
 import { ask, choose } from '../prompt.js';
 import { baseColors, fetchItem, fetchTheme, iconLibraryNames, openRegistry, resolveRegistryUrl } from '../registry.js';
+import { transformDirection } from '../rtl.js';
 import { baseDependencies } from './init.js';
 
 export type MigrateOptions = { cwd: string; yes: boolean; install: boolean; path?: string; from?: string; to?: string };
@@ -21,6 +22,7 @@ export const migrations: { name: string; description: string; run: (options: Mig
   { name: 'cn', description: 'migrate clsx and tailwind-merge to cn.', run: migrateCn },
   { name: 'icons', description: 'migrate your ui components to a different icon library.', run: migrateIcons },
   { name: 'base-color', description: 'migrate your theme to a different base color.', run: migrateBaseColor },
+  { name: 'rtl', description: 'migrate your components to support RTL (right-to-left).', run: migrateRtl },
 ];
 
 /** Runs the named migration, or lists them all when `list` is set or no name is given. */
@@ -93,7 +95,7 @@ async function fromAndTo<T extends string>(options: MigrateOptions, [kind, plura
   return { from, to };
 }
 
-async function confirmed(options: MigrateOptions, message: string): Promise<boolean> {
+async function confirmed(options: Pick<MigrateOptions, 'yes'>, message: string): Promise<boolean> {
   if (options.yes || (await ask(message, true))) return true;
   log.info('Migration cancelled.');
   return false;
@@ -224,4 +226,42 @@ export async function migrateCn(options: MigrateOptions): Promise<{ changed: str
   if (options.path !== undefined) log.info('Kept clsx, tailwind-merge and cnfast dependencies because this was a scoped migration.');
   warnUnsupported(unsupported);
   return { changed: changed.map(({ file }) => file), removed };
+}
+
+/** Components whose layout the transform cannot fully flip. */
+const NEEDS_MANUAL_REVIEW = ['sidebar', 'pagination', 'calendar'];
+
+// Ported from shadcn-ui/ui d2fba50 packages/shadcn/src/migrations/migrate-rtl.ts; MIT: THIRD_PARTY_NOTICES.md.
+/** Sets `rtl: true` in components.json and rewrites the installed components, or `path`, with the transform `add` applies to RTL projects. */
+export async function migrateRtl(options: Pick<MigrateOptions, 'cwd' | 'yes' | 'path'>): Promise<{ transformed: string[]; review: string[] }> {
+  const { cwd } = options;
+  const { raw, config } = readConfig(cwd);
+  const { base, files } = selectFiles(cwd, aliasPath(config.aliases.ui), options.path);
+  if (!(await confirmed(options, `We will migrate ${files.length} file(s) in ${options.path ?? `./${relative(cwd, base)}`} to RTL. Continue?`))) return { transformed: [], review: [] };
+
+  // Transform every file before writing anything, so a file the parser rejects is skipped rather than stopping the run halfway.
+  const changes: { path: string; file: string; content: string }[] = [];
+  for (const file of files) {
+    const path = resolve(base, file);
+    const content = fs.readFileSync(path, 'utf8');
+    try {
+      const next = transformDirection(file, content);
+      if (next !== content) changes.push({ path, file, content: next });
+    } catch (error) {
+      log.warn(`Skipped ${file}: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+
+  writeConfig(cwd, { ...raw, rtl: true });
+  log.success(`Updated ${CONFIG_FILE}.`);
+  for (const { path, content } of changes) fs.writeFileSync(path, content);
+  const transformed = changes.map(({ file }) => file);
+  log.success(`Migration complete. ${transformed.length} file(s) transformed.`);
+
+  const review = files.filter((file) => file.split(/[\\/]/).some((part) => NEEDS_MANUAL_REVIEW.includes(part.replace(SOURCE, '').toLowerCase())));
+  if (review.length > 0) {
+    const docs = new URL('/docs/rtl#manual-migration-optional', resolveRegistryUrl(config.registry)).href;
+    log.warn(`The following components may need manual RTL adjustments:\n${review.map((file) => `  - ${file}`).join('\n')}\nSee ${docs} for more information.`);
+  }
+  return { transformed, review };
 }

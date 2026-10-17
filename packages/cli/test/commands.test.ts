@@ -10,7 +10,7 @@ import { apply, type ApplyOptions } from '../src/commands/apply.js';
 import { build } from '../src/commands/build.js';
 import { diff } from '../src/commands/diff.js';
 import { baseDependencies, init } from '../src/commands/init.js';
-import { migrate, type MigrateOptions } from '../src/commands/migrate.js';
+import { migrate, migrateRtl, type MigrateOptions } from '../src/commands/migrate.js';
 import { update } from '../src/commands/update.js';
 import { cliPackage } from '../src/version.js';
 
@@ -157,6 +157,7 @@ describe('init', () => {
       $schema: new URL('/schema.json', registryUrl).href,
       style: 'nova',
       iconLibrary: 'tabler',
+      rtl: false,
       menuColor: 'default',
       tailwind: { css: 'src/app.css', baseColor: 'neutral' },
       aliases: { components: '$lib/components', ui: '$lib/components/ui', utils: '$lib/utils', lib: '$lib', hooks: '$lib/hooks' },
@@ -247,6 +248,17 @@ describe('init', () => {
     expect(JSON.parse(read('components.json'))).toMatchObject({ menuColor: 'inverted', menuAccent: 'bold' });
   });
 
+  test('--rtl writes rtl: true, add then flips the marked icons, and a later run keeps it', async () => {
+    await init({ cwd, ...defaults, rtl: true });
+    expect(JSON.parse(read('components.json')).rtl).toBe(true);
+    await add(['button'], { ...defaults, overwrite: false, all: false, dryRun: false, cwd });
+    expect(read('src/lib/components/ui/button/Button.svelte')).toContain('<button class="rtl:rotate-180 px-2.5">');
+    await init({ cwd, ...defaults });
+    expect(JSON.parse(read('components.json')).rtl).toBe(true);
+    await init({ cwd, ...defaults, rtl: false });
+    expect(JSON.parse(read('components.json')).rtl).toBe(false);
+  });
+
   test('a bold menuAccent in components.json gives the flags path theme the primary color as its accent', async () => {
     const neutral = registryFiles['themes/neutral.json'];
     const modes = (primary: string, foreground: string) => ({ primary, 'primary-foreground': foreground, accent: 'oklch(0.97 0 0)', 'accent-foreground': 'oklch(0.205 0 0)' });
@@ -273,6 +285,7 @@ describe('init', () => {
         $schema: new URL('/schema.json', registryUrl).href,
         style: 'vega',
         iconLibrary: 'tabler',
+        rtl: false,
         menuColor: 'inverted-translucent',
         menuAccent: 'bold',
         tailwind: { css: 'src/app.css', baseColor: 'neutral' },
@@ -280,7 +293,7 @@ describe('init', () => {
         registry: registryUrl,
         typescript: true,
       });
-      expect(Object.keys(JSON.parse(read('components.json'))).slice(2, 5)).toEqual(['iconLibrary', 'menuColor', 'menuAccent']);
+      expect(Object.keys(JSON.parse(read('components.json'))).slice(2, 6)).toEqual(['iconLibrary', 'rtl', 'menuColor', 'menuAccent']);
       expect(read('src/app.css')).toBe(`@import 'tailwindcss';
 @import 'tw-animate-css';
 @import '${cliPackage}/tailwind.css';
@@ -328,6 +341,37 @@ describe('init', () => {
         '/init?style=sera&baseColor=taupe&theme=taupe&iconLibrary=lucide&font=noto-sans&menuAccent=subtle&menuColor=default&radius=default&chartColor=taupe&fontHeading=playfair-display',
         '/init?style=nova&font=inter',
       ]);
+    });
+
+    test('--rtl adds rtl=true to the init URL, --no-rtl drops it from a URL, and the preset item can set it', async () => {
+      await init({ cwd, ...defaults, preset: 'nova', rtl: true });
+      await init({ cwd, ...defaults, preset: `${origin}/init?style=nova&rtl=true`, rtl: false });
+      expect(initRequests).toEqual([
+        '/init?style=nova&baseColor=neutral&theme=neutral&iconLibrary=lucide&font=geist&menuAccent=subtle&menuColor=default&radius=default&rtl=true',
+        '/init?style=nova',
+      ]);
+      const { config } = initItem as unknown as { config: { rtl?: boolean } };
+      config.rtl = true;
+      try {
+        await init({ cwd, ...defaults, preset: 'b0' });
+        expect(JSON.parse(read('components.json')).rtl).toBe(true);
+        await init({ cwd, ...defaults, preset: 'b0', rtl: false });
+        expect(JSON.parse(read('components.json')).rtl).toBe(false);
+      } finally {
+        delete config.rtl;
+      }
+    });
+
+    test('prints the preset item\'s docs', async () => {
+      Object.assign(initItem, { docs: 'See the RTL docs.' });
+      const info = vi.spyOn(log, 'info');
+      try {
+        await init({ cwd, ...defaults, preset: 'b0' });
+        expect(info).toHaveBeenCalledWith('See the RTL docs.');
+      } finally {
+        info.mockRestore();
+        delete (initItem as { docs?: string }).docs;
+      }
     });
 
     test('a code with a chart color keeps it, and neutral is left out', async () => {
@@ -608,11 +652,68 @@ describe('migrate', () => {
     });
   });
 
+  describe('rtl', () => {
+    const ui = 'src/lib/components/ui';
+    beforeEach(async () => {
+      await init({ cwd, ...defaults });
+      mkdirSync(join(cwd, ui, 'card'), { recursive: true });
+      mkdirSync(join(cwd, ui, 'calendar'), { recursive: true });
+      writeFileSync(join(cwd, ui, 'card/Card.svelte'), '<div class="ml-2 text-left">x</div>\n');
+      writeFileSync(join(cwd, ui, 'card/variants.ts'), "export const v = cva('pl-2 rounded-l-md');\n");
+      writeFileSync(join(cwd, ui, 'calendar/Calendar.svelte'), '<div class="flex">x</div>\n');
+    });
+
+    test('sets rtl: true and rewrites every component under the ui alias', async () => {
+      const result = await migrateRtl({ cwd, yes: true });
+      expect(JSON.parse(read('components.json')).rtl).toBe(true);
+      expect(read(`${ui}/card/Card.svelte`)).toBe('<div class="ms-2 text-start">x</div>\n');
+      expect(read(`${ui}/card/variants.ts`)).toBe("export const v = cva('ps-2 rounded-s-md');\n");
+      expect(result.transformed.sort()).toEqual(['card/Card.svelte', 'card/variants.ts']);
+      expect(result.review).toEqual(['calendar/Calendar.svelte']);
+    });
+
+    test('limits the migration to a file, a directory or a glob', async () => {
+      await migrateRtl({ cwd, yes: true, path: `${ui}/card/Card.svelte` });
+      expect(read(`${ui}/card/variants.ts`)).toContain('pl-2');
+      expect(read(`${ui}/card/Card.svelte`)).toContain('ms-2');
+      await migrateRtl({ cwd, yes: true, path: `${ui}/**/*.ts` });
+      expect(read(`${ui}/card/variants.ts`)).toContain('ps-2');
+      await expect(migrateRtl({ cwd, yes: true, path: 'nope' })).rejects.toThrow('File not found: nope');
+      await expect(migrateRtl({ cwd, yes: true, path: 'src/**/*.md' })).rejects.toThrow('No files found matching: src/**/*.md');
+    });
+
+    test('skips the directories a glob matches', async () => {
+      const result = await migrateRtl({ cwd, yes: true, path: `${ui}/**` });
+      expect(result.transformed.sort()).toEqual([`${ui}/card/Card.svelte`, `${ui}/card/variants.ts`]);
+      expect(read(`${ui}/card/Card.svelte`)).toContain('ms-2');
+    });
+
+    test('takes an absolute glob', async () => {
+      const result = await migrateRtl({ cwd, yes: true, path: join(cwd, ui, 'card/*.svelte') });
+      expect(result.transformed).toHaveLength(1);
+      expect(read(`${ui}/card/Card.svelte`)).toContain('ms-2');
+    });
+
+    test('skips a file the parser rejects and migrates the rest', async () => {
+      writeFileSync(join(cwd, ui, 'card/snippet.ts'), "export const s = '</script>';\n");
+      const result = await migrateRtl({ cwd, yes: true });
+      expect(result.transformed.sort()).toEqual(['card/Card.svelte', 'card/variants.ts']);
+      expect(read(`${ui}/card/snippet.ts`)).toBe("export const s = '</script>';\n");
+    });
+
+    test('changes nothing when the prompt is declined', async () => {
+      vi.mocked(confirm).mockResolvedValueOnce(false);
+      await migrateRtl({ cwd, yes: false });
+      expect(JSON.parse(read('components.json')).rtl).toBe(false);
+      expect(read(`${ui}/card/Card.svelte`)).toContain('ml-2');
+    });
+  });
+
   test('lists the migrations, and rejects an unknown one', async () => {
     const info = vi.spyOn(log, 'info').mockImplementation(() => {});
     try {
       await migrate(undefined, options());
-      expect(info).toHaveBeenCalledWith('Available migrations:\n- cn: migrate clsx and tailwind-merge to cn.\n- icons: migrate your ui components to a different icon library.\n- base-color: migrate your theme to a different base color.');
+      expect(info).toHaveBeenCalledWith('Available migrations:\n- cn: migrate clsx and tailwind-merge to cn.\n- icons: migrate your ui components to a different icon library.\n- base-color: migrate your theme to a different base color.\n- rtl: migrate your components to support RTL (right-to-left).');
     } finally {
       info.mockRestore();
     }
@@ -1073,3 +1174,4 @@ describe('update', () => {
     expect(existsSync(join(cwd, 'src/lib'))).toBe(false);
   });
 });
+

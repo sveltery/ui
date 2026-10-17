@@ -50,6 +50,8 @@ Options:
   --icons <library>      the icon library
   --base-color <name>    the base color of the theme
   --css <path>           the CSS file that imports Tailwind
+  --rtl                  enable RTL support
+  --no-rtl               disable RTL support
   --cwd <path>           the project root (default: ".")
   --no-install           do not install packages
   -h, --help             display help for command
@@ -62,6 +64,8 @@ Options:
 | `--base-color` | `neutral`, `stone`, `zinc`, `mauve`, `olive`, `mist` or `taupe` |
 
 `--preset` cannot be combined with `--style`, `--icons` or `--base-color`. With `-y` and no value, `--preset` uses `nova`.
+
+`--rtl` writes `rtl: true` to `components.json`, so `add` turns physical classes into logical ones. It works with or without `--preset`. See [RTL](/docs/rtl).
 
 ---
 
@@ -611,10 +615,11 @@ Run `migrate --list` to see the migrations. Each one asks before it writes. The 
 | `icons` | Swaps the icon library in your installed components, then sets `iconLibrary` in `components.json`. |
 | `base-color` | Swaps the theme's base color in your CSS file, then sets `tailwind.baseColor` in `components.json`. |
 | `cn` | Moves `clsx`, `tailwind-merge` and `cnfast` imports in your `.svelte`, `.ts` and `.js` files to the `cn` package. |
+| `rtl` | Changes physical classes in your installed components to logical ones for right-to-left layouts, then sets `rtl: true` in `components.json`. |
 
 There is no `radix` migration. In shadcn/ui, it moves `@radix-ui/react-*` imports to the `radix-ui` package, and a Svelte project has no such imports.
 
-Pass a file, a directory or a glob pattern to migrate only those files. By default, `icons` migrates the `aliases.ui` directory and `cn` migrates every source file in the project. A glob pattern needs Node 22 or later. A file that does not parse, such as a module with `</script>` in a string, stays as it is, and `migrate` lists it.
+Pass a file, a directory or a glob pattern to migrate only those files. By default, `icons` and `rtl` migrate the `aliases.ui` directory and `cn` migrates every source file in the project. A glob pattern needs Node 22 or later. A file that does not parse, such as a module with `</script>` in a string, stays as it is, and `migrate` lists it.
 
 ### icons
 
@@ -644,6 +649,17 @@ npx @sveltery/ui@latest migrate cn
 
 `cn` installs the `cn` package before it writes. After a run without a path, it removes `clsx`, `tailwind-merge` and `cnfast` if no file imports them. It lists what you must change by hand, such as a dynamic import, an `export ... from` declaration or a CommonJS `require`. It needs Tailwind CSS 4 and `tailwind-merge` 3.
 
+### rtl
+
+`rtl` rewrites the components you already installed for right-to-left layouts. It changes physical classes such as `ml-2` and `left-0` to logical ones such as `ms-2` and `start-0`, the same transform `add` applies in an RTL project.
+
+```bash
+npx @sveltery/ui@latest migrate rtl
+npx @sveltery/ui@latest migrate rtl "src/lib/components/ui/dropdown-menu/**"
+```
+
+It sets `rtl: true` in `components.json`, also after a run with a path. It lists the calendar, pagination and sidebar files it finds for you to check by hand. The icons that `add` would flip lose their flip marker when an LTR project adds them, so run `update` afterwards to get them back. See [Manual Migration](/docs/rtl#manual-migration-optional).
+
 **Options**
 
 ```txt
@@ -665,7 +681,7 @@ Options:
   -h, --help         display help for command
 ```
 
-`icons` asks for a missing `--from` or `--to`, and offers `iconLibrary` from `components.json` as the source. `base-color` takes `tailwind.baseColor` from `components.json` as the source, and asks only for a missing `--to`. With `--yes`, neither asks, so pass `--to`. `cn` does not use `--from` or `--to`.
+`icons` asks for a missing `--from` or `--to`, and offers `iconLibrary` from `components.json` as the source. `base-color` takes `tailwind.baseColor` from `components.json` as the source, and asks only for a missing `--to`. With `--yes`, neither asks, so pass `--to`. `cn` and `rtl` do not use `--from` or `--to`.
 
 ---
 
@@ -709,4 +725,4 @@ SVELTERY_REGISTRY_URL=https://preview.example.com/r npx @sveltery/ui@latest add 
 
 ## Not supported
 
-The shadcn CLI has commands and options that this CLI does not have yet: `registry add`, local file paths as items, JavaScript output and the RTL transform. See [Registry](/docs/registry), [JavaScript](/docs/javascript) and [RTL](/docs/rtl) for what works today.
+The shadcn CLI has commands and options that this CLI does not have yet: `registry add`, local file paths as items and JavaScript output. See [Registry](/docs/registry) and [JavaScript](/docs/javascript) for what works today.

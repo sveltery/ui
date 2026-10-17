@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, test } from 'vitest';
 import type { PresetMenuColor } from '../src/preset/preset.js';
 import type { IconLibraryName } from '../src/registry.js';
-import { transformIcons, transformMarkers, type TransformContext } from '../src/transforms.js';
+import { applyTransforms, transformIcons, transformMarkers, type TransformContext } from '../src/transforms.js';
 
 const read = (path: string) => ({ target: path, content: readFileSync(new URL(`../../../apps/docs/registry/bases/base/ui/${path}`, import.meta.url), 'utf8') });
 
@@ -16,7 +16,7 @@ function swap(source: string, edits: [from: string, to: string][]): string {
   return source;
 }
 
-const ctx = (iconLibrary: IconLibraryName, fontHeading = false, menuColor: PresetMenuColor = 'default'): TransformContext => ({ iconLibrary, menuColor, fontHeading, aliases: { ui: '$lib/components/ui', components: '$lib/components' } });
+const ctx = (iconLibrary: IconLibraryName, fontHeading = false, menuColor: PresetMenuColor = 'default'): TransformContext => ({ iconLibrary, menuColor, fontHeading, rtl: false, aliases: { ui: '$lib/components/ui', components: '$lib/components' } });
 const placeholderImport = "import { IconPlaceholder } from '../icons/index.js';";
 const selectIcon = '<IconPlaceholder lucide="CheckIcon" tabler="IconCheck" hugeicons="Tick02Icon" phosphor="CheckIcon" remixicon="RiCheckLine" class="cn-select-item-indicator-icon pointer-events-none" />';
 const spinnerOpen = `<IconPlaceholder
@@ -155,5 +155,16 @@ describe('transformMarkers', () => {
     test('inverted-translucent does both', () => {
       expect(menu('inverted-translucent')).toBe(wrap(`dark z-50 text-sm ${translucent}`));
     });
+  });
+});
+
+describe('applyTransforms in an RTL project', () => {
+  test('flips the marked icon and opens the menu toward the inline end, and an LTR project drops the marker', () => {
+    const separator = read('breadcrumb/BreadcrumbSeparator.svelte');
+    const rtl = applyTransforms(separator, { ...ctx('lucide'), rtl: true }).content;
+    expect(rtl).toContain('class="rtl:rotate-180"');
+    expect(rtl).toContain('<ChevronRightIcon');
+    expect(applyTransforms(separator, ctx('lucide')).content).not.toContain('rotate-180');
+    expect(applyTransforms(read('context-menu/ContextMenuContent.svelte'), { ...ctx('lucide'), rtl: true }).content).toContain("side = 'inline-end',");
   });
 });

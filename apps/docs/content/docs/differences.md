@@ -55,6 +55,10 @@ Base UI marks an open trigger with its own attributes. A collapsible trigger get
 
 ### Examples copied from the Radix variant use Base UI's attributes
 
+**Upstream:** The chevron in [`collapsible-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/collapsible-example.tsx#L110) rotates on `group-data-[state=open]`, as does the folder chevron in [`collapsible-file-tree.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/collapsible-file-tree.tsx#L74). The bookmark icons in [`toggle-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/toggle-example.tsx#L321) (also line 331) fill on `group-data-[state=on]/toggle`. These are Radix attributes.
+
+**Sveltery UI:** The [Collapsible](/docs/components/collapsible) kitchen-sink and file tree examples use `group-data-panel-open:`, and the [Toggle](/docs/components/toggle) example uses `group-data-pressed/toggle:`.
+
 **Upstream:** The chevron in [`collapsible-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/collapsible-example.tsx#L110) rotates on `group-data-[state=open]`. The bookmark icons in [`toggle-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/toggle-example.tsx#L321) (also line 331) fill on `group-data-[state=on]/toggle`. These are Radix attributes. The menu buttons and the collapsible chevron in [`sidebar-demo.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/sidebar-demo.tsx#L223) use `data-[state=open]`, and its dropdown menus are `w-(--radix-dropdown-menu-trigger-width)`, a Radix variable.
 
 **Sveltery UI:** The [Collapsible](/docs/components/collapsible) example uses `group-data-panel-open:`, and the Toggle preview example (`ToggleExample.svelte`) uses `group-data-pressed/toggle:`. The [Sidebar](/docs/components/sidebar) demo uses `data-popup-open:`, `group-data-open/collapsible:` and `w-(--anchor-width)`.
@@ -323,6 +327,26 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 ## Example content
 
+### The Collapsible settings inputs have distinct ids
+
+**Upstream:** All four inputs in [`collapsible-settings.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/collapsible-settings.tsx#L36-L63) have `id="radius"`, and their labels point at `radius-x` and `radius-y`.
+
+**Sveltery UI:** The [Collapsible](/docs/components/collapsible) settings example gives each input its own id, matching its label.
+
+**Why:** Duplicate ids are invalid HTML, and a label whose `for` matches no id does not name its input.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Dialog demo and RTL forms submit
+
+**Upstream:** In [`dialog-demo.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/dialog-demo.tsx) and [`dialog-rtl.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/dialog-rtl.tsx), the `form` wraps the trigger and the dialog content. The content renders in a portal outside the form, so **Save changes** does not submit it.
+
+**Sveltery UI:** The [Dialog](/docs/components/dialog) demo and RTL examples put the `form` inside the dialog content and close the dialog on submit.
+
+**Why:** A submit button must submit its form. This is the same fix as "The Dialog form example submits" above.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ### The Toggle Group select starts on one of its items
 
 **Upstream:** The "With Input and Select" example in [`toggle-group-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/toggle-group-example.tsx#L343) sets `defaultValue={items[0]}`, an object, while each `SelectItem` has a string `value`.
@@ -357,7 +381,7 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Upstream:** In the "With Form" example of [`dialog-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/dialog-example.tsx#L83-L116), the `form` wraps the trigger and the dialog content. The content renders in a portal outside the form, so **Save changes** does not submit it.
 
-**Sveltery UI:** The [Dialog](/docs/components/dialog) example puts the `form` inside the dialog content.
+**Sveltery UI:** The Dialog kitchen-sink example (`DialogExample.svelte`, no longer shown on the page) puts the `form` inside the dialog content.
 
 **Why:** A submit button must submit its form.
 
@@ -431,6 +455,8 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Why:** `@sveltery/day-picker` ports only the Gregorian calendar, so there is nothing to swap in. A Gregorian calendar with a Persian locale would look like the Persian calendar but show different dates.
 
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
 ### The Button page has no `init --pointer` sentence
 
 **Upstream:** The [Button page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/button.mdx#L69) says the pointer cursor can be enabled with `npx shadcn@latest init --pointer`.
@@ -458,6 +484,8 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Sveltery UI:** The [Breadcrumb](/docs/components/breadcrumb) Custom separator example points it to `/docs/components`, as the Collapsed example already does.
 
 **Why:** The docs site prerenders every link, and `/components` is not a page here, so the build fails on it.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
 
 ### The Item avatar section does not name an `avatar` variant
 
@@ -907,7 +935,7 @@ The old `list` command marked the items in your project as `installed` and had n
 
 **Upstream:** [`migrate.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/migrate.ts#L28) lists a `radix` migration. [`migrate-radix.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/migrate-radix.ts#L315) moves `@radix-ui/react-*` imports to the `radix-ui` package.
 
-**Sveltery UI:** [`migrate`](/docs/cli#migrate) lists `cn`, `icons` and `base-color`. `migrate radix` stops with an error that says why there is no `radix` migration.
+**Sveltery UI:** [`migrate`](/docs/cli#migrate) lists `cn`, `icons`, `base-color` and `rtl`. `migrate radix` stops with an error that says why there is no `radix` migration.
 
 **Why:** The migration rewrites React imports. A Svelte project does not import `@radix-ui/react-*`, so the migration has nothing to change.
 
@@ -937,7 +965,7 @@ The old `list` command marked the items in your project as `installed` and had n
 
 **Upstream:** [`cn/transform.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/cn/transform.ts#L70) and [`migrate-icons.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/migrate-icons.ts#L331) parse each file with ts-morph, which recovers from a syntax error and transforms the rest of the file.
 
-**Sveltery UI:** [`migrate`](/docs/cli#migrate) parses each file with `svelte/compiler`, which reads a `.ts` or `.js` module as the body of a `<script>` tag. A file that does not parse stays as it is. `migrate cn` lists it for manual review, and `migrate icons` lists it as skipped, with "could not parse" and the parser's message. A module that contains `</script>`, as in a string, is such a file. A leading `#!` line parses.
+**Sveltery UI:** [`migrate`](/docs/cli#migrate) parses each file with `svelte/compiler`, which reads a `.ts` or `.js` module as the body of a `<script>` tag. A file that does not parse stays as it is. `migrate cn` lists it for manual review, and `migrate icons` lists it as skipped, with "could not parse" and the parser's message. `migrate rtl` warns that it skipped the file, with the parser's message. A module that contains `</script>`, as in a string, is such a file. A leading `#!` line parses.
 
 **Why:** The CLI already parses Svelte components with `svelte/compiler`. A second parser for modules would add a large dependency for the rare module that contains `</script>`. Listing the file tells you which one to change by hand.
 

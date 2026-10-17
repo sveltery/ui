@@ -29,6 +29,8 @@ program
   .option('--icons <library>', 'the icon library')
   .option('--base-color <name>', 'the base color of the theme')
   .option('--css <path>', 'the CSS file that imports Tailwind')
+  .option('--rtl', 'enable RTL support')
+  .option('--no-rtl', 'disable RTL support')
   .option('--cwd <path>', 'the project root', '.')
   .option('--no-install', 'do not install packages')
   .action(async (options) => void (await init({ ...options, cwd: resolve(options.cwd) })));

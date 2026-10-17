@@ -43,13 +43,20 @@ const initError = async (query: string) => {
 describe('/init', () => {
   it('expands the default preset code into a full registry:base item', async () => {
     const item = await init('preset=b0');
-    expect(item.type === 'registry:base' && item.config).toEqual({ style: 'nova', iconLibrary: 'lucide', menuColor: 'default', menuAccent: 'subtle', tailwind: { baseColor: 'neutral' } });
+    expect(item.type === 'registry:base' && item.config).toEqual({ style: 'nova', iconLibrary: 'lucide', rtl: false, menuColor: 'default', menuAccent: 'subtle', tailwind: { baseColor: 'neutral' } });
+    expect(item.docs).toBeUndefined();
     expect(item.dependencies).toEqual([`${cli.name}@latest`, 'cn@^0.2.2', 'class-variance-authority@^0.7.1', 'tw-animate-css@^1.4.0', '@lucide/svelte@^1.48.0']);
     expect(item.registryDependencies).toEqual(['font-inter']);
     expect(item.cssVars?.theme?.['font-heading']).toBe('var(--font-sans)');
     expect(item.cssVars?.light?.['primary']).toBe('oklch(0.205 0 0)');
     expect(item.cssVars?.dark?.['chart-1']).toBe('oklch(0.87 0 0)');
     expect(Object.keys(item.css ?? {})).toEqual(['@import "tw-animate-css"', `@import "${cli.name}/tailwind.css"`, '@layer base']);
+  });
+
+  it('sets rtl and points at the RTL docs for rtl=true, as upstream', async () => {
+    const item = await init('preset=b0&rtl=true');
+    expect(item.type === 'registry:base' && item.config?.rtl).toBe(true);
+    expect(item.docs).toBe('To learn how to set up the RTL provider and fonts for your app, see https://ui.sveltery.dev/docs/rtl');
   });
 
   it('builds the same item from one param per field', async () => {

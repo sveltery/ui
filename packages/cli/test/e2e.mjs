@@ -216,7 +216,7 @@ try {
     if (icons === 'lucide') await run('pnpm', ['exec', 'vite', 'build'], allApp);
   }
 
-  step('sveltery migrate icons, base-color and cn in the lucide app, then check it again');
+  step('sveltery migrate icons, base-color, cn and rtl in the lucide app, then check it again');
   const lucideApp = join(work, 'all-lucide');
   const lucideCli = (...args) => run('pnpm', ['exec', 'sveltery', ...args], lucideApp, env);
   await lucideCli('migrate', 'icons', '--to', 'phosphor', '-y');
@@ -233,6 +233,9 @@ try {
   assert.equal(readFileSync(join(lucideApp, 'src/lib/html.ts'), 'utf8'), html, 'migrate cn leaves a module it cannot parse as it is');
   // html.ts imports clsx, which the app does not install, so it would fail the check below.
   rmSync(join(lucideApp, 'src/lib/html.ts'));
+  await lucideCli('migrate', 'rtl', '-y');
+  assert.equal(JSON.parse(readFileSync(join(lucideApp, 'components.json'), 'utf8')).rtl, true, 'migrate rtl sets rtl: true');
+  assert.ok(readFileSync(join(lucideApp, 'src/lib/components/ui/context-menu/ContextMenuContent.svelte'), 'utf8').includes("side = 'inline-end',"), 'migrate rtl opens the context menu toward the inline end');
   await run('pnpm', ['run', 'check'], lucideApp);
 
   step('sveltery init -y');
