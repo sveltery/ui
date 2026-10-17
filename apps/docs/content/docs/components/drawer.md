@@ -56,6 +56,7 @@ body {
 
 ```svelte
 <script lang="ts">
+  import { Button } from '#lib/components/ui/button';
   import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '#lib/components/ui/drawer';
   let open = $state(false);
 </script>
@@ -71,6 +72,7 @@ body {
     </DrawerHeader>
     <div class="p-4"><!-- Content here --></div>
     <DrawerFooter>
+      <Button>Submit</Button>
       <DrawerClose>Cancel</DrawerClose>
     </DrawerFooter>
   </DrawerContent>

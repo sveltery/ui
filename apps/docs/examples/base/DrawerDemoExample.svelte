@@ -5,7 +5,7 @@
   import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '$registry/bases/base/ui/drawer';
   import { Field, FieldContent, FieldDescription, FieldLabel, FieldTitle } from '$registry/bases/base/ui/field';
   import { RadioGroup, RadioGroupItem } from '$registry/bases/base/ui/radio-group';
-  import { Toaster, toast } from '$registry/bases/base/ui/toast';
+  import { toast } from '$registry/bases/base/ui/toast';
 
   const deliveryTimes = [
     {
@@ -97,4 +97,3 @@
   </DrawerContent>
 </Drawer>
 
-<Toaster />

@@ -363,16 +363,6 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
 
-### The Drawer demo mounts its own Toaster
-
-**Upstream:** The [`drawer-demo.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/drawer-demo.tsx) example calls `toast()` from Sonner and relies on the `Toaster` in the site's root layout.
-
-**Sveltery UI:** The [Drawer](/docs/components/drawer) demo renders a `Toaster` next to the drawer.
-
-**Why:** The Drawer page renders in the Rhea style, and the docs build loads each style's registry modules as separate instances. The `toast` manager an example imports there is not the one the layout's `Toaster` reads, so the "Delivery time confirmed" toast would never show.
-
-**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
-
 ### The Drawer page has no Vaul migration guide
 
 **Upstream:** The [Drawer page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/drawer.mdx) opens with a callout and ends with a "Migrating from Vaul" section for projects that installed the earlier Vaul-based drawer.

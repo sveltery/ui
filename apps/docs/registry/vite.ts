@@ -23,6 +23,8 @@ const CODE = /\.(svelte|[cm]?[jt]s)$/;
 export function registryStyles({ root, zones }: { root: string; zones: Record<string, Variant> }): Plugin {
   const ui = join(root, 'registry/bases/base/ui/');
   const tagged = ['registry/bases/', 'blocks/', 'examples/'].map((dir) => join(root, dir));
+  // Modules that hold app-wide state load once for every style, so a page in another style shares the layout's toast manager.
+  const shared = new Set([join(ui, 'toast/toast.ts')]);
   const zoneDirs = Object.entries(zones).map(([dir, variant]) => [join(root, dir), variant] as const);
   const sheets = new Map<StyleName, { css: string; sheet: StyleSheet }>();
 
@@ -50,7 +52,7 @@ export function registryStyles({ root, zones }: { root: string; zones: Record<st
       const tag = TAG.exec(source)?.[1] as Variant | undefined;
       if (!importer || ('scan' in options && options.scan) || (source.includes('?') && !tag)) return null;
       const resolved = await this.resolve(source.replace(TAG, ''), importer, { ...options, skipSelf: true });
-      if (!resolved || resolved.external || resolved.id.includes('?') || !CODE.test(resolved.id) || !tagged.some((dir) => resolved.id.startsWith(dir))) return resolved;
+      if (!resolved || resolved.external || resolved.id.includes('?') || !CODE.test(resolved.id) || !tagged.some((dir) => resolved.id.startsWith(dir)) || shared.has(resolved.id)) return resolved;
       return { ...resolved, id: `${resolved.id}?style=${tag ?? variantOf(importer)}` };
     },
     transform(code, id) {
