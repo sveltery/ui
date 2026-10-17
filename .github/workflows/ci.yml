@@ -64,7 +64,7 @@ jobs:
           node-version: '24'
       - run: bash scripts/bootstrap.sh
       - name: Build packages
-        run: bash -c 'source scripts/toolchain.sh; pnpm --filter @sveltery/resizable --filter @sveltery/svelte --filter @sveltery/command build'
+        run: bash scripts/build-packages.sh
       # The runner image already ships the system libraries Chromium needs.
       - name: Install Chromium
         run: bash -c 'source scripts/toolchain.sh; pnpm exec playwright install chromium'
