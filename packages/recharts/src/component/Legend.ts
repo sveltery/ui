@@ -1,9 +1,12 @@
 import { CSSProperties } from '../react.js';
 import { ContentType, LegendPayload, Props as DefaultLegendContentProps, VerticalAlignmentType } from './DefaultLegendContent.js';
-import { Margin } from '../util/types.js';
+import { LayoutType, Margin } from '../util/types.js';
 import { UniqueOption } from '../util/payload/getUniqPayload.js';
 import { ElementOffset } from '../util/useElementOffset.js';
-type ContentProps = Props & {
+export function defaultUniqBy(entry: LegendPayload) {
+  return entry.value;
+}
+export type ContentProps = Props & {
   margin: Margin | undefined;
   chartWidth: number;
   chartHeight: number;
@@ -14,6 +17,42 @@ type PositionInput = {
   align?: Props['align'];
   verticalAlign?: Props['verticalAlign'];
 };
+export function getDefaultPosition(
+  style: CSSProperties | undefined,
+  props: PositionInput,
+  margin: Margin | undefined,
+  chartWidth: number,
+  chartHeight: number,
+  box: ElementOffset,
+) {
+  const { layout, align, verticalAlign } = props;
+  let hPos, vPos;
+
+  if (
+    !style ||
+    ((style.left === undefined || style.left === null) && (style.right === undefined || style.right === null))
+  ) {
+    if (align === 'center' && layout === 'vertical') {
+      hPos = { left: ((chartWidth || 0) - box.width) / 2 };
+    } else {
+      hPos = align === 'right' ? { right: (margin && margin.right) || 0 } : { left: (margin && margin.left) || 0 };
+    }
+  }
+
+  if (
+    !style ||
+    ((style.top === undefined || style.top === null) && (style.bottom === undefined || style.bottom === null))
+  ) {
+    if (verticalAlign === 'middle') {
+      vPos = { top: ((chartHeight || 0) - box.height) / 2 };
+    } else {
+      vPos =
+        verticalAlign === 'bottom' ? { bottom: (margin && margin.bottom) || 0 } : { top: (margin && margin.top) || 0 };
+    }
+  }
+
+  return { ...hPos, ...vPos };
+}
 export type LegendItemSorter = 'value' | 'dataKey' | ((item: LegendPayload) => number | string);
 export type Props = Omit<DefaultLegendContentProps, 'payload' | 'ref' | 'verticalAlign'> & {
   /**
@@ -76,3 +115,30 @@ export type Props = Omit<DefaultLegendContentProps, 'payload' | 'ref' | 'vertica
    */
   verticalAlign?: VerticalAlignmentType;
 };
+export function getWidthOrHeight(
+  layout: LayoutType | undefined,
+  height: number | string | undefined,
+  width: number | string | undefined,
+  maxWidth: number,
+): null | { height?: number | string; width?: number | string } {
+  if (layout === 'vertical' && height != null) {
+    return {
+      height,
+    };
+  }
+  if (layout === 'horizontal') {
+    return {
+      width: width || maxWidth,
+    };
+  }
+
+  return null;
+}
+export const legendDefaultProps = {
+  align: 'center',
+  iconSize: 14,
+  inactiveColor: '#ccc',
+  itemSorter: 'value',
+  layout: 'horizontal',
+  verticalAlign: 'bottom',
+} as const satisfies Partial<Props>;

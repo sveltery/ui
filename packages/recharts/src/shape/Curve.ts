@@ -1,9 +1,26 @@
 import { Ref } from '../react.js';
-import { CurveFactory } from 'victory-vendor/d3-shape';
+import { area as shapeArea, Area as D3AreaCurve, curveBasis, curveBasisClosed, curveBasisOpen, curveBumpX, curveBumpY, CurveFactory, curveLinear, curveLinearClosed, curveMonotoneX, curveMonotoneY, curveNatural, curveStep, curveStepAfter, curveStepBefore, line as shapeLine, Line as D3LineCurve } from 'victory-vendor/d3-shape';
 import { Coordinate, LayoutType, NullableCoordinate, PresentationAttributesWithProps, RechartsMouseEventHandler } from '../util/types.js';
+import { isNumber, upperFirst } from '../util/DataUtils.js';
+import { isWellBehavedNumber } from '../util/isWellBehavedNumber.js';
 interface CurveFactories {
   [index: string]: CurveFactory;
 }
+const CURVE_FACTORIES: CurveFactories = {
+  curveBasisClosed,
+  curveBasisOpen,
+  curveBasis,
+  curveBumpX,
+  curveBumpY,
+  curveLinearClosed,
+  curveLinear,
+  curveMonotoneX,
+  curveMonotoneY,
+  curveNatural,
+  curveStep,
+  curveStepAfter,
+  curveStepBefore,
+};
 /**
  * @inline
  */
@@ -30,6 +47,25 @@ type NullableAreaPoint = NullableCoordinate & { base?: NullableCoordinate };
  * @inline
  */
 export type BaseLineType = number | ReadonlyArray<NullableCoordinate>;
+const defined = (p: NullableCoordinate): p is Coordinate => isWellBehavedNumber(p.x) && isWellBehavedNumber(p.y);
+const areaDefined = (d: NullableAreaPoint): d is AreaPoint => d.base != null && defined(d.base) && defined(d);
+const getX = (p: Coordinate) => p.x;
+const getY = (p: Coordinate) => p.y;
+const getCurveFactory = (type: CurveType, layout: LayoutType | undefined): CurveFactory => {
+  if (typeof type === 'function') {
+    return type;
+  }
+
+  const name = `curve${upperFirst(type)}`;
+
+  if ((name === 'curveMonotone' || name === 'curveBump') && layout) {
+    const factory = CURVE_FACTORIES[`${name}${layout === 'vertical' ? 'Y' : 'X'}`];
+    if (factory) {
+      return factory;
+    }
+  }
+  return CURVE_FACTORIES[name] || curveLinear;
+};
 interface CurveProps {
   className?: string;
   /**
@@ -127,3 +163,75 @@ export type Props = Omit<
   CurveMouseEvents &
   CurveProps;
 type GetPathProps = Pick<Props, 'type' | 'points' | 'baseLine' | 'layout' | 'connectNulls'>;
+export const defaultCurveProps = {
+  connectNulls: false,
+  type: 'linear',
+} as const satisfies Partial<Props>;
+/**
+ * Calculate the path of curve. Returns null if points is an empty array.
+ * @return path or null
+ */
+export const getPath = ({
+  type = defaultCurveProps.type,
+  points = [],
+  baseLine,
+  layout,
+  connectNulls = defaultCurveProps.connectNulls,
+}: GetPathProps): string | null => {
+  const curveFactory = getCurveFactory(type, layout);
+  const formatPoints: ReadonlyArray<NullableCoordinate> = connectNulls ? points.filter(defined) : points;
+
+  // When dealing with an area chart (where `baseLine` is an array),
+  // we need to pair points with their corresponding `baseLine` points first.
+  // This is to ensure that we filter points and their baseline counterparts together,
+  // preventing errors from mismatched array lengths and ensuring `defined` checks both.
+  if (Array.isArray(baseLine)) {
+    let lineFunction: D3AreaCurve<AreaPoint>;
+
+    const areaPoints: ReadonlyArray<NullableAreaPoint> = points.map((entry, index) => ({
+      ...entry,
+      base: baseLine[index],
+    }));
+
+    if (layout === 'vertical') {
+      lineFunction = shapeArea<AreaPoint>()
+        .y(getY)
+        .x1(getX)
+        .x0(d => d.base.x);
+    } else {
+      lineFunction = shapeArea<AreaPoint>()
+        .x(getX)
+        .y1(getY)
+        .y0(d => d.base.y);
+    }
+    /*
+     * What happens here is that the `.defined()` call will make it so that this function can accept
+     * nullable points, and internally it will filter them out and skip when generating the path.
+     * So on the input it accepts NullableCoordinate, but it never calls getX/getY on null points because of the defined() filter.
+     *
+     * The d3 type definition has only one generic so it doesn't allow to describe this properly.
+     * However. d3 types are mutable, but we can pretend that they are not, and we can pretend
+     * that calling defined() returns a new function with a different generic type.
+     */
+    // @ts-expect-error the defined call changes the generic type internally but d3 types don't reflect that
+    const nullableLineFunction: D3AreaCurve<NullableAreaPoint> = lineFunction.defined(areaDefined).curve(curveFactory);
+
+    const finalPoints: ReadonlyArray<NullableAreaPoint> = connectNulls ? areaPoints.filter(areaDefined) : areaPoints;
+
+    return nullableLineFunction(finalPoints);
+  }
+
+  let lineFunction: D3LineCurve<Coordinate> | D3AreaCurve<Coordinate>;
+  if (layout === 'vertical' && isNumber(baseLine)) {
+    lineFunction = shapeArea<Coordinate>().y(getY).x1(getX).x0(baseLine);
+  } else if (isNumber(baseLine)) {
+    lineFunction = shapeArea<Coordinate>().x(getX).y1(getY).y0(baseLine);
+  } else {
+    lineFunction = shapeLine<Coordinate>().x(getX).y(getY);
+  }
+
+  // @ts-expect-error the defined call changes the generic type internally but d3 types don't reflect that
+  const nullableLineFunction: D3LineCurve<NullableCoordinate> = lineFunction.defined(defined).curve(curveFactory);
+
+  return nullableLineFunction(formatPoints);
+};

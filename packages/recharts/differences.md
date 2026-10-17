@@ -24,7 +24,7 @@
 
 **Upstream:** Children are React nodes, and render props are elements or functions, for example `children: (time: number) => ReactNode` in [`animation/JavascriptAnimate.tsx:22`](https://github.com/recharts/recharts/blob/v3.8.0/src/animation/JavascriptAnimate.tsx#L22).
 
-**Here:** Children and render props are snippets, and a snippet receives what upstream's function would receive.
+**Here:** Children and render props are snippets, and a snippet receives what upstream's function would receive. That covers Bar's `shape`, `activeBar` and `background`, the `dot` and `activeDot` of Line and Area, the `content` of Label, LabelList, Tooltip and Legend, Tooltip's `cursor` and the axes' `tick`. Where upstream clones an element with the parent's props, the snippet gets the same merged props and places the spread itself. Tooltip and Legend give the parent's props the last word ([`component/Tooltip.tsx:60`](https://github.com/recharts/recharts/blob/v3.8.0/src/component/Tooltip.tsx#L60), [`component/Legend.tsx:43`](https://github.com/recharts/recharts/blob/v3.8.0/src/component/Legend.tsx#L43)), so `<Content own {...props} />` matches them. A shape element's own props win in [`util/ActiveShapeUtils.tsx:94`](https://github.com/recharts/recharts/blob/v3.8.0/src/util/ActiveShapeUtils.tsx#L94), so there the spread goes first.
 
 **Why:** Svelte has no element values to pass around or clone.
 
@@ -77,3 +77,27 @@
 **Here:** The same registrations run in `$effect`, in the same order, which Svelte flushes in a microtask before the browser paints. The store's notifications are batched to the next animation frame in both, so the DOM at rest is the same. Only intermediate frames can differ.
 
 **Why:** Svelte has no after-paint effect.
+
+### Tooltip and Legend portals go in front of the svg
+
+**Upstream:** Tooltip and Legend portal into the chart's wrapper div with `createPortal`, in [`component/Tooltip.tsx:408`](https://github.com/recharts/recharts/blob/v3.8.0/src/component/Tooltip.tsx#L408) and [`component/Legend.tsx:265`](https://github.com/recharts/recharts/blob/v3.8.0/src/component/Legend.tsx#L265). In the rendered DOM the portal content comes before the svg.
+
+**Here:** The portals mount after the svg exists, so they insert their content before the wrapper's `svg` child. A `portal` prop still appends to the element it names.
+
+**Why:** A Svelte portal mounts in an effect, one flush after the svg. Without the anchor it would land after the svg, and the DOM order would differ from upstream's.
+
+### Animation ids compare props shallowly
+
+**Upstream:** `useAnimationId` issues a new id whenever the props object differs by reference, in [`util/useAnimationId.tsx:18-26`](https://github.com/recharts/recharts/blob/v3.8.0/src/util/useAnimationId.tsx#L18-L26). Props are a new object on every render, so every render of the parent starts a new animation.
+
+**Here:** It takes a getter and issues a new id when the returned object differs shallowly from the last one. Bar passes all its props, Line its points and Area its points and baseline, as upstream's callers do.
+
+**Why:** Svelte has no re-render, so a reference check would never fire, and a fresh object per read would fire on every frame. A shallow check fires when upstream's inputs change.
+
+### Refs read during render are read on the render's triggers
+
+**Upstream:** The animated items keep the last frame in a ref, write it while rendering a frame and read it when the component renders, for example `previousRectanglesRef` in [`cartesian/Bar.tsx:780`](https://github.com/recharts/recharts/blob/v3.8.0/src/cartesian/Bar.tsx#L780) and [`cartesian/Bar.tsx:848`](https://github.com/recharts/recharts/blob/v3.8.0/src/cartesian/Bar.tsx#L848). The component renders when a new animation starts and when the animation starts or ends.
+
+**Here:** The ref is a plain variable that the frame writes, read through a `$derived` that depends on the animation id and the animating flag. It sees the same values at the same moments as upstream's render.
+
+**Why:** A `$state` ref written during a frame would make each frame depend on the last one and loop. A plain variable read in the template would never update.

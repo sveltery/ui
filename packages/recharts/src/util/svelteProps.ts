@@ -46,3 +46,15 @@ export function svelteProps<P extends object>(bag: P): SvelteArgs<P> {
   const { className, ...rest } = bag as P & { className?: unknown };
   return { ...rest, class: className == null ? undefined : String(className) } as SvelteArgs<P>;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- any function, whatever its parameters
+type AnyFunction = (...args: any[]) => unknown;
+
+/**
+ * Upstream's element-or-render-function props as Svelte takes them: the function and element forms become one snippet,
+ * which receives the props upstream would clone into the element. Objects and booleans keep their upstream meaning.
+ * `S` maps each such prop to the props its snippet receives.
+ */
+export type WithSnippets<P, S extends { [K in keyof P]?: object }> = Omit<P, keyof S> & {
+  [K in keyof S]?: Exclude<P[K & keyof P], AnyFunction | { type: unknown; props: unknown; key: unknown }> | Snippet<[SvelteArgs<S[K]>]>;
+};

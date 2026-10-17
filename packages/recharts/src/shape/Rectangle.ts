@@ -2,10 +2,69 @@ import * as React from '../react.js';
 import { SVGProps } from '../react.js';
 import { AnimationDuration } from '../util/types.js';
 import { EasingInput } from '../animation/easing.js';
+import { round, roundTemplateLiteral } from '../util/round.js';
 /**
  * @inline
  */
 export type RectRadius = number | [number, number, number, number];
+export const getRectanglePath = (x: number, y: number, width: number, height: number, radius: RectRadius): string => {
+  const roundedWidth = round(width);
+  const roundedHeight = round(height);
+  const maxRadius = Math.min(Math.abs(roundedWidth) / 2, Math.abs(roundedHeight) / 2);
+  const ySign = roundedHeight >= 0 ? 1 : -1;
+  const xSign = roundedWidth >= 0 ? 1 : -1;
+  const clockWise = (roundedHeight >= 0 && roundedWidth >= 0) || (roundedHeight < 0 && roundedWidth < 0) ? 1 : 0;
+  let path;
+
+  if (maxRadius > 0 && Array.isArray(radius)) {
+    const newRadius: RectRadius = [0, 0, 0, 0];
+    for (let i = 0, len = 4; i < len; i++) {
+      const r: number = radius[i] ?? 0;
+      newRadius[i] = r > maxRadius ? maxRadius : r;
+    }
+
+    path = roundTemplateLiteral`M${x},${y + ySign * newRadius[0]}`;
+
+    if (newRadius[0] > 0) {
+      path += roundTemplateLiteral`A ${newRadius[0]},${newRadius[0]},0,0,${clockWise},${x + xSign * newRadius[0]},${y}`;
+    }
+
+    path += roundTemplateLiteral`L ${x + width - xSign * newRadius[1]},${y}`;
+
+    if (newRadius[1] > 0) {
+      path += roundTemplateLiteral`A ${newRadius[1]},${newRadius[1]},0,0,${clockWise},
+        ${x + width},${y + ySign * newRadius[1]}`;
+    }
+    path += roundTemplateLiteral`L ${x + width},${y + height - ySign * newRadius[2]}`;
+
+    if (newRadius[2] > 0) {
+      path += roundTemplateLiteral`A ${newRadius[2]},${newRadius[2]},0,0,${clockWise},
+        ${x + width - xSign * newRadius[2]},${y + height}`;
+    }
+    path += roundTemplateLiteral`L ${x + xSign * newRadius[3]},${y + height}`;
+
+    if (newRadius[3] > 0) {
+      path += roundTemplateLiteral`A ${newRadius[3]},${newRadius[3]},0,0,${clockWise},
+        ${x},${y + height - ySign * newRadius[3]}`;
+    }
+    path += 'Z';
+  } else if (maxRadius > 0 && radius === +radius && radius > 0) {
+    const newRadius = Math.min(maxRadius, radius);
+
+    path = roundTemplateLiteral`M ${x},${y + ySign * newRadius}
+            A ${newRadius},${newRadius},0,0,${clockWise},${x + xSign * newRadius},${y}
+            L ${x + width - xSign * newRadius},${y}
+            A ${newRadius},${newRadius},0,0,${clockWise},${x + width},${y + ySign * newRadius}
+            L ${x + width},${y + height - ySign * newRadius}
+            A ${newRadius},${newRadius},0,0,${clockWise},${x + width - xSign * newRadius},${y + height}
+            L ${x + xSign * newRadius},${y + height}
+            A ${newRadius},${newRadius},0,0,${clockWise},${x},${y + height - ySign * newRadius} Z`;
+  } else {
+    path = roundTemplateLiteral`M ${x},${y} h ${width} v ${height} h ${-width} Z`;
+  }
+
+  return path;
+};
 interface RectangleProps {
   className?: string;
   /**
@@ -94,3 +153,15 @@ interface RectangleProps {
   onMouseLeave?: (e: React.MouseEvent<SVGPathElement>) => void;
 }
 export type Props = Omit<SVGProps<SVGPathElement>, 'radius'> & RectangleProps;
+export const defaultRectangleProps = {
+  x: 0,
+  y: 0,
+  width: 0,
+  height: 0,
+  radius: 0,
+  isAnimationActive: false,
+  isUpdateAnimationActive: false,
+  animationBegin: 0,
+  animationDuration: 1500,
+  animationEasing: 'ease',
+} as const satisfies Partial<Props>;

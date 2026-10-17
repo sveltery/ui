@@ -9,7 +9,7 @@ declare global {
 
 export type Key = string | number | bigint;
 
-export type ReactNode = Snippet | string | number | bigint | boolean | null | undefined;
+export type ReactNode = Snippet | string | number | bigint | boolean | null | undefined | Iterable<ReactNode>;
 
 export type ReactElement<P = any> = { type: unknown; props: P; key: Key | null };
 
@@ -31,8 +31,8 @@ type CamelCase<S extends string> = S extends `${'aria' | 'data'}-${string}`
 
 type SvgAttributes = Omit<SvelteSVGAttributes<EventTarget>, keyof DOMAttributes<EventTarget> | 'class' | 'style' | 'tabindex'> & { style?: CSSProperties; tabIndex?: number };
 
-// React names SVG attributes in camelCase (strokeWidth for stroke-width), and recharts' props follow it.
-export type SVGAttributes<_T = unknown> = { [K in keyof SvgAttributes as K extends string ? CamelCase<K> : K]: SvgAttributes[K] };
+// React names SVG attributes in camelCase (strokeWidth for stroke-width), and recharts' props follow it. React's types have no null values.
+export type SVGAttributes<_T = unknown> = { [K in keyof SvgAttributes as K extends string ? CamelCase<K> : K]: Exclude<SvgAttributes[K], null> };
 
 export type SVGProps<T = unknown> = SVGAttributes<T>;
 

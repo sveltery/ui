@@ -1,11 +1,14 @@
 import { CurveType, Props as CurveProps } from '../shape/Curve.js';
 import { ImplicitLabelListType } from '../component/LabelList.js';
+import { ErrorBarDataItem, ErrorBarDataPointFormatter } from './ErrorBar.js';
 import { isNullish } from '../util/DataUtils.js';
-import { getCateCoordinateOfLine, getValueByDataKey } from '../util/ChartUtils.js';
+import { getCateCoordinateOfLine, getTooltipNameProp, getValueByDataKey } from '../util/ChartUtils.js';
 import { ActiveDotType, ActiveShape, AnimationDuration, AnimationTiming, CartesianLayout, DataConsumer, DataKey, DataProvider, DotType, LegendType, TickItem, TooltipType } from '../util/types.js';
+import type { LegendPayload } from '../component/DefaultLegendContent.js';
 import { BaseAxisWithScale } from '../state/selectors/axisSelectors.js';
 import { AxisId } from '../state/cartesianAxisSlice.js';
 import { ZIndexable } from '../zIndex/ZIndexLayer.js';
+import { DefaultZIndexes } from '../zIndex/DefaultZIndexes.js';
 import { GraphicalItemId } from '../state/graphicalItemsSlice.js';
 import { ChartData } from '../state/chartDataSlice.js';
 export interface LinePointItem {
@@ -255,8 +258,133 @@ interface LineProps<DataPointType = any, DataValueType = any>
  * Because of naming conflict, we are forced to ignore certain (valid) SVG attributes.
  */
 type LineSvgProps = Omit<CurveProps, 'points' | 'pathRef' | 'ref' | 'layout' | 'baseLine'>;
-type InternalProps = LineSvgProps & InternalLineProps;
+export type InternalProps = LineSvgProps & InternalLineProps;
 export type Props<DataPointType = any, ValueAxisType = any> = LineSvgProps & LineProps<DataPointType, ValueAxisType>;
+export const computeLegendPayloadFromAreaData = (props: Props): ReadonlyArray<LegendPayload> => {
+  const { dataKey, name, stroke, legendType, hide } = props;
+  return [
+    {
+      inactive: hide,
+      dataKey,
+      type: legendType,
+      color: stroke,
+      value: getTooltipNameProp(name, dataKey),
+      payload: props,
+    },
+  ];
+};
+/**
+ * Generates a simple stroke-dasharray string for animating a line draw effect.
+ *
+ * Uses `totalLength` as the gap (instead of `totalLength - length`) to prevent a floating-point
+ * precision artifact: when fractional dash and gap values are serialized to a string attribute
+ * and re-parsed by the SVG renderer, their sum can differ from the actual path length by a ULP,
+ * causing the dasharray pattern to repeat and render a phantom dot at the path endpoint
+ * with round or square strokeLinecap.
+ *
+ * @param totalLength The total length of the SVG path
+ * @param length The currently visible portion of the path
+ * @returns A stroke-dasharray string like "50px 200px"
+ */
+export const generateSimpleStrokeDasharray = (totalLength: number, length: number): string => {
+  return `${length}px ${totalLength}px`;
+};
+/**
+ * Repeats a dash pattern array a given number of times.
+ *
+ * If the input array has an odd length, a trailing `0` is appended to make it even
+ * before repeating, because SVG stroke-dasharray patterns must have an even number
+ * of values to cycle correctly between dash and gap segments.
+ *
+ * @param lines Array of dash/gap lengths to repeat
+ * @param count Number of times to repeat the pattern
+ * @returns A new array with the pattern repeated `count` times
+ */
+function repeat(lines: number[], count: number): number[] {
+  const linesUnit = lines.length % 2 !== 0 ? [...lines, 0] : lines;
+  const result: number[] = [];
+  for (let i = 0; i < count; ++i) {
+    result.push(...linesUnit);
+  }
+  return result;
+}
+/**
+ * Computes a stroke-dasharray string for animating a custom-dashed line draw effect.
+ *
+ * Given a user-specified dash pattern (e.g. `"7,3"`), this function builds a dasharray
+ * that reveals exactly `length` pixels of that pattern, followed by a gap of `totalLength`
+ * to hide the remainder of the path.
+ *
+ * Like {@link generateSimpleStrokeDasharray}, the trailing gap uses `totalLength` rather than
+ * `totalLength - length` to avoid floating-point precision artifacts with round/square strokeLinecap.
+ *
+ * @param length The currently visible portion of the path
+ * @param totalLength The total length of the SVG path
+ * @param lines The user-specified dash pattern as an array of numbers (e.g. [7, 3])
+ * @returns A stroke-dasharray string incorporating the custom dash pattern
+ */
+export const getStrokeDasharray = (length: number, totalLength: number, lines: number[]): string => {
+  const lineLength = lines.reduce((pre, next) => pre + next, 0);
+
+  // if lineLength is 0 return the default when no strokeDasharray is provided
+  if (!lineLength) {
+    return generateSimpleStrokeDasharray(totalLength, length);
+  }
+
+  const count = Math.floor(length / lineLength);
+  const remainLength = length % lineLength;
+  let remainLines: number[] = [];
+  for (let i = 0, sum = 0; i < lines.length; sum += lines[i] ?? 0, ++i) {
+    const lineValue = lines[i];
+    if (lineValue != null && sum + lineValue > remainLength) {
+      remainLines = [...lines.slice(0, i), remainLength - sum];
+      break;
+    }
+  }
+
+  const emptyLines = remainLines.length % 2 === 0 ? [0, totalLength] : [totalLength];
+
+  return [...repeat(lines, count), ...remainLines, ...emptyLines].map(line => `${line}px`).join(', ');
+};
+export function getTotalLength(mainCurve: SVGPathElement | null): number {
+  try {
+    return (mainCurve && mainCurve.getTotalLength && mainCurve.getTotalLength()) || 0;
+  } catch {
+    return 0;
+  }
+}
+export const errorBarDataPointFormatter: ErrorBarDataPointFormatter<LinePointItem> = (
+  dataPoint: LinePointItem,
+  dataKey,
+): ErrorBarDataItem => {
+  return {
+    x: dataPoint.x ?? undefined,
+    y: dataPoint.y ?? undefined,
+    value: dataPoint.value,
+    // getValueByDataKey does not validate the output type
+    errorVal: getValueByDataKey(dataPoint.payload, dataKey),
+  };
+};
+export const defaultLineProps = {
+  activeDot: true,
+  animateNewValues: true,
+  animationBegin: 0,
+  animationDuration: 1500,
+  animationEasing: 'ease',
+  connectNulls: false,
+  dot: true,
+  fill: '#fff',
+  hide: false,
+  isAnimationActive: 'auto',
+  label: false,
+  legendType: 'line',
+  stroke: '#3182bd',
+  strokeWidth: 1,
+  xAxisId: 0,
+  yAxisId: 0,
+  zIndex: DefaultZIndexes.line,
+  type: 'linear',
+} as const satisfies Partial<Props>;
 export function computeLinePoints({
   layout,
   xAxis,
