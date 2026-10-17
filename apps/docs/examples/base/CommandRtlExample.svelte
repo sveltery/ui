@@ -78,18 +78,15 @@
         <CommandGroup heading={t.settings}>
           <CommandItem>
             <IconPlaceholder lucide="UserIcon" tabler="IconUser" hugeicons="UserIcon" phosphor="UserIcon" remixicon="RiUserLine" />
-            <span>{t.profile}</span>
-            <CommandShortcut>⌘P</CommandShortcut>
+            <span>{t.profile}</span><CommandShortcut>⌘P</CommandShortcut>
           </CommandItem>
           <CommandItem>
             <IconPlaceholder lucide="CreditCardIcon" tabler="IconCreditCard" hugeicons="CreditCardIcon" phosphor="CreditCardIcon" remixicon="RiBankCardLine" />
-            <span>{t.billing}</span>
-            <CommandShortcut>⌘B</CommandShortcut>
+            <span>{t.billing}</span><CommandShortcut>⌘B</CommandShortcut>
           </CommandItem>
           <CommandItem>
             <IconPlaceholder lucide="SettingsIcon" tabler="IconSettings" hugeicons="SettingsIcon" phosphor="GearIcon" remixicon="RiSettingsLine" />
-            <span>{t.settings}</span>
-            <CommandShortcut>⌘S</CommandShortcut>
+            <span>{t.settings}</span><CommandShortcut>⌘S</CommandShortcut>
           </CommandItem>
         </CommandGroup>
       </CommandList>

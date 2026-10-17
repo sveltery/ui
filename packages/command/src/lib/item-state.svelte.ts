@@ -1,9 +1,12 @@
-import { createContext } from 'svelte';
+import { createContext, type Snippet } from 'svelte';
 import type { Attachment } from 'svelte/attachments';
+import { Container, type Part } from './parts.svelte.js';
 import type { GroupEntry, ItemEntry } from './rank.js';
 import type { CommandModel } from './root-state.svelte.js';
 
 export interface ItemOptions {
+  readonly anchor: string;
+  readonly view: Snippet;
   readonly id: string;
   readonly value: string | undefined;
   readonly keywords: readonly string[] | undefined;
@@ -12,11 +15,13 @@ export interface ItemOptions {
   readonly onSelect: ((value: string) => void) | undefined;
 }
 
-export class ItemModel implements ItemEntry<GroupModel> {
+export class ItemModel implements ItemEntry<GroupModel>, Part {
   readonly root: CommandModel;
   readonly group: GroupModel | undefined;
   readonly #options: ItemOptions;
-  /** Set while the item is registered with Root. */
+  readonly kind = 'item';
+  readonly sequence: number;
+  /** Set while the item is rendered. The search unmounts it while it does not match. */
   element = $state.raw<HTMLElement>();
   /** The text content, measured on attach and again whenever Root re-measures. */
   #text = $state<string>();
@@ -25,8 +30,15 @@ export class ItemModel implements ItemEntry<GroupModel> {
     this.root = root;
     this.group = group;
     this.#options = options;
+    this.sequence = root.sequence();
   }
 
+  get anchor(): string {
+    return this.#options.anchor;
+  }
+  get view(): Snippet {
+    return this.#options.view;
+  }
   get id(): string {
     return this.#options.id;
   }
@@ -39,12 +51,7 @@ export class ItemModel implements ItemEntry<GroupModel> {
 
   value = $derived.by(() => (this.#options.value ?? this.#text)?.trim());
   keywords = $derived.by(() => (this.#options.keywords ?? []).map((keyword) => keyword.trim()));
-  // An unregistered item never reads the view. It renders as the server did, and items that mount together are
-  // ranked once after they all registered instead of once each.
-  #view = $derived.by(() => (this.element ? this.root.view : undefined));
-  hidden = $derived.by(() => (this.#view ? !this.#view.visibleItems.has(this) : false));
-  slot = $derived.by(() => this.#view?.itemSlot.get(this));
-  selected = $derived.by(() => this.#view !== undefined && this.root.selectedItem === this);
+  selected = $derived.by(() => this.root.view !== undefined && this.root.selectedItem === this);
 
   /** Re-reads the text an inferred value comes from. */
   measure(): void {
@@ -67,46 +74,45 @@ export class ItemModel implements ItemEntry<GroupModel> {
     // Reading `this.element` back here would make the attachment depend on its own write and re-run.
     this.#text = element.textContent;
     this.element = element;
-    const unregister = this.root.register(this, element);
     return () => {
-      unregister();
       this.element = undefined;
     };
   };
 }
 
 export interface GroupOptions {
+  readonly anchor: string;
+  readonly view: Snippet;
   readonly forceMount: boolean;
 }
 
-export class GroupModel implements GroupEntry {
+export class GroupModel implements GroupEntry, Part {
   readonly root: CommandModel;
   readonly #options: GroupOptions;
-  /** Set while the group is registered with Root. */
-  element = $state.raw<HTMLElement>();
+  readonly kind = 'group';
+  readonly sequence: number;
+  /** Where the group's items render. */
+  readonly items: Container;
   headingElement = $state.raw<HTMLElement>();
 
   constructor(root: CommandModel, options: GroupOptions) {
     this.root = root;
     this.#options = options;
+    this.sequence = root.sequence();
+    this.items = new Container(root, this);
   }
 
+  get anchor(): string {
+    return this.#options.anchor;
+  }
+  get view(): Snippet {
+    return this.#options.view;
+  }
   get forceMount(): boolean {
     return this.#options.forceMount;
   }
 
-  #view = $derived.by(() => (this.element ? this.root.view : undefined));
-  hidden = $derived.by(() => (this.#view ? !this.#view.visibleGroups.has(this) : false));
-  slot = $derived.by(() => this.#view?.groupSlot.get(this));
-
-  attach: Attachment<HTMLElement> = (element) => {
-    this.element = element;
-    const unregister = this.root.registerGroup(this, element);
-    return () => {
-      unregister();
-      this.element = undefined;
-    };
-  };
+  hidden = $derived.by(() => (this.root.view ? !this.root.view.visibleGroups.has(this) : false));
 
   attachHeading: Attachment<HTMLElement> = (element) => {
     this.headingElement = element;

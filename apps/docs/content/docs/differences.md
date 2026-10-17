@@ -152,6 +152,130 @@ Where upstream code misbehaves on Base UI, Sveltery UI fixes it instead of copyi
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
+## Command menu
+
+shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/command.tsx) is built on [cmdk](https://github.com/pacocoursey/cmdk) 1.1.1, and Sveltery UI's [Command](/docs/components/command) on its port, `@sveltery/command`. The links below point at cmdk commit [`dd2250e`](https://github.com/pacocoursey/cmdk/tree/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3), which is 1.1.1 with README changes. The port renders the same elements and attributes as cmdk, except where an entry here says otherwise.
+
+### `aria-activedescendant` always names the selected item
+
+**Upstream:** cmdk sets `selectedItemId` by reading the selected item from the DOM in a scheduled callback ([index.tsx:251](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L251)). When the menu opens or the search changes, that callback runs in the same pass that picks the new item ([index.tsx:1050](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L1050)), before React renders the selection, so it finds the previous item or none. The input and list take `aria-activedescendant` from it ([index.tsx:814](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L814), [index.tsx:866](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L866)). On [ui.shadcn.com's command preview](https://ui.shadcn.com/preview/base/command-example), the attribute is missing when the menu opens and names the item selected before the last search.
+
+**Sveltery UI:** The input and list always point `aria-activedescendant` at the selected item.
+
+**Why:** Screen readers announce the active option from `aria-activedescendant`, so upstream announces nothing on open and the wrong item after a search.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### Results stay ranked when the search changes in one step
+
+**Upstream:** cmdk sorts the items as soon as the search changes ([index.tsx:238](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L238)), before React renders the items the new search brings back. Those items stay registered while hidden ([index.tsx:672](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L672), [index.tsx:702](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L702)), so nothing sorts again once they render, and React appends them after the items already shown. On the preview, searching "ca" and then pasting "e" lists Calendar above Search Emoji, though Search Emoji scores higher. Typing "e" into an empty search lists Search Emoji first.
+
+**Sveltery UI:** Results are in score order whatever the previous search was.
+
+**Why:** Pasting, replacing the selected text, or setting the search from code would otherwise show a worse match first and select it.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### Clearing the search restores the declared order
+
+**Upstream:** With no search, cmdk's sort returns before moving anything ([index.tsx:369](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L369)), so items that stayed mounted keep the last ranked order. On the preview, searching "e" and clearing it lists Search Emoji above Calendar, and a different search leaves a different order.
+
+**Sveltery UI:** With no search, items are in the order they are written.
+
+**Why:** Upstream's order after clearing depends on the previous search, so the same menu opens in different orders.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### Opening the menu does not scroll the page
+
+**Upstream:** cmdk scrolls the selected item into view on every selection change except the pointer's ([index.tsx:256](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L256)). It also scrolls once when the menu mounts ([index.tsx:221](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L221)).
+
+**Sveltery UI:** Only keyboard moves and a new search scroll the selection into view.
+
+**Why:** An inline menu below the fold scrolls the page to itself when it mounts.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### `onValueChange` fires without a bound value
+
+**Upstream:** cmdk calls `onValueChange` only when `value` is controlled ([index.tsx:261](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L261)).
+
+**Sveltery UI:** `onValueChange` fires for every change of the selected value, whether or not `value` is bound.
+
+**Why:** Upstream's callback never runs for an uncontrolled menu, which reads as broken to whoever passes it.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### A group of force-mounted items stays visible
+
+**Upstream:** A force-mounted item does not register with cmdk ([index.tsx:672](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L672)), so its group counts no matches and hides while searching ([index.tsx:736](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L736)), taking the item with it.
+
+**Sveltery UI:** A group that holds only force-mounted items stays visible while searching. The docs search menu relies on this for its search results group.
+
+**Why:** `forceMount` exists to keep the item on screen.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### Empty does not flash on the server
+
+**Upstream:** cmdk's count of matches starts at 0 ([index.tsx:179](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L179)) and Empty renders while it is 0 ([index.tsx:900](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L900)), so server-rendered markup shows "No results" above the full list until the client mounts.
+
+**Sveltery UI:** Empty renders only after the menu mounts.
+
+**Why:** The empty message would flash on every server-rendered page with a command menu.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### Parts render in their List or Group
+
+**Upstream:** cmdk sorts by moving item nodes in the DOM, and an element wrapped around a grouped item moves with it ([index.tsx:410](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L410)). Other markup in the list or a group stays where it is written until a search moves the items after it.
+
+**Sveltery UI:** Svelte cannot move the nodes it renders, so List and each Group render their items, groups, separators and empty and loading states themselves, in cmdk's order, with a comment where each part is written. An element wrapped around a part stays empty, other markup written in List or Group renders before its parts, and context set between List or Group and an item does not reach the item's content.
+
+**Why:** Rendering the parts from their container is how Svelte can show cmdk's DOM order while it owns every node.
+
+**Decided:** Hugo Hsi, 2026-10-17
+
+### Only the menu in use moves focus
+
+**Upstream:** When the selection changes and any command menu's input or root has focus, cmdk moves focus to its own input ([index.tsx:245](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L245)). With two menus on a page, items loading into one take focus from the other's input.
+
+**Sveltery UI:** Focus moves to the input only when that menu's own input or root has focus.
+
+**Why:** Typing in one menu should not be interrupted by another.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### Groups are ordered by their best match
+
+**Upstream:** cmdk means to move groups by their best item's score, but looks each group up by `data-value` equal to its encoded internal id ([index.tsx:422](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L422)). A group's `data-value` is its heading, so the lookup never matches and groups keep their template order.
+
+**Sveltery UI:** While searching, a group whose best item scores higher comes first. Ties keep the template order.
+
+**Why:** cmdk's own comment says groups sort by their highest item score ([index.tsx:367](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L367)), and with upstream's order the best match can sit below weaker ones.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### Only one item is selected when values repeat
+
+**Upstream:** cmdk marks an item selected when its value equals the selected value ([index.tsx:681](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L681)), so every item sharing that value is highlighted together.
+
+**Sveltery UI:** Only the item reached with the keyboard or pointer is selected, and the arrow keys walk each duplicate in turn.
+
+**Why:** With upstream, two rows light up and `aria-activedescendant` can name only one of them.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### Item click and pointer handlers run
+
+**Upstream:** cmdk's item passes its props to the element and then sets its own `onPointerMove` and `onClick` ([index.tsx:709](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L709), [index.tsx:718](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L718)), so handlers given to an item never run.
+
+**Sveltery UI:** An item runs its `onclick` and `onpointermove` and then selects or activates as cmdk does.
+
+**Why:** A handler that silently never runs looks like a bug to whoever passes it.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ## Example content
 
 ### The Toggle Group select starts on one of its items

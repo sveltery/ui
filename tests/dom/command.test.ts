@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, onTestFinished, vi } from 'vitest';
 import { flushSync, mount, tick, unmount } from 'svelte';
 import CommandDuplicateFixture from './CommandDuplicateFixture.svelte';
 import CommandDynamicFixture from './CommandDynamicFixture.svelte';
+import CommandEdgeFixture from './CommandEdgeFixture.svelte';
 import CommandFixture from './CommandFixture.svelte';
 
 type Bound = { bound(): { value: string; search: string }; setValue(value: string): void };
@@ -84,19 +85,14 @@ function active() {
 /** The test ids of the items marked selected. */
 const selected = () => [...document.querySelectorAll<HTMLElement>('[cmdk-item][aria-selected="true"]')].map((item) => item.dataset.testid);
 
-/** Lays out the list the way a browser does: hidden children dropped, then a stable sort by CSS `order`. */
-function laidOut(container: Element): HTMLElement[] {
-  return [...container.children]
-    .filter((child): child is HTMLElement => child instanceof HTMLElement && !child.hidden)
-    .map((child, index) => ({ child, index, order: Number(child.style.order || 0) }))
-    .sort((a, b) => a.order - b.order || a.index - b.index)
-    .flatMap(({ child }) => {
-      if (child.hasAttribute('cmdk-item')) return [child];
-      const items = child.querySelector(':scope > [cmdk-group-items]');
-      return items ? laidOut(items) : [];
-    });
-}
-const visualOrder = () => laidOut(document.querySelector('[cmdk-list-sizer]')!).map((item) => item.dataset.testid);
+/** The test ids of the parts a container renders, in document order. */
+const partOrder = (container: string) =>
+  [...document.querySelector(container)!.children].flatMap((child) =>
+    [...child.attributes].some((attribute) => attribute.name.startsWith('cmdk-')) ? [(child as HTMLElement).dataset.testid] : []
+  );
+/** The rendered items in document order, which is the order the user sees and a screen reader reads. */
+const visualOrder = () =>
+  [...document.querySelectorAll<HTMLElement>('[cmdk-item]')].filter((item) => !item.closest('[hidden]')).map((item) => item.dataset.testid);
 
 /** Walks the selection with ArrowDown from the first item and records where it lands, until it stops moving. */
 function keyboardOrder() {
@@ -259,6 +255,15 @@ describe('Command', () => {
     expect(active()).toBe('banana');
   });
 
+  it('moves focus from Root to Input when the selection changes', () => {
+    setup();
+    el('root').focus();
+    el('root').dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, cancelable: true, key: 'ArrowDown' }));
+    flushSync();
+    expect(active()).toBe('banana');
+    expect(document.activeElement).toBe(input());
+  });
+
   it('calls onSelect with the value on Enter and on click', () => {
     const onSelect = vi.fn();
     const fixture = setup({ onSelect });
@@ -295,23 +300,15 @@ describe('Command', () => {
     type('c');
 
     expect(fixture.bound().search).toBe('c');
-    expect(el('apple').hidden).toBe(true);
-    expect(el('apple').style.display).toBe('none');
-    expect(el('banana').hidden).toBe(true);
-    expect(el('asparagus').hidden).toBe(true);
-    expect(el('carrot').hidden).toBe(false);
-    expect(el('cabbage').hidden).toBe(false);
-    expect(el('pineapple').hidden).toBe(false);
-    // "Settings" matches through its "preferences" keyword. Ungrouped matches come before groups.
-    expect(el('settings').style.order).toBe('1');
-    expect(el('vegetables').style.order).toBe('2');
-    expect(el('fruits').style.order).toBe('3');
-    expect(el('carrot').style.order).toBe('1');
-    expect(el('cabbage').style.order).toBe('2');
-    expect(el('pineapple').style.order).toBe('1');
+    expect(query('apple')).toBe(null);
+    expect(query('banana')).toBe(null);
+    expect(query('asparagus')).toBe(null);
+    // "Settings" matches through its "preferences" keyword. Ungrouped matches come before groups, best group first.
+    expect(partOrder('[cmdk-list-sizer]')).toEqual(['settings', 'vegetables', 'fruits']);
+    // Disabled Cabbage is not moved, as in cmdk, so it stays ahead of the items that move to the end of its group.
+    expect(visualOrder()).toEqual(['settings', 'cabbage', 'carrot', 'pineapple']);
     expect(query('separator')).toBe(null);
     expect(query('empty')).toBe(null);
-    expect(visualOrder()).toEqual(['settings', 'carrot', 'cabbage', 'pineapple']);
     expect(fixture.bound().value).toBe('Settings');
     expect(onValueChange.mock.calls).toEqual([['Apple'], ['Settings']]);
     expect(el('state').textContent).toBe(`c|Settings|4|${el('settings').id}`);
@@ -323,20 +320,29 @@ describe('Command', () => {
     type('ap');
     expect(visualOrder()).toEqual(['apple', 'pineapple', 'asparagus']);
     expect(keyboardOrder()).toEqual(['apple', 'pineapple', 'asparagus']);
-    expect(el('fruits').style.order).toBe('1');
-    expect(el('vegetables').style.order).toBe('2');
-    expect(el('settings').hidden).toBe(true);
+    expect(partOrder('[cmdk-list-sizer]')).toEqual(['fruits', 'vegetables']);
+    expect(query('settings')).toBe(null);
 
     type('ca');
-    expect(visualOrder()).toEqual(['carrot', 'cabbage', 'pineapple']);
+    expect(visualOrder()).toEqual(['cabbage', 'carrot', 'pineapple']);
     expect(active()).toBe('carrot');
     expect(el('fruits').hidden).toBe(false);
 
     type('set');
     expect(visualOrder()).toEqual(['settings']);
     expect(el('fruits').hidden).toBe(true);
-    expect(el('fruits').style.display).toBe('none');
+    expect(el('fruits').getAttribute('style')).toBe(null);
     expect(el('vegetables').hidden).toBe(true);
+    expect(partOrder('[cmdk-list-sizer]')).toEqual(['fruits', 'vegetables', 'settings']);
+  });
+
+  it('leaves no style attribute on items or groups once the search is cleared', () => {
+    setup();
+    type('ap');
+    type('set');
+    type('');
+    const styled = [...document.querySelectorAll('[cmdk-item], [cmdk-group]')].filter((node) => node.hasAttribute('style'));
+    expect(styled).toEqual([]);
   });
 
   it('shows Empty and selects nothing when no item matches', () => {
@@ -357,9 +363,7 @@ describe('Command', () => {
     type('c');
     type('');
     expect(visualOrder()).toEqual(['apple', 'banana', 'pineapple', 'carrot', 'cabbage', 'asparagus', 'settings']);
-    expect(el('settings').style.order).toBe('');
-    expect(el('fruits').style.order).toBe('');
-    expect(el('separator').hidden).toBe(false);
+    expect(partOrder('[cmdk-list-sizer]')).toEqual(['fruits', 'separator', 'vegetables', 'settings']);
     expect(active()).toBe('apple');
   });
 
@@ -378,14 +382,13 @@ describe('Command', () => {
     expect(el('empty').textContent).toBe('No results.');
     expect(fixture.bound().value).toBe('Search the web for "zzz"');
     type('c');
-    expect(visualOrder()).toEqual(['settings', 'web', 'carrot', 'cabbage', 'pineapple']);
+    expect(visualOrder()).toEqual(['settings', 'web', 'cabbage', 'carrot', 'pineapple']);
   });
 
   it('keeps every item in declared order with shouldFilter false', () => {
     setup({ shouldFilter: false });
     type('zzz');
     expect(visualOrder()).toEqual(['apple', 'banana', 'pineapple', 'carrot', 'cabbage', 'asparagus', 'settings']);
-    expect(el('apple').style.order).toBe('');
     expect(query('empty')).toBe(null);
     expect(active()).toBe('apple');
   });
@@ -394,7 +397,7 @@ describe('Command', () => {
     const filter = vi.fn((value: string, search: string) => (value.toLowerCase().startsWith(search) ? 1 : 0));
     setup({ filter });
     type('c');
-    expect(visualOrder()).toEqual(['carrot', 'cabbage']);
+    expect(visualOrder()).toEqual(['cabbage', 'carrot']);
     expect(filter).toHaveBeenCalledWith('Settings', 'c', ['preferences']);
   });
 
@@ -410,7 +413,7 @@ describe('Command', () => {
     expect(active()).toBe('asparagus');
     expect(fixture.bound().value).toBe('Asparagus');
     expect(onValueChange).not.toHaveBeenCalled();
-    expect(visualOrder()).toEqual(['apple', 'banana', 'pineapple', 'asparagus', 'carrot', 'cabbage']);
+    expect(visualOrder()).toEqual(['apple', 'banana', 'pineapple', 'cabbage', 'asparagus', 'carrot']);
   });
 
   it('keeps a bound value that names a hidden item at mount, and selects the best match once the search changes', () => {
@@ -418,7 +421,7 @@ describe('Command', () => {
     const fixture = setup({ value: 'Banana', search: 'ap', onValueChange });
     expect(active()).toBe(undefined);
     expect(fixture.bound().value).toBe('Banana');
-    expect(el('banana').hidden).toBe(true);
+    expect(query('banana')).toBe(null);
     type('app');
     expect(active()).toBe('apple');
     expect(onValueChange.mock.calls).toEqual([['Apple']]);
@@ -448,14 +451,15 @@ describe('Command', () => {
     expect(active()).toBe('settings');
     expect(scrolled).toEqual(['banana', 'Fruits', 'apple', 'settings']);
     press('ArrowDown');
-    expect(scrolled).toEqual(['banana', 'Fruits', 'apple', 'settings', 'Vegetables', 'carrot']);
+    // Disabled Cabbage now leads Vegetables, so Carrot scrolls without the heading, as in cmdk.
+    expect(scrolled).toEqual(['banana', 'Fruits', 'apple', 'settings', 'carrot']);
     type('');
     pointer('banana');
     fixture.setValue('Asparagus');
     flushSync();
     expect(active()).toBe('asparagus');
     click('settings');
-    expect(scrolled).toEqual(['banana', 'Fruits', 'apple', 'settings', 'Vegetables', 'carrot', 'Fruits', 'apple']);
+    expect(scrolled).toEqual(['banana', 'Fruits', 'apple', 'settings', 'carrot', 'Fruits', 'apple']);
   });
 
   it('does not scroll on mount or when the bound value changes after a keyboard move', () => {
@@ -586,8 +590,8 @@ describe('Command with changing items', () => {
     expect(new Set(ranked).size).toBe(300);
     expect(ranked.length).toBeLessThan(3 * 300);
     expect(active()).toBe('item 0');
-    expect(el('item 299').hidden).toBe(false);
-    expect(el('text').hidden).toBe(true);
+    expect(query('item 299')).not.toBe(null);
+    expect(query('text')).toBe(null);
   });
 
   it('keeps the selection when items mount', () => {
@@ -604,8 +608,8 @@ describe('Command with changing items', () => {
     expect(el('empty').textContent).toBe('Nothing');
     fixture.setItems(['one', 'four']);
     flushSync();
-    expect(el('four').hidden).toBe(false);
-    expect(el('one').hidden).toBe(true);
+    expect(query('four')).not.toBe(null);
+    expect(query('one')).toBe(null);
     expect(query('empty')).toBe(null);
     expect(active()).toBe('four');
   });
@@ -626,8 +630,40 @@ describe('Command with changing items', () => {
     await tick();
     expect(el('text').dataset.value).toBe('Published');
     type('pub');
-    expect(el('text').hidden).toBe(false);
-    expect(el('one').hidden).toBe(true);
+    expect(query('text')).not.toBe(null);
+    expect(query('one')).toBe(null);
     expect(active()).toBe('text');
+  });
+});
+
+describe('Command outside the usual layout', () => {
+  type Edge = { setItems(items: string[]): void; setLate(items: string[]): void };
+  function setupEdge() {
+    instance = mount(CommandEdgeFixture, { target: document.body });
+    flushSync();
+    return instance as unknown as Edge;
+  }
+  const order = () => [...document.querySelectorAll<HTMLElement>('[data-testid="portaled"] ~ * [cmdk-list-sizer] > [cmdk-item]')].map((item) => item.dataset.testid);
+
+  it('keeps the markup order of a List rendered outside Root', async () => {
+    const fixture = setupEdge();
+    fixture.setItems(['c', 'a', 'b']);
+    flushSync();
+    await tick();
+    expect(order()).toEqual(['c', 'a', 'b']);
+  });
+
+  it('renders the parts of a Root nested in another List in place', () => {
+    setupEdge();
+    expect(el('nested').contains(el('inner'))).toBe(true);
+  });
+
+  it("leaves focus alone when another menu's selection changes", () => {
+    const fixture = setupEdge();
+    el('other-input').focus();
+    input().focus();
+    fixture.setLate(['x', 'y']);
+    flushSync();
+    expect(document.activeElement).toBe(input());
   });
 });
