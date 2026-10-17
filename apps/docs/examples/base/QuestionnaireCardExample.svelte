@@ -14,6 +14,7 @@
     QuestionnaireSubmit,
     QuestionnaireTitle,
   } from '$registry/bases/base/ui/questionnaire';
+  import { toast } from '$registry/bases/base/ui/toast';
 
   const items = [
     { choices: [{ value: 'fix' }, { value: 'refactor' }, { value: 'docs' }], name: 'task', required: true },
@@ -24,12 +25,10 @@
   const taskTitleId = `${uid}-task`;
   const outputTitleId = `${uid}-output`;
 
-  let result = $state('');
-
   function handleSubmit(event: SubmitEvent & { currentTarget: HTMLFormElement }) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    result = `Task: ${formData.get('task') ?? 'None'} · Handoff: ${formData.get('output') ?? 'None'}`;
+    toast.add({ title: 'Agent task created', description: `Task: ${formData.get('task') ?? 'None'} · Handoff: ${formData.get('output') ?? 'None'}` });
   }
 </script>
 
@@ -99,7 +98,4 @@
       </QuestionnaireActions>
     </CardFooter>
   </Card>
-  {#if result}
-    <p role="status" class="mt-4 text-sm text-muted-foreground">{result}</p>
-  {/if}
 </Questionnaire>

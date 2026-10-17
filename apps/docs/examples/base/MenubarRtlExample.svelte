@@ -155,7 +155,7 @@
     <Menubar class="w-72" {dir}>
       <MenubarMenu>
         <MenubarTrigger>{t.file}</MenubarTrigger>
-        <MenubarContent {dir} {align} data-lang={lang}>
+        <MenubarContent {dir} {align}>
           <MenubarGroup>
             <MenubarItem>
               {t.newTab} <MenubarShortcut>⌘T</MenubarShortcut>
