@@ -4,7 +4,7 @@ description: Use Field with a SvelteKit form action.
 order: 2
 ---
 
-A classic [form action](https://svelte.dev/docs/kit/form-actions) reads the request, runs your schema and returns the errors with `fail`. The page passes them to `Form`, and each field shows its own. The form works without JavaScript, and `use:enhance` submits it in place when JavaScript runs.
+A classic [form action](https://svelte.dev/docs/kit/form-actions) reads the request, runs your schema and returns the errors with `fail`. Each field shows its own errors from `form`. The form works without JavaScript, and `use:enhance` submits it in place when JavaScript runs.
 
 <ComponentPreview name="forms/FormActionExample" />
 
@@ -33,13 +33,11 @@ export const actions = {
 
 ## The page
 
-Pass `form?.errors` to `errors` on `Form`, and name each `Field` with `name`. `Form` gives each field the errors under its name. `FieldError` shows them, and the field and its control are marked invalid. `FieldLabel` and `FieldError` connect to the control with no `for` or `id`. Pass each submitted value to the control's `defaultValue`, so that the input keeps what the user typed after a submit without JavaScript:
+Mark each field invalid when `form?.errors` has an entry under its name, and show the first error in `FieldError`. Pass each submitted value to the control's `defaultValue`, so that the input keeps what the user typed after a submit without JavaScript:
 
 ```svelte title="src/routes/signup/+page.svelte"
 <script lang="ts">
   import { enhance } from '$app/forms';
-  import { fromAction } from 'svelte/attachments';
-  import { Form, isSubmitBlocked } from '@sveltery/base/form';
   import { Button } from '$lib/components/ui/button';
   import { Field, FieldError, FieldLabel } from '$lib/components/ui/field';
   import { Input } from '$lib/components/ui/input';
@@ -47,23 +45,19 @@ Pass `form?.errors` to `errors` on `Form`, and name each `Field` with `name`. `F
   let { form } = $props();
 </script>
 
-<Form
-  method="POST"
-  errors={form?.errors}
-  {@attach fromAction(enhance, () => ({ formElement, cancel }) => {
-    if (isSubmitBlocked(formElement)) cancel();
-  })}
->
-  <Field name="email">
-    <FieldLabel>Email</FieldLabel>
-    <Input type="email" required defaultValue={form?.values?.email} />
-    <FieldError />
+<form method="POST" use:enhance>
+  <Field data-invalid={!!form?.errors?.email}>
+    <FieldLabel for="email">Email</FieldLabel>
+    <Input id="email" name="email" type="email" required defaultValue={form?.values?.email} aria-invalid={!!form?.errors?.email} />
+    {#if form?.errors?.email}
+      <FieldError>{form.errors.email[0]}</FieldError>
+    {/if}
   </Field>
   <Button type="submit">Sign up</Button>
   {#if form?.welcome}
     <p>Welcome, {form.welcome}.</p>
   {/if}
-</Form>
+</form>
 ```
 
-`Form` renders a `<form>` element, so `use:enhance` goes on it as an attachment, through `fromAction`. Without JavaScript, the browser checks `required` and `type` before the submit. Once the page hydrates, `Form` runs those checks itself. It blocks an invalid submit with `preventDefault()` and focuses the first invalid field, as Base UI does. A server error also focuses its field, and clears when the user changes the field. `use:enhance` still sees the blocked submit and would send it, so its callback cancels the submit when `isSubmitBlocked` returns `true`. Call `isSubmitBlocked` before any `await`, since the next submit replaces its answer.
+The browser checks `required` and `type` before the submit, so an invalid submit sends no request.
