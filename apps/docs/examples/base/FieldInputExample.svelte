@@ -1,0 +1,19 @@
+<script lang="ts">
+  import { Field, FieldDescription, FieldGroup, FieldLabel, FieldSet } from '$registry/bases/base/ui/field';
+  import { Input } from '$registry/bases/base/ui/input';
+</script>
+
+<FieldSet class="w-full max-w-xs">
+  <FieldGroup>
+    <Field>
+      <FieldLabel for="username">Username</FieldLabel>
+      <Input id="username" type="text" placeholder="Max Leiter" />
+      <FieldDescription>Choose a unique username for your account.</FieldDescription>
+    </Field>
+    <Field>
+      <FieldLabel for="password">Password</FieldLabel>
+      <FieldDescription>Must be at least 8 characters long.</FieldDescription>
+      <Input id="password" type="password" placeholder="••••••••" />
+    </Field>
+  </FieldGroup>
+</FieldSet>
