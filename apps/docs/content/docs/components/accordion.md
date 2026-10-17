@@ -3,7 +3,7 @@ title: Accordion
 description: A vertically stacked set of interactive headings that each reveal a section of content.
 ---
 
-<ComponentPreview name="base/AccordionExample" />
+<ComponentPreview name="base/AccordionDemoExample" align="start" class="[&_[data-slot=accordion]]:max-w-sm" />
 
 ## Installation
 
@@ -52,15 +52,19 @@ The component folders import each other with relative paths, so keep them side b
 ```
 
 ```svelte
-<Accordion>
+<Accordion value={['item-1']}>
   <AccordionItem value="item-1">
     <AccordionTrigger>Is it accessible?</AccordionTrigger>
-    <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern.</AccordionContent>
+    <AccordionContent>
+      Yes. It adheres to the WAI-ARIA design pattern.
+    </AccordionContent>
   </AccordionItem>
 </Accordion>
 ```
 
 ## Composition
+
+Use the following composition to build an `Accordion`:
 
 ```text
 Accordion
@@ -72,9 +76,9 @@ Accordion
     └── AccordionContent
 ```
 
-## Open items
+## Binding the value
 
-`Accordion` holds the values of its open items in `value`. Pass it, or bind it to read and set the open items.
+`Accordion` holds the values of its open items in `value`. Pass `value` without `bind:` to set the items that start open, or bind it to read and change the open items from your code.
 
 ```svelte
 <script lang="ts">
@@ -87,22 +91,44 @@ Accordion
 </Accordion>
 ```
 
+## Basic
+
+A basic accordion that shows one item at a time. The first item is open by default.
+
+<ComponentPreview name="base/AccordionBasicExample" align="start" class="[&_[data-slot=accordion]]:max-w-sm" />
+
 ## Multiple
 
-Set `multiple` to let several items stay open at the same time. Without it, opening one item closes the others.
+Use the `multiple` prop to allow multiple items to be open at the same time.
 
-```svelte
-<Accordion multiple>…</Accordion>
-```
+<ComponentPreview name="base/AccordionMultipleExample" align="start" class="[&_[data-slot=accordion]]:max-w-sm" />
 
 ## Disabled
 
-Set `disabled` on an `AccordionItem` to disable that item.
+Use the `disabled` prop on `AccordionItem` to disable individual items.
 
-```svelte
-<AccordionItem value="item-2" disabled>…</AccordionItem>
-```
+<ComponentPreview name="base/AccordionDisabledExample" align="start" class="[&_[data-slot=accordion]]:max-w-sm" />
 
-## API reference
+## Borders
 
-`Accordion` is styled on top of the Sveltery Base `Accordion` primitive, which owns its behavior, open state and accessibility. See the [Base UI Accordion documentation](https://base-ui.com/react/components/accordion) for the behavior it ports.
+Add `border` to the `Accordion` and `border-b last:border-b-0` to the `AccordionItem` to add borders to the items.
+
+<ComponentPreview name="base/AccordionBordersExample" align="start" class="[&_[data-slot=accordion]]:max-w-sm" />
+
+## Card
+
+Wrap the `Accordion` in a `Card` component.
+
+<ComponentPreview name="base/AccordionCardExample" align="start" class="[&_[data-slot=accordion]]:max-w-sm" />
+
+## RTL
+
+Wrap the accordion in a [DirectionProvider](/docs/components/direction) and set `dir` on `Accordion`. Use the buttons to switch the language.
+
+<ComponentPreview name="base/AccordionRtlExample" align="start" />
+
+## API Reference
+
+See the [Base UI Accordion](https://base-ui.com/react/components/accordion#api-reference) documentation.
+
+`Accordion` is styled on top of the Sveltery Base `Accordion` primitive, which owns its behavior, open state and accessibility. `Accordion` takes `value` (the open item values, bindable; there is no `defaultValue`), `multiple` and `disabled`, and `AccordionItem` takes `value` and `disabled`.

@@ -1,3 +1,4 @@
+import heldVersions from './held-versions.json' with { type: 'json' };
 import { analyzeSource, type SourceFile } from './source';
 import type { RegistryItem } from './types';
 
@@ -24,6 +25,15 @@ const NPM_NAME = /^(@[a-z0-9~-][a-z0-9._~-]*\/)?[a-z0-9~-][a-z0-9._~-]*$/;
 const PLAIN_VERSION = /^[\^~]?(\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)$/;
 
 const titleCase = (name: string) => name.replace(/(^|-)([a-z])/g, (_, dash: string, letter: string) => (dash ? ' ' : '') + letter.toUpperCase());
+
+/**
+ * The version each workspace package's registry range names: its own, unless held-versions.json holds it on the
+ * version npm has because the new one is not published yet. `scripts/check-published.mjs` fails once a held
+ * version is on npm, so the hold is removed then.
+ */
+export function workspaceRangeVersions(manifests: { name: string; version: string }[]): Record<string, string> {
+  return { ...Object.fromEntries(manifests.map(({ name, version }) => [name, version])), ...heldVersions };
+}
 
 /**
  * The first usable spec (dependencies, then peers, then dev) decides. A published version or a

@@ -3,7 +3,7 @@ title: Aspect Ratio
 description: Displays content within a desired ratio.
 ---
 
-<ComponentPreview name="base/AspectRatioExample" />
+<ComponentPreview name="base/AspectRatioDemoExample" />
 
 ## Installation
 
@@ -53,6 +53,37 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <AspectRatio ratio={16 / 9}>
-  <img src="..." alt="A mountain lake" class="rounded-md object-cover" />
+  <img src="..." alt="Image" class="rounded-md object-cover" />
 </AspectRatio>
 ```
+
+## Square
+
+A square aspect ratio component using the `ratio={1 / 1}` prop. This is useful for displaying images in a square format.
+
+<ComponentPreview name="base/AspectRatioSquareExample" />
+
+## Portrait
+
+A portrait aspect ratio component using the `ratio={9 / 16}` prop. This is useful for displaying images in a portrait format.
+
+<ComponentPreview name="base/AspectRatioPortraitExample" />
+
+## RTL
+
+Wrap the figure in a [DirectionProvider](/docs/components/direction) and set `dir` on it. Use the buttons to switch the language.
+
+<ComponentPreview name="base/AspectRatioRtlExample" />
+
+## API Reference
+
+### AspectRatio
+
+The `AspectRatio` component displays content within a desired ratio.
+
+| Prop    | Type     | Default | Required |
+| ------- | -------- | ------- | -------- |
+| `ratio` | `number` | -       | Yes      |
+| `class` | `string` | -       | No       |
+
+For more information, see the [Base UI documentation](https://base-ui.com/react/components/aspect-ratio#api-reference).

@@ -183,6 +183,6 @@ export async function init(options: InitOptions): Promise<Plan> {
   };
   log.info(formatPlan(plan, { showIdentical: false }));
   await executePlan(plan, { cwd, install: options.install });
-  log.success(`Ready. Add a component with \`npx sveltery add button\`.`);
+  log.success(`Ready. Add a component with \`npx @sveltery/ui@latest add button\`.`);
   return plan;
 }
