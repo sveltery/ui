@@ -3,7 +3,7 @@ title: Badge
 description: Displays a badge or a component that looks like a badge.
 ---
 
-<ComponentPreview name="base/BadgeExample" />
+<ComponentPreview name="base/BadgeDemoExample" />
 
 ## Installation
 
@@ -52,18 +52,62 @@ The component folders import each other with relative paths, so keep them side b
 ```
 
 ```svelte
-<Badge variant="outline">Badge</Badge>
+<Badge variant="default | outline | secondary | destructive">Badge</Badge>
 ```
+
+## Variants
+
+Use the `variant` prop to change the variant of the badge.
+
+<ComponentPreview name="base/BadgeVariantsExample" />
+
+## With Icon
+
+You can render an icon inside the badge. Use `data-icon="inline-start"` to render the icon on the left and `data-icon="inline-end"` to render the icon on the right.
+
+<ComponentPreview name="base/BadgeIconExample" />
+
+## With Spinner
+
+You can render a spinner inside the badge. Remember to add the `data-icon="inline-start"` or `data-icon="inline-end"` prop to the spinner.
+
+<ComponentPreview name="base/BadgeSpinnerExample" />
 
 ## Link
 
-Pass a `render` snippet to render the badge as another element. Spread `props` onto it and render `children` inside it.
+Use the `render` snippet to render a link as a badge. Spread `props` onto the element and render `children` inside it.
+
+<ComponentPreview name="base/BadgeLinkExample" />
 
 ```svelte
 <Badge>
   {#snippet render(props, state, children)}
-    <a href="/changelog" {...props}>{@render children?.()}</a>
+    <a href="#link" {...props}>{@render children?.()}</a>
   {/snippet}
-  New
+  Open Link <ArrowUpRightIcon data-icon="inline-end" />
 </Badge>
 ```
+
+## Custom Colors
+
+You can customize the colors of a badge by adding custom classes such as `bg-green-50 dark:bg-green-800` to the `Badge` component.
+
+<ComponentPreview name="base/BadgeColorsExample" />
+
+## RTL
+
+Wrap the badges in a [DirectionProvider](/docs/components/direction) and set `dir` on their container. Use the buttons to switch the language.
+
+<ComponentPreview name="base/BadgeRtlExample" />
+
+## API Reference
+
+### Badge
+
+The `Badge` component displays a badge or a component that looks like a badge.
+
+| Prop      | Type                                                                          | Default     |
+| --------- | ----------------------------------------------------------------------------- | ----------- |
+| `variant` | `"default" \| "secondary" \| "destructive" \| "outline" \| "ghost" \| "link"` | `"default"` |
+| `class`   | `string`                                                                      | -           |
+| `render`  | `Snippet`                                                                     | -           |

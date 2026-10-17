@@ -35,8 +35,10 @@ test.describe('on /sidebar', () => {
     const button = page.locator('[data-slot=sidebar-menu-button]', { hasText: 'Inbox' });
     await expect(button).toHaveAttribute('data-active', 'true');
 
+    // While expanded the tooltip still opens after its delay, with its content hidden.
     await button.hover();
-    await page.waitForTimeout(1000);
+    await expect(button).toHaveAttribute('data-popup-open', '');
+    await expect(tooltip).toHaveCount(1);
     await expect(tooltip).toBeHidden();
 
     await page.locator('[data-slot=sidebar-trigger]').click();
