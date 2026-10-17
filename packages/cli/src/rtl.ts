@@ -258,7 +258,7 @@ export function transformDirection(path: string, source: string): string {
   const offset = isSvelte ? 0 : WRAP_START.length;
   const ast = parse(isSvelte ? source : WRAP_START + source + WRAP_END, { modern: true });
   const root = [ast.module, ast.instance, ast.fragment];
-  const component = isSvelte ? path.split('/').at(-1)!.replace(/\.svelte$/, '') : undefined;
+  const component = isSvelte ? path.split(/[\\/]/).at(-1)!.replace(/\.svelte$/, '') : undefined;
 
   const edits: Edit[] = [];
   const edit = (node: Node, map: (value: string) => string | undefined) => {

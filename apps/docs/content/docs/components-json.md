@@ -27,6 +27,7 @@ See [CLI](/docs/cli) for more information. A full file looks like this:
   "$schema": "https://ui.sveltery.dev/schema.json",
   "style": "nova",
   "iconLibrary": "lucide",
+  "rtl": false,
   "menuColor": "default",
   "tailwind": {
     "css": "src/app.css",
@@ -44,7 +45,7 @@ See [CLI](/docs/cli) for more information. A full file looks like this:
 }
 ```
 
-`init` writes the keys on this page in this order and keeps any other keys you add. The CLI stops with `components.json is invalid` when a required key is missing or a key has a value it does not know. Every key is required except `$schema`, `menuAccent` and `registry`.
+`init` writes the keys on this page in this order and keeps any other keys you add. The CLI stops with `components.json is invalid` when a required key is missing or a key has a value it does not know. Every key is required except `$schema`, `rtl`, `menuAccent` and `registry`.
 
 ## $schema
 
@@ -79,6 +80,18 @@ The icon library your components import: `lucide`, `tabler`, `hugeicons`, `phosp
 ```
 
 To change the library, run `init --icons <library>`, then run `update`.
+
+## rtl
+
+Whether your app is right-to-left. With `true`, `add` turns physical classes such as `ml-2` and `left-0` into logical ones such as `ms-2` and `start-0`, and flips arrow and chevron icons. It defaults to `false`.
+
+```json title="components.json"
+{
+  "rtl": true
+}
+```
+
+`init --rtl` sets it, and `migrate rtl` sets it while it converts the components you already have. See [RTL](/docs/rtl).
 
 ## menuColor
 
