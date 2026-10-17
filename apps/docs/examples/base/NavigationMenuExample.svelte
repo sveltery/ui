@@ -34,7 +34,7 @@
             <ul class="w-96">
               {@render ListItem('Introduction', '/docs', 'Re-usable components built with Tailwind CSS.')}
               {@render ListItem('Installation', '/docs/installation', 'How to install dependencies and structure your app.')}
-              {@render ListItem('Typography', '/docs/components/typography', 'Styles for headings, paragraphs, lists...etc')}
+              {@render ListItem('Typography', '/docs/typeset', 'Styles for headings, paragraphs, lists...etc')}
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
