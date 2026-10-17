@@ -117,6 +117,16 @@ Where upstream code misbehaves on Base UI, Sveltery UI fixes it instead of copyi
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
+### A disabled Accordion item is dimmed
+
+**Upstream:** The trigger in [`accordion.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/accordion.tsx#L36) dims with `aria-disabled:pointer-events-none aria-disabled:opacity-50`. Base UI 1.9.0 renders a disabled trigger as a native button with `disabled` and no `aria-disabled` ([`AccordionTrigger.tsx`](https://github.com/mui/base-ui/blob/v1.9.0/packages/react/src/accordion/trigger/AccordionTrigger.tsx#L44)).
+
+**Sveltery UI:** The [Accordion](/docs/components/accordion) trigger also uses `disabled:pointer-events-none disabled:opacity-50`.
+
+**Why:** With Base UI 1.9.0, a disabled Accordion item in upstream looks the same as an enabled one. The shadcn/ui site dims it only because it runs an older Base UI that sets `aria-disabled`.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ### The Switch thumb is centered at every position
 
 **Upstream:** Five styles give the default switch a fractional track height: `h-[18.4px]` in Lyra, Maia, Nova and Vega, for example [`style-nova.css`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/styles/style-nova.css#L1251), and `h-[16.6px]` in [`style-mira.css`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/styles/style-mira.css#L1253). The thumb then sits 1.2px or 1.3px inside the track.
