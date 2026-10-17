@@ -3,7 +3,7 @@ title: Pagination
 description: Pagination with page navigation, next and previous links.
 ---
 
-<ComponentPreview name="base/PaginationExample" />
+<ComponentPreview name="base/PaginationDemoExample" />
 
 ## Installation
 
@@ -55,20 +55,104 @@ The component folders import each other with relative paths, so keep them side b
 <Pagination>
   <PaginationContent>
     <PaginationItem>
-      <PaginationPrevious href="?page=1" />
+      <PaginationPrevious href="#" />
     </PaginationItem>
     <PaginationItem>
-      <PaginationLink href="?page=1">1</PaginationLink>
+      <PaginationLink href="#">1</PaginationLink>
     </PaginationItem>
     <PaginationItem>
-      <PaginationLink href="?page=2" isActive>2</PaginationLink>
+      <PaginationLink href="#" isActive>2</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="#">3</PaginationLink>
     </PaginationItem>
     <PaginationItem>
       <PaginationEllipsis />
     </PaginationItem>
     <PaginationItem>
-      <PaginationNext href="?page=3" />
+      <PaginationNext href="#" />
     </PaginationItem>
   </PaginationContent>
 </Pagination>
 ```
+
+## Composition
+
+Use the following composition to build a `Pagination`:
+
+```text
+Pagination
+└── PaginationContent
+    ├── PaginationItem
+    │   └── PaginationPrevious
+    ├── PaginationItem
+    │   └── PaginationLink
+    ├── PaginationItem
+    │   └── PaginationEllipsis
+    └── PaginationItem
+        └── PaginationNext
+```
+
+## Simple
+
+A simple pagination with only page numbers.
+
+<ComponentPreview name="base/PaginationSimpleExample" />
+
+## Icons Only
+
+Use just the previous and next buttons without page numbers. This is useful for data tables with a rows per page selector.
+
+<ComponentPreview name="base/PaginationIconsOnlyExample" />
+
+## SvelteKit
+
+`PaginationLink` renders an `<a>` tag, so SvelteKit's client router handles `href` links with no changes. Set `isActive` on the link for the current page, which sets `aria-current="page"` and `data-active`.
+
+```svelte
+<PaginationLink href="?page=2" isActive>2</PaginationLink>
+```
+
+## RTL
+
+Wrap the pagination in a [DirectionProvider](/docs/components/direction) and set `dir` on `Pagination`. Pass `text` to `PaginationPrevious` and `PaginationNext` to translate their labels. Use the buttons to switch the language.
+
+<ComponentPreview name="base/PaginationRtlExample" align="start" />
+
+## Changelog
+
+### RTL Support
+
+`PaginationPrevious` and `PaginationNext` take a `text` prop for their label, which defaults to "Previous" and "Next". If you edited your copy of the components and need to add the prop back, apply the following updates.
+
+<Steps>
+
+### Update `PaginationPrevious`.
+
+```diff
+  let {
+    class: classProp,
++   text = 'Previous',
+    ...props
+  }: PaginationPreviousProps = $props();
+  ...
+- <span class="cn-pagination-previous-text hidden sm:block">Previous</span>
++ <span class="cn-pagination-previous-text hidden sm:block">{text}</span>
+```
+
+### Update `PaginationNext`.
+
+```diff
+  let {
+    class: classProp,
++   text = 'Next',
+    ...props
+  }: PaginationNextProps = $props();
+  ...
+- <span class="cn-pagination-next-text hidden sm:block">Next</span>
++ <span class="cn-pagination-next-text hidden sm:block">{text}</span>
+```
+
+</Steps>
+
+Both prop types are `Omit<PaginationLinkProps, 'children'> & { text?: string }` in `types.ts`.
