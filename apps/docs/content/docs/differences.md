@@ -343,6 +343,16 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
 
+### The Bubble variants example writes its ghost text as HTML
+
+**Upstream:** The ghost bubble in [`bubble-variants.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/bubble-variants.tsx#L42) renders its text through a `Markdown` component.
+
+**Sveltery UI:** The [Bubble](/docs/components/bubble) Variants example writes the same text with `<p>`, `<strong>` and `<code>`.
+
+**Why:** Sveltery UI has no Markdown component. The preview looks the same.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
 ## Forms
 
 ### The Forms guides cover SvelteKit forms instead of React form libraries
