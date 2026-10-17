@@ -387,6 +387,16 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
 
+### The Command page documents filtering and the dialog
+
+**Upstream:** The [Command page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/command.mdx#L151-L153) has no section on filtering or on `CommandDialog`, and its API Reference sends readers to the [cmdk](https://github.com/dip/cmdk) README.
+
+**Sveltery UI:** The [Command](/docs/components/command) page adds a Filtering and ranking section (`keywords`, `filter`, `shouldFilter`) after Composition, and a Dialog section with a ⌘J example after Scrollable. Its API Reference links the `@sveltery/command` README and summarizes the props in tables.
+
+**Why:** The cmdk README documents the React API, which the Svelte port does not share in every detail, so the page covers what readers would otherwise have looked up there.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
 ### Navigation Menu example links go to Sveltery UI pages
 
 **Upstream:** The links in [`navigation-menu-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/navigation-menu-example.tsx#L24-L53) point at shadcn/ui's `/docs/primitives/*` routes, and the Typography link at [line 82](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/navigation-menu-example.tsx#L82) points at `/docs/primitives/typography`.
