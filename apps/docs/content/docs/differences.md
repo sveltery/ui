@@ -841,6 +841,14 @@ The old `list` command marked the items in your project as `installed` and had n
 
 **Why:** The registry is the only one the CLI reads until namespaced registries land. The installed mark would need one request for each item to read its file list, and it would add a field to upstream's JSON shape.
 
+### Docs links come from the registry's index and have no base
+
+**Upstream:** [`docs`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/docs.ts#L48-L65) takes `--base` (`base`, `radix` or `aria`), reads `meta.links[base]` of each item in the shadcn registry index, and prints `docs`, `examples` and `api`. The links are written by hand for each item in [`_registry.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/_registry.ts#L1-L20): `examples` is the component's example source file, and `api` is a page of Base UI's React docs.
+
+**Sveltery UI:** [`docs`](/docs/cli#docs) has no `--base`, and `meta.links` of an item in [`index.json`](/docs/registry/registry-json) is not nested by base. The build writes `docs` (the component's page) and `examples` (the same page as Markdown, which inlines every example's source) for each item. It writes `api` from a table of the items that are styled on a Base UI component, and a test checks that the item's docs page links the same Base UI page. Upstream's `api` link is not always a Base UI page, so the table leaves out the items Base UI has no page for (`aspect-ratio`, `calendar`, `carousel`, `command`, `input-otp`, `resizable`, `sonner`) and those items get no `api` link; `hover-card` links Base UI's `preview-card`. The warning for an item with no links goes to stderr, where upstream writes it to stdout, so `--json` stays parseable. The JSON keeps `base: "base"` in the report and in each result, to keep upstream's shape.
+
+**Why:** There is one variant, so `--base` has nothing to choose. The examples are Svelte files in this repository, not files that the site serves, so the page with the examples inlined is what an agent can read.
+
 **Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
 
 ## Typeset
