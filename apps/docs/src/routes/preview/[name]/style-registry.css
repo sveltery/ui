@@ -1,0 +1,3 @@
+/* Only the Create preview renders raw `cn-*` tokens, so only it loads the sheets, as upstream's app/style-registry.css. */
+@reference "../../../app.css";
+@import "../../../../registry/styles/styles.css";
