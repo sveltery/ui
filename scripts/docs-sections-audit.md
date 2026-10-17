@@ -111,13 +111,6 @@ Upstream lacks:
 - `## Forms`
 - `## Without JavaScript`
 
-## code-block
-
-Missing here:
-
-- `## Typeset`
-- `### Markdown`
-
 ## combobox
 
 Upstream lacks:
