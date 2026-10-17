@@ -5,7 +5,6 @@
 export const BASE_UI_PAGES: Record<string, string> = {
   accordion: 'components/accordion',
   'alert-dialog': 'components/alert-dialog',
-  'aspect-ratio': 'components/aspect-ratio',
   avatar: 'components/avatar',
   button: 'components/button',
   checkbox: 'components/checkbox',

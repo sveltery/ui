@@ -147,7 +147,7 @@ describe('index files', () => {
         { name: 'accordion', type: 'registry:ui', meta: { links: { docs: 'https://sveltery.test/docs/components/accordion', examples: 'https://sveltery.test/docs/components/accordion.md', api: 'https://base-ui.com/react/components/accordion.md' } } },
         { name: 'alert', type: 'registry:ui', meta: { links: { docs: 'https://sveltery.test/docs/components/alert', examples: 'https://sveltery.test/docs/components/alert.md' } } },
         { name: 'alert-dialog', type: 'registry:ui', meta: { links: { docs: 'https://sveltery.test/docs/components/alert-dialog', examples: 'https://sveltery.test/docs/components/alert-dialog.md', api: 'https://base-ui.com/react/components/alert-dialog.md' } } },
-        { name: 'aspect-ratio', type: 'registry:ui', meta: { links: { docs: 'https://sveltery.test/docs/components/aspect-ratio', examples: 'https://sveltery.test/docs/components/aspect-ratio.md', api: 'https://base-ui.com/react/components/aspect-ratio.md' } } },
+        { name: 'aspect-ratio', type: 'registry:ui', meta: { links: { docs: 'https://sveltery.test/docs/components/aspect-ratio', examples: 'https://sveltery.test/docs/components/aspect-ratio.md' } } },
       ],
       blocks: [{ name: 'preview', type: 'registry:block', description: 'Preview' }],
     });

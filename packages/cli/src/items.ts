@@ -18,13 +18,24 @@ export async function openProject(cwd: string): Promise<Project> {
   return { cwd, config, registry, uiDir: aliasPath(config.aliases.ui) };
 }
 
-const catalogConfig = object({ style: optional(literal(...styleNames)), registry: optional(string) });
+const catalogConfig = object({ style: optional((value) => value), registry: optional(string) });
+
+/** The style a components.json names, as `view` needs it for a URL. `search` and `docs` never read the style, so `openCatalog` leaves it unchecked and a config written for another style set still works there. */
+export function catalogStyle(style: unknown): StyleName {
+  if (style === undefined) return 'nova';
+  try {
+    return literal(...styleNames)(style, 'style');
+  } catch (error) {
+    if (!(error instanceof ParseError)) throw error;
+    throw new CliError(`${CONFIG_FILE} is invalid. ${error.message}.`);
+  }
+}
 
 /**
  * The registry and style that read-only commands (`view`, `search`, `docs`) use. Unlike `openProject`, it needs no `init`:
- * without a components.json it takes the default registry and the nova style, and with one only `style` and `registry` count.
+ * without a components.json it takes the default registry, and with one only `style` and `registry` count. `style` is returned unchecked: pass it to `catalogStyle` where a style is needed.
  */
-export async function openCatalog(cwd: string): Promise<{ registry: Registry; style: StyleName }> {
+export async function openCatalog(cwd: string): Promise<{ registry: Registry; style: unknown }> {
   const configPath = join(cwd, CONFIG_FILE);
   let settings: ReturnType<typeof catalogConfig> = {};
   if (existsSync(configPath)) {
@@ -35,7 +46,7 @@ export async function openCatalog(cwd: string): Promise<{ registry: Registry; st
       throw new CliError(`${CONFIG_FILE} is invalid. ${error.message}.`);
     }
   }
-  return { registry: await openRegistry(resolveRegistryUrl(settings.registry)), style: settings.style ?? 'nova' };
+  return { registry: await openRegistry(resolveRegistryUrl(settings.registry)), style: settings.style };
 }
 
 /** Where a registry file goes, relative to `cwd`: by its type, under the ui or components alias, or from the project root. */

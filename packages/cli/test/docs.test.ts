@@ -70,6 +70,14 @@ card
     });
   });
 
+  test('works in a project whose components.json names another style set', async () => {
+    writeFileSync(join(cwd, 'components.json'), JSON.stringify({ style: 'new-york' }));
+    expect((await run(['card'])).stdout).toBe(`card
+  - docs      ${site}/docs/components/card
+  - examples  ${site}/docs/components/card.md
+`);
+  });
+
   test('warns about an item without links on stderr and still prints the others', async () => {
     const text = await run(['plain', 'card']);
     expect(text.stderr).toBe('No documentation links available for plain.');
