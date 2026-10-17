@@ -291,7 +291,7 @@ try {
   assert.deepEqual(found.items[0], { name: 'dialog', title: 'Dialog', type: 'registry:ui', registry: '@sveltery', addCommandArgument: 'dialog' });
   const listed = await cli('list', '-t', 'block', '-l', '2', '-o', '1');
   assert.match(listed, new RegExp(`^Showing 2-3 of ${registry.get('index.json').blocks.length}$`, 'm'), 'list is search with paging');
-  await assert.rejects(cli('search', '@acme'), (error) => /Unknown registry "@acme"/.test(error.output), 'search names the registries it does not know');
+  await assert.rejects(cli('search', '@acme'), (error) => /Unknown registry "@acme"\. The registries you can search are @sveltery\./.test(error.output), 'search names the registries it does not know');
 
   step('sveltery docs dropdown-menu');
   const documented = JSON.parse(await cli('docs', 'dropdown-menu', 'card', '--json'));
@@ -302,7 +302,7 @@ try {
   });
   assert.deepEqual(Object.keys(documented.results[1].links), ['docs', 'examples'], 'a component with no Base UI page has no api link');
 
-  step('sveltery add @acme/hello from a registry that wants a bearer token');
+  step('sveltery add, search and view @acme from a registry that wants a bearer token');
   mkdirSync(join(registryDir, 'private'), { recursive: true });
   writeFileSync(
     join(registryDir, 'private/hello.json'),
@@ -312,6 +312,10 @@ try {
   writeFileSync(join(app, '.env.local'), 'ACME_TOKEN=s3cret\n');
   await cli('add', '@acme/hello', '-y');
   assert.equal(readFileSync(join(app, config.aliases.ui.replace(/^[$#]lib/, 'src/lib'), 'private-hello/Hello.svelte'), 'utf8'), helloSource, 'add installs the namespaced item with the token from .env.local');
+  cpSync(join(registryDir, 'acme/registry.json'), join(registryDir, 'private/registry.json'));
+  const namespaced = JSON.parse(await cli('search', '@acme', '-q', 'hello', '--json'));
+  assert.deepEqual(namespaced.items, [{ name: 'hello', type: 'registry:ui', registry: '@acme', addCommandArgument: '@acme/hello' }], 'search @acme reads the registry.json that build wrote, with the token');
+  assert.deepEqual(JSON.parse(await cli('view', '@acme/hello')).map((entry) => entry.name), ['hello'], 'view takes an @namespace/item name');
 
   step('sveltery info');
   const projectInfo = JSON.parse(await cli('info', '--json'));

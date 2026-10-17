@@ -69,7 +69,7 @@ To send headers or query parameters, give an object:
 
 ## Use namespaced items
 
-`add`, `diff` and `update` take `@namespace/item` names:
+`add`, `diff`, `update` and `view` take `@namespace/item` names:
 
 ```bash
 npx @sveltery/ui@latest add @acme/hello-card @internal/auth-form
@@ -87,6 +87,16 @@ An item's `registryDependencies` can name items of any namespace:
 - A plain name such as `button` is an item of the project's registry, even inside an `@acme` item.
 - `@acme/format-name` resolves through the `@acme` entry of the project that installs the item, so tell your users which namespace to configure.
 - A URL is fetched as is.
+
+## Search a namespace
+
+`search` takes namespaces:
+
+```bash
+npx @sveltery/ui@latest search @acme -q card
+```
+
+It fetches the namespace's item named `registry`, such as `https://acme.com/r/registry.json`, with the namespace's headers and query parameters. That is the `registry.json` that [`build`](/docs/cli#build) writes next to the items. Each result shows the argument to give `add`, such as `@acme/hello-card`. See [search](/docs/cli#search).
 
 ## Errors
 
