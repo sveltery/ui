@@ -115,7 +115,12 @@ function extract(path, text) {
     } else if (ts.isExportDeclaration(statement)) {
       if (statement.isTypeOnly || !statement.moduleSpecifier) parts.push(statement.getFullText(file).trim());
     } else if (kept.has(statement)) {
-      parts.push(statement.getFullText(file).replace(/^\s*\n/, ''));
+      const text = statement.getFullText(file);
+      const start = statement.getStart(file) - statement.getFullStart();
+      const exported = statement.modifiers?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword);
+      // A name listed in EXTRACTED_VALUES is what a hand-written module imports, so it is exported even where upstream keeps it private.
+      const exportIt = !exported && declaredNames(statement).some((name) => keep.has(name));
+      parts.push((exportIt ? `${text.slice(0, start)}export ${text.slice(start)}` : text).replace(/^\s*\n/, ''));
     }
   }
   const body = parts.join('\n').trim();

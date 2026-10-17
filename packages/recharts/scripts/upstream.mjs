@@ -146,9 +146,9 @@ export const EXTRACTED_VALUES = {
   'src/chart/CartesianChart.tsx': ['defaultCartesianChartProps'],
   'src/chart/PolarChart.tsx': ['defaultPolarChartProps'],
   'src/chart/PieChart.tsx': ['defaultPieChartProps'],
-  'src/chart/RadarChart.tsx': ['defaultRadarChartProps'],
+  'src/chart/RadarChart.tsx': ['defaultRadarChartProps', 'RadarChartProps'],
   'src/chart/RadialBarChart.tsx': ['defaultRadialBarChartProps'],
-  'src/animation/JavascriptAnimate.tsx': ['defaultJavascriptAnimateProps'],
+  'src/animation/JavascriptAnimate.tsx': ['defaultJavascriptAnimateProps', 'JavascriptAnimateProps'],
   'src/container/Surface.tsx': [],
   'src/container/Layer.tsx': [],
 };
