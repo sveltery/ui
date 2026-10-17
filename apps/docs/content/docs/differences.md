@@ -375,6 +375,16 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
 
+### Native Radio Group is a Sveltery UI component
+
+**Upstream:** shadcn/ui has a [Native Select](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/native-select.tsx) but no native radio. Its only radio is the [Radio Group](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/radio-group.tsx) on Base UI.
+
+**Sveltery UI:** [Native Radio Group](/docs/components/native-radio-group) adds `NativeRadioGroup` and `NativeRadio`, a styled `<input type="radio">`. Each style's `cn-native-radio-group` and `cn-native-radio` rules are derived from its `cn-radio-group`, `cn-radio-group-item` and `cn-radio-group-indicator-icon` rules in `apps/docs/registry/sync-styles.ts`. `data-checked` becomes `:checked`, and the indicator becomes a radial-gradient dot of the same color and size.
+
+**Why:** Base UI's radio is a `<span>` with a hidden input. Without JavaScript, only a click on its label picks it, and the keyboard does nothing. A SvelteKit remote form's `as('radio', value)` describes a native input, so it spreads onto `NativeRadio` with no changes, and the form works before the page hydrates.
+
+**Decided:** Hugo Hsi, 2026-10-17
+
 ## Toast
 
 ### Toasts use Toast, not Sonner
