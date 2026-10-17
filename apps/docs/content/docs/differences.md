@@ -468,6 +468,7 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Sveltery UI:** The [Breadcrumb](/docs/components/breadcrumb) Custom separator example points it to `/docs/components`, as the Collapsed example already does.
 
 **Why:** The docs site prerenders every link, and `/components` is not a page here, so the build fails on it.
+
 ### The Item avatar section does not name an `avatar` variant
 
 **Upstream:** The [Item page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/item.mdx) says "You can use `ItemMedia` with `variant="avatar"` to display an avatar." `ItemMedia` has only the `default`, `icon` and `image` variants, and the example uses the default.
@@ -495,6 +496,8 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Sveltery UI:** The [Toggle Group](/docs/components/toggle-group) page ends at its API Reference. Its `spacing` already defaults to `2`.
 
 **Why:** Sveltery's Toggle Group shipped with a default of `2`, so there is no change to migrate from.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
 ### The Input OTP form example narrows its slots on small screens
 
