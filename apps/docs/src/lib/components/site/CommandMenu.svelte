@@ -87,7 +87,9 @@
           {/if}
         </div>
         <Command.List class="no-scrollbar max-h-[300px] min-h-80 scroll-py-1 scroll-pt-2 scroll-pb-1.5 overflow-x-hidden overflow-y-auto">
-          <Command.Empty class="py-12 text-center text-sm text-muted-foreground">{searching ? 'Searching...' : 'No results found.'}</Command.Empty>
+          {#if !search.hits.length}
+            <Command.Empty class="py-12 text-center text-sm text-muted-foreground">{searching ? 'Searching...' : 'No results found.'}</Command.Empty>
+          {/if}
           <Command.Group heading="Pages" class="overflow-hidden p-0 text-foreground {heading}">
             {#each site.nav as link (link.href)}
               <Command.Item value="Navigation {link.label}" keywords={['nav', 'navigation', link.label.toLowerCase()]} onSelect={() => go(link.href)} class="{item} font-medium">
@@ -112,7 +114,8 @@
             </Command.Group>
           {/each}
           {#if query.trim() && search.hits.length}
-            <Command.Group heading="Search Results" class="overflow-hidden px-0 text-foreground {heading}">
+            <!-- Pagefind already matched these on page text and ranked them, so the title filter would only hide them. -->
+            <Command.Group heading="Search Results" forceMount class="overflow-hidden px-0 text-foreground {heading}">
               {#each search.hits as hit (hit.href)}
                 <Command.Item value="{hit.title} page" keywords={[hit.title]} onSelect={() => go(hit.href)} class="{item} font-normal">
                   <div class="line-clamp-1 text-sm">{hit.title}</div>
