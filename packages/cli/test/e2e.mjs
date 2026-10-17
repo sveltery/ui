@@ -214,6 +214,17 @@ try {
   assert.equal(readFileSync(buttonFile, 'utf8'), pristine, 'update <url> -y restores the registry version');
   assert.equal((await cli('diff', buttonUrl)).trim(), 'Everything is up to date.');
 
+  step('sveltery build a third-party registry, then add its item by URL');
+  const author = join(work, 'author');
+  const helloSource = "<script lang=\"ts\">\n  import { Button } from '../button';\n</script>\n<Button>Hello</Button>\n";
+  mkdirSync(join(author, 'src/lib/components/ui/hello'), { recursive: true });
+  writeFileSync(join(author, 'src/lib/components/ui/hello/Hello.svelte'), helloSource);
+  const helloFiles = [{ path: 'src/lib/components/ui/hello/Hello.svelte', type: 'registry:ui' }];
+  writeFileSync(join(author, 'registry.json'), JSON.stringify({ name: 'acme', homepage: 'https://acme.test', items: [{ name: 'hello', type: 'registry:ui', registryDependencies: ['button'], files: helloFiles }] }));
+  await cli('build', '--cwd', author, '--output', join(registryDir, 'acme'));
+  await cli('add', `${origin}/r/acme/hello.json`, '-y');
+  assert.equal(readFileSync(join(app, config.aliases.ui.replace(/^[$#]lib/, 'src/lib'), 'hello/Hello.svelte'), 'utf8'), helloSource, 'add installs the item build wrote');
+
   writeFileSync(
     join(app, 'src/routes/+page.svelte'),
     // The import form the docs print, an explicit index, and a deep import of one file.
