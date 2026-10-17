@@ -398,6 +398,64 @@ Options:
 
 ---
 
+## info
+
+Use the `info` command to see how the CLI reads your project. It never writes anything and works in any folder, with or without `components.json`.
+
+```bash
+npx @sveltery/ui@latest info
+```
+
+`info` prints these groups:
+
+- **Project.** The framework (`SvelteKit`, `Vite` or `Manual`) and its version, and the Svelte and Tailwind CSS versions. A version is the one in `node_modules` when the package is installed, else the one in `package.json`. It also shows whether the project has a `src` folder, the CSS file that imports Tailwind, and the import alias (`$lib` or `#lib`) of a SvelteKit app.
+- **Configuration.** The `style`, `iconLibrary`, `menuColor` and `menuAccent` from `components.json`, and the registry the CLI reads.
+- **Preset.** The preset code that your `components.json` and CSS add up to, its values, and the [Create page](/create) link for it. A `*` marks a value that the project does not show, so it takes the style's default. Use `init --preset` with the code to make the same setup in another app.
+- **Aliases** and **Resolved Paths.** Where each alias points, as absolute paths.
+- **Installed Components.** The registry items that have a folder under `aliases.ui`.
+- **Links.** The docs, the Markdown page and registry file of a component, and the `components.json` schema.
+
+```txt
+Configuration
+  style        sera
+  iconLibrary  lucide
+  menuColor    default
+  menuAccent   subtle
+  registry     https://ui.sveltery.dev/r
+
+Preset
+  code         b4xFeBLg4O
+  version      b
+  style        sera
+  baseColor    taupe
+  theme        taupe
+  chartColor   taupe
+  iconLibrary  lucide
+  font         noto-sans
+  fontHeading  playfair-display
+  radius       default
+  menuAccent   subtle
+  menuColor    default
+  url          https://ui.sveltery.dev/create?preset=b4xFeBLg4O
+```
+
+Pass `--json` for the same data as an object with `project`, `config`, `preset`, `components` and `links`. `project`, `config` and `preset` are `null` when there is no `package.json` or `components.json`. See [differences](/docs/differences#info-reports-a-svelte-project) for what it leaves out from the shadcn CLI.
+
+**Options**
+
+```txt
+Usage: sveltery info [options]
+
+get information about your project
+
+Options:
+  --json        output as JSON. (default: false)
+  --cwd <path>  the project root (default: ".")
+  -h, --help    display help for command
+```
+
+---
+
 ## migrate
 
 Use the `migrate` command to run a migration on your project.
@@ -459,4 +517,4 @@ SVELTERY_REGISTRY_URL=https://preview.example.com/r npx @sveltery/ui@latest add 
 
 ## Not supported
 
-The shadcn CLI has commands and options that this CLI does not have yet: `apply`, `preset`, `info`, `eject` and `registry add`, the `cn`, `icons`, `base-color` and `radix` migrations, local file paths as items and JavaScript output. See [Registry](/docs/registry) and [JavaScript](/docs/javascript) for what works today.
+The shadcn CLI has commands and options that this CLI does not have yet: `apply`, `preset`, `eject` and `registry add`, the `cn`, `icons`, `base-color` and `radix` migrations, local file paths as items and JavaScript output. See [Registry](/docs/registry) and [JavaScript](/docs/javascript) for what works today.

@@ -142,6 +142,8 @@ try {
     for (const target of expected.imports) assert.match(presetCss, new RegExp(`@import ['"]${target}['"];`), `${code} imports ${target}`);
     for (const line of [`--primary: ${expected.primary};`, ...expected.fonts]) assert.ok(presetCss.includes(line), `${code} writes ${line}`);
     assert.match(presetCss, /html \{\s*@apply font-sans;/, `${code} applies the body font to html`);
+    const presetInfo = JSON.parse(await capture('npm', [...cliExec, 'info', '--json'], presetApp, env));
+    assert.deepEqual([presetInfo.preset.code, presetInfo.preset.fallbacks], [code, []], `info reads ${code} back from the files init wrote`);
   }
 
   step('sveltery init --preset btLmMa prints why /init rejects a gray base color');
@@ -254,6 +256,13 @@ try {
   writeFileSync(join(app, '.env.local'), 'ACME_TOKEN=s3cret\n');
   await cli('add', '@acme/hello', '-y');
   assert.equal(readFileSync(join(app, config.aliases.ui.replace(/^[$#]lib/, 'src/lib'), 'private-hello/Hello.svelte'), 'utf8'), helloSource, 'add installs the namespaced item with the token from .env.local');
+
+  step('sveltery info');
+  const projectInfo = JSON.parse(await cli('info', '--json'));
+  assert.equal(projectInfo.project.framework, 'SvelteKit');
+  assert.equal(projectInfo.project.tailwindCss, config.tailwind.css);
+  assert.deepEqual(projectInfo.components, ['button', 'chart', 'dialog'], 'info lists the items add installed');
+  assert.deepEqual(projectInfo.preset.fallbacks, ['font', 'fontHeading', 'menuAccent'], 'a plain init writes no fonts or menuAccent, so info falls back for them');
 
   writeFileSync(
     join(app, 'src/routes/+page.svelte'),

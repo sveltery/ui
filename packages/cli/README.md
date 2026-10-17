@@ -103,6 +103,14 @@ npx @sveltery/ui@latest docs button dropdown-menu
 
 `docs` prints, for each component, the links to its docs page (`docs`), the same page as Markdown with every example inlined (`examples`) and, for a component styled on a Base UI component, Base UI's API reference (`api`). Pass `--json` for `{ base, results }`.
 
+## See how the CLI reads your project
+
+```sh
+npx @sveltery/ui@latest info
+```
+
+`info` prints the framework and the Svelte, SvelteKit and Tailwind CSS versions, your `components.json` settings, the preset code they add up to, where each alias points, and the registry items you installed. Pass `--json` for an object. It works without a `components.json` and never writes anything.
+
 ## Use another registry
 
 Set `SVELTERY_REGISTRY_URL` to the registry root, for example a preview deploy's `/r` URL. It takes precedence over the `registry` key in `components.json`.
