@@ -1,6 +1,7 @@
 ---
 title: Message
 description: Displays a message in a conversation, with optional avatar, header, footer, and alignment.
+style: rhea
 ---
 
 <ComponentPreview name="base/MessageExample" />

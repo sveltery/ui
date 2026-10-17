@@ -1,6 +1,7 @@
 ---
 title: Drawer
 description: A panel that slides in from an edge of the screen and can be swiped away.
+style: rhea
 ---
 
 <ComponentPreview name="base/DrawerExample" />

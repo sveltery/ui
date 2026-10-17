@@ -2,7 +2,9 @@ name: Release
 
 # Pushing a v* tag publishes every non-private package in packages/ to npm through trusted
 # publishing (OIDC), so the job needs no NPM_TOKEN. Each package's first version must be
-# published by hand before npm accepts this workflow as its trusted publisher.
+# published by hand before npm accepts this workflow as its trusted publisher. The packages ask
+# for provenance, which only CI can generate, so that local publish needs --provenance=false:
+#   npm publish <tarball> --access public --provenance=false
 # Bump all packages together with `node scripts/set-version.mjs <x.y.z>` before tagging.
 on:
   push:
@@ -47,11 +49,11 @@ jobs:
         run: |
           source scripts/toolchain.sh
           npm install --global npm@11.6.2
-          if [[ "$(ls packages | xargs)" != "cli command day-picker message-scroller questionnaire resizable" ]]; then
+          if [[ "$(ls packages | xargs)" != "cli command day-picker input-otp resizable svelte" ]]; then
             echo "::error::packages/ changed. Add the new package to the publish order below."
             exit 1
           fi
-          for dir in cli command day-picker message-scroller questionnaire resizable; do
+          for dir in cli command day-picker input-otp resizable svelte; do
             name="$(node -p "require('./packages/$dir/package.json').name")"
             version="$(node -p "require('./packages/$dir/package.json').version")"
             if [[ "$(node -p "require('./packages/$dir/package.json').private === true")" == true ]]; then

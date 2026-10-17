@@ -6,6 +6,7 @@ import { mdsvex } from 'mdsvex';
 import { defineConfig } from 'vite';
 import { headings } from './markdown/headings';
 import { docsComponents, highlightCodeBlock } from './markdown/preprocess';
+import { registryStyles } from './registry/vite';
 
 const path = (relative: string) => fileURLToPath(new URL(relative, import.meta.url));
 
@@ -14,6 +15,8 @@ export default defineConfig({
   // Examples load through a glob, so the dependency scan has to be pointed at them or a first visit reloads the page.
   optimizeDeps: { entries: ['blocks/**/*.svelte', 'examples/**/*.svelte'] },
   plugins: [
+    // As on ui.shadcn.com, only the Create preview renders raw tokens, and the homepage cards render in Rhea.
+    registryStyles({ root: path('.'), zones: { 'src/routes/preview/': 'tokens', 'src/routes/(site)/cards/': 'rhea' } }),
     tailwindcss(),
     sveltekit({
       adapter: adapter(),

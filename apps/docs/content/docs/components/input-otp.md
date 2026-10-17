@@ -5,6 +5,10 @@ description: Accessible one-time password component with copy paste functionalit
 
 <ComponentPreview name="base/InputOTPExample" />
 
+## About
+
+Input OTP is built on `@sveltery/input-otp`, a Svelte port of [input-otp](https://github.com/guilhermerodz/input-otp) by Guilherme Rodz. The port is released under the MIT License and has no runtime dependencies.
+
 ## Installation
 
 <InstallTabs>
@@ -24,7 +28,7 @@ npx @sveltery/ui@latest add input-otp
 ### Install the dependencies
 
 ```bash
-npm install cn @sveltery/base @lucide/svelte
+npm install cn @sveltery/input-otp @lucide/svelte
 ```
 
 ### Copy the component
@@ -52,42 +56,85 @@ The component folders import each other with relative paths, so keep them side b
 ```
 
 ```svelte
-<InputOTP length={6}>
+<InputOTP maxLength={6}>
   <InputOTPGroup>
-    <InputOTPSlot />
-    <InputOTPSlot />
-    <InputOTPSlot />
+    <InputOTPSlot index={0} />
+    <InputOTPSlot index={1} />
+    <InputOTPSlot index={2} />
   </InputOTPGroup>
   <InputOTPSeparator />
   <InputOTPGroup>
-    <InputOTPSlot />
-    <InputOTPSlot />
-    <InputOTPSlot />
+    <InputOTPSlot index={3} />
+    <InputOTPSlot index={4} />
+    <InputOTPSlot index={5} />
   </InputOTPGroup>
 </InputOTP>
 ```
 
-Each `InputOTPSlot` is a real input, so there is no `input-otp` dependency. Slots take their position from their order, so they have no `index` prop. `length` sets the number of slots and must match the slots you render.
+`InputOTP` renders one transparent input over the slots. The input holds the code, takes the focus and the keyboard, and submits with its form. Each `InputOTPSlot` shows the character at its `index`, and marks the selected slot with `data-active="true"`.
 
-Typing moves to the next slot, Backspace moves back, and pasting a code fills every slot from the first. A phone that offers the code from a text message fills it too, through `autocomplete="one-time-code"`.
+## Composition
 
-## Characters
+```text
+InputOTP
+├── InputOTPGroup
+│   ├── InputOTPSlot
+│   ├── InputOTPSlot
+│   └── InputOTPSlot
+├── InputOTPSeparator
+└── InputOTPGroup
+    ├── InputOTPSlot
+    ├── InputOTPSlot
+    └── InputOTPSlot
+```
 
-`validationType` sets which characters a slot accepts: `numeric` (the default), `alpha`, `alphanumeric` or `none`. Characters that don't fit are dropped as the user types or pastes. `onValueInvalid` reports them.
+## Pattern
+
+Use the `pattern` prop to set the characters the input accepts. Input that doesn't match is dropped.
+
+```svelte
+<script lang="ts">
+  import { REGEXP_ONLY_DIGITS_AND_CHARS } from '@sveltery/input-otp';
+</script>
+
+<InputOTP maxLength={6} pattern={REGEXP_ONLY_DIGITS_AND_CHARS}>
+  …
+</InputOTP>
+```
+
+`@sveltery/input-otp` also exports `REGEXP_ONLY_DIGITS` and `REGEXP_ONLY_CHARS`.
+
+## Value
+
+Use `bind:value` to read or set the code. `onComplete` runs with the code when the last slot fills.
+
+```svelte
+<script lang="ts">
+  let value = $state('');
+</script>
+
+<InputOTP maxLength={6} bind:value onComplete={(code) => console.log(code)}>
+  …
+</InputOTP>
+```
 
 ## In a form
 
-Give `InputOTP` a `name` and it submits its value with its form. A native reset restores `defaultValue`. `onValueComplete` runs when every slot is filled, and `autoSubmit` submits the form at that point. To label it, put it in a [Field](/docs/components/field) and pair the `FieldLabel` with the `InputOTP` `id`.
+Give `InputOTP` a `name` and it submits its value with its form. To label it, put it in a [Field](/docs/components/field) and pair the `FieldLabel` with the `InputOTP` `id`.
 
 ```svelte
 <Field>
   <FieldLabel for="code">Verification code</FieldLabel>
-  <InputOTP id="code" name="code" length={6} required>
+  <InputOTP id="code" name="code" maxLength={6} required>
     …
   </InputOTP>
 </Field>
 ```
 
+## Invalid
+
+Use `aria-invalid` on the slots to show an error state.
+
 ## API reference
 
-`InputOTP` is styled on top of the Sveltery Base `OTPField` primitive, which owns its behavior, focus handling and accessibility. See the [Base UI OTP Field documentation](https://base-ui.com/react/components/otp-field) for the behavior it ports.
+`InputOTP` takes the props of `OTPInput` from `@sveltery/input-otp`, which follow [input-otp](https://input-otp.rodz.dev). `class` goes to the input, and `containerClass` to the element that holds the slots. Other input attributes, such as `id`, `name`, `disabled` and `required`, go to the input.

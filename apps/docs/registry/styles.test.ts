@@ -1,10 +1,23 @@
 // @vitest-environment node
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { parseStyleSheet } from './styles';
-import { styleNames } from './types';
+import { parseStyleSheet, utilitiesSource } from './styles';
+import { scopedSheet } from './sync-styles';
+import { styleNames, type StyleName } from './types';
 
 const read = (style: string) => readFileSync(new URL(`./styles/scoped/${style}.css`, import.meta.url), 'utf8');
+const upstream = (style: string) => readFileSync(new URL(`./styles/upstream/style-${style}.css`, import.meta.url), 'utf8');
+
+describe('scoped sheets', () => {
+  it.each(styleNames)('%s has the pinned upstream rules in upstream order', (style) => {
+    expect(read(style), 'run `node apps/docs/registry/sync-styles.ts`').toBe(scopedSheet(upstream(style), style));
+  });
+
+  it('hand Tailwind every utility they apply', async () => {
+    const sheets = Object.fromEntries(styleNames.map((style) => [style, read(style)])) as Record<StyleName, string>;
+    await expect(utilitiesSource(sheets), 'run `vitest -u`').toMatchFileSnapshot('./styles/utilities.css');
+  });
+});
 
 describe('parseStyleSheet', () => {
   it('maps a token to the utilities of its @apply rule', () => {
@@ -28,6 +41,10 @@ describe('parseStyleSheet', () => {
 
   it('parses every style', () => {
     for (const style of styleNames) expect(parseStyleSheet(read(style), style).utilities.has('cn-button')).toBe(true);
+  });
+
+  it('maps a rule with an empty body to no utilities', () => {
+    expect(parseStyleSheet('.style-nova {\n  .cn-a {\n  }\n}', 'nova').utilities.get('cn-a')).toBe('');
   });
 
   it('throws on a selector shape it does not know, naming the file and selector', () => {

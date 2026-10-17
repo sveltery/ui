@@ -43,6 +43,7 @@
         rule={false}
         props={{
           xAxis: {
+            tickLength: 16,
             format: (d) => chartConfig[d as keyof typeof chartConfig].label,
           },
           highlight: { area: { fill: 'none' } },

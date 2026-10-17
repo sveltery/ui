@@ -1,5 +1,5 @@
 import { parseCss, type CssNode } from './css';
-import type { StyleName } from './types';
+import { styleNames, type StyleName } from './types';
 
 export type StyleSheet = {
   /** `cn-*` token to the utilities its rules apply, space separated, in file order. */
@@ -26,7 +26,8 @@ export function parseStyleSheet(css: string, style: StyleName): StyleSheet {
 
   function applied(selector: string, nodes: CssNode[]) {
     const [only, ...extra] = nodes;
-    if (only?.kind !== 'at' || only.name !== 'apply' || only.children || extra.length) reject(`rule body for ${selector}`);
+    if (!only) return [];
+    if (only.kind !== 'at' || only.name !== 'apply' || only.children || extra.length) reject(`rule body for ${selector}`);
     return only.prelude.split(/\s+/).filter(Boolean);
   }
 
@@ -48,4 +49,13 @@ export function parseStyleSheet(css: string, style: StyleName): StyleSheet {
     }
   }
   return sheet;
+}
+
+/**
+ * `@source inline()` naming every utility the sheets apply. The docs inline them into components as Vite loads
+ * each module, so Tailwind's scan of the source files never sees them.
+ */
+export function utilitiesSource(sheets: Record<StyleName, string>) {
+  const utilities = styleNames.flatMap((style) => [...parseStyleSheet(sheets[style], style).utilities.values()].flatMap((list) => list.split(' ')));
+  return `@source inline("${[...new Set(utilities)].filter(Boolean).sort().join(' ')}");\n`;
 }

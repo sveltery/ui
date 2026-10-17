@@ -7,7 +7,7 @@ description: A multi-step questionnaire with single-choice, multiple-choice, fre
 
 ## About
 
-Questionnaire is built on `@sveltery/questionnaire`, a Svelte package that takes its design from `@shadcn/react/questionnaire`. It presents one question at a time and manages answers, progress, validation and navigation on top of native form controls.
+Questionnaire is built on `@sveltery/svelte/questionnaire`, a Svelte module that takes its design from `@shadcn/react/questionnaire`. It presents one question at a time and manages answers, progress, validation and navigation on top of native form controls.
 
 ## Installation
 
@@ -28,7 +28,7 @@ npx @sveltery/ui@latest add questionnaire
 ### Install the dependencies
 
 ```bash
-npm install cn class-variance-authority @sveltery/questionnaire @lucide/svelte
+npm install cn class-variance-authority @sveltery/svelte @lucide/svelte
 ```
 
 ### Copy the component

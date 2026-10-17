@@ -5,9 +5,6 @@
 </script>
 
 <ExampleWrapper>
-  <Example title="Basic">
-    <Skeleton class="h-4 w-40" />
-  </Example>
   <Example title="Avatar">
     <div class="flex w-full items-center gap-4">
       <Skeleton class="size-10 shrink-0 rounded-full" />

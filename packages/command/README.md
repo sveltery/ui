@@ -30,7 +30,7 @@ The styled [Command](https://ui.sveltery.dev/docs/components/command) component 
 </Command.Root>
 ```
 
-An item's value is its trimmed text unless you pass `value`. Typing filters and ranks items with `commandScore`. The first matching item is selected, the arrow keys move the selection, and Enter or a click calls the item's `onSelect` with its value.
+An item's value is its trimmed text unless you pass `value`. Typing filters and ranks items with cmdk's fuzzy scoring. Items that do not match unmount, and the rest render in ranked order, as in cmdk. The first matching item is selected, the arrow keys move the selection, and Enter or a click calls the item's `onSelect` with its value.
 
 A bound `value` that names no item is kept, for example while items load, and selects the first item with that value once one mounts. An empty `value` selects the first item.
 
@@ -76,7 +76,7 @@ Every part renders one element (Input renders an `<input>`, the others a `<div>`
 | `Separator` | `alwaysRender` | `[cmdk-separator]`, `role="separator"`. Removed while searching unless `alwaysRender`. |
 | `Loading` | `progress`, `label` (default `"Loading..."`) | `[cmdk-loading]`, `role="progressbar"` with `aria-valuenow`, `aria-valuemin` and `aria-valuemax`. |
 
-`filter(value, search, keywords)` returns a score from 0 to 1. A score of 0 hides the item. The default is `defaultFilter`, which calls `commandScore(value, search, keywords)`. Both are exported.
+`filter(value, search, keywords)` returns a score from 0 to 1. A score of 0 hides the item. The default is `defaultFilter`, which is exported.
 
 ### Keyboard
 
@@ -120,18 +120,23 @@ The menu resets its search and selection each time the popup content mounts agai
 
 ## Differences from cmdk
 
-- **Ranked order is CSS `order`.** cmdk moves item and group nodes in the DOM to sort them. Svelte owns the nodes it renders, so this package leaves them in place and sets `order` on them instead. For that reason List ships one rule that makes the list sizer and every group's items container a flex column: `:where([cmdk-list-sizer], [cmdk-group-items]) { display: flex; flex-direction: column }`. `:where` gives it zero specificity, so your own CSS replaces it. A grid also honors `order`, so a grid layout such as an emoji picker keeps the ranked order. While searching, the visual order is the ranked order, and the keyboard and `aria-activedescendant` follow it. A screen reader's browse mode still reads the DOM order, which is the declared order. Browsers that support `reading-flow` follow the visual order, and the containers set it.
-- **Items must be direct children of List or Group, and Groups direct children of List.** `order` only acts on flex and grid children, so an element wrapped around an Item or Group is not ranked.
-- **Filtered items stay mounted.** Items and groups that do not match get the `hidden` attribute and an inline `display: none`, so a `display` class cannot show them. They keep their state, and their text value is known even when a search is already set at mount.
-- **Disabled items are ranked** like any other item. cmdk leaves them out of the sort.
-- **Clearing the search restores the declared order.** cmdk keeps the last sorted order in the DOM.
-- **An inferred value follows the text.** cmdk asks for a stable `value` when the text changes. Here Root re-reads an item's text before it ranks a new search, so `<Command.Item forceMount>Search the web for "{search}"</Command.Item>` reports its current text. Other text changes reach the ranking a microtask later.
+This package matches cmdk 1.1.1. It renders the same elements, attributes and ARIA, and while searching it unmounts the items that do not match and renders the rest in cmdk's ranked DOM order. Where cmdk misbehaves, it keeps the working behavior:
+
+- **`aria-activedescendant` always names the selected item.** cmdk leaves it out when the menu opens and names the previous item after a search.
+- **Results are in score order whatever the previous search was.** cmdk ranks the items a search brings back below the ones already shown, so pasting a search can list a worse match first.
+- **Clearing the search restores the declared order.** cmdk keeps the last ranked order for items that stayed mounted.
+- **Only the menu in use moves focus.** cmdk moves focus to its input when any menu's input or root has focus.
+- **Groups are ordered by their best match while searching.** cmdk means to, but its lookup never finds the group.
 - **Selection follows the item, not its value.** cmdk tracks only the value, so items that share a value are selected together. Here the arrow keys and the pointer reach each of them, and only the picked one is selected. Writing the bound `value` selects the first item with that value, unless the selected item already has it.
 - **Only keyboard moves and a new search scroll the selection into view.** The automatic selection on mount, the pointer, a click and a write to the bound `value` do not, so an inline menu does not scroll the page when it mounts.
-- **`onValueChange` fires for every change of the selected value,** including the automatic selection on mount and on search, whether or not `value` is bound.
+- **`onValueChange` fires for every change of the selected value,** including the automatic selection on mount and on search, whether or not `value` is bound. cmdk calls it only when `value` is controlled.
 - **A group that holds only force-mounted items stays visible** while searching. cmdk hides it.
-- **Svelte bindings replace controlled props.** Bind `value` on Root in place of cmdk's `value` and `defaultValue`, and bind `value` on Input for the search in place of its `value` and `onValueChange`. `getCommandState()` replaces `useCommandState(selector)`. There is no `asChild`.
-- **Item `onclick` and `onpointermove` run before the item's own handling,** which `event.preventDefault()` skips. cmdk replaces them.
-- **Group `data-value`** is `value`, else a string `heading`. A snippet heading gives no `data-value`.
+- **Item `onclick` and `onpointermove` run before the item's own handling.** cmdk replaces them.
 - **Server rendering shows the full list.** Nothing is filtered, ordered or selected until Root mounts, so the server markup and the first client render match. Empty renders only after mount, and `getCommandState().count` reads 0 until then.
-- **Root does not move focus to Input when the selection changes.** cmdk does so when Root itself has focus.
+- **Svelte bindings replace controlled props.** Bind `value` on Root in place of cmdk's `value` and `defaultValue`, and bind `value` on Input for the search in place of its `value` and `onValueChange`. `getCommandState()` replaces `useCommandState(selector)`. There is no `asChild`.
+
+Svelte cannot move the nodes it renders, so List and each Group render their parts themselves, in ranked order, and each part renders only a comment where you write it. Two things follow:
+
+- **An element you wrap around an Item, Group, Separator, Empty or Loading stays empty.** The part renders directly in its List or Group, so put classes and attributes on the part itself. A `{#each}` or `{#if}` around parts is fine.
+- **Other markup written in List or Group renders before its parts.** cmdk keeps it in place until a search moves the items after it. Render it as Empty, Loading or an Item, or outside List.
+- **Context set between List or Group and an Item does not reach the Item's content.** The content renders where List or Group renders it, so it sees the context from List or Group and above.

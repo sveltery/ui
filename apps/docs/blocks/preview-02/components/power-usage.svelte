@@ -43,7 +43,7 @@
             props={{
               bars: { stroke: 'none', strokeWidth: 0, rounded: 'top', radius: 4 },
               highlight: { area: { fill: 'none' } },
-              xAxis: { tickLength: 0 }
+              xAxis: { tickLength: 12 }
             }}
           >
             {#snippet tooltip()}

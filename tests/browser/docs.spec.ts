@@ -79,6 +79,29 @@ test('the Installation section shows the CLI command first and the manual steps 
   await expect(page.locator('[data-slot=component-source]')).toBeHidden();
 });
 
+test('the Drawer page renders its examples in the Rhea style, and other pages stay in Nova', async ({ page }) => {
+  await visit(page, '/docs/components/drawer');
+  await page.locator('[data-slot=component-preview]').first().getByRole('button', { name: 'right', exact: true }).first().click();
+  const drawer = page.locator('[data-slot=drawer-popup]');
+  await expect.poll(() => drawer.evaluate((node) => {
+    const box = node.getBoundingClientRect();
+    return { left: Math.round(box.left), right: Math.round(box.right), top: Math.round(box.top), bottom: Math.round(box.bottom), radius: getComputedStyle(node).borderRadius };
+  })).toEqual({ left: 1280 - 8 - 384, right: 1280 - 8, top: 8, bottom: 900 - 8, radius: '24px' });
+  await page.keyboard.press('Escape');
+  await expect(drawer).toHaveCount(0);
+
+  await page.getByRole('navigation', { name: 'Docs' }).getByRole('link', { name: 'Button', exact: true }).click();
+  await expect(page.getByRole('heading', { level: 1, name: 'Button' })).toBeVisible();
+  const button = page.locator('[data-slot=component-preview]').first().getByRole('button', { name: 'Secondary' }).first();
+  await expect(button).toHaveCSS('border-radius', '8px');
+});
+
+test('docs tooltips open without the default delay, like the upstream site', async ({ page }) => {
+  await visit(page, '/docs/components/tooltip');
+  await page.getByRole('button', { name: 'Show Tooltip' }).first().hover();
+  await expect(page.locator('[data-slot=tooltip-content]')).toBeVisible({ timeout: 400 });
+});
+
 test('the mobile menu opens as a popover and closes on navigation', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await visit(page, '/docs');
@@ -134,4 +157,14 @@ test('the registry serves each style item as JSON', async ({ request }) => {
   expect(response.headers()['content-type']).toBe('application/json');
   const item = await response.json();
   expect([item.name, item.type, item.files.map((file: { target: string }) => file.target)]).toEqual(['button', 'registry:ui', ['button/Button.svelte', 'button/index.ts', 'button/types.ts', 'button/variants.ts']]);
+});
+
+test('a docs page links to its markdown and keeps step titles out of the TOC', async ({ page, request }) => {
+  await visit(page, '/docs/components/button');
+  await expect(page.getByRole('navigation', { name: 'On this page' }).getByRole('link')).toHaveText(['Installation', 'Usage', 'API reference']);
+  await page.getByRole('button', { name: 'More page actions' }).click();
+  await expect(page.getByRole('menuitem', { name: 'View as Markdown' })).toHaveAttribute('href', /\/docs\/components\/button\.md$/);
+  const response = await request.get('/docs/components/button.md');
+  expect(response.headers()['content-type']).toBe('text/markdown; charset=utf-8');
+  expect(await response.text()).toMatch(/^---\ntitle: Button\n/);
 });

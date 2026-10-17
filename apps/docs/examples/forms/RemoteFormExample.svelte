@@ -1,7 +1,6 @@
 <script lang="ts">
   import { Button } from '$registry/bases/base/ui/button';
   import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '$registry/bases/base/ui/field';
-  import { Form, FormError } from '$registry/bases/base/ui/form';
   import { Input } from '$registry/bases/base/ui/input';
   import { signupSchema } from '$lib/forms/signup';
   import { signup } from '$lib/forms/signup.remote';
@@ -9,23 +8,22 @@
   const f = signup.preflight(signupSchema);
 </script>
 
-<Form form={f} class="w-full max-w-sm">
+<form {...f} class="w-full max-w-sm">
   <FieldGroup>
-    <FormError />
-    <Field field={f.fields.name}>
-      <FieldLabel>Name</FieldLabel>
-      <Input required autocomplete="off" />
-      <FieldError />
+    <Field data-invalid={!!f.fields.name.issues()}>
+      <FieldLabel for="remote-name">Name</FieldLabel>
+      <Input id="remote-name" {...f.fields.name.as('text')} required autocomplete="off" />
+      <FieldError errors={f.fields.name.issues()} />
     </Field>
-    <Field field={f.fields.email} type="email">
-      <FieldLabel>Email</FieldLabel>
-      <Input required autocomplete="off" />
+    <Field data-invalid={!!f.fields.email.issues()}>
+      <FieldLabel for="remote-email">Email</FieldLabel>
+      <Input id="remote-email" {...f.fields.email.as('email')} required autocomplete="off" />
       <FieldDescription>Try taken@example.com to see an issue from the server.</FieldDescription>
-      <FieldError />
+      <FieldError errors={f.fields.email.issues()} />
     </Field>
     <Button type="submit" disabled={f.pending > 0}>Sign up</Button>
     {#if f.result}
       <p class="text-sm">Welcome, {f.result.welcome}.</p>
     {/if}
   </FieldGroup>
-</Form>
+</form>

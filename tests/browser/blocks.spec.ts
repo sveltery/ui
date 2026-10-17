@@ -362,7 +362,7 @@ test('sidebar-09 shows the picked folder and a shorter mail list', async ({ page
   // Picking a folder shuffles the mails and keeps 5 to 10; with Math.random at 0 it keeps 5.
   await page.addInitScript(() => (Math.random = () => 0));
   await visit(page, '/view/sidebar-09');
-  const title = page.locator('[data-slot=sidebar-header] .text-base');
+  const title = page.locator('[data-slot=sidebar-header] div.text-base');
   const mails = page.locator('[data-slot=sidebar-content] a.border-b');
   await expect(title).toHaveText('Inbox');
   await expect(mails).toHaveCount(10);
@@ -378,7 +378,7 @@ test('sidebar-09 opens the user menu and picking a folder reopens a collapsed si
   await expect(desktopSidebar(page)).toHaveAttribute('data-state', 'collapsed');
   await page.getByRole('button', { name: 'Sent' }).click();
   await expect(desktopSidebar(page)).toHaveAttribute('data-state', 'expanded');
-  await expect(page.locator('[data-slot=sidebar-header] .text-base')).toHaveText('Sent');
+  await expect(page.locator('[data-slot=sidebar-header] div.text-base')).toHaveText('Sent');
 
   await page.getByRole('button', { name: /shadcn/ }).click();
   await expect(page.getByRole('menuitem', { name: 'Upgrade to Pro' })).toBeVisible();

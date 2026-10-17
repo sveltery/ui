@@ -7,7 +7,7 @@ description: Accessible resizable panel groups and layouts with keyboard support
 
 ## About
 
-Resizable is built on `@sveltery/resizable`, a Svelte package that takes its design from [react-resizable-panels](https://github.com/bvaughn/react-resizable-panels) by Brian Vaughn. The layout algorithm is a port of that library under the MIT License. The package has no runtime dependencies, and you bind to its state with `bind:layout` and `bind:this` instead of calling an imperative API.
+Resizable is built on `@sveltery/resizable`, a Svelte port of [react-resizable-panels](https://github.com/bvaughn/react-resizable-panels) 4.5.8 by Brian Vaughn under the MIT License. The package carries that library's framework-free code unchanged, including its layout algorithm and its document-level pointer and keyboard handling, and its `Group`, `Panel` and `Separator` components are Svelte rewrites of the React ones. It has no runtime dependencies. Where the React library takes a ref, such as `groupRef` or `panelRef`, you bind the prop instead.
 
 ## Installation
 
@@ -116,59 +116,57 @@ Use the `withHandle` prop on `ResizableHandle` to show a visible grip.
 </ResizablePanelGroup>
 ```
 
-## Controlled
+## Layout
 
-Bind `layout` to read the sizes and to set them. The layout maps each panel `id` to its percent of the group, so give the panels an `id` to name them. A layout you assign is validated against the panel limits, and `layout` then holds the result.
+A layout maps each panel `id` to its percent of the group, so give the panels an `id` to name them. Bind `groupRef` to read the layout with `getLayout()` and to set it with `setLayout()`. `setLayout` takes a size for every panel, in the order the panels sit, validates it against the panel limits and returns the layout it applied.
 
 ```svelte
 <script lang="ts">
-  let layout = $state<Record<string, number>>({ sidebar: 25, content: 75 });
+  import type { GroupImperativeHandle } from '@sveltery/resizable';
+
+  let group = $state<GroupImperativeHandle | null>(null);
 </script>
 
-<ResizablePanelGroup bind:layout>
+<ResizablePanelGroup bind:groupRef={group}>
   <ResizablePanel id="sidebar" defaultSize="25%">Sidebar</ResizablePanel>
   <ResizableHandle />
   <ResizablePanel id="content" defaultSize="75%">Content</ResizablePanel>
 </ResizablePanelGroup>
 
-<button onclick={() => (layout = { sidebar: 50, content: 50 })}>Half</button>
+<button onclick={() => group?.setLayout({ sidebar: 50, content: 50 })}>Half</button>
 ```
 
-`onLayoutChange` runs for every step of a drag. `onLayoutChanged` runs once the change settles, which is when a drag ends, and it reports whether the user caused it.
+`onLayoutChange` runs for every step of a drag. `onLayoutChanged` runs once the change settles, which is when the pointer is released. Each runs once for each new layout, starting with the layout the group mounts with.
 
 ```svelte
-<ResizablePanelGroup
-  onLayoutChanged={(layout, { isUserInteraction }) => {
-    if (isUserInteraction) save(layout);
-  }}
->
+<ResizablePanelGroup onLayoutChanged={(layout) => { save(layout); }}>
   …
 </ResizablePanelGroup>
 ```
 
 ## Persistence
 
-`savedLayout` keeps a layout in `localStorage` and restores it on the next visit. Spread its result on the group. Pass `storage` to use another store, such as `sessionStorage`. A missing or blocked storage leaves the group on its default sizes.
+`useDefaultLayout` keeps a layout in `localStorage` and restores it on the next visit. Call it while a component initializes, then pass its `defaultLayout` and `onLayoutChanged` to the group. Pass `storage` to use another store, such as `sessionStorage` or cookies. Pass `panelIds` to save one layout for each set of panels when panels are rendered conditionally.
 
 ```svelte
 <script lang="ts">
-  import { savedLayout } from '@sveltery/resizable';
+  import { useDefaultLayout } from '@sveltery/resizable';
 
-  const persisted = savedLayout({ id: 'editor' });
+  const { defaultLayout, onLayoutChanged } = useDefaultLayout({ id: 'editor' });
 </script>
 
-<ResizablePanelGroup {...persisted}>
+<ResizablePanelGroup {defaultLayout} {onLayoutChanged}>
   <ResizablePanel id="files" defaultSize="30%">Files</ResizablePanel>
   <ResizableHandle />
   <ResizablePanel id="code" defaultSize="70%">Code</ResizablePanel>
 </ResizablePanelGroup>
 ```
 
-The server renders the default sizes, and the browser applies the saved ones when the page loads.
+The server renders the panels at the sizes in `defaultLayout`, or at equal sizes without one. The browser applies each panel's `defaultSize` when the group mounts. `localStorage` does not exist on the server, so for server rendering pass a `storage` that works there, such as one that reads a cookie.
 
 ## Collapsible panels
 
-A collapsible panel snaps to `collapsedSize` when it is dragged below half way between `collapsedSize` and `minSize`, and snaps back to `minSize` when it is dragged above that. Set `collapsedThreshold` to choose that distance instead: with `collapsedSize="5%"`, `collapsedThreshold="5%"` and `minSize="25%"`, the panel collapses below 20% and expands above 10%. Press Enter on the handle to collapse the panel before it, and press Enter again to restore its last size. `data-collapsed` marks a collapsed panel for styling.
+A collapsible panel snaps to `collapsedSize` when it is dragged below half way between `collapsedSize` and `minSize`. A drag expands it again once it passes `minSize`. Press Enter on the handle to collapse the panel before it, and press Enter again to restore its last size.
 
 ```svelte
 <ResizablePanelGroup>
@@ -178,11 +176,13 @@ A collapsible panel snaps to `collapsedSize` when it is dragged below half way b
 </ResizablePanelGroup>
 ```
 
-Bind the panel with `bind:this` to collapse, expand or resize it from your own controls.
+Bind `panelRef` to collapse, expand or resize the panel from your own controls.
 
 ```svelte
 <script lang="ts">
-  let sidebar = $state<ResizablePanel>();
+  import type { PanelImperativeHandle } from '@sveltery/resizable';
+
+  let sidebar = $state<PanelImperativeHandle | null>(null);
 </script>
 
 <button onclick={() => sidebar?.collapse()}>Collapse</button>
@@ -190,7 +190,7 @@ Bind the panel with `bind:this` to collapse, expand or resize it from your own c
 <button onclick={() => sidebar?.resize('40%')}>40%</button>
 
 <ResizablePanelGroup>
-  <ResizablePanel bind:this={sidebar} defaultSize="30%" minSize="20%" collapsible>Sidebar</ResizablePanel>
+  <ResizablePanel bind:panelRef={sidebar} defaultSize="30%" minSize="20%" collapsible>Sidebar</ResizablePanel>
   <ResizableHandle />
   <ResizablePanel>Content</ResizablePanel>
 </ResizablePanelGroup>
@@ -198,21 +198,25 @@ Bind the panel with `bind:this` to collapse, expand or resize it from your own c
 
 ## Keyboard
 
-A handle is a focusable window splitter. It follows the WAI-ARIA pattern and reports the size of the panel before it in `aria-valuenow`, `aria-valuemin` and `aria-valuemax`.
+A handle is a focusable window splitter. It follows the WAI-ARIA pattern and reports the size of the panel on its left, or above it, in `aria-valuenow`, `aria-valuemin` and `aria-valuemax`.
 
 | Key | Action |
 | --- | --- |
 | Arrow Left, Arrow Right | Move a vertical handle by 5 percent in a horizontal group |
 | Arrow Up, Arrow Down | Move a horizontal handle by 5 percent in a vertical group |
 | Home, End | Move the handle as far as the panels allow |
-| Enter | Collapse or expand the panel before the handle, when it is collapsible |
+| Enter | Collapse or expand the panel on the left of or above the handle, when it is collapsible |
 | F6, Shift+F6 | Move focus to the next or previous handle in the group |
 
-Double-click a handle to reset the first panel beside it that has a `defaultSize` to that size. Set `disableDoubleClick` on the handle to turn this off.
+Double-click a handle to reset the first panel beside it that has a `defaultSize` to that size.
+
+## Pointer
+
+A pointer grabs a handle from up to 5 pixels away, or 10 pixels on a touch screen, so a thin handle is easy to hit. While the pointer hovers or drags a handle, the page shows the resize cursor and the handle has `data-separator="hover"` or `data-separator="active"`. Where two groups cross, as in nested groups, one drag resizes both. Set `resizeTargetMinimumSize` on the group to change the grab area, and `disableCursor` to keep the page cursor.
 
 ## RTL
 
-A horizontal group follows the text direction. In a right-to-left page the first panel sits on the right, a drag moves the handle with the pointer, and Arrow Left and Arrow Right swap. Set `dir` on the group or one of its ancestors.
+A horizontal group follows the text direction. In a right-to-left page the first panel sits on the right. Panels are resized in the order they sit on screen, so a drag and the arrow keys move the handle the same way as in a left-to-right page. Set `dir` on the group or one of its ancestors.
 
 ```svelte
 <div dir="rtl">
@@ -231,28 +235,35 @@ A horizontal group follows the text direction. In a right-to-left page the first
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | The direction the panels sit in |
-| `layout` | `Record<string, number>` | | Bindable. Percent of the group for each panel `id` |
-| `defaultLayout` | `Record<string, number>` | | The layout to start from. Panels it does not name use their `defaultSize` |
+| `defaultLayout` | `Record<string, number>` | | Percent of the group for each panel `id`, applied on the server and when the group mounts. It is ignored unless it names every panel |
 | `onLayoutChange` | `(layout) => void` | | Runs for every change, including each step of a drag |
-| `onLayoutChanged` | `(layout, { isUserInteraction }) => void` | | Runs once a change settles |
+| `onLayoutChanged` | `(layout) => void` | | Runs once a change settles |
+| `groupRef` | `GroupImperativeHandle` | | Bindable. Has `getLayout()` and `setLayout(layout)` |
+| `elementRef` | `HTMLDivElement` | | Bindable. The group element |
 | `disabled` | `boolean` | `false` | Turns off resizing for every handle |
+| `disableCursor` | `boolean` | `false` | Keeps the page cursor while a pointer hovers or drags a handle |
+| `resizeTargetMinimumSize` | `{ coarse: number, fine: number }` | `{ coarse: 20, fine: 10 }` | The smallest grab area of a handle in pixels, for touch and for mouse pointers |
+| `id` | `string \| number` | generated | Set on the group as `id` and `data-testid` |
 | `class` | `string` | | Added to the group |
+| `style` | `string` | | Added to the group. `display`, `flex-direction`, `flex-wrap` and `overflow` cannot be changed |
 
 ### ResizablePanel
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `id` | `string` | generated | Names the panel in the layout |
+| `id` | `string \| number` | generated | Names the panel in the layout. Set on the panel as `id` and `data-testid` |
 | `defaultSize` | `number \| string` | | The starting size. A number is pixels |
-| `minSize` | `number \| string` | `0` | The smallest size |
+| `minSize` | `number \| string` | `0%` | The smallest size |
 | `maxSize` | `number \| string` | `100%` | The largest size |
 | `collapsible` | `boolean` | `false` | Lets the panel collapse to `collapsedSize` |
-| `collapsedSize` | `number \| string` | `0` | The size when collapsed |
-| `collapsedThreshold` | `number \| string` | half way | How far past `minSize` the panel moves before it collapses, and past `collapsedSize` before it expands |
-| `onResize` | `(size, id, previous) => void` | | Runs when the panel size changes. A size is `{ asPercentage, inPixels }` |
-| `class` | `string` | | Added to the panel |
+| `collapsedSize` | `number \| string` | `0%` | The size when collapsed |
+| `onResize` | `(size, id, previous) => void` | | Runs when the panel element resizes. A size is `{ asPercentage, inPixels }` |
+| `panelRef` | `PanelImperativeHandle` | | Bindable. Has the methods below |
+| `elementRef` | `HTMLDivElement` | | Bindable. The panel element |
+| `class` | `string` | | Added to the element inside the panel that holds its content |
+| `style` | `string` | | Added to the element inside the panel that holds its content |
 
-A panel bound with `bind:this` has these methods.
+A bound `panelRef` has these methods.
 
 | Method | Description |
 | --- | --- |
@@ -267,17 +278,18 @@ A panel bound with `bind:this` has these methods.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `withHandle` | `boolean` | `false` | Shows a grip in the handle |
-| `disabled` | `boolean` | `false` | Turns off resizing for this handle |
-| `disableDoubleClick` | `boolean` | `false` | Stops a double click from resetting the panel beside the handle to its default size |
+| `elementRef` | `HTMLDivElement` | | Bindable. The handle element |
+| `id` | `string \| number` | generated | Set on the handle as `id` and `data-testid` |
 | `class` | `string` | | Added to the handle |
 
-`ResizablePanelGroup`, `ResizablePanel` and `ResizableHandle` pass every other attribute to their `div`.
+`ResizablePanelGroup`, `ResizablePanel` and `ResizableHandle` pass every other attribute to their outer `div`.
 
-### savedLayout
+### useDefaultLayout
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
-| `id` | `string` | | Names the saved layout. The key is `sveltery-resizable:<id>` |
+| `id` | `string` | | Names the saved layout. The key is `react-resizable-panels:<id>` |
+| `panelIds` | `string[]` | | Saves a separate layout for each set of panel ids |
 | `storage` | `{ getItem, setItem }` | `localStorage` | Where to keep the layout |
 
-It returns `{ id, defaultLayout, onLayoutChanged }` to spread on a `ResizablePanelGroup`.
+It returns `{ defaultLayout, onLayoutChanged }` to pass to a `ResizablePanelGroup`.

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { Container, setContainer } from './parts.svelte.js';
   import { getCommand } from './root-state.svelte.js';
   import type { CommandListProps } from './types.js';
   import { trackListHeight } from './utils.js';
@@ -6,6 +7,8 @@
   let { label = 'Suggestions', children, ...rest }: CommandListProps = $props();
 
   const root = getCommand();
+  const container = new Container(root);
+  setContainer(container);
 </script>
 
 <div
@@ -16,21 +19,7 @@
   aria-activedescendant={root.selectedItem?.id}
   aria-label={label}
   id={root.ids.list}
+  {@attach root.observe}
 >
-  <div cmdk-list-sizer="" {@attach trackListHeight}>
-    {@render children?.()}
-  </div>
+  <div cmdk-list-sizer="" {@attach trackListHeight}>{@render children?.()}{#each container.parts as part (part)}{@render part.view()}{/each}</div>
 </div>
-
-<style>
-  /*
-   * Ranking sets CSS `order` on the children of the list sizer and of each group's items, and `order` only acts on
-   * flex and grid items. `:where` keeps this at zero specificity so any author rule replaces it, a grid included.
-   * `reading-flow` lets browsers that support it read and tab in the visual order.
-   */
-  :global(:where([cmdk-list-sizer], [cmdk-group-items])) {
-    display: flex;
-    flex-direction: column;
-    reading-flow: flex-flow;
-  }
-</style>

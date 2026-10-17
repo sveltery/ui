@@ -78,7 +78,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ## Anatomy
 
-`Field` is a `<div role="group">`, `FieldLabel` is a `<label>`, and `FieldDescription` is a `<p>`. Each part renders through its Sveltery Base `Field` part, so inside a `Field` the label, the description and the error link to an [Input](/docs/components/input), [Textarea](/docs/components/textarea) or [Native Select](/docs/components/native-select) on their own. You can still pair a label with any control by hand: give the control an `id` and the label a matching `for`.
+`Field` is a `<div role="group">`, `FieldLabel` is a `<label>`, and `FieldDescription` is a `<p>`. Pair a label with its control by hand: give the control an `id` and the label a matching `for`.
 
 ```svelte
 <Field>
@@ -98,7 +98,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ## Validation and errors
 
-Inside a [Form](/docs/forms), `Field` validates its control and shows the error in a bare `FieldError`. Without one, you decide when a field is invalid and mark it:
+You decide when a field is invalid and mark it:
 
 - Set `data-invalid` on `Field` to switch the whole field into its error style.
 - Set `aria-invalid` on the control so assistive technology announces it.
@@ -112,7 +112,7 @@ Inside a [Form](/docs/forms), `Field` validates its control and shows the error 
 </Field>
 ```
 
-`FieldError` is a `<div role="alert">`. It renders its children, or the messages in `errors`, an array of `{ message?: string }` objects. Several messages render as a list. With neither, it shows the field's own error, and renders nothing while the field is valid.
+`FieldError` is a `<div role="alert">`. It renders its children, or the messages in `errors`, an array of `{ message?: string }` objects. Several messages render as a list. With neither, it renders nothing.
 
 ```svelte
 <FieldError errors={[{ message: 'Enter a valid email address.' }]} />
@@ -156,13 +156,12 @@ To make the whole option a selectable card, wrap the `Field` in a `FieldLabel`:
 
 ## Forms
 
-`name` on `Field` is what a form submits, and `field` binds a SvelteKit remote form field. See the [Forms](/docs/forms) guide for building forms with `Field` and `Form`.
+`Field` holds no form state. Put `name` on each control, and mark errors as in [Validation and errors](#validation-and-errors). See the [Forms](/docs/forms) guide for SvelteKit remote forms and form actions.
 
 ## Differences from shadcn/ui
 
-- The parts match shadcn/ui's Base UI variant, and compose Sveltery Base's `Field` and `Fieldset` parts underneath. `FieldLabel` takes the HTML `for` attribute in place of React's `htmlFor`.
-- `FieldItem` wraps one option of a radio or checkbox group, so each option has its own label while the group stays one field.
+- `FieldLabel` takes the HTML `for` attribute in place of React's `htmlFor`.
 
 ## API reference
 
-The `Field` parts take their Sveltery Base part's props and their element's attributes. `Field` takes Base `Field.Root`'s `name`, `field`, `type`, `validate`, `invalid` and `disabled`, and adds `orientation`. `FieldLegend` adds `variant`, and `FieldError` adds `errors`. The controls you put inside a field come from their own components, such as [Input](/docs/components/input) and [Select](/docs/components/select).
+The `Field` parts take their element's attributes. `Field` adds `orientation`. `FieldLegend` adds `variant`, and `FieldError` adds `errors`. The controls you put inside a field come from their own components, such as [Input](/docs/components/input) and [Select](/docs/components/select).

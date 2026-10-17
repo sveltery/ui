@@ -1,5 +1,5 @@
 /**
- * What the user sees, in what order, and where the arrow keys go, as one pure function. The CSS `order` slots, the
+ * What the user sees, in what order, and where the arrow keys go, as one pure function. The rendered order, the
  * visibility flags, the keyboard's list and the count Empty reads are fields of the same `View`, so they cannot disagree.
  */
 
@@ -40,10 +40,15 @@ export interface View<I, G> {
   readonly groupOrder: readonly G[];
   /** Navigable items per group in visual order. The first one brings its group heading into view with it. */
   readonly groupItems: ReadonlyMap<G, readonly I[]>;
-  /** CSS `order` of each item inside its container (the list sizer or its group's items). Empty unless ranked. */
-  readonly itemSlot: ReadonlyMap<I, number>;
-  /** CSS `order` of each group inside the list sizer, after the ungrouped items. Empty unless ranked. */
-  readonly groupSlot: ReadonlyMap<G, number>;
+  /**
+   * Whether a search ranks the list. Ranked, each container renders what does not move in document order, then
+   * `looseMoved` and `groupOrder` (the list) or that group's `groupMoved`, as cmdk's sort appends them.
+   */
+  readonly ranked: boolean;
+  /** Ungrouped items that move to the end of the list, best first. Disabled items keep their place, as in cmdk. */
+  readonly looseMoved: readonly I[];
+  /** Per visible group, the items that move to the end of its items, best first. */
+  readonly groupMoved: ReadonlyMap<G, readonly I[]>;
   /** Visible items that are not force-mounted. Empty renders when this is 0. */
   readonly count: number;
 }
@@ -76,31 +81,28 @@ export function rank<I extends ItemEntry<G>, G extends GroupEntry>({ items, grou
   }
 
   const score = (item: I) => scores.get(item) ?? 0;
-  const byScore = (a: I, b: I) => score(b) - score(a);
+  // Array.prototype.sort is stable, so ties keep document order.
+  const moving = (list: readonly I[]) => list.filter((item) => !item.disabled).sort((a, b) => score(b) - score(a));
   const shown = (group: G) => !ranked || group.forceMount || buckets.get(group)!.length > 0;
   let groupOrder = groups.filter(shown);
+  const looseMoved = ranked ? moving(loose) : [];
+  const groupMoved = new Map<G, readonly I[]>();
   if (ranked) {
-    // Array.prototype.sort is stable, so ties keep document order.
-    loose.sort(byScore);
-    for (const bucket of buckets.values()) bucket.sort(byScore);
+    for (const group of groupOrder) groupMoved.set(group, moving(buckets.get(group)!));
     const best = (group: G) => Math.max(0, ...buckets.get(group)!.map(score));
     groupOrder = groupOrder.sort((a, b) => best(b) - best(a));
   }
-
-  const itemSlot = new Map<I, number>();
-  const groupSlot = new Map<G, number>();
-  if (ranked) {
-    loose.forEach((item, index) => itemSlot.set(item, index + 1));
-    groupOrder.forEach((group, index) => {
-      groupSlot.set(group, loose.length + index + 1);
-      buckets.get(group)!.forEach((item, position) => itemSlot.set(item, position + 1));
-    });
-  }
+  const arranged = (list: readonly I[], moved: readonly I[] | undefined) =>
+    ranked ? [...list.filter((item) => item.disabled), ...moved!] : list;
 
   const usable = (item: I) => !item.disabled && item.value !== undefined && item.value !== '';
   // Unranked, the order is the document's (cmdk parity). Ranked, ungrouped items come first, then each group's.
-  const ordered = ranked ? [...loose, ...groupOrder.flatMap((group) => buckets.get(group)!)] : visible;
-  const groupItems = new Map<G, readonly I[]>(groupOrder.map((group) => [group, buckets.get(group)!.filter(usable)]));
+  const ordered = ranked
+    ? [...arranged(loose, looseMoved), ...groupOrder.flatMap((group) => arranged(buckets.get(group)!, groupMoved.get(group)))]
+    : visible;
+  const groupItems = new Map<G, readonly I[]>(
+    groupOrder.map((group) => [group, arranged(buckets.get(group)!, groupMoved.get(group)).filter(usable)])
+  );
 
   return {
     visibleItems: new Set(visible),
@@ -109,8 +111,9 @@ export function rank<I extends ItemEntry<G>, G extends GroupEntry>({ items, grou
     navigable: ordered.filter(usable),
     groupOrder,
     groupItems,
-    itemSlot,
-    groupSlot,
+    ranked,
+    looseMoved,
+    groupMoved,
     count
   };
 }

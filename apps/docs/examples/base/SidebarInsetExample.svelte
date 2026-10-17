@@ -39,6 +39,10 @@
   <a href="#" {...props}>{@render children?.()}</a>
 {/snippet}
 
+{#snippet menuItem(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
+  <SidebarMenuItem {...props}>{@render children?.()}</SidebarMenuItem>
+{/snippet}
+
 {#snippet action(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
   <SidebarMenuAction {...props}>{@render children?.()}</SidebarMenuAction>
 {/snippet}
@@ -74,29 +78,27 @@
           <SidebarGroupLabel>Dashboard</SidebarGroupLabel>
           <SidebarMenu>
             {#each navMain as item (item.title)}
-              <SidebarMenuItem>
-                <Collapsible open={item.isActive}>
-                  <SidebarMenuButton render={link} isActive={item.isActive}>
-                    {@render navIcon(item.title)}
-                    <span>{item.title}</span>
-                  </SidebarMenuButton>
-                  {#if item.items}
-                    <CollapsibleTrigger render={action} class="data-panel-open:rotate-90">
-                      <IconPlaceholder lucide="ChevronRightIcon" tabler="IconChevronRight" hugeicons="ArrowRight01Icon" phosphor="CaretRightIcon" remixicon="RiArrowRightSLine" />
-                      <span class="sr-only">Toggle</span>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent>
-                      <SidebarMenuSub>
-                        {#each item.items as subItem (subItem)}
-                          <SidebarMenuSubItem>
-                            <SidebarMenuSubButton href="#">{subItem}</SidebarMenuSubButton>
-                          </SidebarMenuSubItem>
-                        {/each}
-                      </SidebarMenuSub>
-                    </CollapsibleContent>
-                  {/if}
-                </Collapsible>
-              </SidebarMenuItem>
+              <Collapsible open={item.isActive} render={menuItem}>
+                <SidebarMenuButton render={link} isActive={item.isActive}>
+                  {@render navIcon(item.title)}
+                  <span>{item.title}</span>
+                </SidebarMenuButton>
+                {#if item.items}
+                  <CollapsibleTrigger render={action} class="data-panel-open:rotate-90">
+                    <IconPlaceholder lucide="ChevronRightIcon" tabler="IconChevronRight" hugeicons="ArrowRight01Icon" phosphor="CaretRightIcon" remixicon="RiArrowRightSLine" />
+                    <span class="sr-only">Toggle</span>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      {#each item.items as subItem (subItem)}
+                        <SidebarMenuSubItem>
+                          <SidebarMenuSubButton href="#">{subItem}</SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      {/each}
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
+                {/if}
+              </Collapsible>
             {/each}
           </SidebarMenu>
         </SidebarGroup>

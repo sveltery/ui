@@ -1,6 +1,7 @@
 ---
 title: Marker
 description: Displays an inline status, system note, bordered row, or labeled separator in a conversation.
+style: rhea
 ---
 
 <ComponentPreview name="base/MarkerExample" />

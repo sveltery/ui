@@ -21,6 +21,7 @@
   );
 
   $effect(() => {
+    if (!open) return;
     const current = query;
     searching = !!current.trim();
     search.run(current).then(() => {
@@ -113,7 +114,7 @@
           {#if query.trim() && search.hits.length}
             <Command.Group heading="Search Results" class="overflow-hidden px-0 text-foreground {heading}">
               {#each search.hits as hit (hit.href)}
-                <Command.Item value="{hit.title} {hit.href}" forceMount onSelect={() => go(hit.href)} class="{item} font-normal">
+                <Command.Item value="{hit.title} page" keywords={[hit.title]} onSelect={() => go(hit.href)} class="{item} font-normal">
                   <div class="line-clamp-1 text-sm">{hit.title}</div>
                 </Command.Item>
               {/each}

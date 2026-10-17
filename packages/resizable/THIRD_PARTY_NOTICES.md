@@ -1,6 +1,8 @@
 # Third-party notices
 
-The layout algorithm in `src/lib/layout.ts` is ported from [react-resizable-panels](https://github.com/bvaughn/react-resizable-panels) by Brian Vaughn, under the MIT License below. That covers clamping a panel size with its collapse threshold, validating a layout, and adjusting a layout by a delta across a pair of panels. The component API, the keyboard behavior and the separator ARIA values follow the same library.
+This package is a port of [react-resizable-panels](https://github.com/bvaughn/react-resizable-panels) 4.5.8 by Brian Vaughn, under the MIT License below. `src/lib/constants.ts`, `src/lib/types.ts`, `src/lib/global/`, `src/lib/utils/`, `src/lib/components/group/sortByElementOffset.ts` and `src/lib/components/group/auto-save/` are copied from it with `scripts/sync-upstream.mjs`, which applies the changes in `patches/`. The Svelte components and types in `src/lib/components/` are rewritten from its React components.
+
+`src/lib/vendor/stacking-order.ts` is react-resizable-panels' fork of [stacking-order](https://github.com/Rich-Harris/stacking-order) 2.0.0 by Rich Harris (Copyright (c) Rich Harris), also under the MIT License.
 
 MIT License
 
