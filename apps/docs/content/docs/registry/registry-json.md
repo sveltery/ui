@@ -8,7 +8,6 @@ The `registry.json` file defines your registry: its name, its homepage and its i
 
 ```json title="registry.json"
 {
-  "$schema": "https://ui.sveltery.dev/schema/registry.json",
   "name": "acme",
   "homepage": "https://acme.com",
   "items": [
@@ -34,7 +33,6 @@ You can also split a large registry across several `registry.json` files with `i
 
 ```json title="registry.json"
 {
-  "$schema": "https://ui.sveltery.dev/schema/registry.json",
   "name": "acme",
   "homepage": "https://acme.com",
   "include": ["src/lib/components/ui/registry.json", "src/lib/hooks/registry.json"]
@@ -42,16 +40,6 @@ You can also split a large registry across several `registry.json` files with `i
 ```
 
 ## Definitions
-
-### $schema
-
-The URL of the schema.
-
-```json title="registry.json"
-{
-  "$schema": "https://ui.sveltery.dev/schema/registry.json"
-}
-```
 
 ### name
 
@@ -87,7 +75,6 @@ An included file may leave out `name` and `homepage`. In an included file, item 
 
 ```json title="src/lib/components/ui/registry.json"
 {
-  "$schema": "https://ui.sveltery.dev/schema/registry.json",
   "items": [
     {
       "name": "hello-card",
@@ -102,9 +89,9 @@ Item names must be unique across all included files. `build` writes a flattened 
 
 ### items
 
-The items of your registry. Each item follows the [registry-item schema](/docs/registry/registry-item-json), except that its files name a `path` instead of holding `content`:
+The items of your registry. Each item follows the [registry-item schema](/docs/registry/registry-item-json), except that its files name a `path` instead of holding `content`. `build` writes each item to `<name>.json`, so it stops when a `name` is not lowercase letters, digits and hyphens.
 
-- `path`: the source file. Without `include`, it is relative to the working directory of `build`.
+- `path`: the source file. Without `include`, it is relative to the working directory of `build`. It must be a relative path to a file inside that directory, without `..` segments.
 - `type`: `registry:ui`, `registry:component`, `registry:page` or `registry:file`.
 - `target`: where `add` writes the file. A `registry:ui` file without a `target` goes below the `ui` directory, at the part of `path` after its first `ui` folder, such as `hello-card/HelloCard.svelte`. A `registry:component` file does the same with its first `components` folder. Without that folder, the file name is the target. A `registry:page` or `registry:file` file needs a `target`.
 
@@ -165,7 +152,7 @@ The CLI reads these paths below the registry root:
 
 ### Manifest keys
 
-The JSON Schema for `registry.json` is at [ui.sveltery.dev/schema/registry.json](https://ui.sveltery.dev/schema/registry.json).
+The JSON Schema for the manifest is at [ui.sveltery.dev/schema/registry.json](https://ui.sveltery.dev/schema/registry.json).
 
 #### $schema
 

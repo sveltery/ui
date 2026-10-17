@@ -1,7 +1,7 @@
 import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { basename, dirname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { log } from '@clack/prompts';
-import { array, CliError, literal, object, optional, ParseError, string, type Parser } from '../parse.js';
+import { array, CliError, literal, object, optional, ParseError, refine, string, type Parser } from '../parse.js';
 import { readJson } from '../project.js';
 import { registryItem, type RegistryFile } from '../registry.js';
 
@@ -16,9 +16,11 @@ type SourceItem = { name: string; files: SourceFile[]; fields: Record<string, un
 /** An item and the registry.json that declares it: its file paths are relative to `dir`. */
 type LoadedItem = SourceItem & { registryFile: string; index: number; dir: string };
 
+// `add` takes only names of this form, and the name becomes the output file name, so a `/` or `..` would write outside the output directory.
+const itemName = refine(string, (name) => /^[a-z0-9][a-z0-9-]*$/.test(name), 'lowercase letters, digits and hyphens, starting with a letter or digit');
 const sourceFile = object({ path: string, type: literal('registry:ui', 'registry:component', 'registry:page', 'registry:file'), target: optional(string) });
 const sourceItem: Parser<SourceItem> = (value, path) => {
-  const { name, files } = object({ name: string, files: optional(array(sourceFile)) })(value, path);
+  const { name, files } = object({ name: itemName, files: optional(array(sourceFile)) })(value, path);
   return { name, files: files ?? [], fields: value as Record<string, unknown> };
 };
 const sourceRegistry = object({ name: optional(string), homepage: optional(string), include: optional(array(string)), items: optional(array(sourceItem)) });
@@ -56,9 +58,15 @@ function validateFiles(item: SourceItem, registryFile: string, dir: string) {
     if (isUrl(path)) throw invalid('remote file paths are not supported by build.');
     if (isAbsolute(path)) throw invalid('file paths must be relative.');
     if (hasParentTraversal(path)) throw invalid('file paths cannot use parent-directory traversal.');
-    if (!isPathInside(resolve(dir, path), dir)) throw invalid('file paths must stay inside the registry chunk directory.');
+    if (!isPathInside(resolve(dir, path), dir)) throw invalid(`file paths must name a file inside ${dir}.`);
   }
 }
+
+const ownItems = (registry: SourceRegistry, registryFile: string, dir: string): LoadedItem[] =>
+  (registry.items ?? []).map((item, index) => {
+    validateFiles(item, registryFile, dir);
+    return { ...item, registryFile, index, dir };
+  });
 
 function includePath(include: string, registryFile: string, cwd: string): string {
   const invalid = (reason: string) => new CliError(`Invalid include "${include}" in ${registryFile}: ${reason}`);
@@ -80,17 +88,12 @@ function collectItems(registryFile: string, registry: SourceRegistry, cwd: strin
   if (first) throw new CliError(`Registry file included more than once: ${registryFile}.\n  - first included from ${first}\n  - included again from ${includedFrom}`);
   seen.set(registryFile, includedFrom);
 
-  const dir = dirname(registryFile);
   const included = (registry.include ?? []).flatMap((include) => {
     const file = includePath(include, registryFile, cwd);
     if (!existsSync(file)) throw new CliError(`Failed to read registry file at ${file}.`);
     return collectItems(file, readRegistry(file).registry, cwd, [...chain, registryFile], seen);
   });
-  const own = (registry.items ?? []).map((item, index) => {
-    validateFiles(item, registryFile, dir);
-    return { ...item, registryFile, index, dir };
-  });
-  return [...included, ...own];
+  return [...included, ...ownItems(registry, registryFile, dirname(registryFile))];
 }
 
 const targetDirs: Partial<Record<SourceFile['type'], string>> = { 'registry:ui': 'ui', 'registry:component': 'components' };
@@ -143,7 +146,7 @@ export function build(registryArg: string, options: BuildOptions): string[] {
   const rootDir = usesInclude ? dirname(registryFile) : cwd;
   const items = usesInclude
     ? collectItems(registryFile, registry, cwd, [], new Map())
-    : (registry.items ?? []).map((item, index) => ({ ...item, registryFile, index, dir: cwd }));
+    : ownItems(registry, registryFile, cwd);
   if (usesInclude) {
     const byName = new Map<string, LoadedItem>();
     for (const item of items) {
@@ -157,7 +160,6 @@ export function build(registryArg: string, options: BuildOptions): string[] {
   mkdirSync(outputDir, { recursive: true });
   for (const item of items) {
     const path = join(outputDir, `${item.name}.json`);
-    mkdirSync(dirname(path), { recursive: true });
     writeFileSync(path, `${JSON.stringify(buildItem(item, rootDir), null, 2)}\n`);
     written.push(relative(cwd, path));
   }

@@ -46,7 +46,6 @@ Create `registry.json` in the root of your project. List each item with its `nam
 
 ```json title="registry.json"
 {
-  "$schema": "https://ui.sveltery.dev/schema/registry.json",
   "name": "acme",
   "homepage": "https://example.com",
   "items": [

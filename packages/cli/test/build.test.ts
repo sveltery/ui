@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, test } from 'vitest';
@@ -101,8 +101,35 @@ describe('build', () => {
     expect(() => build('registry.json', options())).toThrow(`Invalid registry file at ${join(cwd, 'registry.json')}: items[0].files[0].type: expected "registry:ui" or "registry:component" or "registry:page" or "registry:file", got "registry:hook"`);
   });
 
+  test('rejects an item name that is not lowercase letters, digits and hyphens, and writes nothing', () => {
+    const registry = { name: 'acme', homepage: 'https://acme.test', items: [{ name: '../../registry', type: 'registry:lib', files: [] }] };
+    write('registry.json', registry);
+    expect(() => build('registry.json', options())).toThrow(
+      `Invalid registry file at ${join(cwd, 'registry.json')}: items[0].name: expected lowercase letters, digits and hyphens, starting with a letter or digit, got "../../registry"`,
+    );
+    expect(readJson('registry.json')).toEqual(registry);
+    expect(existsSync(join(cwd, 'static'))).toBe(false);
+  });
+
+  test.each<[string, (dir: string) => string]>([
+    ['https://example.com/x.svelte', () => 'remote file paths are not supported by build.'],
+    ['/etc/hostname', () => 'file paths must be relative.'],
+    ['../outside.txt', () => 'file paths cannot use parent-directory traversal.'],
+    ['.', (dir) => `file paths must name a file inside ${dir}.`],
+  ])('rejects the file path %s, with or without include', (path, reason) => {
+    write('outside.txt', 'secret\n');
+    write('registry.json', { name: 'acme', homepage: 'https://acme.test', items: [{ name: 'x', type: 'registry:lib', files: [{ path, type: 'registry:file', target: 'x.txt' }] }] });
+    expect(() => build('registry.json', options())).toThrow(`Invalid file path "${path}" for item "x" in ${join(cwd, 'registry.json')}: ${reason(cwd)}`);
+    write('registry.json', { name: 'acme', homepage: 'https://acme.test', include: ['a/registry.json'] });
+    write('a/registry.json', { items: [{ name: 'x', type: 'registry:lib', files: [{ path, type: 'registry:file', target: 'x.txt' }] }] });
+    expect(() => build('registry.json', options())).toThrow(`Invalid file path "${path}" for item "x" in ${join(cwd, 'a/registry.json')}: ${reason(join(cwd, 'a'))}`);
+    expect(existsSync(join(cwd, 'static'))).toBe(false);
+  });
+
   test('rejects include cycles, paths outside the registry, and duplicate names', () => {
     const root = (include: string[]) => write('registry.json', { name: 'acme', homepage: 'https://acme.test', include });
+    root(['registry.json']);
+    expect(() => build('registry.json', options())).toThrow(`Registry include cycle detected:\n  - ${join(cwd, 'registry.json')}\n  - ${join(cwd, 'registry.json')}`);
     root(['a/registry.json']);
     write('a/registry.json', { include: ['../registry.json'] });
     expect(() => build('registry.json', options())).toThrow('Invalid include "../registry.json"');

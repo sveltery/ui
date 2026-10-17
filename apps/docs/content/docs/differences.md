@@ -595,3 +595,13 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Why:** The CLI reads `target` on every file and never looks at `path`, so an item from `build` installs with any CLI version that reads the item format. In a project with the default aliases, the file lands where upstream would place it.
 
 **Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `build` checks item names and file paths in every registry
+
+**Upstream:** `build` writes each item to [`<output>/<name>.json`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/build.ts#L74) for any name, including one with `/` or `..`. Without `include`, it [skips the file path checks](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/registry/loader.ts#L83) that it runs on included files, so it inlines a file at an absolute path or above the working directory.
+
+**Sveltery UI:** [`build`](/docs/registry/registry-json#items) stops when an item name is not lowercase letters, digits and hyphens. It checks file paths with and without `include`: a path must be relative, without `..` segments, and name a file inside the directory it is relative to.
+
+**Why:** An item named `../../registry` overwrote the source `registry.json`, and a path such as `/etc/hostname` put a file from outside the project into the published JSON. `add` installs only names of this form, so the check rejects no item that `add` could install by name.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
