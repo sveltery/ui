@@ -387,6 +387,16 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
 
+### The Command page documents filtering and the dialog
+
+**Upstream:** The [Command page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/command.mdx#L151-L153) has no section on filtering or on `CommandDialog`, and its API Reference sends readers to the [cmdk](https://github.com/dip/cmdk) README.
+
+**Sveltery UI:** The [Command](/docs/components/command) page adds a Filtering and ranking section (`keywords`, `filter`, `shouldFilter`) after Composition, and a Dialog section with a ⌘J example after Scrollable. Its API Reference links the `@sveltery/command` README and summarizes the props in tables.
+
+**Why:** The cmdk README documents the React API, which the Svelte port does not share in every detail, so the page covers what readers would otherwise have looked up there.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
 ### Navigation Menu example links go to Sveltery UI pages
 
 **Upstream:** The links in [`navigation-menu-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/navigation-menu-example.tsx#L24-L53) point at shadcn/ui's `/docs/primitives/*` routes, and the Typography link at [line 82](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/navigation-menu-example.tsx#L82) points at `/docs/primitives/typography`.
@@ -894,5 +904,13 @@ The old `list` command marked the items in your project as `installed` and had n
 **Sveltery UI:** [`info`](/docs/cli#info) leaves out `rsc`, `typescript`, `tailwindConfig`, `base` and `rtl`. Svelte has no server components or JSX, `components.json` has `typescript: true` only, Tailwind CSS 4 has no config file, the Base UI variant is the only one, and `init --rtl` is not supported. The project shows the framework version (SvelteKit's or Vite's), `svelteVersion` and `tailwindVersion` as versions, such as `4.1.2`, taken from `node_modules` when the package is installed and from `package.json` otherwise. The installed items are the manifest items that have a folder under `aliases.ui`. `registry` is the one registry the CLI reads. It does not stop in a monorepo root, because the CLI has no workspace detection and takes `--cwd`, and it has no example link, because a component's page shows its examples.
 
 **Why:** Each omitted field only has a value in a React or Next.js project, or in a setup that this CLI does not have. A version is more useful than `v4` for a bug report.
+
+### Preset resolve reads the CSS of a Svelte project
+
+**Upstream:** [`preset resolve`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/preset.ts#L150-L204) works out the preset from `components.json`, the CSS file and, in a Next.js app, the `next/font/google` imports and the `className` of the root layout ([`resolve.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/preset/resolve.ts#L478-L500)). In a monorepo root it stops and lists the workspaces. `preset open` calls the [`open`](https://www.npmjs.com/package/open) package.
+
+**Sveltery UI:** [`preset resolve`](/docs/cli#preset) reads `components.json` and the CSS file only: the `:root` and `.dark` variables, the `@theme inline` fonts and the fontsource imports. A SvelteKit app has no font module to read. It does not stop in a monorepo root, because the CLI has no workspace detection and takes `--cwd`. `preset open` starts the system's opener (`open`, `start` or `xdg-open`) itself.
+
+**Why:** `init` writes every font as a fontsource import and a theme variable, so the CSS holds what the Next.js readers look for. The `open` package adds dependencies for a call that starts one program.
 
 **Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
