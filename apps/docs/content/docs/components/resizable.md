@@ -3,7 +3,7 @@ title: Resizable
 description: Accessible resizable panel groups and layouts with keyboard support.
 ---
 
-<ComponentPreview name="base/ResizableExample" />
+<ComponentPreview name="base/ResizableDemoExample" />
 
 ## About
 
@@ -56,10 +56,10 @@ The component folders import each other with relative paths, so keep them side b
 ```
 
 ```svelte
-<ResizablePanelGroup orientation="horizontal" class="min-h-[200px] max-w-md rounded-lg border">
-  <ResizablePanel defaultSize="50%">One</ResizablePanel>
+<ResizablePanelGroup orientation="horizontal">
+  <ResizablePanel>One</ResizablePanel>
   <ResizableHandle />
-  <ResizablePanel defaultSize="50%">Two</ResizablePanel>
+  <ResizablePanel>Two</ResizablePanel>
 </ResizablePanelGroup>
 ```
 
@@ -94,27 +94,15 @@ A panel without a `defaultSize` takes an equal share of what the other panels le
 
 ## Vertical
 
-Use `orientation="vertical"` to stack the panels.
+Use `orientation="vertical"` for vertical resizing.
 
-```svelte
-<ResizablePanelGroup orientation="vertical" class="min-h-[200px] max-w-md rounded-lg border">
-  <ResizablePanel defaultSize="25%">Header</ResizablePanel>
-  <ResizableHandle />
-  <ResizablePanel defaultSize="75%">Content</ResizablePanel>
-</ResizablePanelGroup>
-```
+<ComponentPreview name="base/ResizableVerticalExample" />
 
 ## Handle
 
-Use the `withHandle` prop on `ResizableHandle` to show a visible grip.
+Use the `withHandle` prop on `ResizableHandle` to show a visible handle.
 
-```svelte
-<ResizablePanelGroup orientation="horizontal" class="min-h-[200px] max-w-md rounded-lg border">
-  <ResizablePanel defaultSize="25%">Sidebar</ResizablePanel>
-  <ResizableHandle withHandle />
-  <ResizablePanel defaultSize="75%">Content</ResizablePanel>
-</ResizablePanelGroup>
-```
+<ComponentPreview name="base/ResizableHandleExample" />
 
 ## Layout
 
@@ -216,19 +204,13 @@ A pointer grabs a handle from up to 5 pixels away, or 10 pixels on a touch scree
 
 ## RTL
 
-A horizontal group follows the text direction. In a right-to-left page the first panel sits on the right. Panels are resized in the order they sit on screen, so a drag and the arrow keys move the handle the same way as in a left-to-right page. Set `dir` on the group or one of its ancestors.
+A horizontal group follows the text direction. In a right-to-left page the first panel sits on the right. Panels are resized in the order they sit on screen, so a drag and the arrow keys move the handle the same way as in a left-to-right page. Set `dir` on the group or one of its ancestors, and wrap the group in a [DirectionProvider](/docs/components/direction). Use the buttons to switch the language.
 
-```svelte
-<div dir="rtl">
-  <ResizablePanelGroup orientation="horizontal">
-    <ResizablePanel defaultSize="50%">One</ResizablePanel>
-    <ResizableHandle />
-    <ResizablePanel defaultSize="50%">Two</ResizablePanel>
-  </ResizablePanelGroup>
-</div>
-```
+<ComponentPreview name="base/ResizableRtlExample" align="start" />
 
-## API reference
+## API Reference
+
+See the [react-resizable-panels](https://github.com/bvaughn/react-resizable-panels/tree/main/packages/react-resizable-panels) documentation. `@sveltery/resizable` is a Svelte port of it, and the tables below list the props and methods of the Svelte components.
 
 ### ResizablePanelGroup
 
@@ -293,3 +275,26 @@ A bound `panelRef` has these methods.
 | `storage` | `{ getItem, setItem }` | `localStorage` | Where to keep the layout |
 
 It returns `{ defaultLayout, onLayoutChanged }` to pass to a `ResizablePanelGroup`.
+
+## Changelog
+
+### 2025-02-02 `react-resizable-panels` v4
+
+Updated to `react-resizable-panels` v4. See the [v4.0.0 release notes](https://github.com/bvaughn/react-resizable-panels/releases/tag/4.0.0) for full details. `@sveltery/resizable` follows the v4 API, so sizes are strings such as `"50%"`.
+
+If you use `react-resizable-panels` primitives directly, note the following changes:
+
+| v3                           | v4                      |
+| ---------------------------- | ----------------------- |
+| `PanelGroup`                 | `Group`                 |
+| `PanelResizeHandle`          | `Separator`             |
+| `direction` prop             | `orientation` prop      |
+| `defaultSize={50}`           | `defaultSize="50%"`     |
+| `onLayout`                   | `onLayoutChange`        |
+| `ImperativePanelHandle`      | `PanelImperativeHandle` |
+| `ref` prop on Panel          | `panelRef` prop         |
+| `data-panel-group-direction` | `aria-orientation`      |
+
+<Callout>
+  The Sveltery UI wrapper components (`ResizablePanelGroup`, `ResizablePanel`, `ResizableHandle`) remain unchanged.
+</Callout>
