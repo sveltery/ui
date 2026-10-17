@@ -27,11 +27,11 @@ const texts = (locator: Locator) => locator.evaluateAll((elements) => elements.m
 const footer = (page: Page) => page.getByText(/row\(s\) selected\./);
 const pageLabel = (page: Page) => page.getByText(/^Page \d+ of \d+$/);
 
-const tooltip = (page: Page) => texts(page.locator('[data-slot=chart] .lc-tooltip-root'));
+const tooltip = (page: Page) => page.locator('[data-slot=chart] .recharts-tooltip-wrapper').evaluateAll((elements) => elements.map((element) => (element as HTMLElement).innerText.replace(/\s+/g, ' ').trim()));
 
 /** The tooltip of the first or last day the chart shows, read by hovering the edge of the plot. */
 async function day(page: Page, edge: 'first' | 'last') {
-  const area = page.locator('[data-slot=chart] path.lc-area-path').first();
+  const area = page.locator('[data-slot=chart] path.recharts-area-area').first();
   await area.scrollIntoViewIfNeeded();
   const plot = (await area.boundingBox())!;
   await page.mouse.move(edge === 'first' ? plot.x + 1 : plot.x + plot.width - 1, plot.y + plot.height / 2);
@@ -47,7 +47,7 @@ test('renders the sidebar, the cards, the chart and the first page of the table,
     'Acme Inc.', 'Quick Create', 'Dashboard', 'Lifecycle', 'Analytics', 'Projects', 'Team', 'Data Library', 'Reports', 'Word Assistant', 'More', 'Settings', 'Get Help', 'Search',
   ]);
   await expect(page.locator('[data-slot=card-title]')).toHaveText(['$1,250.00', '1,234', '45,678', '4.5%', 'Total Visitors']);
-  await expect(page.locator('[data-slot=chart] path.lc-area-path')).toHaveCount(2);
+  await expect(page.locator('[data-slot=chart] path.recharts-area-area')).toHaveCount(2);
   await expect(page.locator('thead th')).toHaveText(['', '', 'Header', 'Section Type', 'Status', 'Target', 'Limit', 'Reviewer', '']);
   await expect(headers(page)).toHaveCount(10);
   await expect(headers(page).first()).toHaveText('Cover page');
@@ -60,15 +60,15 @@ test('renders the sidebar, the cards, the chart and the first page of the table,
   const ranges = page.locator('[data-slot=toggle-group-item]');
   await expect(ranges).toHaveText(['Last 3 months', 'Last 30 days', 'Last 7 days']);
   await expect(ranges.first()).toHaveAttribute('aria-pressed', 'true');
-  await expect.poll(() => day(page, 'first')).toEqual(['Apr 1 Desktop 222 Mobile 150']);
+  await expect.poll(() => day(page, 'first')).toEqual(['Apr 1 Mobile 150 Desktop 222']);
 
   await page.getByRole('button', { name: 'Last 7 days' }).click();
   await expect(ranges.last()).toHaveAttribute('aria-pressed', 'true');
-  await expect.poll(() => day(page, 'first')).toEqual(['Jun 23 Desktop 480 Mobile 530']);
-  await expect.poll(() => day(page, 'last')).toEqual(['Jun 30 Desktop 446 Mobile 400']);
+  await expect.poll(() => day(page, 'first')).toEqual(['Jun 23 Mobile 530 Desktop 480']);
+  await expect.poll(() => day(page, 'last')).toEqual(['Jun 30 Mobile 400 Desktop 446']);
 
   await page.getByRole('button', { name: 'Last 30 days' }).click();
-  await expect.poll(() => day(page, 'first')).toEqual(['May 31 Desktop 178 Mobile 230']);
+  await expect.poll(() => day(page, 'first')).toEqual(['May 31 Mobile 230 Desktop 178']);
 
   const document = page.locator('[data-slot=sidebar-menu-item]', { hasText: 'Reports' });
   await document.hover();
@@ -87,12 +87,12 @@ test('on a phone the chart starts on the last 7 days and the select changes the 
   await expect(page.locator('[data-slot=toggle-group]')).toBeHidden();
   const select = page.getByRole('combobox', { name: 'Select a value' });
   await expect(select).toHaveText('Last 7 days');
-  await expect.poll(() => day(page, 'first')).toEqual(['Jun 23 Desktop 480 Mobile 530']);
+  await expect.poll(() => day(page, 'first')).toEqual(['Jun 23 Mobile 530 Desktop 480']);
 
   await select.click();
   await page.getByRole('option', { name: 'Last 30 days' }).click();
   await expect(select).toHaveText('Last 30 days');
-  await expect.poll(() => day(page, 'first')).toEqual(['May 31 Desktop 178 Mobile 230']);
+  await expect.poll(() => day(page, 'first')).toEqual(['May 31 Mobile 230 Desktop 178']);
 });
 
 test('the pager moves through the pages and the page size keeps the first row in view', async ({ page }) => {

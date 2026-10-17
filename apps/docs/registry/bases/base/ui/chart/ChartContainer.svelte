@@ -1,75 +1,33 @@
 <script lang="ts">
-  import { on } from 'svelte/events';
   import { cn } from 'cn';
-  import type { ChartState } from 'layerchart';
+  import { ResponsiveContainer } from '@sveltery/recharts';
+  import { setChart } from './context.js';
   import ChartStyle from './ChartStyle.svelte';
-  import { setChartContainer, type ChartRow } from './context.js';
   import type { ChartContainerProps } from './types.js';
 
-  const uid = $props.id();
-  let { id, config, class: classProp, children, ...props }: ChartContainerProps = $props();
+  const INITIAL_DIMENSION = { width: 320, height: 200 } as const;
 
-  const chartId = $derived(`chart-${id ?? uid}`);
-  let tooltipChart = $state.raw<ChartState<ChartRow>>();
+  let { id, class: className, children, config, initialDimension = INITIAL_DIMENSION, ...props }: ChartContainerProps = $props();
 
-  setChartContainer({
+  const uniqueId = $props.id();
+  const chartId = $derived(`chart-${id ?? uniqueId.replace(/:/g, '')}`);
+
+  setChart({
     get config() {
       return config;
     },
-    registerTooltip(chart) {
-      tooltipChart = chart;
-      return () => {
-        if (tooltipChart === chart) tooltipChart = undefined;
-      };
-    },
   });
-
-  // LayerChart has no keyboard tooltip. The container steps through the chart's rows and shows each one through the chart's tooltip.
-  function keyboard(node: HTMLElement) {
-    const chart = tooltipChart;
-    if (!chart) return;
-    const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 } as const;
-    const offKeydown = on(node, 'keydown', (event) => {
-      const rows = chart.flatData;
-      const last = rows.length - 1;
-      if (event.key === 'Escape') return chart.tooltip.hide();
-      const current = rows.indexOf(chart.tooltip.data);
-      const next =
-        event.key === 'Home' ? 0
-        : event.key === 'End' ? last
-        : event.key in step ? current + step[event.key as keyof typeof step]
-        : undefined;
-      if (next === undefined) return;
-      event.preventDefault();
-      chart.tooltip.show({ data: rows[Math.min(Math.max(next, 0), last)] });
-    });
-    const offBlur = on(node, 'blur', () => chart.tooltip.hide());
-    return () => {
-      offKeydown();
-      offBlur();
-    };
-  }
 </script>
 
-<!-- The tabindex and role exist only while a tooltip is registered. -->
-<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <div
   data-slot="chart"
   data-chart={chartId}
-  tabindex={tooltipChart ? 0 : undefined}
-  role={tooltipChart ? 'application' : undefined}
-  aria-roledescription={tooltipChart ? 'chart' : undefined}
   class={cn(
-    'cn-chart PortalTarget flex aspect-video justify-center text-xs focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-hidden',
-    '[&_.lc-bar]:stroke-transparent [&_.lc-line]:stroke-border/50 [&_.lc-axis-tick]:stroke-0 [&_.lc-rule-y-line:not(.lc-grid-y-rule)]:stroke-0',
-    '[&_.lc-highlight-point]:stroke-transparent [&_.lc-highlight-line]:stroke-0',
-    '[&_.lc-text]:text-xs [&_text]:stroke-transparent [&_.lc-axis-tick-label]:fill-muted-foreground',
-    '[&_.lc-grid-y-radial-line]:stroke-border [&_.lc-grid-y-radial-circle]:stroke-border',
-    classProp
+    "cn-chart flex aspect-video justify-center text-xs [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-hidden [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_[stroke='#ccc']]:stroke-border [&_.recharts-sector]:outline-hidden [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-surface]:outline-hidden",
+    className
   )}
   {...props}
-  {@attach keyboard}
 >
   <ChartStyle id={chartId} {config} />
-  {@render children?.()}
+  <ResponsiveContainer {initialDimension}>{@render children()}</ResponsiveContainer>
 </div>

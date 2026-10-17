@@ -1,71 +1,70 @@
 <script lang="ts">
+  import { RadialBar, RadialBarChart } from '@sveltery/recharts';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';
-  import { ArcChart } from 'layerchart';
 
   const chartData = [
-    { browser: 'other', visitors: 90, color: 'var(--color-other)' },
-    { browser: 'edge', visitors: 173, color: 'var(--color-edge)' },
-    { browser: 'firefox', visitors: 187, color: 'var(--color-firefox)' },
-    { browser: 'safari', visitors: 200, color: 'var(--color-safari)' },
-    { browser: 'chrome', visitors: 275, color: 'var(--color-chrome)' },
-  ];
+    { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
+    { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
+    { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
+    { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
+    { browser: "other", visitors: 90, fill: "var(--color-other)" },
+  ]
 
   const chartConfig = {
-    visitors: { label: 'Visitors' },
-    chrome: { label: 'Chrome', color: 'var(--chart-1)' },
-    safari: { label: 'Safari', color: 'var(--chart-2)' },
-    firefox: { label: 'Firefox', color: 'var(--chart-3)' },
-    edge: { label: 'Edge', color: 'var(--chart-4)' },
-    other: { label: 'Other', color: 'var(--chart-5)' },
-  } satisfies ChartConfig;
+    visitors: {
+      label: "Visitors",
+    },
+    chrome: {
+      label: "Chrome",
+      color: "var(--chart-1)",
+    },
+    safari: {
+      label: "Safari",
+      color: "var(--chart-2)",
+    },
+    firefox: {
+      label: "Firefox",
+      color: "var(--chart-3)",
+    },
+    edge: {
+      label: "Edge",
+      color: "var(--chart-4)",
+    },
+    other: {
+      label: "Other",
+      color: "var(--chart-5)",
+    },
+  } satisfies ChartConfig
 </script>
 
-<Card class="w-full max-w-md">
-  <CardHeader class="items-center">
+<Card class="flex flex-col">
+  <CardHeader class="items-center pb-0">
     <CardTitle>Radial Chart</CardTitle>
-    <CardDescription>Showing total visitors for the last 6 months</CardDescription>
+    <CardDescription>January - June 2024</CardDescription>
   </CardHeader>
-  <CardContent class="flex-1">
-    <ChartContainer aria-label="Radial Chart" config={chartConfig} class="mx-auto aspect-square max-h-[250px]">
-      <ArcChart
-        label="browser"
-        value="visitors"
-        outerRadius={-17}
-        innerRadius={-12.5}
-        padding={20}
-        range={[90, -270]}
-        maxValue={Math.max(...chartData.map((d) => d.visitors))}
-        series={chartData.map((d) => ({
-          key: d.browser,
-          color: d.color,
-          data: [d],
-        }))}
-        props={{
-          arc: { track: { fill: 'var(--muted)' }, motion: 'tween' },
-          tooltip: { context: { hideDelay: 350 } },
-        }}
-      >
-        {#snippet tooltip()}
-          <ChartTooltip hideLabel nameKey="browser" />
-        {/snippet}
-      </ArcChart>
+  <CardContent class="flex-1 pb-0">
+    <ChartContainer config={chartConfig} class="mx-auto aspect-square max-h-[250px]">
+      <RadialBarChart data={chartData} innerRadius={30} outerRadius={110}>
+        <ChartTooltip cursor={false}>
+          {#snippet content(props: TooltipContentArgs)}
+            <ChartTooltipContent hideLabel nameKey="browser" {...props} />
+          {/snippet}
+        </ChartTooltip>
+        <RadialBar dataKey="visitors" background />
+      </RadialBarChart>
     </ChartContainer>
   </CardContent>
   <CardFooter class="flex-col gap-2 text-sm">
-    <div class="flex items-center gap-2 leading-none font-medium">
-      Trending up by 5.2% this month <IconPlaceholder
+    <div class="flex items-center gap-2 leading-none font-medium">Trending up by 5.2% this month <IconPlaceholder
         lucide="TrendingUpIcon"
         tabler="IconTrendingUp"
         hugeicons="TradeUpIcon"
         phosphor="TrendUpIcon"
         remixicon="RiLineChartLine"
-        class="size-4"
-      />
-    </div>
-    <div class="text-muted-foreground flex items-center gap-2 leading-none">
-      January - June 2024
-    </div>
+        class="h-4 w-4"
+      /></div>
+    <div class="leading-none text-muted-foreground">Showing total visitors for the last 6 months</div>
   </CardFooter>
 </Card>
