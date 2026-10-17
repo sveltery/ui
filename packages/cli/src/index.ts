@@ -112,7 +112,7 @@ program
 program
   .command('view')
   .description('view items from the registry')
-  .argument('<items...>', 'item names, or URLs of registry items')
+  .argument('<items...>', 'item names, @namespace/item names, or URLs of registry items')
   .option('--cwd <path>', 'the project root', '.')
   .action(async (items: string[], options) => void (await view(items, { cwd: resolve(options.cwd) })));
 

@@ -69,7 +69,7 @@ To send headers or query parameters, give an object:
 
 ## Use namespaced items
 
-`add`, `diff` and `update` take `@namespace/item` names:
+`add`, `diff`, `update` and `view` take `@namespace/item` names:
 
 ```bash
 npx @sveltery/ui@latest add @acme/hello-card @internal/auth-form

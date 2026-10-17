@@ -373,7 +373,7 @@ Use the `view` command to print registry items as JSON. It never writes anything
 npx @sveltery/ui@latest view button
 ```
 
-`view` prints one JSON array with an object for each argument, in the order you gave them. Each object is the item as the registry serves it, with the content of its files. It does not fetch the items they depend on. An argument is an item name, or the URL of an item.
+`view` prints one JSON array with an object for each argument, in the order you gave them. Each object is the item as the registry serves it, with the content of its files. It does not fetch the items they depend on. An argument is an item name, an `@namespace/item` name from the [`registries`](/docs/registry/namespace) of `components.json`, or the URL of an item.
 
 The item name resolves in the style from `components.json`, or `nova` when there is none. The registry is `SVELTERY_REGISTRY_URL`, else the `registry` key of `components.json`, else the Sveltery registry.
 
@@ -385,7 +385,7 @@ Usage: sveltery view [options] <items...>
 view items from the registry
 
 Arguments:
-  items         item names, or URLs of registry items
+  items         item names, @namespace/item names, or URLs of registry items
 
 Options:
   --cwd <path>  the project root (default: ".")
