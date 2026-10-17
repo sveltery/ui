@@ -116,6 +116,10 @@ A table showing actions for each row using a `<DropdownMenu />` component.
 
 You can use the `<Table />` component to build more complex data tables. Combine it with [TanStack Table](https://tanstack.com/table/latest) to create tables with sorting, filtering and pagination.
 
+See the [Data Table](/docs/components/data-table) documentation for more information.
+
+You can also see an example of a data table in the [Tasks](https://ui.shadcn.com/examples/tasks) demo.
+
 ## RTL
 
 Wrap the table in a [DirectionProvider](/docs/components/direction) and set `dir` on `Table`. Use the buttons to switch the language.

@@ -413,16 +413,6 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
 
-### The Table page has no Data Table guide
-
-**Upstream:** The [Table](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/table.mdx) page links to a Data Table guide built on `@tanstack/react-table`, and to the Tasks demo.
-
-**Sveltery UI:** The [Table](/docs/components/table) page names TanStack Table and has no Data Table guide or Tasks demo to link.
-
-**Why:** Sveltery UI has no Data Table guide yet, and the links would lead nowhere.
-
-**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
-
 ### The Card changelog edits the style stylesheet
 
 **Upstream:** The "Spacing Variable" changelog in [`card.mdx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/card.mdx) shows diffs to the class strings in `card.tsx`.
