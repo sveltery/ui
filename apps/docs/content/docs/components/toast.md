@@ -3,11 +3,7 @@ title: Toast
 description: A toast built from the Base toast parts, with a toast manager you can call from anywhere.
 ---
 
-<ComponentPreview name="base/ToastExample" />
-
-## About
-
-Toast is the shadcn/ui Toast, built on the Sveltery Base `Toast` parts. `Toaster` renders the provider, the portal, the viewport and one `Toast` for each toast. The `toast` manager adds toasts from components, modules and event handlers. Sveltery UI has no Sonner component, because Toast covers the same behavior. Where shadcn/ui code calls `toast()` from `sonner`, call `toast.add()` here.
+<ComponentPreview name="base/ToastDemoExample" />
 
 ## Installation
 
@@ -73,47 +69,37 @@ Call `toast.add()` from any component or module.
 </button>
 ```
 
-## Examples
+`Toaster` renders the provider, the portal, the viewport and one `Toast` for each toast. Sveltery UI has no Sonner component, because Toast covers the same behavior. Where shadcn/ui code calls `toast()` from `sonner`, call `toast.add()` here.
 
-### With action
+## Types
 
-`actionProps` adds a button. `children` is its label and `onclick` runs when it is clicked. `toast.add()` returns the toast's id, so the handler can close the toast.
+Set the `type` option to render a status icon. The built-in renderer recognizes `success`, `info`, `warning`, `error` and `loading`. Other values show no icon.
+
+<ComponentPreview name="base/ToastTypesExample" />
+
+## Action
+
+Pass button props with `actionProps` to render an action. `children` is its label and `onclick` runs when it is clicked. `toast.add()` returns the toast's id, so the handler can close the toast.
 
 ```ts
 const id = toast.add({
   title: 'Event created',
-  description: 'You can undo this action.',
   actionProps: {
     children: 'Undo',
     onclick() {
       toast.close(id);
-      toast.add({ description: 'Event creation undone.' });
     }
   }
 });
 ```
 
-### Promise
+## Promise
 
-`toast.promise()` shows the `loading` toast, then replaces it with `success` or `error`. Each takes a string, an options object, or a function of the result or the error that returns either. It returns the promise you passed.
+Use `toast.promise()` to update one toast as an asynchronous task moves through loading, success and error states. Each takes a string, an options object, or a function of the result or the error that returns either. It returns the promise you passed.
 
-```ts
-toast.promise(createEvent(), {
-  loading: 'Creating event…',
-  success: (data) => `${data.name} created.`,
-  error: 'Could not create event.'
-});
-```
+<ComponentPreview name="base/ToastPromiseExample" />
 
-### Types
-
-Set `type` to `success`, `info`, `warning`, `error` or `loading` to show that icon. Other values show no icon.
-
-```ts
-toast.add({ title: 'Event created', type: 'success' });
-```
-
-### Custom layout
+## Custom layout
 
 `Toaster` is the standard layout. To change it, compose the parts yourself and read the toasts with `getToastManager()` inside a `ToastProvider`.
 
@@ -143,7 +129,9 @@ toast.add({ title: 'Event created', type: 'success' });
 
 Render that component inside `<ToastProvider toastManager={toast}>`.
 
-## API reference
+## API Reference
+
+See the [Base UI Toast documentation](https://base-ui.com/react/components/toast) for details about manager options, stacking, swipe dismissal, and the primitive API.
 
 ### Toaster
 
@@ -196,5 +184,3 @@ Each part accepts the props of the Base part it wraps and sets a `data-slot`.
 | `ToastClose`       | `Toast.Close`        | `toast-close`       |
 
 `ToastClose` shows an X icon unless you pass children. The icon for a toast's `type` has `data-slot="toast-icon"`.
-
-See the [Base Toast documentation](https://base-ui.com/react/components/toast) for the behavior it ports: stacking, hover and F6 expansion, swipe to dismiss and screen reader announcements.
