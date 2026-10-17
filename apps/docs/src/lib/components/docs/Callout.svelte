@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
+  import InfoIcon from '@lucide/svelte/icons/info';
   import { cn } from 'cn';
 
   let {
@@ -21,7 +22,11 @@
     className,
   )}
 >
-  {@render icon?.()}
+  {#if icon}
+    {@render icon()}
+  {:else if variant === 'info'}
+    <InfoIcon class="translate-y-[3px]!" />
+  {/if}
   {#if title}<div data-slot="alert-title" class="col-start-2 line-clamp-1 min-h-4 font-medium tracking-tight">{title}</div>{/if}
   <div data-slot="alert-description" class="col-start-2 grid justify-items-start gap-1 text-sm text-card-foreground/80 [&_p]:leading-relaxed">{@render children()}</div>
 </div>
