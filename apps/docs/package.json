@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "vite dev --host 127.0.0.1",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-    "build": "pnpm --filter @sveltery/resizable --filter @sveltery/svelte --filter @sveltery/command build && vite build && pagefind --site .svelte-kit/cloudflare",
+    "build": "pnpm --filter @sveltery/resizable --filter @sveltery/svelte --filter @sveltery/command build && vite build && node search-index.mjs",
     "preview": "wrangler dev --port 4173",
     "deploy": "wrangler deploy"
   },

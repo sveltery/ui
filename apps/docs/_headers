@@ -1,0 +1,3 @@
+# Prerendered .md files would otherwise be served without the charset their endpoint sets.
+/*.md
+  Content-Type: text/markdown; charset=utf-8
