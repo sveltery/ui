@@ -41,8 +41,7 @@ export function addToRange(
     next = { from: date, to: min > 0 ? undefined : date };
   } else if (from && !to) {
     if (lib.isSameDay(from, date)) {
-      if (min === 0) next = { from, to: date };
-      else if (required) next = { from, to: undefined };
+      if (required) next = { from, to: undefined };
     } else if (lib.isBefore(date, from)) {
       next = { from: date, to: from };
     } else {
@@ -82,19 +81,11 @@ export function selectRange(
     max?: number;
     disabled?: Matcher | Matcher[];
     excludeDisabled?: boolean;
-    resetOnSelect?: boolean;
   },
   lib: DateLib,
 ): DateRange | undefined {
-  const { required, disabled, excludeDisabled, resetOnSelect } = options;
-  let next: DateRange | undefined;
-
-  if (resetOnSelect && (!selected?.from || selected.to)) {
-    const isSingleDayRange = selected?.to && lib.isSameDay(selected.to, date) && selected.from && lib.isSameDay(selected.from, date);
-    next = !required && isSingleDayRange ? undefined : { from: date, to: undefined };
-  } else {
-    next = addToRange(date, selected, options, lib);
-  }
+  const { disabled, excludeDisabled } = options;
+  let next = addToRange(date, selected, options, lib);
 
   if (excludeDisabled && disabled && next?.from && next.to && rangeContainsModifiers({ from: next.from, to: next.to }, disabled, lib)) {
     next = { from: date, to: undefined };

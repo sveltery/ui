@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { DateLib } from './date-lib.js';
-import { dateMatchModifiers, isDateRange, rangeContainsModifiers, rangeIncludesDate, toZoneMatchers } from './matchers.js';
+import { dateMatchModifiers, isDateRange, rangeContainsModifiers, rangeIncludesDate } from './matchers.js';
 
 const lib = new DateLib();
 const d = (month: number, day: number, hours = 0) => new Date(2024, month - 1, day, hours);
@@ -162,46 +162,5 @@ describe('rangeContainsModifiers', () => {
     expect(contains((date) => date.getDate() === 12)).toBe(true);
     expect(contains((date) => date.getDate() === 15)).toBe(false);
     expect(contains([(date) => date.getDate() === 99, (date) => date.getDate() === 14])).toBe(true);
-  });
-});
-
-describe('toZoneMatchers', () => {
-  const tokyo = new DateLib({ timeZone: 'Asia/Tokyo' });
-  const instant = new Date('2024-03-10T20:00:00Z');
-  const asDay = (matcher: unknown) => tokyo.format(matcher as Date, 'yyyy-MM-dd');
-
-  it('returns the matchers as they are without a time zone', () => {
-    const matchers = [d(3, 1), { before: d(3, 5) }];
-    expect(toZoneMatchers(matchers, lib)).toBe(matchers);
-    expect(toZoneMatchers(undefined, tokyo)).toBeUndefined();
-  });
-
-  it('moves a date', () => {
-    expect(asDay(toZoneMatchers(instant, tokyo))).toBe('2024-03-11');
-  });
-
-  it('moves the dates of an array', () => {
-    const result = toZoneMatchers([instant, instant], tokyo) as Date[];
-    expect(result.map(asDay)).toEqual(['2024-03-11', '2024-03-11']);
-  });
-
-  it('moves the ends of a range and keeps a missing end', () => {
-    const result = toZoneMatchers({ from: instant, to: undefined }, tokyo) as { from: Date; to: undefined };
-    expect(asDay(result.from)).toBe('2024-03-11');
-    expect(result.to).toBeUndefined();
-  });
-
-  it('moves before, after and interval matchers', () => {
-    expect(asDay((toZoneMatchers({ before: instant }, tokyo) as { before: Date }).before)).toBe('2024-03-11');
-    expect(asDay((toZoneMatchers({ after: instant }, tokyo) as { after: Date }).after)).toBe('2024-03-11');
-    const interval = toZoneMatchers({ before: instant, after: instant }, tokyo) as { before: Date; after: Date };
-    expect([asDay(interval.before), asDay(interval.after)]).toEqual(['2024-03-11', '2024-03-11']);
-  });
-
-  it('moves the matchers inside a list and leaves other kinds alone', () => {
-    const fn = () => true;
-    const result = toZoneMatchers([true, fn, { dayOfWeek: 1 }, { before: instant }], tokyo) as unknown[];
-    expect(result.slice(0, 3)).toEqual([true, fn, { dayOfWeek: 1 }]);
-    expect(asDay((result[3] as { before: Date }).before)).toBe('2024-03-11');
   });
 });

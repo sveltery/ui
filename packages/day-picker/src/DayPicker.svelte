@@ -1,5 +1,5 @@
 <!--
-  A date picker grid. Ports react-day-picker v9.14.0 DayPicker.tsx; MIT, see THIRD_PARTY_NOTICES.md.
+  A date picker grid. Ports react-day-picker v9.8.1 DayPicker.tsx, the version shadcn/ui renders; MIT, see THIRD_PARTY_NOTICES.md.
 -->
 <script lang="ts">
   import { untrack } from 'svelte';
@@ -9,7 +9,6 @@
   import { defaultFormatters, defaultLabels } from './format.js';
   import { getMonthOptions, getWeekdays, getYearOptions } from './grid.js';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { ownProps } from './props.js';
   import type { ChevronSnippetProps, DayButtonSnippetProps, DayPickerProps, WeekNumberSnippetProps } from './props.js';
   import type { CalendarDay, CalendarMonth, ClassNames, Modifiers } from './types.js';
   import { defaultClassNames } from './class-names.js';
@@ -44,12 +43,9 @@
   const lib = $derived(state.lib);
   const interactive = $derived(props.mode !== undefined || props.onDayClick !== undefined);
   const numberOfMonths = $derived(props.numberOfMonths ?? 1);
-  const weekdays = $derived(getWeekdays(lib, props.ISOWeek, state.today));
-  const yearFirst = $derived(lib.getMonthYearOrder() === 'year-first');
+  const weekdays = $derived(getWeekdays(lib, props.ISOWeek));
 
-  const rootAttributes = $derived(
-    Object.fromEntries(Object.entries(props).filter(([key]) => !(key in ownProps))) as HTMLAttributes<HTMLDivElement>,
-  );
+  const dataAttributes = $derived(Object.fromEntries(Object.entries(props).filter(([key]) => key.startsWith('data-'))));
 
   function dayClass(modifiers: Modifiers) {
     const names = [classNames.day];
@@ -66,15 +62,13 @@
     return {
       type: 'button' as const,
       class: classNames.day_button,
-      disabled: (!modifiers.focused && modifiers.disabled) || undefined,
-      'aria-disabled': (modifiers.focused && modifiers.disabled) || undefined,
+      disabled: modifiers.disabled || undefined,
       tabindex: state.isFocusTarget(day) ? 0 : -1,
       'aria-label': labels.labelDayButton(day.date, modifiers, lib),
       onclick: (event: MouseEvent) => {
         event.preventDefault();
         event.stopPropagation();
         state.focus(day);
-        if (modifiers.disabled) return;
         state.select(day, modifiers, event);
         props.onDayClick?.(day.date, modifiers, event);
       },
@@ -103,24 +97,30 @@
     };
   }
 
-  const rootProps = $derived({
-    ...rootAttributes,
+  const rootProps: HTMLAttributes<HTMLDivElement> = $derived({
     class: [classNames.root, classProp],
+    style: props.style,
     dir: props.dir,
-    lang: rootAttributes.lang ?? lib.options.locale?.code,
+    id: props.id,
+    lang: props.lang,
+    nonce: props.nonce,
+    title: props.title,
+    role: props.role,
+    'aria-label': props['aria-label'],
     'data-mode': props.mode,
-    'data-required': props.mode ? props.required : undefined,
+    'data-required': 'required' in props ? props.required : undefined,
     'data-multiple-months': numberOfMonths > 1 || undefined,
     'data-week-numbers': props.showWeekNumber || undefined,
-    'data-nav-layout': props.navLayout,
+    'data-nav-layout': props.navLayout || undefined,
+    ...dataAttributes,
   });
 
   const visuallyHidden =
     'border:0;clip:rect(0 0 0 0);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;white-space:nowrap;word-wrap:normal';
 </script>
 
-{#snippet defaultChevron({ orientation, class: className }: ChevronSnippetProps)}
-  <svg class={className} width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+{#snippet defaultChevron({ orientation, class: className, size = 24 }: ChevronSnippetProps)}
+  <svg class={className} width={size} height={size} viewBox="0 0 24 24">
     {#if orientation === 'up'}
       <polygon points="6.77 17 12.5 11.43 18.24 17 20 15.28 12.5 8 5 15.28" />
     {:else if orientation === 'down'}
@@ -146,7 +146,7 @@
     aria-label={labels.labelPrevious(state.previousMonth)}
     onclick={state.goToPrevious}
   >
-    {@render chevron({ orientation: props.dir === 'rtl' && props.navLayout === 'around' ? 'right' : 'left', class: classNames.chevron, disabled: !state.previousMonth })}
+    {@render chevron({ orientation: props.dir === 'rtl' && props.navLayout === 'around' ? 'right' : 'left', class: classNames.chevron, disabled: state.previousMonth ? undefined : true })}
   </button>
 {/snippet}
 
@@ -159,7 +159,7 @@
     aria-label={labels.labelNext(state.nextMonth)}
     onclick={state.goToNext}
   >
-    {@render chevron({ orientation: props.dir === 'rtl' && props.navLayout === 'around' ? 'left' : 'right', class: classNames.chevron, disabled: !state.nextMonth })}
+    {@render chevron({ orientation: props.dir === 'rtl' && props.navLayout === 'around' ? 'left' : 'right', class: classNames.chevron, disabled: state.nextMonth ? undefined : true })}
   </button>
 {/snippet}
 
@@ -174,9 +174,9 @@
   {const options =
     $derived(kind === 'months'
       ? getMonthOptions(calendarMonth.date, state.navStart, state.navEnd, (m) => formatters.formatMonthDropdown(m, lib), lib)
-      : (getYearOptions(state.navStart, state.navEnd, (y) => formatters.formatYearDropdown(y, lib), lib, props.reverseYears) ?? []))}
+      : (getYearOptions(state.navStart, state.navEnd, (y) => formatters.formatYearDropdown(y, lib), lib) ?? []))}
   {const value = $derived(kind === 'months' ? lib.getMonth(calendarMonth.date) : lib.getYear(calendarMonth.date))}
-  <span class={classNames.dropdown_root} data-disabled={props.disableNavigation || undefined}>
+  <span class={classNames.dropdown_root} data-disabled={Boolean(props.disableNavigation)}>
     <select
       class={[classNames.dropdown, kind === 'months' ? classNames.months_dropdown : classNames.years_dropdown]}
       aria-label={kind === 'months' ? labels.labelMonthDropdown() : labels.labelYearDropdown()}
@@ -194,7 +194,7 @@
     </select>
     <span class={classNames.caption_label} aria-hidden="true">
       {options.find((option) => option.value === value)?.label}
-      {@render chevron({ orientation: 'down', class: classNames.chevron, disabled: false })}
+      {@render chevron({ orientation: 'down', class: classNames.chevron, size: 18 })}
     </span>
   </span>
 {/snippet}
@@ -207,17 +207,8 @@
     {const showMonths = $derived(layout === 'dropdown' || layout === 'dropdown-months')}
     {const showYears = $derived(layout === 'dropdown' || layout === 'dropdown-years')}
     <div class={classNames.dropdowns}>
-      {#snippet monthControl()}
-        {#if showMonths}{@render dropdown('months', calendarMonth)}{:else}<span>{formatters.formatMonthDropdown(calendarMonth.date, lib)}</span>{/if}
-      {/snippet}
-      {#snippet yearControl()}
-        {#if showYears}{@render dropdown('years', calendarMonth)}{:else}<span>{formatters.formatYearDropdown(calendarMonth.date, lib)}</span>{/if}
-      {/snippet}
-      {#if yearFirst}
-        {@render yearControl()}{@render monthControl()}
-      {:else}
-        {@render monthControl()}{@render yearControl()}
-      {/if}
+      {#if showMonths}{@render dropdown('months', calendarMonth)}{:else}<span>{formatters.formatMonthDropdown(calendarMonth.date, lib)}</span>{/if}
+      {#if showYears}{@render dropdown('years', calendarMonth)}{:else}<span>{formatters.formatYearDropdown(calendarMonth.date, lib)}</span>{/if}
       <span role="status" aria-live="polite" style={visuallyHidden}>{formatters.formatCaption(calendarMonth.date, lib)}</span>
     </div>
   {/if}
