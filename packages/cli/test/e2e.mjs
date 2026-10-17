@@ -165,7 +165,8 @@ try {
 
   writeFileSync(
     join(app, 'src/routes/+page.svelte'),
-    `<script lang="ts">\n  import { Button } from '${config.aliases.ui}/button/index.js';\n  import { Dialog, DialogTrigger } from '${config.aliases.ui}/dialog/index.js';\n</script>\n<Button>Click</Button>\n<Dialog><DialogTrigger>Open</DialogTrigger></Dialog>\n`,
+    // The import form the docs print, an explicit index, and a deep import of one file.
+    `<script lang="ts">\n  import { Button } from '${config.aliases.ui}/button';\n  import { Dialog, DialogTrigger } from '${config.aliases.ui}/dialog/index.js';\n  import DeepButton from '${config.aliases.ui}/button/Button.svelte';\n</script>\n<Button>Click</Button>\n<DeepButton>Deep</DeepButton>\n<Dialog><DialogTrigger>Open</DialogTrigger></Dialog>\n`,
   );
 
   step('svelte-check and vite build');

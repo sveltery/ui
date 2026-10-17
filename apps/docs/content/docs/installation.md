@@ -78,4 +78,4 @@ Run `update` to apply the changes. It shows the diff for each file you changed a
 npx @sveltery/ui@latest update
 ```
 
-`npx @sveltery/ui@latest list` shows every component and marks the ones in your project. Read the [CLI README](https://github.com/sveltery/ui/tree/main/packages/cli#readme) for all commands and options.
+`npx @sveltery/ui@latest list` shows every component and marks the ones in your project. See [CLI](/docs/cli) for all commands and options.

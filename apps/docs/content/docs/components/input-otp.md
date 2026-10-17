@@ -167,6 +167,10 @@ Wrap the field in a [DirectionProvider](/docs/components/direction) and set `dir
 
 <ComponentPreview name="base/InputOTPRtlExample" align="start" />
 
+## Without JavaScript
+
+`InputOTP` renders a plain text input in a `<noscript>` fallback, so its form still submits before the page hydrates. For a code field with no slots at all, use [Input](/docs/components/input#one-time-codes) with `autocomplete="one-time-code"`.
+
 ## API Reference
 
 See the [input-otp](https://input-otp.rodz.dev) documentation for more information.
