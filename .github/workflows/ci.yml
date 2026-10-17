@@ -15,9 +15,13 @@ concurrency:
 
 jobs:
   verify:
-    name: Verify
+    name: Verify (${{ matrix.part }})
     runs-on: ubuntu-24.04
     timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        part: [static, unit, build]
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
@@ -29,8 +33,17 @@ jobs:
         with:
           node-version: '24'
       - run: bash scripts/bootstrap.sh
-      - name: Lint, types, unit tests, docs build, remote forms and package smoke test
-        run: bash scripts/verify.sh
+      # static: lint and types. unit: vitest. build: docs build, remote forms and package smoke test.
+      - run: bash scripts/verify.sh ${{ matrix.part }}
+  # One stable check name for the split verification.
+  verify-result:
+    name: Verify
+    if: always()
+    needs: verify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - run: test "${{ needs.verify.result }}" = success
   browser:
     name: Chromium (${{ matrix.shard }}/4)
     runs-on: ubuntu-24.04
