@@ -1,9 +1,9 @@
 ---
 title: Input OTP
-description: Accessible one-time password component with copy paste functionality.
+description: Accessible one-time password component with copy-paste functionality.
 ---
 
-<ComponentPreview name="base/InputOTPExample" />
+<ComponentPreview name="base/InputOTPDemoExample" />
 
 ## About
 
@@ -75,6 +75,8 @@ The component folders import each other with relative paths, so keep them side b
 
 ## Composition
 
+Use the following composition to build an `InputOTP`:
+
 ```text
 InputOTP
 ├── InputOTPGroup
@@ -82,15 +84,19 @@ InputOTP
 │   ├── InputOTPSlot
 │   └── InputOTPSlot
 ├── InputOTPSeparator
+├── InputOTPGroup
+│   ├── InputOTPSlot
+│   ├── InputOTPSlot
+│   └── InputOTPSlot
+├── InputOTPSeparator
 └── InputOTPGroup
-    ├── InputOTPSlot
     ├── InputOTPSlot
     └── InputOTPSlot
 ```
 
 ## Pattern
 
-Use the `pattern` prop to set the characters the input accepts. Input that doesn't match is dropped.
+Use the `pattern` prop to define a custom pattern for the OTP input. `@sveltery/input-otp` exports `REGEXP_ONLY_DIGITS`, `REGEXP_ONLY_CHARS` and `REGEXP_ONLY_DIGITS_AND_CHARS`. Input that doesn't match is dropped.
 
 ```svelte
 <script lang="ts">
@@ -102,23 +108,47 @@ Use the `pattern` prop to set the characters the input accepts. Input that doesn
 </InputOTP>
 ```
 
-`@sveltery/input-otp` also exports `REGEXP_ONLY_DIGITS` and `REGEXP_ONLY_CHARS`.
+<ComponentPreview name="base/InputOTPPatternExample" />
 
-## Value
+## Separator
 
-Use `bind:value` to read or set the code. `onComplete` runs with the code when the last slot fills.
+Use the `<InputOTPSeparator />` component to add a separator between input groups.
 
-```svelte
-<script lang="ts">
-  let value = $state('');
-</script>
+<ComponentPreview name="base/InputOTPSeparatorExample" />
 
-<InputOTP maxLength={6} bind:value onComplete={(code) => console.log(code)}>
-  …
-</InputOTP>
-```
+## Disabled
 
-## In a form
+Use the `disabled` prop to disable the input.
+
+<ComponentPreview name="base/InputOTPDisabledExample" />
+
+## Controlled
+
+Use `bind:value` to control the input value. `onComplete` runs with the code when the last slot fills.
+
+<ComponentPreview name="base/InputOTPControlledExample" />
+
+## Invalid
+
+Use `aria-invalid` on the slots to show an error state.
+
+<ComponentPreview name="base/InputOTPInvalidExample" />
+
+## Four Digits
+
+A common pattern for PIN codes. This uses the `pattern={REGEXP_ONLY_DIGITS}` prop.
+
+<ComponentPreview name="base/InputOTPFourDigitsExample" />
+
+## Alphanumeric
+
+Use `REGEXP_ONLY_DIGITS_AND_CHARS` to accept both letters and numbers.
+
+<ComponentPreview name="base/InputOTPAlphanumericExample" />
+
+## Form
+
+<ComponentPreview name="base/InputOTPFormExample" class="*:data-[slot=preview]:h-[30rem]" />
 
 Give `InputOTP` a `name` and it submits its value with its form. To label it, put it in a [Field](/docs/components/field) and pair the `FieldLabel` with the `InputOTP` `id`.
 
@@ -131,10 +161,14 @@ Give `InputOTP` a `name` and it submits its value with its form. To label it, pu
 </Field>
 ```
 
-## Invalid
+## RTL
 
-Use `aria-invalid` on the slots to show an error state.
+Wrap the field in a [DirectionProvider](/docs/components/direction) and set `dir` on the `InputOTP`. Use the buttons to switch the language.
 
-## API reference
+<ComponentPreview name="base/InputOTPRtlExample" align="start" />
 
-`InputOTP` takes the props of `OTPInput` from `@sveltery/input-otp`, which follow [input-otp](https://input-otp.rodz.dev). `class` goes to the input, and `containerClass` to the element that holds the slots. Other input attributes, such as `id`, `name`, `disabled` and `required`, go to the input.
+## API Reference
+
+See the [input-otp](https://input-otp.rodz.dev) documentation for more information.
+
+`InputOTP` takes the props of `OTPInput` from `@sveltery/input-otp`. `class` goes to the input, and `containerClass` to the element that holds the slots. Other input attributes, such as `id`, `name`, `disabled` and `required`, go to the input.
