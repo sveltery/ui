@@ -24,7 +24,7 @@ const run = (command, args, cwd, env = {}) =>
     );
   });
 
-// Like `run`, but returns what the command printed, which is also echoed.
+// Like `run`, but returns what the command printed, which is also echoed. A failure carries it as `output`.
 const capture = (command, args, cwd, env = {}) =>
   new Promise((done, fail) => {
     let output = '';
@@ -33,7 +33,7 @@ const capture = (command, args, cwd, env = {}) =>
     child.on('close', (code) => {
       process.stdout.write(output);
       if (code === 0) done(output);
-      else fail(new Error(`${command} ${args.join(' ')} exited with ${code}`));
+      else fail(Object.assign(new Error(`${command} ${args.join(' ')} exited with ${code}`), { output }));
     });
   });
 
@@ -140,6 +140,42 @@ try {
     for (const target of expected.imports) assert.match(presetCss, new RegExp(`@import ['"]${target}['"];`), `${code} imports ${target}`);
     for (const line of [`--primary: ${expected.primary};`, ...expected.fonts]) assert.ok(presetCss.includes(line), `${code} writes ${line}`);
     assert.match(presetCss, /html \{\s*@apply font-sans;/, `${code} applies the body font to html`);
+  }
+
+  step('sveltery init --preset btLmMa prints why /init rejects a gray base color');
+  const grayApp = join(work, 'preset-gray');
+  mkdirSync(grayApp);
+  for (const file of ['package.json', 'src']) cpSync(join(app, file), join(grayApp, file), { recursive: true });
+  // shadcn@4.21.1 has no gray base color either, so the code is rejected rather than mapped.
+  await assert.rejects(capture('npm', [...cliExec, 'init', '--preset', 'btLmMa', '--no-install'], grayApp, env), (error) => /Invalid baseColor "gray"/.test(error.output), 'init prints the reason from /init');
+
+  step('sveltery init -y keeps a bold menuAccent from components.json in the theme');
+  const boldApp = join(work, 'menu-accent-bold');
+  mkdirSync(boldApp);
+  for (const file of ['package.json', 'src']) cpSync(join(app, file), join(boldApp, file), { recursive: true });
+  writeFileSync(join(boldApp, 'components.json'), JSON.stringify({ menuAccent: 'bold' }));
+  await run('npm', [...cliExec, 'init', '-y', '--no-install'], boldApp, env);
+  const boldCss = readFileSync(join(boldApp, JSON.parse(readFileSync(join(boldApp, 'components.json'), 'utf8')).tailwind.css), 'utf8');
+  const modes = [...boldCss.matchAll(/^(?::root|\.dark) \{([^}]*)\}/gm)].map((match) => match[1]);
+  assert.equal(modes.length, 2, 'the theme has a light and a dark block');
+  for (const block of modes) {
+    const value = (name) => new RegExp(`--${name}: ([^;]+);`).exec(block)?.[1];
+    assert.equal(value('accent'), value('primary'), 'a bold menu accent is the primary color');
+    assert.equal(value('accent-foreground'), value('primary-foreground'), 'a bold menu accent foreground is the primary foreground');
+  }
+
+  // Each icon library gets its own copy of the app with every item, so their icon props are type-checked against the real packages.
+  for (const icons of ['lucide', 'tabler', 'hugeicons', 'phosphor', 'remixicon']) {
+    step(`sveltery init --icons ${icons}, add --all and blocks, check and build`);
+    const allApp = join(work, `all-${icons}`);
+    cpSync(app, allApp, { recursive: true, filter: (source) => !source.includes('node_modules') });
+    await run('pnpm', ['install'], allApp);
+    await run('npm', [...cliExec, 'init', '-y', '--icons', icons], allApp, env);
+    await run('pnpm', ['exec', 'sveltery', 'add', '--all', '-y'], allApp, env);
+    const blocks = icons === 'lucide' ? ['login-01', 'signup-03', 'sidebar-07', 'dashboard-01', 'preview'] : ['sidebar-07'];
+    await run('pnpm', ['exec', 'sveltery', 'add', ...blocks, '-y'], allApp, env);
+    await run('pnpm', ['run', 'check'], allApp);
+    if (icons === 'lucide') await run('pnpm', ['exec', 'vite', 'build'], allApp);
   }
 
   step('sveltery init -y');

@@ -19,8 +19,13 @@ export type IconLibrary = (typeof iconLibraries)[number];
 /** Bumped only for a breaking change to these shapes. The CLI refuses a newer one. */
 export const REGISTRY_VERSION = 1;
 
-/** Every file installs under the project's `aliases.ui` directory, at `target`. */
-export type RegistryFile = { type: 'registry:ui'; target: string; content: string };
+/**
+ * Where a file installs, by type: `registry:ui` under `aliases.ui` and `registry:component` under `aliases.components`, at
+ * `target`; `registry:page` and `registry:file` at `target` from the project root, such as `src/routes/login/+page.svelte`.
+ * A block's files import `$registry/bases/base/ui/<item>` and `$registry/bases/base/components/<file>`, and `add` rewrites
+ * those to the project's aliases.
+ */
+export type RegistryFile = { type: 'registry:ui' | 'registry:component' | 'registry:page' | 'registry:file'; target: string; content: string };
 
 export type CssVars = { theme?: Record<string, string>; light?: Record<string, string>; dark?: Record<string, string> };
 
@@ -57,6 +62,8 @@ type RegistryItemCommon = {
   description?: string;
   /** npm packages with a caret range, such as `cn@^0.2.2`, or a bare name when no published version is known. */
   dependencies?: string[];
+  /** Type packages the `dependencies` need, as `@types/d3-scale@^4.0.9`, installed as dev dependencies. */
+  devDependencies?: string[];
   /** Other items in this registry, by name. */
   registryDependencies?: string[];
   files: RegistryFile[];
@@ -69,6 +76,7 @@ type RegistryItemCommon = {
 /** As upstream, a `registry:base` item may carry `config` and a `registry:font` item must carry `font`. */
 export type RegistryItem =
   | (RegistryItemCommon & { type: 'registry:ui' | 'registry:lib' | 'registry:theme' })
+  | (RegistryItemCommon & { type: 'registry:block' })
   | (RegistryItemCommon & { type: 'registry:base'; config?: RegistryBaseConfig })
   | (RegistryItemCommon & { type: 'registry:font'; font: RegistryFont });
 
@@ -85,6 +93,8 @@ export type RegistryManifest = {
   iconLibraries: IconLibrary[];
   /** Installable items, in name order. Internal items such as `shared` are left out. */
   items: { name: string; type: RegistryItem['type']; description?: string }[];
+  /** `registry:block` items, kept out of `items` because a 0.1 CLI rejects their type there. */
+  blocks: { name: string; type: 'registry:block'; description?: string }[];
 };
 
 /**
@@ -92,6 +102,7 @@ export type RegistryManifest = {
  * - `index.json`: RegistryManifest
  * - `styles/<style>/index.json`: StyleIndexEntry[]
  * - `styles/<style>/<name>.json`: RegistryItem with the style's classes inlined
+ * - `styles/<style>/<block>.json`: RegistryItem of type `registry:block`, the same for every style
  * - `styles/<style>/font-<font>.json` and `font-heading-<font>.json`: RegistryItem of type `registry:font`, the same for every style
  * - `themes/<baseColor>.json`: RegistryItem of type `registry:theme`, with `cssVars` and no files
  * - `themes/<accentColor>.json`: the same, with only the `light` and `dark` vars the accent overrides

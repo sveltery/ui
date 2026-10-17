@@ -18,11 +18,11 @@ export type IconLibraryName = (typeof iconLibraryNames)[number];
 
 export const REGISTRY_VERSION = 1;
 
-/** A registry writes only inside the project's ui directory. */
+/** A registry writes only inside the project: under its ui or components directory, or below its root. */
 const isContainedPath = (target: string) => target !== '' && !/^([a-zA-Z]:)?[\\/]/.test(target) && !target.split(/[\\/]/).includes('..');
 
 const registryFile = object({
-  type: literal('registry:ui'),
+  type: literal('registry:ui', 'registry:component', 'registry:page', 'registry:file'),
   target: refine(string, isContainedPath, 'a relative path without ".." segments'),
   content: string,
 });
@@ -69,6 +69,7 @@ const itemCommon = {
   title: optional(string),
   description: optional(string),
   dependencies: optional(array(string)),
+  devDependencies: optional(array(string)),
   registryDependencies: optional(array(string)),
   files: array(registryFile),
   cssVars: optional(cssVars),
@@ -76,11 +77,12 @@ const itemCommon = {
   docs: optional(string),
 };
 
-const plainItem = object({ ...itemCommon, type: literal('registry:ui', 'registry:lib', 'registry:theme') });
+const plainItem = object({ ...itemCommon, type: literal('registry:ui', 'registry:lib', 'registry:theme', 'registry:block') });
 const itemByType = {
   'registry:ui': plainItem,
   'registry:lib': plainItem,
   'registry:theme': plainItem,
+  'registry:block': plainItem,
   'registry:base': object({ ...itemCommon, type: literal('registry:base'), config: optional(registryBaseConfig) }),
   'registry:font': object({ ...itemCommon, type: literal('registry:font'), font: registryFont }),
 };
@@ -98,6 +100,7 @@ const registryManifest = object({
   baseColors: array(literal(...baseColors)),
   iconLibraries: array(literal(...iconLibraryNames)),
   items: array(object({ name: string, type: itemType, description: optional(string) })),
+  blocks: array(object({ name: string, type: literal('registry:block'), description: optional(string) })),
 });
 export type RegistryManifest = ReturnType<typeof registryManifest>;
 
@@ -175,7 +178,7 @@ export function fetchItem(registry: Registry, style: StyleName, ref: ItemRef): P
 
 /** Fetches `refs` and their registry dependencies, each item once, dependencies before the items that need them. */
 export async function resolveItems(registry: Registry, style: StyleName, refs: ItemRef[]): Promise<RegistryItem[]> {
-  const known = new Set(registry.manifest.items.map((item) => item.name));
+  const known = new Set([...registry.manifest.items, ...registry.manifest.blocks].map((item) => item.name));
   const unknown = refs.flatMap((ref) => (ref.kind === 'name' && !known.has(ref.name) ? [ref.name] : []));
   if (unknown.length > 0) {
     throw new CliError(`Not in the registry: ${unknown.join(', ')}. Available items: ${[...known].join(', ')}.`);

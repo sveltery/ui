@@ -8,7 +8,16 @@ import { iconLibraryNames, type IconLibraryName } from './registry.js';
 import { transformDirection } from './rtl.js';
 
 export type SourceFile = { target: string; content: string };
-export type TransformContext = { iconLibrary: IconLibraryName; /** Upstream treats a missing menuColor as `default`. */ menuColor?: PresetMenuColor; /** The project CSS defines `--font-heading`. */ fontHeading: boolean; /** components.json sets `rtl: true`. */ rtl: boolean };
+export type TransformContext = {
+  iconLibrary: IconLibraryName;
+  /** Upstream treats a missing menuColor as `default`. */
+  menuColor?: PresetMenuColor;
+  /** The project CSS defines `--font-heading`. */
+  fontHeading: boolean;
+  aliases: { ui: string; components: string };
+  /** components.json sets `rtl: true`. */
+  rtl: boolean;
+};
 export type TransformResult = { content: string; dependencies?: string[] };
 export type Transform = (file: SourceFile, ctx: TransformContext) => TransformResult;
 
@@ -122,10 +131,17 @@ export const transformMarkers: Transform = (file, ctx) => {
   return { content: s.toString() };
 };
 
+const REGISTRY_IMPORT = /(['"])\$registry\/bases\/base\/(ui|components)\//g;
+
+/** Points a block's `$registry/bases/base/ui/` and `$registry/bases/base/components/` imports at the project's aliases. */
+export const transformImports: Transform = (file, ctx) => ({
+  content: file.content.replace(REGISTRY_IMPORT, (_, quote: string, folder: 'ui' | 'components') => `${quote}${ctx.aliases[folder]}/`),
+});
+
 /** Rewrites physical classes as logical ones in an RTL project, as shadcn's transformRtl does. */
 export const transformRtl: Transform = (file, ctx) => ({ content: ctx.rtl ? transformDirection(file.target, file.content) : file.content });
 
-const transforms: Transform[] = [transformIcons, transformRtl, transformMarkers];
+const transforms: Transform[] = [transformImports, transformIcons, transformRtl, transformMarkers];
 
 export function applyTransforms(file: SourceFile, ctx: TransformContext): Required<TransformResult> {
   let content = file.content;

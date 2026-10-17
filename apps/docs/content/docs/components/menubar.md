@@ -142,10 +142,8 @@ Wrap the menubar in a [DirectionProvider](/docs/components/direction) and set `d
 
 <ComponentPreview name="base/MenubarRtlExample" align="start" />
 
-## Examples
+## API Reference
 
-<ComponentPreview name="base/MenubarExample" />
+See the [Base UI Menubar](https://base-ui.com/react/components/menubar#api-reference) documentation.
 
-## API reference
-
-`Menubar` is styled on top of the Sveltery Base `Menubar` and `Menu` primitives, which own the roving focus between triggers, keyboard navigation, typeahead and dismissal. `MenubarMenu` and `MenubarSub` are the Base menu roots. `MenubarContent` renders the Base portal, positioner and popup, and takes the positioner's `side`, `align`, `sideOffset` and `alignOffset` props. `MenubarItem` takes `inset` and `variant` (`default` or `destructive`). See the [Base UI Menubar documentation](https://base-ui.com/react/components/menubar#api-reference) for the behavior it ports.
+`Menubar` is styled on top of the Sveltery Base `Menubar` and `Menu` primitives, which own the roving focus between triggers, keyboard navigation, typeahead and dismissal. `MenubarMenu` and `MenubarSub` are the Base menu roots. `MenubarContent` renders the Base portal, positioner and popup, and takes the positioner's `side`, `align`, `sideOffset` and `alignOffset` props. `MenubarItem` takes `inset` and `variant` (`default` or `destructive`).

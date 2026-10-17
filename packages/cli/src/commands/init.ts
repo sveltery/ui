@@ -7,7 +7,7 @@ import { iconLibraries } from '../icons.js';
 import { planItems, type Project } from '../items.js';
 import { CliError } from '../parse.js';
 import { executePlan, formatPlan, missingPackages, packageName, planFile, type Plan } from '../plan.js';
-import { PRESET_MENU_ACCENTS, PRESET_MENU_COLORS, type PresetMenuAccent, type PresetMenuColor } from '../preset/index.js';
+import { applyMenuAccent, PRESET_MENU_ACCENTS, PRESET_MENU_COLORS, type PresetMenuAccent, type PresetMenuColor } from '../preset/index.js';
 import { aliasPath, checkProject, findCssFile, libAlias, readJson, withLibIndexFallback } from '../project.js';
 import {
   baseColors,
@@ -85,14 +85,17 @@ async function settingsFromFlags(options: InitOptions, registry: Registry, exist
 
   assertServed(registry, style);
   const theme = await fetchTheme(registry, baseColor);
+  const menuAccent = valid(existing.config.menuAccent, PRESET_MENU_ACCENTS);
+  const cssVars = structuredClone(theme.cssVars ?? {});
+  applyMenuAccent(menuAccent, cssVars.light, cssVars.dark);
   return {
     style,
     iconLibrary,
     baseColor,
     menuColor: valid(existing.config.menuColor, PRESET_MENU_COLORS) ?? 'default',
-    menuAccent: valid(existing.config.menuAccent, PRESET_MENU_ACCENTS),
+    menuAccent,
     rtl: options.rtl ?? bool(existing.config.rtl) ?? false,
-    cssVars: theme.cssVars ?? {},
+    cssVars,
     cssTrees: [DEFAULT_CSS],
     dependencies: [...baseDependencies, ...iconLibraries[iconLibrary].packages],
     items: [],
@@ -188,7 +191,7 @@ export async function init(options: InitOptions): Promise<Plan> {
       ...itemsPlan.files,
     ],
     dependencies: missingPackages(cwd, [...settings.dependencies.filter((spec) => packageName(spec) !== cliPackage), ...itemsPlan.dependencies]),
-    devDependencies: missingPackages(cwd, [`${cliPackage}@^${version}`]),
+    devDependencies: missingPackages(cwd, [`${cliPackage}@^${version}`, ...itemsPlan.devDependencies]),
   };
   log.info(formatPlan(plan, { showIdentical: false }));
   await executePlan(plan, { cwd, install: options.install });

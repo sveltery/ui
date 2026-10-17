@@ -107,13 +107,15 @@ A preset sets this key. You can also edit it, then run `update` to apply it to i
 
 ## menuAccent
 
-The accent of highlighted menu items: `subtle` or `bold`. It is optional. A preset sets it, and the CLI records it, but no command acts on it yet. Menus look the same with either value.
+The accent of highlighted menu items: `subtle` or `bold`. It is optional. `subtle` highlights an item with the muted accent color of the base color. `bold` highlights it with the primary color. `init` sets `--accent` and `--accent-foreground` in your CSS file to the values of `--primary` and `--primary-foreground`, in light and dark mode.
 
 ```json title="components.json"
 {
   "menuAccent": "subtle"
 }
 ```
+
+A preset sets this key. If you edit it, run `init` again to apply it to your theme.
 
 ## tailwind
 

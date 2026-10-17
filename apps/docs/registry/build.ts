@@ -1,6 +1,6 @@
 import { fontItems } from './fonts';
 import { inlineStyle } from './inline';
-import { planItems, type ItemPlan, type UiManifest } from './items';
+import { planBlock, planItems, type BlockSource, type ItemPlan, type UiManifest } from './items';
 import { parseStyleSheet, type StyleSheet } from './styles';
 import { parseThemes } from './themes';
 import {
@@ -26,6 +26,8 @@ export type RegistryInput = {
   /** `apps/docs/package.json` parsed, plus each workspace helper's `package.json` version by package name. */
   uiManifest: UiManifest;
   workspaceVersions: Record<string, string>;
+  /** Every block in `apps/docs/blocks`, with its files. */
+  blocks: BlockSource[];
   /** Absolute origin of the docs site, for `$schema` URLs. */
   origin: string;
 };
@@ -47,6 +49,7 @@ export function buildRegistry(input: RegistryInput): RegistryOutput {
   const plans = planItems(input.sources, input.uiManifest, input.workspaceVersions);
   const sheets = Object.fromEntries(styleNames.map((style) => [style, parseStyleSheet(input.styles[style], style)])) as Record<StyleName, StyleSheet>;
   const output: RegistryOutput = new Map();
+  const blocks = input.blocks.map((block) => ({ $schema: `${origin}/schema/registry-item.json`, ...planBlock(block, input.sources, input.uiManifest, input.workspaceVersions) }));
 
   const manifest: RegistryManifest = {
     $schema: `${origin}/schema/registry.json`,
@@ -56,6 +59,7 @@ export function buildRegistry(input: RegistryInput): RegistryOutput {
     baseColors: [...baseColors],
     iconLibraries: [...iconLibraries],
     items: plans.filter((plan) => plan.name !== 'shared').map(({ name, type }) => ({ name, type })),
+    blocks: blocks.map(({ name, type, description }) => ({ name, type, description })),
   };
   output.set('index.json', manifest);
 
@@ -66,6 +70,7 @@ export function buildRegistry(input: RegistryInput): RegistryOutput {
     output.set(`styles/${style}/index.json`, index);
     for (const plan of plans) output.set(`styles/${style}/${plan.name}.json`, renderItem(plan, sheets[style], style, origin));
     for (const font of fonts) output.set(`styles/${style}/${font.name}.json`, font);
+    for (const block of blocks) output.set(`styles/${style}/${block.name}.json`, block);
   }
 
   const themes = parseThemes(input.themes);
