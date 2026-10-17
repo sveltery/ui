@@ -396,7 +396,7 @@ Options:
 
 ## search
 
-Use the `search` command to find items in the registry. `list` is an alias. It never writes anything and needs no `components.json`.
+Use the `search` command to find items in registries. `list` is an alias. It never writes anything, and it needs no `components.json` to search the Sveltery UI registry.
 
 ```bash
 npx @sveltery/ui@latest search -q dialog
@@ -439,7 +439,15 @@ Showing 1-3 of 3
 }
 ```
 
-The only registry is `@sveltery`, the Sveltery UI registry that `SVELTERY_REGISTRY_URL` or `components.json` points at. Pass it to be explicit. Any other registry is an error. See [differences](/docs/differences#search-takes-one-registry-and-no-installed-mark).
+With no argument, `search` searches `@sveltery`, the Sveltery UI registry that `SVELTERY_REGISTRY_URL` or `components.json` points at. To search a [namespace](/docs/registry/namespace) from the `registries` of `components.json`, pass it:
+
+```bash
+npx @sveltery/ui@latest search @acme -q card
+```
+
+`search` fetches the namespace's item named `registry`, such as `https://acme.com/r/registry.json`, which is the `registry.json` that `build` writes. It sends the query, the types, `--limit` and `--offset` as the `q`, `type`, `limit` and `offset` query parameters. A registry that answers with `pagination` has filtered and paged the items itself, and `search` prints its page as it is. Otherwise `search` filters and ranks the items. A result from a namespace gives `add` the `@acme/name` form.
+
+Pass several registries to search them together. Each line then names its registry. A URL, a GitHub source or a namespace that `registries` does not list is an error. See [differences](/docs/differences#search-defaults-to-sveltery-and-takes-namespaces-only).
 
 **Options**
 
@@ -449,8 +457,9 @@ Usage: sveltery search|list [options] [registries...]
 search items from registries
 
 Arguments:
-  registries             the registries to search; the only one is @sveltery,
-                         the default
+  registries             the registry namespaces to search, such as @acme from
+                         the registries in components.json. When omitted,
+                         searches @sveltery.
 
 Options:
   -q, --query <query>    query string

@@ -201,7 +201,7 @@ export function fetchTheme(registry: Registry, baseColor: BaseColor): Promise<Re
 export type ItemRef = { kind: 'name'; name: string } | { kind: 'url'; url: string } | { kind: 'namespaced'; namespace: string; name: string };
 
 /** The built-in namespace: Sveltery UI's own registry, in the project's style, unless `registries` sets it. */
-const BUILTIN_NAMESPACE = '@sveltery';
+export const BUILTIN_NAMESPACE = '@sveltery';
 
 export function parseItemRef(value: string): ItemRef {
   if (/^https?:\/\//.test(value)) return { kind: 'url', url: value };
@@ -271,6 +271,35 @@ export function fetchItem(registry: Registry, style: StyleName, ref: ItemRef): P
 /** The item exactly as the registry serves it, after checking that the CLI can read it. Not cached: `view` fetches each item once. */
 export function fetchRawItem(registry: Registry, style: StyleName, ref: ItemRef): Promise<unknown> {
   return fetchJson(itemRequest(registry, style, ref), (json, path) => (registryItem(json, path), json));
+}
+
+const catalogItem = object({ name: string, type: string, title: optional(string), description: optional(string) });
+const searchPagination = object({ total: number, offset: number, limit: number, hasMore: literal(true, false) });
+export type SearchPagination = ReturnType<typeof searchPagination>;
+
+/** A namespace's `registry` item: a built registry.json, or a dynamic registry's search answer, which has `pagination`. Only the fields `search` reads are checked. */
+const registryCatalog = object({ name: string, homepage: string, include: optional(array(string)), items: array(catalogItem), pagination: optional(searchPagination) });
+export type RegistryCatalog = ReturnType<typeof registryCatalog>;
+
+/** What `search` forwards to a namespace, so a dynamic registry can filter and page on the server. `types` are full names such as `registry:ui`. */
+export type CatalogSearch = { query?: string; types?: string[]; limit?: number; offset?: number };
+
+/** Fetches the item named `registry` of `namespace`, as `@namespace/registry`, with the search as `q`, `type`, `limit` and `offset`. */
+export async function fetchCatalog(registry: Registry, style: StyleName, namespace: string, search: CatalogSearch): Promise<RegistryCatalog> {
+  const request = namespaceRequest(registry.namespaces, style, namespace, 'registry');
+  const fields = { q: search.query || undefined, type: search.types?.length ? search.types.join(',') : undefined, limit: search.limit, offset: search.offset };
+  const entries = Object.entries(fields).flatMap(([key, value]): [string, string][] => (value === undefined ? [] : [[key, String(value)]]));
+  // As upstream, each field replaces a parameter of the same name. The display URL keeps `${VAR}` unparsed, so it appends them.
+  // A URL that does not parse goes to fetch as it is, which reports it.
+  const url = URL.canParse(request.url) ? new URL(request.url) : undefined;
+  for (const [key, value] of entries) url?.searchParams.set(key, value);
+  const query = new URLSearchParams(entries).toString();
+  const displayUrl = query ? `${request.displayUrl}${request.displayUrl.includes('?') ? '&' : '?'}${query}` : request.displayUrl;
+  const catalog = await fetchJson({ ...request, url: url && entries.length > 0 ? url.toString() : request.url, displayUrl }, registryCatalog);
+  if (catalog.include?.length) {
+    throw new CliError(`Registry catalog "${namespace}/registry" uses "include", but a registry must serve the resolved catalog. Run \`npx @sveltery/ui@latest build\` and serve the registry.json it writes.`);
+  }
+  return catalog;
 }
 
 /** Throws when a named ref is not in the registry's manifest, before any item is fetched. URLs are not checked. */
