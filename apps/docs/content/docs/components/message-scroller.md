@@ -77,7 +77,7 @@ npx @sveltery/ui@latest add message-scroller
 ### Install the dependencies
 
 ```bash
-npm install @sveltery/svelte
+npm install @sveltery/svelte @sveltery/base
 ```
 
 ### Copy the component

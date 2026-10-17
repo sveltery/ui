@@ -28,7 +28,7 @@ npx @sveltery/ui@latest add command
 ### Install the dependencies
 
 ```bash
-npm install @sveltery/command
+npm install @sveltery/command @sveltery/base
 ```
 
 ### Copy the component

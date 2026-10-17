@@ -46,10 +46,14 @@ const show = ({ level, text }) => `${'#'.repeat(level)} ${text}`;
 function installSteps(file, tab, step) {
   const found = { cli: [], manual: [] };
   let section = false;
+  let fence = false;
   let current = null;
   for (const line of readFileSync(file, 'utf8').split('\n')) {
+    if (/^\s*(`{3,}|~{3,})/u.test(line)) fence = !fence;
+    if (fence) continue;
     if (/^## /u.test(line)) section = line === '## Installation';
     if (!section) continue;
+    if (/^\s*<\/(InstallTab|TabsContent)>/u.test(line)) current = null;
     current = tab.exec(line)?.[1] ?? current;
     const text = step.exec(line)?.[1];
     if (current && text) found[current].push(stepKey(text));

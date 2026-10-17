@@ -321,9 +321,13 @@ Missing here:
 Steps compare by what they do: `run` the CLI command, `install` packages, `add components` the item needs, `copy` the source, update the `imports`. Other steps compare by their text.
 
 - `aspect-ratio` manual: copy, imports here, install, copy, imports upstream
-- `button-group` manual: copy, imports here, install, copy, imports upstream
+- `field` manual: install, copy, imports here, copy, imports upstream
 - `input` manual: install, copy, imports here, copy, imports upstream
+- `input-group` manual: install, copy, imports here, copy, imports upstream
+- `item` manual: install, copy, imports here, copy, imports upstream
 - `label` manual: copy, imports here, install, copy, imports upstream
+- `pagination` manual: install, copy, imports here, copy, imports upstream
+- `sidebar` manual: install, copy, imports here, none upstream
 
 ## RTL guide line
 

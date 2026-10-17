@@ -21,6 +21,12 @@ npx @sveltery/ui@latest add field
 
 <Steps>
 
+### Install the dependencies
+
+```bash
+npm install @sveltery/base
+```
+
 ### Copy the component
 
 Copy the following files into `src/lib/components/ui/field`.

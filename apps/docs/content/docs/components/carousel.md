@@ -28,7 +28,7 @@ npx @sveltery/ui@latest add carousel
 ### Install the dependencies
 
 ```bash
-npm install embla-carousel
+npm install embla-carousel @sveltery/base
 ```
 
 ### Copy the component

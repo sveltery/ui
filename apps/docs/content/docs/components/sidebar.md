@@ -28,7 +28,25 @@ npx @sveltery/ui@latest add sidebar
 
 <InstallTab value="manual">
 
+<Steps>
+
+### Install the dependencies
+
+```bash
+npm install @sveltery/base
+```
+
+### Copy the component
+
+Copy the following files into `src/lib/components/ui/sidebar`.
+
 <ComponentSource name="sidebar" />
+
+### Update the import paths
+
+The component folders import each other with relative paths, so keep them side by side. If you place them elsewhere, change the imports to match your project setup.
+
+</Steps>
 
 </InstallTab>
 

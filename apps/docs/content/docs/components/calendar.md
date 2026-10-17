@@ -24,7 +24,7 @@ npx @sveltery/ui@latest add calendar
 ### Install the dependencies
 
 ```bash
-npm install date-fns @date-fns/tz @sveltery/day-picker
+npm install date-fns @date-fns/tz @sveltery/base @sveltery/day-picker
 ```
 
 ### Add the `Button` component to your project
