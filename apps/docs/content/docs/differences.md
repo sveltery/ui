@@ -359,7 +359,7 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Sveltery UI:** The [Input Group](/docs/components/input-group) Custom Input example is a plain `textarea` with `field-sizing-content`. The Button example calls `navigator.clipboard.writeText`.
 
-**Why:** `react-textarea-autosize` and the React hook have no Svelte build in these docs. `field-sizing-content` makes a native `textarea` grow with its text, which is what the library does.
+**Why:** `react-textarea-autosize` and the React hook have no Svelte build in these docs. In browsers that support `field-sizing`, `field-sizing-content` makes a native `textarea` grow with its text, which is what the library does. Elsewhere the textarea keeps its height and scrolls.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 

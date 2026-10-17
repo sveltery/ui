@@ -19,7 +19,7 @@
     <FieldLabel>Tasks</FieldLabel>
     <FieldDescription>
       Get notified when tasks you&apos;ve created have updates.
-      <a href="#manage-tasks">Manage tasks</a>
+      <a href="#">Manage tasks</a>
     </FieldDescription>
     <FieldGroup data-slot="checkbox-group">
       <Field orientation="horizontal">

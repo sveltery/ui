@@ -156,7 +156,7 @@
   </div>
   <DirectionProvider direction={dir}>
     <div class="w-full max-w-md py-6" {dir}>
-      <form onsubmit={(event) => event.preventDefault()}>
+      <form>
         <FieldGroup>
           <FieldSet>
             <FieldLegend>{t.paymentMethod}</FieldLegend>

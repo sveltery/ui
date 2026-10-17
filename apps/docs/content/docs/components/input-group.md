@@ -48,23 +48,20 @@ The component folders import each other with relative paths, so keep them side b
 ```svelte
 <script lang="ts">
   import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput, InputGroupText } from '#lib/components/ui/input-group';
-  let url = $state('');
+  import SearchIcon from '@lucide/svelte/icons/search';
 </script>
 ```
 
 ```svelte
 <InputGroup>
+  <InputGroupInput placeholder="Search..." />
   <InputGroupAddon>
-    <InputGroupText>https://</InputGroupText>
-  </InputGroupAddon>
-  <InputGroupInput name="url" placeholder="example.com" bind:value={url} />
-  <InputGroupAddon align="inline-end">
-    <InputGroupButton>Go</InputGroupButton>
+    <SearchIcon />
   </InputGroupAddon>
 </InputGroup>
 ```
 
-`InputGroupAddon` takes `align`: `inline-start` (default), `inline-end`, `block-start` or `block-end`. Clicking an addon focuses the input in the group, unless the click lands on a button or your own `onclick` calls `event.preventDefault()`. `InputGroupInput` and `InputGroupTextarea` accept `bind:value` like the `Input` and `Textarea` they wrap.
+`InputGroupAddon` takes `align`: `inline-start` (default), `inline-end`, `block-start` or `block-end`. Clicking an addon focuses the input in the group, unless the click lands on a button. An `onclick` you pass replaces that behavior. `InputGroupInput` and `InputGroupTextarea` accept `bind:value` like the `Input` and `Textarea` they wrap.
 
 ## Composition
 
@@ -83,7 +80,9 @@ InputGroup
 Use the `align` prop on `InputGroupAddon` to position the addon relative to the input.
 
 <Callout>
-  For proper focus management, `InputGroupAddon` should always be placed after `InputGroupInput` or `InputGroupTextarea` in the DOM. Use the `align` prop to visually position the addon.
+
+For proper focus management, `InputGroupAddon` should always be placed after `InputGroupInput` or `InputGroupTextarea` in the DOM. Use the `align` prop to visually position the addon.
+
 </Callout>
 
 ### inline-start
@@ -142,7 +141,7 @@ Use `align="block-end"` to position the addon below the input.
 
 Add the `data-slot="input-group-control"` attribute to your custom input for automatic focus state handling.
 
-Here's an example of a custom resizable textarea. It is a native `textarea` that sizes itself to its content with `field-sizing-content`.
+Here's an example of a custom resizable textarea. It is a native `textarea` that sizes itself to its content with `field-sizing-content` in browsers that support `field-sizing`.
 
 <ComponentPreview name="base/InputGroupCustomExample" />
 
@@ -174,7 +173,9 @@ The main component that wraps inputs and addons.
 Displays icons, text, buttons, or other content alongside inputs.
 
 <Callout title="Focus Navigation">
-  For proper focus navigation, the `InputGroupAddon` component should be placed after the input. Set the `align` prop to position the addon.
+
+For proper focus navigation, the `InputGroupAddon` component should be placed after the input. Set the `align` prop to position the addon.
+
 </Callout>
 
 | Prop    | Type                                                             | Default          |

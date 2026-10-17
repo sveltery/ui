@@ -34,7 +34,7 @@
 </script>
 
 <div class="w-full max-w-md">
-  <form onsubmit={(event) => event.preventDefault()}>
+  <form>
     <FieldGroup>
       <FieldSet>
         <FieldLegend>Payment Method</FieldLegend>

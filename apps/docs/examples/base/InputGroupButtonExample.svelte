@@ -12,9 +12,10 @@
   let isFavorite = $state(false);
 
   function copyToClipboard(text: string) {
-    void navigator.clipboard.writeText(text);
-    isCopied = true;
-    setTimeout(() => (isCopied = false), 2000);
+    void navigator.clipboard.writeText(text).then(() => {
+      isCopied = true;
+      setTimeout(() => (isCopied = false), 2000);
+    });
   }
 </script>
 

@@ -5,7 +5,7 @@
 </script>
 
 <div class="w-full max-w-lg">
-  <form onsubmit={(event) => event.preventDefault()}>
+  <form>
     <FieldSet>
       <FieldLegend>Profile</FieldLegend>
       <FieldDescription>Fill in your profile information.</FieldDescription>
