@@ -95,6 +95,14 @@ npx @sveltery/ui@latest search -q dialog
 | `--json` | Print `{ pagination, items }` as JSON. |
 | `--cwd <path>` | The project root. Defaults to the current directory. |
 
+## Find a component's docs
+
+```sh
+npx @sveltery/ui@latest docs button dropdown-menu
+```
+
+`docs` prints, for each component, the links to its docs page (`docs`), the same page as Markdown with every example inlined (`examples`) and, for a component styled on a Base UI component, Base UI's API reference (`api`). Pass `--json` for `{ base, results }`.
+
 ## Use another registry
 
 Set `SVELTERY_REGISTRY_URL` to the registry root, for example a preview deploy's `/r` URL. It takes precedence over the `registry` key in `components.json`.
