@@ -101,8 +101,8 @@ NavigationMenu
 │   │       ├── NavigationMenuLink
 │   │       └── NavigationMenuLink
 │   └── NavigationMenuItem
-│       └── NavigationMenuLink
-└── NavigationMenuIndicator
+│       ├── NavigationMenuLink
+│       └── NavigationMenuIndicator
 ```
 
 ## Link Component

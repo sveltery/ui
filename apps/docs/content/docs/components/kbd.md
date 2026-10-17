@@ -104,7 +104,7 @@ Use the `Kbd` component to display a keyboard key.
 
 | Prop    | Type     | Default |
 | ------- | -------- | ------- |
-| `class` | `string` | ``      |
+| `class` | `string` | -       |
 
 ```svelte
 <Kbd>Ctrl</Kbd>
@@ -116,7 +116,7 @@ Use the `KbdGroup` component to group `Kbd` components together.
 
 | Prop    | Type     | Default |
 | ------- | -------- | ------- |
-| `class` | `string` | ``      |
+| `class` | `string` | -       |
 
 ```svelte
 <KbdGroup>

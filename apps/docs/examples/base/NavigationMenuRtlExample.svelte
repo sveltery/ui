@@ -150,7 +150,7 @@
             <ul class="w-96">
               {@render ListItem(t.introduction, '/docs', t.introductionDesc)}
               {@render ListItem(t.installation, '/docs/installation', t.installationDesc)}
-              {@render ListItem(t.typography, '#', t.typographyDesc)}
+              {@render ListItem(t.typography, '/docs/components/typography', t.typographyDesc)}
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>

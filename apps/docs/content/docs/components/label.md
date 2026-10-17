@@ -82,4 +82,4 @@ Wrap the label and its control in a [DirectionProvider](/docs/components/directi
 
 ## API Reference
 
-See the [Base UI Label](https://base-ui.com/react/components/label#api-reference) documentation for more information.
+`Label` renders a native `<label>` element and takes its attributes, such as `for`.
