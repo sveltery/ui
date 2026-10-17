@@ -75,6 +75,10 @@ Bind `value` to read or change the selection.
 <RadioGroup bind:value={density}>...</RadioGroup>
 ```
 
+## Without JavaScript
+
+`RadioGroup` needs JavaScript for the keyboard and for a remote form's `as()` spread. For a form that must work before the page hydrates, use [Native Radio Group](/docs/components/native-radio-group), a styled native input that looks the same.
+
 ## Composition
 
 Use the following composition to build a `RadioGroup`:
