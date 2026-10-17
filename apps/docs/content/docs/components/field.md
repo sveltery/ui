@@ -193,6 +193,8 @@ Stack `Field` components with `FieldGroup`. Add `FieldSeparator` to divide them.
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the form in a [DirectionProvider](/docs/components/direction) and set `dir` on the container. Use the language selector to switch the language.
 
 <ComponentPreview name="base/FieldRtlExample" direction="rtl" align="start" class="[&_[data-slot=preview]]:max-h-none" />
@@ -226,10 +228,6 @@ A disabled field works the same way. Set `data-disabled` on `Field` and `disable
 - `FieldSet` and `FieldLegend` keep related controls grouped for keyboard and assistive tech users.
 - `Field` outputs `role="group"` so nested controls inherit labeling from `FieldLabel` and `FieldLegend` when combined.
 - Apply `FieldSeparator` sparingly to ensure screen readers encounter clear section boundaries.
-
-## Differences from shadcn/ui
-
-- `FieldLabel` takes the HTML `for` attribute in place of React's `htmlFor`.
 
 ## API Reference
 

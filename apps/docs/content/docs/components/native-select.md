@@ -194,6 +194,8 @@ Use `aria-invalid` to show validation errors and the `data-invalid` attribute to
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the select in a [DirectionProvider](/docs/components/direction) and set `dir` on `NativeSelect`. Use the language selector to switch the language.
 
 <ComponentPreview name="base/NativeSelectRtlExample" direction="rtl" align="start" />

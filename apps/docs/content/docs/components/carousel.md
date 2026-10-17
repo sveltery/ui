@@ -241,11 +241,9 @@ You can use the `plugins` prop to add plugins to the carousel.
 
 <ComponentPreview name="base/CarouselPluginExample" />
 
-## Keyboard
-
-The left and right arrow keys move to the previous and next slide while focus is inside the carousel. `CarouselPrevious` and `CarouselNext` are disabled when there is no slide to move to.
-
 ## RTL
+
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
 
 Wrap the carousel in a [DirectionProvider](/docs/components/direction), set `dir` on `Carousel` and use the language selector to switch the language.
 

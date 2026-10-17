@@ -603,6 +603,40 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
+## Component page sections
+
+Each component page follows its [upstream page](https://github.com/shadcn-ui/ui/tree/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base) section for section. [`scripts/docs-sections.mjs`](https://github.com/sveltery/ui/blob/main/scripts/docs-sections.mjs) lists the sections that differ, and the entries below cover the ones only Sveltery UI has.
+
+### Pages show how to bind their state
+
+**Upstream:** The Accordion, Alert Dialog, Combobox, Navigation Menu, Native Select, Select, Sheet, Slider, Switch, Tabs, Textarea, Toggle and Toggle Group pages have no section on reading or setting the component's state. A few examples pass `value` and `onValueChange`.
+
+**Sveltery UI:** Each of those pages has a section that binds the state with `bind:`, such as [Accordion](/docs/components/accordion#binding-the-value), [Alert Dialog](/docs/components/alert-dialog#closing), [Combobox](/docs/components/combobox#binding-the-value), [Navigation Menu](/docs/components/navigation-menu#value), [Native Select](/docs/components/native-select#binding-a-value), [Select](/docs/components/select#binding-the-value), [Sheet](/docs/components/sheet#binding-the-open-state), [Slider](/docs/components/slider#value), [Switch](/docs/components/switch#checked-state), [Tabs](/docs/components/tabs#value), [Textarea](/docs/components/textarea#value), [Toggle](/docs/components/toggle#pressed-state) and [Toggle Group](/docs/components/toggle-group#value).
+
+**Why:** A Svelte component takes a bindable prop where a React one takes a value and a change handler, so the upstream pattern does not carry over.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### Pages document forms and pages without JavaScript
+
+**Upstream:** The component pages say nothing about what a control submits with its form, about remote forms, or about a page before it hydrates.
+
+**Sveltery UI:** Forms sections on [Checkbox](/docs/components/checkbox#forms), [Combobox](/docs/components/combobox#forms), [Date Picker](/docs/components/date-picker#in-a-form), [Native Select](/docs/components/native-select#forms), [Select](/docs/components/select#forms), [Slider](/docs/components/slider#forms) and [Switch](/docs/components/switch#forms) say what each submits. [Input](/docs/components/input#remote-forms) and [Native Select](/docs/components/native-select#remote-forms) show remote form fields, and Input also covers native input types and one-time codes. Without JavaScript sections on Checkbox, Input OTP, Radio Group, Select, Slider, Switch and Toggle Group, and the Date Picker's Native date input section, name the control to use before the page hydrates. Native Select also has a Multiple section.
+
+**Why:** SvelteKit forms work before the page hydrates, and remote form fields spread onto native controls, so a reader needs to know which controls submit and which need JavaScript.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### Pages document the Svelte API where upstream links a React API
+
+**Upstream:** The API Reference of [Questionnaire](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/questionnaire.mdx#L361) and [Message Scroller](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/message-scroller.mdx#L628) links to `@shadcn/react` pages, [Resizable](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/resizable.mdx#L110) links to the react-resizable-panels README, and [Toast](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/toast.mdx#L138) links to the Base UI Toast docs.
+
+**Sveltery UI:** [Questionnaire](/docs/components/questionnaire#validation) carries the `@shadcn/react` page's Validation, Custom render targets, Native forms, Keyboard and Data attributes sections and its prop tables. [Message Scroller](/docs/components/message-scroller#api-reference) has prop tables for each part. [Resizable](/docs/components/resizable#api-reference) has Sizes, Layout, Persistence, Collapsible panels, Keyboard and Pointer sections and prop tables. [Toast](/docs/components/toast#custom-layout) has a Custom layout section and tables for `Toaster`, `toast` and the parts.
+
+**Why:** The `@shadcn/react` pages do not exist on this site. The react-resizable-panels README shows a React API the Svelte port changes in places, such as bound props in place of refs. The Base UI Toast docs do not cover `Toaster` and the `toast` object, which replace Sonner here (see "Toasts use Toast, not Sonner"). This is the same call as "The Command page documents filtering and the dialog".
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
 ## Forms
 
 ### The Forms guides cover SvelteKit forms instead of React form libraries

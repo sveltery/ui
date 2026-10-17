@@ -92,6 +92,8 @@ You can use the `Kbd` component inside a `InputGroupAddon` component to display 
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the keys in a [DirectionProvider](/docs/components/direction) and set `dir` on their container. Use the language selector to switch the language.
 
 <ComponentPreview name="base/KbdRtlExample" direction="rtl" align="start" />

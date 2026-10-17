@@ -115,6 +115,8 @@ Use just the previous and next buttons without page numbers. This is useful for 
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the pagination in a [DirectionProvider](/docs/components/direction) and set `dir` on `Pagination`. Pass `text` to `PaginationPrevious` and `PaginationNext` to translate their labels. Use the language selector to switch the language.
 
 <ComponentPreview name="base/PaginationRtlExample" direction="rtl" align="start" />
