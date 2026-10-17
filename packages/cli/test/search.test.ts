@@ -70,10 +70,11 @@ beforeEach(() => {
 });
 afterEach(() => rmSync(cwd, { recursive: true, force: true }));
 
+/** Runs `search` with the defaults that the CLI's options give. */
 async function print(registries: string[], options: Partial<SearchOptions> = {}) {
   const log = vi.spyOn(console, 'log').mockImplementation(() => {});
   try {
-    await search(registries, { cwd, json: false, ...options });
+    await search(registries, { cwd, json: false, limit: '100', offset: '0', ...options });
     return log.mock.calls.map(([line]) => line).join('\n');
   } finally {
     log.mockRestore();
@@ -206,7 +207,7 @@ Showing 1-2 of 2
 
 - @acme/hello (ui) — Says hello.
 - @acme/greet-dialog (block)`);
-    expect(requests.at(-1)).toBe('/acme/registry.json');
+    expect(requests.at(-1)).toBe('/acme/registry.json?limit=100&offset=0');
   });
 
   test('forwards the query, the types and the page to the registry, and filters a static registry itself', async () => {
@@ -249,9 +250,18 @@ More items available. Use --offset 4 to see the next page.`);
     expect(namespaceRequests().sort()).toEqual(['/acme/registry.json?q=dialog&limit=4', '/dynamic/registry.json?q=dialog&limit=4']);
   });
 
-  test('a @sveltery entry in registries replaces the built-in registry', async () => {
+  test('a @sveltery entry in registries replaces the built-in registry when @sveltery is named', async () => {
     configure({ '@sveltery': acme() });
-    expect(await print([], { limit: '1' })).toContain('- @sveltery/hello (ui) — Says hello.');
+    expect(await print(['@sveltery'], { limit: '1' })).toContain('- @sveltery/hello (ui) — Says hello.');
+  });
+
+  test('without a registry argument, reads the manifest even when registries sets @sveltery', async () => {
+    const all = await print([]);
+    configure({ '@sveltery': `${origin}/r/styles/{style}/{name}.json` });
+    expect(await print([])).toBe(all);
+    writeFileSync(join(cwd, 'components.json'), JSON.stringify({ style: 'new-york', registries: { '@sveltery': acme() } }));
+    expect(await print([])).toBe(all);
+    expect(namespaceRequests()).toEqual([]);
   });
 
   test('stops before any namespace request when an environment variable is missing', async () => {
@@ -262,10 +272,31 @@ More items available. Use --offset 4 to see the next page.`);
     expect(namespaceRequests()).toEqual([]);
   });
 
+  test('sends no request, not even with the credentials that are set, when another registry is missing an environment variable', async () => {
+    delete process.env.BETA_TOKEN;
+    configure({ '@acme': acme(), '@beta': { url: `${origin}/acme/{name}.json`, headers: { Authorization: 'Bearer ${BETA_TOKEN}' } } });
+    // The server may not have seen a request that fetch already started, so the sent requests are read from fetch.
+    const fetched = vi.spyOn(globalThis, 'fetch');
+    try {
+      await expect(search(['@acme', '@beta'], { cwd, json: false })).rejects.toThrow('Registry "@beta" requires the following environment variables:\n\n  • BETA_TOKEN');
+      expect(fetched.mock.calls.map(([url]) => String(url)).filter((url) => url.startsWith(`${origin}/acme/`))).toEqual([]);
+    } finally {
+      fetched.mockRestore();
+    }
+    expect(namespaceRequests()).toEqual([]);
+  });
+
   test('names a rejected token and prints ${VAR} instead of its value', async () => {
     writeFileSync(join(cwd, '.env.local'), 'ACME_TOKEN=wrong\n');
-    configure({ '@acme': acme() });
-    await expect(search(['@acme'], { cwd, json: false })).rejects.toThrow(`You are not authorized to access the item at ${origin}/acme/registry.json. If this is a remote registry, you may need to authenticate.`);
+    configure({ '@acme': { ...acme(), params: { token: '${ACME_TOKEN}' } } });
+    const error = await search(['@acme'], { cwd, json: false }).then(
+      () => undefined,
+      (error: unknown) => error,
+    );
+    expect(error).toBeInstanceOf(Error);
+    const message = (error as Error).message;
+    expect(message).toContain(`You are not authorized to access the item at ${origin}/acme/registry.json?token=\${ACME_TOKEN}. If this is a remote registry, you may need to authenticate.`);
+    expect(message).not.toContain('wrong');
   });
 
   test('rejects a registry item that is not a catalog, and one that still uses include', async () => {

@@ -445,7 +445,7 @@ With no argument, `search` searches `@sveltery`, the Sveltery UI registry that `
 npx @sveltery/ui@latest search @acme -q card
 ```
 
-`search` fetches the namespace's item named `registry`, such as `https://acme.com/r/registry.json`, which is the `registry.json` that `build` writes. It sends the query, the types, `--limit` and `--offset` as the `q`, `type`, `limit` and `offset` query parameters. A registry that answers with `pagination` has filtered and paged the items itself, and `search` prints its page as it is. Otherwise `search` filters and ranks the items. A result from a namespace gives `add` the `@acme/name` form.
+`search` fetches the namespace's item named `registry`, such as `https://acme.com/r/registry.json`, which is the `registry.json` that `build` writes. It sends the query, the types, `--limit` and `--offset` as the `q`, `type`, `limit` and `offset` query parameters. With several registries, it sends no `offset`, and `limit` is `--offset` plus `--limit`, as upstream does. A registry that answers with `pagination` has filtered and paged the items itself, and `search` prints its page as it is. Otherwise `search` filters and ranks the items. A result from a namespace gives `add` the `@acme/name` form.
 
 Pass several registries to search them together. Each line then names its registry. A URL, a GitHub source or a namespace that `registries` does not list is an error. See [differences](/docs/differences#search-defaults-to-sveltery-and-takes-namespaces-only).
 

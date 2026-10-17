@@ -1,7 +1,7 @@
 import fuzzysort from 'fuzzysort';
 import { catalogStyle, openCatalog } from '../items.js';
 import { CliError } from '../parse.js';
-import { BUILTIN_NAMESPACE, fetchCatalog, itemTypeNames, type CatalogSearch, type Registry, type SearchPagination } from '../registry.js';
+import { BUILTIN_NAMESPACE, catalogRequest, fetchCatalog, itemTypeNames, type CatalogSearch, type ItemRequest, type Registry, type SearchPagination } from '../registry.js';
 
 /** Shaped like shadcn's search result item. `addCommandArgument` is what `add` takes: `@namespace/name`, or the bare name for the built-in `@sveltery`. */
 export type SearchItem = { name: string; title?: string; type: string; description?: string; registry: string; addCommandArgument: string };
@@ -26,9 +26,6 @@ function parseCount(flag: string, value: string | undefined): number | undefined
   return Number(value);
 }
 
-/** `@sveltery`, unless `registries` sets it, is read from the manifest that `index.json` already holds. */
-const readsManifest = (registry: Registry, address: string) => address === BUILTIN_NAMESPACE && !registry.namespaces.configs[BUILTIN_NAMESPACE];
-
 function selectRegistries(registry: Registry, requested: string[]): string[] {
   const known = [...new Set([BUILTIN_NAMESPACE, ...Object.keys(registry.namespaces.configs)])];
   const addresses = requested.length > 0 ? [...new Set(requested)] : [BUILTIN_NAMESPACE];
@@ -51,9 +48,10 @@ const toSearchItem = (entry: { name: string; title?: string; type: string; descr
   addCommandArgument,
 });
 
-async function readSource(registry: Registry, style: unknown, address: string, search: CatalogSearch): Promise<Source> {
-  if (readsManifest(registry, address)) return { items: [...registry.manifest.items, ...registry.manifest.blocks].map((entry) => toSearchItem(entry, address, entry.name)) };
-  const catalog = await fetchCatalog(registry, catalogStyle(style), address, search);
+/** Without a request, the registry is the built-in `@sveltery`, read from the manifest that `index.json` already holds. */
+async function readSource(registry: Registry, address: string, request: ItemRequest | undefined): Promise<Source> {
+  if (!request) return { items: [...registry.manifest.items, ...registry.manifest.blocks].map((entry) => toSearchItem(entry, address, entry.name)) };
+  const catalog = await fetchCatalog(request, address);
   return { items: catalog.items.map((entry) => toSearchItem(entry, address, `${address}/${entry.name}`)), ...(catalog.pagination && { pagination: catalog.pagination }) };
 }
 
@@ -116,7 +114,11 @@ export async function search(requested: string[], options: SearchOptions): Promi
   const types = filters.types?.map((type) => `registry:${type}`);
   const forwarded: CatalogSearch =
     registries.length === 1 ? { query: filters.query, types, limit, offset } : { query: filters.query, types, limit: limit === undefined ? undefined : (offset ?? 0) + limit };
-  const sources = await Promise.all(registries.map((address) => readSource(registry, style, address, forwarded)));
+  // A Sveltery registry serves index.json, not a registry.json for each style, so the default search reads the manifest even when `registries` sets `@sveltery`.
+  const readsManifest = (address: string) => address === BUILTIN_NAMESPACE && (requested.length === 0 || !registry.namespaces.configs[BUILTIN_NAMESPACE]);
+  // Every request is built, and so every environment variable checked, before any is sent.
+  const requests = registries.map((address) => (readsManifest(address) ? undefined : catalogRequest(registry, catalogStyle(style), address, forwarded)));
+  const sources = await Promise.all(registries.map((address, index) => readSource(registry, address, requests[index])));
   const results = searchItems(sources, { ...filters, limit, offset });
   console.log(options.json ? JSON.stringify(results, null, 2) : formatResults(results, filters, registries));
   return results;

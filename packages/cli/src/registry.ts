@@ -284,8 +284,11 @@ export type RegistryCatalog = ReturnType<typeof registryCatalog>;
 /** What `search` forwards to a namespace, so a dynamic registry can filter and page on the server. `types` are full names such as `registry:ui`. */
 export type CatalogSearch = { query?: string; types?: string[]; limit?: number; offset?: number };
 
-/** Fetches the item named `registry` of `namespace`, as `@namespace/registry`, with the search as `q`, `type`, `limit` and `offset`. */
-export async function fetchCatalog(registry: Registry, style: StyleName, namespace: string, search: CatalogSearch): Promise<RegistryCatalog> {
+/**
+ * Where the item named `registry` of `namespace`, as `@namespace/registry`, is served, with the search as `q`, `type`, `limit` and `offset`.
+ * Throws when an environment variable the namespace needs is not set.
+ */
+export function catalogRequest(registry: Registry, style: StyleName, namespace: string, search: CatalogSearch): ItemRequest {
   const request = namespaceRequest(registry.namespaces, style, namespace, 'registry');
   const fields = { q: search.query || undefined, type: search.types?.length ? search.types.join(',') : undefined, limit: search.limit, offset: search.offset };
   const entries = Object.entries(fields).flatMap(([key, value]): [string, string][] => (value === undefined ? [] : [[key, String(value)]]));
@@ -295,7 +298,11 @@ export async function fetchCatalog(registry: Registry, style: StyleName, namespa
   for (const [key, value] of entries) url?.searchParams.set(key, value);
   const query = new URLSearchParams(entries).toString();
   const displayUrl = query ? `${request.displayUrl}${request.displayUrl.includes('?') ? '&' : '?'}${query}` : request.displayUrl;
-  const catalog = await fetchJson({ ...request, url: url && entries.length > 0 ? url.toString() : request.url, displayUrl }, registryCatalog);
+  return { ...request, url: url && entries.length > 0 ? url.toString() : request.url, displayUrl };
+}
+
+export async function fetchCatalog(request: ItemRequest, namespace: string): Promise<RegistryCatalog> {
+  const catalog = await fetchJson(request, registryCatalog);
   if (catalog.include?.length) {
     throw new CliError(`Registry catalog "${namespace}/registry" uses "include", but a registry must serve the resolved catalog. Run \`npx @sveltery/ui@latest build\` and serve the registry.json it writes.`);
   }

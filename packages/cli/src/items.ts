@@ -20,7 +20,7 @@ export async function openProject(cwd: string): Promise<Project> {
 
 const catalogConfig = object({ style: optional((value) => value), registry: optional(string), registries: optional(namespaceConfigs) });
 
-/** The style a components.json names, as `view` and a namespace `search` need it for a URL. `docs` and a `@sveltery` search never read the style, so `openCatalog` leaves it unchecked and a config written for another style set still works there. */
+/** The style a components.json names, as `view` and a namespace `search` need it for a URL. `docs` and a search of the manifest never read the style, so `openCatalog` leaves it unchecked and a config written for another style set still works there. */
 export function catalogStyle(style: unknown): StyleName {
   if (style === undefined) return 'nova';
   try {
