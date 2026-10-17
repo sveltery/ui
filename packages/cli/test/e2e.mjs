@@ -169,6 +169,24 @@ try {
   // shadcn@4.21.1 has no gray base color either, so the code is rejected rather than mapped.
   await assert.rejects(capture('npm', [...cliExec, 'init', '--preset', 'btLmMa', '--no-install'], grayApp, env), (error) => /Invalid baseColor "gray"/.test(error.output), 'init prints the reason from /init');
 
+  step('sveltery apply lyra re-adds the installed items, and apply --only theme keeps them');
+  const applyApp = join(work, 'apply');
+  mkdirSync(applyApp);
+  for (const file of ['package.json', 'src']) cpSync(join(app, file), join(applyApp, file), { recursive: true });
+  await run('npm', [...cliExec, 'init', '--preset', 'nova', '--no-install'], applyApp, env);
+  await run('npm', [...cliExec, 'add', 'dialog', '-y', '--no-install'], applyApp, env);
+  const dialogContent = join(applyApp, 'src/lib/components/ui/dialog/DialogContent.svelte');
+  assert.match(readFileSync(dialogContent, 'utf8'), /from '@lucide\/svelte\/icons\/x'/, 'nova uses lucide');
+  await run('npm', [...cliExec, 'apply', 'lyra', '-y', '--no-install'], applyApp, env);
+  const applied = JSON.parse(readFileSync(join(applyApp, 'components.json'), 'utf8'));
+  assert.deepEqual([applied.style, applied.iconLibrary], ['lyra', 'phosphor'], 'apply writes the preset to components.json');
+  const phosphorDialog = readFileSync(dialogContent, 'utf8');
+  assert.match(phosphorDialog, /from 'phosphor-svelte\/lib\/X'/, 'apply re-adds the dialog with phosphor icons');
+  await run('npm', [...cliExec, 'apply', 'sera', '--only', 'theme', '-y', '--no-install'], applyApp, env);
+  const themed = JSON.parse(readFileSync(join(applyApp, 'components.json'), 'utf8'));
+  assert.deepEqual([themed.style, themed.iconLibrary, themed.tailwind.baseColor], ['lyra', 'phosphor', 'taupe'], 'apply --only theme changes only the theme');
+  assert.equal(readFileSync(dialogContent, 'utf8'), phosphorDialog, 'apply --only theme leaves the components alone');
+
   step('sveltery init -y keeps a bold menuAccent from components.json in the theme');
   const boldApp = join(work, 'menu-accent-bold');
   mkdirSync(boldApp);
@@ -279,6 +297,13 @@ try {
   assert.equal(projectInfo.project.tailwindCss, config.tailwind.css);
   assert.deepEqual(projectInfo.components, ['button', 'chart', 'dialog'], 'info lists the items add installed');
   assert.deepEqual(projectInfo.preset.fallbacks, ['font', 'fontHeading', 'menuAccent'], 'a plain init writes no fonts or menuAccent, so info falls back for them');
+
+  step('sveltery eject -y, so the build and render below run on the inlined tailwind.css');
+  await cli('eject', '-y');
+  const ejected = readFileSync(join(app, config.tailwind.css), 'utf8');
+  assert.ok(!ejected.includes('@sveltery/ui/tailwind.css'), 'eject removes the import');
+  assert.match(ejected, /\/\* ejected from @sveltery\/ui@.*\*\/\n.*\n@theme inline \{/, 'eject inlines tailwind.css');
+  assert.equal(JSON.parse(readFileSync(join(app, 'package.json'), 'utf8')).devDependencies['@sveltery/ui'], undefined, 'eject removes the dev dependency');
 
   writeFileSync(
     join(app, 'src/routes/+page.svelte'),

@@ -81,7 +81,8 @@ export function formatPlan(plan: Plan, { showIdentical }: { showIdentical: boole
   return lines.join('\n');
 }
 
-export async function executePlan(plan: Plan, { cwd, install: shouldInstall }: { cwd: string; install: boolean }): Promise<void> {
+/** Writes the plan's files and installs its packages. `silent` hides the package manager's output. */
+export async function executePlan(plan: Plan, { cwd, install: shouldInstall, silent = false }: { cwd: string; install: boolean; silent?: boolean }): Promise<void> {
   for (const file of plan.files) {
     if (file.status === 'identical') continue;
     const absolute = join(cwd, file.path);
@@ -89,15 +90,21 @@ export async function executePlan(plan: Plan, { cwd, install: shouldInstall }: {
     writeFileSync(absolute, file.content);
   }
   if (!shouldInstall) return;
-  const agent = (await detect({ cwd }))?.agent ?? 'npm';
   for (const [specs, dev] of [
     [plan.dependencies, false],
     [plan.devDependencies, true],
   ] as const) {
-    if (specs.length === 0) continue;
-    const resolved = resolveCommand(agent, 'add', [...(dev ? ['-D'] : []), ...specs]);
-    if (!resolved) throw new CliError(`Do not know how to install packages with ${agent}. Install these yourself: ${specs.join(' ')}`);
-    const result = spawnSync(resolved.command, resolved.args, { cwd, stdio: 'inherit', shell: process.platform === 'win32' });
-    if (result.status !== 0) throw new CliError(`\`${resolved.command} ${resolved.args.join(' ')}\` failed. Install these yourself: ${specs.join(' ')}`);
+    if (specs.length > 0) await runPackageManager(cwd, 'add', [...(dev ? ['-D'] : []), ...specs], { fallback: `Install these yourself: ${specs.join(' ')}`, silent });
   }
 }
+
+/** Runs the project's package manager, or npm when none is detected. `fallback` tells the user what to do by hand when it fails. */
+async function runPackageManager(cwd: string, command: 'add' | 'uninstall', args: string[], { fallback, silent = false }: { fallback: string; silent?: boolean }) {
+  const agent = (await detect({ cwd }))?.agent ?? 'npm';
+  const resolved = resolveCommand(agent, command, args);
+  if (!resolved) throw new CliError(`Do not know how to ${command} packages with ${agent}. ${fallback}`);
+  const result = spawnSync(resolved.command, resolved.args, { cwd, stdio: silent ? 'ignore' : 'inherit', shell: process.platform === 'win32' });
+  if (result.status !== 0) throw new CliError(`\`${resolved.command} ${resolved.args.join(' ')}\` failed. ${fallback}`);
+}
+
+export const removePackage = (cwd: string, name: string, { silent }: { silent: boolean }) => runPackageManager(cwd, 'uninstall', [name], { fallback: `Remove ${name} from package.json yourself.`, silent });

@@ -3,9 +3,11 @@ import { resolve } from 'node:path';
 import { log } from '@clack/prompts';
 import { Command } from 'commander';
 import { add } from './commands/add.js';
+import { apply } from './commands/apply.js';
 import { build } from './commands/build.js';
 import { diff } from './commands/diff.js';
 import { docs } from './commands/docs.js';
+import { eject } from './commands/eject.js';
 import { info } from './commands/info.js';
 import { init } from './commands/init.js';
 import { presetDecode, presetOpen, presetResolve, presetUrl } from './commands/preset.js';
@@ -14,7 +16,7 @@ import { migrateRtl, migrations } from './commands/migrate.js';
 import { update } from './commands/update.js';
 import { view } from './commands/view.js';
 import { CliError } from './parse.js';
-import { version } from './version.js';
+import { cliPackage, version } from './version.js';
 
 const program = new Command('sveltery').description('Add Sveltery UI components to a Svelte app.').version(version);
 
@@ -32,6 +34,18 @@ program
   .option('--cwd <path>', 'the project root', '.')
   .option('--no-install', 'do not install packages')
   .action(async (options) => void (await init({ ...options, cwd: resolve(options.cwd) })));
+
+program
+  .command('apply')
+  .description('apply a preset to a project that ran init')
+  .argument('[preset]', 'the preset: a name such as nova, a preset code, or an /init URL')
+  .option('--preset <preset>', 'the preset, as an option')
+  .option('--only [parts]', 'apply only parts of the preset: theme, font')
+  .option('-y, --yes', 'do not ask to continue', false)
+  .option('-s, --silent', 'do not print the plan or the package manager output', false)
+  .option('--no-install', 'do not install packages')
+  .option('--cwd <path>', 'the project root', '.')
+  .action(async (preset: string | undefined, options) => void (await apply(preset, { ...options, cwd: resolve(options.cwd) })));
 
 program
   .command('add')
@@ -156,6 +170,14 @@ preset
   .option('--json', 'output as JSON.', false)
   .option('--cwd <path>', 'the project root', '.')
   .action((options) => void presetResolve({ ...options, cwd: resolve(options.cwd) }));
+
+program
+  .command('eject')
+  .description(`inline ${cliPackage}/tailwind.css into your CSS file and remove the ${cliPackage} dependency`)
+  .option('-y, --yes', 'do not ask to continue', false)
+  .option('-s, --silent', 'do not print the warnings or the package manager output', false)
+  .option('--cwd <path>', 'the project root', '.')
+  .action(async (options) => void (await eject({ ...options, cwd: resolve(options.cwd) })));
 
 try {
   await program.parseAsync();

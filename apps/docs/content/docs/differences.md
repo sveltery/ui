@@ -947,4 +947,40 @@ The old `list` command marked the items in your project as `installed` and had n
 
 **Why:** `init` writes every font as a fontsource import and a theme variable, so the CSS holds what the Next.js readers look for. The `open` package adds dependencies for a call that starts one program.
 
+### `apply` with no preset prints the Create page link
+
+**Upstream:** [`apply.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/apply.ts#L140) calls [`promptToOpenPresetBuilder`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/preset/presets.ts#L53), which prints the link and then asks "Open in browser?" unless `--yes` is set.
+
+**Sveltery UI:** [`apply`](/docs/cli#apply) prints the link and the command to run next, and exits.
+
+**Why:** The link is clickable in most terminals, and the CLI does not need a package that starts a browser on each platform.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `apply` changes only the project it runs in
+
+**Upstream:** After it applies the preset, [`apply.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/apply.ts#L438) copies the style, base color, icon library and menu settings into the `components.json` of each linked workspace. Run at a monorepo root without a `components.json`, [`preflight-apply.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/preflights/preflight-apply.ts#L30) lists the workspace packages to run it in.
+
+**Sveltery UI:** [`apply`](/docs/cli#apply) changes only the project at `--cwd`. In a [monorepo](/docs/monorepo), run it in each package that has a `components.json`. At a monorepo root, it says that the directory has no `components.json`.
+
+**Why:** This CLI does not resolve workspaces yet, so it has no list of linked projects to update or suggest.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `apply` does not back up `components.json`
+
+**Upstream:** [`apply.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/apply.ts#L215) wraps the whole run in [`withFileBackup`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/utils/file-helper.ts#L63), which copies `components.json` first and puts it back if the run throws or the process exits early.
+
+**Sveltery UI:** [`apply`](/docs/cli#apply) resolves the preset, the settings and every file to write before it writes anything. A preset that does not resolve, an unreachable registry or a refused prompt leaves the project as it was. Once the plan is known, it writes all the files and then installs the packages. If the install fails, the written files, `components.json` included, stay in place, and the error names the packages to install yourself.
+
+**Why:** Nothing that can fail on the network or on input runs after the first write, so a backup would guard only the install step. Restoring `components.json` there would leave the new CSS and components paired with the old settings.
+
+### `eject` at a monorepo root does not list the workspace packages
+
+**Upstream:** When the directory has no `components.json` and is a monorepo root, [`eject.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/eject.ts#L57) lists the workspace packages that have one and shows the command to run in each.
+
+**Sveltery UI:** [`eject`](/docs/cli#eject) says that the directory has no `components.json` and to run `init` first.
+
+**Why:** This CLI does not resolve workspaces yet. The [Monorepo](/docs/monorepo) page tells you to run the CLI in the package with `--cwd`.
+
 **Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
