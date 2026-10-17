@@ -1,73 +1,134 @@
 <script lang="ts">
-  import { scaleBand, scaleUtc } from 'd3-scale';
-  import { curveLinearClosed, curveNatural } from 'd3-shape';
-  import { cubicInOut } from 'svelte/easing';
-  import { AreaChart, ArcChart, BarChart, LineChart, PieChart, Text, type ChartContextValue } from 'layerchart';
+  import { Area, AreaChart, Bar, BarChart, CartesianGrid, Label, Line, LineChart, Pie, PieChart, PolarAngleAxis, PolarGrid, PolarRadiusAxis, Radar, RadarChart, RadialBar, RadialBarChart, XAxis, type SvelteArgs, type LabelContentProps } from '@sveltery/recharts';
   import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '../charts/layerchart';
+  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
-  const monthly = [
-    { month: 'January', desktop: 186, mobile: 80 },
-    { month: 'February', desktop: 305, mobile: 200 },
-    { month: 'March', desktop: 237, mobile: 120 },
-    { month: 'April', desktop: 73, mobile: 190 },
-    { month: 'May', desktop: 209, mobile: 130 },
-    { month: 'June', desktop: 214, mobile: 140 },
-  ];
-  const dated = monthly.map((row, index) => ({ ...row, date: new Date(Date.UTC(2024, index, 1)) }));
-  const shortMonth = (value: Date) => value.toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' });
-  const longMonth = (value: Date) => value.toLocaleDateString('en-US', { month: 'long', timeZone: 'UTC' });
+  const areaChartData = [
+    { month: "January", desktop: 186 },
+    { month: "February", desktop: 305 },
+    { month: "March", desktop: 237 },
+    { month: "April", desktop: 73 },
+    { month: "May", desktop: 209 },
+    { month: "June", desktop: 214 },
+  ]
 
-  const visitorsConfig = {
-    desktop: { label: 'Desktop', color: 'var(--chart-1)' },
-  } satisfies ChartConfig;
+  const areaChartConfig = {
+    desktop: {
+      label: "Desktop",
+      color: "var(--chart-1)",
+    },
+  } satisfies ChartConfig
 
-  const deviceConfig = {
-    desktop: { label: 'Desktop', color: 'var(--chart-1)' },
-    mobile: { label: 'Mobile', color: 'var(--chart-2)' },
-  } satisfies ChartConfig;
+  const barChartData = [
+    { month: "January", desktop: 186, mobile: 80 },
+    { month: "February", desktop: 305, mobile: 200 },
+    { month: "March", desktop: 237, mobile: 120 },
+    { month: "April", desktop: 73, mobile: 190 },
+    { month: "May", desktop: 209, mobile: 130 },
+    { month: "June", desktop: 214, mobile: 140 },
+  ]
 
-  const pieData = [
-    { browser: 'chrome', visitors: 275, color: 'var(--color-chrome)' },
-    { browser: 'safari', visitors: 200, color: 'var(--color-safari)' },
-    { browser: 'firefox', visitors: 287, color: 'var(--color-firefox)' },
-    { browser: 'edge', visitors: 173, color: 'var(--color-edge)' },
-    { browser: 'other', visitors: 190, color: 'var(--color-other)' },
-  ];
-  const pieConfig = {
-    visitors: { label: 'Visitors' },
-    chrome: { label: 'Chrome', color: 'var(--chart-1)' },
-    safari: { label: 'Safari', color: 'var(--chart-2)' },
-    firefox: { label: 'Firefox', color: 'var(--chart-3)' },
-    edge: { label: 'Edge', color: 'var(--chart-4)' },
-    other: { label: 'Other', color: 'var(--chart-5)' },
-  } satisfies ChartConfig;
-  const totalVisitors = pieData.reduce((total, row) => total + row.visitors, 0);
+  const barChartConfig = {
+    desktop: {
+      label: "Desktop",
+      color: "var(--chart-1)",
+    },
+    mobile: {
+      label: "Mobile",
+      color: "var(--chart-2)",
+    },
+  } satisfies ChartConfig
 
-  const radialData = [{ browser: 'safari', visitors: 1260, color: 'var(--color-safari)' }];
-  const radialConfig = {
-    visitors: { label: 'Visitors' },
-    safari: { label: 'Safari', color: 'var(--chart-2)' },
-  } satisfies ChartConfig;
+  const lineChartData = [
+    { month: "January", desktop: 186, mobile: 80 },
+    { month: "February", desktop: 305, mobile: 200 },
+    { month: "March", desktop: 237, mobile: 120 },
+    { month: "April", desktop: 73, mobile: 190 },
+    { month: "May", desktop: 209, mobile: 130 },
+    { month: "June", desktop: 214, mobile: 140 },
+  ]
 
-  let barContext = $state<ChartContextValue>();
+  const lineChartConfig = {
+    desktop: {
+      label: "Desktop",
+      color: "var(--chart-1)",
+    },
+    mobile: {
+      label: "Mobile",
+      color: "var(--chart-2)",
+    },
+  } satisfies ChartConfig
+
+  const pieChartData = [
+    { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
+    { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
+    { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
+    { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
+    { browser: "other", visitors: 190, fill: "var(--color-other)" },
+  ]
+
+  const pieChartConfig = {
+    visitors: {
+      label: "Visitors",
+    },
+    chrome: {
+      label: "Chrome",
+      color: "var(--chart-1)",
+    },
+    safari: {
+      label: "Safari",
+      color: "var(--chart-2)",
+    },
+    firefox: {
+      label: "Firefox",
+      color: "var(--chart-3)",
+    },
+    edge: {
+      label: "Edge",
+      color: "var(--chart-4)",
+    },
+    other: {
+      label: "Other",
+      color: "var(--chart-5)",
+    },
+  } satisfies ChartConfig
+
+  const radarChartData = [
+    { month: "January", desktop: 186, mobile: 80 },
+    { month: "February", desktop: 305, mobile: 200 },
+    { month: "March", desktop: 237, mobile: 120 },
+    { month: "April", desktop: 73, mobile: 190 },
+    { month: "May", desktop: 209, mobile: 130 },
+    { month: "June", desktop: 214, mobile: 140 },
+  ]
+
+  const radarChartConfig = {
+    desktop: {
+      label: "Desktop",
+      color: "var(--chart-1)",
+    },
+    mobile: {
+      label: "Mobile",
+      color: "var(--chart-2)",
+    },
+  } satisfies ChartConfig
+
+  const radialChartData = [
+    { browser: "safari", visitors: 1260, fill: "var(--color-safari)" },
+  ]
+
+  const radialChartConfig = {
+    visitors: {
+      label: "Visitors",
+    },
+    safari: {
+      label: "Safari",
+      color: "var(--chart-2)",
+    },
+  } satisfies ChartConfig
 </script>
-
-{#snippet trend(detail: string)}
-  <div class="flex items-center gap-2 leading-none font-medium">
-    Trending up by 5.2% this month <IconPlaceholder
-      lucide="TrendingUpIcon"
-      tabler="IconTrendingUp"
-      hugeicons="TradeUpIcon"
-      phosphor="TrendUpIcon"
-      remixicon="RiLineChartLine"
-      class="size-4"
-    />
-  </div>
-  <div class="flex items-center gap-2 leading-none text-muted-foreground">{detail}</div>
-{/snippet}
 
 {#snippet ChartAreaExample()}
   <Example title="Area Chart">
@@ -77,26 +138,40 @@
         <CardDescription>Showing total visitors for the last 6 months</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={visitorsConfig}>
+        <ChartContainer config={areaChartConfig}>
           <AreaChart
-            data={dated}
-            x="date"
-            xScale={scaleUtc()}
-            series={[{ key: 'desktop', label: 'Desktop', color: 'var(--color-desktop)' }]}
-            axis="x"
-            props={{
-              area: { curve: curveNatural, 'fill-opacity': 0.4, line: { class: 'stroke-1' }, motion: 'tween' },
-              xAxis: { tickLength: 14, format: shortMonth },
+            accessibilityLayer
+            data={areaChartData}
+            margin={{
+              left: 12,
+              right: 12,
             }}
           >
-            {#snippet tooltip()}
-              <ChartTooltip labelFormatter={longMonth} indicator="line" />
-            {/snippet}
+            <CartesianGrid vertical={false} />
+            <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} tickFormatter={(value) => value.slice(0, 3)} />
+            <ChartTooltip cursor={false}>
+              {#snippet content(props: TooltipContentArgs)}
+                <ChartTooltipContent indicator="line" {...props} />
+              {/snippet}
+            </ChartTooltip>
+            <Area dataKey="desktop" type="natural" fill="var(--color-desktop)" fillOpacity={0.4} stroke="var(--color-desktop)" />
           </AreaChart>
         </ChartContainer>
       </CardContent>
       <CardFooter>
-        <div class="grid gap-2 text-sm">{@render trend('January - June 2024')}</div>
+        <div class="flex w-full items-start gap-2">
+          <div class="grid gap-2">
+            <div class="flex items-center gap-2 leading-none font-medium">Trending up by 5.2% this month <IconPlaceholder
+                lucide="TrendingUpIcon"
+                tabler="IconTrendingUp"
+                hugeicons="ChartUpIcon"
+                phosphor="TrendUpIcon"
+                remixicon="RiLineChartLine"
+                class="size-4"
+              /></div>
+            <div class="flex items-center gap-2 leading-none text-muted-foreground">January - June 2024</div>
+          </div>
+        </div>
       </CardFooter>
     </Card>
   </Example>
@@ -110,44 +185,30 @@
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={deviceConfig}>
-          <BarChart
-            bind:context={barContext}
-            data={monthly}
-            xScale={scaleBand().padding(0.25)}
-            x="month"
-            axis="x"
-            series={[
-              { key: 'desktop', label: 'Desktop', color: 'var(--color-desktop)' },
-              { key: 'mobile', label: 'Mobile', color: 'var(--color-mobile)' },
-            ]}
-            x1Scale={scaleBand().paddingInner(0.2)}
-            seriesLayout="group"
-            rule={false}
-            props={{
-              bars: {
-                stroke: 'none',
-                strokeWidth: 0,
-                rounded: 'all',
-                initialY: barContext?.height,
-                initialHeight: 0,
-                motion: {
-                  y: { type: 'tween', duration: 500, easing: cubicInOut },
-                  height: { type: 'tween', duration: 500, easing: cubicInOut },
-                },
-              },
-              highlight: { area: { fill: 'none' } },
-              xAxis: { tickLength: 16, format: (month: string) => month.slice(0, 3) },
-            }}
-          >
-            {#snippet tooltip()}
-              <ChartTooltip indicator="dashed" />
-            {/snippet}
+        <ChartContainer config={barChartConfig}>
+          <BarChart accessibilityLayer data={barChartData}>
+            <CartesianGrid vertical={false} />
+            <XAxis dataKey="month" tickLine={false} tickMargin={10} axisLine={false} tickFormatter={(value) => value.slice(0, 3)} />
+            <ChartTooltip cursor={false}>
+              {#snippet content(props: TooltipContentArgs)}
+                <ChartTooltipContent indicator="dashed" {...props} />
+              {/snippet}
+            </ChartTooltip>
+            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
+            <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
           </BarChart>
         </ChartContainer>
       </CardContent>
       <CardFooter class="flex-col items-start gap-2">
-        {@render trend('Showing total visitors for the last 6 months')}
+        <div class="flex gap-2 leading-none font-medium">Trending up by 5.2% this month <IconPlaceholder
+            lucide="TrendingUpIcon"
+            tabler="IconTrendingUp"
+            hugeicons="ChartUpIcon"
+            phosphor="TrendUpIcon"
+            remixicon="RiLineChartLine"
+            class="size-4"
+          /></div>
+        <div class="leading-none text-muted-foreground">Showing total visitors for the last 6 months</div>
       </CardFooter>
     </Card>
   </Example>
@@ -161,126 +222,86 @@
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={deviceConfig}>
+        <ChartContainer config={lineChartConfig}>
           <LineChart
-            data={dated}
-            x="date"
-            xScale={scaleUtc()}
-            axis="x"
-            series={[
-              { key: 'desktop', label: 'Desktop', color: 'var(--color-desktop)' },
-              { key: 'mobile', label: 'Mobile', color: 'var(--color-mobile)' },
-            ]}
-            props={{
-              spline: { curve: curveNatural, motion: 'tween', strokeWidth: 2 },
-              xAxis: { tickLength: 14, format: shortMonth },
-              highlight: { points: { r: 4 } },
+            accessibilityLayer
+            data={lineChartData}
+            margin={{
+              left: 12,
+              right: 12,
             }}
           >
-            {#snippet tooltip()}
-              <ChartTooltip labelFormatter={longMonth} />
-            {/snippet}
+            <CartesianGrid vertical={false} />
+            <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} tickFormatter={(value) => value.slice(0, 3)} />
+            <ChartTooltip cursor={false}>
+              {#snippet content(props: TooltipContentArgs)}
+                <ChartTooltipContent {...props} />
+              {/snippet}
+            </ChartTooltip>
+            <Line dataKey="desktop" type="monotone" stroke="var(--color-desktop)" strokeWidth={2} dot={false} />
+            <Line dataKey="mobile" type="monotone" stroke="var(--color-mobile)" strokeWidth={2} dot={false} />
           </LineChart>
         </ChartContainer>
       </CardContent>
       <CardFooter>
-        <div class="grid gap-2 text-sm">{@render trend('Showing total visitors for the last 6 months')}</div>
+        <div class="flex w-full items-start gap-2">
+          <div class="grid gap-2">
+            <div class="flex items-center gap-2 leading-none font-medium">Trending up by 5.2% this month <IconPlaceholder
+                lucide="TrendingUpIcon"
+                tabler="IconTrendingUp"
+                hugeicons="ChartUpIcon"
+                phosphor="TrendUpIcon"
+                remixicon="RiLineChartLine"
+                class="size-4"
+              /></div>
+            <div class="flex items-center gap-2 leading-none text-muted-foreground">Showing total visitors for the last 6 months</div>
+          </div>
+        </div>
       </CardFooter>
     </Card>
   </Example>
 {/snippet}
 
 {#snippet ChartPieExample()}
-  <Example title="Pie Chart">
+  {const totalVisitors = $derived.by(() => {
+    return pieChartData.reduce((acc, curr) => acc + curr.visitors, 0)
+  })}<Example title="Pie Chart">
     <Card class="w-full">
       <CardHeader class="items-center pb-0">
         <CardTitle>Pie Chart - Donut with Text</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent class="flex-1 pb-0">
-        <ChartContainer config={pieConfig} class="mx-auto aspect-square max-h-[250px]">
-          <PieChart
-            data={pieData}
-            key="browser"
-            value="visitors"
-            c="color"
-            innerRadius={60}
-            padding={28}
-            props={{ pie: { motion: 'tween' } }}
-          >
-            {#snippet aboveMarks()}
-              <Text
-                value={totalVisitors.toLocaleString()}
-                textAnchor="middle"
-                verticalAnchor="middle"
-                class="fill-foreground text-3xl! font-bold"
-                dy={3}
-              />
-              <Text
-                value="Visitors"
-                textAnchor="middle"
-                verticalAnchor="middle"
-                class="fill-muted-foreground! text-muted-foreground"
-                dy={22}
-              />
-            {/snippet}
-            {#snippet tooltip()}
-              <ChartTooltip hideLabel nameKey="browser" />
-            {/snippet}
+        <ChartContainer config={pieChartConfig} class="mx-auto aspect-square max-h-[250px]">
+          <PieChart>
+            <ChartTooltip cursor={false}>
+              {#snippet content(props: TooltipContentArgs)}
+                <ChartTooltipContent hideLabel {...props} />
+              {/snippet}
+            </ChartTooltip>
+            <Pie data={pieChartData} dataKey="visitors" nameKey="browser" innerRadius={60} strokeWidth={5}>
+              <Label>
+                {#snippet content({ viewBox }: SvelteArgs<LabelContentProps>)}
+                  {#if viewBox && "cx" in viewBox && "cy" in viewBox}<text x={viewBox.cx} y={viewBox.cy} text-anchor="middle" dominant-baseline="middle">
+                    <tspan x={viewBox.cx} y={viewBox.cy} class="fill-foreground text-3xl font-bold">{totalVisitors.toLocaleString()}</tspan>
+                    <tspan x={viewBox.cx} y={(viewBox.cy || 0) + 24} class="fill-muted-foreground">Visitors</tspan>
+                  </text>{/if}
+                {/snippet}
+              </Label>
+            </Pie>
           </PieChart>
         </ChartContainer>
       </CardContent>
       <CardFooter class="flex-col gap-2">
-        {@render trend('Showing total visitors for the last 6 months')}
-      </CardFooter>
-    </Card>
-  </Example>
-{/snippet}
-
-{#snippet ChartRadialExample()}
-  <Example title="Radial Chart">
-    <Card class="w-full">
-      <CardHeader>
-        <CardTitle>Radial Chart - Shape</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
-      </CardHeader>
-      <CardContent class="flex-1 pb-0">
-        <ChartContainer config={radialConfig} class="mx-auto aspect-square max-h-[210px]">
-          <ArcChart
-            label="browser"
-            value="visitors"
-            outerRadius={88}
-            innerRadius={66}
-            trackOuterRadius={83}
-            trackInnerRadius={72}
-            padding={40}
-            range={[90, -270]}
-            maxValue={radialData[0].visitors * 4}
-            series={radialData.map((row) => ({ key: row.browser, color: row.color, data: [row] }))}
-            props={{
-              arc: { track: { fill: 'var(--muted)' }, motion: 'tween' },
-              tooltip: { context: { hideDelay: 350 } },
-            }}
-            tooltipContext={false}
-          >
-            {#snippet belowMarks()}
-              <circle cx="0" cy="0" r="80" class="fill-background" />
-            {/snippet}
-            {#snippet aboveMarks()}
-              <Text
-                value={radialData[0].visitors.toLocaleString()}
-                textAnchor="middle"
-                verticalAnchor="middle"
-                class="fill-foreground text-4xl! font-bold"
-                dy={3}
-              />
-              <Text value="Visitors" textAnchor="middle" verticalAnchor="middle" class="fill-muted-foreground!" dy={22} />
-            {/snippet}
-          </ArcChart>
-        </ChartContainer>
-      </CardContent>
-      <CardFooter class="flex-col gap-2">
-        {@render trend('Showing total visitors for the last 6 months')}
+        <div class="flex items-center gap-2 leading-none font-medium">Trending up by 5.2% this month <IconPlaceholder
+            lucide="TrendingUpIcon"
+            tabler="IconTrendingUp"
+            hugeicons="ChartUpIcon"
+            phosphor="TrendUpIcon"
+            remixicon="RiLineChartLine"
+            class="size-4"
+          /></div>
+        <div class="leading-none text-muted-foreground">Showing total visitors for the last 6 months</div>
       </CardFooter>
     </Card>
   </Example>
@@ -294,54 +315,79 @@
         <CardDescription>Showing total visitors for the last 6 months</CardDescription>
       </CardHeader>
       <CardContent class="pb-0">
-        <ChartContainer config={deviceConfig} class="mx-auto aspect-square max-h-[250px]">
-          <LineChart
-            data={monthly}
-            series={[
-              {
-                key: 'desktop',
-                label: 'Desktop',
-                color: 'var(--color-desktop)',
-                props: { fill: 'var(--color-desktop)', fillOpacity: 0.6 },
-              },
-              {
-                key: 'mobile',
-                label: 'Mobile',
-                color: 'var(--color-mobile)',
-                props: { fill: 'var(--color-mobile)' },
-              },
-            ]}
-            radial
-            x="month"
-            xScale={scaleBand()}
-            padding={12}
-            props={{
-              spline: { curve: curveLinearClosed, stroke: '0', motion: 'tween' },
-              xAxis: { tickLength: 0 },
-              yAxis: { format: () => '' },
-              grid: { radialY: 'linear' },
-              tooltip: { context: { mode: 'band' } },
-              highlight: { lines: false, points: { r: 4 } },
-            }}
-          >
-            {#snippet tooltip()}
-              <ChartTooltip indicator="line" />
-            {/snippet}
-          </LineChart>
+        <ChartContainer config={radarChartConfig} class="mx-auto aspect-square max-h-[250px]">
+          <RadarChart data={radarChartData}>
+            <ChartTooltip cursor={false}>
+              {#snippet content(props: TooltipContentArgs)}
+                <ChartTooltipContent indicator="line" {...props} />
+              {/snippet}
+            </ChartTooltip>
+            <PolarAngleAxis dataKey="month" />
+            <PolarGrid />
+            <Radar dataKey="desktop" fill="var(--color-desktop)" fillOpacity={0.6} />
+            <Radar dataKey="mobile" fill="var(--color-mobile)" />
+          </RadarChart>
         </ChartContainer>
       </CardContent>
       <CardFooter class="flex-col gap-2">
-        {@render trend('January - June 2024')}
+        <div class="flex items-center gap-2 leading-none font-medium">Trending up by 5.2% this month <IconPlaceholder
+            lucide="TrendingUpIcon"
+            tabler="IconTrendingUp"
+            hugeicons="ChartUpIcon"
+            phosphor="TrendUpIcon"
+            remixicon="RiLineChartLine"
+            class="size-4"
+          /></div>
+        <div class="flex items-center gap-2 leading-none text-muted-foreground">January - June 2024</div>
       </CardFooter>
     </Card>
   </Example>
 {/snippet}
 
-<ExampleWrapper>
-  {@render ChartAreaExample()}
-  {@render ChartBarExample()}
-  {@render ChartLineExample()}
-  {@render ChartPieExample()}
-  {@render ChartRadialExample()}
-  {@render ChartRadarExample()}
-</ExampleWrapper>
+{#snippet ChartRadialExample()}
+  <Example title="Radial Chart">
+    <Card class="w-full">
+      <CardHeader>
+        <CardTitle>Radial Chart - Shape</CardTitle>
+        <CardDescription>January - June 2024</CardDescription>
+      </CardHeader>
+      <CardContent class="flex-1 pb-0">
+        <ChartContainer config={radialChartConfig} class="mx-auto aspect-square max-h-[210px]">
+          <RadialBarChart data={radialChartData} endAngle={100} innerRadius={64} outerRadius={94}>
+            <PolarGrid
+              gridType="circle"
+              radialLines={false}
+              stroke="none"
+              class="first:fill-muted last:fill-background"
+              polarRadius={[86, 74]}
+            />
+            <RadialBar dataKey="visitors" background />
+            <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
+              <Label>
+                {#snippet content({ viewBox }: SvelteArgs<LabelContentProps>)}
+                  {#if viewBox && "cx" in viewBox && "cy" in viewBox}<text x={viewBox.cx} y={viewBox.cy} text-anchor="middle" dominant-baseline="middle">
+                    <tspan x={viewBox.cx} y={viewBox.cy} class="fill-foreground text-4xl font-bold">{radialChartData[0].visitors.toLocaleString()}</tspan>
+                    <tspan x={viewBox.cx} y={(viewBox.cy || 0) + 24} class="fill-muted-foreground">Visitors</tspan>
+                  </text>{/if}
+                {/snippet}
+              </Label>
+            </PolarRadiusAxis>
+          </RadialBarChart>
+        </ChartContainer>
+      </CardContent>
+      <CardFooter class="flex-col gap-2">
+        <div class="flex items-center gap-2 leading-none font-medium">Trending up by 5.2% this month <IconPlaceholder
+            lucide="TrendingUpIcon"
+            tabler="IconTrendingUp"
+            hugeicons="ChartUpIcon"
+            phosphor="TrendUpIcon"
+            remixicon="RiLineChartLine"
+            class="size-4"
+          /></div>
+        <div class="leading-none text-muted-foreground">Showing total visitors for the last 6 months</div>
+      </CardFooter>
+    </Card>
+  </Example>
+{/snippet}
+
+<ExampleWrapper>{@render ChartAreaExample()}{@render ChartBarExample()}{@render ChartLineExample()}{@render ChartPieExample()}{@render ChartRadialExample()}{@render ChartRadarExample()}</ExampleWrapper>

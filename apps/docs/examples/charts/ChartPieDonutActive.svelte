@@ -1,88 +1,76 @@
 <script lang="ts">
+  import { Pie, PieChart, Sector, type PieSectorShapeProps, type SvelteArgs } from '@sveltery/recharts';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from './layerchart';
+  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';
-  import { Arc, PieChart } from 'layerchart';
 
   const chartData = [
-    { browser: 'chrome', visitors: 275, color: 'var(--color-chrome)' },
-    { browser: 'safari', visitors: 200, color: 'var(--color-safari)' },
-    { browser: 'firefox', visitors: 287, color: 'var(--color-firefox)' },
-    { browser: 'edge', visitors: 173, color: 'var(--color-edge)' },
-    { browser: 'other', visitors: 190, color: 'var(--color-other)' },
-  ];
+    { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
+    { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
+    { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
+    { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
+    { browser: "other", visitors: 90, fill: "var(--color-other)" },
+  ]
 
   const chartConfig = {
     visitors: {
-      label: 'Visitors',
+      label: "Visitors",
     },
     chrome: {
-      label: 'Chrome',
-      color: 'var(--chart-1)',
+      label: "Chrome",
+      color: "var(--chart-1)",
     },
     safari: {
-      label: 'Safari',
-      color: 'var(--chart-2)',
+      label: "Safari",
+      color: "var(--chart-2)",
     },
     firefox: {
-      label: 'Firefox',
-      color: 'var(--chart-3)',
+      label: "Firefox",
+      color: "var(--chart-3)",
     },
     edge: {
-      label: 'Edge',
-      color: 'var(--chart-4)',
+      label: "Edge",
+      color: "var(--chart-4)",
     },
     other: {
-      label: 'Other',
-      color: 'var(--chart-5)',
+      label: "Other",
+      color: "var(--chart-5)",
     },
-  } satisfies ChartConfig;
+  } satisfies ChartConfig
+
+  const ACTIVE_INDEX = 0
 </script>
 
-<Card class="flex w-full max-w-md flex-col">
-  <CardHeader class="items-center">
+<Card class="flex flex-col">
+  <CardHeader class="items-center pb-0">
     <CardTitle>Pie Chart - Donut Active</CardTitle>
     <CardDescription>January - June 2024</CardDescription>
   </CardHeader>
-  <CardContent class="flex-1">
-    <ChartContainer aria-label="Pie Chart - Donut Active" config={chartConfig} class="mx-auto aspect-square max-h-[250px]">
-      <PieChart
-        data={chartData}
-        key="browser"
-        value="visitors"
-        c="color"
-        innerRadius={60}
-        outerRadius={-10}
-        props={{
-          pie: { motion: 'tween' },
-          arc: {
-            strokeWidth: 5,
-          },
-        }}
-        padding={29}
-      >
-        {#snippet tooltip()}
-          <ChartTooltip hideLabel nameKey="browser" />
-        {/snippet}
-        {#snippet arc({ props, index })}
-          <Arc {...props} outerRadius={index === 0 ? 0 : props.outerRadius} />
-        {/snippet}
+  <CardContent class="flex-1 pb-0">
+    <ChartContainer config={chartConfig} class="mx-auto aspect-square max-h-[250px]">
+      <PieChart>
+        <ChartTooltip cursor={false}>
+          {#snippet content(props: TooltipContentArgs)}
+            <ChartTooltipContent hideLabel {...props} />
+          {/snippet}
+        </ChartTooltip>
+        <Pie data={chartData} dataKey="visitors" nameKey="browser" innerRadius={60} strokeWidth={5}>
+          {#snippet shape({ index, outerRadius = 0, ...props }: SvelteArgs<PieSectorShapeProps>)}
+            {#if index === ACTIVE_INDEX}<Sector {...props} outerRadius={outerRadius + 10} />{:else}<Sector {...props} {outerRadius} />{/if}
+          {/snippet}
+        </Pie>
       </PieChart>
     </ChartContainer>
   </CardContent>
   <CardFooter class="flex-col gap-2 text-sm">
-    <div class="flex items-center gap-2 leading-none font-medium">
-      Trending up by 5.2% this month <IconPlaceholder
+    <div class="flex items-center gap-2 leading-none font-medium">Trending up by 5.2% this month <IconPlaceholder
         lucide="TrendingUpIcon"
         tabler="IconTrendingUp"
         hugeicons="TradeUpIcon"
         phosphor="TrendUpIcon"
         remixicon="RiLineChartLine"
-        class="size-4"
-      />
-    </div>
-    <div class="text-muted-foreground leading-none">
-      Showing total visitors for the last 6 months
-    </div>
+        class="h-4 w-4"
+      /></div>
+    <div class="leading-none text-muted-foreground">Showing total visitors for the last 6 months</div>
   </CardFooter>
 </Card>

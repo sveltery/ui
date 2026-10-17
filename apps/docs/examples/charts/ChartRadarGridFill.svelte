@@ -1,96 +1,54 @@
 <script lang="ts">
-  import { LineChart } from 'layerchart';
-  import { curveLinearClosed } from 'd3-shape';
-  import { scaleBand } from 'd3-scale';
+  import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from '@sveltery/recharts';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from './layerchart';
+  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
   const chartData = [
-    { month: 'January', desktop: 186 },
-    { month: 'February', desktop: 285 },
-    { month: 'March', desktop: 237 },
-    { month: 'April', desktop: 203 },
-    { month: 'May', desktop: 209 },
-    { month: 'June', desktop: 264 },
-  ];
+    { month: "January", desktop: 186 },
+    { month: "February", desktop: 285 },
+    { month: "March", desktop: 237 },
+    { month: "April", desktop: 203 },
+    { month: "May", desktop: 209 },
+    { month: "June", desktop: 264 },
+  ]
 
   const chartConfig = {
-    desktop: { label: 'Desktop', color: 'var(--chart-1)' },
-  } satisfies ChartConfig;
+    desktop: {
+      label: "Desktop",
+      color: "var(--chart-1)",
+    },
+  } satisfies ChartConfig
 </script>
 
-<Card class="w-full max-w-md">
-  <CardHeader class="items-center">
+<Card>
+  <CardHeader class="items-center pb-4">
     <CardTitle>Radar Chart - Grid Filled</CardTitle>
     <CardDescription>Showing total visitors for the last 6 months</CardDescription>
   </CardHeader>
-  <CardContent class="flex-1">
-    <ChartContainer aria-label="Radar Chart - Grid Filled" config={chartConfig} class="mx-auto aspect-square max-h-[250px]">
-      <LineChart
-        data={chartData}
-        series={[
-          {
-            key: 'desktop',
-            label: 'Desktop',
-            color: 'var(--color-desktop)',
-          },
-        ]}
-        radial
-        x="month"
-        xScale={scaleBand()}
-        padding={12}
-        yPadding={[0, 8]}
-        props={{
-          spline: {
-            curve: curveLinearClosed,
-            fill: 'var(--color-desktop)',
-            fillOpacity: 0.5,
-            stroke: '0',
-            motion: 'tween',
-          },
-          xAxis: {
-            tickLength: 0,
-          },
-          yAxis: {
-            format: () => '',
-          },
-          grid: {
-            radialY: 'linear',
-            class: 'fill-(--color-desktop)',
-            classes: {
-              line: 'fill-(--color-desktop) opacity-20!',
-            },
-          },
-          tooltip: {
-            context: {
-              mode: 'band',
-            },
-          },
-          highlight: {
-            lines: false,
-          },
-        }}
-      >
-        {#snippet tooltip()}
-          <ChartTooltip hideLabel />
-        {/snippet}
-      </LineChart>
+  <CardContent class="pb-0">
+    <ChartContainer config={chartConfig} class="mx-auto aspect-square max-h-[250px]">
+      <RadarChart data={chartData}>
+        <ChartTooltip cursor={false}>
+          {#snippet content(props: TooltipContentArgs)}
+            <ChartTooltipContent hideLabel {...props} />
+          {/snippet}
+        </ChartTooltip>
+        <PolarGrid class="fill-(--color-desktop) opacity-20" />
+        <PolarAngleAxis dataKey="month" />
+        <Radar dataKey="desktop" fill="var(--color-desktop)" fillOpacity={0.5} />
+      </RadarChart>
     </ChartContainer>
   </CardContent>
   <CardFooter class="flex-col gap-2 text-sm">
-    <div class="flex items-center gap-2 leading-none font-medium">
-      Trending up by 5.2% this month <IconPlaceholder
+    <div class="flex items-center gap-2 leading-none font-medium">Trending up by 5.2% this month <IconPlaceholder
         lucide="TrendingUpIcon"
         tabler="IconTrendingUp"
         hugeicons="TradeUpIcon"
         phosphor="TrendUpIcon"
         remixicon="RiLineChartLine"
-        class="size-4"
-      />
-    </div>
-    <div class="text-muted-foreground flex items-center gap-2 leading-none">
-      January - June 2024
-    </div>
+        class="h-4 w-4"
+      /></div>
+    <div class="flex items-center gap-2 leading-none text-muted-foreground">January - June 2024</div>
   </CardFooter>
 </Card>
