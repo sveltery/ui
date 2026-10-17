@@ -29,6 +29,7 @@ const configShape = {
   $schema: optional(string),
   style: literal(...styleNames),
   iconLibrary: literal(...iconLibraryNames),
+  rtl: optional(literal(true, false)),
   menuColor: literal(...PRESET_MENU_COLORS),
   menuAccent: optional(literal(...PRESET_MENU_ACCENTS)),
   tailwind: object({ css: string, baseColor: literal(...baseColors) }),

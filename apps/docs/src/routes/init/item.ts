@@ -27,7 +27,7 @@ function fontPart(config: InitConfig) {
 }
 
 /** Port of shadcn's `buildRegistryBase` and `buildPartialRegistryBase`, with sveltery's packages in place of shadcn's. The CLI package's name follows its package.json. */
-export function buildInitItem({ config, pointer, parts }: InitRequest, colors: ThemeColors, origin: string): RegistryItem {
+export function buildInitItem({ config, pointer, rtl, parts }: InitRequest, colors: ThemeColors, origin: string): RegistryItem {
   const want = (part: InitPart) => !parts || parts.includes(part);
   const theme = want('theme') ? themeVars(config, colors) : undefined;
   const font = want('font') ? fontPart(config) : undefined;
@@ -63,6 +63,7 @@ export function buildInitItem({ config, pointer, parts }: InitRequest, colors: T
     config: {
       style: config.style,
       iconLibrary: config.iconLibrary,
+      rtl,
       menuColor: config.menuColor,
       menuAccent: config.menuAccent,
       tailwind: { baseColor: config.baseColor },
@@ -71,5 +72,6 @@ export function buildInitItem({ config, pointer, parts }: InitRequest, colors: T
     registryDependencies: font?.registryDependencies,
     cssVars,
     css,
+    ...(rtl && { docs: `To learn how to set up the RTL provider and fonts for your app, see ${origin}/docs/rtl` }),
   };
 }
