@@ -7,6 +7,7 @@ import { diff } from './commands/diff.js';
 import { init } from './commands/init.js';
 import { search } from './commands/search.js';
 import { update } from './commands/update.js';
+import { view } from './commands/view.js';
 import { CliError } from './parse.js';
 import { version } from './version.js';
 
@@ -65,6 +66,13 @@ program
   .option('--json', 'output as JSON.', false)
   .option('--cwd <path>', 'the project root', '.')
   .action(async (registries: string[], options) => void (await search(registries, { ...options, cwd: resolve(options.cwd) })));
+
+program
+  .command('view')
+  .description('view items from the registry')
+  .argument('<items...>', 'item names, or URLs of registry items')
+  .option('--cwd <path>', 'the project root', '.')
+  .action(async (items: string[], options) => void (await view(items, { cwd: resolve(options.cwd) })));
 
 try {
   await program.parseAsync();

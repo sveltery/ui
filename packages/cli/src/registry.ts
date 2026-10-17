@@ -175,13 +175,21 @@ export function fetchItem(registry: Registry, style: StyleName, ref: ItemRef): P
   return fetched;
 }
 
-/** Fetches `refs` and their registry dependencies, each item once, dependencies before the items that need them. */
-export async function resolveItems(registry: Registry, style: StyleName, refs: ItemRef[]): Promise<RegistryItem[]> {
+/** The item exactly as the registry serves it, after checking that the CLI can read it. Not cached: `view` fetches each item once. */
+export function fetchRawItem(registry: Registry, style: StyleName, ref: ItemRef): Promise<unknown> {
+  return fetchJson(itemUrl(registry, style, ref), (json, path) => (registryItem(json, path), json));
+}
+
+/** Throws when a named ref is not in the registry's manifest, before any item is fetched. URLs are not checked. */
+export function assertListed(registry: Registry, refs: ItemRef[]): void {
   const known = new Set([...registry.manifest.items, ...registry.manifest.blocks].map((item) => item.name));
   const unknown = refs.flatMap((ref) => (ref.kind === 'name' && !known.has(ref.name) ? [ref.name] : []));
-  if (unknown.length > 0) {
-    throw new CliError(`Not in the registry: ${unknown.join(', ')}. Available items: ${[...known].join(', ')}.`);
-  }
+  if (unknown.length > 0) throw new CliError(`Not in the registry: ${unknown.join(', ')}. Available items: ${[...known].join(', ')}.`);
+}
+
+/** Fetches `refs` and their registry dependencies, each item once, dependencies before the items that need them. */
+export async function resolveItems(registry: Registry, style: StyleName, refs: ItemRef[]): Promise<RegistryItem[]> {
+  assertListed(registry, refs);
   const ordered: RegistryItem[] = [];
   const visited = new Set<string>();
   const visit = async (ref: ItemRef): Promise<void> => {
