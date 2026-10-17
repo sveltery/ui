@@ -36,11 +36,6 @@ type Patch = { selectors: string[]; edit: (utility: string) => string };
 
 const PATCHES: Patch[] = [
   {
-    // Upstream's slot is a div that `input-otp` marks `data-active`. Ours is the focused input itself.
-    selectors: ['.cn-input-otp-slot'],
-    edit: (utility) => utility.replace('data-[active=true]:', 'focus:'),
-  },
-  {
     // Base UI 1.9.0 marks an open submenu or menu trigger `data-popup-open`, never `data-open`,
     // so upstream's `data-open:` classes on these triggers never match.
     selectors: ['.cn-context-menu-sub-trigger', '.cn-dropdown-menu-sub-trigger', '.cn-menubar-sub-trigger', '.cn-sidebar-menu-button'],

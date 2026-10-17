@@ -47,11 +47,11 @@ jobs:
         run: |
           source scripts/toolchain.sh
           npm install --global npm@11.6.2
-          if [[ "$(ls packages | xargs)" != "cli command day-picker message-scroller questionnaire resizable" ]]; then
+          if [[ "$(ls packages | xargs)" != "cli command day-picker input-otp message-scroller questionnaire resizable" ]]; then
             echo "::error::packages/ changed. Add the new package to the publish order below."
             exit 1
           fi
-          for dir in cli command day-picker message-scroller questionnaire resizable; do
+          for dir in cli command day-picker input-otp message-scroller questionnaire resizable; do
             name="$(node -p "require('./packages/$dir/package.json').name")"
             version="$(node -p "require('./packages/$dir/package.json').version")"
             if [[ "$(node -p "require('./packages/$dir/package.json').private === true")" == true ]]; then

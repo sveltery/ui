@@ -18,6 +18,7 @@
     "@dnd-kit/svelte": "0.5.0",
     "@sveltery/command": "workspace:*",
     "@sveltery/day-picker": "workspace:*",
+    "@sveltery/input-otp": "workspace:*",
     "@sveltery/message-scroller": "workspace:*",
     "@sveltery/questionnaire": "workspace:*",
     "@sveltery/resizable": "workspace:*",
