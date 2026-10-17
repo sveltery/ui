@@ -9,8 +9,8 @@ const sources = globSync(['examples/**/*.svelte', 'blocks/**/*.svelte'], { cwd: 
 describe('asInstalled', () => {
   it('imports the components where `add` writes them', () => {
     const code = asInstalled(readFileSync(join(docs, 'examples/base/ButtonExample.svelte'), 'utf8'), 'ButtonExample.svelte');
-    expect(code).toContain("import { Example, ExampleWrapper } from '$lib/components/example';");
-    expect(code).toContain("import { Button, buttonVariants } from '$lib/components/ui/button';");
+    expect(code).toContain("import { Example, ExampleWrapper } from '#lib/components/example';");
+    expect(code).toContain("import { Button, buttonVariants } from '#lib/components/ui/button';");
     expect(code).toContain("import ArrowRightIcon from '@lucide/svelte/icons/arrow-right';");
     expect(code).not.toContain('IconPlaceholder');
   });

@@ -6,10 +6,10 @@ export const SOURCE_CONFIG: TransformContext = { iconLibrary: 'lucide', fontHead
 
 /**
  * Writes docs source the way an app that ran `add` has it, like upstream's `formatCode`: registry imports
- * take the CLI's default aliases, and icon placeholders become Lucide icons.
+ * take the CLI's default aliases for a SvelteKit 3 app (`#lib/...`), and icon placeholders become Lucide icons.
  */
 export function asInstalled(content: string, target: string) {
-  const imports = content.replace(/'\$registry\/bases\/base\/(?:components\/)?/g, "'$lib/components/");
+  const imports = content.replace(/'\$registry\/bases\/base\/(?:components\/)?/g, "'#lib/components/");
   try {
     return applyTransforms({ target, content: imports }, SOURCE_CONFIG).content;
   } catch (error) {

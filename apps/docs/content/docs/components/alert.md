@@ -7,6 +7,18 @@ description: Displays a callout for user attention.
 
 ## Installation
 
+<InstallTabs>
+
+<InstallTab value="cli">
+
+```bash
+npx @sveltery/ui@latest add alert
+```
+
+</InstallTab>
+
+<InstallTab value="manual">
+
 <Steps>
 
 ### Install the dependencies
@@ -23,9 +35,13 @@ Copy the following files into `src/lib/components/ui/alert`.
 
 ### Update the import paths
 
-Change the imports to match your project setup.
+The component folders import each other with relative paths, so keep them side by side. If you place them elsewhere, change the imports to match your project setup.
 
 </Steps>
+
+</InstallTab>
+
+</InstallTabs>
 
 ## Usage
 

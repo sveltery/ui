@@ -8,6 +8,18 @@ style: rhea
 
 ## Installation
 
+<InstallTabs>
+
+<InstallTab value="cli">
+
+```bash
+npx @sveltery/ui@latest add marker
+```
+
+</InstallTab>
+
+<InstallTab value="manual">
+
 <Steps>
 
 ### Install the dependencies
@@ -24,9 +36,13 @@ Copy the following files into `src/lib/components/ui/marker`.
 
 ### Update the import paths
 
-Change the imports to match your project setup.
+The component folders import each other with relative paths, so keep them side by side. If you place them elsewhere, change the imports to match your project setup.
 
 </Steps>
+
+</InstallTab>
+
+</InstallTabs>
 
 ## Usage
 

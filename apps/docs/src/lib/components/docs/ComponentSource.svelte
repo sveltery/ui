@@ -9,6 +9,9 @@
 </script>
 
 <div data-slot="component-source" data-name={name} data-not-typeset class="mt-6">
+  <p class="text-sm text-muted-foreground">
+    These files use the Nova style and Lucide icons. <code class="rounded bg-muted px-1 font-mono text-[0.85em]">npx @sveltery/ui@latest add</code> writes the style and icon library from your <code class="rounded bg-muted px-1 font-mono text-[0.85em]">components.json</code>.
+  </p>
   {#if requires.length}
     <p class="text-sm text-muted-foreground">
       It imports the

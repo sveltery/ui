@@ -59,7 +59,7 @@ test('ComponentPreview renders the example and reveals its source as an app that
   const preview = page.locator('[data-slot=component-preview]').first();
   await expect(preview.getByRole('button', { name: 'Secondary' }).first()).toBeVisible();
   await preview.getByRole('button', { name: 'View Code' }).click();
-  const imports = "import { Button, buttonVariants } from '$lib/components/ui/button';";
+  const imports = "import { Button, buttonVariants } from '#lib/components/ui/button';";
   await expect(preview.locator('[data-slot=code] pre')).toContainText(imports);
   await expect(preview.locator('[data-slot=code] pre')).not.toContainText('$registry/');
   if (browserName === 'chromium') await context.grantPermissions(['clipboard-read', 'clipboard-write']);
@@ -68,6 +68,22 @@ test('ComponentPreview renders the example and reveals its source as an app that
   const copied = await page.evaluate(() => navigator.clipboard.readText());
   expect(copied).toContain(imports);
   expect(copied).not.toContain('$registry/');
+});
+
+test('the Installation section shows the CLI command first and the manual steps on the Manual tab', async ({ page }) => {
+  await visit(page, '/docs/components/button', 30_000);
+  const cli = page.getByRole('tab', { name: 'CLI', exact: true });
+  const manual = page.getByRole('tab', { name: 'Manual', exact: true });
+  await expect(cli).toHaveAttribute('aria-selected', 'true');
+  await expect(page.getByRole('tabpanel').filter({ hasText: '@sveltery/ui@latest add button' }).first()).toBeVisible();
+  await expect(page.locator('[data-slot=component-source]')).toBeHidden();
+  await manual.click();
+  await expect(manual).toHaveAttribute('aria-selected', 'true');
+  await expect(page.getByRole('heading', { name: 'Copy the component' })).toBeVisible();
+  await expect(page.locator('[data-slot=component-source]')).toContainText('These files use the Nova style and Lucide icons.');
+  await expect(page.locator('[data-slot=code-block]').filter({ hasText: 'cn class-variance-authority @sveltery/base' })).toBeVisible();
+  await cli.click();
+  await expect(page.locator('[data-slot=component-source]')).toBeHidden();
 });
 
 test('the Drawer page renders its examples in the Rhea style, and other pages stay in Nova', async ({ page }) => {
@@ -159,6 +175,6 @@ test('a docs page links to its markdown and keeps step titles out of the TOC', a
   expect(response.headers()['content-type']).toBe('text/markdown; charset=utf-8');
   const markdown = await response.text();
   expect(markdown).toMatch(/^---\ntitle: Button\n/);
-  expect(markdown).toContain("import { Button, buttonVariants } from '$lib/components/ui/button';");
+  expect(markdown).toContain("import { Button, buttonVariants } from '#lib/components/ui/button';");
   expect(markdown).not.toContain('$registry/');
 });

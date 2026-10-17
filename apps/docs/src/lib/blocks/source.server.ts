@@ -8,7 +8,7 @@ const sources = import.meta.glob<string>(['/blocks/**/*.svelte', '/blocks/*/*.js
 /** Writes the code the way an app that copied the components and the block has it. */
 const asCopied = (raw: string, path: string) =>
   asInstalled(raw, path)
-    .replace(/'\.\/components\//g, "'$lib/components/")
+    .replace(/'\.\/components\//g, "'#lib/components/")
     .replace(/[ \t]*<!-- svelte-ignore [^>]*-->\n?/g, '');
 
 function tree(targets: string[]): FileTree[] {
