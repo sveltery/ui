@@ -19,7 +19,7 @@ The format follows the shadcn registry, limited to what this CLI reads. It suppo
 
 - adding an item by its URL, and checking it with `diff <url>` and `update <url>`,
 - `registryDependencies` by name, from the project's registry, by `@namespace/name`, or by URL, from any registry,
-- [namespaced registries](/docs/registry/namespace) such as `@acme/button`, set in `components.json`, and `search` over a namespace's `registry.json`, a registry URL or a public GitHub repository,
+- [namespaced registries](/docs/registry/namespace) such as `@acme/button`, set in `components.json`, and `search` over a namespace's `registry.json`, a registry URL or a public GitHub repository, or over every namespace in `registries` when you name none,
 - [authentication](/docs/registry/authentication) with headers or query parameters that read environment variables,
 - `dependencies` on npm packages,
 - building item files from a `registry.json` with `build`,

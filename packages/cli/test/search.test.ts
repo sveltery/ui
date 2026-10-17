@@ -4,7 +4,7 @@ import { createServer, type Server } from 'node:http';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, test, vi } from 'vitest';
-import { search, type SearchOptions } from '../src/commands/search.js';
+import { search, SEARCH_CONCURRENCY, type SearchOptions } from '../src/commands/search.js';
 
 const longDescription = 'A form for people who already have an account to sign in with their email and password, or with a provider such as GitHub.';
 const manifest = {
@@ -83,7 +83,7 @@ async function print(registries: string[], options: Partial<SearchOptions> = {})
 
 describe('search', () => {
   test('lists every item with its type and description, items before blocks', async () => {
-    expect(await print([])).toBe(`Found 7 items in @sveltery
+    expect(await print(['@sveltery'])).toBe(`Found 7 items in @sveltery
 Showing 1-7 of 7
 
 - alert-dialog (ui)
@@ -96,7 +96,7 @@ Showing 1-7 of 7
   });
 
   test('--query ranks the best match first, and matches letters in order as shadcn does', async () => {
-    const output = await print([], { query: 'dialog' });
+    const output = await print(['@sveltery'], { query: 'dialog' });
     expect(output).toBe(`Found 3 items matching "dialog" in @sveltery
 Showing 1-3 of 3
 
@@ -106,46 +106,46 @@ Showing 1-3 of 3
   });
 
   test('--query matches the description', async () => {
-    expect(await print([], { query: 'collapses' })).toBe(`Found 1 item matching "collapses" in @sveltery
+    expect(await print(['@sveltery'], { query: 'collapses' })).toBe(`Found 1 item matching "collapses" in @sveltery
 Showing 1-1 of 1
 
 - sidebar-07 (block) — A sidebar that collapses to icons.`);
   });
 
   test('--type takes short and full names, comma-separated', async () => {
-    expect(await print([], { type: 'block' })).toBe(await print([], { type: 'registry:block' }));
-    expect(await print([], { type: 'block' })).toBe(`Found 2 items of type block in @sveltery
+    expect(await print(['@sveltery'], { type: 'block' })).toBe(await print(['@sveltery'], { type: 'registry:block' }));
+    expect(await print(['@sveltery'], { type: 'block' })).toBe(`Found 2 items of type block in @sveltery
 Showing 1-2 of 2
 
 - login-01 (block) — A form for people who already have an account to sign in with their email...
 - sidebar-07 (block) — A sidebar that collapses to icons.`);
-    expect(await print([], { type: 'block', query: 'sidebar' })).toContain('Found 1 item of type block matching "sidebar" in @sveltery');
-    expect(await print([], { type: 'ui,block', limit: '1' })).toContain('Found 7 items of type ui, block in @sveltery');
+    expect(await print(['@sveltery'], { type: 'block', query: 'sidebar' })).toContain('Found 1 item of type block matching "sidebar" in @sveltery');
+    expect(await print(['@sveltery'], { type: 'ui,block', limit: '1' })).toContain('Found 7 items of type ui, block in @sveltery');
   });
 
   test('rejects an unknown type before it fetches anything', async () => {
-    await expect(search([], { cwd, json: false, type: 'ui,hook,page' })).rejects.toThrow('Unknown types: hook, page. Valid types: ui, lib, theme, block, base, font.');
-    await expect(search([], { cwd, json: false, type: 'hook' })).rejects.toThrow('Unknown type: hook.');
+    await expect(search(['@sveltery'], { cwd, json: false, type: 'ui,hook,page' })).rejects.toThrow('Unknown types: hook, page. Valid types: ui, lib, theme, block, base, font.');
+    await expect(search(['@sveltery'], { cwd, json: false, type: 'hook' })).rejects.toThrow('Unknown type: hook.');
     expect(requests).toEqual([]);
   });
 
   test('works in a project whose components.json names another style set', async () => {
     writeFileSync(join(cwd, 'components.json'), JSON.stringify({ style: 'new-york' }));
-    expect(await print([], { query: 'badge', limit: '1' })).toBe(`Found 1 item matching "badge" in @sveltery
+    expect(await print(['@sveltery'], { query: 'badge', limit: '1' })).toBe(`Found 1 item matching "badge" in @sveltery
 Showing 1-1 of 1
 
 - badge (ui) — Displays a badge.`);
   });
 
   test('--limit and --offset page through the items and say where the next page starts', async () => {
-    expect(await print([], { limit: '2', offset: '1' })).toBe(`Found 7 items in @sveltery
+    expect(await print(['@sveltery'], { limit: '2', offset: '1' })).toBe(`Found 7 items in @sveltery
 Showing 2-3 of 7
 
 - badge (ui) — Displays a badge.
 - button (ui)
 
 More items available. Use --offset 3 to see the next page.`);
-    expect(await print([], { limit: '3', offset: '4' })).toBe(`Found 7 items in @sveltery
+    expect(await print(['@sveltery'], { limit: '3', offset: '4' })).toBe(`Found 7 items in @sveltery
 Showing 5-7 of 7
 
 - tooltip (ui)
@@ -154,27 +154,26 @@ Showing 5-7 of 7
   });
 
   test('--limit 0 shows every item', async () => {
-    expect(await print([], { limit: '0' })).toContain('Showing 1-7 of 7');
+    expect(await print(['@sveltery'], { limit: '0' })).toContain('Showing 1-7 of 7');
   });
 
   test('reports an offset past the end as no items', async () => {
-    expect(await print([], { offset: '50' })).toBe('No items found in @sveltery.');
+    expect(await print(['@sveltery'], { offset: '50' })).toBe('No items found in @sveltery.');
   });
 
   test('says what it searched when nothing matches', async () => {
-    expect(await print([], { query: 'zzzz', type: 'ui' })).toBe('No items found of type ui matching "zzzz" in @sveltery.');
+    expect(await print(['@sveltery'], { query: 'zzzz', type: 'ui' })).toBe('No items found of type ui matching "zzzz" in @sveltery.');
   });
 
   test('--json prints the items with the registry and the argument to give add, and the pagination', async () => {
-    const results = JSON.parse(await print([], { json: true, query: 'badge', limit: '5' }));
+    const results = JSON.parse(await print(['@sveltery'], { json: true, query: 'badge', limit: '5' }));
     expect(results).toEqual({
       pagination: { total: 1, offset: 0, limit: 5, hasMore: false },
       items: [{ name: 'badge', title: 'Badge', type: 'registry:ui', description: 'Displays a badge.', registry: '@sveltery', addCommandArgument: 'badge' }],
     });
   });
 
-  test('accepts the registry by its address, and searches one named twice twice, as upstream does', async () => {
-    expect(await print(['@sveltery'])).toBe(await print([]));
+  test('searches a registry named twice twice, as upstream does', async () => {
     const twice = await print(['@sveltery', '@sveltery'], { query: 'badge' });
     expect(twice).toBe(`Found 2 items matching "badge" in @sveltery, @sveltery
 Showing 1-2 of 2
@@ -194,8 +193,8 @@ Showing 1-2 of 2
   });
 
   test('rejects a --limit or --offset that is not a whole number', async () => {
-    await expect(search([], { cwd, json: false, limit: 'many' })).rejects.toThrow('--limit must be a whole number, got "many".');
-    await expect(search([], { cwd, json: false, offset: '-1' })).rejects.toThrow('--offset must be a whole number, got "-1".');
+    await expect(search(['@sveltery'], { cwd, json: false, limit: 'many' })).rejects.toThrow('--limit must be a whole number, got "many".');
+    await expect(search(['@sveltery'], { cwd, json: false, offset: '-1' })).rejects.toThrow('--offset must be a whole number, got "-1".');
   });
 });
 
@@ -260,15 +259,6 @@ More items available. Use --offset 4 to see the next page.`);
     expect(await print(['@sveltery'], { limit: '1' })).toContain('- @sveltery/hello (ui) — Says hello.');
   });
 
-  test('without a registry argument, reads the manifest even when registries sets @sveltery', async () => {
-    const all = await print([]);
-    configure({ '@sveltery': `${origin}/r/styles/{style}/{name}.json` });
-    expect(await print([])).toBe(all);
-    writeFileSync(join(cwd, 'components.json'), JSON.stringify({ style: 'new-york', registries: { '@sveltery': acme() } }));
-    expect(await print([])).toBe(all);
-    expect(namespaceRequests()).toEqual([]);
-  });
-
   test('stops before any namespace request when an environment variable is missing', async () => {
     rmSync(join(cwd, '.env.local'));
     delete process.env.ACME_TOKEN;
@@ -316,18 +306,42 @@ More items available. Use --offset 4 to see the next page.`);
 
 describe('search with no registry argument', () => {
   beforeEach(() => writeFileSync(join(cwd, '.env.local'), 'ACME_TOKEN=s3cret\n'));
+  afterEach(() => void (process.exitCode = undefined));
 
-  test('searches @sveltery and every namespace in components.json, asking each for the whole page', async () => {
+  test('searches every namespace in components.json, asking each for the whole page', async () => {
     configure({ '@acme': acme(), '@dynamic': `${origin}/dynamic/{name}.json` });
-    expect(await print([], { query: 'dialog' })).toBe(`Found 44 items matching "dialog" in @sveltery, @acme, @dynamic
-Showing 1-44 of 44
+    expect(await print([], { query: 'dialog' })).toBe(`Found 41 items matching "dialog" in @acme, @dynamic
+Showing 1-41 of 41
 
 - @dynamic/server-pick (ui) · @dynamic — Picked by the server.
-- dialog (ui) · @sveltery
-- alert-dialog (ui) · @sveltery
-- @acme/greet-dialog (block) · @acme
-- login-01 (block) · @sveltery — A form for people who already have an account to sign in with their email...`);
+- @acme/greet-dialog (block) · @acme`);
     expect(namespaceRequests().sort()).toEqual(['/acme/registry.json?q=dialog&limit=100', '/dynamic/registry.json?q=dialog&limit=100']);
+  });
+
+  test('leaves out @sveltery, even when registries sets it, as upstream leaves out its built-in registries', async () => {
+    configure({ '@sveltery': acme(), '@acme': acme() });
+    expect(await print([])).toBe(`Found 2 items in @acme
+Showing 1-2 of 2
+
+- @acme/hello (ui) — Says hello.
+- @acme/greet-dialog (block)`);
+    expect(namespaceRequests()).toEqual(['/acme/registry.json?limit=100&offset=0']);
+  });
+
+  test('asks for a registry, before any request, when there is no components.json', async () => {
+    await expect(search([], { cwd, json: false })).rejects.toThrow(
+      'Provide a registry or namespace to search, e.g. `npx @sveltery/ui@latest search @sveltery`.\n\nIf you have a components.json with registries configured, run `npx @sveltery/ui@latest search` with no arguments to search all of them.',
+    );
+    expect(requests).toEqual([]);
+  });
+
+  test('says no registries are configured when components.json lists none but @sveltery', async () => {
+    const message = 'No registries are configured in components.json.\nProvide a registry or namespace to search, e.g. `npx @sveltery/ui@latest search @sveltery`.';
+    writeFileSync(join(cwd, 'components.json'), JSON.stringify({ style: 'nova' }));
+    await expect(search([], { cwd, json: false })).rejects.toThrow(message);
+    configure({ '@sveltery': acme() });
+    await expect(search([], { cwd, json: false })).rejects.toThrow(message);
+    expect(namespaceRequests()).toEqual([]);
   });
 
   test('skips a registry that fails, or lacks an environment variable, names it, and searches the rest', async () => {
@@ -340,7 +354,7 @@ Showing 1-44 of 44
 Set the required environment variables to your .env or .env.local file.
 Skipped @gone: GET ${origin}/gone/registry.json?q=hello&limit=100 failed with 404 Not Found
 
-Found 1 item matching "hello" in @sveltery, @beta, @gone, @acme
+Found 1 item matching "hello" in @beta, @gone, @acme
 Showing 1-1 of 1
 
 - @acme/hello (ui) · @acme — Says hello.`);
@@ -352,11 +366,43 @@ Showing 1-1 of 1
       { registry: '@gone', message: `GET ${origin}/gone/registry.json?q=hello&limit=100 failed with 404 Not Found` },
     ]);
     expect(results.items.map((item: { addCommandArgument: string }) => item.addCommandArgument)).toEqual(['@acme/hello']);
+    expect(process.exitCode).toBeUndefined();
+  });
+
+  test('prints the skipped registries and exits with 1 when every registry fails, as upstream does', async () => {
+    configure({ '@gone': `${origin}/gone/{name}.json` });
+    expect(await print([])).toBe(`Skipped @gone: GET ${origin}/gone/registry.json?limit=100&offset=0 failed with 404 Not Found
+
+No items found in @gone.`);
+    expect(process.exitCode).toBe(1);
   });
 
   test('prints no errors when every registry answers', async () => {
     configure({ '@acme': acme() });
     expect(JSON.parse(await print([], { json: true })).errors).toBeUndefined();
+  });
+
+  test(`fetches at most ${SEARCH_CONCURRENCY} registries at once`, async () => {
+    const names = Array.from({ length: SEARCH_CONCURRENCY + 2 }, (_, index) => `@r${index}`);
+    configure(Object.fromEntries(names.map((name) => [name, `${origin}/public/{name}.json?from=${name}`])));
+    const original = globalThis.fetch;
+    let running = 0;
+    let most = 0;
+    const fetched = vi.spyOn(globalThis, 'fetch').mockImplementation(async (...args) => {
+      most = Math.max(most, ++running);
+      try {
+        return await original(...args);
+      } finally {
+        running--;
+      }
+    });
+    try {
+      const results = JSON.parse(await print([], { json: true, query: 'hello' }));
+      expect(results.items.map((item: { registry: string }) => item.registry).sort()).toEqual(names);
+    } finally {
+      fetched.mockRestore();
+    }
+    expect([most, namespaceRequests().length]).toEqual([SEARCH_CONCURRENCY, names.length]);
   });
 });
 

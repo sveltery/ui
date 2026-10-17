@@ -1,4 +1,7 @@
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import fuzzysort from 'fuzzysort';
+import { CONFIG_FILE } from '../config.js';
 import { catalogStyle, openCatalog } from '../items.js';
 import { CliError } from '../parse.js';
 import {
@@ -40,6 +43,29 @@ function parseCount(flag: string, value: string | undefined): number | undefined
   if (!/^\d+$/.test(value)) throw new CliError(`${flag} must be a whole number, got "${value}".`);
   return Number(value);
 }
+
+/** At most this many registries are fetched at once, as upstream caps it. */
+export const SEARCH_CONCURRENCY = 8;
+
+/** Like `Promise.allSettled` of `fn` over `items`, in their order, but with at most `limit` running at once, as upstream's `mapSettledWithConcurrency`. */
+async function mapSettled<T, R>(items: T[], limit: number, fn: (item: T) => Promise<R>): Promise<PromiseSettledResult<R>[]> {
+  const results: PromiseSettledResult<R>[] = new Array(items.length);
+  let next = 0;
+  const worker = async () => {
+    while (next < items.length) {
+      const index = next++;
+      try {
+        results[index] = { status: 'fulfilled', value: await fn(items[index]!) };
+      } catch (reason) {
+        results[index] = { status: 'rejected', reason };
+      }
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
+  return results;
+}
+
+const SEARCH_EXAMPLE = '`npx @sveltery/ui@latest search @sveltery`';
 
 const isUrl = (value: string) => /^https?:\/\//.test(value);
 
@@ -166,24 +192,27 @@ export function formatResults(results: SearchResults, filters: { query?: string;
 
 /**
  * Prints the items of the registries matching the filters, as upstream's `search` does, and returns them.
- * With no registry, it searches every namespace in components.json and the built-in `@sveltery`, and skips one that fails.
+ * With no registry, it searches every namespace in components.json except the built-in `@sveltery`, skips one that fails, and sets exit code 1 when all fail.
  */
 export async function search(requested: string[], options: SearchOptions): Promise<SearchResults> {
   const filters = { query: options.query, types: parseTypes(options.type) };
   const limit = parseCount('--limit', options.limit);
   const offset = parseCount('--offset', options.offset);
-  const { registry, style } = await openCatalog(options.cwd);
   const searchAll = requested.length === 0;
+  if (searchAll && !existsSync(join(options.cwd, CONFIG_FILE))) {
+    throw new CliError(`Provide a registry or namespace to search, e.g. ${SEARCH_EXAMPLE}.\n\nIf you have a ${CONFIG_FILE} with registries configured, run \`npx @sveltery/ui@latest search\` with no arguments to search all of them.`);
+  }
+  const { registry, style } = await openCatalog(options.cwd);
   if (!searchAll) assertSearchable(registry, requested);
   // As upstream, a registry named twice is searched twice.
-  const registries = searchAll ? [...new Set([BUILTIN_NAMESPACE, ...Object.keys(registry.namespaces.configs)])] : requested;
+  const registries = searchAll ? Object.keys(registry.namespaces.configs).filter((namespace) => namespace !== BUILTIN_NAMESPACE) : requested;
+  if (registries.length === 0) throw new CliError(`No registries are configured in ${CONFIG_FILE}.\nProvide a registry or namespace to search, e.g. ${SEARCH_EXAMPLE}.`);
   // One registry pages on the server. Several are asked for every item up to the end of the page, which is then cut here.
   const types = filters.types?.map((type) => `registry:${type}`);
   const forwarded: CatalogSearch =
     registries.length === 1 ? { query: filters.query, types, limit, offset } : { query: filters.query, types, limit: limit === undefined ? undefined : (offset ?? 0) + limit };
   const toTarget = (address: string): Target => {
-    // A Sveltery registry serves index.json, not a registry.json for each style, so searching every registry reads the manifest even when `registries` sets `@sveltery`.
-    if (address === BUILTIN_NAMESPACE && (searchAll || !registry.namespaces.configs[BUILTIN_NAMESPACE])) return { kind: 'manifest', address };
+    if (address === BUILTIN_NAMESPACE && !registry.namespaces.configs[BUILTIN_NAMESPACE]) return { kind: 'manifest', address };
     if (isUrl(address)) return { kind: 'url', address, request: catalogRequest(plainRequest(address), forwarded) };
     // A GitHub registry is a file, with no server to search, so nothing is forwarded.
     const source = parseGitHubSource(address);
@@ -204,10 +233,13 @@ export async function search(requested: string[], options: SearchOptions): Promi
       return skip(error);
     }
   });
-  const outcomes = await Promise.all(targets.map((target) => ('error' in target ? target : readSource(registry, target).then((source): Outcome => ({ source }), skip))));
+  const settled = await mapSettled(targets, SEARCH_CONCURRENCY, async (target): Promise<Outcome> => ('error' in target ? target : { source: await readSource(registry, target) }));
+  const outcomes = settled.map((outcome) => (outcome.status === 'fulfilled' ? outcome.value : skip(outcome.reason)));
   const sources = outcomes.flatMap((outcome) => ('source' in outcome ? [outcome.source] : []));
   const errors = outcomes.flatMap((outcome, index) => ('error' in outcome ? [{ registry: registries[index]!, message: outcome.error }] : []));
   const results = { ...searchItems(sources, registries.length === 1, { ...filters, limit, offset }), ...(errors.length > 0 && { errors }) };
   console.log(options.json ? JSON.stringify(results, null, 2) : formatResults(results, filters, registries));
+  // As upstream, a search of every registry fails when no registry answered.
+  if (errors.length === registries.length) process.exitCode = 1;
   return results;
 }

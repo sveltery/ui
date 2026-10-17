@@ -286,11 +286,12 @@ try {
   assert.equal(readFileSync(join(app, config.aliases.ui.replace(/^[$#]lib/, 'src/lib'), 'hello/Hello.svelte'), 'utf8'), helloSource, 'add installs the item build wrote');
 
   step('sveltery search and list');
-  const found = JSON.parse(await cli('search', '-q', 'dialog', '-t', 'ui', '--json'));
+  const found = JSON.parse(await cli('search', '@sveltery', '-q', 'dialog', '-t', 'ui', '--json'));
   assert.deepEqual(found.items.map((entry) => entry.name), ['dialog', 'alert-dialog'], 'search ranks the exact name first');
   assert.deepEqual(found.items[0], { name: 'dialog', title: 'Dialog', type: 'registry:ui', registry: '@sveltery', addCommandArgument: 'dialog' });
-  const listed = await cli('list', '-t', 'block', '-l', '2', '-o', '1');
+  const listed = await cli('list', '@sveltery', '-t', 'block', '-l', '2', '-o', '1');
   assert.match(listed, new RegExp(`^Showing 2-3 of ${registry.get('index.json').blocks.length}$`, 'm'), 'list is search with paging');
+  await assert.rejects(cli('search'), (error) => /No registries are configured in components\.json\./.test(error.output), 'search with no argument leaves out @sveltery, so a project without registries has nothing to search');
   await assert.rejects(cli('search', '@acme'), (error) => /Unknown registry "@acme"\. The namespaces you can search are @sveltery\./.test(error.output), 'search names the namespaces it does not know');
   const acmeCatalog = `${origin}/r/acme/registry.json`;
   const byUrl = JSON.parse(await cli('search', acmeCatalog, '-q', 'hello', '--json'));
@@ -318,8 +319,8 @@ try {
   cpSync(join(registryDir, 'acme/registry.json'), join(registryDir, 'private/registry.json'));
   const namespaced = JSON.parse(await cli('search', '@acme', '-q', 'hello', '--json'));
   assert.deepEqual(namespaced.items, [{ name: 'hello', type: 'registry:ui', registry: '@acme', addCommandArgument: '@acme/hello' }], 'search @acme reads the registry.json that build wrote, with the token');
-  const everywhere = JSON.parse(await cli('search', '-q', 'hello', '--json'));
-  assert.deepEqual([everywhere.errors, everywhere.items.map((entry) => entry.registry)], [undefined, ['@acme']], 'search with no argument searches @sveltery and the namespaces in components.json');
+  const everywhere = JSON.parse(await cli('search', '--json'));
+  assert.deepEqual([everywhere.errors, [...new Set(everywhere.items.map((entry) => entry.registry))]], [undefined, ['@acme']], 'search with no argument searches the namespaces in components.json and not @sveltery');
   assert.deepEqual(JSON.parse(await cli('view', '@acme/hello')).map((entry) => entry.name), ['hello'], 'view takes an @namespace/item name');
 
   step('sveltery info');

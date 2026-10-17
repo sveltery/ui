@@ -81,10 +81,10 @@ An item counts as installed when any of its files exists under `aliases.ui`. Wit
 ## Search the registry
 
 ```sh
-npx @sveltery/ui@latest search -q dialog
+npx @sveltery/ui@latest search @sveltery -q dialog
 ```
 
-`search` (alias `list`) prints the items in the registry, with a type and a description. It needs no `components.json`.
+`search` (alias `list`) prints the items of the registries you name, with a type and a description. Searching `@sveltery`, the Sveltery UI registry, needs no `components.json`. With no registry, `search` searches every namespace in the `registries` of `components.json` except `@sveltery`.
 
 | Option | Description |
 | --- | --- |
