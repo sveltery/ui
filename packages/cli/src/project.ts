@@ -85,3 +85,60 @@ export function aliasPath(alias: string): string {
   if (alias.startsWith('./') || alias.startsWith('../')) return join(alias);
   throw new CliError(`Cannot place files for the alias "${alias}". Use a path under $lib or #lib, such as $lib/components/ui, or one relative to the project root, such as ./src/ui.`);
 }
+
+/** What `info` reports about the app, from its package.json and files. Versions are `null` when the package is not declared. */
+export type ProjectInfo = {
+  framework: 'SvelteKit' | 'Vite' | 'Manual';
+  frameworkName: 'sveltekit' | 'vite' | 'manual';
+  /** SvelteKit's version, or Vite's for a Vite app. */
+  frameworkVersion: string | null;
+  svelteVersion: string | null;
+  tailwindVersion: string | null;
+  srcDirectory: boolean;
+  tailwindCss: string | null;
+  /** `$lib` or `#lib` in a SvelteKit app. */
+  importAlias: string | null;
+};
+
+/** The installed version when `node_modules` has the package, else the first version in the declared range, else the range as written (`latest`). */
+function packageVersion(cwd: string, name: string, range: string | undefined): string | null {
+  if (range === undefined) return null;
+  const installed = join(cwd, 'node_modules', name, 'package.json');
+  if (existsSync(installed)) {
+    const { version } = readJson(installed) as { version?: unknown };
+    if (typeof version === 'string') return version;
+  }
+  return /\d+\.\d+\.\d+/.exec(range)?.[0] ?? range;
+}
+
+/** The project's facts, or null when `cwd` has no package.json. `configCss` is the `tailwind.css` of an existing components.json. */
+export function inspectProject(cwd: string, configCss: string | undefined): ProjectInfo | null {
+  if (!existsSync(join(cwd, 'package.json'))) return null;
+  const packages = declaredPackages(cwd);
+  const version = (name: string) => packageVersion(cwd, name, packages.get(name));
+  const kit = packages.has('@sveltejs/kit');
+  const [framework, frameworkName, frameworkVersion] = kit
+    ? (['SvelteKit', 'sveltekit', version('@sveltejs/kit')] as const)
+    : packages.has('vite')
+      ? (['Vite', 'vite', version('vite')] as const)
+      : (['Manual', 'manual', null] as const);
+  let tailwindCss: string | null = null;
+  if (configCss !== undefined && existsSync(join(cwd, configCss))) tailwindCss = configCss;
+  else {
+    try {
+      tailwindCss = findCssFile(cwd, undefined);
+    } catch (error) {
+      if (!(error instanceof CliError)) throw error;
+    }
+  }
+  return {
+    framework,
+    frameworkName,
+    frameworkVersion,
+    svelteVersion: version('svelte'),
+    tailwindVersion: version('tailwindcss'),
+    srcDirectory: existsSync(join(cwd, 'src')),
+    tailwindCss,
+    importAlias: kit ? libAlias(cwd) : null,
+  };
+}

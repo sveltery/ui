@@ -81,6 +81,14 @@ An item counts as installed when any of its files exists under `aliases.ui`. Wit
 
 `list` prints one line per item in the registry with its type, and `installed` when the item is in your project. Pass `--json` for an array of `{ name, type, installed }`.
 
+## See how the CLI reads your project
+
+```sh
+npx @sveltery/ui@latest info
+```
+
+`info` prints the framework and the Svelte, SvelteKit and Tailwind CSS versions, your `components.json` settings, the preset code they add up to, where each alias points, and the registry items you installed. Pass `--json` for an object. It works without a `components.json` and never writes anything.
+
 ## Use another registry
 
 Set `SVELTERY_REGISTRY_URL` to the registry root, for example a preview deploy's `/r` URL. It takes precedence over the `registry` key in `components.json`.
