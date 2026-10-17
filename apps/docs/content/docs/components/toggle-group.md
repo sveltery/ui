@@ -3,7 +3,7 @@ title: Toggle Group
 description: A set of two-state buttons that can be toggled on or off.
 ---
 
-<ComponentPreview name="base/ToggleGroupExample" />
+<ComponentPreview name="base/ToggleGroupDemoExample" />
 
 ## Installation
 
@@ -52,10 +52,10 @@ The component folders import each other with relative paths, so keep them side b
 ```
 
 ```svelte
-<ToggleGroup multiple>
-  <ToggleGroupItem value="bold" aria-label="Toggle bold">Bold</ToggleGroupItem>
-  <ToggleGroupItem value="italic" aria-label="Toggle italic">Italic</ToggleGroupItem>
-  <ToggleGroupItem value="underline" aria-label="Toggle underline">Underline</ToggleGroupItem>
+<ToggleGroup>
+  <ToggleGroupItem value="a">A</ToggleGroupItem>
+  <ToggleGroupItem value="b">B</ToggleGroupItem>
+  <ToggleGroupItem value="c">C</ToggleGroupItem>
 </ToggleGroup>
 ```
 
@@ -75,43 +75,62 @@ The component folders import each other with relative paths, so keep them side b
 </ToggleGroup>
 ```
 
-## Variant and size
-
-`variant` and `size` on the group apply to every item. Without them, each item uses its own.
-
-```svelte
-<ToggleGroup variant="outline" size="sm" value={['all']}>
-  <ToggleGroupItem value="all">All</ToggleGroupItem>
-  <ToggleGroupItem value="missed">Missed</ToggleGroupItem>
-</ToggleGroup>
-```
-
-## Spacing
-
-`spacing` is the gap between items in spacing units. The default is `2`. With `spacing={0}`, outline items join into one bar.
-
-```svelte
-<ToggleGroup variant="outline" spacing={0}>
-  <ToggleGroupItem value="top">Top</ToggleGroupItem>
-  <ToggleGroupItem value="bottom">Bottom</ToggleGroupItem>
-</ToggleGroup>
-```
-
-## Vertical
-
-Arrow keys follow the orientation.
-
-```svelte
-<ToggleGroup orientation="vertical" multiple spacing={1}>
-  <ToggleGroupItem value="bold">Bold</ToggleGroupItem>
-  <ToggleGroupItem value="italic">Italic</ToggleGroupItem>
-</ToggleGroup>
-```
-
 ## Without JavaScript
 
 `ToggleGroup` needs JavaScript. To get the same look in a form that works without it, hide native checkboxes or radios inside labels that carry the Toggle's classes. See the toggle style on [Native Checkbox](/docs/components/native-checkbox#toggle-style) and its [remote form example](/docs/components/native-select#remote-forms).
 
-## API reference
+## Composition
 
-`ToggleGroup` and `ToggleGroupItem` are styled on top of the Sveltery Base `ToggleGroup` and `Toggle` primitives, which own the pressed state, roving focus and accessibility. See the [Base UI Toggle Group documentation](https://base-ui.com/react/components/toggle-group) for the behavior they port.
+Use the following composition to build a `ToggleGroup`:
+
+```text
+ToggleGroup
+├── ToggleGroupItem
+└── ToggleGroupItem
+```
+
+## Outline
+
+Use `variant="outline"` for an outline style.
+
+<ComponentPreview name="base/ToggleGroupOutlineExample" />
+
+## Size
+
+Use the `size` prop to change the size of the toggle group.
+
+<ComponentPreview name="base/ToggleGroupSizesExample" />
+
+## Spacing
+
+Use `spacing` to add spacing between toggle group items.
+
+<ComponentPreview name="base/ToggleGroupSpacingExample" />
+
+## Vertical
+
+Use `orientation="vertical"` for vertical toggle groups.
+
+<ComponentPreview name="base/ToggleGroupVerticalExample" />
+
+## Disabled
+
+<ComponentPreview name="base/ToggleGroupDisabledExample" />
+
+## Custom
+
+A custom toggle group example.
+
+<ComponentPreview name="base/ToggleGroupFontWeightSelectorExample" class="[&_[data-slot=field]]:max-w-xs" />
+
+## RTL
+
+Wrap the toggle group in a [DirectionProvider](/docs/components/direction) and set `dir` on `ToggleGroup`. Use the buttons to switch the language.
+
+<ComponentPreview name="base/ToggleGroupRtlExample" align="start" />
+
+## API Reference
+
+See the [Base UI Toggle Group](https://base-ui.com/react/components/toggle-group#api-reference) documentation.
+
+`ToggleGroup` and `ToggleGroupItem` are styled on top of the Sveltery Base `ToggleGroup` and `Toggle` primitives, which own the pressed state, roving focus and accessibility. `variant` and `size` on the group apply to every item. Without them, each item uses its own. `spacing` is the gap between items in spacing units, and with `spacing={0}` outline items join into one bar. Arrow keys follow `orientation`.

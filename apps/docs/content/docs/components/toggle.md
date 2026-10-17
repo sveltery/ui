@@ -3,7 +3,7 @@ title: Toggle
 description: A two-state button that can be either on or off.
 ---
 
-<ComponentPreview name="base/ToggleExample" />
+<ComponentPreview name="base/ToggleDemoExample" />
 
 ## Installation
 
@@ -52,7 +52,7 @@ The component folders import each other with relative paths, so keep them side b
 ```
 
 ```svelte
-<Toggle aria-label="Toggle italic">Italic</Toggle>
+<Toggle>Toggle</Toggle>
 ```
 
 ## Pressed state
@@ -69,25 +69,32 @@ The component folders import each other with relative paths, so keep them side b
 
 ## Outline
 
-```svelte
-<Toggle variant="outline" aria-label="Toggle italic">Italic</Toggle>
-```
+Use `variant="outline"` for an outline style.
 
-## Sizes
+<ComponentPreview name="base/ToggleOutlineExample" />
 
-`size` is `sm`, `default` or `lg`.
+## With Text
 
-```svelte
-<Toggle size="sm" aria-label="Toggle small">Small</Toggle>
-<Toggle size="lg" aria-label="Toggle large">Large</Toggle>
-```
+<ComponentPreview name="base/ToggleTextExample" />
+
+## Size
+
+Use the `size` prop to change the size of the toggle.
+
+<ComponentPreview name="base/ToggleSizesExample" />
 
 ## Disabled
 
-```svelte
-<Toggle disabled aria-label="Toggle disabled">Disabled</Toggle>
-```
+<ComponentPreview name="base/ToggleDisabledExample" />
 
-## API reference
+## RTL
 
-`Toggle` is styled on top of the Sveltery Base `Toggle` primitive, which owns its pressed state, keyboard behavior and accessibility. `toggleVariants` returns the class string for `variant` and `size`. See the [Base UI Toggle documentation](https://base-ui.com/react/components/toggle) for the behavior it ports.
+Wrap the toggle in a [DirectionProvider](/docs/components/direction) and set `dir` on `Toggle`. Use the buttons to switch the language.
+
+<ComponentPreview name="base/ToggleRtlExample" align="start" />
+
+## API Reference
+
+See the [Base UI Toggle](https://base-ui.com/react/components/toggle#api-reference) documentation.
+
+`Toggle` is styled on top of the Sveltery Base `Toggle` primitive, which owns its pressed state, keyboard behavior and accessibility. `size` is `sm`, `default` or `lg`. `toggleVariants` returns the class string for `variant` and `size`.
