@@ -6,6 +6,42 @@ order: 10
 
 New releases of the `@sveltery/ui` CLI and the Svelte packages that the components use. The newest release is first. The components themselves have no version: `add` and `update` always copy the current source from the registry.
 
+## October 2026: Typeset
+
+Added on 2026-10-17.
+
+[Typeset](/docs/typeset) is a styling system for HTML and rendered markdown, in one CSS file. It is [shadcn/typeset](https://ui.shadcn.com/docs/typeset), and it replaces the Typography page.
+
+Your app renders the same HTML elements everywhere: headings, paragraphs, lists, tables, and code. You style them for your blog, then your docs, and now chat. Typeset lets you style them once, then tune the rhythm for each context.
+
+```svelte
+<div class="typeset">{content}</div>
+```
+
+Add one class and everything inside gets styled. Typeset follows the size of its container, uses your theme, and gives you three controls: size, leading, and flow.
+
+You can create as many typesets as you need. Use a tighter rhythm for chat and a roomier one for docs:
+
+```css
+.typeset-chat {
+  --typeset-leading: 1.6;
+  --typeset-flow: 1em;
+}
+
+.typeset-docs {
+  --typeset-size: 15px;
+  --typeset-leading: 1.75;
+  --typeset-flow: 1.5em;
+}
+```
+
+```svelte
+<div class="typeset typeset-chat">{message}</div>
+<article class="typeset typeset-docs">{page}</article>
+```
+
+It's also designed for streaming, so new blocks don't restyle earlier ones. The file lives in your project. There's no package or config layer to work around.
+
 ## October 2026: @sveltery/ui 0.1.1
 
 Released on 2026-10-17.
