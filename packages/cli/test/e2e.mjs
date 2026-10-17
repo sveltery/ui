@@ -178,6 +178,20 @@ try {
     if (icons === 'lucide') await run('pnpm', ['exec', 'vite', 'build'], allApp);
   }
 
+  step('sveltery migrate icons, base-color and cn in the lucide app, then check it again');
+  const lucideApp = join(work, 'all-lucide');
+  const lucideCli = (...args) => run('pnpm', ['exec', 'sveltery', ...args], lucideApp, env);
+  await lucideCli('migrate', 'icons', '--to', 'phosphor', '-y');
+  assert.equal(JSON.parse(readFileSync(join(lucideApp, 'components.json'), 'utf8')).iconLibrary, 'phosphor', 'migrate icons records the new library');
+  const uiFiles = readdirSync(join(lucideApp, 'src/lib/components/ui'), { recursive: true }).filter((file) => file.endsWith('.svelte'));
+  assert.deepEqual(uiFiles.filter((file) => readFileSync(join(lucideApp, 'src/lib/components/ui', file), 'utf8').includes('@lucide/svelte')), [], 'no ui component imports lucide');
+  await lucideCli('migrate', 'base-color', '--to', 'stone', '-y');
+  assert.ok(readFileSync(join(lucideApp, JSON.parse(readFileSync(join(lucideApp, 'components.json'), 'utf8')).tailwind.css), 'utf8').includes('--foreground: oklch(0.147 0.004 49.25);'), 'migrate base-color writes the stone tokens');
+  writeFileSync(join(lucideApp, 'src/lib/legacy.ts'), "import { clsx, type ClassValue } from 'clsx';\nimport { twMerge } from 'tailwind-merge';\n\nexport function cx(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n");
+  await lucideCli('migrate', 'cn', 'src/lib/legacy.ts', '-y');
+  assert.equal(readFileSync(join(lucideApp, 'src/lib/legacy.ts'), 'utf8'), "export { cn as cx } from 'cn';\n", 'migrate cn re-exports the helper from cn');
+  await run('pnpm', ['run', 'check'], lucideApp);
+
   step('sveltery init -y');
   await run('npm', ['exec', '--yes', `--package=${overrides['@sveltery/ui']}`, '--', 'sveltery', 'init', '-y'], app, env);
   const config = JSON.parse(readFileSync(join(app, 'components.json'), 'utf8'));

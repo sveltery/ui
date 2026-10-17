@@ -212,6 +212,77 @@ Options:
 
 ---
 
+## migrate
+
+Use the `migrate` command to change code that is already in your project.
+
+```bash
+npx @sveltery/ui@latest migrate icons --to tabler
+```
+
+Run `migrate --list` to see the migrations. Each one asks before it writes. The default answer is yes.
+
+| Migration | What it changes |
+| --- | --- |
+| `icons` | Swaps the icon library in your installed components, then sets `iconLibrary` in `components.json`. |
+| `base-color` | Swaps the theme's base color in your CSS file, then sets `tailwind.baseColor` in `components.json`. |
+| `cn` | Moves `clsx`, `tailwind-merge` and `cnfast` imports in your `.svelte`, `.ts` and `.js` files to the `cn` package. |
+
+Pass a file, a directory or a glob pattern to migrate only those files. By default, `icons` migrates the `aliases.ui` directory and `cn` migrates every source file in the project. A glob pattern needs Node 22 or later.
+
+### icons
+
+`icons` changes each icon's import, its tags and the attributes that pass it as a value. It installs the new library's package. It maps each icon to the one the registry's components use for it. An icon with no match, or one used outside the markup, stays as it is, and `migrate` lists it. Hugeicons wraps each icon in `<HugeiconsIcon icon={...} />`, so an icon moves to or from Hugeicons only where it is a self-closing tag.
+
+```bash
+npx @sveltery/ui@latest migrate icons --from lucide --to phosphor
+```
+
+A run with a path leaves `iconLibrary` in `components.json` as it is.
+
+### base-color
+
+`base-color` changes only the theme tokens that still have the old base color's value. It keeps tokens that you changed, or that a preset's theme color set, and it lists them.
+
+```bash
+npx @sveltery/ui@latest migrate base-color --to stone
+```
+
+### cn
+
+`cn` replaces `twMerge(clsx(...))` with `cn(...)`. It replaces an exported helper that only returns `twMerge(clsx(inputs))`, such as `cn` in a shadcn-svelte `utils.ts`, with `export { cn } from 'cn'`. It does not need `components.json`.
+
+```bash
+npx @sveltery/ui@latest migrate cn
+```
+
+`cn` installs the `cn` package before it writes. After a run without a path, it removes `clsx`, `tailwind-merge` and `cnfast` if no file imports them. It lists what you must change by hand, such as a dynamic import, an `export ... from` declaration or a CommonJS `require`. It needs Tailwind CSS 4 and `tailwind-merge` 3.
+
+**Options**
+
+```txt
+Usage: sveltery migrate [options] [migration] [path]
+
+run a migration
+
+Arguments:
+  migration          the migration to run
+  path               a file, directory or glob pattern to migrate
+
+Options:
+  -l, --list         list all migrations (default: false)
+  -y, --yes          skip the confirmation prompt (default: false)
+  -f, --from <name>  the base color or icon library to migrate from
+  -t, --to <name>    the base color or icon library to migrate to
+  --no-install       do not install or remove packages
+  --cwd <path>       the project root (default: ".")
+  -h, --help         display help for command
+```
+
+Without `--from` or `--to`, `migrate` asks, and offers the value in `components.json` as the source. With `--yes`, it takes that value as the source and does not ask, so pass `--to`. `cn` does not use `--from` or `--to`.
+
+---
+
 ## Environment variables
 
 `SVELTERY_REGISTRY_URL` sets the registry root, for example a preview deploy's `/r` URL. It takes precedence over the `registry` key in `components.json`. `init` writes the URL it used to that key.
@@ -222,4 +293,4 @@ SVELTERY_REGISTRY_URL=https://preview.example.com/r npx @sveltery/ui@latest add 
 
 ## Not supported
 
-The shadcn CLI has commands and options that this CLI does not have yet: `apply`, `preset`, `view`, `search`, `build`, `docs`, `info`, `migrate` and `eject`, namespaced registries, local file paths as items, JavaScript output and the RTL transform. See [Registry](/docs/registry), [JavaScript](/docs/javascript) and [RTL](/docs/rtl) for what works today.
+The shadcn CLI has commands and options that this CLI does not have yet: `apply`, `preset`, `view`, `search`, `build`, `docs`, `info` and `eject`, namespaced registries, local file paths as items, JavaScript output and the RTL transform. See [Registry](/docs/registry), [JavaScript](/docs/javascript) and [RTL](/docs/rtl) for what works today.

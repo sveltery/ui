@@ -6,6 +6,7 @@ import { add } from './commands/add.js';
 import { diff } from './commands/diff.js';
 import { init } from './commands/init.js';
 import { list } from './commands/list.js';
+import { migrate } from './commands/migrate.js';
 import { update } from './commands/update.js';
 import { CliError } from './parse.js';
 import { version } from './version.js';
@@ -59,6 +60,19 @@ program
   .option('--json', 'print the items as JSON', false)
   .option('--cwd <path>', 'the project root', '.')
   .action(async (options) => void (await list({ ...options, cwd: resolve(options.cwd) })));
+
+program
+  .command('migrate')
+  .description('run a migration')
+  .argument('[migration]', 'the migration to run')
+  .argument('[path]', 'a file, directory or glob pattern to migrate')
+  .option('-l, --list', 'list all migrations', false)
+  .option('-y, --yes', 'skip the confirmation prompt', false)
+  .option('-f, --from <name>', 'the base color or icon library to migrate from')
+  .option('-t, --to <name>', 'the base color or icon library to migrate to')
+  .option('--no-install', 'do not install or remove packages')
+  .option('--cwd <path>', 'the project root', '.')
+  .action(async (migration: string | undefined, path: string | undefined, options) => void (await migrate(migration, { ...options, path, cwd: resolve(options.cwd) })));
 
 try {
   await program.parseAsync();

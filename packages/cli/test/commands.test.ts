@@ -9,6 +9,7 @@ import { add } from '../src/commands/add.js';
 import { diff } from '../src/commands/diff.js';
 import { baseDependencies, init } from '../src/commands/init.js';
 import { list } from '../src/commands/list.js';
+import { migrate, type MigrateOptions } from '../src/commands/migrate.js';
 import { update } from '../src/commands/update.js';
 import { cliPackage } from '../src/version.js';
 
@@ -67,6 +68,11 @@ const registryFiles: Record<string, unknown> = {
 
 const font = (name: string, variable: string, family: string, dependency: string) =>
   item(name, { type: 'registry:font', files: [], font: { family, provider: 'google', import: name, variable, dependency } });
+registryFiles['themes/stone.json'] = item('stone', {
+  type: 'registry:theme',
+  files: [],
+  cssVars: { theme: { 'color-background': 'var(--background)' }, light: { background: 'oklch(0.99 0.001 106)' }, dark: { background: 'oklch(0.147 0.004 49)' } },
+});
 registryFiles['styles/vega/font-inter.json'] = font('font-inter', '--font-sans', "'Inter Variable', sans-serif", '@fontsource-variable/inter');
 registryFiles['styles/vega/font-heading-playfair-display.json'] = font('font-heading-playfair-display', '--font-heading', "'Playfair Display Variable', serif", '@fontsource-variable/playfair-display');
 
@@ -370,6 +376,93 @@ describe('init', () => {
       await init({ cwd, ...defaults, yes: false, preset: true });
       expect(initRequests[0]).toContain('/init?style=maia&');
     });
+  });
+});
+
+describe('migrate', () => {
+  const buttonPath = 'src/lib/components/ui/button/Button.svelte';
+  const options = (rest: Partial<MigrateOptions> = {}) => ({ cwd, yes: true, install: false, list: false, ...rest });
+
+  describe('icons', () => {
+    beforeEach(async () => {
+      vi.mocked(confirm).mockReset();
+      await init({ cwd, ...defaults });
+      await add(['button'], { cwd, ...defaults, overwrite: false, all: false, dryRun: false });
+    });
+
+    test('swaps the icons in the ui directory and records the library in components.json', async () => {
+      expect(await migrate('icons', options({ to: 'tabler' }))).toEqual({ changed: [buttonPath], skipped: [] });
+      expect(read(buttonPath)).toBe(`<script lang="ts">
+  import { IconChevronRight } from '@tabler/icons-svelte';
+  let { children } = $props();
+</script>
+<button class="px-2.5">{@render children?.()}<IconChevronRight /></button>
+`);
+      expect(JSON.parse(read('components.json')).iconLibrary).toBe('tabler');
+      expect(await diff([], { cwd })).toBe('Everything is up to date.');
+    });
+
+    test('a path limits the run and leaves components.json alone', async () => {
+      await migrate('icons', options({ to: 'tabler', path: buttonPath }));
+      expect([read(buttonPath).includes('<IconChevronRight />'), JSON.parse(read('components.json')).iconLibrary]).toEqual([true, 'lucide']);
+    });
+
+    test('asks to continue, defaulting to yes, and a no changes nothing', async () => {
+      vi.mocked(confirm).mockResolvedValueOnce(false);
+      const before = read(buttonPath);
+      await migrate('icons', options({ yes: false, from: 'lucide', to: 'tabler' }));
+      expect(vi.mocked(confirm).mock.calls[0]![0]).toMatchObject({ message: 'We will migrate 1 files in ./src/lib/components/ui from lucide to tabler. Continue?', initialValue: true });
+      expect(read(buttonPath)).toBe(before);
+    });
+
+    test.each([
+      [{ to: 'feather' }, 'Unknown icon library: feather. Available libraries: lucide, tabler, hugeicons, phosphor, remixicon.'],
+      [{ to: 'lucide' }, 'You cannot migrate to the same icon library.'],
+      [{}, 'Pass the icon library to migrate to with --to.'],
+    ])('rejects %o', async (rest, message) => {
+      await expect(migrate('icons', options(rest))).rejects.toThrow(message);
+    });
+  });
+
+  test('base-color changes the tokens that hold the old color and records the new one', async () => {
+    await init({ cwd, ...defaults });
+    await migrate('base-color', options({ to: 'stone' }));
+    expect(read('src/app.css')).toContain(':root {\n  --background: oklch(0.99 0.001 106);\n}\n.dark {\n  --background: oklch(0.147 0.004 49);\n}');
+    expect(JSON.parse(read('components.json')).tailwind.baseColor).toBe('stone');
+  });
+
+  describe('cn', () => {
+    const utils = "import { clsx, type ClassValue } from 'clsx';\nimport { twMerge } from 'tailwind-merge';\n\nexport function cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n";
+    beforeEach(() => {
+      writeFileSync(join(cwd, 'package.json'), JSON.stringify({ dependencies: { clsx: '^2.1.1', 'tailwind-merge': '^3.3.1' }, devDependencies: { tailwindcss: '^4.0.0' } }));
+      mkdirSync(join(cwd, 'src/lib'), { recursive: true });
+      writeFileSync(join(cwd, 'src/lib/utils.ts'), utils);
+      mkdirSync(join(cwd, 'node_modules/clsx'), { recursive: true });
+      writeFileSync(join(cwd, 'node_modules/clsx/index.ts'), utils);
+    });
+
+    test('migrates the source files outside node_modules, and needs no components.json', async () => {
+      expect(await migrate('cn', options())).toEqual({ changed: ['src/lib/utils.ts'], removed: [] });
+      expect(read('src/lib/utils.ts')).toBe("export { cn } from 'cn';\n");
+      expect(read('node_modules/clsx/index.ts')).toBe(utils);
+    });
+
+    test('refuses tailwind-merge v2', async () => {
+      writeFileSync(join(cwd, 'package.json'), JSON.stringify({ dependencies: { 'tailwind-merge': '^2.6.0' } }));
+      await expect(migrate('cn', options())).rejects.toThrow('The cn migration requires Tailwind CSS v4 and tailwind-merge v3.');
+      expect(read('src/lib/utils.ts')).toBe(utils);
+    });
+  });
+
+  test('lists the migrations, and rejects an unknown one', async () => {
+    const info = vi.spyOn(log, 'info').mockImplementation(() => {});
+    try {
+      await migrate(undefined, options());
+      expect(info).toHaveBeenCalledWith('Available migrations:\n- cn: migrate clsx and tailwind-merge to cn.\n- icons: migrate your ui components to a different icon library.\n- base-color: migrate your theme to a different base color.');
+    } finally {
+      info.mockRestore();
+    }
+    await expect(migrate('radix', options())).rejects.toThrow('Unknown migration "radix".');
   });
 });
 

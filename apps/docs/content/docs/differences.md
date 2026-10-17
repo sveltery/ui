@@ -573,3 +573,35 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Why:** The other rows make room during the drag, as they do upstream.
 
 **Decided:** Hugo Hsi, 2026-10-14
+
+## CLI
+
+### `migrate icons` maps icons from the registry's components
+
+**Upstream:** [`migrate-icons.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/migrate-icons.ts#L118) fetches `icons/index.json`, a list with one entry per icon that names it in each library.
+
+**Sveltery UI:** [`migrate icons`](/docs/cli#icons) reads the icon names from the `IconPlaceholder` tags in the registry's items and blocks. Where components pair one icon with different icons in the target library, it takes the pairing they use most.
+
+**Why:** The registry serves no icon list. The placeholders already name each icon in every library, so the mapping cannot drift from the components. On the registry at this commit, the migration changes 40 files in a lucide project with every item. For each library, 36 to 40 of them match the files an `init --icons <library>` project gets. The others use an icon that other components pair with the same lucide icon, such as a chevron in place of Select's selector icon.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `migrate --yes` does not ask for `--from` or `--to`
+
+**Upstream:** [`migrate-icons.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/migrate-icons.ts#L148) and [`migrate-base-color.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/migrate-base-color.ts#L79) ask for a missing `--from` or `--to` even with `--yes`. `--yes` skips only the confirmation.
+
+**Sveltery UI:** With `--yes`, [`migrate`](/docs/cli#migrate) takes the value in `components.json` as the source and stops with an error when `--to` is missing.
+
+**Why:** In this CLI, `--yes` means that a command does not prompt, so it can run in CI. A prompt there fails with "No terminal to confirm in. Re-run with --yes.", which `--yes` does not fix.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `migrate cn` leaves CommonJS requires for manual review
+
+**Upstream:** [`specifiers.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/cn/specifiers.ts#L201) moves `require("clsx")` and `require("tailwind-merge")` calls to `cn`.
+
+**Sveltery UI:** [`migrate cn`](/docs/cli#cn) leaves each `require` call as it is and lists it for manual review.
+
+**Why:** Svelte components and SvelteKit apps are ES modules, so a `require` of these packages is rare. Porting upstream's CommonJS rewrite would add a second set of binding rules for little use.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
