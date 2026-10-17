@@ -478,6 +478,16 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
+### The Input OTP form example narrows its slots on small screens
+
+**Upstream:** [`input-otp-form.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/input-otp-form.tsx) gives each slot `w-11` and the separator `mx-2` at every width.
+
+**Sveltery UI:** The [Input OTP](/docs/components/input-otp) form example adds `max-sm:*:data-[slot=input-otp-slot]:w-9` to each group and `max-sm:mx-0` to the separator.
+
+**Why:** On a phone the card's content area is about 260px, and six `w-11` slots plus the separator need about 312px, so the last slots were clipped.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ## Forms
 
 ### The Forms guides cover SvelteKit forms instead of React form libraries
