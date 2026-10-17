@@ -669,6 +669,16 @@ Each component page follows its [upstream page](https://github.com/shadcn-ui/ui/
 
 **Decided:** Hugo Hsi, 2026-10-17
 
+### A choice card highlights a checked native input
+
+**Upstream:** A `FieldLabel` that wraps a `Field` is a choice card. Each style's `cn-field-label` rule highlights the card with `has-data-checked:` variants, for example in [`style-nova.css`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/styles/style-nova.css#L639-L641). These match only a control that carries `data-checked`, such as Base UI's Radio Group item or Checkbox.
+
+**Sveltery UI:** A PATCHES entry in `apps/docs/registry/sync-styles.ts` rewrites those variants to `has-[[data-checked],input:checked]:` in every style. A [Field](/docs/components/field#choice-card) choice card highlights a checked Base UI control as before, and also a checked [Native Radio Group](/docs/components/native-radio-group) or [Native Checkbox](/docs/components/native-checkbox) input. Every `FieldLabel` carries the longer class names.
+
+**Why:** A native input has no `data-checked`, so upstream's rule never highlights a card around one. The `:checked` pseudo-class matches before the page hydrates, so the card shows the choice of a form that works without JavaScript.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
 ### Native Checkbox, Native Switch and Native Slider are Sveltery UI components
 
 **Upstream:** shadcn/ui has a [Native Select](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/native-select.tsx) but no native checkbox, switch or slider. Its [Checkbox](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/checkbox.tsx), [Switch](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/switch.tsx) and [Slider](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/slider.tsx) run on Base UI.
