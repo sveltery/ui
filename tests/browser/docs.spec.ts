@@ -80,7 +80,7 @@ test('a docs page keeps step titles out of the TOC, the Installation section sho
   await expect(manual).toHaveAttribute('aria-selected', 'true');
   await expect(page.getByRole('heading', { name: 'Copy the component' })).toBeVisible();
   await expect(page.locator('[data-slot=component-source]')).toContainText('These files use the Nova style and Lucide icons.');
-  await expect(page.locator('[data-slot=code-block]').filter({ hasText: 'cn class-variance-authority @sveltery/base' })).toBeVisible();
+  await expect(page.locator('[data-slot=code-block] code').filter({ hasText: /^(npm install|pnpm add|yarn add|bun add) @sveltery\/base$/ })).toBeVisible();
   await cli.click();
   await expect(page.locator('[data-slot=component-source]')).toBeHidden();
 
