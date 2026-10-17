@@ -34,7 +34,7 @@ const configShape = {
   tailwind: object({ css: string, baseColor: literal(...baseColors) }),
   aliases: object({ components: string, ui: string, utils: string, lib: string, hooks: string }),
   registry: optional(string),
-  typescript: literal(true),
+  typescript: literal(true, false),
 };
 
 /** The keys `init` owns in components.json; it keeps any others. */
@@ -43,16 +43,11 @@ export const configKeys = Object.keys(configShape);
 /** components.json, in shadcn-svelte's format, limited to what this CLI supports. */
 export type Config = InferShape<typeof configShape>;
 
-const hints: Record<string, string> = {
-  typescript: 'Only TypeScript projects are supported.',
-};
-
 export function parseConfig(json: unknown): Config {
   try {
     return object(configShape)(json, '');
   } catch (error) {
     if (!(error instanceof ParseError)) throw error;
-    const key = error.message.split(/[.:[]/)[0] ?? '';
-    throw new CliError(`${CONFIG_FILE} is invalid. ${error.message}. ${hints[key] ?? 'Run `npx @sveltery/ui@latest init` to repair it.'}`.trimEnd());
+    throw new CliError(`${CONFIG_FILE} is invalid. ${error.message}. Run \`npx @sveltery/ui@latest init\` to repair it.`);
   }
 }

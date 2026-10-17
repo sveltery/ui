@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { log } from '@clack/prompts';
 import { CONFIG_FILE, configKeys, defaultAliases, parseConfig, stylePresets, type Config } from '../config.js';
@@ -157,7 +157,8 @@ export async function init(options: InitOptions): Promise<Plan> {
     tailwind: { css: cssPath, baseColor },
     aliases: { ...defaultAliases(libAlias(cwd)), ...Object.fromEntries(Object.entries(existingAliases).filter(([, value]) => typeof value === 'string')) },
     registry: registry.url,
-    typescript: true,
+    // As in shadcn, a project with no tsconfig.* in its root is a JavaScript one.
+    typescript: typeof existingConfig.typescript === 'boolean' ? existingConfig.typescript : readdirSync(cwd).some((name) => name.startsWith('tsconfig.')),
   });
   // Known keys first in a fixed order, then the user's own keys, so a second run writes the same bytes.
   const written = {

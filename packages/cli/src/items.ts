@@ -5,6 +5,7 @@ import { CliError } from './parse.js';
 import { missingPackages, planFile, type Plan, type PlannedFile } from './plan.js';
 import { aliasPath, readJson } from './project.js';
 import { fetchItem, openRegistry, parseItemRef, resolveItems, resolveRegistryUrl, type ItemRef, type Registry, type RegistryFile, type RegistryItem } from './registry.js';
+import { jsTarget, stripTypes } from './strip-types.js';
 import { applyTransforms, type TransformContext } from './transforms.js';
 
 /** A project that ran `init`: its root, its components.json, the registry it points at, and where items are written (relative to `cwd`). */
@@ -18,14 +19,15 @@ export async function openProject(cwd: string): Promise<Project> {
   return { cwd, config, registry, uiDir: aliasPath(config.aliases.ui) };
 }
 
-/** Where a registry file goes, relative to `cwd`: by its type, under the ui or components alias, or from the project root. */
+/** Where a registry file goes, relative to `cwd`: by its type, under the ui or components alias, or from the project root. A JavaScript project gets `.js` for `.ts`. */
 export function filePath({ config, uiDir }: Project, file: RegistryFile): string {
-  if (file.type === 'registry:ui') return join(uiDir, file.target);
-  if (file.type === 'registry:component') return join(aliasPath(config.aliases.components), file.target);
-  return join(file.target);
+  const target = config.typescript ? file.target : jsTarget(file.target);
+  if (file.type === 'registry:ui') return join(uiDir, target);
+  if (file.type === 'registry:component') return join(aliasPath(config.aliases.components), target);
+  return join(target);
 }
 
-/** What writing `items` into the project would do: every file transformed for this project, and the packages it lacks. `css` is the stylesheet as it will be, when it is not the one on disk. */
+/** What writing `items` into the project would do: every file transformed for this project, and stripped of types for a JavaScript one, and the packages it lacks. `css` is the stylesheet as it will be, when it is not the one on disk. */
 export function planItems(project: Project, items: RegistryItem[], css?: string): Plan {
   const { cwd, config } = project;
   const cssPath = join(cwd, config.tailwind.css);
@@ -44,8 +46,11 @@ export function planItems(project: Project, items: RegistryItem[], css?: string)
     for (const file of item.files) {
       const result = applyTransforms(file, ctx);
       dependencies.push(...result.dependencies);
+      const content = config.typescript ? result.content : stripTypes(file.target, result.content);
+      // A module of types alone has nothing left to write.
+      if (content === undefined) continue;
       const path = filePath(project, file);
-      files.set(path, { ...planFile(cwd, path, result.content), item: item.name });
+      files.set(path, { ...planFile(cwd, path, content), item: item.name });
     }
   }
   return { files: [...files.values()], dependencies: missingPackages(cwd, dependencies), devDependencies: missingPackages(cwd, devDependencies) };
