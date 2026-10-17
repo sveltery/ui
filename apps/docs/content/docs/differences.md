@@ -573,3 +573,15 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Why:** The other rows make room during the drag, as they do upstream.
 
 **Decided:** Hugo Hsi, 2026-10-14
+
+## Command line
+
+### Preset resolve reads the CSS of a Svelte project
+
+**Upstream:** [`preset resolve`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/preset.ts#L150-L204) works out the preset from `components.json`, the CSS file and, in a Next.js app, the `next/font/google` imports and the `className` of the root layout ([`resolve.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/preset/resolve.ts#L478-L500)). In a monorepo root it stops and lists the workspaces. `preset open` calls the [`open`](https://www.npmjs.com/package/open) package.
+
+**Sveltery UI:** [`preset resolve`](/docs/cli#preset) reads `components.json` and the CSS file only: the `:root` and `.dark` variables, the `@theme inline` fonts and the fontsource imports. A SvelteKit app has no font module to read. It does not stop in a monorepo root, because the CLI has no workspace detection and takes `--cwd`. `preset open` starts the system's opener (`open`, `start` or `xdg-open`) itself.
+
+**Why:** `init` writes every font as a fontsource import and a theme variable, so the CSS holds what the Next.js readers look for. The `open` package adds dependencies for a call that starts one program.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17

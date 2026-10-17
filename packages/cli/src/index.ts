@@ -5,6 +5,7 @@ import { Command } from 'commander';
 import { add } from './commands/add.js';
 import { diff } from './commands/diff.js';
 import { init } from './commands/init.js';
+import { presetDecode, presetOpen, presetResolve, presetUrl } from './commands/preset.js';
 import { list } from './commands/list.js';
 import { update } from './commands/update.js';
 import { CliError } from './parse.js';
@@ -59,6 +60,38 @@ program
   .option('--json', 'print the items as JSON', false)
   .option('--cwd <path>', 'the project root', '.')
   .action(async (options) => void (await list({ ...options, cwd: resolve(options.cwd) })));
+
+const preset = program
+  .command('preset')
+  .description('manage presets')
+  .action(() => preset.outputHelp());
+
+preset
+  .command('decode')
+  .description('decode a preset code')
+  .argument('<code>', 'the preset code to decode')
+  .option('--json', 'output as JSON.', false)
+  .action((code: string, options) => void presetDecode(code, options));
+
+preset
+  .command('url')
+  .description('get the create URL for a preset code')
+  .argument('<code>', 'the preset code')
+  .action((code: string) => void presetUrl(code));
+
+preset
+  .command('open')
+  .description('open a preset code in the browser')
+  .argument('<code>', 'the preset code')
+  .action(async (code: string) => void (await presetOpen(code)));
+
+preset
+  .command('resolve')
+  .alias('info')
+  .description('resolve a preset from your project')
+  .option('--json', 'output as JSON.', false)
+  .option('--cwd <path>', 'the project root', '.')
+  .action((options) => void presetResolve({ ...options, cwd: resolve(options.cwd) }));
 
 try {
   await program.parseAsync();
