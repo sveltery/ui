@@ -4,7 +4,7 @@ import { mkdtempSync, readdirSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
-import { assignShards, specSeconds } from '../browser-shard.mjs';
+import { assignShards, recordedSeconds, specSeconds } from '../browser-shard.mjs';
 
 test('the shards run every browser spec exactly once', () => {
   const specs = readdirSync('tests/browser', { recursive: true }).filter((file) => file.endsWith('.spec.ts')).sort();
@@ -32,4 +32,13 @@ test('a spec with no recorded time counts as the median spec', () => {
   writeFileSync(join(dir, 'timings.json'), JSON.stringify({ 'a.spec.ts': 1, 'b.spec.ts': 5, 'c.spec.ts': 9, 'gone.spec.ts': 100 }));
   for (const file of ['a', 'b', 'c', 'new']) writeFileSync(join(dir, `${file}.spec.ts`), '');
   assert.deepEqual(specSeconds(dir), { 'a.spec.ts': 1, 'b.spec.ts': 5, 'c.spec.ts': 9, 'new.spec.ts': 9 });
+});
+
+test('a Playwright JSON report records each spec file as the seconds its tests took', () => {
+  const result = (duration) => ({ results: [{ duration }] });
+  const report = { suites: [
+    { specs: [{ file: 'a.spec.ts', tests: [result(1200)] }], suites: [{ specs: [{ file: 'a.spec.ts', tests: [result(2400), result(300)] }] }] },
+    { specs: [{ file: 'b.spec.ts', tests: [result(40)] }] },
+  ] };
+  assert.deepEqual(recordedSeconds(report), { 'a.spec.ts': 4, 'b.spec.ts': 1 });
 });
