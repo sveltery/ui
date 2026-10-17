@@ -14,6 +14,7 @@
     QuestionnaireSubmit,
     QuestionnaireTitle,
   } from '$registry/bases/base/ui/questionnaire';
+  import { toast } from '$registry/bases/base/ui/toast';
 
   const items = [
     { name: 'detail', required: true },
@@ -33,7 +34,6 @@
 
   let item = $state('detail');
   let errors = $state<Errors>({});
-  let result = $state('');
 
   function handleSubmit(event: SubmitEvent & { currentTarget: HTMLFormElement }) {
     event.preventDefault();
@@ -43,9 +43,8 @@
     const firstInvalid = (['detail', 'audience'] as const).find((name) => errors[name]);
     if (firstInvalid) {
       item = firstInvalid;
-      result = '';
     } else {
-      result = `Detail: ${answers.detail} · Audience: ${answers.audience}`;
+      toast.add({ title: 'Agent response configured', description: `Detail: ${answers.detail} · Audience: ${answers.audience}` });
     }
   }
 </script>
@@ -98,7 +97,4 @@
       </QuestionnaireActions>
     </CardFooter>
   </Card>
-  {#if result}
-    <p role="status" class="mt-4 text-sm text-muted-foreground">{result}</p>
-  {/if}
 </Questionnaire>

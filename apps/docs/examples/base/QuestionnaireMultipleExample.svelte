@@ -10,14 +10,13 @@
     QuestionnaireSubmit,
     QuestionnaireTitle,
   } from '$registry/bases/base/ui/questionnaire';
+  import { toast } from '$registry/bases/base/ui/toast';
 
   const items = [{ choices: [{ value: 'source' }, { value: 'tests' }, { value: 'docs' }, { value: 'history' }], name: 'context', required: true }];
 
-  let result = $state('');
-
   function handleSubmit(event: SubmitEvent & { currentTarget: HTMLFormElement }) {
     event.preventDefault();
-    result = `Context: ${new FormData(event.currentTarget).getAll('context').join(', ') || 'None'}`;
+    toast.add({ title: 'Context selected', description: `Context: ${new FormData(event.currentTarget).getAll('context').join(', ') || 'None'}` });
   }
 </script>
 
@@ -37,7 +36,4 @@
   <QuestionnaireActions>
     <QuestionnaireSubmit>Share context</QuestionnaireSubmit>
   </QuestionnaireActions>
-  {#if result}
-    <p role="status" class="mt-4 text-sm text-muted-foreground">{result}</p>
-  {/if}
 </Questionnaire>

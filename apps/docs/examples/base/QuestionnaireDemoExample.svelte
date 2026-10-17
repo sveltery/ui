@@ -15,6 +15,7 @@
     QuestionnaireSubmit,
     QuestionnaireTitle,
   } from '$registry/bases/base/ui/questionnaire';
+  import { toast } from '$registry/bases/base/ui/toast';
 
   const items = [
     {
@@ -55,12 +56,10 @@
     },
   ] as const;
 
-  let result = $state('');
-
   function handleSubmit(event: SubmitEvent & { currentTarget: HTMLFormElement }) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    result = `Direction: ${formData.get('direction') ?? 'None'} · Progress signals: ${formData.getAll('signals').join(', ') || 'None'} · Timing: ${formData.get('timing') ?? 'None'}`;
+    toast.add({ title: 'Agent plan saved', description: `Direction: ${formData.get('direction') ?? 'None'} · Progress signals: ${formData.getAll('signals').join(', ') || 'None'} · Timing: ${formData.get('timing') ?? 'None'}` });
   }
 </script>
 
@@ -92,7 +91,4 @@
     <QuestionnaireNext>Next</QuestionnaireNext>
     <QuestionnaireSubmit>Save plan</QuestionnaireSubmit>
   </QuestionnaireActions>
-  {#if result}
-    <p role="status" class="mt-4 text-sm text-muted-foreground">{result}</p>
-  {/if}
 </Questionnaire>
