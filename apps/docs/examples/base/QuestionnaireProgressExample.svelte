@@ -12,15 +12,14 @@
     QuestionnaireSubmit,
     QuestionnaireTitle,
   } from '$registry/bases/base/ui/questionnaire';
+  import { toast } from '$registry/bases/base/ui/toast';
 
   const items = [{ name: 'scope', required: true }, { name: 'strategy', required: true }, { name: 'tests', required: true }, { name: 'delivery', required: true }];
-
-  let result = $state('');
 
   function handleSubmit(event: SubmitEvent & { currentTarget: HTMLFormElement }) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    result = `Scope: ${formData.get('scope') ?? 'None'} · Commits: ${formData.get('strategy') ?? 'None'} · Tests: ${formData.get('tests') ?? 'None'} · Delivery: ${formData.get('delivery') ?? 'None'}`;
+    toast.add({ title: 'Pull request plan ready', description: `Scope: ${formData.get('scope') ?? 'None'} · Commits: ${formData.get('strategy') ?? 'None'} · Tests: ${formData.get('tests') ?? 'None'} · Delivery: ${formData.get('delivery') ?? 'None'}` });
   }
 </script>
 
@@ -83,7 +82,4 @@
     <QuestionnaireNext>Next</QuestionnaireNext>
     <QuestionnaireSubmit>Finish plan</QuestionnaireSubmit>
   </QuestionnaireActions>
-  {#if result}
-    <p role="status" class="mt-4 text-sm text-muted-foreground">{result}</p>
-  {/if}
 </Questionnaire>
