@@ -37,7 +37,7 @@ export function planRelease(version, packages) {
 }
 
 /** The versions npm has of `name`, or undefined when npm has no such package. */
-function publishedVersions(name) {
+export function publishedVersions(name) {
   try {
     return [JSON.parse(execFileSync('npm', ['view', name, 'versions', '--json'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }))].flat();
   } catch (error) {

@@ -28,7 +28,7 @@ it('wraps a native select with the upstream slots, classes and icon', () => {
   expect(wrapper.className).toBe('cn-native-select-wrapper group/native-select relative w-fit has-[select:disabled]:opacity-50 wrapper-extra');
   expect(select('bound').getAttribute('data-slot')).toBe('native-select');
   expect(select('bound').getAttribute('data-size')).toBe('default');
-  expect(select('bound').className).toBe('cn-native-select outline-none disabled:pointer-events-none disabled:cursor-not-allowed');
+  expect(select('bound').className).toBe('cn-native-select outline-none disabled:pointer-events-none disabled:cursor-not-allowed [&[multiple]]:h-auto [&[multiple]]:pr-2.5');
   const icon = wrapper.querySelector('svg')!;
   expect(icon.getAttribute('data-slot')).toBe('native-select-icon');
   expect(icon.getAttribute('aria-hidden')).toBe('true');
@@ -48,7 +48,8 @@ it('styles options and option groups with the upstream classes', () => {
   const { select } = setup();
   const option = select('plain').querySelector('option')!;
   expect(option.getAttribute('data-slot')).toBe('native-select-option');
-  expect(option.className).toBe('bg-[Canvas] text-[CanvasText]');
+  // In a multiple select, the list box draws the options in the theme's colors.
+  expect(option.className).toBe('bg-[Canvas] text-[CanvasText] in-[select[multiple]]:rounded-sm in-[select[multiple]]:bg-transparent in-[select[multiple]]:px-1 in-[select[multiple]]:text-foreground in-[select[multiple]]:checked:bg-muted');
   const group = select('plain').querySelector('optgroup')!;
   expect(group.getAttribute('data-slot')).toBe('native-select-optgroup');
   expect(group.label).toBe('Fruits');

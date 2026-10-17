@@ -98,6 +98,44 @@ Use `bind:value` to read and set the selected option's value.
 </form>
 ```
 
+## Multiple
+
+Add `multiple` to show a list box that picks several options. The chevron hides, and the select grows to show its options. Mark the initial picks with `selected`.
+
+```svelte
+<NativeSelect name="fruits" multiple>
+  <NativeSelectOption value="apple" selected>Apple</NativeSelectOption>
+  <NativeSelectOption value="banana">Banana</NativeSelectOption>
+  <NativeSelectOption value="grapes" selected>Grapes</NativeSelectOption>
+</NativeSelect>
+```
+
+## Remote forms
+
+Spread a [remote form](/docs/forms/remote-forms) field onto the select with `as('select')`, or with `as('select multiple')` for a list. This example also has toggle-style checkboxes and radios, which take `as('checkbox', value)` and `as('radio', value)`.
+
+<ComponentPreview name="forms/ChoicesRemoteExample" />
+
+```svelte
+<form {...f}>
+  <Field data-invalid={!!f.fields.fruits.issues()}>
+    <FieldLabel for="fruits">Fruits</FieldLabel>
+    <NativeSelect id="fruits" {...f.fields.fruits.as('select multiple')}>
+      {#each fruits as fruit (fruit)}
+        <NativeSelectOption value={fruit}>{fruit}</NativeSelectOption>
+      {/each}
+    </NativeSelect>
+    <FieldError errors={f.fields.fruits.issues()} />
+  </Field>
+  <div class="flex gap-1">
+    {#each textStyles as style (style)}
+      <label class={toggle}><input class="sr-only" {...f.fields.styles.as('checkbox', style)} />{style}</label>
+    {/each}
+  </div>
+  <Button type="submit">Save</Button>
+</form>
+```
+
 ## Composition
 
 ### Simple

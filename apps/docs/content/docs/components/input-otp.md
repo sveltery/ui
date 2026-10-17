@@ -135,6 +135,10 @@ Give `InputOTP` a `name` and it submits its value with its form. To label it, pu
 
 Use `aria-invalid` on the slots to show an error state.
 
+## Without JavaScript
+
+`InputOTP` renders a plain text input in a `<noscript>` fallback, so its form still submits before the page hydrates. For a code field with no slots at all, use [Input](/docs/components/input#one-time-codes) with `autocomplete="one-time-code"`.
+
 ## API reference
 
 `InputOTP` takes the props of `OTPInput` from `@sveltery/input-otp`, which follow [input-otp](https://input-otp.rodz.dev). `class` goes to the input, and `containerClass` to the element that holds the slots. Other input attributes, such as `id`, `name`, `disabled` and `required`, go to the input.

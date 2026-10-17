@@ -7,8 +7,8 @@
   /** What a Legend content snippet receives: the Legend's props, the chart's size and margin, and the payload to draw. */
   export type LegendContentProps = Omit<ContentProps, 'contextPayload' | 'content'> & Omit<DefaultLegendContentProps, 'payload'> & { payload: ReadonlyArray<LegendPayload> };
 
-  /** Legend's public props: content is a snippet where upstream takes an element or a component. */
-  export type LegendProps = Omit<UpstreamProps, 'content'> & { content?: Snippet<[SvelteArgs<LegendContentProps>]> };
+  /** Legend's public props: `class` for `className`, which reaches the content, and content is a snippet where upstream takes an element or a component. */
+  export type LegendProps = Omit<UpstreamProps, 'content' | 'className'> & { class?: string; content?: Snippet<[SvelteArgs<LegendContentProps>]> };
 </script>
 
 <script lang="ts">
