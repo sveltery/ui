@@ -145,7 +145,7 @@ The CLI reads these paths below the registry root:
 | Path | Read by | Holds |
 | --- | --- | --- |
 | `index.json` | every command | The manifest |
-| `styles/<style>/<name>.json` | `add`, `diff`, `update`, `list`, `view`, `init --preset` | Each item in each style, and the font items that presets list |
+| `styles/<style>/<name>.json` | `add`, `diff`, `update`, `view`, `init --preset` | Each item in each style, and the font items that presets list |
 | `themes/<baseColor>.json` | `init` without `--preset` | A `registry:theme` item with the base color's tokens |
 
 `init --preset` with a preset name or code fetches `/init` on the registry's origin, which returns a `registry:base` item. `init` also writes `<origin>/schema.json` to the `$schema` key of `components.json`.
@@ -216,12 +216,12 @@ Required. The icon libraries the items support.
 
 #### items
 
-Required. Every item the registry serves under each style, with its `name` and `type`, and an optional `description`. `add` accepts only names in this list, `add --all` adds all of them, and `list` prints them.
+Required. Every item the registry serves under each style, with its `name` and `type`, and an optional `description`. `add` accepts only names in this list, `add --all` adds all of them, and `search` prints them. The optional `title` is the name `search` matches a query against and prints in `--json`.
 
 ```json title="index.json"
 {
   "items": [
-    { "name": "button", "type": "registry:ui", "description": "Displays a button." }
+    { "name": "button", "type": "registry:ui", "title": "Button", "description": "Displays a button." }
   ]
 }
 ```
