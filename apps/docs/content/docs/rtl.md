@@ -4,13 +4,33 @@ description: Right-to-left support for Sveltery UI components.
 order: 5
 ---
 
-Sveltery UI components support right-to-left (RTL) layouts for languages such as Arabic, Hebrew and Persian. Sveltery Base reads the direction for keyboard navigation and popup placement, and most component classes use logical properties that follow the document's direction.
+Sveltery UI components support right-to-left (RTL) layouts. Text alignment, positioning and directional styles adapt for languages such as Arabic, Hebrew and Persian. Sveltery Base reads the direction for keyboard navigation and popup placement.
 
 <ComponentPreview name="base/DirectionExample" hideCode />
+
+When you add components, the CLI turns physical positioning classes into logical ones, so your components work in both LTR and RTL layouts.
 
 ## Get started
 
 <Steps>
+
+### Turn on RTL in components.json
+
+Run `init` with the `--rtl` flag. You can skip this step if `components.json` already has `"rtl": true`.
+
+```bash
+npx @sveltery/ui@latest init --rtl
+```
+
+This writes `rtl: true` to `components.json`. Presets take it too, as `init --preset nova --rtl` or `rtl=true` on an `/init` URL.
+
+```json title="components.json"
+{
+  "$schema": "https://ui.sveltery.dev/schema.json",
+  "style": "nova",
+  "rtl": true
+}
+```
 
 ### Set the direction on the document
 
@@ -81,28 +101,32 @@ Import it in your CSS file and set it as the sans font:
 
 For Hebrew, use `@fontsource-variable/noto-sans-hebrew`.
 
-</Steps>
+### Add components
 
-## What the CLI does not do yet
+You are ready to add components. The CLI handles RTL support for you.
 
-The shadcn CLI has an `rtl` option in `components.json`. With it, `add` turns physical classes such as `left-*` into logical ones such as `start-*`, and flips arrow and chevron icons with `rtl:rotate-180`. It also has `migrate rtl` for components you installed before.
-
-This CLI has none of these. It copies each component as the registry has it and removes the icon flip markers. A few components still use physical classes or icons that point one way. Change these by hand after you add them:
-
-- [Breadcrumb](/docs/components/breadcrumb): add `rtl:rotate-180` to the separator icon in `BreadcrumbSeparator.svelte`.
-- [Pagination](/docs/components/pagination): add `rtl:rotate-180` to the icons in `PaginationPrevious.svelte` and `PaginationNext.svelte`.
-- [Carousel](/docs/components/carousel): in `CarouselPrevious.svelte` and `CarouselNext.svelte`, change `-left-12` to `-start-12` and `-right-12` to `-end-12`, and add `rtl:rotate-180` to the icons.
-- [Dropdown Menu](/docs/components/dropdown-menu) and [Context Menu](/docs/components/context-menu): in the sub-trigger, change the chevron's `ml-auto` to `ms-auto` and add `rtl:rotate-180` to it.
-- [Sidebar](/docs/components/sidebar): add `rtl:rotate-180` to the icon in `SidebarTrigger.svelte`.
-- [Calendar](/docs/components/calendar): the next and previous buttons already flip with `rtl:` classes.
-
-Add `rtl:rotate-180` to arrow and chevron icons in your own code too:
-
-```svelte
-<ArrowRightIcon class="rtl:rotate-180" />
+```bash
+npx @sveltery/ui@latest add item
 ```
 
-## Popups outside the document direction
+</Steps>
+
+## How it works
+
+When you add components with `rtl: true` in `components.json`, the CLI changes their classes and props:
+
+- Physical positioning classes such as `left-*` and `right-*` become logical ones such as `start-*` and `end-*`.
+- Directional props, such as a submenu's `side="right"`, take logical values such as `side="inline-end"`.
+- Text alignment and spacing classes change the same way, for example `text-left` to `text-start` and `ml-*` to `ms-*`.
+- Arrow and chevron icons that the registry marks get `rtl:rotate-180`, so they flip.
+
+The CLI uses the same mappings as the shadcn CLI. The examples on the component pages that show an RTL layout render through the same transform.
+
+## Animations
+
+The CLI also changes directional animation classes. For example, `slide-in-from-right` becomes `slide-in-from-end`, so dropdowns, popovers and tooltips animate in the direction of the text.
+
+**Popups outside the document direction**
 
 Popovers, tooltips and menus render in a portal at the end of `<body>`. With `dir` on `<html>`, they inherit it. If you set `dir` on an inner element instead, pass `dir` to the popup content as well:
 
@@ -114,3 +138,43 @@ Popovers, tooltips and menus render in a portal at the end of `<body>`. With `di
   </PopoverContent>
 </Popover>
 ```
+
+## Migrating existing components
+
+If you installed components before you turned on RTL, migrate them with the CLI.
+
+<Steps>
+
+### Run the migrate command
+
+```bash
+npx @sveltery/ui@latest migrate rtl [path]
+```
+
+`[path]` takes a file, a directory or a glob pattern. Without it, the command migrates every file in the `ui` directory. It also sets `rtl: true` in `components.json`, so later `add` runs transform too.
+
+### Manual Migration (Optional)
+
+The CLI does not migrate the following components. Check them by hand:
+
+- [Calendar](/docs/components/calendar#rtl): pass `dir="rtl"` and a right-to-left locale.
+- [Pagination](/docs/components/pagination): add `rtl:rotate-180` to the icons in `PaginationPrevious.svelte` and `PaginationNext.svelte` if they do not flip.
+- [Sidebar](/docs/components/sidebar): check the side the sidebar opens from, and add `rtl:rotate-180` to the icon in `SidebarTrigger.svelte` if it does not flip.
+
+### Migrate icons
+
+Icons such as `ArrowRightIcon` or `ChevronLeftIcon` in your own code need the `rtl:rotate-180` class to flip:
+
+```svelte
+<ArrowRightIcon class="rtl:rotate-180" />
+```
+
+### Add the direction component
+
+Add the direction component, then wrap your app in `DirectionProvider` as [Get started](#get-started) shows.
+
+```bash
+npx @sveltery/ui@latest add direction
+```
+
+</Steps>
