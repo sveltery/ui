@@ -1,7 +1,7 @@
 ---
 title: Differences from shadcn/ui
 description: Where Sveltery UI deliberately differs from shadcn/ui's Base UI variant and from Base UI.
-order: 4
+order: 9
 ---
 
 <!--
@@ -106,6 +106,26 @@ Where upstream code misbehaves on Base UI, Sveltery UI fixes it instead of copyi
 **Why:** In upstream, a number value or no value renders two thumbs at the same index. The slider then has two tab stops, and a form posts the name twice.
 
 **Decided:** Hugo Hsi, 2026-10-14
+
+### A disabled Radio Group item or Checkbox is dimmed
+
+**Upstream:** The radio item in [`radio-group.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/radio-group.tsx#L22) and the checkbox in [`checkbox.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/checkbox.tsx#L13) dim with `disabled:cursor-not-allowed disabled:opacity-50`. Base UI renders both as a `span` next to a hidden input ([`RadioRoot.tsx`](https://github.com/mui/base-ui/blob/v1.9.0/packages/react/src/radio/root/RadioRoot.tsx#L129), [`CheckboxRoot.tsx`](https://github.com/mui/base-ui/blob/v1.9.0/packages/react/src/checkbox/root/CheckboxRoot.tsx)), and a `span` never matches `:disabled`.
+
+**Sveltery UI:** [Radio Group](/docs/components/radio-group) items and the [Checkbox](/docs/components/checkbox) use `data-disabled:cursor-not-allowed data-disabled:opacity-50`, as upstream's switch already does.
+
+**Why:** In upstream, a disabled radio item looks the same as an enabled one, and a disabled checkbox dims only inside a `Field`, through the style's `group-has-disabled/field:opacity-50`. Base UI sets `data-disabled` on both when they are disabled.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Switch thumb is centered at every position
+
+**Upstream:** Five styles give the default switch a fractional track height: `h-[18.4px]` in Lyra, Maia, Nova and Vega, for example [`style-nova.css`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/styles/style-nova.css#L1251), and `h-[16.6px]` in [`style-mira.css`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/styles/style-mira.css#L1253). The thumb then sits 1.2px or 1.3px inside the track.
+
+**Sveltery UI:** The [Switch](/docs/components/switch) track is `h-[18px]` in those four styles and `h-[16px]` in Mira, so the thumb sits 1px inside it.
+
+**Why:** The browser rounds the track and the thumb to whole device pixels, and a fractional inset rounds differently at the top and the bottom. Depending on where the switch lands on the page, the track shows one more pixel above or below the thumb.
+
+**Decided:** Hugo Hsi, 2026-10-17
 
 ### The Combobox trigger stays out of the tab order
 
@@ -327,7 +347,7 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Upstream:** The links in [`navigation-menu-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/navigation-menu-example.tsx#L24-L53) point at shadcn/ui's `/docs/primitives/*` routes, and the Typography link at [line 82](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/navigation-menu-example.tsx#L82) points at `/docs/primitives/typography`.
 
-**Sveltery UI:** The [Navigation Menu](/docs/components/navigation-menu) example links to the matching `/docs/components/*` pages. Typography links to `#`, because these docs have no Typography page. The `/docs` and `/docs/installation` links keep upstream's values.
+**Sveltery UI:** The [Navigation Menu](/docs/components/navigation-menu) example links to the matching `/docs/components/*` pages, Typography included. The `/docs` and `/docs/installation` links keep upstream's values.
 
 **Why:** Upstream's `/docs/primitives/*` paths do not exist on this site, so the links would return 404.
 
@@ -354,6 +374,36 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Why:** Upstream's guides are written for React. SvelteKit keeps form state in remote forms and form actions, so Sveltery UI's guides show those. `Field` is a plain `div` that holds no form state, like upstream's [`field.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/field.tsx#L64-L72), so the same parts work with each of them.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
+
+### Native Radio Group is a Sveltery UI component
+
+**Upstream:** shadcn/ui has a [Native Select](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/native-select.tsx) but no native radio. Its only radio is the [Radio Group](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/radio-group.tsx) on Base UI.
+
+**Sveltery UI:** [Native Radio Group](/docs/components/native-radio-group) adds `NativeRadioGroup` and `NativeRadio`, a styled `<input type="radio">`. Each style's `cn-native-radio-group` and `cn-native-radio` rules are derived from its `cn-radio-group`, `cn-radio-group-item` and `cn-radio-group-indicator-icon` rules in `apps/docs/registry/sync-styles.ts`. `data-checked` becomes `:checked`, and the indicator becomes a radial-gradient dot of the same color and size.
+
+**Why:** Base UI's radio is a `<span>` with a hidden input. Without JavaScript, only a click on its label picks it, and the keyboard does nothing. A SvelteKit remote form's `as('radio', value)` describes a native input, so it spreads onto `NativeRadio` with no changes, and the form works before the page hydrates.
+
+**Decided:** Hugo Hsi, 2026-10-17
+
+### Native Checkbox, Native Switch and Native Slider are Sveltery UI components
+
+**Upstream:** shadcn/ui has a [Native Select](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/native-select.tsx) but no native checkbox, switch or slider. Its [Checkbox](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/checkbox.tsx), [Switch](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/switch.tsx) and [Slider](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/slider.tsx) run on Base UI.
+
+**Sveltery UI:** [Native Checkbox](/docs/components/native-checkbox), [Native Switch](/docs/components/native-switch) and [Native Slider](/docs/components/native-slider) are styled `<input type="checkbox">`, `<input type="checkbox" role="switch">` and `<input type="range">`. Each style's `cn-native-checkbox`, `cn-native-switch`, `cn-native-switch-thumb` and `cn-native-slider` rules are derived from its Checkbox, Switch and Slider rules in `apps/docs/registry/sync-styles.ts`: `data-checked` becomes `:checked`, the switch thumb follows the input through `peer-checked`, and the slider's track and thumb rules move onto the range pseudo-elements. Each wrapper carries its Base twin's `data-slot`, so Label and Field rules that key on it apply to both. In browsers other than Firefox, the slider's track is not filled left of the thumb.
+
+**Why:** Base UI's controls are a `<span>` with a hidden input, so without JavaScript the keyboard does nothing, and a SvelteKit remote form's `as('checkbox')` or `as('range')` spread describes a native input they don't render. The native twins take the spread with no changes and work before the page hydrates. Only Firefox styles the filled part of a range track (`::-moz-range-progress`); elsewhere it would take JavaScript, which these components avoid.
+
+**Decided:** Hugo Hsi, 2026-10-17
+
+### Native Select styles `multiple`
+
+**Upstream:** [Native Select](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/native-select.tsx) has one height and always draws its chevron, so a `multiple` select is clipped to one row with a chevron over its list.
+
+**Sveltery UI:** With `multiple`, the select takes its list box height, the chevron hides, and the options take the theme's colors, with `bg-muted` for a picked option.
+
+**Why:** A remote form's `as('select multiple')` spreads onto Native Select, and the select must show its options for that to work.
+
+**Decided:** Hugo Hsi, 2026-10-17
 
 ## Toast
 

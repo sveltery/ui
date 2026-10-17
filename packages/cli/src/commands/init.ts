@@ -8,7 +8,7 @@ import { planItems, type Project } from '../items.js';
 import { CliError } from '../parse.js';
 import { executePlan, formatPlan, missingPackages, packageName, planFile, type Plan } from '../plan.js';
 import { PRESET_MENU_ACCENTS, PRESET_MENU_COLORS, type PresetMenuAccent, type PresetMenuColor } from '../preset/index.js';
-import { aliasPath, checkProject, findCssFile, libAlias, readJson } from '../project.js';
+import { aliasPath, checkProject, findCssFile, libAlias, readJson, withLibIndexFallback } from '../project.js';
 import {
   baseColors,
   fetchItem,
@@ -170,8 +170,14 @@ export async function init(options: InitOptions): Promise<Plan> {
   const css = mergeTheme(readFileSync(join(cwd, cssPath), 'utf8'), settings.cssVars, settings.cssTrees);
   const project: Project = { cwd, config, registry, uiDir: aliasPath(config.aliases.ui) };
   const itemsPlan = planItems(project, settings.items, css);
+  const manifest = withLibIndexFallback(cwd);
   const plan: Plan = {
-    files: [planFile(cwd, CONFIG_FILE, `${JSON.stringify(written, null, 2)}\n`), planFile(cwd, cssPath, css), ...itemsPlan.files],
+    files: [
+      planFile(cwd, CONFIG_FILE, `${JSON.stringify(written, null, 2)}\n`),
+      planFile(cwd, cssPath, css),
+      ...(manifest === undefined ? [] : [planFile(cwd, 'package.json', manifest)]),
+      ...itemsPlan.files,
+    ],
     dependencies: missingPackages(cwd, [...settings.dependencies.filter((spec) => packageName(spec) !== cliPackage), ...itemsPlan.dependencies]),
     devDependencies: missingPackages(cwd, [`${cliPackage}@^${version}`]),
   };
