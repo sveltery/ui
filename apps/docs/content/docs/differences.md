@@ -548,10 +548,10 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 ### `apply` changes only the project it runs in
 
-**Upstream:** After it applies the preset, [`apply.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/apply.ts#L438) copies the style, base color, icon library and menu settings into the `components.json` of each linked workspace.
+**Upstream:** After it applies the preset, [`apply.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/apply.ts#L438) copies the style, base color, icon library and menu settings into the `components.json` of each linked workspace. Run at a monorepo root without a `components.json`, [`preflight-apply.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/preflights/preflight-apply.ts#L30) lists the workspace packages to run it in.
 
-**Sveltery UI:** [`apply`](/docs/cli#apply) changes only the project at `--cwd`. In a [monorepo](/docs/monorepo), run it in each package that has a `components.json`.
+**Sveltery UI:** [`apply`](/docs/cli#apply) changes only the project at `--cwd`. In a [monorepo](/docs/monorepo), run it in each package that has a `components.json`. At a monorepo root, it says that the directory has no `components.json`.
 
-**Why:** This CLI does not resolve workspaces yet, so it has no list of linked projects to update.
+**Why:** This CLI does not resolve workspaces yet, so it has no list of linked projects to update or suggest.
 
 **Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
