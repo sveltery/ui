@@ -87,6 +87,12 @@ An argument that is a URL is fetched as is. Use it to add an item from [your own
 npx @sveltery/ui@latest add https://example.com/r/hello-card.json
 ```
 
+An argument such as `@acme/hello-card` installs `hello-card` from the registry that the `registries` key in `components.json` maps to `@acme`. See [Namespaces](/docs/registry/namespace).
+
+```bash
+npx @sveltery/ui@latest add @acme/hello-card
+```
+
 **Options**
 
 ```txt
@@ -95,7 +101,7 @@ Usage: sveltery add [options] [items...]
 add components to the project
 
 Arguments:
-  items            item names, or URLs of registry items
+  items            item names, @namespace/item names, or URLs of registry items
 
 Options:
   -y, --yes        do not ask to continue; changed files are skipped unless
@@ -210,6 +216,8 @@ Options:
 ```
 
 `-y` discards your edits to the changed files.
+
+`diff` and `update` also take `@namespace/item` names.
 
 ---
 
@@ -451,4 +459,4 @@ SVELTERY_REGISTRY_URL=https://preview.example.com/r npx @sveltery/ui@latest add 
 
 ## Not supported
 
-The shadcn CLI has commands and options that this CLI does not have yet: `apply`, `preset`, `info` and `eject`, the `cn`, `icons`, `base-color` and `radix` migrations, namespaced registries, local file paths as items and JavaScript output. See [Registry](/docs/registry) and [JavaScript](/docs/javascript) for what works today.
+The shadcn CLI has commands and options that this CLI does not have yet: `apply`, `preset`, `info`, `eject` and `registry add`, the `cn`, `icons`, `base-color` and `radix` migrations, local file paths as items and JavaScript output. See [Registry](/docs/registry) and [JavaScript](/docs/javascript) for what works today.
