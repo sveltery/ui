@@ -156,7 +156,7 @@ export const EXTRACTED_VALUES = {
   'src/cartesian/YAxis.tsx': ['yAxisDefaultProps'],
   'src/component/DefaultLegendContent.tsx': ['defaultLegendContentDefaultProps', 'getStrokeDasharray', 'SIZE', 'InternalProps'],
   'src/component/DefaultTooltipContent.tsx': ['defaultFormatter', 'defaultDefaultTooltipContentProps', 'lodashLikeSortBy'],
-  'src/component/ActivePoints.tsx': [],
+  'src/component/ActivePoints.tsx': ['ActivePointsProps'],
   'src/component/Dots.tsx': ['shouldRenderDots', 'DotsProps'],
   'src/component/Label.tsx': ['defaultLabelProps', 'getLabel', 'isLabelContentAFunction', 'getDeltaAngle', 'getAttrsOfPolarLabel', 'isPolar', 'polarViewBoxToTrapezoid'],
   'src/component/LabelList.tsx': ['defaultAccessor'],

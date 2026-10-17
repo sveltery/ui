@@ -6,7 +6,7 @@ export interface PointType {
   readonly value?: any;
   readonly payload?: any;
 }
-interface ActivePointsProps extends ZIndexable {
+export interface ActivePointsProps extends ZIndexable {
   points: ReadonlyArray<PointType>;
   /**
    * Different graphical elements have different opinion on what is their main color.
