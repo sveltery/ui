@@ -6,6 +6,7 @@ import { add } from './commands/add.js';
 import { diff } from './commands/diff.js';
 import { init } from './commands/init.js';
 import { list } from './commands/list.js';
+import { migrateRtl, migrations } from './commands/migrate.js';
 import { update } from './commands/update.js';
 import { view } from './commands/view.js';
 import { CliError } from './parse.js';
@@ -22,6 +23,8 @@ program
   .option('--icons <library>', 'the icon library')
   .option('--base-color <name>', 'the base color of the theme')
   .option('--css <path>', 'the CSS file that imports Tailwind')
+  .option('--rtl', 'enable RTL support')
+  .option('--no-rtl', 'disable RTL support')
   .option('--cwd <path>', 'the project root', '.')
   .option('--no-install', 'do not install packages')
   .action(async (options) => void (await init({ ...options, cwd: resolve(options.cwd) })));
@@ -60,6 +63,25 @@ program
   .option('--json', 'print the items as JSON', false)
   .option('--cwd <path>', 'the project root', '.')
   .action(async (options) => void (await list({ ...options, cwd: resolve(options.cwd) })));
+
+program
+  .command('migrate')
+  .description('run a migration')
+  .argument('[migration]', 'the migration to run')
+  .argument('[path]', 'a file, directory or glob pattern to migrate; the ui directory when omitted')
+  .option('-l, --list', 'list all migrations', false)
+  .option('-y, --yes', 'skip the confirmation prompt', false)
+  .option('--cwd <path>', 'the project root', '.')
+  .action(async (migration: string | undefined, path: string | undefined, options) => {
+    if (migration !== undefined && !options.list && !migrations.some((m) => m.name === migration)) {
+      throw new CliError(`Unknown migration "${migration}". Run \`npx @sveltery/ui@latest migrate --list\` to see the migrations.`);
+    }
+    if (options.list || migration === undefined) {
+      log.info(`Available migrations:\n${migrations.map((m) => `- ${m.name}: ${m.description}`).join('\n')}`);
+      return;
+    }
+    await migrateRtl({ cwd: resolve(options.cwd), yes: options.yes, path });
+  });
 
 program
   .command('view')
