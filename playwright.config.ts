@@ -19,8 +19,8 @@ export default defineConfig({
       cwd: './tests/app', url: 'http://127.0.0.1:5173', reuseExistingServer: false,
     },
     {
-      // Its first page takes 50 to 60s to compile on a CI runner, too close to Playwright's 60s default.
-      command: 'node ../../node_modules/vite/bin/vite.js --host 127.0.0.1 --port 5175 --strictPort',
+      // DOCS_PREVIEW serves an existing docs build. The dev server's first page takes 50 to 60s to compile on a CI runner, too close to Playwright's 60s default.
+      command: `node ../../node_modules/vite/bin/vite.js ${process.env.DOCS_PREVIEW ? 'preview ' : ''}--host 127.0.0.1 --port 5175 --strictPort`,
       cwd: './apps/docs', url: 'http://127.0.0.1:5175', reuseExistingServer: false, timeout: 180_000,
     },
   ],
