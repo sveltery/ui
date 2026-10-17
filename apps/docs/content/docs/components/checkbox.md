@@ -96,6 +96,10 @@ Set `disabled` to prevent interaction.
 <Checkbox id="toggle" disabled />
 ```
 
+## Without JavaScript
+
+`Checkbox` needs JavaScript for the keyboard and for a remote form's `as()` spread. For a form that must work before the page hydrates, use [Native Checkbox](/docs/components/native-checkbox), a styled native input that looks the same.
+
 ## API reference
 
 `Checkbox` is styled on top of the Sveltery Base `Checkbox` primitive, which owns its behavior, form submission and accessibility. See the [Base UI Checkbox documentation](https://base-ui.com/react/components/checkbox) for the behavior it ports.

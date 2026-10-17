@@ -365,6 +365,26 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Hugo Hsi, 2026-10-17
 
+### Native Checkbox, Native Switch and Native Slider are Sveltery UI components
+
+**Upstream:** shadcn/ui has a [Native Select](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/native-select.tsx) but no native checkbox, switch or slider. Its [Checkbox](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/checkbox.tsx), [Switch](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/switch.tsx) and [Slider](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/slider.tsx) run on Base UI.
+
+**Sveltery UI:** [Native Checkbox](/docs/components/native-checkbox), [Native Switch](/docs/components/native-switch) and [Native Slider](/docs/components/native-slider) are styled `<input type="checkbox">`, `<input type="checkbox" role="switch">` and `<input type="range">`. Each style's `cn-native-checkbox`, `cn-native-switch`, `cn-native-switch-thumb` and `cn-native-slider` rules are derived from its Checkbox, Switch and Slider rules in `apps/docs/registry/sync-styles.ts`: `data-checked` becomes `:checked`, the switch thumb follows the input through `peer-checked`, and the slider's track and thumb rules move onto the range pseudo-elements. Each wrapper carries its Base twin's `data-slot`, so Label and Field rules that key on it apply to both. In browsers other than Firefox, the slider's track is not filled left of the thumb.
+
+**Why:** Base UI's controls are a `<span>` with a hidden input, so without JavaScript the keyboard does nothing, and a SvelteKit remote form's `as('checkbox')` or `as('range')` spread describes a native input they don't render. The native twins take the spread with no changes and work before the page hydrates. Only Firefox styles the filled part of a range track (`::-moz-range-progress`); elsewhere it would take JavaScript, which these components avoid.
+
+**Decided:** Hugo Hsi, 2026-10-17
+
+### Native Select styles `multiple`
+
+**Upstream:** [Native Select](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/native-select.tsx) has one height and always draws its chevron, so a `multiple` select is clipped to one row with a chevron over its list.
+
+**Sveltery UI:** With `multiple`, the select takes its list box height, the chevron hides, and the options take the theme's colors, with `bg-muted` for a picked option.
+
+**Why:** A remote form's `as('select multiple')` spreads onto Native Select, and the select must show its options for that to work.
+
+**Decided:** Hugo Hsi, 2026-10-17
+
 ## Toast
 
 ### Toasts use Toast, not Sonner
