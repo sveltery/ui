@@ -2,6 +2,7 @@
 // Checks the built docs site in apps/docs/.svelte-kit/cloudflare for what a static file can't do that its route could.
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
+import { gunzipSync } from 'node:zlib';
 
 const site = 'apps/docs/.svelte-kit/cloudflare';
 const files = readdirSync(site, { recursive: true }).map((file) => `/${file}`);
@@ -26,4 +27,11 @@ for (const file of markdown) assert.equal(header(file, 'content-type'), 'text/ma
 for (const file of files.filter((file) => file.endsWith('.html'))) {
   assert(!readFileSync(`${site}${file}`, 'utf8').includes('action="?/'), `${file}: a form posts back to a prerendered page`);
 }
+// Search reads only the Pagefind index, so every docs page needs a record in it, whether or not it was prerendered.
+const indexed = new Set(readdirSync(`${site}/pagefind/fragment`).map((file) => {
+  const fragment = gunzipSync(readFileSync(`${site}/pagefind/fragment/${file}`)).toString('utf8');
+  return JSON.parse(fragment.slice(fragment.indexOf('{'))).url.replace(/\.html$/u, '');
+}));
+for (const file of markdown.filter((file) => file.startsWith('/docs'))) assert(indexed.has(file.replace(/\.md$/u, '')), `${file}: page missing from the search index`);
+
 console.log(`Docs site: PASS (${markdown.length} markdown files, ${files.filter((file) => file.endsWith('.html')).length} pages)`);
