@@ -343,16 +343,6 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
 
-### The Questionnaire validation example checks the answers without Zod
-
-**Upstream:** [`questionnaire-validation.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/questionnaire-validation.tsx) parses the form data with a Zod schema and maps its issues to item errors.
-
-**Sveltery UI:** The [Questionnaire](/docs/components/questionnaire#custom-validation) example runs a plain function that returns the same error for the same answers.
-
-**Why:** The docs site has no Zod dependency, and the example is about moving to an invalid item and showing its error, not about a schema library.
-
-**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
-
 ### Navigation Menu example links go to Sveltery UI pages
 
 **Upstream:** The links in [`navigation-menu-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/navigation-menu-example.tsx#L24-L53) point at shadcn/ui's `/docs/primitives/*` routes, and the Typography link at [line 82](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/navigation-menu-example.tsx#L82) points at `/docs/primitives/typography`.

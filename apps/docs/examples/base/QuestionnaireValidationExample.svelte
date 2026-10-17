@@ -15,36 +15,61 @@
     QuestionnaireTitle,
   } from '$registry/bases/base/ui/questionnaire';
   import { toast } from '$registry/bases/base/ui/toast';
+  import { z } from 'zod';
 
   const items = [
     { name: 'detail', required: true },
     { name: 'audience', required: true },
   ];
 
-  type ItemName = 'detail' | 'audience';
-  type Errors = Partial<Record<ItemName, string>>;
+  const questionnaireSchema = z
+    .object({
+      detail: z.enum(['summary', 'complete']),
+      audience: z.enum(['team', 'public']),
+    })
+    .superRefine((answers, context) => {
+      if (answers.audience === 'public' && answers.detail === 'summary') {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Public answers need enough context. Choose a complete answer.',
+          path: ['detail'],
+        });
+      }
+    });
 
-  // A cross-field rule the questionnaire cannot know: public answers must be complete.
-  function validate(answers: { detail: string; audience: string }): Errors {
-    if (answers.audience === 'public' && answers.detail === 'summary') {
-      return { detail: 'Public answers need enough context. Choose a complete answer.' };
-    }
-    return {};
-  }
+  type QuestionnaireItemName = keyof z.infer<typeof questionnaireSchema>;
+  type QuestionnaireErrors = Partial<Record<QuestionnaireItemName, string>>;
 
   let item = $state('detail');
-  let errors = $state<Errors>({});
+  let errors = $state<QuestionnaireErrors>({});
 
   function handleSubmit(event: SubmitEvent & { currentTarget: HTMLFormElement }) {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const answers = { detail: String(formData.get('detail')), audience: String(formData.get('audience')) };
-    errors = validate(answers);
-    const firstInvalid = (['detail', 'audience'] as const).find((name) => errors[name]);
-    if (firstInvalid) {
-      item = firstInvalid;
-    } else {
-      toast.add({ title: 'Agent response configured', description: `Detail: ${answers.detail} · Audience: ${answers.audience}` });
+
+    const result = questionnaireSchema.safeParse(Object.fromEntries(new FormData(event.currentTarget)));
+
+    if (result.success) {
+      errors = {};
+      toast.add({ title: 'Agent response configured', description: `Detail: ${result.data.detail} · Audience: ${result.data.audience}` });
+      return;
+    }
+
+    const nextErrors: QuestionnaireErrors = {};
+
+    for (const issue of result.error.issues) {
+      const name = issue.path[0];
+
+      if ((name === 'detail' || name === 'audience') && !nextErrors[name]) {
+        nextErrors[name] = issue.message;
+      }
+    }
+
+    const firstInvalidItem = result.error.issues[0]?.path[0];
+
+    errors = nextErrors;
+
+    if (firstInvalidItem === 'detail' || firstInvalidItem === 'audience') {
+      item = firstInvalidItem;
     }
   }
 </script>
