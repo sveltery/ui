@@ -33,6 +33,8 @@ export type { XAxisOrientation, XAxisPadding, NiceTicksAlgorithm, YAxisOrientati
 export type { YAxisProps } from './cartesian/YAxis.svelte';
 export type { PieProps } from './polar/Pie.svelte';
 export type { PieLabelRenderProps, PieSectorDataItem, PieSectorShapeProps } from './polar/Pie.js';
+export type { RadarProps } from './polar/Radar.svelte';
+export type { RadarPoint } from './polar/Radar.js';
 export type { PolarGridProps } from './polar/PolarGrid.svelte';
 export type { PolarAngleAxisProps } from './polar/PolarAngleAxis.svelte';
 export type { PolarRadiusAxisProps } from './polar/PolarRadiusAxis.svelte';
@@ -76,6 +78,7 @@ export { default as Bar } from './cartesian/Bar.svelte';
 export { default as XAxis } from './cartesian/XAxis.svelte';
 export { default as YAxis } from './cartesian/YAxis.svelte';
 export { default as Pie } from './polar/Pie.svelte';
+export { default as Radar } from './polar/Radar.svelte';
 export { default as PolarGrid } from './polar/PolarGrid.svelte';
 export { default as PolarAngleAxis } from './polar/PolarAngleAxis.svelte';
 export { default as PolarRadiusAxis } from './polar/PolarRadiusAxis.svelte';
