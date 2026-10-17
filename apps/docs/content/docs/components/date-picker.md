@@ -7,7 +7,23 @@ description: A date picker component with range and presets.
 
 ## Installation
 
+<InstallTabs>
+
+<InstallTab value="cli">
+
+```bash
+npx @sveltery/ui@latest add popover calendar
+```
+
+</InstallTab>
+
+<InstallTab value="manual">
+
 The Date Picker is built from the [Popover](/docs/components/popover#installation) and [Calendar](/docs/components/calendar#installation) components. Install both.
+
+</InstallTab>
+
+</InstallTabs>
 
 ## Usage
 

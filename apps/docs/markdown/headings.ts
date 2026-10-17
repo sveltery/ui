@@ -28,14 +28,19 @@ const anchor = (id: string, children: MdNode[]): MdNode => ({
 /**
  * Gives h2 to h6 an id and a self link, and exposes h2 to h4 as `metadata.toc`. A heading inside
  * `<Steps>` is a step title, like upstream's `<Step>`, so it gets neither an id nor a toc entry.
+ * A heading inside an `<InstallTab>` gets no toc entry either, because the inactive tab is hidden.
  */
 export function headings() {
   return (tree: MdNode, file: { data: { fm?: Record<string, unknown> } }) => {
     const toc: TocItem[] = [];
     const seen = new Map<string, number>();
     let inSteps = false;
+    let inTab = false;
     for (const node of tree.children ?? []) {
-      if (node.type === 'html') inSteps = /^<Steps\b/.test(node.value ?? '') || (inSteps && !/^<\/Steps>/.test(node.value ?? ''));
+      if (node.type === 'html') {
+        inSteps = /^<Steps\b/.test(node.value ?? '') || (inSteps && !/^<\/Steps>/.test(node.value ?? ''));
+        inTab = /^<InstallTab\b/.test(node.value ?? '') || (inTab && !/^<\/InstallTab>/.test(node.value ?? ''));
+      }
       if (node.type !== 'heading' || !node.depth || node.depth < 2 || inSteps) continue;
       const title = text(node);
       const base = slugify(title);
@@ -45,7 +50,7 @@ export function headings() {
       node.data = { ...node.data, hProperties: { id } };
       // A link cannot contain a link, so a heading that already has one keeps its id without the self link.
       if (!hasLink(node)) node.children = [anchor(id, node.children ?? [])];
-      if (node.depth <= 4) toc.push({ title, url: `#${id}`, depth: node.depth });
+      if (node.depth <= 4 && !inTab) toc.push({ title, url: `#${id}`, depth: node.depth });
     }
     file.data.fm = { ...file.data.fm, toc };
   };

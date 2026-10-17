@@ -7,6 +7,18 @@ description: Use the Empty component to display an empty state.
 
 ## Installation
 
+<InstallTabs>
+
+<InstallTab value="cli">
+
+```bash
+npx @sveltery/ui@latest add empty
+```
+
+</InstallTab>
+
+<InstallTab value="manual">
+
 <Steps>
 
 ### Install the dependencies
@@ -23,9 +35,13 @@ Copy the following files into `src/lib/components/ui/empty`.
 
 ### Update the import paths
 
-Change the imports to match your project setup.
+The component folders import each other with relative paths, so keep them side by side. If you place them elsewhere, change the imports to match your project setup.
 
 </Steps>
+
+</InstallTab>
+
+</InstallTabs>
 
 ## Usage
 
