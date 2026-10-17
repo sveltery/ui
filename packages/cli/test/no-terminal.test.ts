@@ -11,7 +11,7 @@ const bin = join(cliDir, 'dist/index.js');
 
 const item = (name: string, rest: object) => ({ $schema: 'https://example.test/schema/registry-item.json', name, type: 'registry:ui', ...rest });
 const registryFiles: Record<string, unknown> = {
-  'index.json': { $schema: 'https://example.test/schema/registry.json', name: 'sveltery', registryVersion: 1, styles: ['nova'], baseColors: ['neutral'], iconLibraries: ['lucide'], items: [{ name: 'button', type: 'registry:ui' }] },
+  'index.json': { $schema: 'https://example.test/schema/registry.json', name: 'sveltery', registryVersion: 1, styles: ['nova'], baseColors: ['neutral'], iconLibraries: ['lucide'], items: [{ name: 'button', type: 'registry:ui' }], blocks: [] },
   'styles/nova/button.json': item('button', { files: [{ type: 'registry:ui', target: 'button/Button.svelte', content: '<button></button>\n' }] }),
   'themes/neutral.json': item('neutral', { type: 'registry:theme', files: [], cssVars: { light: { background: 'oklch(1 0 0)' } } }),
 };

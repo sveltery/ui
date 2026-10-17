@@ -11,14 +11,13 @@
     QuestionnaireSubmit,
     QuestionnaireTitle,
   } from '$registry/bases/base/ui/questionnaire';
+  import { toast } from '$registry/bases/base/ui/toast';
 
   const items = [{ choices: [{ value: 'incremental' }, { value: 'module' }, { value: 'rewrite' }], name: 'approach', required: true }];
 
-  let result = $state('');
-
   function handleSubmit(event: SubmitEvent & { currentTarget: HTMLFormElement }) {
     event.preventDefault();
-    result = `Approach: ${new FormData(event.currentTarget).get('approach') ?? 'None'}`;
+    toast.add({ title: 'Approach selected', description: `Approach: ${new FormData(event.currentTarget).get('approach') ?? 'None'}` });
   }
 </script>
 
@@ -38,7 +37,4 @@
   <QuestionnaireActions>
     <QuestionnaireSubmit>Use this approach</QuestionnaireSubmit>
   </QuestionnaireActions>
-  {#if result}
-    <p role="status" class="mt-4 text-sm text-muted-foreground">{result}</p>
-  {/if}
 </Questionnaire>

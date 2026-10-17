@@ -1,8 +1,8 @@
 <script lang="ts">
+  import RotateCwIcon from '@lucide/svelte/icons/rotate-cw';
   import { onDestroy } from 'svelte';
   import { Button } from '$registry/bases/base/ui/button';
   import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
   import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerProvider, MessageScrollerViewport } from '$registry/bases/base/ui/message-scroller';
   import { Slider } from '$registry/bases/base/ui/slider';
   import { Chat } from './message-scroller/chat.svelte.js';
@@ -37,7 +37,7 @@
                 demoKey++;
               }}
             >
-              <IconPlaceholder lucide="RotateCwIcon" tabler="IconRotateClockwise" hugeicons="RotateClockwiseIcon" phosphor="ArrowClockwiseIcon" remixicon="RiRestartLine" />
+              <RotateCwIcon />
             </Button>
           </CardAction>
         </CardHeader>

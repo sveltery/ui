@@ -3,7 +3,7 @@ title: Scroll Area
 description: Augments native scroll functionality for custom, cross-browser styling.
 ---
 
-<ComponentPreview name="base/ScrollAreaExample" />
+<ComponentPreview name="base/ScrollAreaDemoExample" />
 
 ## Installation
 
@@ -52,12 +52,36 @@ The component folders import each other with relative paths, so keep them side b
 ```
 
 ```svelte
-<ScrollArea class="h-72 w-48 rounded-md border">
-  <div class="p-4">Long content</div>
-  <ScrollBar orientation="horizontal" />
+<ScrollArea class="h-[200px] w-[350px] rounded-md border p-4">
+  Your scrollable content here.
 </ScrollArea>
 ```
 
-## API reference
+## Composition
 
-`ScrollArea` is styled on top of the Sveltery Base `ScrollArea` primitive, which owns the scroll position, thumb sizing and overflow detection. `ScrollArea` renders the viewport, a vertical `ScrollBar` and the corner. Add a `ScrollBar` with `orientation="horizontal"` inside it for horizontal scrolling. See the [Base UI Scroll Area documentation](https://base-ui.com/react/components/scroll-area) for the behavior it ports.
+Use the following composition to build a `ScrollArea`:
+
+```text
+ScrollArea
+└── ScrollBar
+```
+
+`ScrollArea` renders the viewport, a vertical `ScrollBar` and the corner. Add a `ScrollBar` with `orientation="horizontal"` inside it for horizontal scrolling.
+
+## Horizontal
+
+Use `ScrollBar` with `orientation="horizontal"` for horizontal scrolling.
+
+<ComponentPreview name="base/ScrollAreaHorizontalDemoExample" />
+
+## RTL
+
+Wrap the scroll area in a [DirectionProvider](/docs/components/direction) and set `dir` on `ScrollArea`. Use the buttons to switch the language.
+
+<ComponentPreview name="base/ScrollAreaRtlExample" align="start" />
+
+## API Reference
+
+See the [Base UI Scroll Area](https://base-ui.com/react/components/scroll-area#api-reference) documentation.
+
+`ScrollArea` is styled on top of the Sveltery Base `ScrollArea` primitive, which owns the scroll position, thumb sizing and overflow detection.

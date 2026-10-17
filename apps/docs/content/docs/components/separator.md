@@ -3,7 +3,7 @@ title: Separator
 description: Visually or semantically separates content.
 ---
 
-<ComponentPreview name="base/SeparatorExample" />
+<ComponentPreview name="base/SeparatorDemoExample" />
 
 ## Installation
 
@@ -55,6 +55,32 @@ The component folders import each other with relative paths, so keep them side b
 <Separator />
 ```
 
-## API reference
+## Vertical
 
-`Separator` is styled on top of the Sveltery Base `Separator` primitive, which owns its behavior, focus handling and accessibility. See the [Base UI Separator documentation](https://base-ui.com/react/components/separator) for the behavior it ports.
+Use `orientation="vertical"` for a vertical separator.
+
+<ComponentPreview name="base/SeparatorVerticalExample" />
+
+## Menu
+
+Vertical separators between menu items with descriptions.
+
+<ComponentPreview name="base/SeparatorMenuExample" />
+
+## List
+
+Horizontal separators between list items.
+
+<ComponentPreview name="base/SeparatorListExample" />
+
+## RTL
+
+Set `dir` on the container, as the `Separator` follows the layout direction. Use the buttons to switch the language.
+
+<ComponentPreview name="base/SeparatorRtlExample" align="start" />
+
+## API Reference
+
+See the [Base UI Separator](https://base-ui.com/react/components/separator#api-reference) documentation.
+
+`Separator` is styled on top of the Sveltery Base `Separator` primitive.

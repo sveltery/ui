@@ -3,7 +3,7 @@ title: Radio Group
 description: A set of checkable buttons, known as radio buttons, where no more than one of the buttons can be checked at a time.
 ---
 
-<ComponentPreview name="base/RadioGroupExample" />
+<ComponentPreview name="base/RadioGroupDemoExample" />
 
 ## Installation
 
@@ -53,14 +53,14 @@ The component folders import each other with relative paths, so keep them side b
 ```
 
 ```svelte
-<RadioGroup name="density" defaultValue="comfortable">
-  <div class="flex items-center gap-2">
-    <RadioGroupItem value="default" id="r1" />
-    <Label for="r1">Default</Label>
+<RadioGroup defaultValue="option-one">
+  <div class="flex items-center gap-3">
+    <RadioGroupItem value="option-one" id="option-one" />
+    <Label for="option-one">Option One</Label>
   </div>
-  <div class="flex items-center gap-2">
-    <RadioGroupItem value="comfortable" id="r2" />
-    <Label for="r2">Comfortable</Label>
+  <div class="flex items-center gap-3">
+    <RadioGroupItem value="option-two" id="option-two" />
+    <Label for="option-two">Option Two</Label>
   </div>
 </RadioGroup>
 ```
@@ -79,6 +79,54 @@ Bind `value` to read or change the selection.
 
 `RadioGroup` needs JavaScript for the keyboard and for a remote form's `as()` spread. For a form that must work before the page hydrates, use [Native Radio Group](/docs/components/native-radio-group), a styled native input that looks the same.
 
-## API reference
+## Composition
 
-`RadioGroup` is styled on top of the Sveltery Base `RadioGroup` and `Radio` primitives, which own the selection, arrow-key navigation and the hidden inputs that take part in form submission. `RadioGroup` keeps the HTML form semantics: `name` submits the checked value, `defaultValue` sets the initial selection, and `bind:value` shares it with the parent. See the [Base UI Radio Group documentation](https://base-ui.com/react/components/radio-group) and the [Radio documentation](https://base-ui.com/react/components/radio) for the behavior they port.
+Use the following composition to build a `RadioGroup`:
+
+```text
+RadioGroup
+├── RadioGroupItem
+└── RadioGroupItem
+```
+
+## Description
+
+Radio group items with a description using the `Field` component.
+
+<ComponentPreview name="base/RadioGroupDescriptionExample" />
+
+## Choice Card
+
+Use `FieldLabel` to wrap the entire `Field` for a clickable card-style selection.
+
+<ComponentPreview name="base/RadioGroupChoiceCardExample" />
+
+## Fieldset
+
+Use `FieldSet` and `FieldLegend` to group radio items with a label and description.
+
+<ComponentPreview name="base/RadioGroupFieldsetExample" />
+
+## Disabled
+
+Use the `disabled` prop on `RadioGroup` to disable all items.
+
+<ComponentPreview name="base/RadioGroupDisabledExample" />
+
+## Invalid
+
+Use `aria-invalid` on `RadioGroupItem` and `data-invalid` on `Field` to show validation errors.
+
+<ComponentPreview name="base/RadioGroupInvalidExample" />
+
+## RTL
+
+Wrap the radio group in a [DirectionProvider](/docs/components/direction) and set `dir` on `RadioGroup`, `RadioGroupItem`, `FieldLabel` and `FieldDescription`. Use the buttons to switch the language.
+
+<ComponentPreview name="base/RadioGroupRtlExample" align="start" />
+
+## API Reference
+
+See the [Base UI Radio Group](https://base-ui.com/react/components/radio-group#api-reference) documentation.
+
+`RadioGroup` is styled on top of the Sveltery Base `RadioGroup` and `Radio` primitives, which own the selection, arrow-key navigation and the hidden inputs that take part in form submission. `RadioGroup` keeps the HTML form semantics: `name` submits the checked value, `defaultValue` sets the initial selection, and `bind:value` shares it with the parent.

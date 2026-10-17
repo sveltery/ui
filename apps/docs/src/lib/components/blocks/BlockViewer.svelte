@@ -29,6 +29,13 @@
 
   const treeItemClass = 'rounded-none pl-(--index) whitespace-nowrap hover:bg-muted-foreground/15 focus:bg-muted-foreground/15 focus-visible:bg-muted-foreground/15 active:bg-muted-foreground/15 data-[active=true]:bg-muted-foreground/15';
 
+  let copied = $state(false);
+  async function copyAddCommand() {
+    await navigator.clipboard.writeText(`npx @sveltery/ui@latest add ${block.name}`);
+    copied = true;
+    setTimeout(() => (copied = false), 2000);
+  }
+
   function resize(value: string[]) {
     view = 'preview';
     if (value[0]) panel?.resize(value[0]);
@@ -65,6 +72,14 @@
 
 {#snippet rotate(className = '')}
   <svg viewBox="0 0 24 24" class={className} fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" /><path d="M21 3v5h-5" /></svg>
+{/snippet}
+
+{#snippet terminal(className = '')}
+  <svg viewBox="0 0 24 24" class={className} fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19h8" /><path d="m4 17 6-6-6-6" /></svg>
+{/snippet}
+
+{#snippet check(className = '')}
+  <svg viewBox="0 0 24 24" class={className} fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
 {/snippet}
 
 {#snippet newTab(props: HTMLAttributes<HTMLElement>, _state: unknown, children?: Snippet)}
@@ -142,6 +157,11 @@
           </Button>
         </ToggleGroup>
       </div>
+      <Separator orientation="vertical" class="mx-1 h-4!" />
+      <Button variant="outline" class="w-fit gap-1 px-2 shadow-none" size="sm" onclick={copyAddCommand}>
+        {#if copied}{@render check()}{:else}{@render terminal()}{/if}
+        <span>npx @sveltery/ui add {block.name}</span>
+      </Button>
     </div>
   </div>
   <div class="flex h-(--height) group-data-[view=code]/block-view-wrapper:hidden">
