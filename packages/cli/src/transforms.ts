@@ -1,6 +1,7 @@
 import { twMerge } from 'cn';
 import MagicString from 'magic-string';
 import { parse, type AST } from 'svelte/compiler';
+import { parseSource, walk, type Node } from './ast.js';
 import { iconLibraries } from './icons.js';
 import { CliError } from './parse.js';
 import type { PresetMenuColor } from './preset/preset.js';
@@ -21,15 +22,6 @@ export type TransformContext = {
 export type TransformResult = { content: string; dependencies?: string[] };
 export type Transform = (file: SourceFile, ctx: TransformContext) => TransformResult;
 
-type Node = { type: string; start: number; end: number; [key: string]: unknown };
-
-function* walk(value: unknown, seen = new WeakSet<object>()): Generator<Node> {
-  if (typeof value !== 'object' || value === null || seen.has(value)) return;
-  seen.add(value);
-  if (typeof (value as Node).type === 'string' && typeof (value as Node).start === 'number') yield value as Node;
-  for (const child of Object.values(value)) yield* walk(child, seen);
-}
-
 const PLACEHOLDER = 'IconPlaceholder';
 
 /** Replaces `<IconPlaceholder lucide="CheckIcon" ...>` and its import with the configured library's component. */
@@ -41,7 +33,7 @@ export const transformIcons: Transform = (file, ctx) => {
   const icons: string[] = [];
   let importDeclaration: Node | undefined;
 
-  for (const node of walk(ast)) {
+  for (const [node] of walk(ast)) {
     if (node.type === 'ImportDeclaration' && (node.specifiers as { local: { name: string } }[]).some((spec) => spec.local.name === PLACEHOLDER)) {
       importDeclaration = node;
     }
@@ -102,16 +94,12 @@ function replaceMarkers(text: string, ctx: TransformContext): string | undefined
   return `${/^\s/.test(text) ? ' ' : ''}${kept.join(' ')}${/\s$/.test(text) ? ' ' : ''}`;
 }
 
-const SCRIPT_OPEN = '<script lang="ts">';
-
 /** Resolves the class markers in string literals, template literal parts and static `class` attribute text. */
 export const transformMarkers: Transform = (file, ctx) => {
   const isSvelte = file.target.endsWith('.svelte');
   if (!isSvelte && !/\.[cm]?[jt]s$/.test(file.target)) return { content: file.content };
   if (![...markers.keys()].some((marker) => file.content.includes(marker))) return { content: file.content };
-  // svelte/compiler parses a plain TypeScript module as the body of a script tag.
-  const offset = isSvelte ? 0 : SCRIPT_OPEN.length;
-  const ast = parse(isSvelte ? file.content : `${SCRIPT_OPEN}${file.content}</script>`, { filename: file.target, modern: true });
+  const { ast, offset } = parseSource(file.target, file.content);
   const s = new MagicString(file.content);
   const edit = (start: number, end: number) => {
     const replacement = replaceMarkers(file.content.slice(start, end), ctx);
@@ -119,7 +107,7 @@ export const transformMarkers: Transform = (file, ctx) => {
     if (replacement === '') s.remove(start, end);
     else s.overwrite(start, end, replacement);
   };
-  for (const node of walk(ast)) {
+  for (const [node] of walk(ast)) {
     const start = node.start - offset;
     const end = node.end - offset;
     if (node.type === 'Literal' && typeof node.value === 'string') edit(start + 1, end - 1);
