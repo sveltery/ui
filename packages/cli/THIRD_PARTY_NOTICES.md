@@ -1,6 +1,6 @@
 # Third-party notices
 
-`tailwind.css` is vendored from the `shadcn` package's `dist/tailwind.css`, and `src/preset/` is ported from shadcn's preset codec, default presets, font definitions and `buildRegistryTheme`, all under the MIT License below.
+`tailwind.css` is vendored from the `shadcn` package's `dist/tailwind.css`, and `src/preset/` is ported from shadcn's preset codec, default presets, font definitions and `buildRegistryTheme`, and `src/rtl.ts` from shadcn's `transform-rtl`, all under the MIT License below.
 
 MIT License
 
