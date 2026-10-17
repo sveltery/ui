@@ -362,6 +362,21 @@ describe('transformDirection', () => {
     expect(rtl(source)).toBe(`<div class={'ml-2'}></div>\n<div class={isOpen ? 'ml-2' : 'mr-2'}></div>\n<div class={cn(cn('ml-2'), 'me-2')}></div>\n<div class={cn(\`pl-2\`, 'pe-2')}></div>`);
   });
 
+  it('maps the cn() call in a quoted class expression', () => {
+    expect(rtl(`<div class="{cn('ml-2', x)}"></div>`)).toBe(`<div class="{cn('ms-2', x)}"></div>`);
+  });
+
+  it('quotes an unquoted static class that gains a class', () => {
+    expect(rtl(`<div class=translate-x-2></div>\n<div class=ml-2></div>`)).toBe(`<div class="translate-x-2 rtl:-translate-x-2"></div>\n<div class=ms-2></div>`);
+  });
+
+  it('maps the class of merged props, as upstream maps mergeProps({ className })', () => {
+    const source = `<script lang="ts">\n  const hostProps = $derived({ 'data-slot': 'x', ...props, class: cn('top-1 right-1', isOpen && 'pl-2', classProp) });\n  const other = $derived({ ...props, class: 'ml-2' });\n  const plain = { size: 'sm', class: 'ml-2' };\n</script>`;
+    expect(rtl(source)).toBe(
+      `<script lang="ts">\n  const hostProps = $derived({ 'data-slot': 'x', ...props, class: cn('top-1 end-1', isOpen && 'ps-2', classProp) });\n  const other = $derived({ ...props, class: 'ms-2' });\n  const plain = { size: 'sm', class: 'ml-2' };\n</script>`,
+    );
+  });
+
   it('leaves a class attribute that mixes text and expressions', () => {
     const source = `<div class="ml-2 {extra}"></div>`;
     expect(rtl(source)).toBe(source);
@@ -389,6 +404,10 @@ describe('transformDirection', () => {
 
   it('escapes the quote a mapped string is written with', () => {
     expect(rtl(`<div class={cn('ml-1 after:content-[\\'x\\']')}></div>`)).toBe(`<div class={cn('ms-1 after:content-[\\'x\\']')}></div>`);
+  });
+
+  it('escapes line breaks in a mapped string', () => {
+    expect(rtl(`<div class={cn('ml-2\\n pl-2')}></div>`)).toBe(`<div class={cn('ms-2\\n ps-2')}></div>`);
   });
 
   it('leaves unchanged strings byte for byte', () => {
@@ -431,6 +450,10 @@ describe('transformDirection', () => {
     const out = rtl(ui('button-group/variants.ts'), 'button-group/variants.ts');
     expect(out).toContain("'cn-button-group-orientation-horizontal *:data-slot:rounded-e-none [&>[data-slot]~[data-slot]]:rounded-s-none [&>[data-slot]~[data-slot]]:border-s-0'");
     expect(out).toContain("'cn-button-group-orientation-vertical flex-col *:data-slot:rounded-b-none [&>[data-slot]~[data-slot]]:rounded-t-none [&>[data-slot]~[data-slot]]:border-t-0'");
+  });
+
+  it('maps the registry Bubble content class', () => {
+    expect(rtl(ui('bubble/BubbleContent.svelte'), 'bubble/BubbleContent.svelte')).toContain('[button]:text-start');
   });
 
   it('opens the registry menus toward the inline end', () => {
