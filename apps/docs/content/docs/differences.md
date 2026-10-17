@@ -132,6 +132,26 @@ Where upstream code misbehaves on Base UI, Sveltery UI fixes it instead of copyi
 
 **Decided:** Hugo Hsi, 2026-10-14
 
+### Arrow keys move focus in the Calendar
+
+**Upstream:** `CalendarDayButton` in [`calendar.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/calendar.tsx#L216-L218) creates a ref and focuses it when the day is focused, but never passes the ref to its `Button`. The Radix variant's [`calendar.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/radix/ui/calendar.tsx#L223) passes `ref={ref}`.
+
+**Sveltery UI:** In the [Calendar](/docs/components/calendar), the arrow keys move keyboard focus to the next day.
+
+**Why:** In upstream, the arrow keys move the focus ring (`data-focused`) but keyboard focus stays where it was. Enter then selects the day that kept focus, not the one with the ring, and screen readers announce no move. The Radix variant shows the intent.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### Calendar month and year dropdowns have a border
+
+**Upstream:** The dropdown root in [`calendar.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/calendar.tsx#L76) uses `cn-calendar-dropdown-root`, which each style defines with a border and focus ring, for example [`style-nova.css`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/styles/style-nova.css#L235-L237). The registry build leaves that class uninlined, in the served [`base-nova/calendar.json`](https://ui.shadcn.com/r/styles/base-nova/calendar.json) too, and the site has no rule for it. The month and year dropdowns on ui.shadcn.com have no border and no focus ring.
+
+**Sveltery UI:** The [Calendar](/docs/components/calendar) dropdowns get the style's border and focus ring.
+
+**Why:** The style files define the class for this element, so the missing border is a build gap, not a design choice. Without it, a focused dropdown shows no focus ring.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ## Command menu
 
 shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/command.tsx) is built on [cmdk](https://github.com/pacocoursey/cmdk) 1.1.1, and Sveltery UI's [Command](/docs/components/command) on its port, `@sveltery/command`. The links below point at cmdk commit [`dd2250e`](https://github.com/pacocoursey/cmdk/tree/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3), which is 1.1.1 with README changes. The port renders the same elements and attributes as cmdk, except where an entry here says otherwise.
@@ -305,6 +325,18 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Sveltery UI:** The [Sidebar](/docs/components/sidebar) examples in the docs use `h-full min-h-0` on the provider and `absolute h-full` on the sidebar.
 
 **Why:** The docs show each example in a preview frame. A sidebar sized to the viewport would overflow it.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-16
+
+## Forms
+
+### The Forms guides cover SvelteKit forms instead of React form libraries
+
+**Upstream:** The [Forms](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/forms/index.mdx) section has a guide for each of [React Hook Form](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/forms/react-hook-form.mdx), [TanStack Form](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/forms/tanstack-form.mdx) and [Formisch](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/forms/formisch.mdx), and lists `useActionState` as coming soon. Each guide keeps the form state in the library and passes it to the `Field` parts.
+
+**Sveltery UI:** The [Forms](/docs/forms) section covers a native `<form>`, [SvelteKit remote forms](/docs/forms/remote-forms) and [SvelteKit form actions](/docs/forms/form-actions). Each page uses the same [Field](/docs/components/field) parts.
+
+**Why:** Upstream's guides are written for React. SvelteKit keeps form state in remote forms and form actions, so Sveltery UI's guides show those. `Field` is a plain `div` that holds no form state, like upstream's [`field.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/field.tsx#L64-L72), so the same parts work with each of them.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
 

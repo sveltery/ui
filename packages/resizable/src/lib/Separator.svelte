@@ -2,43 +2,30 @@
   import { getGroup, SeparatorEntry } from './group-state.svelte.js';
   import type { SeparatorProps } from './types.js';
 
-  let { disabled = false, disableDoubleClick = false, children, style, ...rest }: SeparatorProps = $props();
+  const generatedId = $props.id();
+  let { id = generatedId, disabled = false, disableDoubleClick = false, children, style, ...rest }: SeparatorProps = $props();
 
   const group = getGroup();
-  const separator = new SeparatorEntry(group, () => ({ disabled }));
-  const horizontal = $derived(group.orientation === 'horizontal');
+  const separator = new SeparatorEntry(group, () => ({ disabled, disableDoubleClick }));
 </script>
 
-<!-- A window splitter is interactive: it takes focus, the arrow keys and the pointer. -->
+<!-- A window splitter is interactive: it takes focus and the arrow keys. -->
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <div
   {...rest}
-  role="separator"
-  tabindex={separator.disabled ? undefined : 0}
-  aria-orientation={horizontal ? 'vertical' : 'horizontal'}
   aria-controls={separator.controls}
-  aria-valuenow={separator.range ? Math.round(separator.range.now) : undefined}
-  aria-valuemin={separator.range?.min === undefined ? undefined : Math.round(separator.range.min)}
-  aria-valuemax={separator.range?.max === undefined ? undefined : Math.round(separator.range.max)}
+  aria-orientation={group.orientation === 'horizontal' ? 'vertical' : 'horizontal'}
+  aria-valuemax={separator.range?.max}
+  aria-valuemin={separator.range?.min}
+  aria-valuenow={separator.range?.now}
   aria-disabled={separator.disabled || undefined}
   data-separator={separator.state}
-  style="touch-action:none;flex:none;cursor:{horizontal ? 'col-resize' : 'row-resize'};{style ?? ''}"
-  onpointerdown={(event) => {
-    if (event.button !== 0 || separator.disabled) return;
-    event.preventDefault();
-    event.currentTarget.setPointerCapture?.(event.pointerId);
-    group.beginDrag(separator, event);
-  }}
-  onpointermove={(event) => group.moveDrag(event)}
-  onpointerup={(event) => group.endDrag(event)}
-  onpointercancel={(event) => group.endDrag(event)}
-  onlostpointercapture={(event) => group.endDrag(event)}
-  onpointerenter={() => (separator.hovered = true)}
-  onpointerleave={() => (separator.hovered = false)}
+  data-testid={id}
+  {id}
+  role="separator"
+  style="flex-basis:auto;{style ?? ''};flex-grow:0;flex-shrink:0"
+  tabindex={separator.disabled ? undefined : 0}
   onkeydown={(event) => group.keydown(separator, event)}
-  ondblclick={(event) => {
-    if (!disableDoubleClick && !event.defaultPrevented && group.resetToDefault(separator)) event.preventDefault();
-  }}
   {@attach separator.attach}
 >
   {@render children?.()}

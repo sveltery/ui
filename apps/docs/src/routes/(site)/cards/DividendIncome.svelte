@@ -1,7 +1,8 @@
 <script lang="ts">
+  import { Cancel01Icon } from '@hugeicons/core-free-icons';
+  import { HugeiconsIcon } from '@hugeicons/svelte';
   import { Button } from '$registry/bases/base/ui/button';
   import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
   import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '$registry/bases/base/ui/item';
 
   const HOLDINGS = [
@@ -58,7 +59,7 @@
     <CardDescription>Quarterly dividend payouts across your portfolio holdings.</CardDescription>
     <CardAction>
       <Button variant="ghost" size="icon-sm" class="bg-muted" aria-label="Dismiss dividend income">
-        <IconPlaceholder lucide="XIcon" tabler="IconX" hugeicons="Cancel01Icon" phosphor="XIcon" remixicon="RiCloseLine" />
+        <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} />
       </Button>
     </CardAction>
   </CardHeader>

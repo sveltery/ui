@@ -8,7 +8,6 @@ import {
   differenceInCalendarDays,
   differenceInCalendarMonths,
   eachMonthOfInterval,
-  eachYearOfInterval,
   endOfISOWeek,
   endOfMonth,
   endOfWeek,
@@ -23,6 +22,7 @@ import {
   isDate,
   isSameDay,
   isSameMonth,
+  isSameYear,
   max,
   min,
   setMonth,
@@ -35,10 +35,6 @@ import {
 } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 import type { DateLibLike, DateLibOptions } from './types.js';
-
-export type MonthYearOrder = 'month-first' | 'year-first';
-
-const yearFirstLocales = new Set(['eu', 'hu', 'ja', 'ja-Hira', 'ja-JP', 'ko', 'ko-KR', 'lt', 'lt-LT', 'lv', 'lv-LV', 'mn', 'mn-MN', 'zh', 'zh-CN', 'zh-HK', 'zh-TW']);
 
 /** date-fns bound to a locale, week settings and an optional time zone. Members are arrow functions so they can be destructured. */
 export class DateLib implements DateLibLike {
@@ -82,6 +78,7 @@ export class DateLib implements DateLibLike {
   startOfDay = startOfDay<Date, Date>;
   isSameDay = isSameDay;
   isSameMonth = isSameMonth;
+  isSameYear = isSameYear;
   isBefore = isBefore;
   isAfter = isAfter;
   isDate: (value: unknown) => value is Date = isDate;
@@ -98,28 +95,4 @@ export class DateLib implements DateLibLike {
   getYear = (date: Date): number => getYear(date);
   format = (date: Date, pattern: string): string => format(date, pattern, this.#fns);
   eachMonthOfInterval = (interval: Interval): Date[] => eachMonthOfInterval(interval);
-
-  eachYearOfInterval = (interval: Interval): Date[] => {
-    const years = eachYearOfInterval(interval);
-    // Across DST changes in some zones date-fns repeats a year (date-fns/tz#72).
-    const distinct = [...new Set(years.map((year) => getYear(year)))];
-    return distinct.length === years.length ? years : distinct.map((year) => this.newDate(year, 0, 1));
-  };
-
-  getMonthYearOrder = (): MonthYearOrder => {
-    const code = this.options.locale?.code;
-    return code && yearFirstLocales.has(code) ? 'year-first' : 'month-first';
-  };
-
-  formatMonthYear = (date: Date): string => {
-    const code = this.options.locale?.code;
-    if (code && yearFirstLocales.has(code)) {
-      try {
-        return new Intl.DateTimeFormat(code, { month: 'long', year: 'numeric', timeZone: this.options.timeZone }).format(date);
-      } catch {
-        // An unsupported locale code falls back to the date-fns pattern.
-      }
-    }
-    return this.format(date, this.getMonthYearOrder() === 'year-first' ? 'y LLLL' : 'LLLL y');
-  };
 }

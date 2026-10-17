@@ -31,7 +31,7 @@ export function dateMatchModifiers(date: Date, matchers: Matcher | Matcher[], li
   return toList(matchers).some((matcher) => {
     if (typeof matcher === 'boolean') return matcher;
     if (lib.isDate(matcher)) return lib.isSameDay(date, matcher);
-    if (isDatesArray(matcher, lib)) return matcher.some((day) => lib.isSameDay(date, day));
+    if (isDatesArray(matcher, lib)) return matcher.includes(date);
     if (isDateRange(matcher)) return rangeIncludesDate(matcher, date, false, lib);
     if (isDayOfWeek(matcher)) return toList(matcher.dayOfWeek).includes(date.getDay());
     if (isDateInterval(matcher)) {
@@ -90,23 +90,4 @@ export function rangeContainsModifiers(range: Span, matchers: Matcher | Matcher[
     if (fns.some((fn) => fn(day))) return true;
   }
   return false;
-}
-
-function convertMatcher(matcher: Matcher, lib: DateLib): Matcher {
-  if (typeof matcher === 'boolean' || typeof matcher === 'function') return matcher;
-  if (matcher instanceof Date) return lib.toZone(matcher);
-  if (Array.isArray(matcher)) return matcher.map((day) => lib.toZone(day));
-  if (isDateRange(matcher)) {
-    return { ...matcher, from: matcher.from && lib.toZone(matcher.from), to: matcher.to && lib.toZone(matcher.to) };
-  }
-  if (isDateInterval(matcher)) return { before: lib.toZone(matcher.before), after: lib.toZone(matcher.after) };
-  if (isDateAfter(matcher)) return { after: lib.toZone(matcher.after) };
-  if (isDateBefore(matcher)) return { before: lib.toZone(matcher.before) };
-  return matcher;
-}
-
-/** Moves the dates inside matchers into the lib's time zone, so calendar-day comparisons agree. Without a time zone the matchers pass through. */
-export function toZoneMatchers(matchers: Matcher | Matcher[] | undefined, lib: DateLib): Matcher | Matcher[] | undefined {
-  if (!lib.options.timeZone || !matchers) return matchers;
-  return Array.isArray(matchers) ? matchers.map((matcher) => convertMatcher(matcher, lib)) : convertMatcher(matchers, lib);
 }

@@ -12,4 +12,4 @@
   <Questionnaire.Item data-slot="questionnaire-item" name="color"><Questionnaire.Title data-slot="questionnaire-title">Color</Questionnaire.Title></Questionnaire.Item>
   <Questionnaire.Next data-slot="questionnaire-next" /><Questionnaire.Submit data-slot="questionnaire-submit" />
 </Questionnaire.Root>
-<Resizable.Group data-slot="resizable-panel-group"><Resizable.Panel data-slot="resizable-panel" defaultSize="30%">One</Resizable.Panel><Resizable.Separator data-slot="resizable-handle" /><Resizable.Panel data-slot="resizable-panel">Two</Resizable.Panel></Resizable.Group>
+<Resizable.Group data-slot="resizable-panel-group" defaultLayout={{ one: 30, two: 70 }}><Resizable.Panel data-slot="resizable-panel" id="one" defaultSize="30%">One</Resizable.Panel><Resizable.Separator data-slot="resizable-handle" /><Resizable.Panel data-slot="resizable-panel" id="two">Two</Resizable.Panel></Resizable.Group>

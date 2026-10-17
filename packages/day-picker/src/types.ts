@@ -22,8 +22,11 @@ export type CaptionLayout = 'label' | 'dropdown' | 'dropdown-months' | 'dropdown
 export type DayFlag = 'disabled' | 'hidden' | 'outside' | 'focused' | 'today';
 export type SelectionState = 'selected' | 'range_start' | 'range_middle' | 'range_end';
 
-/** What applies to a day: the built-in flags and selection states, plus the names of the custom `modifiers` that match it. */
-export type Modifiers = Record<DayFlag | SelectionState, boolean> & Record<string, boolean>;
+/**
+ * What applies to a day: the built-in flags, the selection states and the custom `modifiers`.
+ * `selected` is set only on a selected day, and the range states only while `selected` is a range.
+ */
+export type Modifiers = Record<DayFlag, boolean> & Partial<Record<string, boolean>>;
 
 /** A day in the grid. An outside day belongs to the month before or after `displayMonth`. */
 export interface CalendarDay {
@@ -142,5 +145,4 @@ export interface Labels {
 export interface DateLibLike {
   readonly options: DateLibOptions;
   format: (date: Date, pattern: string) => string;
-  formatMonthYear: (date: Date) => string;
 }

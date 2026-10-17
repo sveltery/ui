@@ -85,8 +85,9 @@ describe('selectRange', () => {
     expect(select({ from: d(10), to: undefined }, 5)).toEqual({ from: '2024-03-05', to: '2024-03-10' });
   });
 
-  it('closes the range on its start with a second click there', () => {
-    expect(select({ from: d(10), to: undefined }, 10)).toEqual({ from: '2024-03-10', to: '2024-03-10' });
+  it('clears an open range clicked on its start unless required', () => {
+    expect(select({ from: d(10), to: undefined }, 10)).toBeUndefined();
+    expect(select({ from: d(10), to: undefined }, 10, { required: true })).toEqual({ from: '2024-03-10', to: undefined });
   });
 
   it('clears the start when min is set unless required', () => {
@@ -160,30 +161,6 @@ describe('selectRange', () => {
       const selected = { from: d(8), to: undefined };
       selectRange(selected, d(12), { disabled, excludeDisabled: true }, lib);
       expect(isoRange(selected)).toEqual({ from: '2024-03-08', to: undefined });
-    });
-  });
-
-  describe('resetOnSelect', () => {
-    const options = { resetOnSelect: true };
-
-    it('starts an open range with the first click', () => {
-      expect(select(undefined, 10, options)).toEqual({ from: '2024-03-10', to: undefined });
-    });
-
-    it('ends the range with the next click', () => {
-      expect(select({ from: d(10), to: undefined }, 15, options)).toEqual({ from: '2024-03-10', to: '2024-03-15' });
-      expect(select({ from: d(10), to: undefined }, 5, options)).toEqual({ from: '2024-03-05', to: '2024-03-10' });
-    });
-
-    it('starts over when a full range gets a click', () => {
-      expect(select({ from: d(10), to: d(15) }, 12, options)).toEqual({ from: '2024-03-12', to: undefined });
-      expect(select({ from: d(10), to: d(15) }, 20, options)).toEqual({ from: '2024-03-20', to: undefined });
-      expect(select({ from: d(10), to: d(15) }, 10, options)).toEqual({ from: '2024-03-10', to: undefined });
-    });
-
-    it('clears a one day range when its day is clicked unless required', () => {
-      expect(select({ from: d(10), to: d(10) }, 10, options)).toBeUndefined();
-      expect(select({ from: d(10), to: d(10) }, 10, { ...options, required: true })).toEqual({ from: '2024-03-10', to: undefined });
     });
   });
 });

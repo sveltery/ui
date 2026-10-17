@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { DateLib } from './date-lib.js';
 import {
   clampMonth,
@@ -136,6 +136,11 @@ describe('getMonths', () => {
     expect(getMonths(d(2024, 3, 1), d(2024, 3, 31), { numberOfMonths: 2 }, lib)).toHaveLength(1);
   });
 
+  it('ends the grid on the last day of endMonth', () => {
+    const [march] = getMonths(d(2024, 3, 1), d(2024, 3, 31), { endMonth: d(2024, 3, 1) }, lib);
+    expect(firstAndLast(march)).toEqual(['2024-02-25', '2024-03-31']);
+  });
+
   it('shows no month when the first month is past the nav range', () => {
     expect(getMonths(d(2024, 6, 1), d(2024, 4, 30), {}, lib)).toEqual([]);
   });
@@ -249,10 +254,16 @@ describe('clampMonth', () => {
 });
 
 describe('getWeekdays', () => {
-  const today = d(2024, 3, 13);
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(d(2024, 3, 13));
+  });
+  afterEach(() => {
+    vi.useRealTimers();
+  });
 
   it('lists the week of today from the locale week start', () => {
-    expect(getWeekdays(lib, false, today).map((day) => iso(day))).toEqual([
+    expect(getWeekdays(lib, false).map((day) => iso(day))).toEqual([
       '2024-03-10',
       '2024-03-11',
       '2024-03-12',
@@ -261,11 +272,11 @@ describe('getWeekdays', () => {
       '2024-03-15',
       '2024-03-16',
     ]);
-    expect(iso(getWeekdays(monday, false, today)[0], monday)).toBe('2024-03-11');
+    expect(iso(getWeekdays(monday, false)[0], monday)).toBe('2024-03-11');
   });
 
   it('starts on Monday with ISOWeek', () => {
-    const weekdays = getWeekdays(lib, true, today);
+    const weekdays = getWeekdays(lib, true);
     expect([iso(weekdays[0]), iso(weekdays[6])]).toEqual(['2024-03-11', '2024-03-17']);
   });
 });
@@ -306,10 +317,6 @@ describe('getYearOptions', () => {
       { value: 2023, label: '2023', disabled: false },
       { value: 2024, label: '2024', disabled: false },
     ]);
-  });
-
-  it('lists the latest year first when reversed', () => {
-    expect(getYearOptions(d(2022, 5, 1), d(2024, 2, 29), format, lib, true)?.map((option) => option.value)).toEqual([2024, 2023, 2022]);
   });
 
   it('lists the years of the default dropdown range', () => {
