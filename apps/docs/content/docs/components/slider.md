@@ -3,7 +3,7 @@ title: Slider
 description: An input where the user selects a value from within a given range.
 ---
 
-<ComponentPreview name="base/SliderExample" />
+<ComponentPreview name="base/SliderDemoExample" />
 
 ## Installation
 
@@ -52,7 +52,7 @@ The component folders import each other with relative paths, so keep them side b
 ```
 
 ```svelte
-<Slider defaultValue={50} max={100} step={1} />
+<Slider defaultValue={[33]} max={100} step={1} />
 ```
 
 ## Value
@@ -67,14 +67,6 @@ Bind `value` to read and write the position. `defaultValue` is the position an u
 <Slider bind:value={range} min={0} max={100} step={5} />
 ```
 
-## Vertical
-
-Give a vertical slider a height.
-
-```svelte
-<Slider defaultValue={[50]} orientation="vertical" class="h-40" />
-```
-
 ## Forms
 
 Each thumb holds a range input, so the slider submits one entry per thumb under `name`.
@@ -86,6 +78,40 @@ Each thumb holds a range input, so the slider submits one entry per thumb under 
 </form>
 ```
 
-## API reference
+## Range
 
-`Slider` is styled on top of the Sveltery Base `Slider` primitive, which owns its value, pointer and keyboard behavior and accessibility. See the [Base UI Slider documentation](https://base-ui.com/react/components/slider) for the behavior it ports.
+Use an array with two values for a range slider.
+
+<ComponentPreview name="base/SliderRangeExample" />
+
+## Multiple Thumbs
+
+Use an array with multiple values for multiple thumbs.
+
+<ComponentPreview name="base/SliderMultipleExample" />
+
+## Vertical
+
+Use `orientation="vertical"` for a vertical slider.
+
+<ComponentPreview name="base/SliderVerticalExample" />
+
+## Controlled
+
+<ComponentPreview name="base/SliderControlledExample" />
+
+## Disabled
+
+Use the `disabled` prop to disable the slider.
+
+<ComponentPreview name="base/SliderDisabledExample" />
+
+## RTL
+
+Wrap the slider in a [DirectionProvider](/docs/components/direction) and set `dir` on `Slider`. Use the buttons to switch the language.
+
+<ComponentPreview name="base/SliderRtlExample" align="start" />
+
+## API Reference
+
+See the [Base UI Slider](https://base-ui.com/react/components/slider#api-reference) documentation.
