@@ -57,7 +57,7 @@ If a file already exists and differs, `add` asks before it overwrites it. Identi
 | `--no-install` | Do not install packages. |
 | `--cwd <path>` | The project root. Defaults to the current directory. |
 
-An argument that is a URL is fetched as is, so you can add an item from another registry that uses the same format.
+An argument that is a URL is fetched as is, so you can add an item from another registry that uses the same format. An argument such as `acme/ui/hello-card` installs `hello-card` from the `registry.json` at the root of the public GitHub repository `acme/ui`. Add `#` and a branch, tag or commit, such as `acme/ui/hello-card#v1.0`, to read another ref.
 
 ## See and apply upstream changes
 

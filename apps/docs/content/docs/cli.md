@@ -101,6 +101,12 @@ An argument such as `@acme/hello-card` installs `hello-card` from the registry t
 npx @sveltery/ui@latest add @acme/hello-card
 ```
 
+An argument such as `acme/ui/hello-card` installs `hello-card` from the `registry.json` at the root of the public GitHub repository `acme/ui`, at its default branch. After `#`, name a branch, tag or commit to read instead. `add` reads each file of the item from the repository at the same ref. See [Publish your registry](/docs/registry/getting-started#publish-your-registry).
+
+```bash
+npx @sveltery/ui@latest add acme/ui/hello-card#v1.0
+```
+
 **Options**
 
 ```txt
@@ -109,7 +115,8 @@ Usage: sveltery add [options] [items...]
 add components to the project
 
 Arguments:
-  items            item names, @namespace/item names, or URLs of registry items
+  items            item names, @namespace/item names, owner/repo/item GitHub
+                   items, or URLs of registry items
 
 Options:
   -y, --yes        do not ask to continue; changed files are skipped unless
@@ -395,7 +402,8 @@ Usage: sveltery view [options] <items...>
 view items from the registry
 
 Arguments:
-  items         item names, @namespace/item names, or URLs of registry items
+  items         item names, @namespace/item names, owner/repo/item GitHub items,
+                or URLs of registry items
 
 Options:
   --cwd <path>  the project root (default: ".")
@@ -463,7 +471,7 @@ npx @sveltery/ui@latest search @acme -q card
 npx @sveltery/ui@latest search https://acme.com/r/registry.json
 ```
 
-A GitHub source, `owner/repo` or `owner/repo#ref`, reads the `registry.json` at the root of a public repository, at the default branch or at the branch, tag or commit after `#`. `search` filters it itself and gives each result as `owner/repo/name`. `add` does not install that form yet. See [differences](/docs/differences#search-reads-a-github-registry-at-its-ref-without-include-or-sign-in).
+A GitHub source, `owner/repo` or `owner/repo#ref`, reads the `registry.json` at the root of a public repository, at the default branch or at the branch, tag or commit after `#`. `search` filters it itself and gives each result as `owner/repo/name`, which `add` installs. See [differences](/docs/differences#a-github-registry-is-read-at-its-ref-without-include-or-sign-in).
 
 Pass several registries to search them together. Each line then names its registry. A registry named twice is searched twice, as upstream does. A namespace that `registries` does not list is an error. See [differences](/docs/differences#search-gives-sveltery-items-by-bare-name-and-looks-up-no-directory).
 
@@ -753,4 +761,4 @@ SVELTERY_REGISTRY_URL=https://preview.example.com/r npx @sveltery/ui@latest add 
 
 ## Not supported
 
-The shadcn CLI has commands and options that this CLI does not have yet: `registry add`, local file paths as items, GitHub items such as `owner/repo/item` and JavaScript output. See [Registry](/docs/registry) and [JavaScript](/docs/javascript) for what works today.
+The shadcn CLI has commands and options that this CLI does not have yet: `registry add`, local file paths as items and JavaScript output. See [Registry](/docs/registry) and [JavaScript](/docs/javascript) for what works today.

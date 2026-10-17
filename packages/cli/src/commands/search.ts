@@ -8,7 +8,7 @@ import {
   BUILTIN_NAMESPACE,
   catalogRequest,
   fetchCatalog,
-  gitHubCatalogRequest,
+  gitHubFileRequest,
   itemTypeNames,
   namespaceRequest,
   openRegistry,
@@ -221,7 +221,7 @@ export async function search(requested: string[], options: SearchOptions): Promi
     if (isUrl(address)) return { kind: 'url', address, request: catalogRequest(plainRequest(address), forwarded) };
     // A GitHub registry is a file, with no server to search, so nothing is forwarded.
     const source = parseGitHubSource(address);
-    if (source) return { kind: 'github', address, source, request: gitHubCatalogRequest(source) };
+    if (source) return { kind: 'github', address, source, request: gitHubFileRequest(source, 'registry.json') };
     return { kind: 'namespace', address, request: catalogRequest(namespaceRequest(namespaces, catalogStyle(style), address, 'registry'), forwarded) };
   };
   type Outcome = { source: Source } | { error: string };

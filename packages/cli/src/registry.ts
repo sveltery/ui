@@ -1,6 +1,7 @@
 import { DEFAULT_REGISTRY_URL } from './constants.js';
 import { array, CliError, literal, number, object, optional, ParseError, record, refine, string, type Parser } from './parse.js';
 import { PRESET_MENU_ACCENTS, PRESET_MENU_COLORS } from './preset/preset.js';
+import { assertRoot, assertUniqueNames, installableItem, ownItems, rewriteFiles, sourceOf, sourceRegistry, type SourceRegistry } from './source.js';
 
 // The served JSON contract, mirrored from apps/docs/registry/types.ts. test/registry-contract.ts fails `check` if they drift.
 
@@ -127,10 +128,11 @@ export const namespaceConfigs: Parser<Record<string, NamespaceConfig>> = (value,
 export type Namespaces = { configs: Record<string, NamespaceConfig>; env: Record<string, string | undefined> };
 
 /**
- * `items` memoizes fetched items by URL, so a command that looks at every item and then resolves some of them asks the server once.
+ * `items` memoizes fetched items by `itemKey`, so a command that looks at every item and then resolves some of them asks the server once.
+ * `gitHubRegistries` memoizes the root registry.json of each GitHub repository and ref by URL, so its items read it once.
  * `namespaces` resolves `@namespace/item` refs.
  */
-export type Registry = { url: string; manifest: RegistryManifest; items: Map<string, Promise<RegistryItem>>; namespaces: Namespaces };
+export type Registry = { url: string; manifest: RegistryManifest; items: Map<string, Promise<RegistryItem>>; gitHubRegistries: Map<string, Promise<SourceRegistry>>; namespaces: Namespaces };
 
 /** `SVELTERY_REGISTRY_URL`, then components.json's `registry`, then the production registry. */
 export function resolveRegistryUrl(configured: string | undefined): string {
@@ -142,7 +144,7 @@ export type ItemRequest = { url: string; headers: Record<string, string>; displa
 
 export const plainRequest = (url: string): ItemRequest => ({ url, headers: {}, displayUrl: url });
 
-async function fetchJson<T>({ url, headers, displayUrl }: ItemRequest, parser: Parser<T>): Promise<T> {
+async function fetchOk({ url, headers, displayUrl }: ItemRequest): Promise<Response> {
   let response: Response;
   try {
     response = await fetch(url, { headers, signal: AbortSignal.timeout(30_000) });
@@ -171,6 +173,12 @@ async function fetchJson<T>({ url, headers, displayUrl }: ItemRequest, parser: P
     }
     throw new CliError(`${`GET ${displayUrl} failed with ${response.status} ${response.statusText}`.trimEnd()}${serverMessage ? `: ${serverMessage}` : ''}`);
   }
+  return response;
+}
+
+async function fetchJson<T>(request: ItemRequest, parser: Parser<T>): Promise<T> {
+  const response = await fetchOk(request);
+  const { displayUrl } = request;
   let json: unknown;
   try {
     json = await response.json();
@@ -191,7 +199,7 @@ export async function openRegistry(url: string, namespaces: Namespaces = { confi
   if (registryVersion > REGISTRY_VERSION) {
     throw new CliError(`The registry at ${url} uses format version ${registryVersion}, and this CLI reads version ${REGISTRY_VERSION}. Update it with \`npx @sveltery/ui@latest\`.`);
   }
-  return { url, manifest: await fetchJson(index, registryManifest), items: new Map(), namespaces };
+  return { url, manifest: await fetchJson(index, registryManifest), items: new Map(), gitHubRegistries: new Map(), namespaces };
 }
 
 export function fetchTheme(registry: Registry, baseColor: BaseColor): Promise<RegistryItem> {
@@ -200,9 +208,14 @@ export function fetchTheme(registry: Registry, baseColor: BaseColor): Promise<Re
 
 /**
  * A command-line argument or a `registryDependencies` entry: an item of the configured style, any item URL,
- * or `@namespace/name`, an item of a registry that components.json's `registries` names.
+ * `@namespace/name`, an item of a registry that components.json's `registries` names, or `owner/repo/name#ref`, an item of a GitHub registry.
  */
-export type ItemRef = { kind: 'name'; name: string } | { kind: 'url'; url: string } | { kind: 'namespaced'; namespace: string; name: string };
+export type ItemRef =
+  | { kind: 'name'; name: string }
+  | { kind: 'url'; url: string }
+  | { kind: 'namespaced'; namespace: string; name: string }
+  | { kind: 'github'; source: GitHubSource; name: string };
+type GitHubItemRef = Extract<ItemRef, { kind: 'github' }>;
 
 export function parseItemRef(value: string): ItemRef {
   if (/^https?:\/\//.test(value)) return { kind: 'url', url: value };
@@ -216,8 +229,10 @@ export function parseItemRef(value: string): ItemRef {
     }
     return { kind: 'namespaced', namespace: namespaced[1]!, name };
   }
-  const [owner = '', repo = '', ...item] = value.split('#')[0]!.split('/');
-  if (item.length > 0 && GITHUB_OWNER.test(owner) && GITHUB_REPO.test(repo)) throw new CliError('GitHub items such as owner/repo/item are not supported yet.');
+  const hash = value.indexOf('#');
+  const [owner = '', repo = '', ...item] = (hash === -1 ? value : value.slice(0, hash)).split('/');
+  const name = item.join('/');
+  if (name && isGitHubRepository(owner, repo)) return { kind: 'github', source: { owner, repo, ...(hash !== -1 && { ref: gitHubRef(value, hash, 'item address') }) }, name };
   throw new CliError(`"${value}" is neither an item name, an @namespace/item name, nor an http(s) URL.`);
 }
 
@@ -249,8 +264,8 @@ export function namespaceRequest({ configs, env }: Namespaces, style: StyleName,
   };
 }
 
-/** Where `ref` is served, and the headers its namespace sends. */
-export function itemRequest(registry: Registry, style: StyleName, ref: ItemRef): ItemRequest {
+/** Where `ref` is served, and the headers its namespace sends. A GitHub item has no URL of its own: `fetchGitHubItem` builds it from its repository. */
+function itemRequest(registry: Registry, style: StyleName, ref: Exclude<ItemRef, GitHubItemRef>): ItemRequest {
   switch (ref.kind) {
     case 'url':
       return plainRequest(ref.url);
@@ -262,18 +277,27 @@ export function itemRequest(registry: Registry, style: StyleName, ref: ItemRef):
   }
 }
 
+/** What identifies `ref` in one run: its URL, or for a GitHub item its registry.json URL with the item name after `#`. */
+function itemKey(registry: Registry, style: StyleName, ref: ItemRef): string {
+  return ref.kind === 'github' ? `${gitHubFileRequest(ref.source, 'registry.json').url}#${ref.name}` : itemRequest(registry, style, ref).url;
+}
+
+function fetchParsedItem<T>(registry: Registry, style: StyleName, ref: ItemRef, parser: Parser<T>): Promise<T> {
+  return ref.kind === 'github' ? fetchGitHubItem(registry, ref, parser) : fetchJson(itemRequest(registry, style, ref), parser);
+}
+
 export function fetchItem(registry: Registry, style: StyleName, ref: ItemRef): Promise<RegistryItem> {
-  const request = itemRequest(registry, style, ref);
-  const cached = registry.items.get(request.url);
+  const key = itemKey(registry, style, ref);
+  const cached = registry.items.get(key);
   if (cached) return cached;
-  const fetched = fetchJson(request, registryItem);
-  registry.items.set(request.url, fetched);
+  const fetched = fetchParsedItem(registry, style, ref, registryItem);
+  registry.items.set(key, fetched);
   return fetched;
 }
 
-/** The item exactly as the registry serves it, after checking that the CLI can read it. Not cached: `view` fetches each item once. */
+/** The item exactly as the registry serves it, or as a GitHub registry's files make it, after checking that the CLI can read it. Not cached: `view` fetches each item once. */
 export function fetchRawItem(registry: Registry, style: StyleName, ref: ItemRef): Promise<unknown> {
-  return fetchJson(itemRequest(registry, style, ref), (json, path) => (registryItem(json, path), json));
+  return fetchParsedItem(registry, style, ref, (json, path) => (registryItem(json, path), json));
 }
 
 const catalogItem = object({ name: string, type: string, title: optional(string), description: optional(string) });
@@ -310,26 +334,63 @@ export type GitHubSource = { owner: string; repo: string; ref?: string };
 const GITHUB_OWNER = /^(?!.*--)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$/;
 const GITHUB_REPO = /^[a-zA-Z0-9._-]+$/;
 
+const isGitHubRepository = (owner: string, repo: string) => GITHUB_OWNER.test(owner) && GITHUB_REPO.test(repo) && repo !== '.' && repo !== '..';
+
+/** The ref after `#` at `hash` in `value`, or an error when it could not name a branch, tag or commit. `address` is what upstream calls `value` in the error. */
+function gitHubRef(value: string, hash: number, address: 'registry source' | 'item address'): string {
+  const ref = value.slice(hash + 1);
+  // A . or .. segment would resolve, in the URL, into another repository.
+  // eslint-disable-next-line no-control-regex -- a ref goes into a URL, so control characters are rejected as upstream does.
+  if (!ref || /[\x00-\x1F\x7F\s]/.test(ref) || ref.startsWith('-') || ref.split('/').some((segment) => segment === '.' || segment === '..')) {
+    throw new CliError(`Invalid GitHub ref in ${address} "${value}". Use a non-empty branch, tag, or commit SHA without whitespace, control characters, leading dashes, or . or .. segments.`);
+  }
+  return ref;
+}
+
 /** Upstream's reading of a GitHub source: undefined when `value` is not one, and an error when its ref could not name a branch, tag or commit. */
 export function parseGitHubSource(value: string): GitHubSource | undefined {
   const hash = value.indexOf('#');
   const parts = (hash === -1 ? value : value.slice(0, hash)).split('/');
   if (parts.length !== 2) return undefined;
   const [owner, repo] = parts as [string, string];
-  if (!GITHUB_OWNER.test(owner) || !GITHUB_REPO.test(repo) || repo === '.' || repo === '..') return undefined;
-  if (hash === -1) return { owner, repo };
-  const ref = value.slice(hash + 1);
-  // A . or .. segment would resolve, in the URL, into another repository.
-  // eslint-disable-next-line no-control-regex -- a ref goes into a URL, so control characters are rejected as upstream does.
-  if (!ref || /[\x00-\x1F\x7F\s]/.test(ref) || ref.startsWith('-') || ref.split('/').some((segment) => segment === '.' || segment === '..')) {
-    throw new CliError(`Invalid GitHub ref in registry source "${value}". Use a non-empty branch, tag, or commit SHA without whitespace, control characters, leading dashes, or . or .. segments.`);
-  }
-  return { owner, repo, ref };
+  if (!isGitHubRepository(owner, repo)) return undefined;
+  return hash === -1 ? { owner, repo } : { owner, repo, ref: gitHubRef(value, hash, 'registry source') };
 }
 
-/** The repository's root `registry.json` at `ref`, or at the default branch. */
-export function gitHubCatalogRequest({ owner, repo, ref = 'HEAD' }: GitHubSource): ItemRequest {
-  return plainRequest(`https://raw.githubusercontent.com/${owner}/${repo}/${ref.split('/').map((segment) => encodeURIComponent(segment)).join('/')}/registry.json`);
+const encodePath = (path: string) => path.split('/').map((segment) => encodeURIComponent(segment)).join('/');
+
+/** The file at `path` from the repository's root, at `ref` or at the default branch. */
+export function gitHubFileRequest({ owner, repo, ref = 'HEAD' }: GitHubSource, path: string): ItemRequest {
+  return plainRequest(`https://raw.githubusercontent.com/${owner}/${repo}/${encodePath(ref)}/${encodePath(path)}`);
+}
+
+/** The item `name` of a GitHub registry, read by `parser`: its entry in the root registry.json, with each file read from the repository at the same ref, as upstream's `fetchGitHubRegistryItem`. */
+async function fetchGitHubItem<T>(registry: Registry, { source, name }: GitHubItemRef, parser: Parser<T>): Promise<T> {
+  const catalog = gitHubFileRequest(source, 'registry.json');
+  let loading = registry.gitHubRegistries.get(catalog.url);
+  if (!loading) {
+    loading = fetchJson(catalog, sourceRegistry);
+    registry.gitHubRegistries.set(catalog.url, loading);
+  }
+  const root = await loading;
+  if (root.include?.length) throw new CliError(`Registry ${source.owner}/${source.repo} uses "include", which the CLI does not resolve in a GitHub registry yet.`);
+  assertRoot(root, `${source.owner}/${source.repo}#${source.ref ?? 'HEAD'}/registry.json`);
+  const items = ownItems(root, 'registry.json', '.');
+  assertUniqueNames(items);
+  const item = items.find((entry) => entry.name === name);
+  if (!item) throw new CliError(`Registry item "${name}" was not found. Check that the item name exists in the resolved registry catalog.`);
+  const contents = await Promise.all(
+    rewriteFiles(item, '.').map(({ path }, index) =>
+      fetchOk(gitHubFileRequest(source, path)).then(
+        (response) => response.text(),
+        (error: unknown) => {
+          if (!(error instanceof CliError)) throw error;
+          throw new CliError(`Failed to read file "${item.files[index]!.path}" for registry item "${name}" (${sourceOf(item)}). Expected file at ${path}. ${error.message}`);
+        },
+      ),
+    ),
+  );
+  return installableItem(item, '.', contents, parser);
 }
 
 /** Throws when a named ref is not in the registry's manifest, before any item is fetched. URLs are not checked. */
@@ -345,9 +406,9 @@ export async function resolveItems(registry: Registry, style: StyleName, refs: I
   const ordered: RegistryItem[] = [];
   const visited = new Set<string>();
   const visit = async (ref: ItemRef): Promise<void> => {
-    const { url } = itemRequest(registry, style, ref);
-    if (visited.has(url)) return;
-    visited.add(url);
+    const key = itemKey(registry, style, ref);
+    if (visited.has(key)) return;
+    visited.add(key);
     const item = await fetchItem(registry, style, ref);
     for (const dependency of item.registryDependencies ?? []) await visit(parseItemRef(dependency));
     if (!ordered.some((other) => other.name === item.name)) ordered.push(item);

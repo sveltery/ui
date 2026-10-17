@@ -461,6 +461,8 @@ describe('search <owner/repo>', () => {
     'https://raw.githubusercontent.com/acme/ui/v1.0/registry.json': { ...acmeCatalog, items: acmeCatalog.items.slice(0, 1) },
     'https://raw.githubusercontent.com/acme/ui/feature/next/registry.json': acmeCatalog,
     'https://raw.githubusercontent.com/acme/split/HEAD/registry.json': { ...acmeCatalog, include: ['ui/registry.json'] },
+    'https://raw.githubusercontent.com/acme/ui/HEAD/src/lib/components/ui/hello/Hello.svelte': '<p>Hello</p>\n',
+    'https://raw.githubusercontent.com/acme/ui/v1.0/src/lib/components/ui/hello/Hello.svelte': '<p>Hello v1</p>\n',
   };
   beforeEach(() => {
     fetched = [];
@@ -468,7 +470,9 @@ describe('search <owner/repo>', () => {
       const url = String(input);
       if (!url.startsWith('https://raw.githubusercontent.com/')) return realFetch(input, init);
       fetched.push(url);
-      return url in repository ? Response.json(repository[url]) : new Response('404: Not Found', { status: 404, statusText: 'Not Found' });
+      const body = repository[url];
+      if (body === undefined) return new Response('404: Not Found', { status: 404, statusText: 'Not Found' });
+      return typeof body === 'string' ? new Response(body) : Response.json(body);
     });
   });
   afterEach(() => vi.restoreAllMocks());
@@ -497,7 +501,8 @@ Showing 1-1 of 1
     expect(fetched).toEqual([]);
   });
 
-  test('add says it does not install the owner/repo/name address that a result gives yet', async () => {
+  test('add installs the owner/repo/name address that a result gives, at its ref', async () => {
+    writeFileSync(join(cwd, 'package.json'), '{}');
     writeFileSync(
       join(cwd, 'components.json'),
       JSON.stringify({
@@ -513,9 +518,13 @@ Showing 1-1 of 1
       (item: { addCommandArgument: string }) => item.addCommandArgument,
     );
     expect(addresses).toEqual(['acme/ui/hello', 'acme/ui/hello#v1.0']);
-    for (const address of addresses) {
-      await expect(add([address], { cwd, yes: true, overwrite: false, all: false, dryRun: true, install: false })).rejects.toThrow('GitHub items such as owner/repo/item are not supported yet.');
-    }
+    vi.spyOn(console, 'log').mockImplementation(() => {});
+    const plans = [];
+    for (const address of addresses) plans.push(await add([address], { cwd, yes: true, overwrite: false, all: false, dryRun: true, install: false }));
+    expect(plans.map((plan) => plan.files.map(({ path, content }) => [path, content]))).toEqual([
+      [['src/lib/components/ui/hello/Hello.svelte', '<p>Hello</p>\n']],
+      [['src/lib/components/ui/hello/Hello.svelte', '<p>Hello v1</p>\n']],
+    ]);
   });
 
   test('names a repository without a registry.json, and one whose registry.json uses include', async () => {
