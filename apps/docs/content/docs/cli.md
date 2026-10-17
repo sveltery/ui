@@ -21,6 +21,7 @@ npx @sveltery/ui@latest init
 - writes [`components.json`](/docs/components-json),
 - adds the `tw-animate-css` and `@sveltery/ui/tailwind.css` imports, the `dark` custom variant and the [theme tokens](/docs/theming) to your CSS file,
 - installs `cn`, `class-variance-authority`, `tw-animate-css` and the icon package as dependencies, and `@sveltery/ui` as a dev dependency, because your CSS imports its `tailwind.css`.
+- gives SvelteKit 3's `"#lib/*": "./src/lib/*"` mapping in `package.json` a `./src/lib/*/index.js` fallback, so TypeScript resolves imports such as `#lib/components/ui/button`.
 
 `init` needs Svelte 5, Tailwind CSS 4, and `@sveltejs/kit` or `vite` in `package.json`. It looks for the CSS file in this order: the `--css` flag, `tailwind.css` in an existing `components.json`, `src/app.css`, then the first CSS file under `src/` that contains `@import "tailwindcss"`.
 

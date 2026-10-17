@@ -136,11 +136,13 @@ To change it, run `init --base-color <name>`. `init` replaces the theme tokens i
 
 The import roots of your project. SvelteKit resolves `$lib`, and SvelteKit 3 apps resolve `#lib` through `imports` in `package.json`. `init` writes `#lib` when your `package.json` maps `#lib/*`, and `$lib` otherwise.
 
+`init` also adds a fallback to SvelteKit 3's `#lib/*` mapping. Vite resolves `#lib/components/ui/button` to the folder's `index.ts`, but TypeScript does not look inside a folder behind `imports`. It does try each target of an array:
+
 ```json title="package.json"
 {
   "imports": {
     "#lib": "./src/lib/index.js",
-    "#lib/*": "./src/lib/*"
+    "#lib/*": ["./src/lib/*", "./src/lib/*/index.js"]
   }
 }
 ```
