@@ -91,7 +91,7 @@ These need no import:
 | `<ComponentSource name="button" />` | Every source file in `apps/docs/registry/bases/base/ui/<name>`, in the Nova style, and the `shared/` helpers it imports, highlighted, with a copy button. It also names the other component folders the component imports |
 | `<Steps>` | Numbers each `###` heading inside it |
 | `<InstallTabs>` and `<InstallTab value="cli">`, `<InstallTab value="manual">` | The Installation section's CLI and Manual tabs. Put a blank line around each tag so the markdown inside renders |
-| `<Callout title="...">` | A highlighted note |
+| `<Callout title="...">` | A highlighted note. It shows an icon only when the page passes an `icon` snippet, like upstream's `icon` prop |
 | `<ComponentsList />` | Links to every component page |
 
 The build resolves `name` and fails when the example or the folder does not exist. Write both as self-closing tags.

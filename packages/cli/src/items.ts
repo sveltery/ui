@@ -65,6 +65,7 @@ export function planItems(project: Project, items: RegistryItem[], css?: string)
     menuColor: config.menuColor,
     aliases: config.aliases,
     fontHeading: (css ?? (existsSync(cssPath) ? readFileSync(cssPath, 'utf8') : '')).includes('--font-heading'),
+    rtl: config.rtl ?? false,
   };
   const files = new Map<string, PlannedFile>();
   const dependencies: string[] = [];
