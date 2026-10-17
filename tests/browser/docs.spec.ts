@@ -110,7 +110,7 @@ test('the Drawer page renders its examples in the Rhea style, and other pages st
 
 test('docs tooltips open without the default delay, like the upstream site', async ({ page }) => {
   await visit(page, '/docs/components/tooltip');
-  await page.getByRole('button', { name: 'Show Tooltip' }).first().hover();
+  await page.getByRole('button', { name: 'Hover' }).first().hover();
   await expect(page.locator('[data-slot=tooltip-content]')).toBeVisible({ timeout: 400 });
 });
 
@@ -140,8 +140,8 @@ test('the Field Horizontal Fields example offers Favorite Fruit and shows the ch
 
 test('the Input Form example labels each control and describes the email field', async ({ page }) => {
   await visit(page, '/docs/components/input');
-  const form = page.locator('[data-slot=example]').filter({ has: page.locator('#form-name') });
-  await expect(form.getByLabel('Name')).toHaveAttribute('placeholder', 'John Doe');
+  const form = page.locator('[data-slot=component-preview][data-name="base/InputFormExample"]');
+  await expect(form.getByLabel('Name')).toHaveAttribute('placeholder', 'Evil Rabbit');
   const email = form.getByLabel('Email');
   await expect(email).toHaveAttribute('type', 'email');
   await expect(form.getByText("We'll never share your email with anyone.")).toBeVisible();
