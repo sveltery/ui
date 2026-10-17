@@ -32,7 +32,7 @@ The CLI reads these paths below the registry root:
 | Path | Read by | Holds |
 | --- | --- | --- |
 | `index.json` | every command | The manifest |
-| `styles/<style>/<name>.json` | `add`, `diff`, `update`, `list`, `init --preset` | Each item in each style, and the font items that presets list |
+| `styles/<style>/<name>.json` | `add`, `diff`, `update`, `list`, `view`, `init --preset` | Each item in each style, and the font items that presets list |
 | `themes/<baseColor>.json` | `init` without `--preset` | A `registry:theme` item with the base color's tokens |
 
 `init --preset` with a preset name or code fetches `/init` on the registry's origin, which returns a `registry:base` item. `init` also writes `<origin>/schema.json` to the `$schema` key of `components.json`.
