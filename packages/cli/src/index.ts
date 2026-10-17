@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 import { log } from '@clack/prompts';
 import { Command } from 'commander';
 import { add } from './commands/add.js';
+import { build } from './commands/build.js';
 import { diff } from './commands/diff.js';
 import { init } from './commands/init.js';
 import { search } from './commands/search.js';
@@ -34,6 +35,8 @@ program
   .option('-o, --overwrite', 'overwrite changed files', false)
   .option('-a, --all', 'add every item', false)
   .option('--dry-run', 'show the plan and stop', false)
+  .option('--diff [path]', 'show the diff of each file that would change, or of the file matching path; implies --dry-run')
+  .option('--view [path]', 'show the contents of each file that would be written, or of the file matching path; implies --dry-run')
   .option('--no-install', 'do not install packages')
   .option('--cwd <path>', 'the project root', '.')
   .action(async (items: string[], options) => void (await add(items, { ...options, cwd: resolve(options.cwd) })));
@@ -41,14 +44,14 @@ program
 program
   .command('diff')
   .description('show how the registry versions of installed items differ from your files')
-  .argument('[items...]', 'item names; every installed item when omitted')
+  .argument('[items...]', 'item names or URLs; every installed item of the registry when omitted')
   .option('--cwd <path>', 'the project root', '.')
   .action(async (items: string[], options) => void (await diff(items, { cwd: resolve(options.cwd) })));
 
 program
   .command('update')
   .description('re-add installed items, showing each changed file\'s diff and asking before it overwrites')
-  .argument('[items...]', 'item names; every installed item when omitted')
+  .argument('[items...]', 'item names or URLs; every installed item of the registry when omitted')
   .option('-y, --yes', 'overwrite changed files without asking', false)
   .option('--no-install', 'do not install packages')
   .option('--cwd <path>', 'the project root', '.')
@@ -73,6 +76,14 @@ program
   .argument('<items...>', 'item names, or URLs of registry items')
   .option('--cwd <path>', 'the project root', '.')
   .action(async (items: string[], options) => void (await view(items, { cwd: resolve(options.cwd) })));
+
+program
+  .command('build')
+  .description('build components for a registry')
+  .argument('[registry]', 'path to registry.json file', './registry.json')
+  .option('-o, --output <path>', 'destination directory for json files', './static/r')
+  .option('-c, --cwd <path>', 'the working directory', '.')
+  .action((registry: string, options) => void build(registry, options));
 
 try {
   await program.parseAsync();

@@ -99,6 +99,10 @@ Options:
   -o, --overwrite  overwrite changed files (default: false)
   -a, --all        add every item (default: false)
   --dry-run        show the plan and stop (default: false)
+  --diff [path]    show the diff of each file that would change, or of the file
+                   matching path; implies --dry-run
+  --view [path]    show the contents of each file that would be written, or of
+                   the file matching path; implies --dry-run
   --no-install     do not install packages
   --cwd <path>     the project root (default: ".")
   -h, --help       display help for command
@@ -116,6 +120,18 @@ Packages:
   @sveltery/base@^0.2.0
 ```
 
+`--diff` and `--view` imply `--dry-run`. They show what the plan would write, for any item address, including a URL.
+
+- `--diff` prints a unified diff for each file that would change. A new file diffs from `/dev/null`. Your file is the `a/` side and the registry version is the `b/` side.
+- `--view` prints the contents each file would have, after the project's transforms, under a line such as `src/lib/components/ui/button/Button.svelte (new, 8 lines)`.
+
+Without a path, both show five files at most, and `--diff` skips identical files. Pass a path to show one file. It matches the project path exactly, or else every path that contains it. Put the item names before the flag, because the flag takes the next word as its path.
+
+```bash
+npx @sveltery/ui@latest add button --diff
+npx @sveltery/ui@latest add https://example.com/r/hello-card.json --view hello-card
+```
+
 ---
 
 ## diff
@@ -126,7 +142,13 @@ Use the `diff` command to see how the registry versions of your installed items 
 npx @sveltery/ui@latest diff
 ```
 
-An item counts as installed when any of its files exists under `aliases.ui`. With no names, `diff` checks every installed item and the items they depend on. A named item that is not installed is an error.
+An item counts as installed when any of its files exists in the project. With no names, `diff` checks every installed item of the configured registry and the items they depend on. A named item that is not installed is an error.
+
+An argument that is a URL works like a name. `diff` fetches the item and its registry dependencies, as `add` does, and compares them with your files. The item must be installed, and the URL must be the one you added it with, because a project does not record where an item came from. An unnamed `diff` cannot know which URLs you used, so it does not check items that only a URL names. To check one, pass its URL.
+
+```bash
+npx @sveltery/ui@latest diff https://example.com/r/hello-card.json
+```
 
 `diff` prints a unified diff for each file that differs. Your file is the `a/` side and the registry version is the `b/` side, so `+` lines are what `update` would write. It ends with a count such as `3 files differ in 2 items`, or `Everything is up to date.`
 
@@ -138,7 +160,8 @@ Usage: sveltery diff [options] [items...]
 show how the registry versions of installed items differ from your files
 
 Arguments:
-  items         item names; every installed item when omitted
+  items         item names or URLs; every installed item of the registry when
+                omitted
 
 Options:
   --cwd <path>  the project root (default: ".")
@@ -157,6 +180,12 @@ npx @sveltery/ui@latest update
 
 `update` plans the same files as `add`, including new files, new items an item now depends on and missing packages. For each changed file, it shows the diff and asks whether to overwrite it. The default answer is no. It writes new files without asking.
 
+Like `diff`, it takes item names and URLs, and with no arguments it updates every installed item of the configured registry, but not items that only a URL names. To update one, pass its URL. See [diff](#diff).
+
+```bash
+npx @sveltery/ui@latest update https://example.com/r/hello-card.json
+```
+
 **Options**
 
 ```txt
@@ -166,7 +195,8 @@ re-add installed items, showing each changed file's diff and asking before it
 overwrites
 
 Arguments:
-  items         item names; every installed item when omitted
+  items         item names or URLs; every installed item of the registry when
+                omitted
 
 Options:
   -y, --yes     overwrite changed files without asking (default: false)
@@ -176,8 +206,6 @@ Options:
 ```
 
 `-y` discards your edits to the changed files.
-
-`diff` and `update` take item names only. They do not check items that you added by URL.
 
 ---
 
@@ -281,6 +309,41 @@ Options:
 
 ---
 
+## build
+
+Use the `build` command to generate the JSON files of [your own registry](/docs/registry/getting-started).
+
+```bash
+npx @sveltery/ui@latest build
+```
+
+`build` reads `registry.json` and writes one item file per item to `static/r`, such as `static/r/hello-card.json`, with each file's source in `content`. It also writes `static/r/registry.json`. A SvelteKit app serves the `static` folder, so the items are at `/r/<name>.json`.
+
+**Options**
+
+```txt
+Usage: sveltery build [options] [registry]
+
+build components for a registry
+
+Arguments:
+  registry             path to registry.json file (default: "./registry.json")
+
+Options:
+  -o, --output <path>  destination directory for json files (default:
+                       "./static/r")
+  -c, --cwd <path>     the working directory (default: ".")
+  -h, --help           display help for command
+```
+
+To change the output directory, use the `--output` option. In a Vite app without SvelteKit, pass `./public/r`.
+
+```bash
+npx @sveltery/ui@latest build --output ./public/r
+```
+
+---
+
 ## Environment variables
 
 `SVELTERY_REGISTRY_URL` sets the registry root, for example a preview deploy's `/r` URL. It takes precedence over the `registry` key in `components.json`. `init` writes the URL it used to that key.
@@ -291,4 +354,4 @@ SVELTERY_REGISTRY_URL=https://preview.example.com/r npx @sveltery/ui@latest add 
 
 ## Not supported
 
-The shadcn CLI has commands and options that this CLI does not have yet: `apply`, `preset`, `build`, `docs`, `info`, `migrate` and `eject`, namespaced registries, local file paths as items, JavaScript output and the RTL transform. See [Registry](/docs/registry), [JavaScript](/docs/javascript) and [RTL](/docs/rtl) for what works today.
+The shadcn CLI has commands and options that this CLI does not have yet: `apply`, `preset`, `docs`, `info`, `migrate` and `eject`, namespaced registries, local file paths as items, JavaScript output and the RTL transform. See [Registry](/docs/registry), [JavaScript](/docs/javascript) and [RTL](/docs/rtl) for what works today.

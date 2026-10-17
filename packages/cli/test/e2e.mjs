@@ -204,6 +204,27 @@ try {
   const viewed = JSON.parse(await cli('view', 'button', `${env.SVELTERY_REGISTRY_URL}/styles/${config.style}/card.json`));
   assert.deepEqual(viewed, [served('button'), served('card')], 'view prints the items as the registry serves them, in argument order');
 
+  step('sveltery diff, update and add --diff on an item added by its URL');
+  const buttonUrl = `${env.SVELTERY_REGISTRY_URL}/styles/${config.style}/button.json`;
+  await cli('add', buttonUrl, '-y', '--no-install');
+  writeFileSync(buttonFile, pristine.replace(firstLine, `${firstLine} <!-- edited locally -->`));
+  assert.match(await cli('diff', buttonUrl), /^-.*edited locally/m, 'diff <url> shows the edited line');
+  assert.match(await cli('add', buttonUrl, '--diff'), /^-.*edited locally/m, 'add <url> --diff shows the edited line');
+  await cli('update', buttonUrl, '-y', '--no-install');
+  assert.equal(readFileSync(buttonFile, 'utf8'), pristine, 'update <url> -y restores the registry version');
+  assert.equal((await cli('diff', buttonUrl)).trim(), 'Everything is up to date.');
+
+  step('sveltery build a third-party registry, then add its item by URL');
+  const author = join(work, 'author');
+  const helloSource = "<script lang=\"ts\">\n  import { Button } from '../button';\n</script>\n<Button>Hello</Button>\n";
+  mkdirSync(join(author, 'src/lib/components/ui/hello'), { recursive: true });
+  writeFileSync(join(author, 'src/lib/components/ui/hello/Hello.svelte'), helloSource);
+  const helloFiles = [{ path: 'src/lib/components/ui/hello/Hello.svelte', type: 'registry:ui' }];
+  writeFileSync(join(author, 'registry.json'), JSON.stringify({ name: 'acme', homepage: 'https://acme.test', items: [{ name: 'hello', type: 'registry:ui', registryDependencies: ['button'], files: helloFiles }] }));
+  await cli('build', '--cwd', author, '--output', join(registryDir, 'acme'));
+  await cli('add', `${origin}/r/acme/hello.json`, '-y');
+  assert.equal(readFileSync(join(app, config.aliases.ui.replace(/^[$#]lib/, 'src/lib'), 'hello/Hello.svelte'), 'utf8'), helloSource, 'add installs the item build wrote');
+
   step('sveltery search and list');
   const found = JSON.parse(await cli('search', '-q', 'dialog', '-t', 'ui', '--json'));
   assert.deepEqual(found.items.map((entry) => entry.name), ['dialog', 'alert-dialog'], 'search ranks the exact name first');
