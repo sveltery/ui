@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import { CONFIG_FILE, parseConfig, type Config } from './config.js';
 import { CliError, literal, object, optional, ParseError, string } from './parse.js';
 import { missingPackages, planFile, type Plan, type PlannedFile } from './plan.js';
-import { aliasPath, readJson } from './project.js';
+import { aliasPath, loadEnv, readJson } from './project.js';
 import { fetchItem, openRegistry, parseItemRef, resolveItems, resolveRegistryUrl, styleNames, type ItemRef, type Registry, type RegistryFile, type RegistryItem, type StyleName } from './registry.js';
 import { applyTransforms, type TransformContext } from './transforms.js';
 
@@ -14,7 +14,7 @@ export async function openProject(cwd: string): Promise<Project> {
   const configPath = join(cwd, CONFIG_FILE);
   if (!existsSync(configPath)) throw new CliError(`No ${CONFIG_FILE} in ${cwd}. Run \`npx @sveltery/ui@latest init\` first.`);
   const config = parseConfig(readJson(configPath));
-  const registry = await openRegistry(resolveRegistryUrl(config.registry));
+  const registry = await openRegistry(resolveRegistryUrl(config.registry), { configs: config.registries ?? {}, env: loadEnv(cwd) });
   return { cwd, config, registry, uiDir: aliasPath(config.aliases.ui) };
 }
 

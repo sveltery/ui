@@ -6,6 +6,7 @@ import { add } from './commands/add.js';
 import { build } from './commands/build.js';
 import { diff } from './commands/diff.js';
 import { docs } from './commands/docs.js';
+import { info } from './commands/info.js';
 import { init } from './commands/init.js';
 import { search } from './commands/search.js';
 import { migrateRtl, migrations } from './commands/migrate.js';
@@ -34,7 +35,7 @@ program
 program
   .command('add')
   .description('add components to the project')
-  .argument('[items...]', 'item names, or URLs of registry items')
+  .argument('[items...]', 'item names, @namespace/item names, or URLs of registry items')
   .option('-y, --yes', 'do not ask to continue; changed files are skipped unless --overwrite is set', false)
   .option('-o, --overwrite', 'overwrite changed files', false)
   .option('-a, --all', 'add every item', false)
@@ -115,6 +116,13 @@ program
   .option('--json', 'output as JSON.', false)
   .option('--cwd <path>', 'the project root', '.')
   .action(async (components: string[], options) => void (await docs(components, { ...options, cwd: resolve(options.cwd) })));
+
+program
+  .command('info')
+  .description('get information about your project')
+  .option('--json', 'output as JSON.', false)
+  .option('--cwd <path>', 'the project root', '.')
+  .action(async (options) => void (await info({ ...options, cwd: resolve(options.cwd) })));
 
 try {
   await program.parseAsync();

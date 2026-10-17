@@ -879,4 +879,30 @@ The old `list` command marked the items in your project as `installed` and had n
 
 **Why:** There is one variant, so `--base` has nothing to choose. The examples are Svelte files in this repository, not files that the site serves, so the page with the examples inlined is what an agent can read.
 
+### An `@namespace/item` name cannot expand environment variables
+
+**Upstream:** [`buildUrlFromRegistryConfig`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/registry/builder.ts#L71-L75) puts the item name into the namespace's URL template and then expands `${VAR}` in the result. A `registryDependencies` entry such as `@acme/${AWS_SECRET_ACCESS_KEY}` in a fetched item sends that secret to the `@acme` server.
+
+**Sveltery UI:** The CLI expands `${VAR}` in the template before it puts the item name in. It stops with an error for an item name that contains `${`, `?`, `#` or a `..` segment. See [Namespaces](/docs/registry/namespace#url-placeholders).
+
+**Why:** An item from one registry can name dependencies on any namespace you configured. Its author must not be able to read your environment variables, or to send your credentials to another path on that server.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### Registry errors print `${VAR}`, not its value
+
+**Upstream:** [`RegistryUnauthorizedError`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/registry/errors.ts#L122) and the other fetch errors print the expanded item URL. A token in a namespace's `params` appears in the terminal and in CI logs.
+
+**Sveltery UI:** Errors print the item URL with each `${VAR}` as written in `components.json`, such as `https://registry.company.com/button.json?token=${REGISTRY_TOKEN}`. When `fetch` rejects a header value, the error does not quote the value. See [Authentication](/docs/registry/authentication).
+
+**Why:** An error message is often pasted into an issue or kept in a build log, and it must not carry a credential.
+
+### Info reports a Svelte project
+
+**Upstream:** [`info`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/info.ts#L94-L145) prints `rsc`, `typescript` and `tailwindConfig` for the project, and `rsc`, `typescript`, `base` and `rtl` for the configuration. It reads the framework version only for Next.js, and `tailwindVersion` is `v3` or `v4`. It lists the `.tsx` and `.jsx` files in the ui folder that match a registry item, prints each configured registry, and stops with a message in a monorepo root. Its links include the example source of a component.
+
+**Sveltery UI:** [`info`](/docs/cli#info) leaves out `rsc`, `typescript`, `tailwindConfig`, `base` and `rtl`. Svelte has no server components or JSX, `components.json` has `typescript: true` only, Tailwind CSS 4 has no config file, the Base UI variant is the only one, and `init --rtl` is not supported. The project shows the framework version (SvelteKit's or Vite's), `svelteVersion` and `tailwindVersion` as versions, such as `4.1.2`, taken from `node_modules` when the package is installed and from `package.json` otherwise. The installed items are the manifest items that have a folder under `aliases.ui`. `registry` is the one registry the CLI reads. It does not stop in a monorepo root, because the CLI has no workspace detection and takes `--cwd`, and it has no example link, because a component's page shows its examples.
+
+**Why:** Each omitted field only has a value in a React or Next.js project, or in a setup that this CLI does not have. A version is more useful than `v4` for a bug report.
+
 **Decided:** Pending Hugo Hsi's sign-off, 2026-10-17

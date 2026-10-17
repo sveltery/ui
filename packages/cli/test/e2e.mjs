@@ -58,6 +58,8 @@ const server = createServer(async (request, response) => {
     response.writeHead(init.status, { 'content-type': 'application/json' }).end(await init.text());
     return;
   }
+  // A namespaced registry that wants a bearer token.
+  if (request.url?.startsWith('/r/private/') && request.headers.authorization !== 'Bearer s3cret') return void response.writeHead(401).end();
   try {
     const body = readFileSync(join(registryDir, decodeURIComponent(new URL(request.url ?? '/', 'http://x').pathname.replace(/^\/r\//, ''))));
     response.writeHead(200, { 'content-type': 'application/json' }).end(body);
@@ -140,6 +142,8 @@ try {
     for (const target of expected.imports) assert.match(presetCss, new RegExp(`@import ['"]${target}['"];`), `${code} imports ${target}`);
     for (const line of [`--primary: ${expected.primary};`, ...expected.fonts]) assert.ok(presetCss.includes(line), `${code} writes ${line}`);
     assert.match(presetCss, /html \{\s*@apply font-sans;/, `${code} applies the body font to html`);
+    const presetInfo = JSON.parse(await capture('npm', [...cliExec, 'info', '--json'], presetApp, env));
+    assert.deepEqual([presetInfo.preset.code, presetInfo.preset.fallbacks], [code, []], `info reads ${code} back from the files init wrote`);
   }
 
   step('sveltery init --preset btLmMa prints why /init rejects a gray base color');
@@ -241,6 +245,24 @@ try {
     api: 'https://base-ui.com/react/components/menu.md',
   });
   assert.deepEqual(Object.keys(documented.results[1].links), ['docs', 'examples'], 'a component with no Base UI page has no api link');
+
+  step('sveltery add @acme/hello from a registry that wants a bearer token');
+  mkdirSync(join(registryDir, 'private'), { recursive: true });
+  writeFileSync(
+    join(registryDir, 'private/hello.json'),
+    JSON.stringify({ $schema: `${origin}/schema/registry-item.json`, name: 'hello', type: 'registry:ui', registryDependencies: ['button'], files: [{ type: 'registry:ui', target: 'private-hello/Hello.svelte', content: helloSource }] }),
+  );
+  writeFileSync(join(app, 'components.json'), JSON.stringify({ ...config, registries: { '@acme': { url: `${origin}/r/private/{name}.json`, headers: { Authorization: 'Bearer ${ACME_TOKEN}' } } } }, null, 2));
+  writeFileSync(join(app, '.env.local'), 'ACME_TOKEN=s3cret\n');
+  await cli('add', '@acme/hello', '-y');
+  assert.equal(readFileSync(join(app, config.aliases.ui.replace(/^[$#]lib/, 'src/lib'), 'private-hello/Hello.svelte'), 'utf8'), helloSource, 'add installs the namespaced item with the token from .env.local');
+
+  step('sveltery info');
+  const projectInfo = JSON.parse(await cli('info', '--json'));
+  assert.equal(projectInfo.project.framework, 'SvelteKit');
+  assert.equal(projectInfo.project.tailwindCss, config.tailwind.css);
+  assert.deepEqual(projectInfo.components, ['button', 'chart', 'dialog'], 'info lists the items add installed');
+  assert.deepEqual(projectInfo.preset.fallbacks, ['font', 'fontHeading', 'menuAccent'], 'a plain init writes no fonts or menuAccent, so info falls back for them');
 
   writeFileSync(
     join(app, 'src/routes/+page.svelte'),
