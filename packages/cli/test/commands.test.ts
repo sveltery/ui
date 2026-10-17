@@ -782,6 +782,17 @@ describe('add', () => {
     expect(existsSync(join(cwd, 'src/lib'))).toBe(false);
   });
 
+  test('keeps two URL items that share a name, as upstream identifies an item by its address', async () => {
+    registryFiles['other/hello.json'] = item('hello', { files: [{ type: 'registry:ui', target: 'other-hello/Hello.svelte', content: '<p>other</p>\n' }] });
+    const plan = await add([`${origin}/r/elsewhere/hello.json`, `${origin}/r/other/hello.json`], options());
+    expect(plan.files.map((file) => file.path)).toEqual([
+      'src/lib/components/ui/button/Button.svelte',
+      'src/lib/components/ui/hello/Hello.svelte',
+      'src/lib/components/ui/other-hello/Hello.svelte',
+    ]);
+    expect(read('src/lib/components/ui/other-hello/Hello.svelte')).toBe('<p>other</p>\n');
+  });
+
   describe('--diff and --view', () => {
     const buttonPath = 'src/lib/components/ui/button/Button.svelte';
     const titlePath = 'src/lib/components/ui/dialog/DialogTitle.svelte';
@@ -1020,6 +1031,24 @@ describe('namespaced registries', () => {
     expect(acmeRequests).toEqual([]);
   });
 
+  test('keeps same-named items from two namespaces, and from a namespace and a URL', async () => {
+    registryFiles['craft/hello.json'] = item('hello', { files: [{ type: 'registry:ui', target: 'craft-hello/Hello.svelte', content: '<p>craft</p>\n' }] });
+    configure({ '@acme': acme(), '@craft': `${origin}/craft/{name}.json` });
+    process.env.ACME_TOKEN = 's3cret';
+    const paths = async (names: string[]) => (await add(names, { ...addOptions, cwd, dryRun: true })).files.map((file) => file.path);
+    expect(await paths(['@acme/hello', '@craft/hello'])).toEqual([
+      'src/lib/components/ui/button/Button.svelte',
+      'src/lib/components/ui/greet/index.ts',
+      'src/lib/components/ui/hello/Hello.svelte',
+      'src/lib/components/ui/craft-hello/Hello.svelte',
+    ]);
+    expect(await paths(['@craft/hello', `${origin}/r/elsewhere/hello.json`])).toEqual([
+      'src/lib/components/ui/craft-hello/Hello.svelte',
+      'src/lib/components/ui/button/Button.svelte',
+      'src/lib/components/ui/hello/Hello.svelte',
+    ]);
+  });
+
   test('@sveltery names the project registry, and init keeps registries', async () => {
     expect((await add(['@sveltery/button'], { ...addOptions, cwd })).files.map((file) => file.path)).toEqual(['src/lib/components/ui/button/Button.svelte']);
     configure({ '@acme': acme() });
@@ -1048,6 +1077,17 @@ describe('GitHub items', () => {
     [`${raw}/acme/ui/v1.0/registry.json`]: { name: 'acme', homepage: 'https://github.com/acme/ui', items: [{ name: 'hello', type: 'registry:ui', files: [helloFile] }] },
     [`${raw}/acme/ui/v1.0/src/lib/components/ui/hello/Hello.svelte`]: '<p>Hello v1</p>\n',
     [`${raw}/acme/split/HEAD/registry.json`]: { name: 'acme', homepage: 'https://github.com/acme/split', include: ['ui/registry.json'] },
+    [`${raw}/craft/ui/HEAD/registry.json`]: {
+      name: 'craft',
+      homepage: 'https://github.com/craft/ui',
+      items: [
+        { name: 'hello', type: 'registry:ui', files: [{ path: 'src/lib/components/ui/craft-hello/Hello.svelte', type: 'registry:ui' }] },
+        { name: 'greet', type: 'registry:lib', files: [{ path: 'src/lib/components/ui/craft-greet/index.ts', type: 'registry:ui' }] },
+        { name: 'pair', type: 'registry:ui', registryDependencies: ['acme/ui/greet', 'craft/ui/greet'], files: [] },
+      ],
+    },
+    [`${raw}/craft/ui/HEAD/src/lib/components/ui/craft-hello/Hello.svelte`]: '<p>Craft</p>\n',
+    [`${raw}/craft/ui/HEAD/src/lib/components/ui/craft-greet/index.ts`]: 'export const greet = 2;\n',
     [`${raw}/acme/evil/HEAD/registry.json`]: { name: 'acme', homepage: 'https://github.com/acme/evil', items: [{ name: 'evil', type: 'registry:ui', files: [{ path: '../evil/Evil.svelte', type: 'registry:ui' }] }] },
   };
   const realFetch = globalThis.fetch;
@@ -1073,6 +1113,17 @@ describe('GitHub items', () => {
     expect(read('src/lib/components/ui/greet/index.ts')).toBe('export const greet = 1;\n');
     expect(fetched).toEqual([`${raw}/acme/ui/HEAD/registry.json`, `${raw}/acme/ui/HEAD/src/lib/components/ui/hello/Hello.svelte`, `${raw}/acme/ui/HEAD/src/lib/components/ui/greet/index.ts`]);
     expect(await diff(['acme/ui/hello'], { cwd })).toBe('Everything is up to date.');
+  });
+
+  test('keeps same-named items from two repositories, as roots and as registryDependencies', async () => {
+    const paths = async (names: string[]) => (await add(names, { ...addOptions, cwd, dryRun: true })).files.map((file) => file.path);
+    expect(await paths(['acme/ui/hello', 'craft/ui/hello'])).toEqual([
+      'src/lib/components/ui/greet/index.ts',
+      'src/lib/components/ui/button/Button.svelte',
+      'src/lib/components/ui/hello/Hello.svelte',
+      'src/lib/components/ui/craft-hello/Hello.svelte',
+    ]);
+    expect(await paths(['craft/ui/pair'])).toEqual(['src/lib/components/ui/greet/index.ts', 'src/lib/components/ui/craft-greet/index.ts']);
   });
 
   test('adds an item at the ref after #', async () => {
