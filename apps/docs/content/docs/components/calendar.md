@@ -24,14 +24,8 @@ npx @sveltery/ui@latest add calendar
 ### Install the dependencies
 
 ```bash
-npm install cn class-variance-authority date-fns @date-fns/tz @sveltery/base @lucide/svelte
+npm install cn class-variance-authority date-fns @date-fns/tz @sveltery/base @sveltery/day-picker @lucide/svelte
 ```
-
-<Callout title="Not on npm yet">
-
-The calendar runs on `@sveltery/day-picker`, the Svelte port of React DayPicker in the Sveltery UI repository. It is not published yet, so copy `packages/day-picker/src` into your app as `$lib/day-picker` and import it from there.
-
-</Callout>
 
 ### Add the Button component
 
