@@ -83,7 +83,7 @@ export function planItems(project: Project, items: RegistryItem[], css?: string)
   return { files: [...files.values()], dependencies: missingPackages(cwd, dependencies), devDependencies: missingPackages(cwd, devDependencies) };
 }
 
-const refOf = (name: string): ItemRef => ({ kind: 'name', name });
+export const refOf = (name: string): ItemRef => ({ kind: 'name', name });
 
 /** Every item the registry lists, in manifest order. */
 export function fetchAllItems({ registry, config }: Project): Promise<RegistryItem[]> {
@@ -97,8 +97,7 @@ export const isInstalled = (project: Project, item: RegistryItem) => item.files.
 export const NONE_INSTALLED = 'No items from the registry are installed. Name an item you added by URL, or add one with `npx @sveltery/ui@latest add button`.';
 
 /**
- * The items `diff` and `update` act on, with their registry dependencies. Named items and URLs must be installed.
- * Unnamed, it is every installed item of the registry except `registry:lib` ones such as `shared`, which come in as dependencies of the items that need them.
+ * The items `diff` and `update` act on, with their registry dependencies: the named items and URLs, which must be installed, or else the installed roots.
  * A scan cannot know which URLs were used, so it never includes an item that only a URL names.
  */
 export async function selectInstalled(project: Project, names: string[]): Promise<RegistryItem[]> {
@@ -111,6 +110,10 @@ export async function selectInstalled(project: Project, names: string[]): Promis
     }
     return items;
   }
-  const installed = (await fetchAllItems(project)).filter((item) => item.type !== 'registry:lib' && isInstalled(project, item));
-  return resolveItems(registry, config.style, installed.map((item) => refOf(item.name)));
+  return resolveItems(registry, config.style, (await installedRoots(project)).map((item) => refOf(item.name)));
+}
+
+/** Every installed item except `registry:lib` ones such as `shared`, which come in as dependencies of the items that need them. */
+export async function installedRoots(project: Project): Promise<RegistryItem[]> {
+  return (await fetchAllItems(project)).filter((item) => item.type !== 'registry:lib' && isInstalled(project, item));
 }
