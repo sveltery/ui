@@ -859,6 +859,18 @@ Each component page follows its [upstream page](https://github.com/shadcn-ui/ui/
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
+## Typeset
+
+### The Typeset builder installs fonts with Fontsource and has no framework picker
+
+**Upstream:** The [Get Code panel](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/app/(app)/(typeset)/components/docs-panel.tsx#L80-L95) has a framework picker that starts on Next.js. For Next.js, its font step loads the picked fonts with `next/font/google` in `app/layout.tsx`. For the other frameworks, it installs them with Fontsource. Its prompt asks the agent to look for `react-markdown`, Streamdown, MDX and `dangerouslySetInnerHTML`.
+
+**Sveltery UI:** The [Typeset builder](/typeset) always gives the Fontsource step, with a command for each package manager and the `@import` lines for `src/app.css`. The prompt asks the agent to look for mdsvex pages, Svelte markdown components and `{@html}`. The wrapper sample renders `{@html content}`.
+
+**Why:** `next/font` is part of Next.js. Fontsource works the same way in SvelteKit and in Vite, so a framework picker would offer one answer twice.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ## CLI
 
 ### `diff` and `update` stay, and `add --diff` and `add --view` print plain text
