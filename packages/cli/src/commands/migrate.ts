@@ -37,7 +37,7 @@ function selectFiles(cwd: string, uiDir: string, path: string | undefined): { ba
     if (!fs.globSync) throw new CliError('A glob pattern needs Node 22 or later. Pass a file or directory instead.');
     // globSync matches directories too, as in src/**, so keep only files.
     const matches = fs.globSync(path, { cwd, exclude: (name) => name.split(/[\\/]/).includes('node_modules') });
-    selected = { base: cwd, files: matches.filter((file) => fs.statSync(join(cwd, file)).isFile()) };
+    selected = { base: cwd, files: matches.filter((file) => fs.statSync(resolve(cwd, file)).isFile()) };
   } else {
     const full = resolve(cwd, path);
     const stat = fs.statSync(full, { throwIfNoEntry: false });
@@ -62,18 +62,23 @@ export async function migrateRtl(options: MigrateOptions): Promise<{ transformed
     return { transformed: [], review: [] };
   }
 
+  // Transform every file before writing anything, so a file the parser rejects is skipped rather than stopping the run halfway.
+  const changes: { path: string; file: string; content: string }[] = [];
+  for (const file of files) {
+    const path = resolve(base, file);
+    const content = fs.readFileSync(path, 'utf8');
+    try {
+      const next = transformDirection(file, content);
+      if (next !== content) changes.push({ path, file, content: next });
+    } catch (error) {
+      log.warn(`Skipped ${file}: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+
   fs.writeFileSync(configPath, `${JSON.stringify({ ...raw, rtl: true }, null, 2)}\n`);
   log.success(`Updated ${CONFIG_FILE}.`);
-
-  const transformed: string[] = [];
-  for (const file of files) {
-    const path = join(base, file);
-    const content = fs.readFileSync(path, 'utf8');
-    const next = transformDirection(file, content);
-    if (next === content) continue;
-    fs.writeFileSync(path, next);
-    transformed.push(file);
-  }
+  for (const { path, content } of changes) fs.writeFileSync(path, content);
+  const transformed = changes.map(({ file }) => file);
   log.success(`Migration complete. ${transformed.length} file(s) transformed.`);
 
   const review = files.filter((file) => file.split(/[\\/]/).some((part) => NEEDS_MANUAL_REVIEW.includes(part.replace(SOURCE, '').toLowerCase())));

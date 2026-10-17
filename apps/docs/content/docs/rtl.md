@@ -124,7 +124,7 @@ The CLI uses the same mappings as the shadcn CLI. The examples on the component 
 
 ## Animations
 
-The CLI also changes directional animation classes. For example, `slide-in-from-right` becomes `slide-in-from-end`, so dropdowns, popovers and tooltips animate in the direction of the text.
+Dropdowns, popovers and tooltips animate in the direction of the text without a change from the CLI: their slide animations come from the style's CSS, which keys them on the logical `data-[side=inline-start]` and `data-[side=inline-end]` sides. In your own classes, the CLI changes a slide inside a logical side, such as `data-[side=inline-start]:slide-in-from-right`, to `slide-in-from-end`.
 
 **Popups outside the document direction**
 
@@ -147,13 +147,22 @@ If you installed components before you turned on RTL, migrate them with the CLI.
 npx @sveltery/ui@latest migrate rtl [path]
 ```
 
-`[path]` takes a file, a directory or a glob pattern. Without it, the command migrates every file in the `ui` directory. It also sets `rtl: true` in `components.json`, so later `add` runs transform too.
+`[path]` takes a file, a directory or a glob pattern with `*`, which needs Node 22 or later. Without it, the command migrates every file in the `ui` directory. It also sets `rtl: true` in `components.json`, so later `add` runs transform too. A file it cannot parse is skipped with a warning.
+
+The flip markers on arrow and chevron icons were removed when you added the components, so the migration cannot add `rtl:rotate-180` back to them. Run `update` afterwards to rewrite your components from the registry with the flips:
+
+```bash
+npx @sveltery/ui@latest update
+```
+
+`update` asks before it overwrites each changed file, so keep your own edits where you need them.
 
 ### Manual Migration (Optional)
 
 The CLI does not migrate the following components. Check them by hand:
 
 - [Calendar](/docs/components/calendar#rtl): pass `dir="rtl"` and a right-to-left locale.
+- [Breadcrumb](/docs/components/breadcrumb), [Carousel](/docs/components/carousel), [Dropdown Menu](/docs/components/dropdown-menu) and [Context Menu](/docs/components/context-menu): add `rtl:rotate-180` to the separator, previous and next, and sub-trigger chevron icons, or run `update`.
 - [Pagination](/docs/components/pagination): add `rtl:rotate-180` to the icons in `PaginationPrevious.svelte` and `PaginationNext.svelte` if they do not flip.
 - [Sidebar](/docs/components/sidebar): check the side the sidebar opens from, and add `rtl:rotate-180` to the icon in `SidebarTrigger.svelte` if it does not flip.
 

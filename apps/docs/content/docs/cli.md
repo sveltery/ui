@@ -251,19 +251,19 @@ Options:
 
 ### migrate rtl
 
-The `rtl` migration rewrites the components you already installed for right-to-left layouts, the way `add` writes them when `components.json` has `rtl: true`.
+The `rtl` migration rewrites the components you already installed for right-to-left layouts.
 
 ```bash
 npx @sveltery/ui@latest migrate rtl
 ```
 
-It sets `rtl: true` in `components.json`, then changes physical classes such as `ml-2` and `left-0` to logical ones such as `ms-2` and `start-0` in each file. Pass a file, a directory or a glob pattern to migrate only those files:
+It sets `rtl: true` in `components.json`, then changes physical classes such as `ml-2` and `left-0` to logical ones such as `ms-2` and `start-0` in each file. Pass a file, a directory or a glob pattern with `*` to migrate only those files. A glob needs Node 22 or later.
 
 ```bash
 npx @sveltery/ui@latest migrate rtl "src/lib/components/ui/dropdown-menu/**"
 ```
 
-It lists the calendar, pagination and sidebar files it finds for you to check by hand. See [Manual Migration](/docs/rtl#manual-migration-optional).
+It skips a file it cannot parse, with a warning, and lists the calendar, pagination and sidebar files it finds for you to check by hand. The icons that `add` would flip lose their flip marker when an LTR project adds them, so run `update` afterwards to get them back. See [Manual Migration](/docs/rtl#manual-migration-optional).
 
 ---
 

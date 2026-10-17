@@ -658,6 +658,19 @@ describe('migrate rtl', () => {
     expect(read(`${ui}/card/Card.svelte`)).toContain('ms-2');
   });
 
+  test('takes an absolute glob', async () => {
+    const result = await migrateRtl({ cwd, yes: true, path: join(cwd, ui, 'card/*.svelte') });
+    expect(result.transformed).toHaveLength(1);
+    expect(read(`${ui}/card/Card.svelte`)).toContain('ms-2');
+  });
+
+  test('skips a file the parser rejects and migrates the rest', async () => {
+    writeFileSync(join(cwd, ui, 'card/snippet.ts'), "export const s = '</script>';\n");
+    const result = await migrateRtl({ cwd, yes: true });
+    expect(result.transformed.sort()).toEqual(['card/Card.svelte', 'card/variants.ts']);
+    expect(read(`${ui}/card/snippet.ts`)).toBe("export const s = '</script>';\n");
+  });
+
   test('changes nothing when the prompt is declined', async () => {
     vi.mocked(confirm).mockResolvedValueOnce(false);
     await migrateRtl({ cwd, yes: false });
