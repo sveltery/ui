@@ -118,7 +118,7 @@ Use multiple fields to create a checkbox list.
 
 Wrap the checkboxes in a [DirectionProvider](/docs/components/direction) and set `dir` on the field group. Use the buttons to switch the language.
 
-<ComponentPreview name="base/CheckboxRtlExample" align="start" />
+<ComponentPreview name="base/CheckboxRtlExample" />
 
 ## API Reference
 

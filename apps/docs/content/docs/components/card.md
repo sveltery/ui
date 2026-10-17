@@ -107,7 +107,7 @@ Add an image before the card header to create a card with an image.
 
 Wrap the card in a [DirectionProvider](/docs/components/direction) and set `dir` on `Card`. Use the buttons to switch the language.
 
-<ComponentPreview name="base/CardRtlExample" align="start" />
+<ComponentPreview name="base/CardRtlExample" />
 
 ## API Reference
 

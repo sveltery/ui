@@ -207,7 +207,7 @@ Focus skips disabled and hidden days and changes month when it leaves the displa
 
 Wrap the calendar in a [DirectionProvider](/docs/components/direction) and pass `dir`. Use the buttons to switch the language.
 
-<ComponentPreview name="base/CalendarRtlExample" align="start" />
+<ComponentPreview name="base/CalendarRtlExample" />
 
 When using RTL, import the locale from `date-fns/locale` and pass both the `locale` and `dir` props to the Calendar component:
 
