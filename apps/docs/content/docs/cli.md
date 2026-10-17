@@ -273,6 +273,41 @@ Options:
 
 ---
 
+## build
+
+Use the `build` command to generate the JSON files of [your own registry](/docs/registry/getting-started).
+
+```bash
+npx @sveltery/ui@latest build
+```
+
+`build` reads `registry.json` and writes one item file per item to `static/r`, such as `static/r/hello-card.json`, with each file's source in `content`. It also writes `static/r/registry.json`. A SvelteKit app serves the `static` folder, so the items are at `/r/<name>.json`.
+
+**Options**
+
+```txt
+Usage: sveltery build [options] [registry]
+
+build components for a registry
+
+Arguments:
+  registry             path to registry.json file (default: "./registry.json")
+
+Options:
+  -o, --output <path>  destination directory for json files (default:
+                       "./static/r")
+  -c, --cwd <path>     the working directory (default: ".")
+  -h, --help           display help for command
+```
+
+To change the output directory, use the `--output` option. In a Vite app without SvelteKit, pass `./public/r`.
+
+```bash
+npx @sveltery/ui@latest build --output ./public/r
+```
+
+---
+
 ## migrate
 
 Use the `migrate` command to run a migration on your project.
@@ -334,4 +369,4 @@ SVELTERY_REGISTRY_URL=https://preview.example.com/r npx @sveltery/ui@latest add 
 
 ## Not supported
 
-The shadcn CLI has commands and options that this CLI does not have yet: `apply`, `preset`, `search`, `build`, `docs`, `info` and `eject`, the `cn`, `icons`, `base-color` and `radix` migrations, namespaced registries, local file paths as items and JavaScript output. See [Registry](/docs/registry) and [JavaScript](/docs/javascript) for what works today.
+The shadcn CLI has commands and options that this CLI does not have yet: `apply`, `preset`, `search`, `docs`, `info` and `eject`, the `cn`, `icons`, `base-color` and `radix` migrations, namespaced registries, local file paths as items and JavaScript output. See [Registry](/docs/registry) and [JavaScript](/docs/javascript) for what works today.
