@@ -57,7 +57,7 @@ Base UI marks an open trigger with its own attributes. A collapsible trigger get
 
 **Upstream:** The chevron in [`collapsible-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/collapsible-example.tsx#L110) rotates on `group-data-[state=open]`. The bookmark icons in [`toggle-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/toggle-example.tsx#L321) (also line 331) fill on `group-data-[state=on]/toggle`. These are Radix attributes. The menu buttons and the collapsible chevron in [`sidebar-demo.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/sidebar-demo.tsx#L223) use `data-[state=open]`, and its dropdown menus are `w-(--radix-dropdown-menu-trigger-width)`, a Radix variable.
 
-**Sveltery UI:** The [Collapsible](/docs/components/collapsible) example uses `group-data-panel-open:`, and the [Toggle](/docs/components/toggle) example uses `group-data-pressed/toggle:`. The [Sidebar](/docs/components/sidebar) demo uses `data-popup-open:`, `group-data-open/collapsible:` and `w-(--anchor-width)`.
+**Sveltery UI:** The [Collapsible](/docs/components/collapsible) example uses `group-data-panel-open:`, and the Toggle preview example (`ToggleExample.svelte`) uses `group-data-pressed/toggle:`. The [Sidebar](/docs/components/sidebar) demo uses `data-popup-open:`, `group-data-open/collapsible:` and `w-(--anchor-width)`.
 
 **Why:** Base UI never sets `data-state`, so upstream's chevron does not rotate and the bookmark does not fill when pressed. It has no `--radix-dropdown-menu-trigger-width`, so that class sets no width.
 
@@ -333,6 +333,16 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
 
+### The Toggle Group usage snippet has no `type`
+
+**Upstream:** The [Toggle Group](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/toggle-group.mdx) usage snippet passes `type="single"`, a Radix prop that Base UI's toggle group does not take.
+
+**Sveltery UI:** The [Toggle Group](/docs/components/toggle-group) usage snippet passes no `type`. A group is single-select until you add `multiple`.
+
+**Why:** Base UI ignores `type`, so the prop in upstream's snippet does nothing.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ### Every icon in the Button example has `data-icon`
 
 **Upstream:** In [`button-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/button-example.tsx#L186), the small outline button's trailing icon has no `data-icon`. Its sibling buttons all have `data-icon="inline-end"`.
@@ -466,6 +476,16 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Sveltery UI:** The [Item](/docs/components/item) group example adds `aria-label="Add {username}"` to each button.
 
 **Why:** A screen reader announces an unnamed button as just "button".
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Toggle Group page has no changelog
+
+**Upstream:** The [Toggle Group page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/toggle-group.mdx?plain=1#L131) ends with a changelog for the default `spacing` moving from `0` to `2`.
+
+**Sveltery UI:** The [Toggle Group](/docs/components/toggle-group) page ends at its API Reference. Its `spacing` already defaults to `2`.
+
+**Why:** Sveltery's Toggle Group shipped with a default of `2`, so there is no change to migrate from.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
