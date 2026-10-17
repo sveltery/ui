@@ -152,13 +152,18 @@ Where upstream code misbehaves on Base UI, Sveltery UI fixes it instead of copyi
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
-### Calendar month and year dropdowns have a border
+### Calendar and Input OTP keep the style classes the registry build drops
 
-**Upstream:** The dropdown root in [`calendar.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/calendar.tsx#L76) uses `cn-calendar-dropdown-root`, which each style defines with a border and focus ring, for example [`style-nova.css`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/styles/style-nova.css#L235-L237). The registry build leaves that class uninlined, in the served [`base-nova/calendar.json`](https://ui.shadcn.com/r/styles/base-nova/calendar.json) too, and the site has no rule for it. The month and year dropdowns on ui.shadcn.com have no border and no focus ring.
+**Upstream:** The registry build inlines each style's `cn-*` classes only in `cva` calls, `className` attributes, `className:` object keys, and `mergeProps` calls ([`transform-style-map.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/styles/transform-style-map.ts#L41-L58)). It misses three classes that the style files define, for example in [`style-nova.css`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/styles/style-nova.css):
 
-**Sveltery UI:** The [Calendar](/docs/components/calendar) dropdowns get the style's border and focus ring.
+- `cn-calendar-dropdown-root` and `cn-calendar-caption-label` are `classNames` keys in [`calendar.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/calendar.tsx#L76-L88). The style gives the dropdown root a border and focus ring ([`style-nova.css`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/styles/style-nova.css#L235-L237)), and the caption label `h-6 pr-1 pl-1.5` ([`style-nova.css`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/styles/style-nova.css#L239-L241)).
+- `cn-input-otp` is the `containerClassName` in [`input-otp.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/input-otp.tsx#L19-L22). The style gives it `gap-2` ([`style-nova.css`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/styles/style-nova.css#L682-L684)).
 
-**Why:** The style files define the class for this element, so the missing border is a build gap, not a design choice. Without it, a focused dropdown shows no focus ring.
+The served [`base-nova/calendar.json`](https://ui.shadcn.com/r/styles/base-nova/calendar.json) and [`base-nova/input-otp.json`](https://ui.shadcn.com/r/styles/base-nova/input-otp.json) keep these classes as raw tokens, and the site has no rule for them. On ui.shadcn.com, the month and year dropdowns have no border and no focus ring, the dropdown caption has no height or padding, and the Input OTP root has no gap between its groups and separators.
+
+**Sveltery UI:** The [Calendar](/docs/components/calendar) dropdowns and caption get the style's classes, and so does the [Input OTP](/docs/components/input-otp) root.
+
+**Why:** The style files define these classes for these elements, so their absence upstream is a build gap, not a design choice. Without them, a focused dropdown shows no focus ring.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
@@ -332,9 +337,9 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Upstream:** The sidebar examples size the provider with `min-h-svh` and the sidebar with `fixed h-svh`, for example in [`sidebar-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/sidebar-example.tsx).
 
-**Sveltery UI:** The [Sidebar](/docs/components/sidebar) examples in the docs use `h-full min-h-0` on the provider and `absolute h-full` on the sidebar.
+**Sveltery UI:** The [Sidebar](/docs/components/sidebar) examples in the docs sit in a preview frame, `<div class="relative h-[32rem] w-full transform-gpu overflow-hidden rounded-lg border">`. Inside it, they use `h-full min-h-0` on the provider, `absolute h-full` on the sidebar, and `min-w-0 overflow-auto` on `SidebarInset`.
 
-**Why:** The docs show each example in a preview frame. A sidebar sized to the viewport would overflow it.
+**Why:** The docs show each example in a preview frame. A sidebar sized to the viewport would overflow it. At phone widths, the inset content is taller than the frame, and `overflow-auto` lets you scroll it. Without it, the frame cuts the content off.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
 
