@@ -1,6 +1,6 @@
 import { defineConfig } from '@playwright/test';
 export default defineConfig({
-  testDir: './tests/browser', workers: 1, fullyParallel: false, retries: 0, reporter: [['list']],
+  testDir: './tests/browser', workers: 1, fullyParallel: true, retries: 0, reporter: [['list']],
   projects: [
     // CHROMIUM_PATH runs a preinstalled local Chromium, typically as root in a container where the sandbox cannot start.
     { name: 'chromium', use: { browserName: 'chromium', launchOptions: { executablePath: process.env.CHROMIUM_PATH } } },
