@@ -93,7 +93,19 @@ To pick a theme, fonts and radius visually, use the [Create page](/create). It g
 
 ## Base colors
 
-The `@sveltery/components/themes.css` stylesheet also ships the shadcn/ui base colors as classes, from `theme-neutral` to `theme-zinc`. Add one to an element to recolor everything inside it.
+`init` writes one set of tokens: the base color you pick with `--base-color`, such as `neutral` or `zinc`. A preset from the [Create page](/create) also merges in its accent theme, such as `blue`. The registry serves every base color and accent theme at `https://ui.sveltery.dev/r/themes/<name>.json`, with its light and dark tokens under `cssVars`.
+
+To recolor part of a page, put another theme's tokens on a class and add the class to an element. Everything inside it uses those tokens.
+
+```css title="src/app.css"
+.theme-blue {
+  --primary: oklch(0.488 0.243 264.376);
+  --primary-foreground: oklch(0.97 0.014 254.604);
+}
+.dark .theme-blue {
+  --primary: oklch(0.424 0.199 265.638);
+}
+```
 
 ```svelte
 <div class="theme-blue">
