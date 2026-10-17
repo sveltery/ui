@@ -2,7 +2,7 @@
   import { PieChart, Text } from 'layerchart';
   import { Badge } from '$registry/bases/base/ui/badge';
   import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { type ChartConfig, ChartContainer, ChartLegend, ChartTooltip } from '$registry/bases/base/ui/chart';
+  import { type ChartConfig, ChartContainer, ChartLegend, ChartTooltip } from '../../../examples/charts/layerchart';
   import { Progress } from '$registry/bases/base/ui/progress';
 
   const pieChartData = [

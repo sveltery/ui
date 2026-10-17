@@ -92,7 +92,7 @@ describe('items', () => {
 
   it('gives a helper package its workspace version and an optional peer its peer range', () => {
     expect(item('styles/nova/calendar.json').dependencies).toEqual([`@sveltery/day-picker@${HELPER_RANGE}`, 'cn@^0.2.2', 'date-fns@^4.4.0']);
-    expect(item('styles/nova/chart.json').dependencies).toEqual(['cn@^0.2.2', 'layerchart@^2.7.0']);
+    expect(item('styles/nova/chart.json').dependencies).toEqual(['@sveltery/recharts@^0.1.0', 'cn@^0.2.2']);
   });
 
   it('lists shared as a dependency of an item that imports ../shared/ and ships it as a lib item', () => {

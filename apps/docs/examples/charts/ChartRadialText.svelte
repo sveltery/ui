@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { type ChartConfig, ChartContainer } from '$registry/bases/base/ui/chart';
+  import { type ChartConfig, ChartContainer } from './layerchart';
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';
   import { ArcChart, Text } from 'layerchart';
 

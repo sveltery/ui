@@ -3,7 +3,7 @@
   import { curveLinearClosed } from 'd3-shape';
   import { scaleBand } from 'd3-scale';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
+  import { type ChartConfig, ChartContainer, ChartTooltip } from './layerchart';
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
   const chartData = [

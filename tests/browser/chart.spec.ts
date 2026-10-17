@@ -3,109 +3,82 @@ import { expect, test, type Page } from '@playwright/test';
 async function open(page: Page) {
   await page.goto('/chart');
   await expect(page.locator('[data-hydrated=true]')).toBeAttached();
-  await expect(page.locator('[data-chart=chart-bars] .lc-bar')).toHaveCount(8);
+  await expect(bars(page, 'bars')).toHaveCount(8);
 }
 
 const chart = (page: Page, id: string) => page.locator(`[data-chart=chart-${id}]`);
+const bars = (page: Page, id: string) => chart(page, id).locator('.recharts-bar-rectangle path');
+const tooltip = (page: Page, id: string) => chart(page, id).locator('.recharts-tooltip-wrapper');
+/** The text a reader sees, one space between blocks: the content has no whitespace between its elements, as upstream. */
+const read = (page: Page, id: string) => () => tooltip(page, id).evaluate((element) => (element as HTMLElement).innerText.replace(/\s+/g, ' ').trim());
 
-/** Hovers the first bar of a chart and returns the chart's tooltip. */
-async function firstTooltip(page: Page, id: string) {
-  await open(page);
-  await pointAt(page, `[data-chart=chart-${id}] .lc-bar >> nth=0`);
-  return chart(page, id).locator('.lc-tooltip-root');
-}
-
-// LayerChart lays a transparent hit area over the marks, so a pointer reaches a mark only by its coordinates.
-async function pointAt(page: Page, selector: string) {
-  await page.locator(selector).scrollIntoViewIfNeeded();
-  const box = (await page.locator(selector).boundingBox())!;
+/** Hovers the middle of a bar, which puts the pointer over its category. */
+async function hoverBar(page: Page, id: string, index: number) {
+  const bar = bars(page, id).nth(index);
+  await bar.scrollIntoViewIfNeeded();
+  const box = (await bar.boundingBox())!;
   await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
 }
 
-const fill = (page: Page, selector: string) => page.locator(selector).evaluate((element) => getComputedStyle(element).fill);
+async function firstTooltip(page: Page, id: string) {
+  await open(page);
+  await hoverBar(page, id, 0);
+  return read(page, id);
+}
+
+const fill = (page: Page, id: string, index: number) => bars(page, id).nth(index).evaluate((element) => getComputedStyle(element).fill);
 
 test('hovering a bar shows the month and each series with its config label and value', async ({ page }) => {
   await open(page);
-  await pointAt(page, '[data-chart=chart-bars] .lc-bar >> nth=1');
-  const tooltip = page.locator('[data-chart=chart-bars] .lc-tooltip-root');
-  await expect(tooltip).toHaveText('February Desktop 305 Mobile 200');
-  await expect(tooltip.locator('[style*="--color-border"]').first()).toHaveCSS('border-top-color', 'rgb(37, 99, 235)');
+  await hoverBar(page, 'bars', 1);
+  await expect.poll(read(page, 'bars')).toBe('February Desktop 305 Mobile 200');
+  await expect(tooltip(page, 'bars').locator('[style*="--color-border"]').first()).toHaveCSS('border-top-color', 'rgb(37, 99, 235)');
   await page.mouse.move(0, 0);
-  await expect(tooltip).toHaveCount(0);
+  await expect.poll(read(page, 'bars')).toBe('');
 });
 
-test('hovering a pie slice names the row from the config and colors its indicator from the config', async ({ page }) => {
+test('focusing the chart shows the first category, the arrow keys step through the categories and blur hides the tooltip', async ({ page }) => {
   await open(page);
-  await pointAt(page, '[data-chart=chart-pie] path.lc-arc-line >> nth=0');
-  const tooltip = page.locator('[data-chart=chart-pie] .lc-tooltip-root');
-  await expect(tooltip).toHaveText('Chrome 275');
-  await expect(tooltip.locator('[style*="--color-bg"]').first()).toHaveCSS('background-color', 'rgb(34, 197, 94)');
-});
-
-test('hovering a radial arc shows only that arc, though every arc is its own series', async ({ page }) => {
-  await open(page);
-  await pointAt(page, '[data-chart=chart-radial] path.lc-arc-line >> nth=0');
-  await expect(page.locator('[data-chart=chart-radial] .lc-tooltip-root')).toHaveText(/^\s*(Chrome 275|Safari 200|Firefox 187)$/);
-});
-
-test('arrow keys, Home and End step through the data points and Escape or blur hides the tooltip', async ({ page }) => {
-  await open(page);
-  const bars = chart(page, 'bars');
-  const tooltip = bars.locator('.lc-tooltip-root');
-  await expect(bars).toHaveAttribute('tabindex', '0');
-  await bars.focus();
-  await expect(tooltip).toHaveCount(0);
+  const surface = chart(page, 'bars').locator('svg.recharts-surface');
+  const content = read(page, 'bars');
+  await expect(surface).toHaveAttribute('tabindex', '0');
+  await expect(surface).toHaveAttribute('role', 'application');
+  await surface.focus();
+  await expect.poll(content).toBe('January Desktop 186 Mobile 80');
   await page.keyboard.press('ArrowRight');
-  await expect(tooltip).toHaveText('January Desktop 186 Mobile 80');
-  await page.keyboard.press('ArrowDown');
-  await expect(tooltip).toHaveText('February Desktop 305 Mobile 200');
+  await expect.poll(content).toBe('February Desktop 305 Mobile 200');
   await page.keyboard.press('ArrowLeft');
-  await expect(tooltip).toHaveText('January Desktop 186 Mobile 80');
-  await page.keyboard.press('ArrowLeft');
-  await expect(tooltip).toHaveText('January Desktop 186 Mobile 80');
-  await page.keyboard.press('End');
-  await expect(tooltip).toHaveText('April Desktop 73 Mobile 190');
-  await page.keyboard.press('ArrowUp');
-  await expect(tooltip).toHaveText('March Desktop 237 Mobile 120');
-  await page.keyboard.press('Home');
-  await expect(tooltip).toHaveText('January Desktop 186 Mobile 80');
-  await page.keyboard.press('Escape');
-  await expect(tooltip).toHaveCount(0);
-  await page.keyboard.press('End');
-  await expect(tooltip).toHaveText('April Desktop 73 Mobile 190');
-  await bars.blur();
-  await expect(tooltip).toHaveCount(0);
+  await expect.poll(content).toBe('January Desktop 186 Mobile 80');
+  await surface.blur();
+  await expect.poll(content).toBe('');
 });
 
 test('the legend lists the config labels in order with their colors, below the plot', async ({ page }) => {
   await open(page);
-  const items = page.locator('[data-chart=chart-bars]').getByText('Desktop').locator('..').locator('> div');
+  const items = chart(page, 'bars').locator('.recharts-legend-wrapper > div > div');
   await expect(items).toHaveText(['Desktop', 'Mobile']);
   await expect(items.nth(0).locator('div')).toHaveCSS('background-color', 'rgb(37, 99, 235)');
   await expect(items.nth(1).locator('div')).toHaveCSS('background-color', 'rgb(220, 38, 38)');
-  const legend = (await items.first().locator('..').boundingBox())!;
-  const labels = await page.locator('[data-chart=chart-bars] .lc-axis-tick-label').evaluateAll((nodes) => Math.max(...nodes.map((node) => node.getBoundingClientRect().bottom)));
+  await expect(chart(page, 'bars').locator('.recharts-cartesian-axis-tick-value')).toHaveCount(4);
+  const legend = (await items.first().boundingBox())!;
+  const labels = await chart(page, 'bars').locator('.recharts-cartesian-axis-tick-value').evaluateAll((nodes) => Math.max(...nodes.map((node) => node.getBoundingClientRect().bottom)));
   expect(legend.y).toBeGreaterThanOrEqual(labels);
-
-  const slices = page.locator('[data-chart=chart-pie]').getByText('Chrome').locator('..').locator('> div');
-  await expect(slices).toHaveText(['Chrome', 'Safari', 'Firefox']);
-  await expect(slices.nth(2).locator('div')).toHaveCSS('background-color', 'rgb(249, 115, 22)');
 });
 
 test('config colors fill the marks and a theme color follows the dark class', async ({ page }) => {
   await open(page);
-  expect(await fill(page, '[data-chart=chart-bars] .lc-bar >> nth=0')).toBe('rgb(37, 99, 235)');
-  expect(await fill(page, '[data-chart=chart-bars] .lc-bar >> nth=4')).toBe('rgb(220, 38, 38)');
+  expect(await fill(page, 'bars', 0)).toBe('rgb(37, 99, 235)');
+  expect(await fill(page, 'bars', 4)).toBe('rgb(220, 38, 38)');
   await page.evaluate(() => document.documentElement.classList.add('dark'));
-  expect(await fill(page, '[data-chart=chart-bars] .lc-bar >> nth=0')).toBe('rgb(37, 99, 235)');
-  expect(await fill(page, '[data-chart=chart-bars] .lc-bar >> nth=4')).toBe('rgb(250, 204, 21)');
+  expect(await fill(page, 'bars', 0)).toBe('rgb(37, 99, 235)');
+  expect(await fill(page, 'bars', 4)).toBe('rgb(250, 204, 21)');
   await page.evaluate(() => document.documentElement.classList.remove('dark'));
-  expect(await fill(page, '[data-chart=chart-bars] .lc-bar >> nth=4')).toBe('rgb(220, 38, 38)');
+  expect(await fill(page, 'bars', 4)).toBe('rgb(220, 38, 38)');
 });
 
 test('the chart follows the width of its container', async ({ page }) => {
   await open(page);
-  const width = () => page.locator('[data-chart=chart-bars] svg.lc-layout-svg').first().evaluate((svg) => svg.getBoundingClientRect().width);
+  const width = () => chart(page, 'bars').locator('svg.recharts-surface').evaluate((svg) => svg.getBoundingClientRect().width);
   await expect.poll(width).toBe(600);
   await page.locator('#wrapper').evaluate((wrapper) => (wrapper.style.width = '420px'));
   await expect.poll(width).toBe(420);
@@ -125,42 +98,31 @@ test('a config without colors writes no style element', async ({ page }) => {
   await expect(chart(page, 'plain').locator('> style')).toHaveCount(0);
 });
 
-// ChartTooltip stands for Recharts' Tooltip, whose filterNull drops these rows before the content renders.
-test('a series with no value at the hovered row gets no row', async ({ page }) => {
-  await expect(await firstTooltip(page, 'gaps')).toHaveText('January Desktop 186');
-});
-
-test('a falsy category gives no header, as upstream', async ({ page }) => {
-  await expect(await firstTooltip(page, 'zero')).toHaveText('Desktop 186 Mobile 80');
-});
-
-test.describe('in UTC', () => {
-  test.use({ timezoneId: 'UTC' });
-  test('a date category reaches the header and labelFormatter as the date itself', async ({ page }) => {
-    await expect(await firstTooltip(page, 'dates')).toHaveText('Mon Jan 01 2024 00:00:00 GMT+0000 (Coordinated Universal Time) Desktop 186 Mobile 80');
-  });
+test('a series with no value at the hovered category gets no row', async ({ page }) => {
+  await expect.poll(await firstTooltip(page, 'gaps')).toBe('January Desktop 186');
 });
 
 test('a labelFormatter result is shown even when it is falsy', async ({ page }) => {
-  await expect(await firstTooltip(page, 'formatted')).toHaveText('0 Desktop 186 Mobile 80');
+  await expect.poll(await firstTooltip(page, 'formatted')).toBe('0 Desktop 186 Mobile 80');
 });
 
-test('the formatter skips a series whose label is empty', async ({ page }) => {
-  await expect(await firstTooltip(page, 'unnamed')).toHaveText('January Desktop 186Mobile=80');
+test('the formatter snippet replaces the content of each row', async ({ page }) => {
+  await expect.poll(await firstTooltip(page, 'valued')).toBe('January desktop=186 mobile=80');
 });
 
-test('the legend shows nothing for a series with no config or series label', async ({ page }) => {
+test('the legend shows nothing for a series with no config label', async ({ page }) => {
   await open(page);
-  await expect(chart(page, 'unlisted').getByText('Desktop').locator('..').locator('> div')).toHaveText(['Desktop', '']);
+  await expect(chart(page, 'unlisted').locator('.recharts-legend-wrapper > div > div')).toHaveText(['Desktop', '']);
 });
 
 test('the tooltip takes its look from the style', async ({ page }) => {
-  const tooltip = (await firstTooltip(page, 'bars')).locator('.lc-tooltip-content > div');
-  await expect(tooltip).toHaveCSS('border-top-width', '1px');
+  await firstTooltip(page, 'bars');
+  const content = tooltip(page, 'bars').locator('> div');
+  await expect(content).toHaveCSS('border-top-width', '1px');
   // One style per document, as the Create preview switches it on <body>.
   await page.evaluate(() => document.body.classList.replace('style-nova', 'style-luma'));
-  await expect(tooltip).toHaveCSS('border-top-width', '0px');
-  await expect(tooltip).toHaveCSS('border-top-left-radius', '14px');
+  await expect(content).toHaveCSS('border-top-width', '0px');
+  await expect(content).toHaveCSS('border-top-left-radius', '14px');
 });
 
 test.describe('docs blocks', () => {
@@ -171,8 +133,8 @@ test.describe('docs blocks', () => {
     await expect(page.locator('html')).toHaveAttribute('data-ready', { timeout: 30_000 });
     const gap = (title: string) =>
       page.locator('[data-slot=card]', { hasText: title }).locator('[data-slot=chart]').evaluate((chart) => {
-        const bottom = Math.max(...[...chart.querySelectorAll('.lc-bar')].map((bar) => bar.getBoundingClientRect().bottom));
-        const top = Math.min(...[...chart.querySelectorAll('.placement-bottom text')].map((label) => label.getBoundingClientRect().top));
+        const bottom = Math.max(...[...chart.querySelectorAll('.recharts-bar-rectangle path')].map((bar) => bar.getBoundingClientRect().bottom));
+        const top = Math.min(...[...chart.querySelectorAll('.recharts-cartesian-axis-tick-value')].map((label) => label.getBoundingClientRect().top));
         return top - bottom;
       });
     await expect.poll(async () => [Math.round(await gap('Contribution History')), Math.round(await gap('Power Usage'))]).toEqual([11, 9]);

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { PieChart } from 'layerchart';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
+  import { type ChartConfig, ChartContainer, ChartTooltip } from './layerchart';
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
   const desktopData = [

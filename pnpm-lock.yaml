@@ -276,6 +276,9 @@ importers:
       '@sveltery/input-otp':
         specifier: workspace:*
         version: link:../../packages/input-otp
+      '@sveltery/recharts':
+        specifier: workspace:*
+        version: link:../../packages/recharts
       '@sveltery/resizable':
         specifier: workspace:*
         version: link:../../packages/resizable
