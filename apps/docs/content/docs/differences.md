@@ -524,6 +524,6 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Sveltery UI:** [`diff` and `update`](/docs/cli#diff) stay, because they check whole projects, and they take item URLs as well as names. [`add --diff` and `add --view`](/docs/cli#add) print unified diffs and file contents as plain text. They show every difference, and the `--diff` overview skips identical files.
 
-**Why:** A project does not record the URL an item came from, so a scan cannot check items added by URL. `diff <url>` and `update <url>` check one. Plain text pipes into a patch viewer or a file, and it shows a formatting-only edit as the change it is.
+**Why:** A project does not record the URL an item came from, so a scan cannot check items added by URL. `diff <url>` and `update <url>` check one. Upstream hides formatting-only changes because its transforms reformat the code they copy. This CLI's transforms keep the source's formatting, so a formatting-only difference is an edit you made, and the diff shows it. Plain text pipes into a patch viewer or a file.
 
-**Decided:** Hugo Hsi, 2026-10-17
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
