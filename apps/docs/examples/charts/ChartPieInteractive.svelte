@@ -1,110 +1,104 @@
 <script lang="ts">
-  import { Arc, PieChart, Text } from 'layerchart';
-  import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
-  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
-  import { NativeSelect, NativeSelectOption } from '$registry/bases/base/ui/native-select';
+  import { Label, Pie, PieChart, Sector, type PieSectorShapeProps, type SvelteArgs, type LabelContentProps } from '@sveltery/recharts';
+  import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { ChartContainer, ChartStyle, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
+  import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '$registry/bases/base/ui/select';
 
   const desktopData = [
-    { month: 'january', desktop: 186, color: 'var(--color-january)' },
-    { month: 'february', desktop: 305, color: 'var(--color-february)' },
-    { month: 'march', desktop: 237, color: 'var(--color-march)' },
-    { month: 'april', desktop: 173, color: 'var(--color-april)' },
-    { month: 'may', desktop: 209, color: 'var(--color-may)' },
-  ];
+    { month: "january", desktop: 186, fill: "var(--color-january)" },
+    { month: "february", desktop: 305, fill: "var(--color-february)" },
+    { month: "march", desktop: 237, fill: "var(--color-march)" },
+    { month: "april", desktop: 173, fill: "var(--color-april)" },
+    { month: "may", desktop: 209, fill: "var(--color-may)" },
+  ]
 
   const chartConfig = {
-    desktop: { label: 'Desktop' },
-    january: { label: 'January', color: 'var(--chart-1)' },
-    february: { label: 'February', color: 'var(--chart-2)' },
-    march: { label: 'March', color: 'var(--chart-3)' },
-    april: { label: 'April', color: 'var(--chart-4)' },
-    may: { label: 'May', color: 'var(--chart-5)' },
-  } satisfies ChartConfig;
+    visitors: {
+      label: "Visitors",
+    },
+    desktop: {
+      label: "Desktop",
+    },
+    mobile: {
+      label: "Mobile",
+    },
+    january: {
+      label: "January",
+      color: "var(--chart-1)",
+    },
+    february: {
+      label: "February",
+      color: "var(--chart-2)",
+    },
+    march: {
+      label: "March",
+      color: "var(--chart-3)",
+    },
+    april: {
+      label: "April",
+      color: "var(--chart-4)",
+    },
+    may: {
+      label: "May",
+      color: "var(--chart-5)",
+    },
+  } satisfies ChartConfig
+
+  const id = "pie-interactive";
 
   let activeMonth = $state(desktopData[0].month);
 
-  const activeIndex = $derived(desktopData.findIndex((item) => item.month === activeMonth));
+  const activeIndex = $derived.by(() => desktopData.findIndex((item) => item.month === activeMonth));
 
-  const months = $derived(desktopData.map((item) => item.month));
+  const months = $derived.by(() => desktopData.map((item) => item.month));
 </script>
 
-<Card class="flex w-full max-w-md flex-col">
-  <CardHeader class="flex flex-row items-start space-y-0 pb-0">
+{#snippet renderPieShape({ index, outerRadius = 0, ...props }: SvelteArgs<PieSectorShapeProps>)}
+  {#if index === activeIndex}<g>
+    <Sector {...props} outerRadius={outerRadius + 10} />
+    <Sector {...props} outerRadius={outerRadius + 25} innerRadius={outerRadius + 12} />
+  </g>{:else}<Sector {...props} {outerRadius} />{/if}
+{/snippet}
+
+<Card data-chart={id} class="flex flex-col">
+  <ChartStyle {id} config={chartConfig} />
+  <CardHeader class="flex-row items-start space-y-0 pb-0">
     <div class="grid gap-1">
       <CardTitle>Pie Chart - Interactive</CardTitle>
       <CardDescription>January - June 2024</CardDescription>
     </div>
-    <NativeSelect bind:value={activeMonth} size="sm" class="ms-auto" aria-label="Select a month">
-      {#each months as month (month)}
-        <NativeSelectOption value={month}>{chartConfig[month as keyof typeof chartConfig].label}</NativeSelectOption>
-      {/each}
-    </NativeSelect>
+    <Select value={activeMonth} onValueChange={(value) => value !== null && (activeMonth = value)}>
+      <SelectTrigger class="ml-auto h-7 w-[130px] rounded-lg pl-2.5" aria-label="Select a value">
+        <SelectValue placeholder="Select month" />
+      </SelectTrigger>
+      <SelectContent align="end" class="rounded-xl">
+        {#each months as key (key)}
+          {const config = $derived(chartConfig[key as keyof typeof chartConfig])}{#if !(!config)}<SelectItem value={key} class="rounded-lg [&_span]:flex">
+            <div class="flex items-center gap-2 text-xs"><span class="flex h-3 w-3 shrink-0 rounded-xs" style:background-color={`var(--color-${key})`}></span>{config?.label}</div>
+          </SelectItem>{/if}
+        {/each}
+      </SelectContent>
+    </Select>
   </CardHeader>
-  <CardContent class="flex-1">
-    <ChartContainer aria-label="Pie Chart - Interactive" config={chartConfig} class="mx-auto aspect-square max-h-[250px]">
-      <PieChart
-        data={desktopData}
-        label="month"
-        key="month"
-        value="desktop"
-        c="color"
-        props={{
-          pie: {
-            sort: (a, b) => {
-              const monthOrder = ['january', 'february', 'march', 'april', 'may'];
-              return monthOrder.indexOf(a.month) - monthOrder.indexOf(b.month);
-            },
-            motion: 'tween',
-          },
-        }}
-        innerRadius={60}
-        outerRadius={-35}
-        padding={4}
-      >
-        {#snippet aboveMarks()}
-          <Text
-            value={desktopData[activeIndex].desktop.toLocaleString()}
-            textAnchor="middle"
-            verticalAnchor="middle"
-            class="fill-foreground !text-3xl font-bold"
-            dy={3}
-          />
-          <Text
-            value="Visitors"
-            textAnchor="middle"
-            verticalAnchor="middle"
-            class="!fill-muted-foreground text-muted-foreground"
-            dy={22}
-          />
-        {/snippet}
-        {#snippet arc({ props, index })}
-          {#if index === activeIndex}
-            <Arc {...props} outerRadius={-25} />
-            <Arc {...props} outerRadius={-10} innerRadius={-13} />
-          {:else}
-            <Arc {...props} />
-          {/if}
-        {/snippet}
-        {#snippet tooltip()}
-          <ChartTooltip hideLabel nameKey="month" />
-        {/snippet}
+  <CardContent class="flex flex-1 justify-center pb-0">
+    <ChartContainer {id} config={chartConfig} class="mx-auto aspect-square w-full max-w-[300px]">
+      <PieChart>
+        <ChartTooltip cursor={false}>
+          {#snippet content(props: TooltipContentArgs)}
+            <ChartTooltipContent hideLabel {...props} />
+          {/snippet}
+        </ChartTooltip>
+        <Pie data={desktopData} dataKey="desktop" nameKey="month" innerRadius={60} strokeWidth={5} shape={renderPieShape}>
+          <Label>
+            {#snippet content({ viewBox }: SvelteArgs<LabelContentProps>)}
+              {#if viewBox && "cx" in viewBox && "cy" in viewBox}<text x={viewBox.cx} y={viewBox.cy} text-anchor="middle" dominant-baseline="middle">
+                <tspan x={viewBox.cx} y={viewBox.cy} class="fill-foreground text-3xl font-bold">{desktopData[activeIndex].desktop.toLocaleString()}</tspan>
+                <tspan x={viewBox.cx} y={(viewBox.cy || 0) + 24} class="fill-muted-foreground">Visitors</tspan>
+              </text>{/if}
+            {/snippet}
+          </Label>
+        </Pie>
       </PieChart>
     </ChartContainer>
   </CardContent>
-  <CardFooter class="flex-col gap-2 text-sm">
-    <div class="flex items-center gap-2 leading-none font-medium">
-      Trending up by 5.2% this month <IconPlaceholder
-        lucide="TrendingUpIcon"
-        tabler="IconTrendingUp"
-        hugeicons="TradeUpIcon"
-        phosphor="TrendUpIcon"
-        remixicon="RiLineChartLine"
-        class="size-4"
-      />
-    </div>
-    <div class="text-muted-foreground leading-none">
-      Showing total visitors for the last 6 months
-    </div>
-  </CardFooter>
 </Card>
