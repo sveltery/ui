@@ -627,7 +627,199 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Hugo Hsi, 2026-10-14
 
+## Data Table guide
+
+### The guide has no state wiring steps
+
+**Upstream:** The [Data Table guide](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/data-table.mdx#L492) opens its Sorting, Filtering, Visibility and Row Selection sections with an "Update `<DataTable>`" step. Each step keeps one state slice in `React.useState` and passes it to `useTable` as `state` and `on*Change`.
+
+**Sveltery UI:** The [Data Table](/docs/components/data-table) guide drops those steps where nothing is left to change. Sorting and Row Selection go straight to the column definitions, and Filtering and Visibility add only the input and the menu. `createTable` from `@tanstack/svelte-table` keeps every state slice itself.
+
+**Why:** Wiring state by hand is how the React adapter gets it. The Svelte adapter reads and writes the slices through the table, so passing `state` and `on*Change` would only repeat what it already does. The guide still works the same for the user: sorting, filtering, hiding columns and selecting rows all happen in the table.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### Column definitions return components and snippets
+
+**Upstream:** The guide's [`columns.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/data-table.mdx#L167-L197) returns JSX from `header` and `cell`, and renders it with `<table.FlexRender />`.
+
+**Sveltery UI:** `columns.ts` cannot hold markup, so a cell returns `renderComponent(Component, props)`. The row menu, the sortable email header, the select checkbox and the right-aligned amount are small components next to `columns.ts`. The amount header is the one snippet, `renderSnippet(createRawSnippet(...))`, because it is static text. The table renders them with `<FlexRender />` from `@tanstack/svelte-table`, and the guide's callout about it describes that component.
+
+**Why:** A `.ts` module has no template. A `createRawSnippet` reads its arguments once, so a cell built with it keeps its first value when `data` changes. A component takes the new `amount` as a prop.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### A menu label sits inside a group
+
+**Upstream:** The guide's row actions put [`DropdownMenuLabel`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/data-table.mdx#L409) directly in `DropdownMenuContent`, and the Tasks [`data-table-view-options.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/app/%28app%29/examples/tasks/components/data-table-view-options.tsx#L36) does the same. Upstream's own [`data-table-demo.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/data-table-demo.tsx#L176) wraps its labels in `DropdownMenuGroup`.
+
+**Sveltery UI:** The row actions and the view options wrap `DropdownMenuLabel` in a `DropdownMenuGroup`, as the demo does.
+
+**Why:** Base UI's group label throws "MenuGroupContext is missing" outside a group, so the menu in upstream's guide code never opens.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The reusable components use Base UI's attributes and props
+
+**Upstream:** The Tasks [`data-table-column-header.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/app/%28app%29/examples/tasks/components/data-table-column-header.tsx#L34-L38) and [`data-table-view-options.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/app/%28app%29/examples/tasks/components/data-table-view-options.tsx#L25) import the Radix variant's dropdown menu. They use `DropdownMenuTrigger asChild` and `data-[state=open]:bg-accent`, and the column header is generic over `TData` and `TValue`.
+
+**Sveltery UI:** The [Data Table](/docs/components/data-table#reusable-components) components use a `render` snippet on the trigger and `data-popup-open:bg-accent`. The column header types `column` as the four methods it calls, so `renderComponent` accepts the column that a header receives. The guide links the Tasks demo on ui.shadcn.com, because these docs have no `/examples/tasks` page. The shared type is `DataTableFeatures`, where upstream's section calls it `TasksTableFeatures`, and the section adds the line "Put each component next to `data-table-features.ts`". The components use the features the guide registers, so they have no faceting.
+
+**Why:** Base UI never sets `data-state`, so the open column header would not stay highlighted. `renderComponent` cannot infer a component's generics, and a generic `column` prop fails to type-check against `Column<Features, Payment, ...>`. The Tasks features object registers faceting for its faceted filter, which the guide does not build, and the guide's own object is the one the components share.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The RTL example sets its own direction
+
+**Upstream:** The [RTL section](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/data-table.mdx#L891) links the RTL configuration guide, and the preview takes `direction="rtl"` from the docs site's language selector.
+
+**Sveltery UI:** The section links the [RTL guide](/docs/rtl) too. It then names the [DirectionProvider](/docs/components/direction), and the example has its own language buttons and sets `dir` on the table and on each menu.
+
+**Why:** These docs have no language selector that gives a preview its direction, so a Svelte example sets its own.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Installation step names the other components
+
+**Upstream:** The [Installation](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/data-table.mdx#L48-L50) step adds only `table`, and the guide imports `button`, `checkbox`, `dropdown-menu`, `input` and `select` without saying so.
+
+**Sveltery UI:** The step adds a sentence that lists those five components.
+
+**Why:** A project that follows the guide from a fresh `init` fails to build at the first import of a component it never added.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ## CLI
+
+### `diff` and `update` stay, and `add --diff` and `add --view` print plain text
+
+**Upstream:** [`diff`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/diff.ts#L41-L43) is deprecated in favor of `add --diff` and `add --view`. Upstream has no `update`. Its [`--diff` and `--view` output](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/utils/dry-run-formatter.ts) is colored and drawn in boxes, lists identical files as skipped, and hides formatting-only changes.
+
+**Sveltery UI:** [`diff` and `update`](/docs/cli#diff) stay, because they check whole projects, and they take item URLs as well as names. [`add --diff` and `add --view`](/docs/cli#add) print unified diffs and file contents as plain text. They show every difference, and the `--diff` overview skips identical files.
+
+**Why:** A project does not record the URL an item came from, so a scan cannot check items added by URL. `diff <url>` and `update <url>` check one. Upstream hides formatting-only changes because its transforms reformat the code they copy. This CLI's transforms keep the source's formatting, so a formatting-only difference is an edit you made, and the diff shows it. Plain text pipes into a patch viewer or a file.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `build` writes to `static/r`
+
+**Upstream:** [`build`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/build.ts#L28) writes to `./public/r` unless `--output` names another directory.
+
+**Sveltery UI:** [`build`](/docs/cli#build) writes to `./static/r` by default.
+
+**Why:** Next.js serves `public`, and SvelteKit serves `static`. With upstream's default, a SvelteKit app does not serve the items it built.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `build` writes a `target` for files that name none
+
+**Upstream:** `build` keeps a file without `target` as it is, and [`add`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/resolve-file-path.ts#L76) places it from its `path`, below the folder named like the last segment of the project's `ui` or `components` directory.
+
+**Sveltery UI:** [`build`](/docs/registry/registry-json#items) writes that place into `target`: the part of `path` after its first `ui` folder for a `registry:ui` file, or after its first `components` folder for a `registry:component` file, else the file name. It stops when a `registry:page` or `registry:file` file has no `target`.
+
+**Why:** The CLI reads `target` on every file and never looks at `path`, so an item from `build` installs with any CLI version that reads the item format. In a project with the default aliases, the file lands where upstream would place it.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `build` checks item names and file paths in every registry
+
+**Upstream:** `build` writes each item to [`<output>/<name>.json`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/build.ts#L74) for any name, including one with `/` or `..`. Without `include`, it [skips the file path checks](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/registry/loader.ts#L83) that it runs on included files, so it inlines a file at an absolute path or above the working directory.
+
+**Sveltery UI:** [`build`](/docs/registry/registry-json#items) stops when an item name is not lowercase letters, digits and hyphens. It checks file paths with and without `include`: a path must be relative, without `..` segments, and name a file inside the directory it is relative to.
+
+**Why:** An item named `../../registry` overwrote the source `registry.json`, and a path such as `/etc/hostname` put a file from outside the project into the published JSON. `add` installs only names of this form, so the check rejects no item that `add` could install by name.
+
+### Search takes one registry and no installed mark
+
+**Upstream:** [`search`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/search.ts#L37) (alias `list`) takes any number of registries: namespaces such as `@shadcn`, GitHub sources and URLs. With none, it searches every registry in `components.json` and stops when there is no `components.json`. Each result's `addCommandArgument` is the [namespaced address](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/registry/search.ts#L317) that `add` takes, and a search of several registries lists which registry a result is from.
+
+**Sveltery UI:** `search` knows one registry, `@sveltery`, which is the registry `SVELTERY_REGISTRY_URL` or `components.json` points at. With no argument it searches that one, with or without a `components.json`. Any other registry is an error. `addCommandArgument` is the bare item name, because `add` takes names and URLs only, and `registry` is `@sveltery`. Results come from the manifest `index.json`, which gained an optional `title` for each item so that a search needs one request.
+
+`--type` accepts the six types this registry has (`ui`, `lib`, `theme`, `block`, `base`, `font`) and rejects any other, such as `hook`. Upstream accepts every type of its schema and prints "No items found of type hook" for one the registry lacks.
+
+The old `list` command marked the items in your project as `installed` and had no types, pagination or query. `list` is now an alias of `search`, which prints upstream's output, and the mark is gone.
+
+**Why:** The registry is the only one the CLI reads until namespaced registries land. The installed mark would need one request for each item to read its file list, and it would add a field to upstream's JSON shape.
+
+### Docs links come from the registry's index and have no base
+
+**Upstream:** [`docs`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/docs.ts#L48-L65) takes `--base` (`base`, `radix` or `aria`), reads `meta.links[base]` of each item in the shadcn registry index, and prints `docs`, `examples` and `api`. The links are written by hand for each item in [`_registry.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/_registry.ts#L1-L20): `examples` is the component's example source file, and `api` is a page of Base UI's React docs.
+
+**Sveltery UI:** [`docs`](/docs/cli#docs) has no `--base`, and `meta.links` of an item in [`index.json`](/docs/registry/registry-json) is not nested by base. The build writes `docs` (the component's page) and `examples` (the same page as Markdown, which inlines every example's source) for each item. It writes `api` from a table of the items that are styled on a Base UI component, and a test checks that the item's docs page links the same Base UI page. Upstream's `api` link is not always a Base UI page, so the table leaves out the items Base UI has no page for (`aspect-ratio`, `calendar`, `carousel`, `command`, `input-otp`, `resizable`, `sonner`) and those items get no `api` link; `hover-card` links Base UI's `preview-card`. The warning for an item with no links goes to stderr, where upstream writes it to stdout, so `--json` stays parseable. The JSON keeps `base: "base"` in the report and in each result, to keep upstream's shape.
+
+**Why:** There is one variant, so `--base` has nothing to choose. The examples are Svelte files in this repository, not files that the site serves, so the page with the examples inlined is what an agent can read.
+
+### An `@namespace/item` name cannot expand environment variables
+
+**Upstream:** [`buildUrlFromRegistryConfig`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/registry/builder.ts#L71-L75) puts the item name into the namespace's URL template and then expands `${VAR}` in the result. A `registryDependencies` entry such as `@acme/${AWS_SECRET_ACCESS_KEY}` in a fetched item sends that secret to the `@acme` server.
+
+**Sveltery UI:** The CLI expands `${VAR}` in the template before it puts the item name in. It stops with an error for an item name that contains `${`, `?`, `#` or a `..` segment. See [Namespaces](/docs/registry/namespace#url-placeholders).
+
+**Why:** An item from one registry can name dependencies on any namespace you configured. Its author must not be able to read your environment variables, or to send your credentials to another path on that server.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### Registry errors print `${VAR}`, not its value
+
+**Upstream:** [`RegistryUnauthorizedError`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/registry/errors.ts#L122) and the other fetch errors print the expanded item URL. A token in a namespace's `params` appears in the terminal and in CI logs.
+
+**Sveltery UI:** Errors print the item URL with each `${VAR}` as written in `components.json`, such as `https://registry.company.com/button.json?token=${REGISTRY_TOKEN}`. When `fetch` rejects a header value, the error does not quote the value. See [Authentication](/docs/registry/authentication).
+
+**Why:** An error message is often pasted into an issue or kept in a build log, and it must not carry a credential.
+
+### Info reports a Svelte project
+
+**Upstream:** [`info`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/info.ts#L94-L145) prints `rsc`, `typescript` and `tailwindConfig` for the project, and `rsc`, `typescript`, `base` and `rtl` for the configuration. It reads the framework version only for Next.js, and `tailwindVersion` is `v3` or `v4`. It lists the `.tsx` and `.jsx` files in the ui folder that match a registry item, prints each configured registry, and stops with a message in a monorepo root. Its links include the example source of a component.
+
+**Sveltery UI:** [`info`](/docs/cli#info) leaves out `rsc`, `typescript`, `tailwindConfig`, `base` and `rtl`. Svelte has no server components or JSX, `components.json` has `typescript: true` only, Tailwind CSS 4 has no config file, the Base UI variant is the only one, and `init --rtl` is not supported. The project shows the framework version (SvelteKit's or Vite's), `svelteVersion` and `tailwindVersion` as versions, such as `4.1.2`, taken from `node_modules` when the package is installed and from `package.json` otherwise. The installed items are the manifest items that have a folder under `aliases.ui`. `registry` is the one registry the CLI reads. It does not stop in a monorepo root, because the CLI has no workspace detection and takes `--cwd`, and it has no example link, because a component's page shows its examples.
+
+**Why:** Each omitted field only has a value in a React or Next.js project, or in a setup that this CLI does not have. A version is more useful than `v4` for a bug report.
+
+### Preset resolve reads the CSS of a Svelte project
+
+**Upstream:** [`preset resolve`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/preset.ts#L150-L204) works out the preset from `components.json`, the CSS file and, in a Next.js app, the `next/font/google` imports and the `className` of the root layout ([`resolve.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/preset/resolve.ts#L478-L500)). In a monorepo root it stops and lists the workspaces. `preset open` calls the [`open`](https://www.npmjs.com/package/open) package.
+
+**Sveltery UI:** [`preset resolve`](/docs/cli#preset) reads `components.json` and the CSS file only: the `:root` and `.dark` variables, the `@theme inline` fonts and the fontsource imports. A SvelteKit app has no font module to read. It does not stop in a monorepo root, because the CLI has no workspace detection and takes `--cwd`. `preset open` starts the system's opener (`open`, `start` or `xdg-open`) itself.
+
+**Why:** `init` writes every font as a fontsource import and a theme variable, so the CSS holds what the Next.js readers look for. The `open` package adds dependencies for a call that starts one program.
+
+### `apply` with no preset prints the Create page link
+
+**Upstream:** [`apply.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/apply.ts#L140) calls [`promptToOpenPresetBuilder`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/preset/presets.ts#L53), which prints the link and then asks "Open in browser?" unless `--yes` is set.
+
+**Sveltery UI:** [`apply`](/docs/cli#apply) prints the link and the command to run next, and exits.
+
+**Why:** The link is clickable in most terminals, and the CLI does not need a package that starts a browser on each platform.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `apply` changes only the project it runs in
+
+**Upstream:** After it applies the preset, [`apply.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/apply.ts#L438) copies the style, base color, icon library and menu settings into the `components.json` of each linked workspace. Run at a monorepo root without a `components.json`, [`preflight-apply.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/preflights/preflight-apply.ts#L30) lists the workspace packages to run it in.
+
+**Sveltery UI:** [`apply`](/docs/cli#apply) changes only the project at `--cwd`. In a [monorepo](/docs/monorepo), run it in each package that has a `components.json`. At a monorepo root, it says that the directory has no `components.json`.
+
+**Why:** This CLI does not resolve workspaces yet, so it has no list of linked projects to update or suggest.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `apply` does not back up `components.json`
+
+**Upstream:** [`apply.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/apply.ts#L215) wraps the whole run in [`withFileBackup`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/utils/file-helper.ts#L63), which copies `components.json` first and puts it back if the run throws or the process exits early.
+
+**Sveltery UI:** [`apply`](/docs/cli#apply) resolves the preset, the settings and every file to write before it writes anything. A preset that does not resolve, an unreachable registry or a refused prompt leaves the project as it was. Once the plan is known, it writes all the files and then installs the packages. If the install fails, the written files, `components.json` included, stay in place, and the error names the packages to install yourself.
+
+**Why:** Nothing that can fail on the network or on input runs after the first write, so a backup would guard only the install step. Restoring `components.json` there would leave the new CSS and components paired with the old settings.
+
+### `eject` at a monorepo root does not list the workspace packages
+
+**Upstream:** When the directory has no `components.json` and is a monorepo root, [`eject.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/eject.ts#L57) lists the workspace packages that have one and shows the command to run in each.
+
+**Sveltery UI:** [`eject`](/docs/cli#eject) says that the directory has no `components.json` and to run `init` first.
+
+**Why:** This CLI does not resolve workspaces yet. The [Monorepo](/docs/monorepo) page tells you to run the CLI in the package with `--cwd`.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
 
 ### `migrate icons` maps icons from the registry's components
 
@@ -698,65 +890,3 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Why:** The CLI already parses Svelte components with `svelte/compiler`. A second parser for modules would add a large dependency for the rare module that contains `</script>`. Listing the file tells you which one to change by hand.
 
 **Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
-
-## Data Table guide
-
-### The guide has no state wiring steps
-
-**Upstream:** The [Data Table guide](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/data-table.mdx#L492) opens its Sorting, Filtering, Visibility and Row Selection sections with an "Update `<DataTable>`" step. Each step keeps one state slice in `React.useState` and passes it to `useTable` as `state` and `on*Change`.
-
-**Sveltery UI:** The [Data Table](/docs/components/data-table) guide drops those steps where nothing is left to change. Sorting and Row Selection go straight to the column definitions, and Filtering and Visibility add only the input and the menu. `createTable` from `@tanstack/svelte-table` keeps every state slice itself.
-
-**Why:** Wiring state by hand is how the React adapter gets it. The Svelte adapter reads and writes the slices through the table, so passing `state` and `on*Change` would only repeat what it already does. The guide still works the same for the user: sorting, filtering, hiding columns and selecting rows all happen in the table.
-
-**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
-
-### Column definitions return components and snippets
-
-**Upstream:** The guide's [`columns.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/data-table.mdx#L167-L197) returns JSX from `header` and `cell`, and renders it with `<table.FlexRender />`.
-
-**Sveltery UI:** `columns.ts` cannot hold markup, so a cell returns `renderComponent(Component, props)`. The row menu, the sortable email header, the select checkbox and the right-aligned amount are small components next to `columns.ts`. The amount header is the one snippet, `renderSnippet(createRawSnippet(...))`, because it is static text. The table renders them with `<FlexRender />` from `@tanstack/svelte-table`, and the guide's callout about it describes that component.
-
-**Why:** A `.ts` module has no template. A `createRawSnippet` reads its arguments once, so a cell built with it keeps its first value when `data` changes. A component takes the new `amount` as a prop.
-
-**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
-
-### A menu label sits inside a group
-
-**Upstream:** The guide's row actions put [`DropdownMenuLabel`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/data-table.mdx#L409) directly in `DropdownMenuContent`, and the Tasks [`data-table-view-options.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/app/%28app%29/examples/tasks/components/data-table-view-options.tsx#L36) does the same. Upstream's own [`data-table-demo.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/data-table-demo.tsx#L176) wraps its labels in `DropdownMenuGroup`.
-
-**Sveltery UI:** The row actions and the view options wrap `DropdownMenuLabel` in a `DropdownMenuGroup`, as the demo does.
-
-**Why:** Base UI's group label throws "MenuGroupContext is missing" outside a group, so the menu in upstream's guide code never opens.
-
-**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
-
-### The reusable components use Base UI's attributes and props
-
-**Upstream:** The Tasks [`data-table-column-header.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/app/%28app%29/examples/tasks/components/data-table-column-header.tsx#L34-L38) and [`data-table-view-options.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/app/%28app%29/examples/tasks/components/data-table-view-options.tsx#L25) import the Radix variant's dropdown menu. They use `DropdownMenuTrigger asChild` and `data-[state=open]:bg-accent`, and the column header is generic over `TData` and `TValue`.
-
-**Sveltery UI:** The [Data Table](/docs/components/data-table#reusable-components) components use a `render` snippet on the trigger and `data-popup-open:bg-accent`. The column header types `column` as the four methods it calls, so `renderComponent` accepts the column that a header receives. The guide links the Tasks demo on ui.shadcn.com, because these docs have no `/examples/tasks` page. The shared type is `DataTableFeatures`, where upstream's section calls it `TasksTableFeatures`, and the section adds the line "Put each component next to `data-table-features.ts`". The components use the features the guide registers, so they have no faceting.
-
-**Why:** Base UI never sets `data-state`, so the open column header would not stay highlighted. `renderComponent` cannot infer a component's generics, and a generic `column` prop fails to type-check against `Column<Features, Payment, ...>`. The Tasks features object registers faceting for its faceted filter, which the guide does not build, and the guide's own object is the one the components share.
-
-**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
-
-### The RTL example sets its own direction
-
-**Upstream:** The [RTL section](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/data-table.mdx#L891) links the RTL configuration guide, and the preview takes `direction="rtl"` from the docs site's language selector.
-
-**Sveltery UI:** The section links the [RTL guide](/docs/rtl) too. It then names the [DirectionProvider](/docs/components/direction), and the example has its own language buttons and sets `dir` on the table and on each menu.
-
-**Why:** These docs have no language selector that gives a preview its direction, so a Svelte example sets its own.
-
-**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
-
-### The Installation step names the other components
-
-**Upstream:** The [Installation](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/data-table.mdx#L48-L50) step adds only `table`, and the guide imports `button`, `checkbox`, `dropdown-menu`, `input` and `select` without saying so.
-
-**Sveltery UI:** The step adds a sentence that lists those five components.
-
-**Why:** A project that follows the guide from a fresh `init` fails to build at the first import of a component it never added.
-
-**Decided:** Under Hugo Hsi's standing rule, 2026-10-17

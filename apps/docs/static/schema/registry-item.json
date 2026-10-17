@@ -44,7 +44,7 @@
       "items": {
         "type": "string"
       },
-      "description": "Item names in the project's registry, or http(s) URLs of items."
+      "description": "Item names in the project's registry, @namespace/name items of a registry that components.json's registries names, or http(s) URLs of items."
     },
     "files": {
       "type": "array",

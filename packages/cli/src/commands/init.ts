@@ -123,7 +123,8 @@ async function settingsFromPreset(url: string, registry: Registry, existing: Exi
   };
 }
 
-export async function init(options: InitOptions): Promise<Plan> {
+/** What `init` would write, before anything is written, with the project as it will be. Undefined when the user picks Custom to build a preset on the Create page. */
+export async function planInit(options: InitOptions): Promise<{ plan: Plan; project: Project; css: string } | undefined> {
   const { cwd } = options;
   checkProject(cwd);
   const configPath = join(cwd, CONFIG_FILE);
@@ -139,7 +140,7 @@ export async function init(options: InitOptions): Promise<Plan> {
       throw new CliError('--preset sets the style, icon library and base color. Drop --style, --icons and --base-color, or drop --preset.');
     }
     const preset = options.preset === true ? (options.yes ? 'nova' : await promptForPreset(registryUrl)) : options.preset;
-    if (preset === undefined) return { files: [], dependencies: [], devDependencies: [] };
+    if (preset === undefined) return undefined;
     presetUrl = resolvePresetUrl(registryUrl, preset);
   }
 
@@ -160,6 +161,7 @@ export async function init(options: InitOptions): Promise<Plan> {
     tailwind: { css: cssPath, baseColor },
     aliases: { ...defaultAliases(libAlias(cwd)), ...Object.fromEntries(Object.entries(existingAliases).filter(([, value]) => typeof value === 'string')) },
     registry: registry.url,
+    registries: existingConfig.registries,
     typescript: true,
   });
   // Known keys first in a fixed order, then the user's own keys, so a second run writes the same bytes.
@@ -184,8 +186,14 @@ export async function init(options: InitOptions): Promise<Plan> {
     dependencies: missingPackages(cwd, [...settings.dependencies.filter((spec) => packageName(spec) !== cliPackage), ...itemsPlan.dependencies]),
     devDependencies: missingPackages(cwd, [`${cliPackage}@^${version}`, ...itemsPlan.devDependencies]),
   };
-  log.info(formatPlan(plan, { showIdentical: false }));
-  await executePlan(plan, { cwd, install: options.install });
+  return { plan, project, css };
+}
+
+export async function init(options: InitOptions): Promise<Plan> {
+  const planned = await planInit(options);
+  if (planned === undefined) return { files: [], dependencies: [], devDependencies: [] };
+  log.info(formatPlan(planned.plan, { showIdentical: false }));
+  await executePlan(planned.plan, { cwd: options.cwd, install: options.install });
   log.success(`Ready. Add a component with \`npx @sveltery/ui@latest add button\`.`);
-  return plan;
+  return planned.plan;
 }
