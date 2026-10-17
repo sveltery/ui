@@ -51,7 +51,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
-  import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '$lib/components/ui/input-otp';
+  import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '#lib/components/ui/input-otp';
 </script>
 ```
 

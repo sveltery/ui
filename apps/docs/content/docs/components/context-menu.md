@@ -47,7 +47,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
-  import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '$lib/components/ui/context-menu';
+  import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '#lib/components/ui/context-menu';
 </script>
 ```
 

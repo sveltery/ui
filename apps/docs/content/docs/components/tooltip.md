@@ -47,7 +47,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
-  import { Tooltip, TooltipContent, TooltipTrigger } from '$lib/components/ui/tooltip';
+  import { Tooltip, TooltipContent, TooltipTrigger } from '#lib/components/ui/tooltip';
 </script>
 ```
 

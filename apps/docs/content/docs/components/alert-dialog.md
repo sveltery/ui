@@ -57,7 +57,7 @@ The component folders import each other with relative paths, so keep them side b
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-  } from '$lib/components/ui/alert-dialog';
+  } from '#lib/components/ui/alert-dialog';
 </script>
 ```
 

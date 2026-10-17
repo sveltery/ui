@@ -96,6 +96,7 @@ afterAll(() => void server.close());
 
 beforeEach(() => {
   initRequests = [];
+  process.stdin.isTTY = true;
   vi.mocked(select).mockReset();
   process.env.SVELTERY_REGISTRY_URL = registryUrl;
   cwd = mkdtempSync(join(tmpdir(), 'sveltery-cli-'));
@@ -103,7 +104,10 @@ beforeEach(() => {
   mkdirSync(join(cwd, 'src'));
   writeFileSync(join(cwd, 'src/app.css'), "@import 'tailwindcss';\n");
 });
-afterEach(() => rmSync(cwd, { recursive: true, force: true }));
+afterEach(() => {
+  rmSync(cwd, { recursive: true, force: true });
+  process.stdin.isTTY = false;
+});
 
 const read = (path: string) => readFileSync(join(cwd, path), 'utf8');
 const defaults = { yes: true, install: false };

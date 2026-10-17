@@ -51,7 +51,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
-  import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '$lib/components/ui/carousel';
+  import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '#lib/components/ui/carousel';
 </script>
 ```
 
@@ -160,7 +160,7 @@ Use `bind:api` to read the Embla instance. It is `undefined` until the carousel 
 
 ```svelte
 <script lang="ts">
-  import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '$lib/components/ui/carousel';
+  import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '#lib/components/ui/carousel';
 
   let api = $state.raw<CarouselApi>();
   let current = $state(0);
@@ -192,7 +192,7 @@ Listen to events on the instance from `bind:api`. Return a cleanup from the effe
 
 ```svelte
 <script lang="ts">
-  import type { CarouselApi } from '$lib/components/ui/carousel';
+  import type { CarouselApi } from '#lib/components/ui/carousel';
 
   let api = $state.raw<CarouselApi>();
 

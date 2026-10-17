@@ -61,7 +61,7 @@ The component folders import each other with relative paths, so keep them side b
     CommandList,
     CommandSeparator,
     CommandShortcut,
-  } from '$lib/components/ui/command';
+  } from '#lib/components/ui/command';
 </script>
 ```
 

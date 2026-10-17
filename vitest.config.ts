@@ -12,5 +12,5 @@ export default defineConfig({
     ],
     conditions: ['browser'],
   },
-  test: { projects: [{ extends: true, test: { environment: 'jsdom', include: ['tests/dom/*.test.ts', 'packages/day-picker/src/**/*.test.ts', 'apps/docs/registry/*.test.ts', 'apps/docs/src/routes/init/*.test.ts', 'packages/cli/test/**/*.test.ts'] } }, 'packages/resizable', 'packages/recharts'] },
+  test: { projects: [{ extends: true, test: { environment: 'jsdom', include: ['tests/dom/*.test.ts', 'packages/day-picker/src/**/*.test.ts', 'apps/docs/registry/*.test.ts', 'apps/docs/markdown/*.test.ts', 'apps/docs/src/routes/init/*.test.ts', 'packages/cli/test/**/*.test.ts'] } }, 'packages/resizable', 'packages/recharts'] },
 });

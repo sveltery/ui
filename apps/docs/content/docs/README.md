@@ -6,7 +6,7 @@ Pages are [mdsvex](https://github.com/pngwn/MDsveX) markdown, so they can use Sv
 
 ## Add a component page
 
-1. Add the component to `packages/ui/src/lib/<name>`.
+1. Add the component to `apps/docs/registry/bases/base/ui/<name>`. The registry build turns each folder there into the item that `npx @sveltery/ui@latest add <name>` installs.
 2. Add a preview to `apps/docs/examples`.
 3. Create `components/<name>.md` from the template below. The `npx @sveltery/ui@latest add` name and the `<ComponentSource>` name are the folder name. List `@lucide/svelte` in the manual `npm install` line when the component imports icons.
 
@@ -62,7 +62,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
-  import { Button } from '$lib/components/ui/button';
+  import { Button } from '#lib/components/ui/button';
 </script>
 ```
 
@@ -88,7 +88,7 @@ These need no import:
 | Component | Use |
 | --- | --- |
 | `<ComponentPreview name="base/ButtonExample" />` | A live preview of `apps/docs/examples/<name>.svelte` with its source under **View Code**. Props: `align` (`center`, `start` or `end`), `hideCode` |
-| `<ComponentSource name="button" />` | Every source file in `packages/ui/src/lib/<name>` and the `shared/` helpers it imports, highlighted, with a copy button. It also names the other component folders the component imports |
+| `<ComponentSource name="button" />` | Every source file in `apps/docs/registry/bases/base/ui/<name>`, in the Nova style, and the `shared/` helpers it imports, highlighted, with a copy button. It also names the other component folders the component imports |
 | `<Steps>` | Numbers each `###` heading inside it |
 | `<InstallTabs>` and `<InstallTab value="cli">`, `<InstallTab value="manual">` | The Installation section's CLI and Manual tabs. Put a blank line around each tag so the markdown inside renders |
 | `<Callout title="...">` | A highlighted note |
