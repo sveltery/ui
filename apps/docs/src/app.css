@@ -3,7 +3,7 @@
 @import "tw-animate-css";
 @import "@sveltery/ui/tailwind.css";
 @import "../registry/styles/themes.css";
-@import "../registry/styles/styles.css";
+@import "../registry/styles/utilities.css";
 @import "@fontsource-variable/geist";
 @import "@fontsource-variable/geist-mono";
 
@@ -13,6 +13,14 @@
 
 @custom-variant dark (&:is(.dark *));
 @custom-variant fixed (&:is(.layout-fixed *));
+@custom-variant style-vega (&:where(.style-vega *));
+@custom-variant style-nova (&:where(.style-nova *));
+@custom-variant style-maia (&:where(.style-maia *));
+@custom-variant style-lyra (&:where(.style-lyra *));
+@custom-variant style-mira (&:where(.style-mira *));
+@custom-variant style-luma (&:where(.style-luma *));
+@custom-variant style-sera (&:where(.style-sera *));
+@custom-variant style-rhea (&:where(.style-rhea *));
 
 /* Not inline, so the utilities read the variables and the Create page preview can set them. */
 @theme {

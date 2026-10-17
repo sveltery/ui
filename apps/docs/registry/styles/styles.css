@@ -1,17 +1,9 @@
-/* Derived from shadcn-ui/ui d75a96ab781f3d659be1ad287347d5887ce9f2fc; MIT: apps/docs/registry/THIRD_PARTY_NOTICES.md. */
-@import "./scoped/vega.css" layer(components);
-@import "./scoped/nova.css" layer(components);
-@import "./scoped/maia.css" layer(components);
-@import "./scoped/lyra.css" layer(components);
-@import "./scoped/mira.css" layer(components);
-@import "./scoped/luma.css" layer(components);
-@import "./scoped/sera.css" layer(components);
-@import "./scoped/rhea.css" layer(components);
-@custom-variant style-vega (&:where(.style-vega *));
-@custom-variant style-nova (&:where(.style-nova *));
-@custom-variant style-maia (&:where(.style-maia *));
-@custom-variant style-lyra (&:where(.style-lyra *));
-@custom-variant style-mira (&:where(.style-mira *));
-@custom-variant style-luma (&:where(.style-luma *));
-@custom-variant style-sera (&:where(.style-sera *));
-@custom-variant style-rhea (&:where(.style-rhea *));
+/* Derived from shadcn-ui/ui d2fba50ee5b9113008b5bb908563527b7efd2f27; MIT: apps/docs/registry/THIRD_PARTY_NOTICES.md. */
+@import "./scoped/vega.css" layer(base);
+@import "./scoped/nova.css" layer(base);
+@import "./scoped/maia.css" layer(base);
+@import "./scoped/lyra.css" layer(base);
+@import "./scoped/mira.css" layer(base);
+@import "./scoped/luma.css" layer(base);
+@import "./scoped/sera.css" layer(base);
+@import "./scoped/rhea.css" layer(base);

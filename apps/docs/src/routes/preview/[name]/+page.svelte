@@ -1,4 +1,5 @@
 <script lang="ts">
+  import './style-registry.css';
   import { IconLibraryProvider } from '$registry/bases/base/ui/icons';
   import { Toaster } from '$registry/bases/base/ui/toast';
   import { prepareDesignSystem, syncMenuColor } from '$lib/create/preview/design-system';
