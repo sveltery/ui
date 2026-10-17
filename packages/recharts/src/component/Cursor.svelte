@@ -15,6 +15,7 @@
   import { isPolarCoordinate } from '../util/types.js';
   import { getCursorRectangle } from '../util/cursor/getCursorRectangle.js';
   import { getCursorPoints } from '../util/cursor/getCursorPoints.js';
+  import { getRadialCursorPoints } from '../util/cursor/getRadialCursorPoints.js';
   import { useChartLayout, useOffsetInternal } from '../context/chartLayoutContext.svelte.js';
   import { useTooltipAxisBandSize } from '../context/useTooltipAxis.js';
   import { useChartName } from '../state/selectors/selectors.hooks.js';
@@ -23,6 +24,8 @@
   import { DefaultZIndexes } from '../zIndex/DefaultZIndexes.js';
   import Rectangle from '../shape/Rectangle.svelte';
   import Curve from '../shape/Curve.svelte';
+  import Cross from '../shape/Cross.svelte';
+  import Sector from '../shape/Sector.svelte';
   import RenderProp from '../util/RenderProp.svelte';
 
   let props: CursorProps = $props();
@@ -32,7 +35,7 @@
   const layout = useChartLayout();
   const chartName = useChartName();
 
-  type Rendered = { cursorComp: 'rectangle' | 'curve' | null; cursorProps: Record<string, unknown>; preferredZIndex: number };
+  type Rendered = { cursorComp: 'cross' | 'rectangle' | 'sector' | 'curve'; cursorProps: Record<string, unknown>; preferredZIndex: number };
 
   // Upstream's CursorInternal, which Cursor renders once the band size, offset, layout and chart name are known.
   const rendered = $derived.by((): Rendered | null => {
@@ -49,18 +52,24 @@
     let restProps: object, cursorComp: Rendered['cursorComp'], preferredZIndex: number;
 
     if (chartName.current === 'ScatterChart') {
-      // Cross arrives with ScatterChart.
       restProps = activeCoordinate;
-      cursorComp = null;
+      cursorComp = 'cross';
       preferredZIndex = DefaultZIndexes.cursorLine;
     } else if (chartName.current === 'BarChart') {
       restProps = getCursorRectangle(layout.current, activeCoordinate, offset.current, tooltipAxisBandSize.current);
       cursorComp = 'rectangle';
       preferredZIndex = DefaultZIndexes.cursorRectangle;
     } else if (layout.current === 'radial' && isPolarCoordinate(activeCoordinate)) {
-      // Sector arrives with the polar charts.
-      restProps = {};
-      cursorComp = null;
+      const { cx, cy, radius, startAngle, endAngle } = getRadialCursorPoints(activeCoordinate);
+      restProps = {
+        cx,
+        cy,
+        startAngle,
+        endAngle,
+        innerRadius: radius,
+        outerRadius: radius,
+      };
+      cursorComp = 'sector';
       preferredZIndex = DefaultZIndexes.cursorLine;
     } else {
       restProps = { points: getCursorPoints(layout.current, activeCoordinate, offset.current) };
@@ -88,8 +97,12 @@
   <ZIndexLayer zIndex={props.zIndex ?? rendered.preferredZIndex}>
     {#if typeof props.cursor === 'function'}
       <RenderProp of={props.cursor} props={rendered.cursorProps} />
+    {:else if rendered.cursorComp === 'cross'}
+      <Cross {...rendered.cursorProps} />
     {:else if rendered.cursorComp === 'rectangle'}
       <Rectangle {...rendered.cursorProps} />
+    {:else if rendered.cursorComp === 'sector'}
+      <Sector {...rendered.cursorProps} />
     {:else if rendered.cursorComp === 'curve'}
       <Curve {...rendered.cursorProps} />
     {/if}

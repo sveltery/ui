@@ -24,9 +24,11 @@
 
 **Upstream:** Children are React nodes, and render props are elements or functions, for example `children: (time: number) => ReactNode` in [`animation/JavascriptAnimate.tsx:22`](https://github.com/recharts/recharts/blob/v3.8.0/src/animation/JavascriptAnimate.tsx#L22).
 
-**Here:** Children and render props are snippets, and a snippet receives what upstream's function would receive. That covers Bar's `shape`, `activeBar` and `background`, the `dot` and `activeDot` of Line and Area, the `content` of Label, LabelList, Tooltip and Legend, Tooltip's `cursor` and the axes' `tick`. Where upstream clones an element with the parent's props, the snippet gets the same merged props and places the spread itself. Tooltip and Legend give the parent's props the last word ([`component/Tooltip.tsx:60`](https://github.com/recharts/recharts/blob/v3.8.0/src/component/Tooltip.tsx#L60), [`component/Legend.tsx:43`](https://github.com/recharts/recharts/blob/v3.8.0/src/component/Legend.tsx#L43)), so `<Content own {...props} />` matches them. A shape element's own props win in [`util/ActiveShapeUtils.tsx:94`](https://github.com/recharts/recharts/blob/v3.8.0/src/util/ActiveShapeUtils.tsx#L94), so there the spread goes first.
+**Here:** Children and render props are snippets, and a snippet receives what upstream's function would receive. That covers Bar's `shape`, `activeBar` and `background`, the `dot` and `activeDot` of Line, Area and Radar, Pie's `shape`, `activeShape`, `inactiveShape`, `label` and `labelLine`, the `shape` of Radar and RadialBar, RadialBar's `activeShape` and `background`, the `content` of Label, LabelList, Tooltip and Legend, Tooltip's `cursor` and the axes' `tick`. Where upstream clones an element with the parent's props, the snippet gets the same merged props and places the spread itself. Tooltip and Legend give the parent's props the last word ([`component/Tooltip.tsx:60`](https://github.com/recharts/recharts/blob/v3.8.0/src/component/Tooltip.tsx#L60), [`component/Legend.tsx:43`](https://github.com/recharts/recharts/blob/v3.8.0/src/component/Legend.tsx#L43)), so `<Content own {...props} />` matches them. A shape element's own props win in [`util/ActiveShapeUtils.tsx:94`](https://github.com/recharts/recharts/blob/v3.8.0/src/util/ActiveShapeUtils.tsx#L94), so there the spread goes first.
 
-**Why:** Svelte has no element values to pass around or clone.
+A Pie `label` snippet renders its own markup. Upstream's label function may return a string or a number instead of an element, and Pie then wraps it in a `Text` with the class `recharts-pie-label-text` ([`polar/Pie.tsx:569-583`](https://github.com/recharts/recharts/blob/v3.8.0/src/polar/Pie.tsx#L569-L583)). A snippet that wants that text renders `Text` itself.
+
+**Why:** Svelte has no element values to pass around or clone, and a snippet renders markup, so it cannot hand a value back.
 
 ## Mechanism
 
@@ -101,3 +103,11 @@
 **Here:** The ref is a plain variable that the frame writes, read through a `$derived` that depends on the animation id and the animating flag. It sees the same values at the same moments as upstream's render.
 
 **Why:** A `$state` ref written during a frame would make each frame depend on the last one and loop. A plain variable read in the template would never update.
+
+### RadialBar's labels and children stay mounted across animations
+
+**Upstream:** `RadialBarSectors` renders the `RadialBarLabelListProvider`, the label list from the `label` prop and the RadialBar's children on every animation frame, around the frame's sectors ([`polar/RadialBar.tsx:141-184`](https://github.com/recharts/recharts/blob/v3.8.0/src/polar/RadialBar.tsx#L141-L184)). React keeps the children mounted from frame to frame.
+
+**Here:** The provider, the label list and the children sit beside the keyed animation block, with the final sectors, and only the sectors render per frame. They show and hide on the same animating flag, so the DOM at rest and during the animation is the same. Only the first render of an animated RadialBar differs: before the animation's start callback hides the labels, they sit at the final sectors, where upstream places them at the frame-zero sectors.
+
+**Why:** A new animation id remounts the keyed block. Cells among the children would unregister and register again, which builds a new cells array, new sectors and a new animation id, and the animation would restart forever.
