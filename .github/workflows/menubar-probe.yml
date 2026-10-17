@@ -1,0 +1,30 @@
+# Temporary: reproduces the menubar submenu flake on CI's Chromium. Not for merge.
+name: Menubar probe
+on:
+  pull_request:
+    paths: ['.github/workflows/menubar-probe.yml', 'tests/browser/zz-menubar-probe.spec.ts']
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        run: [1, 2, 3]
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+        with:
+          run_install: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: '24'
+      - run: bash scripts/bootstrap.sh
+      - run: bash scripts/build-packages.sh
+      - run: bash -c 'source scripts/toolchain.sh; pnpm exec playwright install chromium'
+      - name: Probe
+        run: bash -c 'source scripts/toolchain.sh; pnpm test:browser --project chromium tests/browser/zz-menubar-probe.spec.ts tests/browser/menubar.spec.ts --repeat-each 40 --workers 2 --reporter list'
