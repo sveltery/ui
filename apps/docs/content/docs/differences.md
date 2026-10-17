@@ -49,7 +49,7 @@ Base UI marks an open trigger with its own attributes. A collapsible trigger get
 
 **Sveltery UI:** All eight styles use `data-popup-open:bg-accent` on the sub-triggers of the [Context Menu](/docs/components/context-menu), [Dropdown Menu](/docs/components/dropdown-menu) and [Menubar](/docs/components/menubar).
 
-**Why:** A Base UI submenu trigger gets [`data-popup-open`](https://github.com/mui/base-ui/blob/v1.9.0/packages/react/src/menu/submenu-trigger/MenuSubmenuTriggerDataAttributes.ts), not `data-open`. In upstream's context menu, the parent row loses its highlight when the pointer moves into the submenu. On the [ui.shadcn.com context menu preview](https://ui.shadcn.com/preview/base/context-menu-example), an open sub-trigger with the pointer in its submenu has `data-popup-open` and a transparent background. The highlight is intended: shadcn/ui's Radix variant keeps it, and Base UI's own [submenu demo](https://github.com/mui/base-ui/blob/v1.9.0/docs/src/app/(docs)/react/components/context-menu/demos/submenu/css-modules/index.module.css#L158) styles `[data-popup-open]`.
+**Why:** A Base UI submenu trigger gets [`data-popup-open`](https://github.com/mui/base-ui/blob/v1.9.0/packages/react/src/menu/submenu-trigger/MenuSubmenuTriggerDataAttributes.ts), not `data-open`. In upstream's context menu, the parent row loses its highlight when the pointer moves into the submenu. On the [ui.shadcn.com context menu preview](https://ui.shadcn.com/preview/base/context-menu-example), an open sub-trigger with the pointer in its submenu has `data-popup-open` and a transparent background. The highlight is intended: shadcn/ui's Radix variant keeps it, and Base UI's own [submenu demo](<https://github.com/mui/base-ui/blob/v1.9.0/docs/src/app/(docs)/react/components/context-menu/demos/submenu/css-modules/index.module.css#L158>) styles `[data-popup-open]`.
 
 **Decided:** Hugo Hsi, 2026-10-16
 
@@ -342,6 +342,36 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Why:** The docs show each example in a preview frame. A sidebar sized to the viewport would overflow it. At phone widths, the inset content is taller than the frame, and `overflow-auto` lets you scroll it. Without it, the frame cuts the content off.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
+
+### Empty examples use Lucide icons where upstream uses Tabler
+
+**Upstream:** [`empty-demo.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/empty-demo.tsx), [`empty-outline.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/empty-outline.tsx) and [`empty-background.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/empty-background.tsx) import `IconFolderCode`, `IconCloud` and `IconBell` from `@tabler/icons-react`.
+
+**Sveltery UI:** The [Empty](/docs/components/empty) examples import `FolderCodeIcon`, `CloudIcon` and `BellIcon` from `@lucide/svelte`.
+
+**Why:** The docs site depends on `@lucide/svelte` only. The Lucide icons draw the same folder, cloud and bell.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Item avatar section does not name an `avatar` variant
+
+**Upstream:** The [Item page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/item.mdx) says "You can use `ItemMedia` with `variant="avatar"` to display an avatar." `ItemMedia` has only the `default`, `icon` and `image` variants, and the example uses the default.
+
+**Sveltery UI:** The [Item](/docs/components/item) page says "You can use `ItemMedia` to display an avatar."
+
+**Why:** `variant="avatar"` does nothing, so copying it from the page would mislead.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Item group example labels its icon buttons
+
+**Upstream:** [`item-group.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/item-group.tsx) renders an icon-only button with no accessible name.
+
+**Sveltery UI:** The [Item](/docs/components/item) group example adds `aria-label="Add {username}"` to each button.
+
+**Why:** A screen reader announces an unnamed button as just "button".
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
 ## Forms
 
