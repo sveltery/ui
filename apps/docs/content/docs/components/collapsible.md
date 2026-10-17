@@ -1,9 +1,9 @@
 ---
 title: Collapsible
-description: An interactive component which expands and collapses a panel.
+description: An interactive component which expands/collapses a panel.
 ---
 
-<ComponentPreview name="base/CollapsibleExample" />
+<ComponentPreview name="base/CollapsibleDemoExample" align="start" />
 
 ## Installation
 
@@ -62,15 +62,17 @@ The component folders import each other with relative paths, so keep them side b
 
 ## Composition
 
+Use the following composition to build a `Collapsible`:
+
 ```text
 Collapsible
 ├── CollapsibleTrigger
 └── CollapsibleContent
 ```
 
-## Controlled state
+## Controlled State
 
-Bind `open` to read and set the state.
+Bind `open` to control the state.
 
 ```svelte
 <script lang="ts">
@@ -83,7 +85,7 @@ Bind `open` to read and set the state.
 </Collapsible>
 ```
 
-## Custom trigger
+## Custom Trigger
 
 Pass a `render` snippet to `CollapsibleTrigger` to render another element, such as a `Button`. Spread `props` onto it and render `children`.
 
@@ -95,6 +97,30 @@ Pass a `render` snippet to `CollapsibleTrigger` to render another element, such 
 <CollapsibleTrigger render={button}>…</CollapsibleTrigger>
 ```
 
-## API reference
+## Basic
 
-`Collapsible` is styled on top of the Sveltery Base `Collapsible` primitive, which owns its behavior, open state and accessibility. See the [Base UI Collapsible documentation](https://base-ui.com/react/components/collapsible) for the behavior it ports.
+<ComponentPreview name="base/CollapsibleBasicExample" align="start" />
+
+## Settings Panel
+
+Use a trigger button to reveal additional settings.
+
+<ComponentPreview name="base/CollapsibleSettingsExample" />
+
+## File Tree
+
+Use nested collapsibles to build a file tree.
+
+<ComponentPreview name="base/CollapsibleFileTreeExample" class="h-[36rem]" />
+
+## RTL
+
+Wrap the collapsible in a [DirectionProvider](/docs/components/direction) and set `dir` on `Collapsible`. Use the buttons to switch the language.
+
+<ComponentPreview name="base/CollapsibleRtlExample" align="start" />
+
+## API Reference
+
+See the [Base UI Collapsible](https://base-ui.com/react/components/collapsible#api-reference) documentation.
+
+`Collapsible` is styled on top of the Sveltery Base `Collapsible` primitive, which owns its behavior, open state and accessibility.

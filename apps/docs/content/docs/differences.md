@@ -343,6 +343,36 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
 
+### The Collapsible file tree chevron rotates
+
+**Upstream:** The folder chevron in [`collapsible-file-tree.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/collapsible-file-tree.tsx#L74) rotates on `group-data-[state=open]`, a Radix attribute.
+
+**Sveltery UI:** The [Collapsible](/docs/components/collapsible) file tree example uses `group-data-panel-open:`.
+
+**Why:** Base UI never sets `data-state`, so upstream's chevron does not rotate when a folder opens.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Collapsible settings inputs have distinct ids
+
+**Upstream:** All four inputs in [`collapsible-settings.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/collapsible-settings.tsx#L36-L63) have `id="radius"`, and their labels point at `radius-x` and `radius-y`.
+
+**Sveltery UI:** The [Collapsible](/docs/components/collapsible) settings example gives each input its own id, matching its label.
+
+**Why:** Duplicate ids are invalid HTML, and a label whose `for` matches no id does not name its input.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Dialog demo and RTL forms submit
+
+**Upstream:** In [`dialog-demo.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/dialog-demo.tsx) and [`dialog-rtl.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/dialog-rtl.tsx), the `form` wraps the trigger and the dialog content. The content renders in a portal outside the form, so **Save changes** does not submit it.
+
+**Sveltery UI:** The [Dialog](/docs/components/dialog) demo and RTL examples put the `form` inside the dialog content and close the dialog on submit.
+
+**Why:** A submit button must submit its form. This is the same fix as the kitchen-sink Dialog example above.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ## Forms
 
 ### The Forms guides cover SvelteKit forms instead of React form libraries

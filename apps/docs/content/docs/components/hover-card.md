@@ -3,7 +3,7 @@ title: Hover Card
 description: For sighted users to preview content available behind a link.
 ---
 
-<ComponentPreview name="base/HoverCardExample" />
+<ComponentPreview name="base/HoverCardDemoExample" class="h-80" />
 
 ## Installation
 
@@ -60,10 +60,54 @@ The component folders import each other with relative paths, so keep them side b
 
 `HoverCardTrigger` renders a link. The card opens when the pointer rests on it or it gets keyboard focus, and it stays open while the pointer moves into the card. It is a preview for sighted users, so keep the link itself useful on its own.
 
-## Delays
+## Composition
 
-`delay` and `closeDelay` on `HoverCardTrigger` set how long the card waits to open and to close, in milliseconds. They default to 600 and 300.
+Use the following composition to build a `HoverCard`:
 
-## API reference
+```text
+HoverCard
+├── HoverCardTrigger
+└── HoverCardContent
+```
 
-`HoverCard` is styled on top of the Sveltery Base `PreviewCard` primitive, which owns its behavior, positioning and accessibility. See the [Base UI Preview Card documentation](https://base-ui.com/react/components/preview-card) for the behavior it ports.
+## Trigger Delays
+
+Use `delay` and `closeDelay` on the trigger to control when the card opens and closes, in milliseconds. They default to 600 and 300.
+
+```svelte
+<HoverCard>
+  <HoverCardTrigger delay={100} closeDelay={200}>Hover</HoverCardTrigger>
+  <HoverCardContent>Content</HoverCardContent>
+</HoverCard>
+```
+
+## Positioning
+
+Use the `side` and `align` props on `HoverCardContent` to control placement.
+
+```svelte
+<HoverCard>
+  <HoverCardTrigger>Hover</HoverCardTrigger>
+  <HoverCardContent side="top" align="start">Content</HoverCardContent>
+</HoverCard>
+```
+
+## Basic
+
+<ComponentPreview name="base/HoverCardDemoExample" class="h-80" />
+
+## Sides
+
+<ComponentPreview name="base/HoverCardSidesExample" class="h-[22rem]" />
+
+## RTL
+
+Wrap the hover card in a [DirectionProvider](/docs/components/direction) and set `dir` on `HoverCardContent`. Use the buttons to switch the language.
+
+<ComponentPreview name="base/HoverCardRtlExample" class="h-80" />
+
+## API Reference
+
+See the [Base UI Preview Card](https://base-ui.com/react/components/preview-card#api-reference) documentation.
+
+`HoverCard` is styled on top of the Sveltery Base `PreviewCard` primitive, which owns its behavior, positioning and accessibility.
