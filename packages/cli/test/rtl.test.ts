@@ -456,6 +456,10 @@ describe('transformDirection', () => {
     expect(rtl(ui('bubble/BubbleContent.svelte'), 'bubble/BubbleContent.svelte')).toContain('[button]:text-start');
   });
 
+  it('reads the component name from a Windows path', () => {
+    expect(rtl(ui('context-menu/ContextMenuContent.svelte'), 'context-menu\\ContextMenuContent.svelte')).toContain("side = 'inline-end',");
+  });
+
   it('opens the registry menus toward the inline end', () => {
     expect(rtl(ui('context-menu/ContextMenuContent.svelte'), 'context-menu/ContextMenuContent.svelte')).toContain("side = 'inline-end',");
     expect(rtl(ui('context-menu/ContextMenuSubContent.svelte'), 'context-menu/ContextMenuSubContent.svelte')).toContain('side="inline-end"');
