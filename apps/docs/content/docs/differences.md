@@ -343,6 +343,26 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
 
+### The Card changelog edits the style stylesheet
+
+**Upstream:** The "Spacing Variable" changelog in [`card.mdx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/card.mdx) shows diffs to the class strings in `card.tsx`.
+
+**Sveltery UI:** The [Card](/docs/components/card) changelog shows the same changes to the `.cn-card`, `.cn-card-header`, `.cn-card-content` and `.cn-card-footer` rules in the style stylesheet, because the Svelte components carry only the `cn-*` class names.
+
+**Why:** The classes upstream's diff edits do not exist in the Svelte component files.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Calendar page has no Persian / Hijri / Jalali example
+
+**Upstream:** The [Calendar page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/calendar.mdx) shows a Persian calendar built on [`react-day-picker/persian`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/calendar-hijri.tsx#L16).
+
+**Sveltery UI:** The [Calendar](/docs/components/calendar) page keeps the section and says the Persian calendar is not available. It has no preview.
+
+**Why:** `@sveltery/day-picker` ports only the Gregorian calendar, so there is nothing to swap in. A Gregorian calendar with a Persian locale would look like the Persian calendar but show different dates.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
 ## Forms
 
 ### The Forms guides cover SvelteKit forms instead of React form libraries

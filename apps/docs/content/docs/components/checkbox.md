@@ -3,7 +3,7 @@ title: Checkbox
 description: A control that allows the user to toggle between checked and not checked.
 ---
 
-<ComponentPreview name="base/CheckboxExample" />
+<ComponentPreview name="base/CheckboxDemoExample" />
 
 ## Installation
 
@@ -57,9 +57,9 @@ The component folders import each other with relative paths, so keep them side b
 <Label for="terms">Accept terms and conditions</Label>
 ```
 
-## Checked state
+## Checked State
 
-`Checkbox` works like an HTML checkbox. Use `defaultChecked` for the initial state, or `bind:checked` to read and set it.
+Use `defaultChecked` for uncontrolled checkboxes, or `bind:checked` to control the state.
 
 ```svelte
 <script lang="ts">
@@ -80,22 +80,48 @@ A checkbox with a `name` submits with its form, as `on` or its `value` when chec
 </form>
 ```
 
-## Invalid state
+## Invalid State
 
-Set `aria-invalid` on the checkbox to show the invalid styles.
+Set `aria-invalid` on the checkbox and `data-invalid` on the field wrapper to show the invalid styles.
 
-```svelte
-<Checkbox id="terms" aria-invalid="true" />
-```
+<ComponentPreview name="base/CheckboxInvalidExample" />
+
+## Basic
+
+Pair the checkbox with `Field` and `FieldLabel` for proper layout and labeling.
+
+<ComponentPreview name="base/CheckboxBasicExample" />
+
+## Description
+
+Use `FieldContent` and `FieldDescription` for helper text.
+
+<ComponentPreview name="base/CheckboxDescriptionExample" />
 
 ## Disabled
 
-Set `disabled` to prevent interaction.
+Use the `disabled` prop to prevent interaction and add the `data-disabled` attribute to the `<Field>` component for disabled styles.
 
-```svelte
-<Checkbox id="toggle" disabled />
-```
+<ComponentPreview name="base/CheckboxDisabledExample" />
 
-## API reference
+## Group
 
-`Checkbox` is styled on top of the Sveltery Base `Checkbox` primitive, which owns its behavior, form submission and accessibility. See the [Base UI Checkbox documentation](https://base-ui.com/react/components/checkbox) for the behavior it ports.
+Use multiple fields to create a checkbox list.
+
+<ComponentPreview name="base/CheckboxGroupExample" />
+
+## Table
+
+<ComponentPreview name="base/CheckboxTableExample" />
+
+## RTL
+
+Wrap the checkboxes in a [DirectionProvider](/docs/components/direction) and set `dir` on the field group. Use the buttons to switch the language.
+
+<ComponentPreview name="base/CheckboxRtlExample" align="start" />
+
+## API Reference
+
+See the [Base UI Checkbox](https://base-ui.com/react/components/checkbox#api-reference) documentation.
+
+`Checkbox` is styled on top of the Sveltery Base `Checkbox` primitive, which owns its behavior, form submission and accessibility.
