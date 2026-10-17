@@ -323,16 +323,6 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 ## Example content
 
-### The Drawer page has no Vaul migration guide
-
-**Upstream:** The [Drawer page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/drawer.mdx) opens with a callout and ends with a "Migrating from Vaul" section for projects that installed the earlier Vaul-based drawer.
-
-**Sveltery UI:** The [Drawer](/docs/components/drawer) page leaves both out.
-
-**Why:** Sveltery UI never shipped a Vaul-based drawer, so there is nothing to migrate from.
-
-**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
-
 ### The Toggle Group select starts on one of its items
 
 **Upstream:** The "With Input and Select" example in [`toggle-group-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/toggle-group-example.tsx#L343) sets `defaultValue={items[0]}`, an object, while each `SelectItem` has a string `value`.
@@ -390,6 +380,16 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Sveltery UI:** The [Sidebar](/docs/components/sidebar#changelog) changelog says to add `class="cn-rtl-flip"`, which is what the component does.
 
 **Why:** Following upstream's prose would leave the copied icon different from the registry component.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Drawer page has no Vaul migration guide
+
+**Upstream:** The [Drawer page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/drawer.mdx) opens with a callout and ends with a "Migrating from Vaul" section for projects that installed the earlier Vaul-based drawer.
+
+**Sveltery UI:** The [Drawer](/docs/components/drawer) page leaves both out.
+
+**Why:** Sveltery UI never shipped a Vaul-based drawer, so there is nothing to migrate from.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
