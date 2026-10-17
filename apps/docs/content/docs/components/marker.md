@@ -4,7 +4,9 @@ description: Displays an inline status, system note, bordered row, or labeled se
 style: rhea
 ---
 
-<ComponentPreview name="base/MarkerExample" />
+<ComponentPreview name="base/MarkerDemoExample" />
+
+The `Marker` component displays inline conversation markers such as status updates, system notes, bordered rows, and labeled separators. Compose it with [`Message`](/docs/components/message) in a conversation thread.
 
 ## Installation
 
@@ -53,20 +55,191 @@ The component folders import each other with relative paths, so keep them side b
 ```
 
 ```svelte
-<Marker variant="separator">
-  <MarkerContent>Worked for 42s</MarkerContent>
+<Marker>
+  <MarkerIcon>
+    <CheckIcon />
+  </MarkerIcon>
+  <MarkerContent>Explored 4 files</MarkerContent>
 </Marker>
 ```
 
-## Link
+## Composition
 
-Pass a `render` snippet to render the marker as a link or a button. Spread `props` onto it and render `children` inside it.
+Use the following composition to build a marker:
+
+```text
+Marker
+├── MarkerIcon
+└── MarkerContent
+```
+
+## Features
+
+- Inline marker, bordered row, and labeled separator variants
+- Decorative icon slot that is hidden from assistive tech
+- Polymorphic root via `render` for link and button markers
+- Pairs with the `shimmer` utility for streaming status text
+- Customizable styling through the `class` prop on every part
+
+## Variants
+
+Use `variant` to switch between an inline marker, bordered row, and labeled separator.
+
+<ComponentPreview name="base/MarkerVariantsExample" />
+
+| Variant     | Description                                          |
+| ----------- | ---------------------------------------------------- |
+| `default`   | An inline marker for status, notes, and actions.     |
+| `border`    | A default marker with a bottom border under the row. |
+| `separator` | A centered label with divider lines on each side.    |
+
+## Status
+
+Set `role="status"` and include a [`Spinner`](/docs/components/spinner) for streaming or in-progress markers so updates are announced.
+
+<ComponentPreview name="base/MarkerStatusExample" />
+
+## Shimmer
+
+Add the `shimmer` utility class to `MarkerContent` for an animated streaming-text effect. The utility ships in the `tailwind.css` that `@sveltery/ui` provides, which the [installation](/docs/installation) imports into your CSS file.
+
+<ComponentPreview name="base/MarkerShimmerExample" />
+
+## Separator
+
+Use the `separator` variant for labeled dividers, such as dates or section breaks, in a conversation. A checkpoint is a separator with a button that restores the thread to that point.
+
+<ComponentPreview name="base/MarkerSeparatorExample" />
+
+## Border
+
+Use the `border` variant for status rows that should keep the default marker alignment while separating the next row.
+
+<ComponentPreview name="base/MarkerBorderExample" />
+
+## With Icon
+
+Use `MarkerIcon` to render an icon alongside the content. Use `flex-col` to stack the icon above the content.
+
+<ComponentPreview name="base/MarkerIconExample" />
+
+## Links and Buttons
+
+Turn a marker into a link or button with the `render` snippet on `Marker`. Spread `props` onto the element and render `children` inside it.
+
+<ComponentPreview name="base/MarkerLinkButtonExample" />
+
+```svelte
+<script lang="ts">
+  import { Marker, MarkerContent } from '#lib/components/ui/marker';
+</script>
+
+<Marker>
+  {#snippet render(props, state, children)}
+    <a {...props} href="/history">{@render children?.()}</a>
+  {/snippet}
+  <MarkerContent>View the pull request</MarkerContent>
+</Marker>
+```
+
+## Accessibility
+
+`Marker` is presentational by default. The correct semantics depend on how you use it, so choose the role based on intent rather than relying on a single default.
+
+### Status and Progress
+
+For streaming or progress markers such as "Thinking..." or a running tool, set `role="status"` so assistive tech announces the update as it appears. `Marker` forwards `role` to the underlying element.
+
+```svelte
+<Marker role="status">
+  <MarkerIcon>
+    <Spinner />
+  </MarkerIcon>
+  <MarkerContent>Compacting conversation</MarkerContent>
+</Marker>
+```
+
+### Labeled Separators
+
+A separator that carries text, such as a date or a section label, needs no role. The divider lines are decorative CSS pseudo-elements, and the text is announced as ordinary content.
+
+```svelte
+<Marker variant="separator">
+  <MarkerContent>Today</MarkerContent>
+</Marker>
+```
+
+<Callout>
+
+**Note:** Do not add `role="separator"` to a labeled divider. A separator takes its accessible name from `aria-label`, not from its text, and its contents are treated as presentational, so the visible label would not be announced. Reserve `role="separator"` for a divider with no meaningful text.
+
+</Callout>
+
+### Bordered Markers
+
+A bordered marker keeps the same semantics as the default marker. The bottom border is decorative, so choose `role="status"`, `render`, or no role based on the marker's purpose.
+
+```svelte
+<Marker variant="border">
+  <MarkerIcon>
+    <FileTextIcon />
+  </MarkerIcon>
+  <MarkerContent>Opened implementation notes</MarkerContent>
+</Marker>
+```
+
+### Decorative Icons
+
+`MarkerIcon` is decorative and hidden from assistive tech with `aria-hidden`, so the adjacent `MarkerContent` carries the meaning. For an icon-only marker, provide an `aria-label` or visible text so it is not announced as empty.
+
+```svelte
+<Marker aria-label="Synced">
+  <MarkerIcon>
+    <CheckIcon />
+  </MarkerIcon>
+</Marker>
+```
+
+### Interactive Markers
+
+When a marker links or triggers an action, render it as a real `<button>` or `<a>` with the `render` snippet so it is focusable and exposes the correct role. The accessible name comes from the marker text.
 
 ```svelte
 <Marker>
   {#snippet render(props, state, children)}
-    <a href="/history" {...props}>{@render children?.()}</a>
+    <a {...props} href="/files">{@render children?.()}</a>
   {/snippet}
-  <MarkerContent>View history</MarkerContent>
+  <MarkerIcon>
+    <FileTextIcon />
+  </MarkerIcon>
+  <MarkerContent>Explored 4 files</MarkerContent>
 </Marker>
 ```
+
+## API Reference
+
+### Marker
+
+The root marker element. The file also exports `markerVariants` for composing the marker styles into custom components.
+
+| Prop      | Type                                   | Default     | Description                                                                       |
+| --------- | -------------------------------------- | ----------- | --------------------------------------------------------------------------------- |
+| `variant` | `"default" \| "border" \| "separator"` | `"default"` | The marker layout.                                                                |
+| `render`  | `Snippet<[props, state, children]>`    | -           | Render as a different element, such as a link. Spread `props` onto that element. |
+| `class`   | `string`                               | -           | Additional classes to apply to the root element.                                  |
+
+### MarkerIcon
+
+A decorative icon slot. Hidden from assistive tech with `aria-hidden`.
+
+| Prop    | Type     | Default | Description                                   |
+| ------- | -------- | ------- | --------------------------------------------- |
+| `class` | `string` | -       | Additional classes to apply to the icon slot. |
+
+### MarkerContent
+
+The marker text content.
+
+| Prop    | Type     | Default | Description                                      |
+| ------- | -------- | ------- | ------------------------------------------------ |
+| `class` | `string` | -       | Additional classes to apply to the content slot. |
