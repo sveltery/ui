@@ -448,6 +448,7 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Sveltery UI:** The [Breadcrumb](/docs/components/breadcrumb) Custom separator example points it to `/docs/components`, as the Collapsed example already does.
 
 **Why:** The docs site prerenders every link, and `/components` is not a page here, so the build fails on it.
+
 ### The Item avatar section does not name an `avatar` variant
 
 **Upstream:** The [Item page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/item.mdx) says "You can use `ItemMedia` with `variant="avatar"` to display an avatar." `ItemMedia` has only the `default`, `icon` and `image` variants, and the example uses the default.
@@ -465,6 +466,36 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Sveltery UI:** The [Item](/docs/components/item) group example adds `aria-label="Add {username}"` to each button.
 
 **Why:** A screen reader announces an unnamed button as just "button".
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Pagination page has a SvelteKit section instead of Next.js
+
+**Upstream:** The [Pagination page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/pagination.mdx?plain=1#L116) has a Next.js section that edits `pagination.tsx` to render Next.js's `<Link />`.
+
+**Sveltery UI:** The [Pagination](/docs/components/pagination#sveltekit) page has a SvelteKit section saying `PaginationLink` already renders an `<a>` that SvelteKit's router handles.
+
+**Why:** The Next.js steps don't apply to Svelte, and SvelteKit needs no change to the component.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Marker page does not link the Shimmer utility or AI Elements
+
+**Upstream:** The [Marker page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/marker.mdx?plain=1#L82) links the `shimmer` utility page (also line 113) and the AI Elements Checkpoint page (line 123).
+
+**Sveltery UI:** The [Marker](/docs/components/marker) page keeps the same prose and examples without those links.
+
+**Why:** These docs have no utility pages and no AI Elements, so the links would 404.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Resizable page has no changelog
+
+**Upstream:** The [Resizable page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/resizable.mdx?plain=1#L114) ends with a changelog for the move to `react-resizable-panels` v4.
+
+**Sveltery UI:** The [Resizable](/docs/components/resizable) page ends at its API Reference.
+
+**Why:** `@sveltery/resizable` never had the v3 API, so the migration steps describe nothing a Sveltery user has.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
