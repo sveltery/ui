@@ -3,7 +3,7 @@ title: Hover Card
 description: For sighted users to preview content available behind a link.
 ---
 
-<ComponentPreview name="base/HoverCardDemoExample" class="h-80" />
+<ComponentPreview name="base/HoverCardDemoExample" />
 
 ## Installation
 
@@ -94,17 +94,17 @@ Use the `side` and `align` props on `HoverCardContent` to control placement.
 
 ## Basic
 
-<ComponentPreview name="base/HoverCardDemoExample" class="h-80" />
+<ComponentPreview name="base/HoverCardDemoExample" />
 
 ## Sides
 
-<ComponentPreview name="base/HoverCardSidesExample" class="h-[22rem]" />
+<ComponentPreview name="base/HoverCardSidesExample" />
 
 ## RTL
 
 Wrap the hover card in a [DirectionProvider](/docs/components/direction) and set `dir` on `HoverCardContent`. Use the buttons to switch the language.
 
-<ComponentPreview name="base/HoverCardRtlExample" class="h-80" />
+<ComponentPreview name="base/HoverCardRtlExample" />
 
 ## API Reference
 

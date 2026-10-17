@@ -111,7 +111,7 @@ Use a trigger button to reveal additional settings.
 
 Use nested collapsibles to build a file tree.
 
-<ComponentPreview name="base/CollapsibleFileTreeExample" class="h-[36rem]" />
+<ComponentPreview name="base/CollapsibleFileTreeExample" />
 
 ## RTL
 

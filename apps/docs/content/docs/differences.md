@@ -55,9 +55,9 @@ Base UI marks an open trigger with its own attributes. A collapsible trigger get
 
 ### Examples copied from the Radix variant use Base UI's attributes
 
-**Upstream:** The chevron in [`collapsible-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/collapsible-example.tsx#L110) rotates on `group-data-[state=open]`. The bookmark icons in [`toggle-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/toggle-example.tsx#L321) (also line 331) fill on `group-data-[state=on]/toggle`. These are Radix attributes.
+**Upstream:** The chevron in [`collapsible-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/collapsible-example.tsx#L110) rotates on `group-data-[state=open]`, as does the folder chevron in [`collapsible-file-tree.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/collapsible-file-tree.tsx#L74). The bookmark icons in [`toggle-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/toggle-example.tsx#L321) (also line 331) fill on `group-data-[state=on]/toggle`. These are Radix attributes.
 
-**Sveltery UI:** The [Collapsible](/docs/components/collapsible) example uses `group-data-panel-open:`, and the [Toggle](/docs/components/toggle) example uses `group-data-pressed/toggle:`.
+**Sveltery UI:** The [Collapsible](/docs/components/collapsible) kitchen-sink and file tree examples use `group-data-panel-open:`, and the [Toggle](/docs/components/toggle) example uses `group-data-pressed/toggle:`.
 
 **Why:** Base UI never sets `data-state`, so upstream's chevron does not rotate and the bookmark does not fill when pressed.
 
@@ -337,7 +337,7 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Upstream:** In the "With Form" example of [`dialog-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/dialog-example.tsx#L83-L116), the `form` wraps the trigger and the dialog content. The content renders in a portal outside the form, so **Save changes** does not submit it.
 
-**Sveltery UI:** The [Dialog](/docs/components/dialog) example puts the `form` inside the dialog content.
+**Sveltery UI:** The Dialog kitchen-sink example (`DialogExample.svelte`, no longer shown on the page) puts the `form` inside the dialog content.
 
 **Why:** A submit button must submit its form.
 
@@ -363,16 +363,6 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
 
-### The Collapsible file tree chevron rotates
-
-**Upstream:** The folder chevron in [`collapsible-file-tree.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/collapsible-file-tree.tsx#L74) rotates on `group-data-[state=open]`, a Radix attribute.
-
-**Sveltery UI:** The [Collapsible](/docs/components/collapsible) file tree example uses `group-data-panel-open:`.
-
-**Why:** Base UI never sets `data-state`, so upstream's chevron does not rotate when a folder opens.
-
-**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
-
 ### The Collapsible settings inputs have distinct ids
 
 **Upstream:** All four inputs in [`collapsible-settings.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/collapsible-settings.tsx#L36-L63) have `id="radius"`, and their labels point at `radius-x` and `radius-y`.
@@ -389,7 +379,7 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Sveltery UI:** The [Dialog](/docs/components/dialog) demo and RTL examples put the `form` inside the dialog content and close the dialog on submit.
 
-**Why:** A submit button must submit its form. This is the same fix as the kitchen-sink Dialog example above.
+**Why:** A submit button must submit its form. This is the same fix as "The Dialog form example submits" above.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
