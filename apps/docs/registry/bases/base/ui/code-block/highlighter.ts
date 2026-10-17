@@ -79,7 +79,7 @@ export async function loadHighlighter(language: string) {
       return {
         lines: tokens.map((line) =>
           line
-            .map((token) => `<span style="${styleOf(token.htmlStyle)}" class="text-(--shiki-light) dark:text-(--shiki-dark)">${escapeHtml(token.content)}</span>`)
+            .map((token) => `<span style="${escapeHtml(styleOf(token.htmlStyle)).replaceAll('"', '&quot;')}" class="text-(--shiki-light) dark:text-(--shiki-dark)">${escapeHtml(token.content)}</span>`)
             .join(''),
         ),
         state: shiki.getLastGrammarState(tokens),
@@ -90,8 +90,8 @@ export async function loadHighlighter(language: string) {
 
 export type Highlighter = NonNullable<Awaited<ReturnType<typeof loadHighlighter>>>;
 
-/** Returns one HTML string per line, or null for a language that is not listed. */
+/** Returns one HTML string per line. A language that is not listed comes back as escaped plain text. */
 export async function highlightCode(code: string, language: string) {
   const highlighter = await loadHighlighter(language);
-  return highlighter ? highlighter.highlight(code).lines : null;
+  return highlighter ? highlighter.highlight(code).lines : code.split('\n').map(escapeHtml);
 }

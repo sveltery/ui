@@ -293,7 +293,7 @@ import { highlightCode } from '#lib/components/ui/code-block';
 
 export async function load() {
   const code = 'export const answer = 42;';
-  return { code, lines: (await highlightCode(code, 'tsx')) ?? code.split('\n') };
+  return { code, lines: await highlightCode(code, 'tsx') };
 }
 ```
 

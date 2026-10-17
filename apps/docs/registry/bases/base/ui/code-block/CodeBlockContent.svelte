@@ -2,7 +2,7 @@
   import type { CodeBlockContentProps } from './types.js';
   import { cn } from 'cn';
   import CodeBlockLine from './CodeBlockLine.svelte';
-  let { children, class: classProp, code, wrap = false, lineNumbers = false, startLine = 1, ...props }: CodeBlockContentProps = $props();
+  let { children, class: classProp, code, wrap = false, lineNumbers = false, startLine = 1, style, ...props }: CodeBlockContentProps = $props();
 </script>
 <!-- The content scrolls, so it takes focus for keyboard scrolling. -->
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
@@ -13,7 +13,7 @@
   dir="ltr"
   tabindex={0}
   {...props}
-  style:counter-reset="line {startLine - 1}"
+  style="counter-reset: line {startLine - 1};{style ?? ''}"
   class={cn(
     'cn-code-block-content min-h-0 min-w-0 scroll-fade-x scrollbar-thin overflow-auto text-start font-mono outline-none data-wrap:scroll-fade-y data-wrap:wrap-break-word data-wrap:whitespace-pre-wrap',
     classProp,

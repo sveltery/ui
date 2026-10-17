@@ -23,6 +23,9 @@ test('a copied selection keeps blank lines and leaves out line numbers and diff 
   const diff = page.getByTestId('diff').locator('[data-slot=code-block-content]');
   expect(await diff.locator('[data-slot=code-block-line]').evaluateAll((lines) => lines.map((line) => line.getAttribute('data-variant')))).toEqual(['default', 'removed', 'added', 'default', 'added']);
   expect(await selectionOf(diff)).toBe('keep\nold\nnew\n\nlast');
+
+  const kept = page.getByTestId('kept').locator('[data-slot=code-block-content]');
+  expect(await selectionOf(kept)).toBe('a\n\nb');
 });
 
 test('highlighted code renders colored tokens, keeps markup in the code as text, and streams new lines', async ({ page }) => {

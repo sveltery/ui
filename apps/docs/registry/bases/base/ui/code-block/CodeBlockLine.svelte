@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { CodeBlockLineProps } from './types.js';
+  import { untrack } from 'svelte';
   import { cn } from 'cn';
   import { codeBlockLineVariants } from './variants.js';
   let { children, class: classProp, variant = 'default', ...props }: CodeBlockLineProps = $props();
@@ -9,7 +10,8 @@
   const newline = '\n';
   let empty = $state(true);
   function watchContent(node: HTMLElement) {
-    const sync = () => (empty = node.childElementCount === 0 && node.textContent?.replace(/\n$/, '') === '');
+    // Only the newline this line added itself is discounted, so content that is a newline does not toggle forever.
+    const sync = () => (empty = node.childElementCount === 0 && node.textContent === (untrack(() => empty) ? newline : ''));
     sync();
     const observer = new MutationObserver(sync);
     observer.observe(node, { childList: true, characterData: true, subtree: true });

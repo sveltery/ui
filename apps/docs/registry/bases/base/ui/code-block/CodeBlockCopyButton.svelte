@@ -21,8 +21,9 @@
   class={cn('cn-code-block-copy-button', classProp)}
   onclick={(event) => {
     onclick?.(event);
+    // The clipboard is undefined outside a secure context.
     navigator.clipboard
-      .writeText(value)
+      ?.writeText(value)
       .then(() => (copied = true))
       .catch(() => {});
   }}

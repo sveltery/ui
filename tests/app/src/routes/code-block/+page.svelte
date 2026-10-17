@@ -30,6 +30,14 @@
   </CodeBlockContent>
 </CodeBlock>
 
+<CodeBlock data-testid="kept">
+  <CodeBlockContent>
+    {#each 'a\n\nb'.split(/^/m) as line, index (index)}
+      <CodeBlockLine>{line}</CodeBlockLine>
+    {/each}
+  </CodeBlockContent>
+</CodeBlock>
+
 <CodeBlock data-testid="highlighted">
   <CodeBlockContent>
     {#each highlighted.lines as line, index (index)}
