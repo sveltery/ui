@@ -111,6 +111,17 @@ npx @sveltery/ui@latest info
 
 `info` prints the framework and the Svelte, SvelteKit and Tailwind CSS versions, your `components.json` settings, the preset code they add up to, where each alias points, and the registry items you installed. Pass `--json` for an object. It works without a `components.json` and never writes anything.
 
+## Read and share presets
+
+```sh
+npx @sveltery/ui@latest preset decode b4xFeBLg4O
+npx @sveltery/ui@latest preset url b4xFeBLg4O
+npx @sveltery/ui@latest preset open b4xFeBLg4O
+npx @sveltery/ui@latest preset resolve
+```
+
+`decode` prints what a preset code sets (`--json` for an object), `url` prints its link on the [Create page](https://ui.sveltery.dev/create), and `open` opens that link in your browser. `resolve` (alias `info`) prints the preset that your `components.json` and CSS file add up to, with a `*` on each value your project does not show. None of them writes a file.
+
 ## Use another registry
 
 Set `SVELTERY_REGISTRY_URL` to the registry root, for example a preview deploy's `/r` URL. It takes precedence over the `registry` key in `components.json`.
