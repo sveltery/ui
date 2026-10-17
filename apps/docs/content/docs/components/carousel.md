@@ -3,7 +3,7 @@ title: Carousel
 description: A carousel with motion and swipe built using Embla.
 ---
 
-<ComponentPreview name="base/CarouselExample" />
+<ComponentPreview name="base/CarouselDemoExample" />
 
 ## About
 
@@ -82,7 +82,9 @@ Carousel
 
 ## Sizes
 
-To set the size of the items, use the `basis` utility class on `CarouselItem`. The Multiple example above shows three items per view on large screens.
+To set the size of the items, you can use the `basis` utility class on `CarouselItem`.
+
+<ComponentPreview name="base/CarouselSizeExample" />
 
 ```svelte
 <!-- 33% of the carousel width. -->
@@ -108,7 +110,19 @@ To set the size of the items, use the `basis` utility class on `CarouselItem`. T
 
 ## Spacing
 
-To set the spacing between the items, use a `pl-[VALUE]` utility on `CarouselItem` and a negative `-ml-[VALUE]` on `CarouselContent`. The With Gap example above uses `pl-1` and `-ml-1`.
+To set the spacing between the items, we use a `pl-[VALUE]` utility on `CarouselItem` and a negative `-ml-[VALUE]` on `CarouselContent`.
+
+<ComponentPreview name="base/CarouselSpacingExample" />
+
+```svelte
+<Carousel>
+  <CarouselContent class="-ml-4">
+    <CarouselItem class="pl-4">...</CarouselItem>
+    <CarouselItem class="pl-4">...</CarouselItem>
+    <CarouselItem class="pl-4">...</CarouselItem>
+  </CarouselContent>
+</Carousel>
+```
 
 ```svelte
 <Carousel>
@@ -138,7 +152,7 @@ Use the `orientation` prop to set the orientation of the carousel.
 
 ## Options
 
-Pass options to the carousel with the `opts` prop. See the [Embla Carousel options](https://www.embla-carousel.com/api/options/) for the full list.
+You can pass options to the carousel using the `opts` prop. See the [Embla Carousel docs](https://www.embla-carousel.com/api/options/) for more information.
 
 ```svelte
 <Carousel opts={{ align: 'start', loop: true }}>
@@ -211,9 +225,7 @@ See the [Embla Carousel events](https://www.embla-carousel.com/api/events/) for 
 
 ## Plugins
 
-Use the `plugins` prop to add plugins to the carousel.
-
-<ComponentPreview name="base/CarouselPluginExample" />
+You can use the `plugins` prop to add plugins to the carousel.
 
 ```svelte
 <script lang="ts">
@@ -227,16 +239,22 @@ Use the `plugins` prop to add plugins to the carousel.
 </Carousel>
 ```
 
+<ComponentPreview name="base/CarouselPluginExample" />
+
 ## Keyboard
 
 The left and right arrow keys move to the previous and next slide while focus is inside the carousel. `CarouselPrevious` and `CarouselNext` are disabled when there is no slide to move to.
 
 ## RTL
 
-When localizing the carousel for right-to-left languages, set Embla's `direction` option to match the text direction so the carousel scrolls the correct way.
+Wrap the carousel in a [DirectionProvider](/docs/components/direction), set `dir` on `Carousel` and use the buttons to switch the language.
+
+<ComponentPreview name="base/CarouselRtlExample" align="start" />
+
+When localizing the carousel for RTL languages, you need to set the `direction` option in the `opts` prop to match the text direction. This ensures the carousel scrolls in the correct direction.
 
 ```svelte
-<Carousel dir="rtl" opts={{ direction: 'rtl' }}>
+<Carousel {dir} opts={{ direction: dir }}>
   <CarouselContent>
     <CarouselItem>...</CarouselItem>
     <CarouselItem>...</CarouselItem>
@@ -247,8 +265,8 @@ When localizing the carousel for right-to-left languages, set Embla's `direction
 </Carousel>
 ```
 
-The `direction` option accepts `ltr` or `rtl` and should match the `dir` attribute. Rotate the navigation buttons with `rtl:rotate-180` so they point the right way.
+The `direction` option accepts `"ltr"` or `"rtl"` and should match the `dir` prop value. You may also want to rotate the navigation buttons using the `rtl:rotate-180` class to ensure they point in the correct direction.
 
-## API reference
+## API Reference
 
-See the [Embla Carousel API](https://www.embla-carousel.com/api/) for the instance methods, options and plugins.
+See the [Embla Carousel docs](https://www.embla-carousel.com/api/) for more information on props and plugins.

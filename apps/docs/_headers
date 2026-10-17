@@ -1,0 +1,7 @@
+# Prerendered .md files would otherwise be served without the charset their endpoint sets.
+/*.md
+  Content-Type: text/markdown; charset=utf-8
+
+# Upstream serves the Typeset stylesheet as text, for the builder to fetch and copy.
+/typeset.css
+  Content-Type: text/plain; charset=utf-8
