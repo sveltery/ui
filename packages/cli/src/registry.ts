@@ -108,6 +108,9 @@ export type RegistryManifest = ReturnType<typeof registryManifest>;
 /** A `registries` entry of components.json: an item URL template with `{name}`, or one with query parameters and headers. Values may hold `${VAR}`. */
 export type NamespaceConfig = string | { url: string; params?: Record<string, string>; headers?: Record<string, string> };
 
+/** The built-in namespace: Sveltery UI's own registry, in the project's style. `registries` cannot set it. */
+export const BUILTIN_NAMESPACE = '@sveltery';
+
 const NAMESPACE = '@[a-zA-Z0-9](?:[a-zA-Z0-9-_]*[a-zA-Z0-9])?';
 const namespaceUrl = refine(string, (url) => url.includes('{name}'), 'a URL with a {name} placeholder');
 export const namespaceConfigs: Parser<Record<string, NamespaceConfig>> = (value, path) => {
@@ -116,6 +119,7 @@ export const namespaceConfigs: Parser<Record<string, NamespaceConfig>> = (value,
   )(value, path);
   const invalid = Object.keys(configs).find((name) => !new RegExp(`^${NAMESPACE}$`).test(name));
   if (invalid !== undefined) throw new ParseError(`${path}.${invalid}: registry names must start with @, such as @acme`);
+  if (BUILTIN_NAMESPACE in configs) throw new CliError(`"${BUILTIN_NAMESPACE}" is a built-in registry and cannot be overridden.`);
   return configs;
 };
 
@@ -200,9 +204,6 @@ export function fetchTheme(registry: Registry, baseColor: BaseColor): Promise<Re
  */
 export type ItemRef = { kind: 'name'; name: string } | { kind: 'url'; url: string } | { kind: 'namespaced'; namespace: string; name: string };
 
-/** The built-in namespace: Sveltery UI's own registry, in the project's style, unless `registries` sets it. */
-export const BUILTIN_NAMESPACE = '@sveltery';
-
 export function parseItemRef(value: string): ItemRef {
   if (/^https?:\/\//.test(value)) return { kind: 'url', url: value };
   if (/^[a-z0-9][a-z0-9-]*$/.test(value)) return { kind: 'name', name: value };
@@ -256,7 +257,7 @@ export function itemRequest(registry: Registry, style: StyleName, ref: ItemRef):
     case 'name':
       return plainRequest(`${registry.url}/styles/${style}/${ref.name}.json`);
     case 'namespaced':
-      if (ref.namespace === BUILTIN_NAMESPACE && !registry.namespaces.configs[BUILTIN_NAMESPACE]) return itemRequest(registry, style, { kind: 'name', name: ref.name });
+      if (ref.namespace === BUILTIN_NAMESPACE) return itemRequest(registry, style, { kind: 'name', name: ref.name });
       return namespaceRequest(registry.namespaces, style, ref.namespace, ref.name);
   }
 }

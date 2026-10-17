@@ -223,4 +223,9 @@ Links
     write('components.json', JSON.stringify({ ...components, style: 'bogus' }));
     await expect(info({ cwd, json: false })).rejects.toThrow('components.json is invalid.');
   });
+
+  test('rejects a @sveltery entry in registries, as upstream rejects a built-in registry there', async () => {
+    write('components.json', JSON.stringify({ ...components, registries: { '@sveltery': 'https://example.test/r/{name}.json' } }));
+    await expect(info({ cwd, json: false })).rejects.toThrow('"@sveltery" is a built-in registry and cannot be overridden.');
+  });
 });

@@ -1010,6 +1010,15 @@ describe('namespaced registries', () => {
     await expect(add(['@acme/hello'], { ...addOptions, cwd })).rejects.toThrow('registries.@acme: expected a URL with a {name} placeholder');
   });
 
+  test('refuses a @sveltery entry in registries, as upstream refuses to override a built-in registry', async () => {
+    configure({ '@sveltery': acme(), '@acme': acme() });
+    process.env.ACME_TOKEN = 's3cret';
+    for (const name of ['@sveltery/button', 'button', '@acme/greet']) {
+      await expect(add([name], { ...addOptions, cwd })).rejects.toThrow('"@sveltery" is a built-in registry and cannot be overridden.');
+    }
+    expect(acmeRequests).toEqual([]);
+  });
+
   test('@sveltery names the project registry, and init keeps registries', async () => {
     expect((await add(['@sveltery/button'], { ...addOptions, cwd })).files.map((file) => file.path)).toEqual(['src/lib/components/ui/button/Button.svelte']);
     configure({ '@acme': acme() });

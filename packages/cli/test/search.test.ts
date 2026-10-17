@@ -260,9 +260,12 @@ More items available. Use --offset 4 to see the next page.`);
     expect(requests.filter((url) => !url.startsWith('/r/')).sort()).toEqual(['/acme/registry.json?q=dialog&limit=4', '/dynamic/registry.json?q=dialog&limit=4']);
   });
 
-  test('a @sveltery entry in registries replaces the built-in registry when @sveltery is named', async () => {
-    configure({ '@sveltery': acme() });
-    expect(await print(['@sveltery'], { limit: '1' })).toContain('- @sveltery/hello (ui) — Says hello.');
+  test('refuses a @sveltery entry in registries before any request, as add and view do', async () => {
+    configure({ '@sveltery': acme(), '@acme': acme() });
+    for (const registries of [['@sveltery'], ['@acme'], []]) {
+      await expect(search(registries, { cwd, json: false })).rejects.toThrow('"@sveltery" is a built-in registry and cannot be overridden.');
+    }
+    expect(requests).toEqual([]);
   });
 
   test('stops before any request when an environment variable is missing', async () => {
@@ -324,16 +327,6 @@ Showing 1-41 of 41
     expect(requests.sort()).toEqual(['/acme/registry.json?q=dialog&limit=100', '/dynamic/registry.json?q=dialog&limit=100']);
   });
 
-  test('leaves out @sveltery, even when registries sets it, as upstream leaves out its built-in registries', async () => {
-    configure({ '@sveltery': acme(), '@acme': acme() });
-    expect(await print([])).toBe(`Found 2 items in @acme
-Showing 1-2 of 2
-
-- @acme/hello (ui) — Says hello.
-- @acme/greet-dialog (block)`);
-    expect(requests).toEqual(['/acme/registry.json?limit=100&offset=0']);
-  });
-
   test('asks for a registry, before any request, when there is no components.json', async () => {
     await expect(search([], { cwd, json: false })).rejects.toThrow(
       'Provide a registry or namespace to search, e.g. `npx @sveltery/ui@latest search @sveltery`.\n\nIf you have a components.json with registries configured, run `npx @sveltery/ui@latest search` with no arguments to search all of them.',
@@ -341,11 +334,9 @@ Showing 1-2 of 2
     expect(requests).toEqual([]);
   });
 
-  test('says no registries are configured when components.json lists none but @sveltery', async () => {
+  test('says no registries are configured when components.json lists none, as @sveltery is left out', async () => {
     const message = 'No registries are configured in components.json.\nProvide a registry or namespace to search, e.g. `npx @sveltery/ui@latest search @sveltery`.';
     writeFileSync(join(cwd, 'components.json'), JSON.stringify({ style: 'nova' }));
-    await expect(search([], { cwd, json: false })).rejects.toThrow(message);
-    configure({ '@sveltery': acme() });
     await expect(search([], { cwd, json: false })).rejects.toThrow(message);
     expect(requests).toEqual([]);
   });
