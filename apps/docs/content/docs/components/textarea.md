@@ -47,7 +47,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
-  import { Textarea } from '$lib/components/ui/textarea';
+  import { Textarea } from '#lib/components/ui/textarea';
 </script>
 ```
 

@@ -47,7 +47,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
-  import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput, InputGroupText } from '$lib/components/ui/input-group';
+  import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput, InputGroupText } from '#lib/components/ui/input-group';
   let url = $state('');
 </script>
 ```

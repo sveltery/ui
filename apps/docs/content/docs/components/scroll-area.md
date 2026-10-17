@@ -47,7 +47,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
-  import { ScrollArea, ScrollBar } from '$lib/components/ui/scroll-area';
+  import { ScrollArea, ScrollBar } from '#lib/components/ui/scroll-area';
 </script>
 ```
 

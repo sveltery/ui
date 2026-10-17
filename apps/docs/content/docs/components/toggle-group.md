@@ -47,7 +47,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
-  import { ToggleGroup, ToggleGroupItem } from '$lib/components/ui/toggle-group';
+  import { ToggleGroup, ToggleGroupItem } from '#lib/components/ui/toggle-group';
 </script>
 ```
 

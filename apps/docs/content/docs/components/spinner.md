@@ -47,7 +47,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
-  import { Spinner } from '$lib/components/ui/spinner';
+  import { Spinner } from '#lib/components/ui/spinner';
 </script>
 ```
 

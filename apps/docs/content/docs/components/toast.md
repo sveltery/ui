@@ -53,7 +53,7 @@ Mount `Toaster` once, in your root layout.
 
 ```svelte
 <script lang="ts">
-  import { Toaster } from '$lib/components/ui/toast';
+  import { Toaster } from '#lib/components/ui/toast';
   let { children } = $props();
 </script>
 
@@ -65,7 +65,7 @@ Call `toast.add()` from any component or module.
 
 ```svelte
 <script lang="ts">
-  import { toast } from '$lib/components/ui/toast';
+  import { toast } from '#lib/components/ui/toast';
 </script>
 
 <button onclick={() => toast.add({ title: 'Event created', description: 'Sunday, December 3 at 9:00 AM' })}>
@@ -119,7 +119,7 @@ toast.add({ title: 'Event created', type: 'success' });
 
 ```svelte
 <script lang="ts">
-  import { Toast, ToastClose, ToastContent, ToastDescription, ToastPortal, ToastTitle, ToastViewport, getToastManager } from '$lib/components/ui/toast';
+  import { Toast, ToastClose, ToastContent, ToastDescription, ToastPortal, ToastTitle, ToastViewport, getToastManager } from '#lib/components/ui/toast';
 
   const manager = getToastManager();
 </script>

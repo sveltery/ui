@@ -17,9 +17,9 @@ A form owns its state in one of these places:
 
 ```svelte
 <script lang="ts">
-  import { Button } from '$lib/components/ui/button';
-  import { Field, FieldLabel } from '$lib/components/ui/field';
-  import { Input } from '$lib/components/ui/input';
+  import { Button } from '#lib/components/ui/button';
+  import { Field, FieldLabel } from '#lib/components/ui/field';
+  import { Input } from '#lib/components/ui/input';
 </script>
 
 <form onsubmit={(event) => console.log(Object.fromEntries(new FormData(event.currentTarget)))}>
