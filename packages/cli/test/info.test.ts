@@ -115,6 +115,7 @@ Links
 Configuration
   style        nova
   iconLibrary  lucide
+  rtl          No
   menuColor    default
   menuAccent   subtle
   registry     ${origin}/r
@@ -184,7 +185,7 @@ Links
       tailwindCss: 'src/app.css',
       importAlias: '$lib',
     });
-    expect(data.config).toMatchObject({ style: 'nova', menuAccent: 'subtle', aliases: components.aliases, registry: `${origin}/r`, resolvedPaths: { ui: `${cwd}/src/lib/components/ui` } });
+    expect(data.config).toMatchObject({ style: 'nova', rtl: false, menuAccent: 'subtle', aliases: components.aliases, registry: `${origin}/r`, resolvedPaths: { ui: `${cwd}/src/lib/components/ui` } });
     expect(data.preset).toEqual({
       code: 'b0',
       values: { style: 'nova', baseColor: 'neutral', theme: 'neutral', chartColor: 'neutral', iconLibrary: 'lucide', font: 'inter', fontHeading: 'inherit', radius: 'default', menuAccent: 'subtle', menuColor: 'default' },

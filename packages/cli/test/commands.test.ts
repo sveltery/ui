@@ -10,7 +10,7 @@ import { apply, type ApplyOptions } from '../src/commands/apply.js';
 import { build } from '../src/commands/build.js';
 import { diff } from '../src/commands/diff.js';
 import { baseDependencies, init } from '../src/commands/init.js';
-import { migrateRtl } from '../src/commands/migrate.js';
+import { migrate, migrateRtl, type MigrateOptions } from '../src/commands/migrate.js';
 import { update } from '../src/commands/update.js';
 import { cliPackage } from '../src/version.js';
 
@@ -70,6 +70,11 @@ const registryFiles: Record<string, unknown> = {
 
 const font = (name: string, variable: string, family: string, dependency: string) =>
   item(name, { type: 'registry:font', files: [], font: { family, provider: 'google', import: name, variable, dependency } });
+registryFiles['themes/stone.json'] = item('stone', {
+  type: 'registry:theme',
+  files: [],
+  cssVars: { theme: { 'color-background': 'var(--background)' }, light: { background: 'oklch(0.99 0.001 106)' }, dark: { background: 'oklch(0.147 0.004 49)' } },
+});
 registryFiles['styles/vega/button.json'] = item('button', { files: [{ type: 'registry:ui', target: 'button/Button.svelte', content: button.replace('px-2.5', 'px-3') }] });
 registryFiles['styles/vega/font-inter.json'] = font('font-inter', '--font-sans', "'Inter Variable', sans-serif", '@fontsource-variable/inter');
 registryFiles['styles/vega/font-heading-playfair-display.json'] = font('font-heading-playfair-display', '--font-heading', "'Playfair Display Variable', serif", '@fontsource-variable/playfair-display');
@@ -525,6 +530,204 @@ describe('apply', () => {
   });
 });
 
+describe('migrate', () => {
+  const buttonPath = 'src/lib/components/ui/button/Button.svelte';
+  const options = (rest: Partial<MigrateOptions> = {}) => ({ cwd, yes: true, install: false, list: false, ...rest });
+
+  describe('icons', () => {
+    beforeEach(async () => {
+      vi.mocked(confirm).mockReset();
+      await init({ cwd, ...defaults });
+      await add(['button'], { cwd, ...defaults, overwrite: false, all: false, dryRun: false });
+    });
+
+    test('swaps the icons in the ui directory and records the library in components.json', async () => {
+      expect(await migrate('icons', options({ to: 'tabler' }))).toEqual({ changed: [buttonPath], skipped: [] });
+      expect(read(buttonPath)).toBe(`<script lang="ts">
+  import { IconChevronRight } from '@tabler/icons-svelte';
+  let { children } = $props();
+</script>
+<button class="px-2.5">{@render children?.()}<IconChevronRight /></button>
+`);
+      expect(JSON.parse(read('components.json')).iconLibrary).toBe('tabler');
+      expect(await diff([], { cwd })).toBe('Everything is up to date.');
+    });
+
+    test('a glob takes the files it matches and skips the directories', async () => {
+      expect(await migrate('icons', options({ to: 'tabler', path: 'src/**' }))).toEqual({ changed: [buttonPath], skipped: [] });
+    });
+
+    test('reports a file that does not parse and migrates the rest', async () => {
+      writeFileSync(join(cwd, 'src/lib/components/ui/no-icons.ts'), "export const html = '<script></script>';\n");
+      writeFileSync(join(cwd, 'src/lib/components/ui/html.ts'), "import XIcon from '@lucide/svelte/icons/x';\nexport const html = '<script></script>';\n");
+      const warn = vi.spyOn(log, 'warn').mockImplementation(() => {});
+      try {
+        expect(await migrate('icons', options({ to: 'tabler' }))).toEqual({ changed: [buttonPath], skipped: [] });
+        expect(warn.mock.calls).toEqual([['Skipped 1 file. These were left untouched:\n  - src/lib/components/ui/html.ts: could not parse (Unterminated string constant at line 2)']]);
+      } finally {
+        warn.mockRestore();
+      }
+    });
+
+    test('a path limits the run and leaves components.json alone', async () => {
+      await migrate('icons', options({ to: 'tabler', path: buttonPath }));
+      expect([read(buttonPath).includes('<IconChevronRight />'), JSON.parse(read('components.json')).iconLibrary]).toEqual([true, 'lucide']);
+    });
+
+    test('asks to continue, defaulting to yes, and a no changes nothing', async () => {
+      vi.mocked(confirm).mockResolvedValueOnce(false);
+      const before = read(buttonPath);
+      await migrate('icons', options({ yes: false, from: 'lucide', to: 'tabler' }));
+      expect(vi.mocked(confirm).mock.calls[0]![0]).toMatchObject({ message: 'We will migrate 1 files in ./src/lib/components/ui from lucide to tabler. Continue?', initialValue: true });
+      expect(read(buttonPath)).toBe(before);
+    });
+
+    test.each([
+      [{ to: 'feather' }, 'Unknown icon library: feather. Available libraries: lucide, tabler, hugeicons, phosphor, remixicon.'],
+      [{ to: 'lucide' }, 'You cannot migrate to the same icon library.'],
+      [{}, 'Pass the icon library to migrate to with --to.'],
+    ])('rejects %o', async (rest, message) => {
+      await expect(migrate('icons', options(rest))).rejects.toThrow(message);
+    });
+  });
+
+  test('base-color changes the tokens that hold the old color and records the new one', async () => {
+    await init({ cwd, ...defaults });
+    await migrate('base-color', options({ to: 'stone' }));
+    expect(read('src/app.css')).toContain(':root {\n  --background: oklch(0.99 0.001 106);\n}\n.dark {\n  --background: oklch(0.147 0.004 49);\n}');
+    expect(JSON.parse(read('components.json')).tailwind.baseColor).toBe('stone');
+  });
+
+  test('base-color takes the source from components.json and asks only for the target', async () => {
+    await init({ cwd, ...defaults });
+    vi.mocked(select).mockReset().mockResolvedValueOnce('stone');
+    vi.mocked(confirm).mockReset().mockResolvedValueOnce(true);
+    await migrate('base-color', options({ yes: false }));
+    expect(vi.mocked(select).mock.calls.map(([prompt]) => prompt.message)).toEqual(['Which base color would you like to migrate to?']);
+    expect(JSON.parse(read('components.json')).tailwind.baseColor).toBe('stone');
+  });
+
+  describe('cn', () => {
+    const utils = "import { clsx, type ClassValue } from 'clsx';\nimport { twMerge } from 'tailwind-merge';\n\nexport function cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n";
+    beforeEach(() => {
+      writeFileSync(join(cwd, 'package.json'), JSON.stringify({ dependencies: { clsx: '^2.1.1', 'tailwind-merge': '^3.3.1' }, devDependencies: { tailwindcss: '^4.0.0' } }));
+      mkdirSync(join(cwd, 'src/lib'), { recursive: true });
+      writeFileSync(join(cwd, 'src/lib/utils.ts'), utils);
+      mkdirSync(join(cwd, 'node_modules/clsx'), { recursive: true });
+      writeFileSync(join(cwd, 'node_modules/clsx/index.ts'), utils);
+    });
+
+    test('migrates the source files outside node_modules, and needs no components.json', async () => {
+      expect(await migrate('cn', options())).toEqual({ changed: ['src/lib/utils.ts'], removed: [] });
+      expect(read('src/lib/utils.ts')).toBe("export { cn } from 'cn';\n");
+      expect(read('node_modules/clsx/index.ts')).toBe(utils);
+    });
+
+    test('a glob takes the files it matches and skips the directories', async () => {
+      mkdirSync(join(cwd, 'src/lib/components'));
+      writeFileSync(join(cwd, 'src/lib/components/a.ts'), utils);
+      expect(await migrate('cn', options({ path: 'src/lib/*' }))).toEqual({ changed: ['src/lib/utils.ts'], removed: [] });
+      expect(read('src/lib/components/a.ts')).toBe(utils);
+    });
+
+    test('migrates a script with a hashbang, and reports a file that does not parse and migrates the rest', async () => {
+      const html = 'import { clsx } from "clsx";\nexport const html = `<script>${clsx("a")}</script>`;\n';
+      writeFileSync(join(cwd, 'src/lib/html.ts'), html);
+      mkdirSync(join(cwd, 'scripts'));
+      writeFileSync(join(cwd, 'scripts/gen.mjs'), `#!/usr/bin/env node\n${utils}`);
+      const warn = vi.spyOn(log, 'warn').mockImplementation(() => {});
+      try {
+        expect(await migrate('cn', options())).toEqual({ changed: ['scripts/gen.mjs', 'src/lib/utils.ts'], removed: [] });
+        expect(warn.mock.calls).toEqual([['Manual review required for 1 item:\n  - src/lib/html.ts: could not parse (Unterminated template literal at line 2)']]);
+      } finally {
+        warn.mockRestore();
+      }
+      expect([read('scripts/gen.mjs'), read('src/lib/html.ts')]).toEqual(["#!/usr/bin/env node\n\nexport { cn } from 'cn';\n", html]);
+    });
+
+    test('refuses tailwind-merge v2', async () => {
+      writeFileSync(join(cwd, 'package.json'), JSON.stringify({ dependencies: { 'tailwind-merge': '^2.6.0' } }));
+      await expect(migrate('cn', options())).rejects.toThrow('The cn migration requires Tailwind CSS v4 and tailwind-merge v3.');
+      expect(read('src/lib/utils.ts')).toBe(utils);
+    });
+  });
+
+  describe('rtl', () => {
+    const ui = 'src/lib/components/ui';
+    beforeEach(async () => {
+      await init({ cwd, ...defaults });
+      mkdirSync(join(cwd, ui, 'card'), { recursive: true });
+      mkdirSync(join(cwd, ui, 'calendar'), { recursive: true });
+      writeFileSync(join(cwd, ui, 'card/Card.svelte'), '<div class="ml-2 text-left">x</div>\n');
+      writeFileSync(join(cwd, ui, 'card/variants.ts'), "export const v = cva('pl-2 rounded-l-md');\n");
+      writeFileSync(join(cwd, ui, 'calendar/Calendar.svelte'), '<div class="flex">x</div>\n');
+    });
+
+    test('sets rtl: true and rewrites every component under the ui alias', async () => {
+      const result = await migrateRtl({ cwd, yes: true });
+      expect(JSON.parse(read('components.json')).rtl).toBe(true);
+      expect(read(`${ui}/card/Card.svelte`)).toBe('<div class="ms-2 text-start">x</div>\n');
+      expect(read(`${ui}/card/variants.ts`)).toBe("export const v = cva('ps-2 rounded-s-md');\n");
+      expect(result.transformed.sort()).toEqual(['card/Card.svelte', 'card/variants.ts']);
+      expect(result.review).toEqual(['calendar/Calendar.svelte']);
+    });
+
+    test('limits the migration to a file, a directory or a glob', async () => {
+      await migrateRtl({ cwd, yes: true, path: `${ui}/card/Card.svelte` });
+      expect(read(`${ui}/card/variants.ts`)).toContain('pl-2');
+      expect(read(`${ui}/card/Card.svelte`)).toContain('ms-2');
+      await migrateRtl({ cwd, yes: true, path: `${ui}/**/*.ts` });
+      expect(read(`${ui}/card/variants.ts`)).toContain('ps-2');
+      await expect(migrateRtl({ cwd, yes: true, path: 'nope' })).rejects.toThrow('File not found: nope');
+      await expect(migrateRtl({ cwd, yes: true, path: 'src/**/*.md' })).rejects.toThrow('No files found matching: src/**/*.md');
+    });
+
+    test('skips the directories a glob matches', async () => {
+      const result = await migrateRtl({ cwd, yes: true, path: `${ui}/**` });
+      expect(result.transformed.sort()).toEqual([`${ui}/card/Card.svelte`, `${ui}/card/variants.ts`]);
+      expect(read(`${ui}/card/Card.svelte`)).toContain('ms-2');
+    });
+
+    test('takes an absolute glob', async () => {
+      const result = await migrateRtl({ cwd, yes: true, path: join(cwd, ui, 'card/*.svelte') });
+      expect(result.transformed).toHaveLength(1);
+      expect(read(`${ui}/card/Card.svelte`)).toContain('ms-2');
+    });
+
+    test('skips a file the parser rejects and migrates the rest', async () => {
+      writeFileSync(join(cwd, ui, 'card/snippet.ts'), "export const s = '</script>';\n");
+      const warn = vi.spyOn(log, 'warn').mockImplementation(() => {});
+      try {
+        const result = await migrateRtl({ cwd, yes: true });
+        expect(result.transformed.sort()).toEqual(['card/Card.svelte', 'card/variants.ts']);
+        expect(warn).toHaveBeenCalledWith(expect.stringContaining(`Skipped 1 file. These were left untouched:\n  - ${ui}/card/snippet.ts: could not parse (`));
+      } finally {
+        warn.mockRestore();
+      }
+      expect(read(`${ui}/card/snippet.ts`)).toBe("export const s = '</script>';\n");
+    });
+
+    test('changes nothing when the prompt is declined', async () => {
+      vi.mocked(confirm).mockResolvedValueOnce(false);
+      await migrateRtl({ cwd, yes: false });
+      expect(JSON.parse(read('components.json')).rtl).toBe(false);
+      expect(read(`${ui}/card/Card.svelte`)).toContain('ml-2');
+    });
+  });
+
+  test('lists the migrations, and rejects an unknown one', async () => {
+    const info = vi.spyOn(log, 'info').mockImplementation(() => {});
+    try {
+      await migrate(undefined, options());
+      expect(info).toHaveBeenCalledWith('Available migrations:\n- cn: migrate clsx and tailwind-merge to cn.\n- icons: migrate your ui components to a different icon library.\n- base-color: migrate your theme to a different base color.\n- rtl: migrate your components to support RTL (right-to-left).');
+    } finally {
+      info.mockRestore();
+    }
+    await expect(migrate('radix', options())).rejects.toThrow("shadcn/ui's radix migration moves @radix-ui/react-* imports to the radix-ui package. A Svelte project has no such imports, so Sveltery UI has no radix migration.");
+    await expect(migrate('rename', options())).rejects.toThrow('Unknown migration "rename".');
+  });
+});
+
 describe('add', () => {
   beforeEach(() => init({ cwd, ...defaults }));
   const options = (extra: { overwrite?: boolean; all?: boolean; dryRun?: boolean; diff?: string | true; view?: string | true } = {}) => ({ ...defaults, overwrite: false, all: false, dryRun: false, cwd, ...extra });
@@ -975,63 +1178,6 @@ describe('update', () => {
     rmSync(join(cwd, 'src/lib'), { recursive: true });
     expect((await update([], { cwd, ...defaults })).files).toEqual([]);
     expect(existsSync(join(cwd, 'src/lib'))).toBe(false);
-  });
-});
-
-describe('migrate rtl', () => {
-  const ui = 'src/lib/components/ui';
-  beforeEach(async () => {
-    await init({ cwd, ...defaults });
-    mkdirSync(join(cwd, ui, 'card'), { recursive: true });
-    mkdirSync(join(cwd, ui, 'calendar'), { recursive: true });
-    writeFileSync(join(cwd, ui, 'card/Card.svelte'), '<div class="ml-2 text-left">x</div>\n');
-    writeFileSync(join(cwd, ui, 'card/variants.ts'), "export const v = cva('pl-2 rounded-l-md');\n");
-    writeFileSync(join(cwd, ui, 'calendar/Calendar.svelte'), '<div class="flex">x</div>\n');
-  });
-
-  test('sets rtl: true and rewrites every component under the ui alias', async () => {
-    const result = await migrateRtl({ cwd, yes: true });
-    expect(JSON.parse(read('components.json')).rtl).toBe(true);
-    expect(read(`${ui}/card/Card.svelte`)).toBe('<div class="ms-2 text-start">x</div>\n');
-    expect(read(`${ui}/card/variants.ts`)).toBe("export const v = cva('ps-2 rounded-s-md');\n");
-    expect(result.transformed.sort()).toEqual(['card/Card.svelte', 'card/variants.ts']);
-    expect(result.review).toEqual(['calendar/Calendar.svelte']);
-  });
-
-  test('limits the migration to a file, a directory or a glob', async () => {
-    await migrateRtl({ cwd, yes: true, path: `${ui}/card/Card.svelte` });
-    expect(read(`${ui}/card/variants.ts`)).toContain('pl-2');
-    expect(read(`${ui}/card/Card.svelte`)).toContain('ms-2');
-    await migrateRtl({ cwd, yes: true, path: `${ui}/**/*.ts` });
-    expect(read(`${ui}/card/variants.ts`)).toContain('ps-2');
-    await expect(migrateRtl({ cwd, yes: true, path: 'nope' })).rejects.toThrow('File not found: nope');
-    await expect(migrateRtl({ cwd, yes: true, path: 'src/**/*.md' })).rejects.toThrow('No files found matching: src/**/*.md');
-  });
-
-  test('skips the directories a glob matches', async () => {
-    const result = await migrateRtl({ cwd, yes: true, path: `${ui}/**` });
-    expect(result.transformed.sort()).toEqual([`${ui}/card/Card.svelte`, `${ui}/card/variants.ts`]);
-    expect(read(`${ui}/card/Card.svelte`)).toContain('ms-2');
-  });
-
-  test('takes an absolute glob', async () => {
-    const result = await migrateRtl({ cwd, yes: true, path: join(cwd, ui, 'card/*.svelte') });
-    expect(result.transformed).toHaveLength(1);
-    expect(read(`${ui}/card/Card.svelte`)).toContain('ms-2');
-  });
-
-  test('skips a file the parser rejects and migrates the rest', async () => {
-    writeFileSync(join(cwd, ui, 'card/snippet.ts'), "export const s = '</script>';\n");
-    const result = await migrateRtl({ cwd, yes: true });
-    expect(result.transformed.sort()).toEqual(['card/Card.svelte', 'card/variants.ts']);
-    expect(read(`${ui}/card/snippet.ts`)).toBe("export const s = '</script>';\n");
-  });
-
-  test('changes nothing when the prompt is declined', async () => {
-    vi.mocked(confirm).mockResolvedValueOnce(false);
-    await migrateRtl({ cwd, yes: false });
-    expect(JSON.parse(read('components.json')).rtl).toBe(false);
-    expect(read(`${ui}/card/Card.svelte`)).toContain('ml-2');
   });
 });
 
