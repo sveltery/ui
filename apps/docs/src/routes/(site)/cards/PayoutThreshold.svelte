@@ -1,8 +1,9 @@
 <script lang="ts">
+  import { Cancel01Icon } from '@hugeicons/core-free-icons';
+  import { HugeiconsIcon } from '@hugeicons/svelte';
   import { Button } from '$registry/bases/base/ui/button';
   import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
   import { Field, FieldDescription, FieldGroup, FieldLabel } from '$registry/bases/base/ui/field';
-  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
   import { Progress } from '$registry/bases/base/ui/progress';
   import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '$registry/bases/base/ui/select';
   import { Textarea } from '$registry/bases/base/ui/textarea';
@@ -21,7 +22,7 @@
     <CardDescription>Set the minimum balance required before a payout is triggered.</CardDescription>
     <CardAction>
       <Button variant="ghost" size="icon-sm" class="bg-muted" aria-label="Dismiss payout threshold">
-        <IconPlaceholder lucide="XIcon" tabler="IconX" hugeicons="Cancel01Icon" phosphor="XIcon" remixicon="RiCloseLine" />
+        <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} />
       </Button>
     </CardAction>
   </CardHeader>

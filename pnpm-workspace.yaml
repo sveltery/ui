@@ -5,6 +5,7 @@ packages:
 engineStrict: true
 autoInstallPeers: false
 allowBuilds:
+  '@hugeicons/svelte': false
   esbuild: true
   workerd: true
 minimumReleaseAgeExclude:

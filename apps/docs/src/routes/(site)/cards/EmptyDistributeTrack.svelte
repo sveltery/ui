@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { Add01Icon } from '@hugeicons/core-free-icons';
+  import { HugeiconsIcon } from '@hugeicons/svelte';
   import { Button } from '$registry/bases/base/ui/button';
   import { Card, CardContent } from '$registry/bases/base/ui/card';
   import {
@@ -9,14 +11,13 @@
     EmptyMedia,
     EmptyTitle
   } from '$registry/bases/base/ui/empty';
-  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 </script>
 
 <Card>
   <CardContent>
     <Empty class="p-4">
       <EmptyMedia variant="icon">
-        <IconPlaceholder lucide="PlusIcon" tabler="IconPlus" hugeicons="Add01Icon" phosphor="PlusIcon" remixicon="RiAddLine" />
+        <HugeiconsIcon icon={Add01Icon} strokeWidth={2} />
       </EmptyMedia>
       <EmptyHeader>
         <EmptyTitle>Distribute Track</EmptyTitle>

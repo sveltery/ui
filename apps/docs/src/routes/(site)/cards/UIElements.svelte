@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { ArrowRight02Icon, ArrowUp01Icon, Search01Icon } from '@hugeicons/core-free-icons';
+  import { HugeiconsIcon } from '@hugeicons/svelte';
   import {
     AlertDialog,
     AlertDialogAction,
@@ -25,7 +27,6 @@
     DropdownMenuTrigger,
   } from '$registry/bases/base/ui/dropdown-menu';
   import { Field, FieldGroup } from '$registry/bases/base/ui/field';
-  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
   import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from '$registry/bases/base/ui/input-group';
   import { RadioGroup, RadioGroupItem } from '$registry/bases/base/ui/radio-group';
   import { Switch } from '$registry/bases/base/ui/switch';
@@ -37,7 +38,7 @@
     <div class="flex gap-2">
       <Button>
         Button
-        <IconPlaceholder lucide="ArrowRightIcon" tabler="IconArrowRight" hugeicons="ArrowRightIcon" phosphor="ArrowRightIcon" remixicon="RiArrowRightLine" data-icon="inline-end" />
+        <HugeiconsIcon icon={ArrowRight02Icon} strokeWidth={2} data-icon="inline-end" />
       </Button>
       <Button variant="secondary">Secondary</Button>
       <Button variant="outline">Outline</Button>
@@ -48,7 +49,7 @@
           <InputGroupInput placeholder="Name" />
           <InputGroupAddon align="inline-end">
             <InputGroupText>
-              <IconPlaceholder lucide="SearchIcon" tabler="IconSearch" hugeicons="Search01Icon" phosphor="MagnifyingGlassIcon" remixicon="RiSearchLine" />
+              <HugeiconsIcon icon={Search01Icon} strokeWidth={2} />
             </InputGroupText>
           </InputGroupAddon>
         </InputGroup>
@@ -101,7 +102,7 @@
         <DropdownMenu>
           <DropdownMenuTrigger>
             {#snippet render(props, _state, content)}<Button variant="outline" size="icon" aria-label="Open quick actions" {...props}>{@render content?.()}</Button>{/snippet}
-            <IconPlaceholder lucide="ArrowUpIcon" tabler="IconArrowUp" hugeicons="ArrowUp01Icon" phosphor="ArrowUpIcon" remixicon="RiArrowUpLine" />
+            <HugeiconsIcon icon={ArrowUp01Icon} strokeWidth={2} />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" side="top" class="w-40">
             <DropdownMenuGroup>

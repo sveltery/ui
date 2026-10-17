@@ -1,10 +1,11 @@
 <script lang="ts">
+  import { AlertCircleIcon, ArrowRight01Icon, SquareLock02Icon } from '@hugeicons/core-free-icons';
+  import { HugeiconsIcon } from '@hugeicons/svelte';
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
   import { Button } from '$registry/bases/base/ui/button';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
   import { Field, FieldGroup, FieldLabel } from '$registry/bases/base/ui/field';
-  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
   import { Input } from '$registry/bases/base/ui/input';
   import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '$registry/bases/base/ui/item';
 </script>
@@ -37,18 +38,18 @@
   </CardContent>
   <CardFooter class="flex-col gap-4">
     <Button class="w-full">
-      <IconPlaceholder lucide="LockKeyholeIcon" tabler="IconLock" hugeicons="SquareLock02Icon" phosphor="LockKeyIcon" remixicon="RiLockLine" />
+      <HugeiconsIcon icon={SquareLock02Icon} strokeWidth={2} />
       Update Security
     </Button>
     <Item variant="muted" render={link}>
       <ItemMedia variant="icon">
-        <IconPlaceholder lucide="AlertCircleIcon" tabler="IconAlertCircle" hugeicons="AlertCircleIcon" phosphor="WarningCircleIcon" remixicon="RiErrorWarningLine" class="text-destructive" />
+        <HugeiconsIcon icon={AlertCircleIcon} strokeWidth={2} class="text-destructive" />
       </ItemMedia>
       <ItemContent>
         <ItemTitle>Danger Zone</ItemTitle>
         <ItemDescription class="line-clamp-1">Archive account and remove catalog</ItemDescription>
       </ItemContent>
-      <IconPlaceholder lucide="ChevronRightIcon" tabler="IconChevronRight" hugeicons="ArrowRight01Icon" phosphor="CaretRightIcon" remixicon="RiArrowRightSLine" class="size-4" />
+      <HugeiconsIcon icon={ArrowRight01Icon} strokeWidth={2} class="size-4" />
     </Item>
   </CardFooter>
 </Card>
