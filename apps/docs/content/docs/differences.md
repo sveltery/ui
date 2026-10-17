@@ -142,6 +142,26 @@ Where upstream code misbehaves on Base UI, Sveltery UI fixes it instead of copyi
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
+### Arrow keys move focus in the Calendar
+
+**Upstream:** `CalendarDayButton` in [`calendar.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/calendar.tsx#L216-L218) creates a ref and focuses it when the day is focused, but never passes the ref to its `Button`. The Radix variant's [`calendar.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/radix/ui/calendar.tsx#L223) passes `ref={ref}`.
+
+**Sveltery UI:** In the [Calendar](/docs/components/calendar), the arrow keys move keyboard focus to the next day.
+
+**Why:** In upstream, the arrow keys move the focus ring (`data-focused`) but keyboard focus stays where it was. Enter then selects the day that kept focus, not the one with the ring, and screen readers announce no move. The Radix variant shows the intent.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### Calendar month and year dropdowns have a border
+
+**Upstream:** The dropdown root in [`calendar.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/calendar.tsx#L76) uses `cn-calendar-dropdown-root`, which each style defines with a border and focus ring, for example [`style-nova.css`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/styles/style-nova.css#L235-L237). The registry build leaves that class uninlined, in the served [`base-nova/calendar.json`](https://ui.shadcn.com/r/styles/base-nova/calendar.json) too, and the site has no rule for it. The month and year dropdowns on ui.shadcn.com have no border and no focus ring.
+
+**Sveltery UI:** The [Calendar](/docs/components/calendar) dropdowns get the style's border and focus ring.
+
+**Why:** The style files define the class for this element, so the missing border is a build gap, not a design choice. Without it, a focused dropdown shows no focus ring.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ## Example content
 
 ### The Toggle Group select starts on one of its items

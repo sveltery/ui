@@ -29,13 +29,14 @@
   <div data-slot="calendar" {...rootProps} class={cn(className)}>{@render children()}</div>
 {/snippet}
 
-{#snippet calendarChevron({ orientation, class: className }: ChevronSnippetProps)}
+{#snippet calendarChevron({ orientation, class: className, size, disabled }: ChevronSnippetProps)}
+  {const attributes = $derived({ ...(size && { width: size, height: size }), ...(disabled && { disabled: '' }) })}
   {#if orientation === 'left'}
-    <IconPlaceholder lucide="ChevronLeftIcon" tabler="IconChevronLeft" hugeicons="ArrowLeftIcon" phosphor="CaretLeftIcon" remixicon="RiArrowLeftSLine" class={cn('cn-rtl-flip size-4', className)} />
+    <IconPlaceholder lucide="ChevronLeftIcon" tabler="IconChevronLeft" hugeicons="ArrowLeftIcon" phosphor="CaretLeftIcon" remixicon="RiArrowLeftSLine" class={cn('cn-rtl-flip size-4', className)} {...attributes} />
   {:else if orientation === 'right'}
-    <IconPlaceholder lucide="ChevronRightIcon" tabler="IconChevronRight" hugeicons="ArrowRightIcon" phosphor="CaretRightIcon" remixicon="RiArrowRightSLine" class={cn('cn-rtl-flip size-4', className)} />
+    <IconPlaceholder lucide="ChevronRightIcon" tabler="IconChevronRight" hugeicons="ArrowRightIcon" phosphor="CaretRightIcon" remixicon="RiArrowRightSLine" class={cn('cn-rtl-flip size-4', className)} {...attributes} />
   {:else}
-    <IconPlaceholder lucide="ChevronDownIcon" tabler="IconChevronDown" hugeicons="ArrowDownIcon" phosphor="CaretDownIcon" remixicon="RiArrowDownSLine" class={cn('size-4', className)} />
+    <IconPlaceholder lucide="ChevronDownIcon" tabler="IconChevronDown" hugeicons="ArrowDownIcon" phosphor="CaretDownIcon" remixicon="RiArrowDownSLine" class={cn('size-4', className)} {...attributes} />
   {/if}
 {/snippet}
 

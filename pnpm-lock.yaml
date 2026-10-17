@@ -259,6 +259,12 @@ importers:
       '@dnd-kit/svelte':
         specifier: 0.5.0
         version: 0.5.0(svelte@5.57.1(@typescript-eslint/types@8.71.0))
+      '@hugeicons/core-free-icons':
+        specifier: 1.2.1
+        version: 1.2.1
+      '@hugeicons/svelte':
+        specifier: 1.1.5
+        version: 1.1.5(svelte@5.57.1(@typescript-eslint/types@8.71.0))
       '@sveltery/command':
         specifier: workspace:*
         version: link:../../packages/command
@@ -1174,6 +1180,11 @@ packages:
 
   '@hugeicons/core-free-icons@1.2.1':
     resolution: {integrity: sha512-ho0QdGMkgL+kt+QsZocCsKvJou1rfyVQWARrxIhNLi+9tCKayUUtD9jlHgioaRphmskSl84TxrDm9Ae0G4Uu1g==}
+
+  '@hugeicons/svelte@1.1.5':
+    resolution: {integrity: sha512-aau7Z9kJWi3QtakeHeFBj+TqHl7NQBO6/BWbnBTete8On3+L/CD1iSmf4vFNs90fcpQeP+567hT4wImEMNd1Fg==}
+    peerDependencies:
+      svelte: ^5.0.0
 
   '@humanfs/core@0.19.2':
     resolution: {integrity: sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA==}
@@ -4768,6 +4779,10 @@ snapshots:
       hono: 4.13.12
 
   '@hugeicons/core-free-icons@1.2.1': {}
+
+  '@hugeicons/svelte@1.1.5(svelte@5.57.1(@typescript-eslint/types@8.71.0))':
+    dependencies:
+      svelte: 5.57.1(@typescript-eslint/types@8.71.0)
 
   '@humanfs/core@0.19.2':
     dependencies:

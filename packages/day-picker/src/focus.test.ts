@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { DateLib } from './date-lib.js';
 import { calculateFocusTarget, getNextFocus, keyToMove } from './focus.js';
 import { createDay, getMonths } from './grid.js';
-import { getDayModifiers, type ModifierContext } from './modifiers.js';
+import { createGetModifiers, type ModifierContext } from './modifiers.js';
 import type { CalendarDay } from './types.js';
 
 const lib = new DateLib();
@@ -136,7 +136,7 @@ describe('calculateFocusTarget', () => {
     overrides: Partial<ModifierContext> & { selected?: Date; lastFocused?: CalendarDay } = {},
   ): string | undefined => {
     const { selected, lastFocused, ...context } = overrides;
-    const getModifiers = (day: CalendarDay) => getDayModifiers(day, { today: d(2024, 3, 13), showOutsideDays: true, ...context }, lib);
+    const getModifiers = createGetModifiers(days, { today: d(2024, 3, 13), showOutsideDays: true, ...context }, lib);
     return calculateFocusTarget(days, getModifiers, (date) => !!selected && lib.isSameDay(selected, date), lastFocused, lib)?.isoDate;
   };
 
@@ -178,6 +178,6 @@ describe('calculateFocusTarget', () => {
 
   it('has no target when no day is focusable', () => {
     expect(target({ disabled: true })).toBeUndefined();
-    expect(calculateFocusTarget([], () => getDayModifiers(days[0], { today: march }, lib), () => false, undefined, lib)).toBeUndefined();
+    expect(calculateFocusTarget([], createGetModifiers([], { today: march }, lib), () => false, undefined, lib)).toBeUndefined();
   });
 });

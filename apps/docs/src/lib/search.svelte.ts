@@ -23,9 +23,10 @@ export class FullTextSearch {
     const engine = await loadPagefind();
     this.available = engine !== null;
     if (!engine || !query.trim()) return (this.hits = []);
-    const search = await engine.debouncedSearch(query, {}, 150);
+    const search = await engine.debouncedSearch(query, {}, 500);
     if (!search) return; // A newer query superseded this one.
     const data = await Promise.all(search.results.slice(0, 8).map((result) => result.data()));
-    this.hits = data.map((hit) => ({ href: hit.url.replace(/\.html$/, '').replace(/\/index$/, '') || '/', title: hit.meta.title ?? hit.url, excerpt: hit.excerpt }));
+    const hits = data.map((hit) => ({ href: hit.url.replace(/\.html$/, '').replace(/\/index$/, '') || '/', title: hit.meta.title ?? hit.url, excerpt: hit.excerpt }));
+    this.hits = hits.filter((hit, index) => hits.findIndex((other) => other.title === hit.title) === index);
   }
 }

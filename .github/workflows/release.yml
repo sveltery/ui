@@ -2,7 +2,9 @@ name: Release
 
 # Pushing a v* tag publishes every non-private package in packages/ to npm through trusted
 # publishing (OIDC), so the job needs no NPM_TOKEN. Each package's first version must be
-# published by hand before npm accepts this workflow as its trusted publisher.
+# published by hand before npm accepts this workflow as its trusted publisher. The packages ask
+# for provenance, which only CI can generate, so that local publish needs --provenance=false:
+#   npm publish <tarball> --access public --provenance=false
 # Bump all packages together with `node scripts/set-version.mjs <x.y.z>` before tagging.
 on:
   push:

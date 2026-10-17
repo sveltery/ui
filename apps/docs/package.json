@@ -16,6 +16,8 @@
     "@dnd-kit/abstract": "0.5.0",
     "@dnd-kit/helpers": "0.5.0",
     "@dnd-kit/svelte": "0.5.0",
+    "@hugeicons/core-free-icons": "1.2.1",
+    "@hugeicons/svelte": "1.1.5",
     "@sveltery/command": "workspace:*",
     "@sveltery/day-picker": "workspace:*",
     "@sveltery/input-otp": "workspace:*",

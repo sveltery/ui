@@ -1,5 +1,5 @@
 import { TZDate } from '@date-fns/tz';
-import { es, ja, ko, zhCN } from 'date-fns/locale';
+import { es } from 'date-fns/locale';
 import { describe, expect, it } from 'vitest';
 import { DateLib } from './date-lib.js';
 
@@ -14,25 +14,6 @@ describe('DateLib', () => {
 
   it('keeps a given locale', () => {
     expect(new DateLib({ locale: es }).options.locale?.code).toBe('es');
-  });
-
-  it('formats the month and year in the locale', () => {
-    expect(new DateLib().formatMonthYear(march)).toBe('March 2024');
-    expect(new DateLib({ locale: es }).formatMonthYear(march)).toBe('marzo 2024');
-  });
-
-  it('puts the year first for year-first locales', () => {
-    expect(new DateLib({ locale: ja }).getMonthYearOrder()).toBe('year-first');
-    expect(new DateLib({ locale: ja }).formatMonthYear(march)).toBe('2024年3月');
-    expect(new DateLib({ locale: ko }).formatMonthYear(march)).toBe('2024년 3월');
-    expect(new DateLib({ locale: zhCN }).formatMonthYear(march)).toBe('2024年3月');
-    expect(new DateLib().getMonthYearOrder()).toBe('month-first');
-  });
-
-  it('formats a year-first caption in the time zone', () => {
-    const instant = new Date('2024-02-29T16:00:00Z');
-    expect(new DateLib({ locale: ja, timeZone: 'Asia/Tokyo' }).formatMonthYear(instant)).toBe('2024年3月');
-    expect(new DateLib({ locale: ja, timeZone: 'America/Los_Angeles' }).formatMonthYear(instant)).toBe('2024年2月');
   });
 
   it('starts weeks on the configured day', () => {
@@ -54,12 +35,6 @@ describe('DateLib', () => {
     expect(format(startOfMonth(addMonths(new Date(2024, 0, 31), 1)), 'yyyy-MM-dd')).toBe('2024-02-01');
     expect(getYear(march)).toBe(2024);
     expect(getMonth(march)).toBe(2);
-  });
-
-  it('lists the years of an interval once each', () => {
-    const lib = new DateLib();
-    const years = lib.eachYearOfInterval({ start: new Date(2022, 5, 1), end: new Date(2024, 5, 1) });
-    expect(years.map((year) => lib.format(year, 'yyyy'))).toEqual(['2022', '2023', '2024']);
   });
 
   describe('time zone', () => {

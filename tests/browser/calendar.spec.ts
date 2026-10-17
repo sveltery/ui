@@ -53,3 +53,18 @@ test('a range takes two clicks across months and marks the days between', async 
   await grid.getByRole('button', { name: 'Go to the Next Month' }).click();
   await expect(grid.getByRole('grid').first()).toHaveAccessibleName('July 2025');
 });
+
+test('the root has no lang, and days carry selection attributes only when they apply', async ({ page }) => {
+  const calendar = single(page).locator('[data-slot=calendar]');
+  await expect(calendar).not.toHaveAttribute('lang');
+  await expect(calendar.getByRole('button', { name: /selected$/ })).toHaveAttribute('data-selected-single', 'true');
+  const unselected = calendar.getByRole('button', { name: 'Friday, June 20th, 2025' });
+  for (const name of ['data-selected-single', 'data-range-start', 'data-range-middle', 'data-range-end']) await expect(unselected).not.toHaveAttribute(name);
+
+  const grid = range(page).getByRole('grid', { name: 'July 2025' });
+  const day = grid.getByRole('button', { name: 'Thursday, July 10th, 2025' });
+  await expect(day).not.toHaveAttribute('data-range-start');
+  await grid.getByRole('button', { name: 'Monday, July 7th, 2025' }).click();
+  await expect(day).toHaveAttribute('data-range-start', 'false');
+  await expect(day).not.toHaveAttribute('data-selected-single');
+});

@@ -1,9 +1,12 @@
 <script lang="ts">
-  import { onDestroy } from 'svelte';
+  import { onDestroy, type Snippet } from 'svelte';
+  import type { HTMLButtonAttributes } from 'svelte/elements';
   import { Button } from '$registry/bases/base/ui/button';
   import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
+  import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '$registry/bases/base/ui/dropdown-menu';
   import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '$registry/bases/base/ui/empty';
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { InputGroupButton } from '$registry/bases/base/ui/input-group';
   import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerProvider, MessageScrollerViewport } from '$registry/bases/base/ui/message-scroller';
   import { Chat } from './message-scroller/chat.svelte.js';
   import Composer from './message-scroller/Composer.svelte';
@@ -13,6 +16,10 @@
   const chat = new Chat(scrollThread);
   onDestroy(() => chat.stop());
 </script>
+
+{#snippet addButton(props: HTMLButtonAttributes, _state: unknown, children?: Snippet)}
+  <InputGroupButton {...props} aria-label="Add files" type="button" size="icon-sm" variant="outline">{@render children?.()}</InputGroupButton>
+{/snippet}
 
 <MessageScrollerProvider>
   <div class="relative flex flex-col gap-4">
@@ -51,7 +58,32 @@
         {/if}
       </CardContent>
       <CardFooter class="flex-col gap-2">
-        <Composer {chat} empty="No messages queued. Reset the conversation." />
+        <Composer {chat} empty="No messages queued. Reset the conversation.">
+          <DropdownMenu>
+            <DropdownMenuTrigger render={addButton}>
+              <IconPlaceholder lucide="PlusIcon" tabler="IconPlus" hugeicons="PlusSignIcon" phosphor="PlusIcon" remixicon="RiAddLine" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" side="top" class="w-44">
+              <DropdownMenuItem>
+                <IconPlaceholder lucide="PaperclipIcon" tabler="IconPaperclip" hugeicons="AttachmentIcon" phosphor="PaperclipIcon" remixicon="RiAttachment2" />
+                Add Photos & Files
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <IconPlaceholder lucide="ImageIcon" tabler="IconPhoto" hugeicons="ImageIcon" phosphor="ImageIcon" remixicon="RiImageLine" />
+                Create Image
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <IconPlaceholder lucide="TelescopeIcon" tabler="IconTelescope" hugeicons="TelescopeIcon" phosphor="BinocularsIcon" remixicon="RiSearchEyeLine" />
+                Deep Research
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <IconPlaceholder lucide="GlobeIcon" tabler="IconGlobe" hugeicons="Globe02Icon" phosphor="GlobeIcon" remixicon="RiGlobeLine" />
+                Web Search
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </Composer>
       </CardFooter>
     </Card>
     <div class="px-0.5 text-center text-xs text-muted-foreground">Demo is read only. Press send to send messages.</div>
