@@ -26,6 +26,7 @@ src/chart/RadarChart.ts
 src/chart/RadialBarChart.ts
 src/chart/SunburstChart.ts
 src/chart/types.ts
+src/component/ActivePoints.ts
 src/component/Cell.ts
 src/component/Cursor.ts
 src/component/DefaultLegendContent.ts

@@ -258,7 +258,7 @@ interface LineProps<DataPointType = any, DataValueType = any>
  * Because of naming conflict, we are forced to ignore certain (valid) SVG attributes.
  */
 type LineSvgProps = Omit<CurveProps, 'points' | 'pathRef' | 'ref' | 'layout' | 'baseLine'>;
-type InternalProps = LineSvgProps & InternalLineProps;
+export type InternalProps = LineSvgProps & InternalLineProps;
 export type Props<DataPointType = any, ValueAxisType = any> = LineSvgProps & LineProps<DataPointType, ValueAxisType>;
 export const computeLegendPayloadFromAreaData = (props: Props): ReadonlyArray<LegendPayload> => {
   const { dataKey, name, stroke, legendType, hide } = props;

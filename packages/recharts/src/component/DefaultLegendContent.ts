@@ -111,7 +111,7 @@ export const defaultLegendContentDefaultProps = {
   verticalAlign: 'middle',
   labelStyle: {},
 } as const satisfies Partial<Props>;
-type InternalProps = RequiresDefaultProps<Props, typeof defaultLegendContentDefaultProps> & {
+export type InternalProps = RequiresDefaultProps<Props, typeof defaultLegendContentDefaultProps> & {
   payload: ReadonlyArray<LegendPayload>;
 };
 export function getStrokeDasharray(input: unknown): string | undefined {

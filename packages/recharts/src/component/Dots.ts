@@ -22,7 +22,7 @@ export function shouldRenderDots(points: ReadonlyArray<DotPoint> | undefined, do
   return points.length === 1;
 }
 export type DotsDotProps = Omit<DotProps, 'cx' | 'cy' | 'key' | 'index' | 'dataKey' | 'value' | 'payload'>;
-interface DotsProps extends ZIndexable {
+export interface DotsProps extends ZIndexable {
   /**
    * Points to render dots for
    */

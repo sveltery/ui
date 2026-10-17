@@ -6,7 +6,7 @@ import { ElementOffset } from '../util/useElementOffset.js';
 export function defaultUniqBy(entry: LegendPayload) {
   return entry.value;
 }
-type ContentProps = Props & {
+export type ContentProps = Props & {
   margin: Margin | undefined;
   chartWidth: number;
   chartHeight: number;

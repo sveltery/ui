@@ -249,9 +249,9 @@ type AreaSvgProps = Omit<
   CurveProps,
   'points' | 'ref' | 'layout' | 'path' | 'pathRef' | 'baseLine' | 'dangerouslySetInnerHTML'
 >;
-type InternalProps = AreaSvgProps & InternalAreaProps;
+export type InternalProps = AreaSvgProps & InternalAreaProps;
 export type Props<DataPointType, ValueAxisType> = AreaSvgProps & AreaProps<DataPointType, ValueAxisType>;
-type PropsWithDefaults<DataPointType, ValueAxisType> = WithIdRequired<
+export type PropsWithDefaults<DataPointType, ValueAxisType> = WithIdRequired<
   RequiresDefaultProps<Props<DataPointType, ValueAxisType>, typeof defaultAreaProps>
 >;
 export function getLegendItemColor(stroke: string | undefined, fill: string | undefined): string | undefined {

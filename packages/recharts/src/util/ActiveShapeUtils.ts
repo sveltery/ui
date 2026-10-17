@@ -11,7 +11,7 @@
  * to the value of props.shapeType that is passed to the root.
  *
  */
-type ShapeType = 'trapezoid' | 'rectangle' | 'sector' | 'symbols' | 'curve';
+export type ShapeType = 'trapezoid' | 'rectangle' | 'sector' | 'symbols' | 'curve';
 export type ShapeProps<OptionType, ExtraProps> = {
   shapeType: ShapeType;
   option: OptionType;

@@ -1,5 +1,6 @@
 import { useAppSelector, type Box } from './state/hooks.svelte.js';
 import { selectPlotArea } from './state/selectors/selectPlotArea.js';
+import { selectActiveTooltipDataPoints } from './state/selectors/tooltipSelectors.js';
 import type { PlotArea } from './types.js';
 
 /**
@@ -8,3 +9,11 @@ import type { PlotArea } from './types.js';
  * @since 3.1
  */
 export const usePlotArea = (): Box<PlotArea | undefined> => useAppSelector(selectPlotArea);
+
+/**
+ * Reads the data points the Tooltip currently shows: the objects passed in the chart's `data`, one per graphical item
+ * when the Tooltip is shared. Follows the Tooltip props, or the default ones without a Tooltip. Reads `undefined`
+ * while nothing is active, and outside a chart.
+ */
+export const useActiveTooltipDataPoints = <T = unknown>(): Box<ReadonlyArray<T> | undefined> =>
+  useAppSelector(selectActiveTooltipDataPoints) as Box<ReadonlyArray<T> | undefined>;

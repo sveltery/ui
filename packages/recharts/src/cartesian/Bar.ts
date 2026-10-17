@@ -334,7 +334,7 @@ type BarSvgProps = Omit<
 export type Props<DataPointType = any, ValueAxisType = any> = Partial<BarEvents> &
   BarProps<DataPointType, ValueAxisType> &
   Omit<BarSvgProps, keyof BarEvents>;
-type InternalProps = BarSvgProps & InternalBarProps;
+export type InternalProps = BarSvgProps & InternalBarProps;
 export const computeLegendPayloadFromBarData = (props: Props): ReadonlyArray<LegendPayload> => {
   const { dataKey, name, fill, legendType, hide } = props;
   return [
@@ -390,7 +390,7 @@ export const defaultBarProps = {
   yAxisId: 0,
   zIndex: DefaultZIndexes.bar,
 } as const satisfies Partial<Props>;
-type BarImplProps = Omit<InternalBarProps, 'layout' | 'data'> & { children?: ReactNode };
+export type BarImplProps = Omit<InternalBarProps, 'layout' | 'data'> & { children?: ReactNode };
 export function computeBarRectangles({
   layout,
   barSettings: { dataKey, minPointSize: minPointSizeProp, hasCustomShape },
