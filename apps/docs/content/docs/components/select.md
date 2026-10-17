@@ -200,9 +200,12 @@ Add the `data-invalid` attribute to the `Field` component and the `aria-invalid`
 ```svelte
 <Field data-invalid>
   <FieldLabel>Fruit</FieldLabel>
-  <SelectTrigger aria-invalid>
-    <SelectValue />
-  </SelectTrigger>
+  <Select {items}>
+    <SelectTrigger aria-invalid>
+      <SelectValue />
+    </SelectTrigger>
+    ...
+  </Select>
 </Field>
 ```
 
