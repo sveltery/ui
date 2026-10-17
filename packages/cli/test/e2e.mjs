@@ -199,6 +199,11 @@ try {
   assert.equal(readFileSync(buttonFile, 'utf8'), pristine, 'update -y restores the registry version');
   assert.equal((await cli('diff')).trim(), 'Everything is up to date.');
 
+  step('sveltery view button and an item URL');
+  const served = (name) => JSON.parse(readFileSync(join(registryDir, `styles/${config.style}/${name}.json`), 'utf8'));
+  const viewed = JSON.parse(await cli('view', 'button', `${env.SVELTERY_REGISTRY_URL}/styles/${config.style}/card.json`));
+  assert.deepEqual(viewed, [served('button'), served('card')], 'view prints the items as the registry serves them, in argument order');
+
   step('sveltery build a third-party registry, then add its item by URL');
   const author = join(work, 'author');
   const helloSource = "<script lang=\"ts\">\n  import { Button } from '../button';\n</script>\n<Button>Hello</Button>\n";
