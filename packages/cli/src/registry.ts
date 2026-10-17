@@ -130,15 +130,19 @@ export function resolveRegistryUrl(configured: string | undefined): string {
   return (process.env.SVELTERY_REGISTRY_URL || configured || DEFAULT_REGISTRY_URL).replace(/\/+$/, '');
 }
 
-/** A GET the CLI sends: the URL and the headers a namespace adds. */
-export type ItemRequest = { url: string; headers: Record<string, string> };
+/** A GET the CLI sends: the URL, the headers a namespace adds, and the URL errors print, with `${VAR}` placeholders instead of their values. */
+export type ItemRequest = { url: string; headers: Record<string, string>; displayUrl: string };
 
-async function fetchJson<T>(url: string, parser: Parser<T>, headers: Record<string, string> = {}): Promise<T> {
+const plainRequest = (url: string): ItemRequest => ({ url, headers: {}, displayUrl: url });
+
+async function fetchJson<T>({ url, headers, displayUrl }: ItemRequest, parser: Parser<T>): Promise<T> {
   let response: Response;
   try {
     response = await fetch(url, { headers, signal: AbortSignal.timeout(30_000) });
   } catch (error) {
-    throw new CliError(`Could not reach ${url}: ${error instanceof Error ? (error.cause instanceof Error ? error.cause.message : error.message) : String(error)}`);
+    // fetch rejects an invalid header with a TypeError that has no cause and quotes the expanded value.
+    const reason = !(error instanceof Error) ? String(error) : error.cause instanceof Error ? error.cause.message : error instanceof TypeError ? 'a header name or value is not valid' : error.message;
+    throw new CliError(`Could not reach ${displayUrl}: ${reason}`);
   }
   if (!response.ok) {
     // The /init route explains a rejected preset in `error`. Other registries may send `detail` (RFC 7807) or `message` too.
@@ -155,36 +159,36 @@ async function fetchJson<T>(url: string, parser: Parser<T>, headers: Record<stri
       () => undefined,
     );
     if (response.status === 401 || response.status === 403) {
-      const lines = [`You are not authorized to access the item at ${url}. If this is a remote registry, you may need to authenticate.`, serverMessage, 'Check your authentication credentials and environment variables.'];
+      const lines = [`You are not authorized to access the item at ${displayUrl}. If this is a remote registry, you may need to authenticate.`, serverMessage, 'Check your authentication credentials and environment variables.'];
       throw new CliError(lines.filter(Boolean).join('\n'));
     }
-    throw new CliError(`${`GET ${url} failed with ${response.status} ${response.statusText}`.trimEnd()}${serverMessage ? `: ${serverMessage}` : ''}`);
+    throw new CliError(`${`GET ${displayUrl} failed with ${response.status} ${response.statusText}`.trimEnd()}${serverMessage ? `: ${serverMessage}` : ''}`);
   }
   let json: unknown;
   try {
     json = await response.json();
   } catch {
-    throw new CliError(`${url} did not return JSON`);
+    throw new CliError(`${displayUrl} did not return JSON`);
   }
   try {
     return parser(json, '');
   } catch (error) {
-    if (error instanceof ParseError) throw new CliError(`${url} is not a valid registry response. ${error.message}`);
+    if (error instanceof ParseError) throw new CliError(`${displayUrl} is not a valid registry response. ${error.message}`);
     throw error;
   }
 }
 
 export async function openRegistry(url: string, namespaces: Namespaces = { configs: {}, env: process.env }): Promise<Registry> {
-  const indexUrl = `${url}/index.json`;
-  const { registryVersion } = await fetchJson(indexUrl, object({ registryVersion: number }));
+  const index = plainRequest(`${url}/index.json`);
+  const { registryVersion } = await fetchJson(index, object({ registryVersion: number }));
   if (registryVersion > REGISTRY_VERSION) {
     throw new CliError(`The registry at ${url} uses format version ${registryVersion}, and this CLI reads version ${REGISTRY_VERSION}. Update it with \`npx @sveltery/ui@latest\`.`);
   }
-  return { url, manifest: await fetchJson(indexUrl, registryManifest), items: new Map(), namespaces };
+  return { url, manifest: await fetchJson(index, registryManifest), items: new Map(), namespaces };
 }
 
 export function fetchTheme(registry: Registry, baseColor: BaseColor): Promise<RegistryItem> {
-  return fetchJson(`${registry.url}/themes/${baseColor}.json`, registryItem);
+  return fetchJson(plainRequest(`${registry.url}/themes/${baseColor}.json`), registryItem);
 }
 
 /**
@@ -200,7 +204,14 @@ export function parseItemRef(value: string): ItemRef {
   if (/^https?:\/\//.test(value)) return { kind: 'url', url: value };
   if (/^[a-z0-9][a-z0-9-]*$/.test(value)) return { kind: 'name', name: value };
   const namespaced = new RegExp(`^(${NAMESPACE})/(.+)$`).exec(value);
-  if (namespaced) return { kind: 'namespaced', namespace: namespaced[1]!, name: namespaced[2]! };
+  if (namespaced) {
+    const name = namespaced[2]!;
+    // The name goes into the namespace's URL, next to its credentials.
+    if (name.includes('${') || /[?#]/.test(name) || name.split(/[\\/]/).some((segment) => /^(\.|%2e){2}$/i.test(segment))) {
+      throw new CliError(`"${value}" is not a valid item name. An @namespace/item name cannot contain "\${", "?", "#" or a ".." segment.`);
+    }
+    return { kind: 'namespaced', namespace: namespaced[1]!, name };
+  }
   throw new CliError(`"${value}" is neither an item name, an @namespace/item name, nor an http(s) URL.`);
 }
 
@@ -218,11 +229,17 @@ function namespaceRequest({ configs, env }: Namespaces, style: StyleName, namesp
     throw new CliError(`Registry "${namespace}" requires the following environment variables:\n\n${missing.map((key) => `  • ${key}`).join('\n')}\n\nSet the required environment variables to your .env or .env.local file.`);
   }
   const expand = (template: string) => template.replace(ENV_VAR, (_, key: string) => env[key] ?? '');
-  const query = new URLSearchParams(Object.entries(params).map(([key, value]) => [key, expand(value)])).toString();
-  const base = expand(url.replace('{name}', name).replace('{style}', style));
+  // `{style}` goes in first: a style name holds no placeholder, and the item name is never scanned for one.
+  const itemUrl = (fill: (template: string) => string) => {
+    const query = new URLSearchParams(Object.entries(params).map(([key, value]) => [key, fill(value)])).toString();
+    const base = fill(url).replace('{style}', () => style).replace('{name}', () => name);
+    return query ? `${base}${base.includes('?') ? '&' : '?'}${query}` : base;
+  };
   return {
-    url: query ? `${base}${base.includes('?') ? '&' : '?'}${query}` : base,
+    url: itemUrl(expand),
     headers: Object.fromEntries(Object.entries(headers).map(([key, value]) => [key, expand(value)])),
+    // URLSearchParams escapes `${VAR}` in params, so unescape it to print it as written.
+    displayUrl: itemUrl((template) => template).replace(/%24%7B(\w+)%7D/g, '${$1}'),
   };
 }
 
@@ -230,9 +247,9 @@ function namespaceRequest({ configs, env }: Namespaces, style: StyleName, namesp
 export function itemRequest(registry: Registry, style: StyleName, ref: ItemRef): ItemRequest {
   switch (ref.kind) {
     case 'url':
-      return { url: ref.url, headers: {} };
+      return plainRequest(ref.url);
     case 'name':
-      return { url: `${registry.url}/styles/${style}/${ref.name}.json`, headers: {} };
+      return plainRequest(`${registry.url}/styles/${style}/${ref.name}.json`);
     case 'namespaced':
       if (ref.namespace === BUILTIN_NAMESPACE && !registry.namespaces.configs[BUILTIN_NAMESPACE]) return itemRequest(registry, style, { kind: 'name', name: ref.name });
       return namespaceRequest(registry.namespaces, style, ref.namespace, ref.name);
@@ -240,11 +257,11 @@ export function itemRequest(registry: Registry, style: StyleName, ref: ItemRef):
 }
 
 export function fetchItem(registry: Registry, style: StyleName, ref: ItemRef): Promise<RegistryItem> {
-  const { url, headers } = itemRequest(registry, style, ref);
-  const cached = registry.items.get(url);
+  const request = itemRequest(registry, style, ref);
+  const cached = registry.items.get(request.url);
   if (cached) return cached;
-  const fetched = fetchJson(url, registryItem, headers);
-  registry.items.set(url, fetched);
+  const fetched = fetchJson(request, registryItem);
+  registry.items.set(request.url, fetched);
   return fetched;
 }
 

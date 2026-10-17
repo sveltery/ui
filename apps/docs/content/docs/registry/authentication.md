@@ -77,7 +77,7 @@ The CLI replaces each `${VAR}` with the environment variable of that name. It lo
 3. `.env.development`
 4. `.env`
 
-If a variable that a namespace uses is not set, the command stops before it sends a request and names the variable.
+If a variable that a namespace uses is not set, the command names the variable and stops before it requests that namespace's items. It writes no files. Error messages show each `${VAR}` as written in `components.json`, not its value.
 
 The CLI sends the headers only with requests for that namespace's items. It does not send them to the project's registry or to item URLs.
 

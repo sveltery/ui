@@ -573,3 +573,25 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Why:** The other rows make room during the drag, as they do upstream.
 
 **Decided:** Hugo Hsi, 2026-10-14
+
+## CLI
+
+### An `@namespace/item` name cannot expand environment variables
+
+**Upstream:** [`buildUrlFromRegistryConfig`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/registry/builder.ts#L71-L75) puts the item name into the namespace's URL template and then expands `${VAR}` in the result. A `registryDependencies` entry such as `@acme/${AWS_SECRET_ACCESS_KEY}` in a fetched item sends that secret to the `@acme` server.
+
+**Sveltery UI:** The CLI expands `${VAR}` in the template before it puts the item name in. It stops with an error for an item name that contains `${`, `?`, `#` or a `..` segment. See [Namespaces](/docs/registry/namespace#url-placeholders).
+
+**Why:** An item from one registry can name dependencies on any namespace you configured. Its author must not be able to read your environment variables, or to send your credentials to another path on that server.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### Registry errors print `${VAR}`, not its value
+
+**Upstream:** [`RegistryUnauthorizedError`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/registry/errors.ts#L122) and the other fetch errors print the expanded item URL. A token in a namespace's `params` appears in the terminal and in CI logs.
+
+**Sveltery UI:** Errors print the item URL with each `${VAR}` as written in `components.json`, such as `https://registry.company.com/button.json?token=${REGISTRY_TOKEN}`. When `fetch` rejects a header value, the error does not quote the value. See [Authentication](/docs/registry/authentication).
+
+**Why:** An error message is often pasted into an issue or kept in a build log, and it must not carry a credential.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17

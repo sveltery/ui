@@ -30,7 +30,7 @@ A namespace starts with `@` and holds letters, digits, hyphens and underscores, 
 
 ### URL placeholders
 
-- `{name}` is required. The CLI replaces it with the item name, the part after the slash.
+- `{name}` is required. The CLI replaces it with the item name, the part after the slash. The item name cannot contain `${`, `?`, `#` or a `..` segment, so a name in `registryDependencies` cannot read your environment variables or leave the namespace's path.
 - `{style}` is optional. The CLI replaces it with the project's `style`, such as `nova`.
 
 ```json title="components.json"
@@ -101,7 +101,7 @@ Unknown registry "@acme". Make sure it is defined under "registries" in your com
 }
 ```
 
-A `${VAR}` that is not set stops the command before any request:
+A `${VAR}` that is not set stops the command before it requests that namespace's items:
 
 ```txt
 Registry "@private" requires the following environment variables:
@@ -111,7 +111,7 @@ Registry "@private" requires the following environment variables:
 Set the required environment variables to your .env or .env.local file.
 ```
 
-A `401` or `403` response names the item URL, then the server's `message`, `detail` or `error`:
+A `401` or `403` response names the item URL, then the server's `message`, `detail` or `error`. Error messages show each `${VAR}` as written in `components.json`, not its value:
 
 ```txt
 You are not authorized to access the item at https://api.company.com/registry/button.json. If this is a remote registry, you may need to authenticate.
