@@ -121,6 +121,11 @@ describe('migrateIconsInSource', () => {
     expect(migrateIconsInSource('a.svelte', input, 'lucide', 'tabler', [selector, selector, icons[0]!]).content).toContain('<IconSelector />');
   });
 
+  test('leaves a module that does not parse as it is, with the reason', () => {
+    const module = "import XIcon from '@lucide/svelte/icons/x';\n\nexport const html = '<script>alert(1)</script>';\n";
+    expect(migrateIconsInSource('html.ts', module, 'lucide', 'tabler', icons)).toEqual({ content: module, skipped: [], unparsed: 'could not parse (Unterminated string constant at line 3)' });
+  });
+
   test('a second run finds nothing to change', () => {
     const once = migrateIconsInSource('a.svelte', lucide, 'lucide', 'tabler', icons).content;
     expect(migrateIconsInSource('a.svelte', once, 'lucide', 'tabler', icons)).toEqual({ content: once, skipped: [] });
@@ -221,6 +226,21 @@ export { buttonClassName, cn }
         { packageName: 'clsx', reason: 'CommonJS requires require manual migration' },
       ],
     });
+  });
+
+  test('migrates a script that starts with a hashbang, and keeps the hashbang', () => {
+    const script = '#!/usr/bin/env node\nimport { clsx } from "clsx"\nimport { twMerge } from "tailwind-merge"\n\nconsole.log(twMerge(clsx("px-2")))\n';
+    expect(transformCn('gen.mjs', script)).toEqual({
+      content: '#!/usr/bin/env node\nimport { cn } from "cn";\n\nconsole.log(cn("px-2"))\n',
+      migrated: ['clsx', 'tailwind-merge'],
+      remaining: [],
+      unsupported: [],
+    });
+  });
+
+  test('leaves a module that does not parse for manual review', () => {
+    const input = 'import { clsx } from "clsx"\n\nexport const html = "<script>" + clsx("a") + "</script>"\n';
+    expect(transformCn('html.ts', input)).toEqual({ content: input, migrated: [], remaining: ['clsx'], unsupported: [{ reason: 'could not parse (Unterminated string constant at line 3)' }] });
   });
 
   test('keeps a Svelte import that only the markup uses', () => {

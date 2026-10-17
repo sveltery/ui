@@ -1,5 +1,5 @@
 import MagicString from 'magic-string';
-import { importWith, lineRange, parseSource, walk, type ImportDeclaration as ImportNode, type ImportSpecifier as Specifier, type Node } from '../ast.js';
+import { importWith, lineRange, tryParseSource, walk, type ImportDeclaration as ImportNode, type ImportSpecifier as Specifier, type Node } from '../ast.js';
 import { iconLibraries, kebab } from '../icons.js';
 import { iconLibraryNames, type IconLibraryName, type RegistryItem } from '../registry.js';
 
@@ -52,10 +52,14 @@ type Component = Node & { name: string; attributes: Attribute[] };
 /**
  * Swaps the `from` library's icons for the `to` library's in a .svelte, .ts or .js file: their imports, their tags, and
  * references in attribute values. An icon with no equivalent, or used in a way that cannot be swapped, stays and is reported.
+ * A file that does not parse stays as it is, with the reason in `unparsed`.
  */
-export function migrateIconsInSource(target: string, content: string, from: IconLibraryName, to: IconLibraryName, icons: IconNames[]): { content: string; skipped: Skipped[] } {
-  if (!/\.(svelte|[cm]?[jt]s)$/.test(target) || from === to) return { content, skipped: [] };
-  const { ast, offset } = parseSource(target, content);
+export function migrateIconsInSource(target: string, content: string, from: IconLibraryName, to: IconLibraryName, icons: IconNames[]): { content: string; skipped: Skipped[]; unparsed?: string } {
+  const mentionsFrom = iconLibraries[from].packages.some((spec) => content.includes(spec.slice(0, spec.lastIndexOf('@'))));
+  if (!/\.(svelte|[cm]?[jt]s)$/.test(target) || from === to || !mentionsFrom) return { content, skipped: [] };
+  const parsed = tryParseSource(target, content);
+  if ('reason' in parsed) return { content, skipped: [], unparsed: parsed.reason };
+  const { ast, offset } = parsed;
   const nodes = [...walk(ast)];
   const at = (node: Node) => [node.start - offset, node.end - offset] as const;
   const targets = iconMap(icons, from, to);

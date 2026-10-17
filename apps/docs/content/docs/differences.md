@@ -605,3 +605,43 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Why:** Svelte components and SvelteKit apps are ES modules, so a `require` of these packages is rare. Porting upstream's CommonJS rewrite would add a second set of binding rules for little use.
 
 **Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `migrate` has no `radix` migration
+
+**Upstream:** [`migrate.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/migrate.ts#L28) lists a `radix` migration. [`migrate-radix.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/migrate-radix.ts#L315) moves `@radix-ui/react-*` imports to the `radix-ui` package.
+
+**Sveltery UI:** [`migrate`](/docs/cli#migrate) lists `cn`, `icons` and `base-color`. `migrate radix` stops with an error that says why there is no `radix` migration.
+
+**Why:** The migration rewrites React imports. A Svelte project does not import `@radix-ui/react-*`, so the migration has nothing to change.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `migrate --no-install` skips package changes
+
+**Upstream:** [`migrate.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/migrate.ts#L56) has no `--no-install` option. [`migrate-icons.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/migrate-icons.ts#L209) always installs the new icon library, and [`cn/index.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/cn/index.ts#L106) always removes `clsx` and `tailwind-merge`.
+
+**Sveltery UI:** With `--no-install`, [`migrate`](/docs/cli#migrate) changes the files and does not install or remove packages.
+
+**Why:** `init`, `add` and `update` in this CLI take `--no-install` too, so a project that manages packages itself, or a CI step without network access, can still run a migration.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `migrate` glob patterns need Node 22
+
+**Upstream:** [`migrate-icons.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/migrate-icons.ts#L75) matches a glob pattern with `fast-glob`, which runs on every Node version that [`package.json`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/package.json#L67) allows (`>=20.18.1`).
+
+**Sveltery UI:** [`migrate`](/docs/cli#migrate) matches a glob pattern with Node's `fs.globSync`, which Node 22 added. The CLI allows Node 20 and later. On Node 20, a glob pattern stops with "A glob pattern needs Node 22 or later. Pass a file or directory instead.", and a file or directory path works.
+
+**Why:** Node 20 reached end of life in April 2026, and `fs.globSync` saves a dependency. A Node 20 user can pass a file or directory instead.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `migrate` lists a file that does not parse and leaves it as it is
+
+**Upstream:** [`cn/transform.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/cn/transform.ts#L70) and [`migrate-icons.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/migrate-icons.ts#L331) parse each file with ts-morph, which recovers from a syntax error and transforms the rest of the file.
+
+**Sveltery UI:** [`migrate`](/docs/cli#migrate) parses each file with `svelte/compiler`, which reads a `.ts` or `.js` module as the body of a `<script>` tag. A file that does not parse stays as it is. `migrate cn` lists it for manual review, and `migrate icons` lists it as skipped, with "could not parse" and the parser's message. A module that contains `</script>`, as in a string, is such a file. A leading `#!` line parses.
+
+**Why:** The CLI already parses Svelte components with `svelte/compiler`. A second parser for modules would add a large dependency for the rare module that contains `</script>`. Listing the file tells you which one to change by hand.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17

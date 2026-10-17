@@ -25,6 +25,7 @@ export const migrations: { name: string; description: string; run: (options: Mig
 
 /** Runs the named migration, or lists them all when `list` is set or no name is given. */
 export async function migrate(name: string | undefined, options: MigrateOptions & { list: boolean }): Promise<unknown> {
+  if (name === 'radix') throw new CliError('shadcn/ui\'s radix migration moves @radix-ui/react-* imports to the radix-ui package. A Svelte project has no such imports, so Sveltery UI has no radix migration.');
   const migration = migrations.find((entry) => entry.name === name);
   if (name !== undefined && !options.list && !migration) throw new CliError(`Unknown migration "${name}". Run \`npx @sveltery/ui@latest migrate --list\` to see the migrations.`);
   if (options.list || !migration) {
@@ -54,7 +55,12 @@ function selectFiles(cwd: string, fallback: string, path: string | undefined): {
   let selected: { base: string; files: string[] };
   if (path.includes('*')) {
     if (!fs.globSync) throw new CliError('A glob pattern needs Node 22 or later. Pass a file or directory instead.');
-    selected = { base: cwd, files: fs.globSync(path, { cwd, exclude: (name) => name.split(/[\\/]/).some((part) => IGNORED.has(part)) }) };
+    // `exclude` keeps `**` out of ignored directories. A pattern that names one still matches inside it, hence the second filter.
+    const files = fs
+      .globSync(path, { cwd, withFileTypes: true, exclude: (entry) => IGNORED.has(entry.name) })
+      .filter((entry) => entry.isFile())
+      .map((entry) => relative(cwd, resolve(cwd, entry.parentPath, entry.name)));
+    selected = { base: cwd, files: files.filter((file) => !file.split(/[\\/]/).some((part) => IGNORED.has(part))).sort() };
   } else {
     const full = resolve(cwd, path);
     const stat = fs.statSync(full, { throwIfNoEntry: false });
@@ -114,11 +120,13 @@ export async function migrateIcons(options: MigrateOptions): Promise<{ changed: 
 
   const changed: string[] = [];
   const skipped: Skipped[] = [];
+  const unparsed: { name: string; reason: string }[] = [];
   for (const file of files) {
     const path = join(base, file);
     const content = fs.readFileSync(path, 'utf8');
     const result = migrateIconsInSource(file, content, from, to, icons);
     skipped.push(...result.skipped);
+    if (result.unparsed) unparsed.push({ name: relative(cwd, path), reason: result.unparsed });
     if (result.content === content) continue;
     fs.writeFileSync(path, result.content);
     changed.push(relative(cwd, path));
@@ -133,6 +141,7 @@ export async function migrateIcons(options: MigrateOptions): Promise<{ changed: 
     skipped.map(({ icon, reason }) => ({ name: icon, reason })),
     'icon',
   );
+  warnSkipped(unparsed, 'file');
   return { changed, skipped };
 }
 
@@ -142,7 +151,7 @@ export async function migrateBaseColor(options: MigrateOptions): Promise<{ skipp
   const { raw, config } = readConfig(cwd);
   const cssPath = join(cwd, config.tailwind.css);
   if (!fs.existsSync(cssPath)) throw new CliError(`${config.tailwind.css}, the CSS file in ${CONFIG_FILE}, does not exist.`);
-  const { from, to } = await fromAndTo(options, ['base color', 'base colors'], baseColors, config.tailwind.baseColor);
+  const { from, to } = await fromAndTo({ ...options, from: options.from ?? config.tailwind.baseColor }, ['base color', 'base colors'], baseColors, config.tailwind.baseColor);
   if (!(await confirmed(options, `We will migrate ./${config.tailwind.css} from ${from} to ${to}. Continue?`))) return undefined;
 
   const registry = await openRegistry(resolveRegistryUrl(config.registry));

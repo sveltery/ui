@@ -228,7 +228,9 @@ Run `migrate --list` to see the migrations. Each one asks before it writes. The 
 | `base-color` | Swaps the theme's base color in your CSS file, then sets `tailwind.baseColor` in `components.json`. |
 | `cn` | Moves `clsx`, `tailwind-merge` and `cnfast` imports in your `.svelte`, `.ts` and `.js` files to the `cn` package. |
 
-Pass a file, a directory or a glob pattern to migrate only those files. By default, `icons` migrates the `aliases.ui` directory and `cn` migrates every source file in the project. A glob pattern needs Node 22 or later.
+There is no `radix` migration. In shadcn/ui, it moves `@radix-ui/react-*` imports to the `radix-ui` package, and a Svelte project has no such imports.
+
+Pass a file, a directory or a glob pattern to migrate only those files. By default, `icons` migrates the `aliases.ui` directory and `cn` migrates every source file in the project. A glob pattern needs Node 22 or later. A file that does not parse, such as a module with `</script>` in a string, stays as it is, and `migrate` lists it.
 
 ### icons
 
@@ -279,7 +281,7 @@ Options:
   -h, --help         display help for command
 ```
 
-Without `--from` or `--to`, `migrate` asks, and offers the value in `components.json` as the source. With `--yes`, it takes that value as the source and does not ask, so pass `--to`. `cn` does not use `--from` or `--to`.
+`icons` asks for a missing `--from` or `--to`, and offers `iconLibrary` from `components.json` as the source. `base-color` takes `tailwind.baseColor` from `components.json` as the source, and asks only for a missing `--to`. With `--yes`, neither asks, so pass `--to`. `cn` does not use `--from` or `--to`.
 
 ---
 

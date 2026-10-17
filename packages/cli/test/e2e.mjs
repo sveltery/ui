@@ -188,8 +188,11 @@ try {
   await lucideCli('migrate', 'base-color', '--to', 'stone', '-y');
   assert.ok(readFileSync(join(lucideApp, JSON.parse(readFileSync(join(lucideApp, 'components.json'), 'utf8')).tailwind.css), 'utf8').includes('--foreground: oklch(0.147 0.004 49.25);'), 'migrate base-color writes the stone tokens');
   writeFileSync(join(lucideApp, 'src/lib/legacy.ts'), "import { clsx, type ClassValue } from 'clsx';\nimport { twMerge } from 'tailwind-merge';\n\nexport function cx(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n");
-  await lucideCli('migrate', 'cn', 'src/lib/legacy.ts', '-y');
+  const html = "import { clsx } from 'clsx';\n\nexport const html = `<script>${clsx('a')}</script>`;\n";
+  writeFileSync(join(lucideApp, 'src/lib/html.ts'), html);
+  await lucideCli('migrate', 'cn', 'src/lib/*', '-y');
   assert.equal(readFileSync(join(lucideApp, 'src/lib/legacy.ts'), 'utf8'), "export { cn as cx } from 'cn';\n", 'migrate cn re-exports the helper from cn');
+  assert.equal(readFileSync(join(lucideApp, 'src/lib/html.ts'), 'utf8'), html, 'migrate cn leaves a module it cannot parse as it is');
   await run('pnpm', ['run', 'check'], lucideApp);
 
   step('sveltery init -y');

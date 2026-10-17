@@ -1,11 +1,11 @@
 import MagicString from 'magic-string';
-import { importWith, lineRange, parseSource, walk, type ImportDeclaration as ImportNode, type ImportSpecifier as Specifier, type Node } from '../ast.js';
+import { importWith, lineRange, tryParseSource, walk, type ImportDeclaration as ImportNode, type ImportSpecifier as Specifier, type Node } from '../ast.js';
 
 export const OLD_PACKAGES = ['clsx', 'tailwind-merge', 'cnfast'] as const;
 export type OldPackage = (typeof OLD_PACKAGES)[number];
 
-/** Something the migration left for the user to change by hand. */
-export type CnIssue = { packageName: OldPackage; symbol?: string; reason: string };
+/** Something the migration left for the user to change by hand. A file that does not parse has no package. */
+export type CnIssue = { packageName?: OldPackage; symbol?: string; reason: string };
 
 export type CnResult = { content: string; migrated: OldPackage[]; remaining: OldPackage[]; unsupported: CnIssue[] };
 
@@ -58,7 +58,9 @@ const isFunction = (node: Node) => ['FunctionDeclaration', 'FunctionExpression',
 export function transformCn(target: string, content: string): CnResult {
   const unchanged = { content, migrated: [], remaining: remainingPackages(content), unsupported: [] };
   if (!/\.(svelte|[cm]?[jt]s)$/.test(target) || !/clsx|tailwind-merge|cnfast/.test(content)) return unchanged;
-  const { ast, offset } = parseSource(target, content);
+  const parsed = tryParseSource(target, content);
+  if ('reason' in parsed) return { ...unchanged, unsupported: [{ reason: parsed.reason }] };
+  const { ast, offset } = parsed;
   const nodes = [...walk(ast)];
   const ancestorsOf = new Map(nodes);
   const at = (node: Node) => [node.start - offset, node.end - offset] as const;

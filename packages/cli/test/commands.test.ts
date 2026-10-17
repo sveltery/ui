@@ -402,6 +402,22 @@ describe('migrate', () => {
       expect(await diff([], { cwd })).toBe('Everything is up to date.');
     });
 
+    test('a glob takes the files it matches and skips the directories', async () => {
+      expect(await migrate('icons', options({ to: 'tabler', path: 'src/**' }))).toEqual({ changed: [buttonPath], skipped: [] });
+    });
+
+    test('reports a file that does not parse and migrates the rest', async () => {
+      writeFileSync(join(cwd, 'src/lib/components/ui/no-icons.ts'), "export const html = '<script></script>';\n");
+      writeFileSync(join(cwd, 'src/lib/components/ui/html.ts'), "import XIcon from '@lucide/svelte/icons/x';\nexport const html = '<script></script>';\n");
+      const warn = vi.spyOn(log, 'warn').mockImplementation(() => {});
+      try {
+        expect(await migrate('icons', options({ to: 'tabler' }))).toEqual({ changed: [buttonPath], skipped: [] });
+        expect(warn.mock.calls).toEqual([['Skipped 1 file. These were left untouched:\n  - src/lib/components/ui/html.ts: could not parse (Unterminated string constant at line 2)']]);
+      } finally {
+        warn.mockRestore();
+      }
+    });
+
     test('a path limits the run and leaves components.json alone', async () => {
       await migrate('icons', options({ to: 'tabler', path: buttonPath }));
       expect([read(buttonPath).includes('<IconChevronRight />'), JSON.parse(read('components.json')).iconLibrary]).toEqual([true, 'lucide']);
@@ -431,6 +447,15 @@ describe('migrate', () => {
     expect(JSON.parse(read('components.json')).tailwind.baseColor).toBe('stone');
   });
 
+  test('base-color takes the source from components.json and asks only for the target', async () => {
+    await init({ cwd, ...defaults });
+    vi.mocked(select).mockReset().mockResolvedValueOnce('stone');
+    vi.mocked(confirm).mockReset().mockResolvedValueOnce(true);
+    await migrate('base-color', options({ yes: false }));
+    expect(vi.mocked(select).mock.calls.map(([prompt]) => prompt.message)).toEqual(['Which base color would you like to migrate to?']);
+    expect(JSON.parse(read('components.json')).tailwind.baseColor).toBe('stone');
+  });
+
   describe('cn', () => {
     const utils = "import { clsx, type ClassValue } from 'clsx';\nimport { twMerge } from 'tailwind-merge';\n\nexport function cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n";
     beforeEach(() => {
@@ -445,6 +470,28 @@ describe('migrate', () => {
       expect(await migrate('cn', options())).toEqual({ changed: ['src/lib/utils.ts'], removed: [] });
       expect(read('src/lib/utils.ts')).toBe("export { cn } from 'cn';\n");
       expect(read('node_modules/clsx/index.ts')).toBe(utils);
+    });
+
+    test('a glob takes the files it matches and skips the directories', async () => {
+      mkdirSync(join(cwd, 'src/lib/components'));
+      writeFileSync(join(cwd, 'src/lib/components/a.ts'), utils);
+      expect(await migrate('cn', options({ path: 'src/lib/*' }))).toEqual({ changed: ['src/lib/utils.ts'], removed: [] });
+      expect(read('src/lib/components/a.ts')).toBe(utils);
+    });
+
+    test('migrates a script with a hashbang, and reports a file that does not parse and migrates the rest', async () => {
+      const html = 'import { clsx } from "clsx";\nexport const html = `<script>${clsx("a")}</script>`;\n';
+      writeFileSync(join(cwd, 'src/lib/html.ts'), html);
+      mkdirSync(join(cwd, 'scripts'));
+      writeFileSync(join(cwd, 'scripts/gen.mjs'), `#!/usr/bin/env node\n${utils}`);
+      const warn = vi.spyOn(log, 'warn').mockImplementation(() => {});
+      try {
+        expect(await migrate('cn', options())).toEqual({ changed: ['scripts/gen.mjs', 'src/lib/utils.ts'], removed: [] });
+        expect(warn.mock.calls).toEqual([['Manual review required for 1 item:\n  - src/lib/html.ts: could not parse (Unterminated template literal at line 2)']]);
+      } finally {
+        warn.mockRestore();
+      }
+      expect([read('scripts/gen.mjs'), read('src/lib/html.ts')]).toEqual(["#!/usr/bin/env node\n\nexport { cn } from 'cn';\n", html]);
     });
 
     test('refuses tailwind-merge v2', async () => {
@@ -462,7 +509,8 @@ describe('migrate', () => {
     } finally {
       info.mockRestore();
     }
-    await expect(migrate('radix', options())).rejects.toThrow('Unknown migration "radix".');
+    await expect(migrate('radix', options())).rejects.toThrow("shadcn/ui's radix migration moves @radix-ui/react-* imports to the radix-ui package. A Svelte project has no such imports, so Sveltery UI has no radix migration.");
+    await expect(migrate('rename', options())).rejects.toThrow('Unknown migration "rename".');
   });
 });
 

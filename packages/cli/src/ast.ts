@@ -16,11 +16,25 @@ const SCRIPT_OPEN = '<script lang="ts">';
 
 /**
  * A .svelte file, or a TypeScript or JavaScript module, which svelte/compiler parses as the body of a script tag.
- * Subtract `offset` from an AST position to get the position in `content`.
+ * Subtract `offset` from an AST position to get the position in `content`. Throws a svelte CompileError when the file
+ * does not parse, as a module that contains `</script>` does not.
  */
 export function parseSource(target: string, content: string): { ast: ReturnType<typeof parse>; offset: number } {
-  const isSvelte = target.endsWith('.svelte');
-  return { ast: parse(isSvelte ? content : `${SCRIPT_OPEN}${content}</script>`, { filename: target, modern: true }), offset: isSvelte ? 0 : SCRIPT_OPEN.length };
+  if (target.endsWith('.svelte')) return { ast: parse(content, { filename: target, modern: true }), offset: 0 };
+  // A script tag cannot hold a hashbang, so it becomes spaces that keep every position.
+  const body = content.replace(/^#!.*/, (line) => ' '.repeat(line.length));
+  return { ast: parse(`${SCRIPT_OPEN}${body}</script>`, { filename: target, modern: true }), offset: SCRIPT_OPEN.length };
+}
+
+/** `parseSource`, or why the file does not parse, for a migration to report and move on. */
+export function tryParseSource(target: string, content: string): ReturnType<typeof parseSource> | { reason: string } {
+  try {
+    return parseSource(target, content);
+  } catch (error) {
+    if (!(error instanceof Error) || error.name !== 'CompileError') throw error;
+    const line = (error as { start?: { line: number } }).start?.line;
+    return { reason: `could not parse (${error.message.split('\n')[0]}${line === undefined ? '' : ` at line ${line}`})` };
+  }
 }
 
 export type ImportSpecifier = Node & { local: Node & { name: string }; imported?: Node & { name?: string; value?: unknown }; importKind?: string };

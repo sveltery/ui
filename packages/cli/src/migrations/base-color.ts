@@ -11,10 +11,13 @@ const normalize = (value: string) => value.trim().replace(/\s+/g, ' ');
  * source's. Tokens that differ were customized, or set by a preset's theme color, and are kept and reported.
  */
 export function baseColorMigration(css: string, source: CssVars, target: CssVars): { vars: { light: Record<string, string>; dark: Record<string, string> }; skipped: SkippedToken[] } {
-  const current: Record<string, Record<string, string>> = { ':root': {}, '.dark': {} };
+  const current = new Map<string, Map<string, string>>([
+    [':root', new Map()],
+    ['.dark', new Map()],
+  ]);
   postcss.parse(css).walkRules((rule) => {
-    const values = current[rule.selector];
-    if (values) rule.walkDecls((decl) => void (decl.prop.startsWith('--') && (values[decl.prop] = decl.value)));
+    const values = current.get(rule.selector);
+    if (values) rule.walkDecls((decl) => void (decl.prop.startsWith('--') && values.set(decl.prop, decl.value)));
   });
 
   const vars = { light: {} as Record<string, string>, dark: {} as Record<string, string> };
@@ -27,7 +30,7 @@ export function baseColorMigration(css: string, source: CssVars, target: CssVars
       const targetValue = target[mode]?.[name];
       if (targetValue === undefined || normalize(sourceValue) === normalize(targetValue)) continue;
       const token = `--${name.replace(/^--/, '')}`;
-      const value = current[selector]![token];
+      const value = current.get(selector)!.get(token);
       if (value === undefined) skipped.push({ token, reason: 'not found in your CSS' });
       else if (normalize(value) === normalize(sourceValue)) vars[mode][name] = targetValue;
       else skipped.push({ token, reason: 'does not match the source base color' });
