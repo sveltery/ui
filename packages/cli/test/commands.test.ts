@@ -791,6 +791,9 @@ describe('add', () => {
       'src/lib/components/ui/other-hello/Hello.svelte',
     ]);
     expect(read('src/lib/components/ui/other-hello/Hello.svelte')).toBe('<p>other</p>\n');
+    writeFileSync(join(cwd, 'src/lib/components/ui/hello/Hello.svelte'), 'mine\n');
+    writeFileSync(join(cwd, 'src/lib/components/ui/other-hello/Hello.svelte'), 'mine\n');
+    expect(await diff([`${origin}/r/elsewhere/hello.json`, `${origin}/r/other/hello.json`], { cwd })).toMatch(/2 files differ in 2 items$/);
   });
 
   describe('--diff and --view', () => {

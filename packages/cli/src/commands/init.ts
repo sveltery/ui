@@ -238,7 +238,8 @@ export async function planInit(options: InitOptions, components: string[] = []):
       : { dir: linked.ui.dir, config: parseConfig({ ...linked.ui.config, style, iconLibrary, rtl, menuColor, ...(menuAccent ? { menuAccent } : {}), tailwind: { ...linked.ui.config.tailwind, baseColor } }) };
   const project: Project = synced === undefined ? linked : { ...linked, ui: synced };
   const added = components.length === 0 ? [] : await resolveItems(registry, style, components.map(parseItemRef));
-  const items = [...new Map([...settings.items, ...added].map((item) => [item.name, item])).values()];
+  // `fetchItem` memoizes by address, so one item reached by both lists is one object, and same-named items from other sources stay.
+  const items = [...new Set([...settings.items, ...added])];
   const itemsPlan = planItems(project, items, css);
   const manifest = withLibIndexFallback(cwd);
   const uiConfigPath = join(synced?.dir ?? '', CONFIG_FILE);
