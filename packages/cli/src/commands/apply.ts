@@ -88,6 +88,7 @@ export async function apply(positional: string | undefined, options: ApplyOption
     files: [...files.values()],
     dependencies: missingPackages(cwd, [...planned.plan.dependencies, ...reinstalled.dependencies]),
     devDependencies: missingPackages(cwd, [...planned.plan.devDependencies, ...reinstalled.devDependencies]),
+    ...(reinstalled.workspace ? { workspace: reinstalled.workspace } : {}),
   };
   if (!options.silent) log.info(formatPlan(plan, { showIdentical: false }));
   await executePlan(plan, { cwd, install: options.install, silent: options.silent });

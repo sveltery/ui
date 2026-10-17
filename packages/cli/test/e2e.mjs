@@ -202,6 +202,28 @@ try {
     assert.equal(value('accent-foreground'), value('primary-foreground'), 'a bold menu accent foreground is the primary foreground');
   }
 
+  step('sveltery init --monorepo, add a component and a block in apps/web, then check and build the workspace');
+  const monorepoParent = join(work, 'monorepo');
+  mkdirSync(monorepoParent);
+  const appCli = (...args) => run('pnpm', ['exec', 'sveltery', ...args], app, env);
+  await appCli('init', '--monorepo', '--name', 'acme', '-y', '--no-install', '--cwd', monorepoParent);
+  const acme = join(monorepoParent, 'acme');
+  // As for the app above: the packed packages are not on npm, so the workspace overrides them and packages/ui declares the CLI up front.
+  writeFileSync(join(acme, 'pnpm-workspace.yaml'), `${readFileSync(join(acme, 'pnpm-workspace.yaml'), 'utf8')}${readFileSync(join(app, 'pnpm-workspace.yaml'), 'utf8')}`);
+  const uiManifestPath = join(acme, 'packages/ui/package.json');
+  const uiManifest = JSON.parse(readFileSync(uiManifestPath, 'utf8'));
+  writeFileSync(uiManifestPath, JSON.stringify({ ...uiManifest, devDependencies: { ...uiManifest.devDependencies, '@sveltery/ui': cliTarball } }, null, 2));
+  await run('pnpm', ['install'], acme);
+  // In the monorepo it created, init --monorepo sets up both workspaces again, this time installing their packages.
+  await appCli('init', '--monorepo', '-y', '--cwd', acme);
+  await appCli('add', 'dialog', 'login-01', '-y', '--cwd', join(acme, 'apps/web'));
+  assert.ok(existsSync(join(acme, 'packages/ui/src/components/dialog/DialogContent.svelte')), 'add puts the ui files in packages/ui');
+  assert.ok(!existsSync(join(acme, 'apps/web/src/lib/components/ui')), 'add puts no ui files in the app');
+  assert.match(readFileSync(join(acme, 'apps/web/src/lib/components/login-form.svelte'), 'utf8'), /from '@workspace\/ui\/components\/button'/, 'the block component imports the ui package');
+  assert.ok(JSON.parse(readFileSync(uiManifestPath, 'utf8')).dependencies['@sveltery/base'], 'add installs the packages in packages/ui');
+  await run('pnpm', ['run', 'check'], acme);
+  await run('pnpm', ['run', 'build'], acme);
+
   // Each icon library gets its own copy of the app with every item, so their icon props are type-checked against the real packages.
   for (const icons of ['lucide', 'tabler', 'hugeicons', 'phosphor', 'remixicon']) {
     step(`sveltery init --icons ${icons}, add --all and blocks, check and build`);

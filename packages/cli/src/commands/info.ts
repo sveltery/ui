@@ -38,7 +38,7 @@ export async function collectInfo(cwd: string): Promise<Info> {
   const config = existsSync(configPath) ? parseConfig(readJson(configPath)) : null;
   const registryUrl = resolveRegistryUrl(config?.registry);
   const origin = new URL(registryUrl).origin;
-  const resolve = (alias: string) => join(cwd, aliasPath(alias));
+  const resolve = (alias: string) => join(cwd, aliasPath(cwd, alias));
   const uiDir = config ? resolve(config.aliases.ui) : '';
   return {
     project: inspectProject(cwd, config?.tailwind.css),

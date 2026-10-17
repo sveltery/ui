@@ -11,8 +11,13 @@ export const count = (n: number, one: string, many: string) => `${n} ${n === 1 ?
 export type FileStatus = 'new' | 'identical' | 'changed';
 /** `path` is relative to the project root. `item` names the registry item the file belongs to. */
 export type PlannedFile = { path: string; content: string; status: FileStatus; item?: string };
-/** Everything a command will change. Commands build one, then `executePlan` applies it. */
-export type Plan = { files: PlannedFile[]; dependencies: string[]; devDependencies: string[] };
+/** Packages to install in the workspace package at `dir`, relative to the project root. */
+export type WorkspacePackages = { dir: string; dependencies: string[]; devDependencies: string[] };
+/**
+ * Everything a command will change. Commands build one, then `executePlan` applies it. The packages install in the project
+ * root, and `workspace` packages in another workspace package, such as the ui package of a monorepo.
+ */
+export type Plan = { files: PlannedFile[]; dependencies: string[]; devDependencies: string[]; workspace?: WorkspacePackages };
 
 export function planFile(cwd: string, path: string, content: string): PlannedFile {
   const absolute = join(cwd, path);
@@ -76,8 +81,11 @@ const marks: Record<FileStatus, string> = { new: '+', changed: '~', identical: '
 export function formatPlan(plan: Plan, { showIdentical }: { showIdentical: boolean }): string {
   const files = plan.files.filter((file) => showIdentical || file.status !== 'identical');
   const lines = files.length > 0 ? ['Files:', ...files.map((file) => `  ${marks[file.status]} ${file.path} (${file.status})`)] : ['Files: none to write'];
-  if (plan.dependencies.length > 0) lines.push('Packages:', ...plan.dependencies.map((spec) => `  ${spec}`));
-  if (plan.devDependencies.length > 0) lines.push('Dev packages:', ...plan.devDependencies.map((spec) => `  ${spec}`));
+  for (const { dir, dependencies, devDependencies } of [{ dir: '', ...plan }, ...(plan.workspace ? [plan.workspace] : [])]) {
+    const where = dir === '' ? '' : ` in ${dir}`;
+    if (dependencies.length > 0) lines.push(`Packages${where}:`, ...dependencies.map((spec) => `  ${spec}`));
+    if (devDependencies.length > 0) lines.push(`Dev packages${where}:`, ...devDependencies.map((spec) => `  ${spec}`));
+  }
   return lines.join('\n');
 }
 
@@ -90,16 +98,18 @@ export async function executePlan(plan: Plan, { cwd, install: shouldInstall, sil
     writeFileSync(absolute, file.content);
   }
   if (!shouldInstall) return;
-  for (const [specs, dev] of [
-    [plan.dependencies, false],
-    [plan.devDependencies, true],
-  ] as const) {
-    if (specs.length > 0) await runPackageManager(cwd, 'add', [...(dev ? ['-D'] : []), ...specs], { fallback: `Install these yourself: ${specs.join(' ')}`, silent });
+  for (const { dir, dependencies, devDependencies } of [{ dir: '', ...plan }, ...(plan.workspace ? [plan.workspace] : [])]) {
+    for (const [specs, dev] of [
+      [dependencies, false],
+      [devDependencies, true],
+    ] as const) {
+      if (specs.length > 0) await runPackageManager(join(cwd, dir), 'add', [...(dev ? ['-D'] : []), ...specs], { fallback: `Install these yourself: ${specs.join(' ')}`, silent });
+    }
   }
 }
 
 /** Runs the project's package manager, or npm when none is detected. `fallback` tells the user what to do by hand when it fails. */
-async function runPackageManager(cwd: string, command: 'add' | 'uninstall', args: string[], { fallback, silent = false }: { fallback: string; silent?: boolean }) {
+export async function runPackageManager(cwd: string, command: 'add' | 'install' | 'uninstall', args: string[], { fallback, silent = false }: { fallback: string; silent?: boolean }) {
   const agent = (await detect({ cwd }))?.agent ?? 'npm';
   const resolved = resolveCommand(agent, command, args);
   if (!resolved) throw new CliError(`Do not know how to ${command} packages with ${agent}. ${fallback}`);

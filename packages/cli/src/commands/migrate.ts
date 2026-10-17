@@ -111,7 +111,7 @@ function warnSkipped(skipped: { name: string; reason: string }[], noun: string) 
 export async function migrateIcons(options: MigrateOptions): Promise<{ changed: string[]; skipped: Skipped[] }> {
   const { cwd } = options;
   const { raw, config } = readConfig(cwd);
-  const { base, files } = selectFiles(cwd, aliasPath(config.aliases.ui), options.path);
+  const { base, files } = selectFiles(cwd, aliasPath(cwd, config.aliases.ui), options.path);
   const { from, to } = await fromAndTo(options, ['icon library', 'libraries'], iconLibraryNames, config.iconLibrary);
   if (!(await confirmed(options, `We will migrate ${files.length} files in ${options.path ?? `./${relative(cwd, base)}`} from ${from} to ${to}. Continue?`))) return { changed: [], skipped: [] };
 
@@ -236,7 +236,7 @@ const NEEDS_MANUAL_REVIEW = ['sidebar', 'pagination', 'calendar'];
 export async function migrateRtl(options: Pick<MigrateOptions, 'cwd' | 'yes' | 'path'>): Promise<{ transformed: string[]; review: string[] }> {
   const { cwd } = options;
   const { raw, config } = readConfig(cwd);
-  const { base, files } = selectFiles(cwd, aliasPath(config.aliases.ui), options.path);
+  const { base, files } = selectFiles(cwd, aliasPath(cwd, config.aliases.ui), options.path);
   if (!(await confirmed(options, `We will migrate ${files.length} file(s) in ${options.path ?? `./${relative(cwd, base)}`} to RTL. Continue?`))) return { transformed: [], review: [] };
 
   // Transform every file before writing anything, so a file the parser rejects is skipped rather than stopping the run halfway.

@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync, existsSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { createServer, type Server } from 'node:http';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -9,9 +9,10 @@ import { add } from '../src/commands/add.js';
 import { apply, type ApplyOptions } from '../src/commands/apply.js';
 import { build } from '../src/commands/build.js';
 import { diff } from '../src/commands/diff.js';
-import { baseDependencies, init } from '../src/commands/init.js';
+import { baseDependencies, init, initMonorepo } from '../src/commands/init.js';
 import { migrate, migrateRtl, type MigrateOptions } from '../src/commands/migrate.js';
 import { update } from '../src/commands/update.js';
+import { formatPlan } from '../src/plan.js';
 import { cliPackage } from '../src/version.js';
 
 vi.mock('@clack/prompts', async (importOriginal) => ({ ...(await importOriginal<typeof import('@clack/prompts')>()), confirm: vi.fn(), select: vi.fn() }));
@@ -1181,3 +1182,193 @@ describe('update', () => {
   });
 });
 
+
+describe('init --monorepo', () => {
+  const options = { yes: true, install: false };
+  let userAgent: string | undefined;
+  beforeEach(() => {
+    rmSync(join(cwd, 'package.json'));
+    rmSync(join(cwd, 'src'), { recursive: true });
+    userAgent = process.env.npm_config_user_agent;
+    process.env.npm_config_user_agent = 'pnpm/12.6.0 npm/? node/v24.22.0 linux x64';
+  });
+  afterEach(() => {
+    if (userAgent === undefined) delete process.env.npm_config_user_agent;
+    else process.env.npm_config_user_agent = userAgent;
+  });
+  const files = (dir: string): string[] =>
+    readdirSync(join(cwd, dir), { recursive: true, encoding: 'utf8' })
+      .filter((path) => !path.split('/').includes('.git') && statSync(join(cwd, dir, path)).isFile())
+      .sort();
+  const addOptions = { ...options, overwrite: false, all: false, dryRun: false };
+  const shared = { style: 'nova', iconLibrary: 'lucide', rtl: false, menuColor: 'default' };
+
+  test('creates the workspace in --name with the theme and the button in packages/ui, and points apps/web at it', async () => {
+    const { root } = await initMonorepo({ cwd, ...options, name: 'acme' });
+    expect(root).toBe(join(cwd, 'acme'));
+    expect(files('acme')).toEqual([
+      '.gitignore',
+      'README.md',
+      'apps/web/components.json',
+      'apps/web/package.json',
+      'apps/web/src/app.d.ts',
+      'apps/web/src/app.html',
+      'apps/web/src/lib/components/theme-provider.svelte',
+      'apps/web/src/lib/index.ts',
+      'apps/web/src/routes/+layout.svelte',
+      'apps/web/src/routes/+page.svelte',
+      'apps/web/tsconfig.json',
+      'apps/web/vite.config.ts',
+      'package.json',
+      'packages/ui/components.json',
+      'packages/ui/package.json',
+      'packages/ui/src/components/.gitkeep',
+      'packages/ui/src/components/button/Button.svelte',
+      'packages/ui/src/hooks/.gitkeep',
+      'packages/ui/src/lib/.gitkeep',
+      'packages/ui/src/styles/globals.css',
+      'packages/ui/tsconfig.json',
+      'pnpm-workspace.yaml',
+      'turbo.json',
+    ]);
+    const meta = { $schema: new URL('/schema.json', registryUrl).href, ...shared };
+    expect(JSON.parse(read('acme/packages/ui/components.json'))).toEqual({
+      ...meta,
+      tailwind: { css: 'src/styles/globals.css', baseColor: 'neutral' },
+      aliases: { components: '@workspace/ui/components', utils: '@workspace/ui/lib/utils', hooks: '@workspace/ui/hooks', lib: '@workspace/ui/lib', ui: '@workspace/ui/components' },
+      registry: registryUrl,
+      typescript: true,
+    });
+    expect(JSON.parse(read('acme/apps/web/components.json'))).toEqual({
+      ...meta,
+      tailwind: { css: '../../packages/ui/src/styles/globals.css', baseColor: 'neutral' },
+      aliases: { components: '#lib/components', hooks: '#lib/hooks', lib: '#lib', utils: '@workspace/ui/lib/utils', ui: '@workspace/ui/components' },
+      registry: registryUrl,
+      typescript: true,
+    });
+    expect(read('acme/packages/ui/src/styles/globals.css')).toBe(`@import 'tailwindcss';
+@import 'tw-animate-css';
+@import '@sveltery/ui/tailwind.css';
+@custom-variant dark (&:is(.dark *));
+@source '../../../apps/**/*.{ts,svelte}';
+@source '../../../components/**/*.{ts,svelte}';
+@source '../**/*.{ts,svelte}';
+:root {
+  --background: oklch(1 0 0);
+}
+.dark {
+  --background: oklch(0.145 0 0);
+}
+@theme inline {
+  --color-background: var(--background);
+}
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+`);
+    expect(read('acme/packages/ui/src/components/button/Button.svelte')).toContain("import ChevronRightIcon from '@lucide/svelte/icons/chevron-right';");
+    expect(read('acme/apps/web/src/routes/+page.svelte')).toContain("import { Button } from '@workspace/ui/components/button';");
+    expect(read('acme/apps/web/src/routes/+layout.svelte')).toContain("import '@workspace/ui/globals.css';");
+    const manifest = JSON.parse(read('acme/package.json'));
+    expect([manifest.name, manifest.packageManager, manifest.workspaces, read('acme/pnpm-workspace.yaml')]).toEqual(['acme', expect.stringMatching(/^pnpm@(\d+\.\d+\.\d+|\*)$/), undefined, 'packages:\n  - "apps/*"\n  - "packages/*"\n']);
+    expect(JSON.parse(read('acme/apps/web/package.json')).dependencies).toEqual({ '@workspace/ui': 'workspace:*' });
+    expect(JSON.parse(read('acme/packages/ui/package.json')).exports['./components/*']).toBe('./src/components/*/index.ts');
+    expect(existsSync(join(cwd, 'acme/.git'))).toBe(true);
+  });
+
+  test('installs the base packages in packages/ui and the icon package in both workspaces, the same way when it runs again in the root', async () => {
+    const first = await initMonorepo({ cwd, ...options, name: 'acme', icons: 'tabler' });
+    expect([first.ui.dependencies, first.ui.devDependencies, first.app.dependencies]).toEqual([
+      ['cn@^0.2.2', 'class-variance-authority@^0.7.1', 'tw-animate-css@^1.4.0', '@tabler/icons-svelte@^3.48.0'],
+      ['@sveltery/ui@^0.2.0'],
+      ['@tabler/icons-svelte@^3.48.0'],
+    ]);
+    const before = Object.fromEntries(files('acme').map((path) => [path, read(`acme/${path}`)]));
+    const again = await initMonorepo({ cwd: join(cwd, 'acme'), ...options });
+    expect([...again.ui.files, ...again.app.files].map((file) => file.status)).toEqual(['identical', 'identical', 'identical', 'identical']);
+    expect(Object.fromEntries(files('acme').map((path) => [path, read(`acme/${path}`)]))).toEqual(before);
+    expect(JSON.parse(read('acme/apps/web/components.json')).iconLibrary).toBe('tabler');
+  });
+
+  test('with npm, lists the workspaces in package.json and depends on the ui package as *', async () => {
+    process.env.npm_config_user_agent = 'npm/11.0.0 node/v24.22.0 linux x64';
+    await initMonorepo({ cwd, ...options });
+    expect(JSON.parse(read('sveltekit-monorepo/package.json')).workspaces).toEqual(['apps/*', 'packages/*']);
+    expect([existsSync(join(cwd, 'sveltekit-monorepo/pnpm-workspace.yaml')), JSON.parse(read('sveltekit-monorepo/apps/web/package.json')).dependencies]).toEqual([false, { '@workspace/ui': '*' }]);
+  });
+
+  test('stops when the project exists, or when the directory has a package.json without the workspaces', async () => {
+    mkdirSync(join(cwd, 'acme'));
+    writeFileSync(join(cwd, 'acme/package.json'), '{}');
+    await expect(initMonorepo({ cwd, ...options, name: 'acme' })).rejects.toThrow('A project with the name acme already exists. Choose a different name and try again.');
+    await expect(initMonorepo({ cwd: join(cwd, 'acme'), ...options })).rejects.toThrow(
+      `${join(cwd, 'acme')} has a package.json, and init --monorepo needs its packages/ui and apps/web workspaces. Run init --monorepo in an empty directory to create a monorepo, or run init in your app.`,
+    );
+    expect(files('acme')).toEqual(['package.json']);
+  });
+
+  test('--name without --monorepo stops', async () => {
+    await expect(init({ cwd, ...options, name: 'acme' })).rejects.toThrow('--name names the project that --monorepo creates. Add --monorepo, or drop --name.');
+  });
+
+  describe('add in apps/web', () => {
+    const app = () => join(cwd, 'acme/apps/web');
+    beforeEach(() => initMonorepo({ cwd, ...options, name: 'acme' }));
+
+    test('writes ui files to packages/ui with its config and packages, and the block files to the app with their packages and imports from the ui package', async () => {
+      const ui = JSON.parse(read('acme/packages/ui/components.json'));
+      writeFileSync(join(cwd, 'acme/packages/ui/components.json'), JSON.stringify({ ...ui, rtl: true }));
+      // The app declares the button's packages, and packages/ui does not, so the plan shows which package.json each list is checked against.
+      const manifest = JSON.parse(read('acme/apps/web/package.json'));
+      writeFileSync(join(app(), 'package.json'), JSON.stringify({ ...manifest, dependencies: { ...manifest.dependencies, cn: '^0.2.2', '@lucide/svelte': '^1.48.0' } }));
+      const plan = await add(['login-01'], { cwd: app(), ...addOptions, overwrite: true });
+      expect(plan.files.map((file) => [file.path, file.status])).toEqual([
+        ['../../packages/ui/src/components/button/Button.svelte', 'changed'],
+        ['src/routes/login/+page.svelte', 'new'],
+        ['src/lib/components/login-form.svelte', 'new'],
+        ['src/routes/login/data.json', 'new'],
+      ]);
+      expect([plan.dependencies, plan.devDependencies, plan.workspace]).toEqual([[], ['@types/d3-scale@^4.0.9'], { dir: '../../packages/ui', dependencies: ['cn@^0.2.2', '@lucide/svelte@^1.48.0'], devDependencies: [] }]);
+      expect(formatPlan(plan, { showIdentical: true }).split('\n').slice(-5)).toEqual(['Dev packages:', '  @types/d3-scale@^4.0.9', 'Packages in ../../packages/ui:', '  cn@^0.2.2', '  @lucide/svelte@^1.48.0']);
+      expect(read('acme/packages/ui/src/components/button/Button.svelte')).toContain('<button class="rtl:rotate-180 px-2.5">');
+      expect(read('acme/apps/web/src/lib/components/login-form.svelte')).toBe(`<script lang="ts">
+  import { Button } from '@workspace/ui/components/button';
+</script>
+<form class=""><Button>Login</Button></form>
+`);
+    });
+
+    test('diff and update find the ui files in packages/ui', async () => {
+      const path = join(cwd, 'acme/packages/ui/src/components/button/Button.svelte');
+      const pristine = readFileSync(path, 'utf8');
+      writeFileSync(path, 'mine\n');
+      expect(await diff(['button'], { cwd: app() })).toContain('--- a/../../packages/ui/src/components/button/Button.svelte');
+      await update(['button'], { cwd: app(), ...options });
+      expect(readFileSync(path, 'utf8')).toBe(pristine);
+    });
+
+    test('follows the exports of a workspace package that package.json workspaces lists under a ** pattern', async () => {
+      const lib = join(cwd, 'repo/libs/shared/kit');
+      mkdirSync(join(cwd, 'repo/site'), { recursive: true });
+      mkdirSync(lib, { recursive: true });
+      writeFileSync(join(cwd, 'repo/package.json'), JSON.stringify({ workspaces: { packages: ['site', 'libs/**', '!libs/ignored'] } }));
+      writeFileSync(join(lib, 'package.json'), JSON.stringify({ name: 'kit', exports: { './ui/*': { types: './types/*.d.ts', svelte: './src/ui/*/index.ts' } } }));
+      writeFileSync(join(cwd, 'repo/site/package.json'), '{}');
+      const config = JSON.parse(read('acme/apps/web/components.json'));
+      writeFileSync(join(lib, 'components.json'), JSON.stringify({ ...config, aliases: { ...config.aliases, ui: './src/ui' } }));
+      writeFileSync(join(cwd, 'repo/site/components.json'), JSON.stringify({ ...config, aliases: { ...config.aliases, ui: 'kit/ui' } }));
+      const plan = await add(['button'], { cwd: join(cwd, 'repo/site'), ...addOptions, dryRun: true });
+      expect([plan.files.map((file) => file.path), plan.workspace?.dir]).toEqual([['../libs/shared/kit/src/ui/button/Button.svelte'], '../libs/shared/kit']);
+    });
+
+    test('stops when the ui package has no components.json', async () => {
+      rmSync(join(cwd, 'acme/packages/ui/components.json'));
+      await expect(add(['button'], { cwd: app(), ...addOptions })).rejects.toThrow('Could not load the workspace config in ../../packages/ui. Add components.json to this workspace and configure its aliases, then try again.');
+    });
+  });
+});

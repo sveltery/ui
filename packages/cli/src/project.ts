@@ -1,5 +1,5 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
-import { join, relative, resolve } from 'node:path';
+import { basename, dirname, join, relative, resolve } from 'node:path';
 import * as util from 'node:util';
 import { importsTailwind } from './css.js';
 import { CliError } from './parse.js';
@@ -89,11 +89,125 @@ export function withLibIndexFallback(cwd: string): string | undefined {
   return `${JSON.stringify(manifest, null, indent)}\n`;
 }
 
+/**
+ * Where an alias points, relative to `cwd`: the directory it names, and the root of the workspace package it is in, which
+ * is `''` for the project itself. `$lib` and `#lib` name `src/lib`, `./` and `../` paths are relative to `cwd`, and any other
+ * alias, such as `@workspace/ui/components`, is a path that a package of the workspace exports, as upstream resolves it.
+ */
+export function resolveAlias(cwd: string, alias: string): { path: string; packageDir: string } {
+  if (/^[$#]lib(\/|$)/.test(alias)) return { path: join('src/lib', alias.slice('$lib'.length)), packageDir: '' };
+  if (alias.startsWith('./') || alias.startsWith('../')) return { path: join(alias), packageDir: '' };
+  const exported = resolveWorkspaceExport(cwd, alias);
+  if (exported) return exported;
+  throw new CliError(
+    `Cannot place files for the alias "${alias}". Use a path under $lib or #lib, such as $lib/components/ui, one relative to the project root, such as ./src/ui, or a path that a workspace package exports, such as @workspace/ui/components.`,
+  );
+}
+
 /** The directory an alias such as `$lib/components/ui` names, relative to `cwd`. */
-export function aliasPath(alias: string): string {
-  if (/^[$#]lib(\/|$)/.test(alias)) return join('src/lib', alias.slice('$lib'.length));
-  if (alias.startsWith('./') || alias.startsWith('../')) return join(alias);
-  throw new CliError(`Cannot place files for the alias "${alias}". Use a path under $lib or #lib, such as $lib/components/ui, or one relative to the project root, such as ./src/ui.`);
+export const aliasPath = (cwd: string, alias: string) => resolveAlias(cwd, alias).path;
+
+/** The `packages` list of pnpm-workspace.yaml, read line by line as upstream's `parsePnpmWorkspacePackages` does. */
+export function pnpmWorkspacePackages(content: string): string[] {
+  const patterns: string[] = [];
+  let inPackages = false;
+  let packagesIndent = 0;
+  for (const line of content.split('\n')) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const key = /^(\s*)([A-Za-z0-9_-]+)\s*:/.exec(line);
+    if (key) {
+      packagesIndent = key[1]!.length;
+      inPackages = key[2] === 'packages';
+      continue;
+    }
+    const entry = inPackages ? /^(\s*)-\s*(.+?)\s*(?:#.*)?$/.exec(line) : null;
+    if (entry && entry[1]!.length > packagesIndent) patterns.push(entry[2]!.trim().replace(/^["']|["']$/g, ''));
+  }
+  return patterns;
+}
+
+/** The workspace patterns `dir` declares, in pnpm-workspace.yaml or in the `workspaces` of package.json. */
+function workspacePatterns(dir: string): string[] {
+  const patterns: string[] = [];
+  const pnpm = join(dir, 'pnpm-workspace.yaml');
+  if (existsSync(pnpm)) patterns.push(...pnpmWorkspacePackages(readFileSync(pnpm, 'utf8')));
+  const manifest = join(dir, 'package.json');
+  if (existsSync(manifest)) {
+    const { workspaces } = (readJson(manifest) ?? {}) as { workspaces?: unknown };
+    const list = Array.isArray(workspaces) ? workspaces : (workspaces as { packages?: unknown } | undefined)?.packages;
+    if (Array.isArray(list)) patterns.push(...list.filter((pattern): pattern is string => typeof pattern === 'string' && !pattern.startsWith('!')));
+  }
+  return [...new Set(patterns)];
+}
+
+/** The closest directory at or above `cwd` that declares workspaces. The search stops at the git root. */
+function findWorkspaceRoot(cwd: string): string | undefined {
+  for (let dir = resolve(cwd); ; dir = dirname(dir)) {
+    if (workspacePatterns(dir).length > 0) return dir;
+    if (existsSync(join(dir, '.git')) || dirname(dir) === dir) return undefined;
+  }
+}
+
+const subdirectories = (dir: string) =>
+  existsSync(dir) ? readdirSync(dir, { withFileTypes: true }).filter((entry) => entry.isDirectory() && entry.name !== 'node_modules').map((entry) => join(dir, entry.name)) : [];
+
+/** The directories a workspace pattern such as `packages/*` matches. `*` matches within one segment and `**` at any depth. */
+function expandPattern(root: string, pattern: string): string[] {
+  let dirs = [root];
+  for (const segment of pattern.split('/').filter((part) => part !== '' && part !== '.')) {
+    if (segment === '**') {
+      const deep = (dir: string): string[] => [dir, ...subdirectories(dir).flatMap(deep)];
+      dirs = dirs.flatMap(deep);
+    } else if (segment.includes('*')) {
+      const matcher = new RegExp(`^${segment.split('*').map((part) => part.replace(/[.+?^${}()|[\]\\]/g, '\\$&')).join('[^/]*')}$`);
+      dirs = dirs.flatMap((dir) => subdirectories(dir).filter((path) => matcher.test(basename(path))));
+    } else dirs = dirs.map((dir) => join(dir, segment)).filter((dir) => existsSync(dir));
+  }
+  return dirs;
+}
+
+/** The first `./` path in an `exports` value, looking through conditions and fallback arrays in order. */
+function exportTarget(value: unknown): string | undefined {
+  if (typeof value === 'string') return value.startsWith('./') ? value : undefined;
+  const values = Array.isArray(value) ? value : value !== null && typeof value === 'object' ? Object.values(value) : [];
+  for (const entry of values) {
+    const target = exportTarget(entry);
+    if (target !== undefined) return target;
+  }
+  return undefined;
+}
+
+/**
+ * The directory that `specifier` names through the `exports` of a workspace package, relative to `cwd`, as upstream's
+ * `resolveWorkspacePackageExport` finds it. `@workspace/ui/components` matches `"./components/*": "./src/components/*\/index.ts"`
+ * with an empty wildcard, so it names `src/components` in that package.
+ */
+function resolveWorkspaceExport(cwd: string, specifier: string): { path: string; packageDir: string } | undefined {
+  const segments = specifier.split('/');
+  const name = specifier.startsWith('@') ? segments.slice(0, 2).join('/') : segments[0]!;
+  const root = findWorkspaceRoot(cwd);
+  if (root === undefined) return undefined;
+  const packageRoot = workspacePatterns(root)
+    .flatMap((pattern) => expandPattern(root, pattern))
+    .find((dir) => existsSync(join(dir, 'package.json')) && (readJson(join(dir, 'package.json')) as { name?: unknown } | null)?.name === name);
+  if (packageRoot === undefined) return undefined;
+  const { exports } = readJson(join(packageRoot, 'package.json')) as { exports?: unknown };
+  if (exports === null || typeof exports !== 'object' || Array.isArray(exports)) return undefined;
+  const entries = Object.entries(exports)
+    .filter(([key]) => key === '.' || key.startsWith('./'))
+    .map(([key, value]) => ({ base: `${name}/${key.slice(2).replace(/\*$/, '')}`.replace(/\/+$/, ''), wildcard: key.includes('*'), target: exportTarget(value) }));
+  const located = (target: string) => ({ path: relative(cwd, join(packageRoot, target)), packageDir: relative(cwd, packageRoot) });
+
+  const exact = entries.find((entry) => !entry.wildcard && entry.base === specifier && entry.target !== undefined);
+  if (exact) return located(exact.target!.replace(/\/index\.[^/]+$/, ''));
+  // The longest pattern wins, as in Node.
+  for (const entry of entries.filter((entry) => entry.wildcard && entry.target !== undefined).sort((a, b) => b.base.length - a.base.length)) {
+    const [prefix, suffix = ''] = entry.target!.split('*');
+    if (specifier === entry.base) return located(prefix!.replace(/\/$/, ''));
+    if (specifier.startsWith(`${entry.base}/`)) return located(`${prefix}${specifier.slice(entry.base.length + 1)}${suffix}`.replace(/\.[^/.]+$/, ''));
+  }
+  return undefined;
 }
 
 /** What `info` reports about the app, from its package.json and files. Versions are `null` when the package is not declared. */

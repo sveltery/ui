@@ -11,7 +11,7 @@ export async function update(names: string[], options: UpdateOptions): Promise<P
   const items = await selectInstalled(project, names);
   const full = planItems(project, items);
   const plan = { ...full, files: full.files.filter((file) => file.status !== 'identical') };
-  if (plan.files.length === 0 && plan.dependencies.length === 0) {
+  if (plan.files.length === 0 && plan.dependencies.length === 0 && (plan.workspace?.dependencies.length ?? 0) === 0) {
     log.success(items.length === 0 ? NONE_INSTALLED : 'Everything is up to date.');
     return plan;
   }
