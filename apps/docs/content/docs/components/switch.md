@@ -3,7 +3,7 @@ title: Switch
 description: A control that allows the user to toggle between checked and not checked.
 ---
 
-<ComponentPreview name="base/SwitchExample" />
+<ComponentPreview name="base/SwitchDemoExample" />
 
 ## Installation
 
@@ -53,10 +53,7 @@ The component folders import each other with relative paths, so keep them side b
 ```
 
 ```svelte
-<div class="flex items-center gap-2">
-  <Switch id="airplane-mode" />
-  <Label for="airplane-mode">Airplane Mode</Label>
-</div>
+<Switch />
 ```
 
 ## Checked state
@@ -83,14 +80,42 @@ Bind `checked` to read and write the state. `defaultChecked` is the state an unb
 </form>
 ```
 
-## Sizes
+## Description
 
-`size` is `sm` or `default`.
+<ComponentPreview name="base/SwitchDescriptionExample" />
 
-```svelte
-<Switch size="sm" />
-```
+## Choice Card
 
-## API reference
+Card-style selection where `FieldLabel` wraps the entire `Field` for a clickable card pattern.
 
-`Switch` is styled on top of the Sveltery Base `Switch` primitive, which owns its state, keyboard behavior, form value and accessibility. See the [Base UI Switch documentation](https://base-ui.com/react/components/switch) for the behavior it ports.
+<ComponentPreview name="base/SwitchChoiceCardExample" />
+
+## Disabled
+
+Add the `disabled` prop to the `Switch` component to disable the switch. Add the `data-disabled` prop to the `Field` component for styling.
+
+<ComponentPreview name="base/SwitchDisabledExample" />
+
+## Invalid
+
+Add the `aria-invalid` prop to the `Switch` component to indicate an invalid state. Add the `data-invalid` prop to the `Field` component for styling.
+
+<ComponentPreview name="base/SwitchInvalidExample" />
+
+## Size
+
+Use the `size` prop to change the size of the switch.
+
+<ComponentPreview name="base/SwitchSizesExample" />
+
+## RTL
+
+Wrap the switch in a [DirectionProvider](/docs/components/direction) and set `dir` on the field parts and the switch. Use the buttons to switch the language.
+
+<ComponentPreview name="base/SwitchRtlExample" align="start" />
+
+## API Reference
+
+See the [Base UI Switch](https://base-ui.com/react/components/switch#api-reference) documentation.
+
+`Switch` is styled on top of the Sveltery Base `Switch` primitive, which owns its state, keyboard behavior, form value and accessibility. `size` is `sm` or `default`.
