@@ -1,7 +1,7 @@
 ---
 title: Differences from shadcn/ui
 description: Where Sveltery UI deliberately differs from shadcn/ui's Base UI variant and from Base UI.
-order: 4
+order: 9
 ---
 
 <!--

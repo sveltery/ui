@@ -23,7 +23,7 @@ This is a port, not a transliteration. Where React and the platform disagree, th
 - Props are HTML attributes: `class`, `for` and `onclick`, not `className`, `htmlFor` and `onClick`.
 - Two-way state uses `bind:`, for example `bind:open` on a dialog and `bind:value` on a textarea.
 - Forms reset the way the browser resets them. Nothing emulates React's controlled inputs.
-- Composition uses snippets and spread props instead of `asChild`.
+- Composition uses the `render` prop, as in Base UI. It takes a snippet that receives the props to spread on your element.
 
 ## Status
 
