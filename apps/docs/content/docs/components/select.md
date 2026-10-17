@@ -220,6 +220,10 @@ Wrap the select in a [DirectionProvider](/docs/components/direction) and set `di
 
 <ComponentPreview name="base/SelectExample" />
 
+## Without JavaScript
+
+`Select` needs JavaScript to open. For a form that must work before the page hydrates, or for a remote form's `as('select')` and `as('select multiple')` spreads, use [Native Select](/docs/components/native-select).
+
 ## API reference
 
 `Select` is styled on top of the Sveltery Base `Select` primitive, which owns the popup positioning, keyboard navigation, typeahead, focus handling, dismissal and form value. `SelectContent` renders the Base portal, positioner, popup and list with scroll arrows, and takes the positioner's `side`, `align`, `sideOffset`, `alignOffset` and `alignItemWithTrigger` props. `SelectTrigger` takes `size` (`default` or `sm`). The trigger sets `data-popup-open` while the popup is open, so style the open state with `data-popup-open:`. See the [Base UI Select documentation](https://base-ui.com/react/components/select) for the behavior it ports.

@@ -1,6 +1,6 @@
 {
   "name": "@sveltery/day-picker",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A date picker and calendar for Svelte 5, ported from react-day-picker.",
   "keywords": [
     "svelte",
