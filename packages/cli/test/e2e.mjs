@@ -165,7 +165,8 @@ try {
 
   writeFileSync(
     join(app, 'src/routes/+page.svelte'),
-    `<script lang="ts">\n  import { Bar, BarChart } from '@sveltery/recharts';\n  import { Button } from '${config.aliases.ui}/button/index.js';\n  import { ChartContainer } from '${config.aliases.ui}/chart/index.js';\n  import { Dialog, DialogTrigger } from '${config.aliases.ui}/dialog/index.js';\n</script>\n<Button>Click</Button>\n<Dialog><DialogTrigger>Open</DialogTrigger></Dialog>\n<ChartContainer config={{ value: { label: 'Value', color: 'var(--chart-1)' } }} class="h-40 w-80"><BarChart data={[{ value: 1 }, { value: 2 }]}><Bar dataKey="value" fill="var(--color-value)" /></BarChart></ChartContainer>\n`,
+    // The import form the docs print, an explicit index, and a deep import of one file.
+    `<script lang="ts">\n  import { Bar, BarChart } from '@sveltery/recharts';\n  import { Button } from '${config.aliases.ui}/button';\n  import { ChartContainer } from '${config.aliases.ui}/chart';\n  import { Dialog, DialogTrigger } from '${config.aliases.ui}/dialog/index.js';\n  import DeepButton from '${config.aliases.ui}/button/Button.svelte';\n</script>\n<Button>Click</Button>\n<DeepButton>Deep</DeepButton>\n<Dialog><DialogTrigger>Open</DialogTrigger></Dialog>\n<ChartContainer config={{ value: { label: 'Value', color: 'var(--chart-1)' } }} class="h-40 w-80"><BarChart data={[{ value: 1 }, { value: 2 }]}><Bar dataKey="value" fill="var(--color-value)" /></BarChart></ChartContainer>\n`,
   );
 
   step('svelte-check and vite build');

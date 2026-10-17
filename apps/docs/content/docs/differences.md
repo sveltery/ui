@@ -1,7 +1,7 @@
 ---
 title: Differences from shadcn/ui
 description: Where Sveltery UI deliberately differs from shadcn/ui's Base UI variant and from Base UI.
-order: 4
+order: 9
 ---
 
 <!--
@@ -347,7 +347,7 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Upstream:** The links in [`navigation-menu-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/navigation-menu-example.tsx#L24-L53) point at shadcn/ui's `/docs/primitives/*` routes, and the Typography link at [line 82](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/navigation-menu-example.tsx#L82) points at `/docs/primitives/typography`.
 
-**Sveltery UI:** The [Navigation Menu](/docs/components/navigation-menu) example links to the matching `/docs/components/*` pages. Typography links to `#`, because these docs have no Typography page. The `/docs` and `/docs/installation` links keep upstream's values.
+**Sveltery UI:** The [Navigation Menu](/docs/components/navigation-menu) example links to the matching `/docs/components/*` pages, Typography included. The `/docs` and `/docs/installation` links keep upstream's values.
 
 **Why:** Upstream's `/docs/primitives/*` paths do not exist on this site, so the links would return 404.
 
@@ -392,6 +392,26 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Sveltery UI:** [Native Radio Group](/docs/components/native-radio-group) adds `NativeRadioGroup` and `NativeRadio`, a styled `<input type="radio">`. Each style's `cn-native-radio-group` and `cn-native-radio` rules are derived from its `cn-radio-group`, `cn-radio-group-item` and `cn-radio-group-indicator-icon` rules in `apps/docs/registry/sync-styles.ts`. `data-checked` becomes `:checked`, and the indicator becomes a radial-gradient dot of the same color and size.
 
 **Why:** Base UI's radio is a `<span>` with a hidden input. Without JavaScript, only a click on its label picks it, and the keyboard does nothing. A SvelteKit remote form's `as('radio', value)` describes a native input, so it spreads onto `NativeRadio` with no changes, and the form works before the page hydrates.
+
+**Decided:** Hugo Hsi, 2026-10-17
+
+### Native Checkbox, Native Switch and Native Slider are Sveltery UI components
+
+**Upstream:** shadcn/ui has a [Native Select](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/native-select.tsx) but no native checkbox, switch or slider. Its [Checkbox](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/checkbox.tsx), [Switch](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/switch.tsx) and [Slider](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/slider.tsx) run on Base UI.
+
+**Sveltery UI:** [Native Checkbox](/docs/components/native-checkbox), [Native Switch](/docs/components/native-switch) and [Native Slider](/docs/components/native-slider) are styled `<input type="checkbox">`, `<input type="checkbox" role="switch">` and `<input type="range">`. Each style's `cn-native-checkbox`, `cn-native-switch`, `cn-native-switch-thumb` and `cn-native-slider` rules are derived from its Checkbox, Switch and Slider rules in `apps/docs/registry/sync-styles.ts`: `data-checked` becomes `:checked`, the switch thumb follows the input through `peer-checked`, and the slider's track and thumb rules move onto the range pseudo-elements. Each wrapper carries its Base twin's `data-slot`, so Label and Field rules that key on it apply to both. In browsers other than Firefox, the slider's track is not filled left of the thumb.
+
+**Why:** Base UI's controls are a `<span>` with a hidden input, so without JavaScript the keyboard does nothing, and a SvelteKit remote form's `as('checkbox')` or `as('range')` spread describes a native input they don't render. The native twins take the spread with no changes and work before the page hydrates. Only Firefox styles the filled part of a range track (`::-moz-range-progress`); elsewhere it would take JavaScript, which these components avoid.
+
+**Decided:** Hugo Hsi, 2026-10-17
+
+### Native Select styles `multiple`
+
+**Upstream:** [Native Select](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/native-select.tsx) has one height and always draws its chevron, so a `multiple` select is clipped to one row with a chevron over its list.
+
+**Sveltery UI:** With `multiple`, the select takes its list box height, the chevron hides, and the options take the theme's colors, with `bg-muted` for a picked option.
+
+**Why:** A remote form's `as('select multiple')` spreads onto Native Select, and the select must show its options for that to work.
 
 **Decided:** Hugo Hsi, 2026-10-17
 

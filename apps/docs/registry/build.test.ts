@@ -14,7 +14,9 @@ const item = (path: string) => output.get(path) as RegistryItem;
 // Releases bump these, so the expected ranges follow the manifests rather than hard-coding them.
 const docs = JSON.parse(readFileSync(`${repoRoot}apps/docs/package.json`, 'utf8'));
 const BASE = `@sveltery/base@^${docs.devDependencies['@sveltery/base'].replace(/^\^/, '')}`;
-const HELPER_RANGE = `^${JSON.parse(readFileSync(`${repoRoot}packages/day-picker/package.json`, 'utf8')).version}`;
+const readJson = (path: string) => JSON.parse(readFileSync(`${repoRoot}${path}`, 'utf8'));
+/** day-picker's version, or the published one held-versions.json keeps while the new one is not on npm. */
+const HELPER_RANGE = `^${readJson('apps/docs/registry/held-versions.json')['@sveltery/day-picker'] ?? readJson('packages/day-picker/package.json').version}`;
 const content = (path: string, target: string) => item(path).files.find((file) => file.target === target)!.content;
 
 const NOVA_BUTTON_VARIANTS = `// Adapted from shadcn-ui/ui d75a96ab; MIT: apps/docs/registry/THIRD_PARTY_NOTICES.md.
@@ -90,7 +92,7 @@ describe('items', () => {
     expect(item('styles/nova/sidebar.json').registryDependencies).toEqual(['button', 'input', 'separator', 'shared', 'sheet', 'skeleton', 'tooltip']);
   });
 
-  it('gives a helper package its workspace version and an optional peer its peer range', () => {
+  it('gives a helper package its workspace or held version and an optional peer its peer range', () => {
     expect(item('styles/nova/calendar.json').dependencies).toEqual([`@sveltery/day-picker@${HELPER_RANGE}`, 'cn@^0.2.2', 'date-fns@^4.4.0']);
     expect(item('styles/nova/chart.json').dependencies).toEqual(['@sveltery/recharts@^0.1.0', 'cn@^0.2.2']);
   });
