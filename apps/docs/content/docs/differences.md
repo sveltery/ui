@@ -164,6 +164,16 @@ Where upstream code misbehaves on Base UI, Sveltery UI fixes it instead of copyi
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
 
+### Navigation Menu example links go to Sveltery UI pages
+
+**Upstream:** The links in [`navigation-menu-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/navigation-menu-example.tsx#L24-L53) point at shadcn/ui's `/docs/primitives/*` routes, and the Typography link at [line 82](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/navigation-menu-example.tsx#L82) points at `/docs/primitives/typography`.
+
+**Sveltery UI:** The [Navigation Menu](/docs/components/navigation-menu) example links to the matching `/docs/components/*` pages. Typography links to `#`, because these docs have no Typography page. The `/docs` and `/docs/installation` links keep upstream's values.
+
+**Why:** Upstream's `/docs/primitives/*` paths do not exist on this site, so the links would return 404.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-16
+
 ### Sidebar examples fit the preview frame
 
 **Upstream:** The sidebar examples size the provider with `min-h-svh` and the sidebar with `fixed h-svh`, for example in [`sidebar-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/sidebar-example.tsx).
