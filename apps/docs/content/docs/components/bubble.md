@@ -48,7 +48,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
-  import { Bubble, BubbleContent, BubbleGroup } from '$lib/components/ui/bubble';
+  import { Bubble, BubbleContent, BubbleGroup } from '#lib/components/ui/bubble';
 </script>
 ```
 

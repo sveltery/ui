@@ -100,7 +100,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
-  import { Message } from '$lib/components/ui/message';
+  import { Message } from '#lib/components/ui/message';
   import {
     MessageScroller,
     MessageScrollerButton,
@@ -108,7 +108,7 @@ The component folders import each other with relative paths, so keep them side b
     MessageScrollerItem,
     MessageScrollerProvider,
     MessageScrollerViewport,
-  } from '$lib/components/ui/message-scroller';
+  } from '#lib/components/ui/message-scroller';
 </script>
 ```
 
@@ -401,7 +401,7 @@ component inside the provider, including controls rendered outside the
 
 ```svelte
 <script lang="ts">
-  import { useMessageScroller } from '$lib/components/ui/message-scroller';
+  import { useMessageScroller } from '#lib/components/ui/message-scroller';
 
   const scroller = useMessageScroller();
 </script>
@@ -432,7 +432,7 @@ anchored turn. It is reactive, so read it in the template or in a `$derived`.
 
 ```svelte
 <script lang="ts">
-  import { useMessageScroller } from '$lib/components/ui/message-scroller';
+  import { useMessageScroller } from '#lib/components/ui/message-scroller';
 
   const scroller = useMessageScroller();
   const currentAnchorId = $derived(scroller.visibility.currentAnchorId);
@@ -459,7 +459,7 @@ scroller itself, prefer the `data-scrollable` attribute.
 
 ```svelte
 <script lang="ts">
-  import { useMessageScroller } from '$lib/components/ui/message-scroller';
+  import { useMessageScroller } from '#lib/components/ui/message-scroller';
 
   const scroller = useMessageScroller();
 </script>

@@ -47,7 +47,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
-  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '$lib/components/ui/select';
+  import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '#lib/components/ui/select';
 
   const items = [
     { label: 'Light', value: 'light' },

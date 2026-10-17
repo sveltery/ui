@@ -47,7 +47,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
-  import { Sidebar, SidebarContent, SidebarGroup, SidebarHeader, SidebarFooter, SidebarInset, SidebarProvider, SidebarTrigger } from '$lib/components/ui/sidebar';
+  import { Sidebar, SidebarContent, SidebarGroup, SidebarHeader, SidebarFooter, SidebarInset, SidebarProvider, SidebarTrigger } from '#lib/components/ui/sidebar';
 </script>
 ```
 
@@ -123,7 +123,7 @@ Inside the provider, `useSidebar()` returns the live state. Read it during compo
 
 ```svelte
 <script lang="ts">
-  import { useSidebar } from '$lib/components/ui/sidebar';
+  import { useSidebar } from '#lib/components/ui/sidebar';
   const sidebar = useSidebar();
 </script>
 

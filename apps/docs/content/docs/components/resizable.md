@@ -51,7 +51,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
-  import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '$lib/components/ui/resizable';
+  import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '#lib/components/ui/resizable';
 </script>
 ```
 

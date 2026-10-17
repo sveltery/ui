@@ -51,7 +51,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
-  import { Calendar } from '$lib/components/ui/calendar';
+  import { Calendar } from '#lib/components/ui/calendar';
 
   let date = $state<Date | undefined>(new Date());
 </script>

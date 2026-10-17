@@ -15,7 +15,7 @@ Read the values from `FormData` and validate them with your schema. On failure, 
 ```ts title="src/routes/signup/+page.server.ts"
 import { fail } from '@sveltejs/kit';
 import * as v from 'valibot';
-import { signupSchema } from '$lib/forms/signup';
+import { signupSchema } from '#lib/forms/signup';
 
 export const actions = {
   default: async ({ request }) => {
@@ -38,9 +38,9 @@ Mark each field invalid when `form?.errors` has an entry under its name, and sho
 ```svelte title="src/routes/signup/+page.svelte"
 <script lang="ts">
   import { enhance } from '$app/forms';
-  import { Button } from '$lib/components/ui/button';
-  import { Field, FieldError, FieldLabel } from '$lib/components/ui/field';
-  import { Input } from '$lib/components/ui/input';
+  import { Button } from '#lib/components/ui/button';
+  import { Field, FieldError, FieldLabel } from '#lib/components/ui/field';
+  import { Input } from '#lib/components/ui/input';
 
   let { form } = $props();
 </script>

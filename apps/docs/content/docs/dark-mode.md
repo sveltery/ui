@@ -26,7 +26,7 @@ Add this script to `src/app.html`, inside `<head>`. It reads the saved mode, fal
 
 ```svelte title="src/lib/components/mode-toggle.svelte"
 <script lang="ts">
-  import { Button } from '$lib/components/ui/button';
+  import { Button } from '#lib/components/ui/button';
 
   function toggle() {
     const dark = document.documentElement.classList.toggle('dark');

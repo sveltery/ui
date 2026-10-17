@@ -47,7 +47,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
-  import { Input } from '$lib/components/ui/input';
+  import { Input } from '#lib/components/ui/input';
   let email = $state('');
 </script>
 ```

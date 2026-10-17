@@ -48,7 +48,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
-  import { Message, MessageAvatar, MessageContent, MessageFooter, MessageHeader } from '$lib/components/ui/message';
+  import { Message, MessageAvatar, MessageContent, MessageFooter, MessageHeader } from '#lib/components/ui/message';
 </script>
 ```
 

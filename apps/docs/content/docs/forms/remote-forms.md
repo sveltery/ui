@@ -46,11 +46,11 @@ export const signup = form(signupSchema, async (data, issue) => {
 
 ```svelte
 <script lang="ts">
-  import { Button } from '$lib/components/ui/button';
-  import { Field, FieldError, FieldLabel } from '$lib/components/ui/field';
-  import { Input } from '$lib/components/ui/input';
-  import { signupSchema } from '$lib/forms/signup';
-  import { signup } from '$lib/forms/signup.remote';
+  import { Button } from '#lib/components/ui/button';
+  import { Field, FieldError, FieldLabel } from '#lib/components/ui/field';
+  import { Input } from '#lib/components/ui/input';
+  import { signupSchema } from '#lib/forms/signup';
+  import { signup } from '#lib/forms/signup.remote';
 
   const f = signup.preflight(signupSchema);
 </script>
