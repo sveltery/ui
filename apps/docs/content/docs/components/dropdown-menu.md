@@ -181,10 +181,6 @@ Wrap the dropdown menu in a [DirectionProvider](/docs/components/direction) and 
 
 <ComponentPreview name="base/DropdownMenuRtlExample" align="start" />
 
-## Trigger
-
-`DropdownMenuTrigger` renders a `<button>`. Pass `class` to style it, for example with `buttonVariants`. To use another element, pass a `render` snippet and spread its props onto that element, as the examples above do with `Button`.
-
 ## API Reference
 
 See the [Base UI documentation](https://base-ui.com/react/components/menu) for the full API reference.

@@ -85,18 +85,6 @@ Bind `open` to control the state.
 </Collapsible>
 ```
 
-## Custom Trigger
-
-Pass a `render` snippet to `CollapsibleTrigger` to render another element, such as a `Button`. Spread `props` onto it and render `children`.
-
-```svelte
-{#snippet button(props, state, children)}
-  <Button {...props} variant="outline" size="icon">{@render children?.()}</Button>
-{/snippet}
-
-<CollapsibleTrigger render={button}>…</CollapsibleTrigger>
-```
-
 ## Basic
 
 <ComponentPreview name="base/CollapsibleBasicExample" align="start" />

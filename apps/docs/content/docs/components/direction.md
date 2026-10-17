@@ -90,7 +90,3 @@ The `useDirection` hook is used to get the current direction of the application.
 
 <div>Current direction: {reading.direction}</div>
 ```
-
-## API Reference
-
-See the [Base UI Direction Provider](https://base-ui.com/react/utils/direction-provider#api-reference) documentation.

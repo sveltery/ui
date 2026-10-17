@@ -227,10 +227,6 @@ A disabled field works the same way. Set `data-disabled` on `Field` and `disable
 - `Field` outputs `role="group"` so nested controls inherit labeling from `FieldLabel` and `FieldLegend` when combined.
 - Apply `FieldSeparator` sparingly to ensure screen readers encounter clear section boundaries.
 
-## Differences from shadcn/ui
-
-- `FieldLabel` takes the HTML `for` attribute in place of React's `htmlFor`.
-
 ## API Reference
 
 ### FieldSet

@@ -66,10 +66,6 @@ The component folders import each other with relative paths, so keep them side b
 
 Hovering or clicking a trigger opens its content in a shared popup below the menu. Moving to another trigger swaps the content, and Escape or a press outside closes it. The arrow keys move focus between triggers and links.
 
-## Link
-
-`NavigationMenuLink` renders an `<a>`. Pass `active` to mark the current page, which sets `aria-current="page"` and `data-active`. Pass `closeOnClick` to close the menu when the link is clicked.
-
 ## Value
 
 Bind `value` to read or change the open item from outside. Give each `NavigationMenuItem` a `value`. A `null` value closes the menu.

@@ -170,10 +170,6 @@ Use `side="inline-end"` to place the menu on the logical right side of the trigg
 </ContextMenu>
 ```
 
-## Trigger
-
-`ContextMenuTrigger` renders a `<div>` that covers the area to listen on. Pass `class` to size and style it. To use another element, pass a `render` snippet and spread its props onto that element.
-
 ## API Reference
 
 See the [Base UI Context Menu](https://base-ui.com/react/components/context-menu#api-reference) documentation.

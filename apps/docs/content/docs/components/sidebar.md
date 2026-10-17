@@ -499,20 +499,6 @@ Use `bind:open` and `onOpenChange` to control the sidebar.
 </SidebarProvider>
 ```
 
-### Persisting the state
-
-Every change writes the `sidebar_state` cookie, which lasts a week. Read it on the server and pass it as `defaultOpen`, so the sidebar renders in the same state after a reload.
-
-```ts title="+layout.server.ts"
-export function load({ cookies }) {
-  return { sidebarOpen: cookies.get('sidebar_state') !== 'false' };
-}
-```
-
-```svelte title="+layout.svelte"
-<SidebarProvider defaultOpen={data.sidebarOpen}>…</SidebarProvider>
-```
-
 ## Theming
 
 We use the following CSS variables to theme the sidebar.
@@ -647,7 +633,3 @@ After applying these changes, you can use the `dir` prop to set the direction:
 ```
 
 The sidebar will correctly position itself and handle interactions in both LTR and RTL layouts.
-
-## API Reference
-
-`Sidebar` has no Base primitive of its own. On mobile it is a `Sheet`, styled on the Sveltery Base `Dialog` primitive, and `SidebarMenuButton` shows its `tooltip` with a `Tooltip`, styled on the Sveltery Base `Tooltip` primitive. Both own their behavior, focus handling and accessibility. See the [Base UI Dialog](https://base-ui.com/react/components/dialog) and [Base UI Tooltip](https://base-ui.com/react/components/tooltip) documentation for the behavior they port.
