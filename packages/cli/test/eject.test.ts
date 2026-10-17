@@ -22,6 +22,7 @@ const config = {
 const css = "@import 'tailwindcss';\n@import 'tw-animate-css';\n@import '@sveltery/ui/tailwind.css';\n@custom-variant dark (&:is(.dark *));\n";
 
 let cwd: string;
+const originalIsTTY = process.stdin.isTTY;
 const read = (path: string) => readFileSync(join(cwd, path), 'utf8');
 const writePackage = (devDependencies: Record<string, string>) => writeFileSync(join(cwd, 'package.json'), JSON.stringify({ devDependencies }));
 
@@ -37,7 +38,7 @@ beforeEach(() => {
 });
 afterEach(() => {
   rmSync(cwd, { recursive: true, force: true });
-  process.stdin.isTTY = false;
+  process.stdin.isTTY = originalIsTTY;
 });
 
 test('inlines the packaged tailwind.css in place of its import and removes the package with the project package manager', async () => {
