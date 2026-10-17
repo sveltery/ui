@@ -343,6 +343,16 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
 
+### The Button page has no `init --pointer` sentence
+
+**Upstream:** The [Button page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/button.mdx#L69) says the pointer cursor can be enabled with `npx shadcn@latest init --pointer`.
+
+**Sveltery UI:** The [Button](/docs/components/button) page shows only the CSS to add.
+
+**Why:** The `@sveltery/ui` CLI has no `--pointer` option, so the sentence would describe a command that fails.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
 ## Forms
 
 ### The Forms guides cover SvelteKit forms instead of React form libraries
