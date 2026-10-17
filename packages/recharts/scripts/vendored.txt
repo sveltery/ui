@@ -7,12 +7,15 @@ src/animation/timeoutController.ts
 src/animation/util.ts
 src/cartesian/Area.ts
 src/cartesian/Bar.ts
+src/cartesian/BarStack.ts
 src/cartesian/CartesianAxis.ts
 src/cartesian/CartesianGrid.ts
 src/cartesian/ErrorBar.ts
 src/cartesian/Line.ts
 src/cartesian/ReferenceLine.ts
 src/cartesian/Scatter.ts
+src/cartesian/XAxis.ts
+src/cartesian/YAxis.ts
 src/cartesian/getCartesianPosition.ts
 src/cartesian/getEquidistantTicks.ts
 src/cartesian/getTicks.ts
@@ -24,6 +27,7 @@ src/chart/RadialBarChart.ts
 src/chart/SunburstChart.ts
 src/chart/types.ts
 src/component/Cell.ts
+src/component/Cursor.ts
 src/component/DefaultLegendContent.ts
 src/component/DefaultTooltipContent.ts
 src/component/Dots.ts
@@ -32,6 +36,8 @@ src/component/LabelList.ts
 src/component/Legend.ts
 src/component/ResponsiveContainer.ts
 src/component/Text.ts
+src/component/Tooltip.ts
+src/component/TooltipBoundingBox.ts
 src/component/responsiveContainerUtils.ts
 src/container/Layer.ts
 src/container/Surface.ts
@@ -136,6 +142,7 @@ src/state/zIndexSlice.ts
 src/synchronisation/syncSelectors.ts
 src/synchronisation/types.ts
 src/types.ts
+src/util/ActiveShapeUtils.ts
 src/util/BarUtils.ts
 src/util/CartesianUtils.ts
 src/util/ChartUtils.ts
@@ -163,6 +170,7 @@ src/util/getActiveCoordinate.ts
 src/util/getAxisTypeBasedOnLayout.ts
 src/util/getClassNameFromUnknown.ts
 src/util/getEveryNth.ts
+src/util/getRadiusAndStrokeWidthFromDot.ts
 src/util/getRelativeCoordinate.ts
 src/util/getSliced.ts
 src/util/isDomainSpecifiedByUser.ts

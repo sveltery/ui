@@ -3,7 +3,7 @@ import { LabelContentType, LabelPosition, LabelFormatter } from './Label.js';
 import { CartesianViewBoxRequired, DataKey, PolarViewBoxRequired, TrapezoidViewBox } from '../util/types.js';
 import { LabelProps } from '../index.js';
 import { ZIndexable } from '../zIndex/ZIndexLayer.js';
-import { RenderableText } from './Text.js';
+import { isRenderableText, RenderableText } from './Text.js';
 export interface LabelListEntry<DataPointItem = any> {
   /**
    * Value is what renders in the UI as the label content.
@@ -135,3 +135,10 @@ export type Props = Omit<SvgTextProps, 'children'> & LabelListProps;
  * @inline
  */
 export type ImplicitLabelListType = boolean | LabelContentType | Props;
+export const defaultAccessor = (entry: LabelListEntry): RenderableText => {
+  const val = Array.isArray(entry.value) ? entry.value[entry.value.length - 1] : entry.value;
+  if (isRenderableText(val)) {
+    return val;
+  }
+  return undefined;
+};

@@ -1,4 +1,9 @@
+import * as React from '../react.js';
 import { CSSProperties, SVGProps } from '../react.js';
+import { isNullish, isNumber } from '../util/DataUtils.js';
+import { Global } from '../util/Global.js';
+import { getStringSize } from '../util/DOMUtils.js';
+const BREAKING_SPACES = /[ \f\n\r\t\v\u2028\u2029]+/;
 interface Words {
   words: Array<string>;
   width: number | undefined;
@@ -16,10 +21,33 @@ interface CalculatedWordWidths {
   spaceWidth: number;
 }
 type CalculateWordWidthsParam = Pick<Props, 'children' | 'breakAll' | 'style'>;
+const calculateWordWidths = ({ children, breakAll, style }: CalculateWordWidthsParam): CalculatedWordWidths | null => {
+  try {
+    let words: string[] = [];
+    if (!isNullish(children)) {
+      if (breakAll) {
+        words = children.toString().split('');
+      } else {
+        words = children.toString().split(BREAKING_SPACES);
+      }
+    }
+
+    const wordsWithComputedWidth = words.map(word => ({ word, width: getStringSize(word, style).width }));
+
+    const spaceWidth = breakAll ? 0 : getStringSize('\u00A0', style).width;
+
+    return { wordsWithComputedWidth, spaceWidth };
+  } catch {
+    return null;
+  }
+};
 /**
  * @inline
  */
 export type TextAnchor = 'start' | 'middle' | 'end' | 'inherit';
+export function isValidTextAnchor(value: string | undefined): value is TextAnchor {
+  return value === 'start' || value === 'middle' || value === 'end' || value === 'inherit';
+}
 /**
  * @inline
  */
@@ -28,6 +56,9 @@ export type TextVerticalAnchor = 'start' | 'middle' | 'end';
  * @inline
  */
 export type RenderableText = string | number | boolean | null | undefined;
+export function isRenderableText(val: unknown): val is RenderableText {
+  return isNullish(val) || typeof val === 'string' || typeof val === 'number' || typeof val === 'boolean';
+}
 interface TextProps {
   /**
    * When true, scales the text to fit within the specified width.
@@ -135,4 +166,187 @@ interface TextProps {
 }
 export type Props = Omit<SVGProps<SVGTextElement>, 'textAnchor' | 'verticalAnchor'> & TextProps;
 type CalculateWordsByLinesProps = Pick<Props, 'maxLines' | 'children' | 'style' | 'breakAll'>;
+const calculate = (
+  words: ReadonlyArray<WordWithComputedWidth>,
+  lineWidth: number | string | undefined,
+  spaceWidth: number,
+  scaleToFit: boolean,
+): ReadonlyArray<WordsWithWidth> =>
+  words.reduce((result: Array<WordsWithWidth>, { word, width }) => {
+    const currentLine = result[result.length - 1];
+
+    if (
+      currentLine &&
+      width != null &&
+      (lineWidth == null || scaleToFit || currentLine.width + width + spaceWidth < Number(lineWidth))
+    ) {
+      // Word can be added to an existing line
+      currentLine.words.push(word);
+      currentLine.width += width + spaceWidth;
+    } else {
+      // Add first word to line or word is too long to scaleToFit on existing line
+      const newLine: WordsWithWidth = { words: [word], width };
+      result.push(newLine);
+    }
+
+    return result;
+  }, []);
+const findLongestLine = (words: ReadonlyArray<WordsWithWidth>): WordsWithWidth =>
+  words.reduce((a: WordsWithWidth, b: WordsWithWidth) => (a.width > b.width ? a : b));
+const suffix = '…';
+const checkOverflow = (
+  text: string,
+  index: number,
+  breakAll: TextProps['breakAll'],
+  style: TextProps['style'],
+  maxLines: number,
+  lineWidth: number | string | undefined,
+  spaceWidth: number,
+  scaleToFit: boolean,
+): [boolean, ReadonlyArray<Words>] => {
+  const tempText = text.slice(0, index);
+
+  const words = calculateWordWidths({
+    breakAll,
+    style,
+    children: tempText + suffix,
+  });
+
+  if (!words) {
+    return [false, []];
+  }
+
+  const result: ReadonlyArray<WordsWithWidth> = calculate(
+    words.wordsWithComputedWidth,
+    lineWidth,
+    spaceWidth,
+    scaleToFit,
+  );
+
+  const doesOverflow = result.length > maxLines || findLongestLine(result).width > Number(lineWidth);
+
+  return [doesOverflow, result];
+};
+const calculateWordsByLines = (
+  { maxLines, children, style, breakAll }: CalculateWordsByLinesProps,
+  initialWordsWithComputedWith: ReadonlyArray<WordWithComputedWidth>,
+  spaceWidth: number,
+  lineWidth: number | string | undefined,
+  scaleToFit: boolean,
+): ReadonlyArray<Words> => {
+  const shouldLimitLines = isNumber(maxLines);
+  const text = String(children);
+
+  const originalResult: ReadonlyArray<WordsWithWidth> = calculate(
+    initialWordsWithComputedWith,
+    lineWidth,
+    spaceWidth,
+    scaleToFit,
+  );
+
+  if (!shouldLimitLines || scaleToFit) {
+    return originalResult;
+  }
+
+  const overflows = originalResult.length > maxLines || findLongestLine(originalResult).width > Number(lineWidth);
+  if (!overflows) {
+    return originalResult;
+  }
+
+  let start = 0;
+  let end = text.length - 1;
+
+  let iterations = 0;
+  let trimmedResult;
+
+  while (start <= end && iterations <= text.length - 1) {
+    const middle = Math.floor((start + end) / 2);
+    const prev = middle - 1;
+
+    const [doesPrevOverflow, result] = checkOverflow(
+      text,
+      prev,
+      breakAll,
+      style,
+      maxLines,
+      lineWidth,
+      spaceWidth,
+      scaleToFit,
+    );
+    const [doesMiddleOverflow] = checkOverflow(
+      text,
+      middle,
+      breakAll,
+      style,
+      maxLines,
+      lineWidth,
+      spaceWidth,
+      scaleToFit,
+    );
+
+    if (!doesPrevOverflow && !doesMiddleOverflow) {
+      start = middle + 1;
+    }
+
+    if (doesPrevOverflow && doesMiddleOverflow) {
+      end = middle - 1;
+    }
+
+    if (!doesPrevOverflow && doesMiddleOverflow) {
+      trimmedResult = result;
+      break;
+    }
+
+    iterations++;
+  }
+
+  // Fallback to originalResult (result without trimming) if we cannot find the
+  // where to trim.  This should not happen :tm:
+  return trimmedResult || originalResult;
+};
+const getWordsWithoutCalculate = (children: React.ReactNode): Array<Words> => {
+  const words = !isNullish(children) ? children.toString().split(BREAKING_SPACES) : [];
+  return [{ words, width: undefined }];
+};
 type GetWordsByLinesProps = Pick<Props, 'width' | 'scaleToFit' | 'children' | 'style' | 'breakAll' | 'maxLines'>;
+export const getWordsByLines = ({ width, scaleToFit, children, style, breakAll, maxLines }: GetWordsByLinesProps) => {
+  // Only perform calculations if using features that require them (multiline, scaleToFit)
+  if ((width || scaleToFit) && !Global.isSsr) {
+    let wordsWithComputedWidth: ReadonlyArray<WordWithComputedWidth>, spaceWidth: number;
+
+    const wordWidths = calculateWordWidths({ breakAll, children, style });
+
+    if (wordWidths) {
+      const { wordsWithComputedWidth: wcw, spaceWidth: sw } = wordWidths;
+
+      wordsWithComputedWidth = wcw;
+      spaceWidth = sw;
+    } else {
+      return getWordsWithoutCalculate(children);
+    }
+
+    return calculateWordsByLines(
+      { breakAll, children, maxLines, style },
+      wordsWithComputedWidth,
+      spaceWidth,
+      width,
+      Boolean(scaleToFit),
+    );
+  }
+  return getWordsWithoutCalculate(children);
+};
+export const DEFAULT_FILL = '#808080';
+export const textDefaultProps = {
+  angle: 0,
+  breakAll: false,
+  // Magic number from d3
+  capHeight: '0.71em',
+  fill: DEFAULT_FILL,
+  lineHeight: '1em',
+  scaleToFit: false,
+  textAnchor: 'start',
+  // Maintain compat with existing charts / default SVG behavior
+  verticalAnchor: 'end',
+  x: 0,
+  y: 0,
+} as const satisfies Partial<Props>;

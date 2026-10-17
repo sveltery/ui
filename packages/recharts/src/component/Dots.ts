@@ -12,6 +12,15 @@ type DotItemProps = {
   dotProps: DotItemDotProps;
   className: string;
 };
+export function shouldRenderDots(points: ReadonlyArray<DotPoint> | undefined, dot: DotType): boolean {
+  if (points == null) {
+    return false;
+  }
+  if (dot) {
+    return true;
+  }
+  return points.length === 1;
+}
 export type DotsDotProps = Omit<DotProps, 'cx' | 'cy' | 'key' | 'index' | 'dataKey' | 'value' | 'payload'>;
 interface DotsProps extends ZIndexable {
   /**

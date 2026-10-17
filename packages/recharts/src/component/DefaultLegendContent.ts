@@ -1,6 +1,7 @@
 import { ReactNode, MouseEvent, ReactElement, CSSProperties } from '../react.js';
 import { DataKey, LegendType, PresentationAttributesAdaptChildEvent, CartesianLayout } from '../util/types.js';
 import { RequiresDefaultProps } from '../util/resolveDefaultProps.js';
+export const SIZE = 32;
 export type ContentType = ReactElement | ((props: Props) => ReactNode);
 export type HorizontalAlignmentType = 'center' | 'left' | 'right';
 export type VerticalAlignmentType = 'top' | 'bottom' | 'middle';
@@ -113,3 +114,9 @@ export const defaultLegendContentDefaultProps = {
 type InternalProps = RequiresDefaultProps<Props, typeof defaultLegendContentDefaultProps> & {
   payload: ReadonlyArray<LegendPayload>;
 };
+export function getStrokeDasharray(input: unknown): string | undefined {
+  if (typeof input === 'object' && input !== null && 'strokeDasharray' in input) {
+    return String(input.strokeDasharray);
+  }
+  return undefined;
+}
