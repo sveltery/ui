@@ -95,6 +95,7 @@ beforeAll(async () => {
   server = createServer((request, response) => {
     const path = request.url ?? '';
     if (path.startsWith('/init')) initRequests.push(path);
+    if (path.includes('baseColor=gray')) return void response.writeHead(400, { 'content-type': 'application/json' }).end(JSON.stringify({ error: 'Invalid baseColor "gray"' }));
     const body = path.startsWith('/init') ? initItem : registryFiles[path.replace(/^\/r\//, '')];
     response.writeHead(body ? 200 : 404, { 'content-type': 'application/json' }).end(body ? JSON.stringify(body) : '{}');
   });
@@ -317,6 +318,11 @@ describe('init', () => {
       const url = `${registryUrl}/styles/nova/button.json`;
       await expect(init({ cwd, ...defaults, preset: url })).rejects.toThrow(`${url} is a registry:ui item, and a preset must be a registry:base item.`);
       expect([initRequests, existsSync(join(cwd, 'components.json'))]).toEqual([[], false]);
+    });
+
+    test('prints the reason /init gives for rejecting a preset', async () => {
+      await expect(init({ cwd, ...defaults, preset: 'btLmMa' })).rejects.toThrow(/failed with 400 Bad Request: Invalid baseColor "gray"$/);
+      expect(existsSync(join(cwd, 'components.json'))).toBe(false);
     });
 
     test('--preset without a value uses nova with --yes', async () => {

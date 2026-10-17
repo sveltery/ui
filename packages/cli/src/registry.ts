@@ -117,7 +117,14 @@ async function fetchJson<T>(url: string, parser: Parser<T>): Promise<T> {
   } catch (error) {
     throw new CliError(`Could not reach ${url}: ${error instanceof Error ? (error.cause instanceof Error ? error.cause.message : error.message) : String(error)}`);
   }
-  if (!response.ok) throw new CliError(`GET ${url} failed with ${response.status} ${response.statusText}`.trimEnd());
+  if (!response.ok) {
+    // The /init route explains a rejected preset in an `error` field.
+    const reason = await response.json().then(
+      (body: unknown) => (typeof (body as { error?: unknown } | null)?.error === 'string' ? `: ${(body as { error: string }).error}` : ''),
+      () => '',
+    );
+    throw new CliError(`${`GET ${url} failed with ${response.status} ${response.statusText}`.trimEnd()}${reason}`);
+  }
   let json: unknown;
   try {
     json = await response.json();
