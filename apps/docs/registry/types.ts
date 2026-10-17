@@ -89,9 +89,9 @@ export type RegistryManifest = {
   baseColors: BaseColor[];
   iconLibraries: IconLibrary[];
   /** Installable items, in name order. Internal items such as `shared` are left out. `meta.links` is what `docs` prints: `docs`, `examples` and, when the item is styled on a Base UI component, `api`. */
-  items: { name: string; type: RegistryItem['type']; description?: string; meta?: { links: Record<string, string> } }[];
+  items: { name: string; type: RegistryItem['type']; title?: string; description?: string; meta?: { links: Record<string, string> } }[];
   /** `registry:block` items, kept out of `items` because a 0.1 CLI rejects their type there. */
-  blocks: { name: string; type: 'registry:block'; description?: string }[];
+  blocks: { name: string; type: 'registry:block'; title?: string; description?: string }[];
 };
 
 /**

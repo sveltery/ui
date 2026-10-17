@@ -85,10 +85,11 @@ const itemByType = {
   'registry:font': object({ ...itemCommon, type: literal('registry:font'), font: registryFont }),
 };
 type ItemType = keyof typeof itemByType;
-const itemType = literal(...(Object.keys(itemByType) as ItemType[]));
+export const itemTypeNames = Object.keys(itemByType) as ItemType[];
+const itemType = literal(...itemTypeNames);
 export type RegistryItem = ReturnType<(typeof itemByType)[ItemType]>;
 
-const registryItem: Parser<RegistryItem> = (value, path) => itemByType[object({ type: itemType })(value, path).type](value, path);
+export const registryItem: Parser<RegistryItem> = (value, path) => itemByType[object({ type: itemType })(value, path).type](value, path);
 
 const registryManifest = object({
   $schema: string,
@@ -97,8 +98,8 @@ const registryManifest = object({
   styles: array(literal(...styleNames)),
   baseColors: array(literal(...baseColors)),
   iconLibraries: array(literal(...iconLibraryNames)),
-  items: array(object({ name: string, type: itemType, description: optional(string), meta: optional(object({ links: record(string) })) })),
-  blocks: array(object({ name: string, type: literal('registry:block'), description: optional(string) })),
+  items: array(object({ name: string, type: itemType, title: optional(string), description: optional(string), meta: optional(object({ links: record(string) })) })),
+  blocks: array(object({ name: string, type: literal('registry:block'), title: optional(string), description: optional(string) })),
 });
 export type RegistryManifest = ReturnType<typeof registryManifest>;
 

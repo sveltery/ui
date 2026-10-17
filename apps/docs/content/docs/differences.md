@@ -660,6 +660,56 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 ## CLI
 
+### `diff` and `update` stay, and `add --diff` and `add --view` print plain text
+
+**Upstream:** [`diff`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/diff.ts#L41-L43) is deprecated in favor of `add --diff` and `add --view`. Upstream has no `update`. Its [`--diff` and `--view` output](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/utils/dry-run-formatter.ts) is colored and drawn in boxes, lists identical files as skipped, and hides formatting-only changes.
+
+**Sveltery UI:** [`diff` and `update`](/docs/cli#diff) stay, because they check whole projects, and they take item URLs as well as names. [`add --diff` and `add --view`](/docs/cli#add) print unified diffs and file contents as plain text. They show every difference, and the `--diff` overview skips identical files.
+
+**Why:** A project does not record the URL an item came from, so a scan cannot check items added by URL. `diff <url>` and `update <url>` check one. Upstream hides formatting-only changes because its transforms reformat the code they copy. This CLI's transforms keep the source's formatting, so a formatting-only difference is an edit you made, and the diff shows it. Plain text pipes into a patch viewer or a file.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `build` writes to `static/r`
+
+**Upstream:** [`build`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/build.ts#L28) writes to `./public/r` unless `--output` names another directory.
+
+**Sveltery UI:** [`build`](/docs/cli#build) writes to `./static/r` by default.
+
+**Why:** Next.js serves `public`, and SvelteKit serves `static`. With upstream's default, a SvelteKit app does not serve the items it built.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `build` writes a `target` for files that name none
+
+**Upstream:** `build` keeps a file without `target` as it is, and [`add`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/resolve-file-path.ts#L76) places it from its `path`, below the folder named like the last segment of the project's `ui` or `components` directory.
+
+**Sveltery UI:** [`build`](/docs/registry/registry-json#items) writes that place into `target`: the part of `path` after its first `ui` folder for a `registry:ui` file, or after its first `components` folder for a `registry:component` file, else the file name. It stops when a `registry:page` or `registry:file` file has no `target`.
+
+**Why:** The CLI reads `target` on every file and never looks at `path`, so an item from `build` installs with any CLI version that reads the item format. In a project with the default aliases, the file lands where upstream would place it.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `build` checks item names and file paths in every registry
+
+**Upstream:** `build` writes each item to [`<output>/<name>.json`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/build.ts#L74) for any name, including one with `/` or `..`. Without `include`, it [skips the file path checks](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/registry/loader.ts#L83) that it runs on included files, so it inlines a file at an absolute path or above the working directory.
+
+**Sveltery UI:** [`build`](/docs/registry/registry-json#items) stops when an item name is not lowercase letters, digits and hyphens. It checks file paths with and without `include`: a path must be relative, without `..` segments, and name a file inside the directory it is relative to.
+
+**Why:** An item named `../../registry` overwrote the source `registry.json`, and a path such as `/etc/hostname` put a file from outside the project into the published JSON. `add` installs only names of this form, so the check rejects no item that `add` could install by name.
+
+### Search takes one registry and no installed mark
+
+**Upstream:** [`search`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/search.ts#L37) (alias `list`) takes any number of registries: namespaces such as `@shadcn`, GitHub sources and URLs. With none, it searches every registry in `components.json` and stops when there is no `components.json`. Each result's `addCommandArgument` is the [namespaced address](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/registry/search.ts#L317) that `add` takes, and a search of several registries lists which registry a result is from.
+
+**Sveltery UI:** `search` knows one registry, `@sveltery`, which is the registry `SVELTERY_REGISTRY_URL` or `components.json` points at. With no argument it searches that one, with or without a `components.json`. Any other registry is an error. `addCommandArgument` is the bare item name, because `add` takes names and URLs only, and `registry` is `@sveltery`. Results come from the manifest `index.json`, which gained an optional `title` for each item so that a search needs one request.
+
+`--type` accepts the six types this registry has (`ui`, `lib`, `theme`, `block`, `base`, `font`) and rejects any other, such as `hook`. Upstream accepts every type of its schema and prints "No items found of type hook" for one the registry lacks.
+
+The old `list` command marked the items in your project as `installed` and had no types, pagination or query. `list` is now an alias of `search`, which prints upstream's output, and the mark is gone.
+
+**Why:** The registry is the only one the CLI reads until namespaced registries land. The installed mark would need one request for each item to read its file list, and it would add a field to upstream's JSON shape.
+
 ### Docs links come from the registry's index and have no base
 
 **Upstream:** [`docs`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/docs.ts#L48-L65) takes `--base` (`base`, `radix` or `aria`), reads `meta.links[base]` of each item in the shadcn registry index, and prints `docs`, `examples` and `api`. The links are written by hand for each item in [`_registry.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/_registry.ts#L1-L20): `examples` is the component's example source file, and `api` is a page of Base UI's React docs.
