@@ -13,6 +13,7 @@
     "@sveltery/command": "workspace:*",
     "@sveltery/day-picker": "workspace:*",
     "@sveltery/input-otp": "workspace:*",
+    "@sveltery/recharts": "workspace:*",
     "@sveltery/resizable": "workspace:*",
     "@sveltery/svelte": "workspace:*",
     "date-fns": "4.4.0",
