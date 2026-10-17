@@ -9,9 +9,10 @@ on:
 permissions:
   contents: read
 
+# A new push to a pull request cancels its older run. Every push to main runs to the end, so each merge gets a result.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   verify:
@@ -68,9 +69,9 @@ jobs:
       # The runner image already ships the system libraries Chromium needs.
       - name: Install Chromium
         run: bash -c 'source scripts/toolchain.sh; pnpm exec playwright install chromium'
-      # Two workers per runner: more saturates the four vCPUs and timing-sensitive tests fail.
+      # Shards split the specs by recorded run time. Two workers per runner: more saturates the four vCPUs and timing-sensitive tests fail.
       - name: Browser tests
-        run: bash -c 'source scripts/toolchain.sh; pnpm test:browser --project chromium --shard ${{ matrix.shard }}/4 --workers 2'
+        run: bash -c 'source scripts/toolchain.sh; node scripts/browser-shard.mjs ${{ matrix.shard }} 4 > "$RUNNER_TEMP/specs.txt" && pnpm test:browser --project chromium --test-list "$RUNNER_TEMP/specs.txt" --workers 2'
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: failure()
         with:

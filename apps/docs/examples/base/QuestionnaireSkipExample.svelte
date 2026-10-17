@@ -16,17 +16,17 @@
     QuestionnaireTitle,
     type QuestionnaireItemStatus,
   } from '$registry/bases/base/ui/questionnaire';
+  import { toast } from '$registry/bases/base/ui/toast';
 
   const items = [{ name: 'task', required: true }, { name: 'constraints' }, { name: 'review', required: true }];
 
   let constraintStatus = $state<QuestionnaireItemStatus>('unanswered');
-  let result = $state('');
 
   function handleSubmit(event: SubmitEvent & { currentTarget: HTMLFormElement }) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const constraints = constraintStatus === 'skipped' ? 'Skipped' : (formData.get('constraints') ?? 'None');
-    result = `Task: ${formData.get('task') ?? 'None'} · Constraints: ${constraints} · Review: ${formData.get('review') ?? 'None'}`;
+    toast.add({ title: 'Agent brief submitted', description: `Task: ${formData.get('task') ?? 'None'} · Constraints: ${constraints} · Review: ${formData.get('review') ?? 'None'}` });
   }
 </script>
 
@@ -72,7 +72,4 @@
     <QuestionnaireNext>Next</QuestionnaireNext>
     <QuestionnaireSubmit>Submit brief</QuestionnaireSubmit>
   </QuestionnaireActions>
-  {#if result}
-    <p role="status" class="mt-4 text-sm text-muted-foreground">{result}</p>
-  {/if}
 </Questionnaire>

@@ -1,5 +1,6 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { blocks } from '../blocks/registry';
 import type { RegistryInput } from './build';
 import { workspaceRangeVersions } from './items';
 import { styleNames, type StyleName } from './types';
@@ -23,12 +24,25 @@ export function readRegistryInput(repoRoot: string, origin: string): RegistryInp
       .map((dir) => JSON.parse(text(join(repoRoot, 'packages', dir.name, 'package.json'))) as { name: string; version: string }),
   );
 
+  const blockFiles = (name: string) => {
+    const dir = join(repoRoot, 'apps/docs/blocks', name);
+    return Object.fromEntries(
+      readdirSync(dir, { recursive: true, withFileTypes: true })
+        .filter((entry) => entry.isFile())
+        .map((entry) => {
+          const path = join(entry.parentPath, entry.name);
+          return [path.slice(dir.length + 1).replaceAll('\\', '/'), text(path)];
+        }),
+    );
+  };
+
   return {
     sources,
     styles: Object.fromEntries(styleNames.map((style) => [style, text(join(registry, 'styles/scoped', `${style}.css`))])) as Record<StyleName, string>,
     themes: text(join(registry, 'styles/themes.css')),
     uiManifest: JSON.parse(text(join(repoRoot, 'apps/docs/package.json'))),
     workspaceVersions,
+    blocks: blocks.map(({ name, description, route }) => ({ name, description, route, files: blockFiles(name) })),
     origin,
   };
 }

@@ -7,7 +7,14 @@ import type { PresetMenuColor } from './preset/preset.js';
 import { iconLibraryNames, type IconLibraryName } from './registry.js';
 
 export type SourceFile = { target: string; content: string };
-export type TransformContext = { iconLibrary: IconLibraryName; /** Upstream treats a missing menuColor as `default`. */ menuColor?: PresetMenuColor; /** The project CSS defines `--font-heading`. */ fontHeading: boolean };
+export type TransformContext = {
+  iconLibrary: IconLibraryName;
+  /** Upstream treats a missing menuColor as `default`. */
+  menuColor?: PresetMenuColor;
+  /** The project CSS defines `--font-heading`. */
+  fontHeading: boolean;
+  aliases: { ui: string; components: string };
+};
 export type TransformResult = { content: string; dependencies?: string[] };
 export type Transform = (file: SourceFile, ctx: TransformContext) => TransformResult;
 
@@ -121,7 +128,14 @@ export const transformMarkers: Transform = (file, ctx) => {
   return { content: s.toString() };
 };
 
-const transforms: Transform[] = [transformIcons, transformMarkers];
+const REGISTRY_IMPORT = /(['"])\$registry\/bases\/base\/(ui|components)\//g;
+
+/** Points a block's `$registry/bases/base/ui/` and `$registry/bases/base/components/` imports at the project's aliases. */
+export const transformImports: Transform = (file, ctx) => ({
+  content: file.content.replace(REGISTRY_IMPORT, (_, quote: string, folder: 'ui' | 'components') => `${quote}${ctx.aliases[folder]}/`),
+});
+
+const transforms: Transform[] = [transformImports, transformIcons, transformMarkers];
 
 export function applyTransforms(file: SourceFile, ctx: TransformContext): Required<TransformResult> {
   let content = file.content;

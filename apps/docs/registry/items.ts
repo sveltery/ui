@@ -98,3 +98,60 @@ export function planItems(sources: Record<string, string>, manifest: UiManifest,
     };
   });
 }
+
+/** A block's metadata from `blocks/registry.ts`, and its files keyed by path in its folder, such as `components/login-form.svelte`. */
+export type BlockSource = { name: string; description: string; route: string; files: Record<string, string> };
+
+type BlockItem = Extract<RegistryItem, { type: 'registry:block' }>;
+
+const UI_IMPORT = '$registry/bases/base/ui/';
+
+/**
+ * A `registry:block` item, as upstream serves blocks: `page.svelte` becomes the route's `+page.svelte`, `components/*` go
+ * under `aliases.components`, and other files, such as data, sit beside the page. The page's `./components/` imports
+ * name the components alias, which `add` rewrites with the ui imports.
+ */
+export function planBlock(block: BlockSource, sources: Record<string, string>, manifest: UiManifest, workspaceVersions: Record<string, string>): Omit<BlockItem, '$schema'> {
+  const items = new Set(Object.keys(sources).map((path) => path.split('/')[0]!));
+  const registryDependencies = new Set<string>();
+  const packages = new Set<string>();
+  const files = Object.entries(block.files)
+    .sort(([a], [b]) => Number(b === 'page.svelte') - Number(a === 'page.svelte') || (a < b ? -1 : 1))
+    .map(([path, content]): BlockItem['files'][number] => {
+      const where = `blocks/${block.name}/${path}`;
+      if (path.endsWith('.svelte')) {
+        for (const specifier of analyzeSource(where, content).imports) {
+          if (specifier.startsWith(UI_IMPORT)) {
+            const item = specifier.slice(UI_IMPORT.length).split('/')[0]!;
+            if (item === 'icons') continue;
+            if (!items.has(item)) throw new Error(`${where}: imports ${specifier}, which is not a registry item`);
+            registryDependencies.add(item);
+          } else if (!specifier.startsWith('.')) {
+            const pkg = packageOf(specifier, where);
+            if (pkg) packages.add(pkg);
+          }
+        }
+      }
+      if (path === 'page.svelte') {
+        return { type: 'registry:page', target: `src/routes/${block.route}/+page.svelte`, content: content.replace(/(['"])\.\/components\//g, (_, quote: string) => `${quote}$registry/bases/base/components/`) };
+      }
+      const [folder, file, ...nested] = path.split('/');
+      if (folder === 'components' && file && !nested.length) return { type: 'registry:component', target: file, content };
+      if (!path.includes('/')) return { type: 'registry:file', target: `src/routes/${block.route}/${path}`, content };
+      throw new Error(`${where}: only page.svelte, components/* and files beside the page are supported`);
+    });
+  const types = [...packages]
+    .sort()
+    .map((pkg) => `@types/${pkg.startsWith('@') ? pkg.slice(1).replace('/', '__') : pkg}`)
+    .filter((pkg) => manifest.devDependencies?.[pkg] !== undefined);
+  return {
+    name: block.name,
+    type: 'registry:block',
+    title: titleCase(block.name),
+    description: block.description,
+    ...(packages.size && { dependencies: [...packages].sort().map((pkg) => withRange(pkg, manifest, workspaceVersions)) }),
+    ...(types.length && { devDependencies: types.map((pkg) => withRange(pkg, manifest, workspaceVersions)) }),
+    ...(registryDependencies.size && { registryDependencies: [...registryDependencies].sort() }),
+    files,
+  };
+}

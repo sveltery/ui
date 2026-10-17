@@ -1,6 +1,6 @@
 <script lang="ts">
+  import ArrowUpIcon from '@lucide/svelte/icons/arrow-up';
   import type { Snippet } from 'svelte';
-  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
   import { InputGroup, InputGroupAddon, InputGroupButton } from '$registry/bases/base/ui/input-group';
   import type { Chat } from './chat.svelte.js';
 
@@ -27,7 +27,7 @@
     <InputGroupAddon align="block-end" class="pt-1">
       {@render children?.()}
       <InputGroupButton type="submit" variant="default" size="icon-sm" disabled={!chat.next || chat.busy} class="ml-auto">
-        <IconPlaceholder lucide="ArrowUpIcon" tabler="IconArrowUp" hugeicons="ArrowUp02Icon" phosphor="ArrowUpIcon" remixicon="RiArrowUpLine" />
+        <ArrowUpIcon />
         <span class="sr-only">Send</span>
       </InputGroupButton>
     </InputGroupAddon>
