@@ -595,6 +595,38 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
+## Trace
+
+### The chat examples use `@ai-sdk/svelte`'s `Chat`
+
+**Upstream:** The [Trace demo](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/trace-demo.tsx#L233), [Reasoning](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/trace-thinking.tsx) and [Tool](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/trace-tool-calls.tsx) examples call `useChat` from `@ai-sdk/react` and `getMessageText` from [`lib/ai.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/lib/ai.ts#L8).
+
+**Sveltery UI:** The [Trace](/docs/components/trace) examples create a `Chat` from `@ai-sdk/svelte` with the same scripted transcript from `createChat` in `@shadcn/helpers/ai-sdk`. They read `chat.messages` and `chat.status` and send with `chat.sendMessage`. The demo replays by setting `chat.messages = []` and sending the question again. The Reasoning and Tool examples reset by setting `chat.messages` back to their opening messages. Each example is one file, so `getMessageText` is a few lines in its own script, and a thinking row's click lives in a `SvelteMap` keyed by message and position instead of in a row component.
+
+**Why:** `useChat` is a React hook. `Chat` is the AI SDK's Svelte binding, and `createChat` has no React dependency, so the transcript, timing and streamed parts are upstream's.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Trace page links to AI Elements on ui.shadcn.com
+
+**Upstream:** The [Trace page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/trace.mdx#L20) has a Built with Trace table and "See ... for more examples" links to [AI Elements](https://ui.shadcn.com/docs/ai-elements), which holds the Chain of Thought, Reasoning, Sources, Stack Trace, Task and Tool pages. The Stack Trace examples belong to that library.
+
+**Sveltery UI:** The [Trace](/docs/components/trace) page keeps the table and the links, and they open ui.shadcn.com. It notes that AI Elements is React code, and it ports no Stack Trace example.
+
+**Why:** AI Elements is not ported, so no Sveltery UI page can take the links. The table still names the patterns `Trace` builds, and the upstream pages show how each one is put together.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### Link rows in the Steps and Whole Turn examples point at their own section
+
+**Upstream:** The [Steps](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/trace-steps.tsx#L40) and [Whole Turn](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/trace-turn.tsx#L86) examples link to `#steps` and `#turn`, which are not headings on the Trace page.
+
+**Sveltery UI:** The [Trace](/docs/components/trace) examples link to `#chain-of-thought` and `#whole-turn`, the headings of their own sections.
+
+**Why:** The docs build fails a page that links to an anchor it does not have. The row still shows a link, and following it stays on the page.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ## Rendering and timing
 
 ### A trigger keeps its own `data-slot` through `render`
