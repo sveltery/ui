@@ -24,7 +24,8 @@ test('the Typeset page lists every section, is linked from the Sections group an
   ]);
 
   const prose = page.locator('.typeset').first();
-  await expect(prose).toHaveCSS('line-height', /px$/);
+  const { fontSize, lineHeight } = await prose.evaluate((element) => getComputedStyle(element));
+  expect(parseFloat(lineHeight)).toBeCloseTo(parseFloat(fontSize) * 1.75, 1);
   const flow = await prose.locator(':scope > h2').first().evaluate((h2) => getComputedStyle(h2).marginBlockStart);
   expect(parseFloat(flow)).toBeGreaterThan(0);
   await expect(prose.locator('.typeset-scroll table')).toHaveCount(1);

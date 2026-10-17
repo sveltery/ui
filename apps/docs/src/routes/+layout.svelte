@@ -1,6 +1,5 @@
 <script lang="ts">
   import '../app.css';
-  import '$lib/typeset/typeset.css';
   import { onMount } from 'svelte';
   import { TooltipProvider } from '$registry/bases/base/ui/tooltip';
   let { children } = $props();

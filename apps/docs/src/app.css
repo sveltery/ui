@@ -1,4 +1,4 @@
-/* Site styles derived from shadcn-ui/ui apps/v4 app/globals.css at d2fba50ee5b9113008b5bb908563527b7efd2f27; MIT. Typeset is in src/lib/typeset/typeset.css. */
+/* Site styles derived from shadcn-ui/ui apps/v4 app/globals.css at d2fba50ee5b9113008b5bb908563527b7efd2f27; MIT. */
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "@sveltery/ui/tailwind.css";
@@ -6,6 +6,7 @@
 @import "../registry/styles/utilities.css";
 @import "@fontsource-variable/geist";
 @import "@fontsource-variable/geist-mono";
+@import "./lib/typeset/typeset.css";
 
 @source "../registry/bases";
 @source "../content";

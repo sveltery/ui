@@ -15,7 +15,7 @@ Added on 2026-10-17.
 Your app renders the same HTML elements everywhere: headings, paragraphs, lists, tables, and code. You style them for your blog, then your docs, and now chat. Typeset lets you style them once, then tune the rhythm for each context.
 
 ```svelte
-<div class="typeset">{content}</div>
+<div class="typeset">{@html content}</div>
 ```
 
 Add one class and everything inside gets styled. Typeset follows the size of its container, uses your theme, and gives you three controls: size, leading, and flow.
@@ -36,8 +36,8 @@ You can create as many typesets as you need. Use a tighter rhythm for chat and a
 ```
 
 ```svelte
-<div class="typeset typeset-chat">{message}</div>
-<article class="typeset typeset-docs">{page}</article>
+<div class="typeset typeset-chat">{@html message}</div>
+<article class="typeset typeset-docs">{@html page}</article>
 ```
 
 It's also designed for streaming, so new blocks don't restyle earlier ones. The file lives in your project. There's no package or config layer to work around.

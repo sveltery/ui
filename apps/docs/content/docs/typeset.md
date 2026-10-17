@@ -106,8 +106,8 @@ You can keep more than one preset in the same app. Here is a tighter one for cha
 ```
 
 ```svelte
-<div class="typeset typeset-chat">{message}</div>
-<article class="typeset typeset-docs">{page}</article>
+<div class="typeset typeset-chat">{@html message}</div>
+<article class="typeset typeset-docs">{@html page}</article>
 ```
 
 For a one-off change, skip the preset and set a value on the container:
