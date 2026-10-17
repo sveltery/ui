@@ -134,9 +134,10 @@ Required. The files of the item. Each file has these keys:
 }
 ```
 
-The CLI changes two things in a file's content as it writes it:
+The CLI changes a file's content as it writes it:
 
 - It replaces each `IconPlaceholder` with an icon from the project's icon library. See [Examples](/docs/registry/examples#icons).
+- In a project with `rtl: true`, it turns physical classes such as `ml-2` into logical ones such as `ms-2`, and `cn-rtl-flip` into `rtl:rotate-180`. See [RTL](/docs/rtl).
 - It resolves the style markers `cn-menu-target`, `cn-menu-translucent`, `cn-font-heading` and `cn-rtl-flip` in class strings, from the project's `menuColor` and fonts.
 
 It does not rewrite imports, so files import other items with relative paths.
