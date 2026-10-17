@@ -7,6 +7,7 @@ import { apply } from './commands/apply.js';
 import { build } from './commands/build.js';
 import { diff } from './commands/diff.js';
 import { docs } from './commands/docs.js';
+import { eject } from './commands/eject.js';
 import { info } from './commands/info.js';
 import { init } from './commands/init.js';
 import { presetDecode, presetOpen, presetResolve, presetUrl } from './commands/preset.js';
@@ -15,7 +16,7 @@ import { migrateRtl, migrations } from './commands/migrate.js';
 import { update } from './commands/update.js';
 import { view } from './commands/view.js';
 import { CliError } from './parse.js';
-import { version } from './version.js';
+import { cliPackage, version } from './version.js';
 
 const program = new Command('sveltery').description('Add Sveltery UI components to a Svelte app.').version(version);
 
@@ -169,6 +170,14 @@ preset
   .option('--json', 'output as JSON.', false)
   .option('--cwd <path>', 'the project root', '.')
   .action((options) => void presetResolve({ ...options, cwd: resolve(options.cwd) }));
+
+program
+  .command('eject')
+  .description(`inline ${cliPackage}/tailwind.css into your CSS file and remove the ${cliPackage} dependency`)
+  .option('-y, --yes', 'do not ask to continue', false)
+  .option('-s, --silent', 'do not print the warnings or the package manager output', false)
+  .option('--cwd <path>', 'the project root', '.')
+  .action(async (options) => void (await eject({ ...options, cwd: resolve(options.cwd) })));
 
 try {
   await program.parseAsync();

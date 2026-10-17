@@ -298,6 +298,13 @@ try {
   assert.deepEqual(projectInfo.components, ['button', 'chart', 'dialog'], 'info lists the items add installed');
   assert.deepEqual(projectInfo.preset.fallbacks, ['font', 'fontHeading', 'menuAccent'], 'a plain init writes no fonts or menuAccent, so info falls back for them');
 
+  step('sveltery eject -y, so the build and render below run on the inlined tailwind.css');
+  await cli('eject', '-y');
+  const ejected = readFileSync(join(app, config.tailwind.css), 'utf8');
+  assert.ok(!ejected.includes('@sveltery/ui/tailwind.css'), 'eject removes the import');
+  assert.match(ejected, /\/\* ejected from @sveltery\/ui@.*\*\/\n.*\n@theme inline \{/, 'eject inlines tailwind.css');
+  assert.equal(JSON.parse(readFileSync(join(app, 'package.json'), 'utf8')).devDependencies['@sveltery/ui'], undefined, 'eject removes the dev dependency');
+
   writeFileSync(
     join(app, 'src/routes/+page.svelte'),
     // The import form the docs print, an explicit index, and a deep import of one file.
