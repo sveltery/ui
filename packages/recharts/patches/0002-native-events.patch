@@ -1,0 +1,12 @@
+diff --git a/src/util/createEventProxy.ts b/src/util/createEventProxy.ts
+index cb9c1d1..112256c 100644
+--- a/src/util/createEventProxy.ts
++++ b/src/util/createEventProxy.ts
+@@ -1,7 +1,6 @@
+ import { SyntheticEvent } from '../react.js';
+
+ export function createEventProxy<T extends SyntheticEvent>(reactEvent: T): T {
+-  reactEvent.persist();
+   const { currentTarget } = reactEvent;
+   return new Proxy(reactEvent, {
+     get: (target, prop) => {
