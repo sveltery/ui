@@ -221,6 +221,104 @@ Options:
 
 ---
 
+## preset
+
+Use the `preset` command to read, share and open [preset](/docs/cli#init) codes. None of its subcommands writes a file.
+
+```bash
+npx @sveltery/ui@latest preset decode b4xFeBLg4O
+```
+
+```txt
+  code         b4xFeBLg4O
+  version      b
+  style        sera
+  baseColor    taupe
+  theme        taupe
+  chartColor   taupe
+  iconLibrary  lucide
+  font         noto-sans
+  fontHeading  playfair-display
+  radius       default
+  menuAccent   subtle
+  menuColor    default
+  url          https://ui.sveltery.dev/create?preset=b4xFeBLg4O
+```
+
+- `preset decode <code>` prints what a code sets. An older code does not carry every value, so `decode` fills in the chart color the older code implied, marks it with `*` and says so. `--json` prints `code`, `version`, `values`, `derived` and `url`.
+- `preset url <code>` prints the link to the [Create page](/create) with the code loaded.
+- `preset open <code>` prints that link and opens it in your browser, with `open` on macOS, `start` on Windows and `xdg-open` elsewhere.
+- `preset resolve` (alias `preset info`) reads your `components.json` and CSS file and prints the preset they add up to, in the same form as `decode`. A `*` marks a value your project does not show, which takes the style's default. `--json` prints `code`, `values` and `fallbacks`, or `null` when there is no `components.json`.
+
+The Create page link uses the origin of `SVELTERY_REGISTRY_URL`, and `https://ui.sveltery.dev` without it. `preset resolve` also honors the `registry` key in `components.json`, with `SVELTERY_REGISTRY_URL` taking precedence. A code that is not a preset code is an error. See [differences](/docs/differences#preset-resolve-reads-the-css-of-a-svelte-project) for how `resolve` differs from the shadcn CLI.
+
+**Options**
+
+```txt
+Usage: sveltery preset [options] [command]
+
+manage presets
+
+Options:
+  -h, --help               display help for command
+
+Commands:
+  decode [options] <code>  decode a preset code
+  url <code>               get the create URL for a preset code
+  open <code>              open a preset code in the browser
+  resolve|info [options]   resolve a preset from your project
+```
+
+```txt
+Usage: sveltery preset decode [options] <code>
+
+decode a preset code
+
+Arguments:
+  code        the preset code to decode
+
+Options:
+  --json      output as JSON. (default: false)
+  -h, --help  display help for command
+```
+
+```txt
+Usage: sveltery preset url [options] <code>
+
+get the create URL for a preset code
+
+Arguments:
+  code        the preset code
+
+Options:
+  -h, --help  display help for command
+```
+
+```txt
+Usage: sveltery preset open [options] <code>
+
+open a preset code in the browser
+
+Arguments:
+  code        the preset code
+
+Options:
+  -h, --help  display help for command
+```
+
+```txt
+Usage: sveltery preset resolve|info [options]
+
+resolve a preset from your project
+
+Options:
+  --json        output as JSON. (default: false)
+  --cwd <path>  the project root (default: ".")
+  -h, --help    display help for command
+```
+
+---
+
 ## view
 
 Use the `view` command to print registry items as JSON. It never writes anything and needs no `components.json`.
@@ -517,4 +615,4 @@ SVELTERY_REGISTRY_URL=https://preview.example.com/r npx @sveltery/ui@latest add 
 
 ## Not supported
 
-The shadcn CLI has commands and options that this CLI does not have yet: `apply`, `preset`, `eject` and `registry add`, the `cn`, `icons`, `base-color` and `radix` migrations, local file paths as items and JavaScript output. See [Registry](/docs/registry) and [JavaScript](/docs/javascript) for what works today.
+The shadcn CLI has commands and options that this CLI does not have yet: `apply`, `eject` and `registry add`, the `cn`, `icons`, `base-color` and `radix` migrations, local file paths as items and JavaScript output. See [Registry](/docs/registry) and [JavaScript](/docs/javascript) for what works today.

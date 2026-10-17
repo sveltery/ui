@@ -1,7 +1,7 @@
 // Builds the registry from this checkout, serves it, and drives the packed CLI through a fresh SvelteKit app.
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
-import { cpSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
@@ -144,6 +144,22 @@ try {
     assert.match(presetCss, /html \{\s*@apply font-sans;/, `${code} applies the body font to html`);
     const presetInfo = JSON.parse(await capture('npm', [...cliExec, 'info', '--json'], presetApp, env));
     assert.deepEqual([presetInfo.preset.code, presetInfo.preset.fallbacks], [code, []], `info reads ${code} back from the files init wrote`);
+    const resolved = JSON.parse(await capture('npm', [...cliExec, 'preset', 'resolve', '--json'], presetApp, env));
+    assert.deepEqual([resolved.code, resolved.fallbacks], [code, []], `preset resolve reads ${code} back from the files init wrote`);
+  }
+
+  step('sveltery preset decode, url and open');
+  const decoded = JSON.parse(await capture('npm', [...cliExec, 'preset', 'decode', 'b4xFeBLg4O', '--json'], app, env));
+  assert.deepEqual([decoded.values.style, decoded.values.fontHeading, decoded.derived, decoded.url], ['sera', 'playfair-display', [], `${origin}/create?preset=b4xFeBLg4O`]);
+  assert.equal((await capture('npm', [...cliExec, 'preset', 'url', 'b0'], app, env)).trim(), `${origin}/create?preset=b0`);
+  // A stand-in opener records the URL it was given, because CI has no browser.
+  const opener = join(work, 'bin');
+  mkdirSync(opener);
+  writeFileSync(join(opener, process.platform === 'darwin' ? 'open' : 'xdg-open'), `#!/bin/sh\nprintf '%s' "$1" > "${join(work, 'opened-url')}"\n`, { mode: 0o755 });
+  if (process.platform !== 'win32') {
+    await capture('npm', [...cliExec, 'preset', 'open', 'b0'], app, { ...env, PATH: `${opener}:${process.env.PATH}` });
+    for (let attempt = 0; !existsSync(join(work, 'opened-url')) && attempt < 100; attempt++) await new Promise((done) => setTimeout(done, 50));
+    assert.equal(readFileSync(join(work, 'opened-url'), 'utf8'), `${origin}/create?preset=b0`, 'preset open hands the Create page URL to the system opener');
   }
 
   step('sveltery init --preset btLmMa prints why /init rejects a gray base color');
