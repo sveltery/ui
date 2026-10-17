@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { Button } from '$registry/bases/base/ui/button';
   import { Combobox, ComboboxChip, ComboboxChips, ComboboxChipsInput, ComboboxCollection, ComboboxContent, ComboboxEmpty, ComboboxItem, ComboboxList, ComboboxValue } from '$registry/bases/base/ui/combobox';
-  import { DirectionProvider } from '$registry/bases/base/ui/direction';
   import { Field, FieldLabel } from '$registry/bases/base/ui/field';
+  import { useLanguage } from '$lib/components/docs/language.svelte';
 
   const categories = ['technology', 'design', 'business', 'marketing', 'education', 'health'] as const;
 
@@ -45,46 +44,37 @@
     }
   } as const;
 
-  let language = $state<keyof typeof translations>('ar');
+  const language = useLanguage();
   let anchor = $state<HTMLElement | null>(null);
-  const t = $derived(translations[language]);
+  const t = $derived(translations[language.current]);
   const label = (category: string) => t[category as (typeof categories)[number]] ?? category;
 </script>
 
 <div class="mx-auto flex w-full max-w-xs flex-col gap-4">
-  <div class="flex gap-2">
-    {#each Object.keys(translations) as code (code)}
-      <Button variant={language === code ? 'default' : 'outline'} size="sm" onclick={() => (language = code as keyof typeof translations)}>
-        {code}
-      </Button>
-    {/each}
-  </div>
-  <DirectionProvider direction={t.dir}>
-    <Field>
-      <FieldLabel>{t.label}</FieldLabel>
-      <Combobox multiple autoHighlight items={categories} defaultValue={[categories[0]]} itemToStringLabel={label} itemToStringValue={label}>
-        <ComboboxChips {@attach (node) => { anchor = node; }}>
-          <ComboboxValue>
-            {#snippet children(values)}
-              {const selected = $derived(values as string[])}
-              {#each selected as value (value)}
-                <ComboboxChip>{label(value)}</ComboboxChip>
-              {/each}
-              <ComboboxChipsInput placeholder={t.placeholder} />
+  <Field>
+    <FieldLabel>{t.label}</FieldLabel>
+    <Combobox multiple autoHighlight items={categories} defaultValue={[categories[0]]} itemToStringLabel={label} itemToStringValue={label}>
+      <ComboboxChips {@attach (node) => { anchor = node; }}>
+        <ComboboxValue>
+          {#snippet children(values)}
+            {const selected = $derived(values as string[])}
+            {#each selected as value (value)}
+              <ComboboxChip>{label(value)}</ComboboxChip>
+            {/each}
+            <ComboboxChipsInput placeholder={t.placeholder} />
+          {/snippet}
+        </ComboboxValue>
+      </ComboboxChips>
+      <ComboboxContent {anchor} dir={t.dir} data-lang={t.dir === 'rtl' ? language.current : undefined}>
+        <ComboboxEmpty>{t.empty}</ComboboxEmpty>
+        <ComboboxList>
+          <ComboboxCollection>
+            {#snippet children(item: string)}
+              <ComboboxItem value={item}>{label(item)}</ComboboxItem>
             {/snippet}
-          </ComboboxValue>
-        </ComboboxChips>
-        <ComboboxContent {anchor} dir={t.dir} data-lang={t.dir === 'rtl' ? language : undefined}>
-          <ComboboxEmpty>{t.empty}</ComboboxEmpty>
-          <ComboboxList>
-            <ComboboxCollection>
-              {#snippet children(item: string)}
-                <ComboboxItem value={item}>{label(item)}</ComboboxItem>
-              {/snippet}
-            </ComboboxCollection>
-          </ComboboxList>
-        </ComboboxContent>
-      </Combobox>
-    </Field>
-  </DirectionProvider>
+          </ComboboxCollection>
+        </ComboboxList>
+      </ComboboxContent>
+    </Combobox>
+  </Field>
 </div>

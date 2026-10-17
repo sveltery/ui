@@ -617,9 +617,9 @@ This prop adds keyboard access and screen reader support to your charts.
 
 ## RTL
 
-Wrap the chart in a [DirectionProvider](/docs/components/direction), set `dir` on its container, and mirror the axis with `reversed`. Use the buttons to switch the language.
+Wrap the chart in a [DirectionProvider](/docs/components/direction), set `dir` on its container, and mirror the axis with `reversed`. Use the language selector to switch the language.
 
-<ComponentPreview name="base/ChartRtlExample" class="[&_[data-slot=preview]]:h-92" />
+<ComponentPreview name="base/ChartRtlExample" direction="rtl" class="[&_[data-slot=preview]]:h-92" />
 
 ## Charts Library
 

@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { Button } from '$registry/bases/base/ui/button';
-  import { DirectionProvider } from '$registry/bases/base/ui/direction';
   import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '$registry/bases/base/ui/table';
+  import { useLanguage } from '$lib/components/docs/language.svelte';
 
   const translations = {
     en: {
@@ -61,45 +60,36 @@
     { invoice: 'INV007', paymentStatus: 'unpaid', totalAmount: '$300.00', paymentMethod: 'creditCard' }
   ] as const;
 
-  let language = $state<keyof typeof translations>('ar');
-  const t = $derived(translations[language]);
+  const language = useLanguage();
+  const t = $derived(translations[language.current]);
 </script>
 
 <div class="flex w-full flex-col gap-4">
-  <div class="flex gap-2">
-    {#each Object.keys(translations) as code (code)}
-      <Button variant={language === code ? 'default' : 'outline'} size="sm" onclick={() => (language = code as keyof typeof translations)}>
-        {code}
-      </Button>
-    {/each}
-  </div>
-  <DirectionProvider direction={t.dir}>
-    <Table dir={t.dir}>
-      <TableCaption>{t.caption}</TableCaption>
-      <TableHeader>
+  <Table dir={t.dir}>
+    <TableCaption>{t.caption}</TableCaption>
+    <TableHeader>
+      <TableRow>
+        <TableHead class="w-[100px]">{t.invoice}</TableHead>
+        <TableHead>{t.status}</TableHead>
+        <TableHead>{t.method}</TableHead>
+        <TableHead class="text-right">{t.amount}</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      {#each invoices as invoice (invoice.invoice)}
         <TableRow>
-          <TableHead class="w-[100px]">{t.invoice}</TableHead>
-          <TableHead>{t.status}</TableHead>
-          <TableHead>{t.method}</TableHead>
-          <TableHead class="text-right">{t.amount}</TableHead>
+          <TableCell class="font-medium">{invoice.invoice}</TableCell>
+          <TableCell>{t[invoice.paymentStatus]}</TableCell>
+          <TableCell>{t[invoice.paymentMethod]}</TableCell>
+          <TableCell class="text-right">{invoice.totalAmount}</TableCell>
         </TableRow>
-      </TableHeader>
-      <TableBody>
-        {#each invoices as invoice (invoice.invoice)}
-          <TableRow>
-            <TableCell class="font-medium">{invoice.invoice}</TableCell>
-            <TableCell>{t[invoice.paymentStatus]}</TableCell>
-            <TableCell>{t[invoice.paymentMethod]}</TableCell>
-            <TableCell class="text-right">{invoice.totalAmount}</TableCell>
-          </TableRow>
-        {/each}
-      </TableBody>
-      <TableFooter>
-        <TableRow>
-          <TableCell colspan={3}>{t.total}</TableCell>
-          <TableCell class="text-right">$2,500.00</TableCell>
-        </TableRow>
-      </TableFooter>
-    </Table>
-  </DirectionProvider>
+      {/each}
+    </TableBody>
+    <TableFooter>
+      <TableRow>
+        <TableCell colspan={3}>{t.total}</TableCell>
+        <TableCell class="text-right">$2,500.00</TableCell>
+      </TableRow>
+    </TableFooter>
+  </Table>
 </div>

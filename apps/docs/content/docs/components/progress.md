@@ -98,9 +98,9 @@ A progress bar that can be controlled by a slider.
 
 ## RTL
 
-Wrap the progress bar in a [DirectionProvider](/docs/components/direction) and set `dir` on `Progress`. Use the buttons to switch the language.
+Wrap the progress bar in a [DirectionProvider](/docs/components/direction) and set `dir` on `Progress`. Use the language selector to switch the language.
 
-<ComponentPreview name="base/ProgressRtlExample" align="start" />
+<ComponentPreview name="base/ProgressRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 

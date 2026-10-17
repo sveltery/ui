@@ -2,8 +2,7 @@
   import CircleCheckIcon from '@lucide/svelte/icons/circle-check';
   import InfoIcon from '@lucide/svelte/icons/info';
   import { Alert, AlertDescription, AlertTitle } from '$registry/bases/base/ui/alert';
-  import { Button } from '$registry/bases/base/ui/button';
-  import { DirectionProvider } from '$registry/bases/base/ui/direction';
+  import { useLanguage } from '$lib/components/docs/language.svelte';
 
   const translations = {
     en: {
@@ -29,30 +28,21 @@
     }
   } as const;
 
-  let language = $state<keyof typeof translations>('ar');
-  const t = $derived(translations[language]);
+  const language = useLanguage();
+  const t = $derived(translations[language.current]);
 </script>
 
 <div class="flex w-full max-w-md flex-col gap-4">
-  <div class="flex gap-2">
-    {#each Object.keys(translations) as code (code)}
-      <Button variant={language === code ? 'default' : 'outline'} size="sm" onclick={() => (language = code as keyof typeof translations)}>
-        {code}
-      </Button>
-    {/each}
+  <div class="grid w-full max-w-md items-start gap-4" dir={t.dir}>
+    <Alert>
+      <CircleCheckIcon />
+      <AlertTitle>{t.paymentTitle}</AlertTitle>
+      <AlertDescription>{t.paymentDescription}</AlertDescription>
+    </Alert>
+    <Alert>
+      <InfoIcon />
+      <AlertTitle>{t.featureTitle}</AlertTitle>
+      <AlertDescription>{t.featureDescription}</AlertDescription>
+    </Alert>
   </div>
-  <DirectionProvider direction={t.dir}>
-    <div class="grid w-full max-w-md items-start gap-4" dir={t.dir}>
-      <Alert>
-        <CircleCheckIcon />
-        <AlertTitle>{t.paymentTitle}</AlertTitle>
-        <AlertDescription>{t.paymentDescription}</AlertDescription>
-      </Alert>
-      <Alert>
-        <InfoIcon />
-        <AlertTitle>{t.featureTitle}</AlertTitle>
-        <AlertDescription>{t.featureDescription}</AlertDescription>
-      </Alert>
-    </div>
-  </DirectionProvider>
 </div>

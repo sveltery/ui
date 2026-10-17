@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { Button } from '$registry/bases/base/ui/button';
   import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { DirectionProvider } from '$registry/bases/base/ui/direction';
   import { Tabs, TabsContent, TabsList, TabsTrigger } from '$registry/bases/base/ui/tabs';
+  import { useLanguage } from '$lib/components/docs/language.svelte';
 
   const translations = {
     en: {
@@ -76,62 +75,53 @@
     },
   } as const;
 
-  let language = $state<keyof typeof translations>('ar');
-  const t = $derived(translations[language]);
+  const language = useLanguage();
+  const t = $derived(translations[language.current]);
 </script>
 
 <div class="flex w-full max-w-sm flex-col gap-4">
-  <div class="flex gap-2">
-    {#each Object.keys(translations) as code (code)}
-      <Button variant={language === code ? 'default' : 'outline'} size="sm" onclick={() => (language = code as keyof typeof translations)}>
-        {code}
-      </Button>
-    {/each}
-  </div>
-  <DirectionProvider direction={t.dir}>
-    <Tabs value="overview" class="w-full max-w-sm" dir={t.dir}>
-      <TabsList dir={t.dir}>
-        <TabsTrigger value="overview">{t.overview}</TabsTrigger>
-        <TabsTrigger value="analytics">{t.analytics}</TabsTrigger>
-        <TabsTrigger value="reports">{t.reports}</TabsTrigger>
-        <TabsTrigger value="settings">{t.settings}</TabsTrigger>
-      </TabsList>
-      <TabsContent value="overview">
-        <Card dir={t.dir}>
-          <CardHeader>
-            <CardTitle>{t.overviewTitle}</CardTitle>
-            <CardDescription>{t.overviewDesc}</CardDescription>
-          </CardHeader>
-          <CardContent class="text-sm text-muted-foreground">{t.overviewContent}</CardContent>
-        </Card>
-      </TabsContent>
-      <TabsContent value="analytics">
-        <Card dir={t.dir}>
-          <CardHeader>
-            <CardTitle>{t.analyticsTitle}</CardTitle>
-            <CardDescription>{t.analyticsDesc}</CardDescription>
-          </CardHeader>
-          <CardContent class="text-sm text-muted-foreground">{t.analyticsContent}</CardContent>
-        </Card>
-      </TabsContent>
-      <TabsContent value="reports">
-        <Card dir={t.dir}>
-          <CardHeader>
-            <CardTitle>{t.reportsTitle}</CardTitle>
-            <CardDescription>{t.reportsDesc}</CardDescription>
-          </CardHeader>
-          <CardContent class="text-sm text-muted-foreground">{t.reportsContent}</CardContent>
-        </Card>
-      </TabsContent>
-      <TabsContent value="settings">
-        <Card dir={t.dir}>
-          <CardHeader>
-            <CardTitle>{t.settingsTitle}</CardTitle>
-            <CardDescription>{t.settingsDesc}</CardDescription>
-          </CardHeader>
-          <CardContent class="text-sm text-muted-foreground">{t.settingsContent}</CardContent>
-        </Card>
-      </TabsContent>
-    </Tabs>
-  </DirectionProvider>
+  <Tabs value="overview" class="w-full max-w-sm" dir={t.dir}>
+    <TabsList dir={t.dir}>
+      <TabsTrigger value="overview">{t.overview}</TabsTrigger>
+      <TabsTrigger value="analytics">{t.analytics}</TabsTrigger>
+      <TabsTrigger value="reports">{t.reports}</TabsTrigger>
+      <TabsTrigger value="settings">{t.settings}</TabsTrigger>
+    </TabsList>
+    <TabsContent value="overview">
+      <Card dir={t.dir}>
+        <CardHeader>
+          <CardTitle>{t.overviewTitle}</CardTitle>
+          <CardDescription>{t.overviewDesc}</CardDescription>
+        </CardHeader>
+        <CardContent class="text-sm text-muted-foreground">{t.overviewContent}</CardContent>
+      </Card>
+    </TabsContent>
+    <TabsContent value="analytics">
+      <Card dir={t.dir}>
+        <CardHeader>
+          <CardTitle>{t.analyticsTitle}</CardTitle>
+          <CardDescription>{t.analyticsDesc}</CardDescription>
+        </CardHeader>
+        <CardContent class="text-sm text-muted-foreground">{t.analyticsContent}</CardContent>
+      </Card>
+    </TabsContent>
+    <TabsContent value="reports">
+      <Card dir={t.dir}>
+        <CardHeader>
+          <CardTitle>{t.reportsTitle}</CardTitle>
+          <CardDescription>{t.reportsDesc}</CardDescription>
+        </CardHeader>
+        <CardContent class="text-sm text-muted-foreground">{t.reportsContent}</CardContent>
+      </Card>
+    </TabsContent>
+    <TabsContent value="settings">
+      <Card dir={t.dir}>
+        <CardHeader>
+          <CardTitle>{t.settingsTitle}</CardTitle>
+          <CardDescription>{t.settingsDesc}</CardDescription>
+        </CardHeader>
+        <CardContent class="text-sm text-muted-foreground">{t.settingsContent}</CardContent>
+      </Card>
+    </TabsContent>
+  </Tabs>
 </div>
