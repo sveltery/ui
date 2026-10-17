@@ -3,7 +3,7 @@ title: Date Picker
 description: A date picker component with range and presets.
 ---
 
-<ComponentPreview name="base/DatePickerExample" />
+<ComponentPreview name="base/DatePickerDemoExample" />
 
 ## Installation
 
@@ -47,9 +47,11 @@ The Date Picker is built from the [Popover](/docs/components/popover#installatio
 </Popover>
 ```
 
+See the [Calendar](/docs/components/calendar) documentation for more information.
+
 ## Composition
 
-There is no `DatePicker` root component. A date picker is a `Popover` with a `Calendar` inside:
+A date picker is built from `Popover` and `Calendar` (there is no `DatePicker` root component):
 
 ```text
 Popover
@@ -67,21 +69,51 @@ To close the popover once a day is picked, bind its `open` and set it to `false`
 </Popover>
 ```
 
+## Basic
+
+A basic date picker component.
+
+<ComponentPreview name="base/DatePickerBasicExample" />
+
 ## Range Picker
 
-Use `mode="range"` and two months. The trigger shows `from` and `to`.
+A date picker component for selecting a range of dates.
 
-## With Presets
-
-Put buttons under the calendar that set `selected` and `month`. `fixedWeeks` keeps the popover the same height in every month.
+<ComponentPreview name="base/DatePickerRangeExample" />
 
 ## Date of Birth
 
-`captionLayout="dropdown"` adds month and year dropdowns, so a date far in the past is a few clicks away.
+A date picker component for selecting a date of birth. This component includes a dropdown caption layout for date and month selection.
+
+<ComponentPreview name="base/DatePickerDobExample" />
+
+## Input
+
+A date picker component with an input field for selecting a date.
+
+<ComponentPreview name="base/DatePickerInputExample" />
 
 ## Time Picker
 
-A native time input sits next to the date picker. Combine the two values when you submit.
+A date picker component with a time input field for selecting a time.
+
+<ComponentPreview name="base/DatePickerTimeExample" />
+
+## Natural Language Picker
+
+This component uses the `chrono-node` library to parse natural language dates.
+
+```bash
+npm install chrono-node
+```
+
+<ComponentPreview name="base/DatePickerNaturalLanguageExample" />
+
+## RTL
+
+Wrap the date picker in a [DirectionProvider](/docs/components/direction) and set `dir` on `PopoverTrigger`, `PopoverContent` and `Calendar`. Pass a `locale` to `Calendar` to translate the month and weekday names. Use the buttons to switch the language.
+
+<ComponentPreview name="base/DatePickerRtlExample" align="start" />
 
 ## In a Form
 
