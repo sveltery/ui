@@ -1,100 +1,76 @@
 <script lang="ts">
-  import { AreaChart } from 'layerchart';
-  import { curveNatural } from 'd3-shape';
-  import { scaleUtc } from 'd3-scale';
+  import { Area, AreaChart, CartesianGrid, XAxis } from '@sveltery/recharts';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
   const chartData = [
-    { date: new Date('2024-01-01'), desktop: 186, mobile: 80, other: 45 },
-    { date: new Date('2024-02-01'), desktop: 305, mobile: 200, other: 100 },
-    { date: new Date('2024-03-01'), desktop: 237, mobile: 120, other: 150 },
-    { date: new Date('2024-04-01'), desktop: 73, mobile: 190, other: 50 },
-    { date: new Date('2024-05-01'), desktop: 209, mobile: 130, other: 100 },
-    { date: new Date('2024-06-01'), desktop: 214, mobile: 140, other: 160 },
-  ];
+    { month: "January", desktop: 186, mobile: 80, other: 45 },
+    { month: "February", desktop: 305, mobile: 200, other: 100 },
+    { month: "March", desktop: 237, mobile: 120, other: 150 },
+    { month: "April", desktop: 73, mobile: 190, other: 50 },
+    { month: "May", desktop: 209, mobile: 130, other: 100 },
+    { month: "June", desktop: 214, mobile: 140, other: 160 },
+  ]
 
   const chartConfig = {
-    desktop: { label: 'Desktop', color: 'var(--chart-1)' },
-    mobile: { label: 'Mobile', color: 'var(--chart-2)' },
-    other: { label: 'Other', color: 'var(--chart-3)' },
-  } satisfies ChartConfig;
+    desktop: {
+      label: "Desktop",
+      color: "var(--chart-1)",
+    },
+    mobile: {
+      label: "Mobile",
+      color: "var(--chart-2)",
+    },
+    other: {
+      label: "Other",
+      color: "var(--chart-3)",
+    },
+  } satisfies ChartConfig
 </script>
 
-<Card class="w-full max-w-md">
+<Card>
   <CardHeader>
     <CardTitle>Area Chart - Stacked Expanded</CardTitle>
-    <CardDescription>Showing total visitors for the last 6 months</CardDescription>
+    <CardDescription>Showing total visitors for the last 6months</CardDescription>
   </CardHeader>
   <CardContent>
-    <ChartContainer aria-label="Area Chart - Stacked Expanded" config={chartConfig}>
+    <ChartContainer config={chartConfig}>
       <AreaChart
+        accessibilityLayer
         data={chartData}
-        x="date"
-        xScale={scaleUtc()}
-        seriesLayout="stackExpand"
-        axis="x"
-        series={[
-          {
-            key: 'other',
-            label: 'Other',
-            color: 'var(--color-other)',
-            props: { opacity: 0.1 },
-          },
-          {
-            key: 'mobile',
-            label: 'Mobile',
-            color: 'var(--color-mobile)',
-          },
-          {
-            key: 'desktop',
-            label: 'Desktop',
-            color: 'var(--color-desktop)',
-          },
-        ]}
-        props={{
-          area: {
-            curve: curveNatural,
-            'fill-opacity': 0.4,
-            line: { class: 'stroke-1' },
-            motion: 'tween',
-          },
-          xAxis: {
-            tickLength: 14,
-            format: (v: Date) => v.toLocaleDateString('en-US', { month: 'short' }),
-          },
+        margin={{
+          left: 12,
+          right: 12,
+          top: 12,
         }}
+        stackOffset="expand"
       >
-        {#snippet tooltip()}
-          <ChartTooltip
-            labelFormatter={(v: Date) => {
-              return v.toLocaleDateString('en-US', {
-                month: 'long',
-              });
-            }}
-            indicator="line"
-          />
-        {/snippet}
+        <CartesianGrid vertical={false} />
+        <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} tickFormatter={(value) => value.slice(0, 3)} />
+        <ChartTooltip cursor={false}>
+          {#snippet content(props: TooltipContentArgs)}
+            <ChartTooltipContent indicator="line" {...props} />
+          {/snippet}
+        </ChartTooltip>
+        <Area dataKey="other" type="natural" fill="var(--color-other)" fillOpacity={0.1} stroke="var(--color-other)" stackId="a" />
+        <Area dataKey="mobile" type="natural" fill="var(--color-mobile)" fillOpacity={0.4} stroke="var(--color-mobile)" stackId="a" />
+        <Area dataKey="desktop" type="natural" fill="var(--color-desktop)" fillOpacity={0.4} stroke="var(--color-desktop)" stackId="a" />
       </AreaChart>
     </ChartContainer>
   </CardContent>
   <CardFooter>
     <div class="flex w-full items-start gap-2 text-sm">
       <div class="grid gap-2">
-        <div class="flex items-center gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <IconPlaceholder
+        <div class="flex items-center gap-2 leading-none font-medium">Trending up by 5.2% this month <IconPlaceholder
             lucide="TrendingUpIcon"
             tabler="IconTrendingUp"
             hugeicons="TradeUpIcon"
             phosphor="TrendUpIcon"
             remixicon="RiLineChartLine"
-            class="size-4"
-          />
-        </div>
-        <div class="text-muted-foreground flex items-center gap-2 leading-none">
-          January - June 2024
-        </div>
+            class="h-4 w-4"
+          /></div>
+        <div class="flex items-center gap-2 leading-none text-muted-foreground">January - June 2024</div>
       </div>
     </div>
   </CardFooter>

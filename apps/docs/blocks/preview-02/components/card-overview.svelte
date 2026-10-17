@@ -1,31 +1,31 @@
 <script lang="ts">
-  import { scaleBand } from 'd3-scale';
-  import { BarChart } from 'layerchart';
+  import { Bar, BarChart, XAxis } from '@sveltery/recharts';
   import { Badge } from '$registry/bases/base/ui/badge';
   import { Button } from '$registry/bases/base/ui/button';
   import { Card, CardContent, CardDescription, CardTitle } from '$registry/bases/base/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
 
   const activityData = [
-    { month: 'Jan', amount: 40 },
-    { month: 'Feb', amount: 55 },
-    { month: 'Mar', amount: 35 },
-    { month: 'Apr', amount: 60 },
-    { month: 'May', amount: 45 },
-    { month: 'Jun', amount: 50 },
-    { month: 'Jul', amount: 65 },
-    { month: 'Aug', amount: 40 },
-    { month: 'Sep', amount: 55 },
-    { month: 'Oct', amount: 70 },
-    { month: 'Nov', amount: 45 },
-    { month: 'Dec', amount: 80 }
-  ];
+    { month: "Jan", amount: 40 },
+    { month: "Feb", amount: 55 },
+    { month: "Mar", amount: 35 },
+    { month: "Apr", amount: 60 },
+    { month: "May", amount: 45 },
+    { month: "Jun", amount: 50 },
+    { month: "Jul", amount: 65 },
+    { month: "Aug", amount: 40 },
+    { month: "Sep", amount: 55 },
+    { month: "Oct", amount: 70 },
+    { month: "Nov", amount: 45 },
+    { month: "Dec", amount: 80 },
+  ]
+
   const chartConfig = {
     amount: {
-      label: 'Activity',
-      color: 'var(--chart-2)'
-    }
-  } satisfies ChartConfig;
+      label: "Activity",
+      color: "var(--chart-2)",
+    },
+  } satisfies ChartConfig
 </script>
 
 <div class="grid grid-cols-2 gap-3">
@@ -51,27 +51,24 @@
         <CardDescription>Yearly Activity</CardDescription>
         <Badge variant="secondary">+US$0.25 Daily Cash</Badge>
       </div>
-          <ChartContainer aria-label="Yearly activity by month" config={chartConfig} class="h-20 w-full">
-            <BarChart
-              data={activityData}
-              x="month"
-              xScale={scaleBand().padding(0.25)}
-              series={[{ key: 'amount', label: 'Activity', color: 'var(--color-amount)' }]}
-              axis="x"
-              grid={false}
-              rule={false}
-              padding={{ top: 4, bottom: 16, left: 0, right: 0 }}
-              props={{
-                bars: { stroke: 'none', strokeWidth: 0, rounded: 'top', radius: 3 },
-                highlight: { area: { fill: 'none' } },
-                xAxis: { format: (month: string) => month.slice(0, 1), tickLength: 10, class: 'text-[10px]' }
-              }}
-            >
-              {#snippet tooltip()}
-                <ChartTooltip hideLabel />
-              {/snippet}
-            </BarChart>
-          </ChartContainer>
+      <ChartContainer config={chartConfig} class="h-20 w-full">
+        <BarChart data={activityData} margin={{ top: 4, right: 0, bottom: 0, left: 0 }}>
+          <XAxis
+            dataKey="month"
+            tickLine={false}
+            tickMargin={4}
+            axisLine={false}
+            tickFormatter={(v) => String(v).slice(0, 1)}
+            class="text-[10px]"
+          />
+          <ChartTooltip cursor={false}>
+            {#snippet content(props: TooltipContentArgs)}
+              <ChartTooltipContent hideLabel {...props} />
+            {/snippet}
+          </ChartTooltip>
+          <Bar dataKey="amount" fill="var(--color-amount)" radius={[3, 3, 0, 0]} />
+        </BarChart>
+      </ChartContainer>
     </CardContent>
   </Card>
 </div>
