@@ -246,6 +246,12 @@ Put a `CodeBlock` between paragraphs inside a [Message](/docs/components/message
 
 <ComponentPreview name="base/CodeBlockChatExample" />
 
+## Typeset
+
+A `CodeBlock` inside a [`typeset`](/docs/typeset) container keeps its own styles and gets the same space above as a paragraph.
+
+<ComponentPreview name="base/CodeBlockTypesetExample" />
+
 ## RTL
 
 Wrap the content in a [DirectionProvider](/docs/components/direction) to lay it out right to left. Code always reads left to right. The header follows the page direction. Use the buttons to switch the language.
@@ -324,6 +330,22 @@ export async function load() {
 While the code streams, `useHighlightedCode` tokenizes only the new lines, starting where the last line left off. Lines that did not change keep the same strings, so Svelte leaves their DOM alone.
 
 <ComponentPreview name="base/CodeBlockStreamingExample" />
+
+### Markdown
+
+Render the message with [svelte-streamdown](https://github.com/beynar/svelte-streamdown) and route fenced code to a `CodeBlock` with its `code` snippet. Inline code goes to the `codespan` snippet, so it stays inline.
+
+<ComponentPreview name="base/CodeBlockMarkdownExample" />
+
+The `code` snippet's `incomplete` is `true` until the closing fence arrives. Use it to disable the copy button while the code is incomplete. It only works while Streamdown streams, so pass `static={false}` while the message streams.
+
+```svelte showLineNumbers
+<Streamdown content={text} static={!isStreaming}>
+  {#snippet code({ token, incomplete })}
+    <MarkdownCodeBlock code={token.text} language={token.lang} {incomplete} />
+  {/snippet}
+</Streamdown>
+```
 
 ## Accessibility
 

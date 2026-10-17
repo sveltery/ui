@@ -633,13 +633,13 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
-### The Code Block page has no Markdown or Typeset example, and its RTL example uses Rhea
+### The Code Block Markdown example renders with svelte-streamdown, and the RTL example uses Rhea
 
-**Upstream:** The [Code Block page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/code-block.mdx#L355) shows a block inside a `typeset` container and a chat message rendered with Streamdown, whose `components.code` routes fenced code to a `CodeBlock`.
+**Upstream:** The [Code Block page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/code-block.mdx#L449) renders a chat message with Streamdown. Its [`code-block-markdown`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/code-block-markdown.tsx) example passes `components.code`, checks `data-block` to tell fenced code from inline code, and reads `useIsCodeFenceIncomplete` while `isAnimating` is set. Upstream's [`code-block-rtl`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/code-block.mdx#L369) preview uses Nova.
 
-**Sveltery UI:** The [Code Block](/docs/components/code-block) page leaves both out. Its RTL example renders in Rhea like the rest of the page, where upstream's [`code-block-rtl`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/code-block.mdx#L369) preview uses Nova.
+**Sveltery UI:** The [Code Block](/docs/components/code-block#markdown) Markdown example renders with [svelte-streamdown](https://github.com/beynar/svelte-streamdown). Fenced code goes to its `code` snippet, which gets `incomplete` while `static` is off, and inline code goes to its `codespan` snippet. The RTL example renders in Rhea like the rest of the page.
 
-**Why:** Streamdown is a React library, so the Markdown example needs a Svelte Markdown renderer first. Typeset is not ported yet. A docs page renders every preview in one style.
+**Why:** Streamdown is a React library. svelte-streamdown is a maintained Svelte 5 port that completes unfinished Markdown and code fences while a message streams. A docs page renders every preview in one style.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
