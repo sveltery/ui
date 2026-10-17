@@ -33,7 +33,7 @@ npx @sveltery/ui@latest add sidebar
 ### Install the dependencies
 
 ```bash
-npm install cn class-variance-authority @sveltery/base @lucide/svelte
+npm install @sveltery/base
 ```
 
 ### Copy the component

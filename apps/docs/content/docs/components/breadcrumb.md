@@ -21,12 +21,6 @@ npx @sveltery/ui@latest add breadcrumb
 
 <Steps>
 
-### Install the dependencies
-
-```bash
-npm install cn @lucide/svelte
-```
-
 ### Copy the component
 
 Copy the following files into `src/lib/components/ui/breadcrumb`.
