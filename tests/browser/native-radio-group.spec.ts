@@ -45,3 +45,18 @@ test('the keyboard focus ring matches Radio Group', async ({ page }) => {
   expect(native['box-shadow']).not.toBe('none');
   expect(native).toEqual(await ring('base-unchecked'));
 });
+
+// NativeRadio carries Radio Group's slots, so style rules keyed on them (sera's Label, every FieldSet's gap) apply to both.
+const textProperties = ['text-transform', 'font-size', 'font-weight', 'letter-spacing'];
+const text = (locator: Locator) => locator.evaluate((el, names) => Object.fromEntries(names.map(name => [name, getComputedStyle(el).getPropertyValue(name)])), textProperties);
+for (const style of styles) {
+  test(`${style}: labels and fieldsets next to NativeRadio match Radio Group`, async ({ page }) => {
+    await page.goto('/native-radio-group/review');
+    await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true');
+    await page.evaluate(style => { document.body.className = `style-${style}`; }, style);
+    expect(await text(page.locator('label[for=native-basic-default]'))).toEqual(await text(page.locator('label[for=base-basic-default]')));
+    const fieldset = page.locator('[data-example=fieldset] fieldset');
+    const gap = (index: number) => fieldset.nth(index).evaluate(el => getComputedStyle(el).rowGap);
+    expect(await gap(1)).toBe(await gap(0));
+  });
+}

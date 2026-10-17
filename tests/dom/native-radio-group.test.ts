@@ -13,14 +13,14 @@ function setup() {
   return { form, radio, fixture: instance as unknown as { changeCount(): number } };
 }
 
-it('renders a radiogroup of native radio inputs with the native slots and classes', () => {
+it('renders a radiogroup of native radio inputs with Radio Group slots and the native classes', () => {
   const { form, radio } = setup();
-  const group = form.querySelector('[data-slot=native-radio-group]')!;
+  const group = form.querySelector('[data-slot=radio-group]')!;
   expect(group.getAttribute('role')).toBe('radiogroup');
   expect(group.getAttribute('aria-label')).toBe('Plan');
   expect(group.className).toBe('cn-native-radio-group w-full group-extra');
   expect(radio('free').type).toBe('radio');
-  expect(radio('free').getAttribute('data-slot')).toBe('native-radio');
+  expect(radio('free').getAttribute('data-slot')).toBe('radio-group-item');
   expect(radio('free').className).toBe('cn-native-radio peer relative aspect-square shrink-0 appearance-none border outline-none disabled:cursor-not-allowed disabled:opacity-50 radio-extra');
   expect(radio('free').id).toBe('free');
   expect(radio('team').disabled).toBe(true);
