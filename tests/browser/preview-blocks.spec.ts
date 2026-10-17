@@ -33,19 +33,19 @@ test('clearing the stock-performance combobox keeps the last ticker data', async
   await expect(price).toHaveText('215');
 });
 
-/** Each ChartContainer keeps the height class of its upstream card, so none may collapse to zero. */
+/** Each ChartContainer, named by the first title or description of its card (savings-progress has none), keeps the height class of its upstream card, so none may collapse to zero. */
 const chartHeights: Record<string, string[]> = {
-  preview: ['Desktop and mobile traffic by month 180', 'Browser share 190', 'Sleep stages by hour 128', 'Visitors by month 133', 'Visitors by month 192'],
+  preview: ['Traffic channels 180', 'Browser Share 190', 'Sleep Report 128', 'Analytics 133', 'Visitors 192'],
   'preview-02': [
-    'Contributions by month 200',
-    'Vanguard VIG quarterly dividends 32',
-    'S&P 500 VOO quarterly dividends 32',
-    'Apple AAPL quarterly dividends 32',
-    'Realty Income quarterly dividends 32',
-    'Savings progress 220',
-    'Yearly activity by month 80',
-    'Power usage by hour 140',
-    'Price by month 200'
+    'Contribution History 200',
+    'Q2 Dividend Income 32',
+    'Q2 Dividend Income 32',
+    'Q2 Dividend Income 32',
+    'Q2 Dividend Income 32',
+    'Untitled 220',
+    'Yearly Activity 80',
+    'Power Usage 140',
+    'Stock Performance 200'
   ]
 };
 
@@ -55,7 +55,11 @@ for (const [name, expected] of Object.entries(chartHeights)) {
     const heights = page.locator('[data-slot=chart]');
     await expect(heights).toHaveCount(expected.length);
     await expect
-      .poll(() => heights.evaluateAll((charts) => charts.map((chart) => `${chart.getAttribute('aria-label')} ${Math.round(chart.getBoundingClientRect().height)}`)))
+      .poll(() =>
+        heights.evaluateAll((charts) =>
+          charts.map((chart) => `${chart.closest('[data-slot=card]')?.querySelector('[data-slot=card-title], [data-slot=card-description]')?.textContent?.trim() ?? 'Untitled'} ${Math.round(chart.getBoundingClientRect().height)}`)
+        )
+      )
       .toEqual(expected);
   });
 }

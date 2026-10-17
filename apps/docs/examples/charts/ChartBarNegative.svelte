@@ -1,81 +1,57 @@
 <script lang="ts">
-  import { scaleBand } from 'd3-scale';
-  import { BarChart } from 'layerchart';
+  import { Bar, BarChart, CartesianGrid, Cell, LabelList } from '@sveltery/recharts';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
   const chartData = [
-    { month: 'January', visitors: 186 },
-    { month: 'February', visitors: 205 },
-    { month: 'March', visitors: -207 },
-    { month: 'April', visitors: 173 },
-    { month: 'May', visitors: -209 },
-    { month: 'June', visitors: 214 },
-  ];
+    { month: "January", visitors: 186 },
+    { month: "February", visitors: 205 },
+    { month: "March", visitors: -207 },
+    { month: "April", visitors: 173 },
+    { month: "May", visitors: -209 },
+    { month: "June", visitors: 214 },
+  ]
 
   const chartConfig = {
-    visitors: { label: 'Visitors' },
-  } satisfies ChartConfig;
+    visitors: {
+      label: "Visitors",
+    },
+  } satisfies ChartConfig
 </script>
 
-<Card class="w-full max-w-md">
+<Card>
   <CardHeader>
     <CardTitle>Bar Chart - Negative</CardTitle>
     <CardDescription>January - June 2024</CardDescription>
   </CardHeader>
   <CardContent>
-    <ChartContainer aria-label="Bar Chart - Negative" config={chartConfig}>
-      <BarChart
-        labels={{
-          offset: 5,
-          value: (d) => d.month,
-          fill: (d) => {
-            if (d.visitors > 0) {
-              return 'var(--chart-1)';
-            } else if (d.visitors < 0) {
-              return 'var(--chart-2)';
-            }
-          },
-        }}
-        data={chartData}
-        xScale={scaleBand().padding(0.25)}
-        x="month"
-        y="visitors"
-        yNice={4}
-        yBaseline={0}
-        cRange={['var(--chart-1)', 'var(--chart-2)']}
-        c={(d) => (d.visitors > 0 ? 'var(--chart-1)' : 'var(--chart-2)')}
-        axis={false}
-        props={{
-          bars: { stroke: 'none', radius: 0 },
-          highlight: { area: { fill: 'none' } },
-          xAxis: { format: (d) => d.slice(0, 3) },
-        }}
-      >
-        {#snippet tooltip()}
-          <ChartTooltip hideLabel hideIndicator nameKey="visitors" />
-        {/snippet}
+    <ChartContainer config={chartConfig}>
+      <BarChart accessibilityLayer data={chartData}>
+        <CartesianGrid vertical={false} />
+        <ChartTooltip cursor={false}>
+          {#snippet content(props: TooltipContentArgs)}
+            <ChartTooltipContent hideLabel hideIndicator {...props} />
+          {/snippet}
+        </ChartTooltip>
+        <Bar dataKey="visitors">
+          <LabelList position="top" dataKey="month" fillOpacity={1} />
+          {#each chartData as item (item.month)}
+            <Cell fill={item.visitors > 0 ? "var(--chart-1)" : "var(--chart-2)"} />
+          {/each}
+        </Bar>
       </BarChart>
     </ChartContainer>
   </CardContent>
-  <CardFooter>
-    <div class="flex w-full items-start gap-2 text-sm">
-      <div class="grid gap-2">
-        <div class="flex items-center gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <IconPlaceholder
-            lucide="TrendingUpIcon"
-            tabler="IconTrendingUp"
-            hugeicons="TradeUpIcon"
-            phosphor="TrendUpIcon"
-            remixicon="RiLineChartLine"
-            class="size-4"
-          />
-        </div>
-        <div class="text-muted-foreground flex items-center gap-2 leading-none">
-          Showing total visitors for the last 6 months
-        </div>
-      </div>
-    </div>
+  <CardFooter class="flex-col items-start gap-2 text-sm">
+    <div class="flex gap-2 leading-none font-medium">Trending up by 5.2% this month <IconPlaceholder
+        lucide="TrendingUpIcon"
+        tabler="IconTrendingUp"
+        hugeicons="TradeUpIcon"
+        phosphor="TrendUpIcon"
+        remixicon="RiLineChartLine"
+        class="h-4 w-4"
+      /></div>
+    <div class="leading-none text-muted-foreground">Showing total visitors for the last 6 months</div>
   </CardFooter>
 </Card>

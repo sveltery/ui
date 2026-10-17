@@ -1,97 +1,79 @@
 <script lang="ts">
+  import { Area, AreaChart, CartesianGrid, XAxis } from '@sveltery/recharts';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';
-  import { scaleUtc } from 'd3-scale';
-  import { curveNatural } from 'd3-shape';
-  import { Area, AreaChart, LinearGradient } from 'layerchart';
 
   const chartData = [
-    { date: new Date('2024-01-01'), desktop: 186, mobile: 80 },
-    { date: new Date('2024-02-01'), desktop: 305, mobile: 200 },
-    { date: new Date('2024-03-01'), desktop: 237, mobile: 120 },
-    { date: new Date('2024-04-01'), desktop: 73, mobile: 190 },
-    { date: new Date('2024-05-01'), desktop: 209, mobile: 130 },
-    { date: new Date('2024-06-01'), desktop: 214, mobile: 140 },
-  ];
+    { month: "January", desktop: 186, mobile: 80 },
+    { month: "February", desktop: 305, mobile: 200 },
+    { month: "March", desktop: 237, mobile: 120 },
+    { month: "April", desktop: 73, mobile: 190 },
+    { month: "May", desktop: 209, mobile: 130 },
+    { month: "June", desktop: 214, mobile: 140 },
+  ]
 
   const chartConfig = {
-    desktop: { label: 'Desktop', color: 'var(--chart-1)' },
-    mobile: { label: 'Mobile', color: 'var(--chart-2)' },
-  } satisfies ChartConfig;
+    desktop: {
+      label: "Desktop",
+      color: "var(--chart-1)",
+    },
+    mobile: {
+      label: "Mobile",
+      color: "var(--chart-2)",
+    },
+  } satisfies ChartConfig
 </script>
 
-<Card class="w-full max-w-md">
+<Card>
   <CardHeader>
     <CardTitle>Area Chart - Gradient</CardTitle>
     <CardDescription>Showing total visitors for the last 6 months</CardDescription>
   </CardHeader>
   <CardContent>
-    <ChartContainer aria-label="Area Chart - Gradient" config={chartConfig}>
+    <ChartContainer config={chartConfig}>
       <AreaChart
+        accessibilityLayer
         data={chartData}
-        x="date"
-        xScale={scaleUtc()}
-        yPadding={[0, 25]}
-        series={[
-          {
-            key: 'mobile',
-            label: 'Mobile',
-            color: 'var(--color-mobile)',
-          },
-          {
-            key: 'desktop',
-            label: 'Desktop',
-            color: 'var(--color-desktop)',
-          },
-        ]}
-        seriesLayout="stack"
-        props={{
-          xAxis: {
-            tickLength: 14,
-            format: (v: Date) => v.toLocaleDateString('en-US', { month: 'short' }),
-          },
-          yAxis: { format: () => '' },
+        margin={{
+          left: 12,
+          right: 12,
         }}
       >
-        {#snippet tooltip()}
-          <ChartTooltip
-            indicator="dot"
-            labelFormatter={(v: Date) => {
-              return v.toLocaleDateString('en-US', {
-                month: 'long',
-              });
-            }}
-          />
-        {/snippet}
-        {#snippet marks({ context })}
-          {#each context.series.visibleSeries as s (s.key)}
-            <LinearGradient stops={[s.color ?? '', `color-mix(in lch, ${s.color} 10%, transparent)`]} vertical>
-              {#snippet children({ gradient })}
-                <Area seriesKey={s.key} curve={curveNatural} fill={gradient} fillOpacity={0.4} line={{ class: 'stroke-1' }} motion="tween" />
-              {/snippet}
-            </LinearGradient>
-          {/each}
-        {/snippet}
+        <CartesianGrid vertical={false} />
+        <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} tickFormatter={(value) => value.slice(0, 3)} />
+        <ChartTooltip cursor={false}>
+          {#snippet content(props: TooltipContentArgs)}
+            <ChartTooltipContent {...props} />
+          {/snippet}
+        </ChartTooltip>
+        <defs>
+          <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stop-color="var(--color-desktop)" stop-opacity={0.8} />
+            <stop offset="95%" stop-color="var(--color-desktop)" stop-opacity={0.1} />
+          </linearGradient>
+          <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stop-color="var(--color-mobile)" stop-opacity={0.8} />
+            <stop offset="95%" stop-color="var(--color-mobile)" stop-opacity={0.1} />
+          </linearGradient>
+        </defs>
+        <Area dataKey="mobile" type="natural" fill="url(#fillMobile)" fillOpacity={0.4} stroke="var(--color-mobile)" stackId="a" />
+        <Area dataKey="desktop" type="natural" fill="url(#fillDesktop)" fillOpacity={0.4} stroke="var(--color-desktop)" stackId="a" />
       </AreaChart>
     </ChartContainer>
   </CardContent>
   <CardFooter>
     <div class="flex w-full items-start gap-2 text-sm">
       <div class="grid gap-2">
-        <div class="flex items-center gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <IconPlaceholder
+        <div class="flex items-center gap-2 leading-none font-medium">Trending up by 5.2% this month <IconPlaceholder
             lucide="TrendingUpIcon"
             tabler="IconTrendingUp"
             hugeicons="TradeUpIcon"
             phosphor="TrendUpIcon"
             remixicon="RiLineChartLine"
-            class="size-4"
-          />
-        </div>
-        <div class="text-muted-foreground flex items-center gap-2 leading-none">
-          January - June 2024
-        </div>
+            class="h-4 w-4"
+          /></div>
+        <div class="flex items-center gap-2 leading-none text-muted-foreground">January - June 2024</div>
       </div>
     </div>
   </CardFooter>
