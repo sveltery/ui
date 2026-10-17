@@ -13,6 +13,7 @@
     QuestionnaireSubmit,
     QuestionnaireTitle,
   } from '$registry/bases/base/ui/questionnaire';
+  import { toast } from '$registry/bases/base/ui/toast';
 
   const items = [
     { name: 'scope', required: true },
@@ -27,12 +28,11 @@
   };
 
   let item = $state('scope');
-  let result = $state('');
 
   function handleSubmit(event: SubmitEvent & { currentTarget: HTMLFormElement }) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    result = `Scope: ${formData.get('scope') ?? 'None'} · Verification: ${formData.get('checks') ?? 'None'} · Output: ${formData.get('output') ?? 'None'}`;
+    toast.add({ title: 'Agent workflow configured', description: `Scope: ${formData.get('scope') ?? 'None'} · Verification: ${formData.get('checks') ?? 'None'} · Output: ${formData.get('output') ?? 'None'}` });
   }
 </script>
 
@@ -78,8 +78,5 @@
       <QuestionnaireNext>Next</QuestionnaireNext>
       <QuestionnaireSubmit>Save workflow</QuestionnaireSubmit>
     </QuestionnaireActions>
-    {#if result}
-      <p role="status" class="mt-4 text-sm text-muted-foreground">{result}</p>
-    {/if}
   </Questionnaire>
 </div>

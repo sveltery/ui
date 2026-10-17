@@ -49,17 +49,17 @@ Base UI marks an open trigger with its own attributes. A collapsible trigger get
 
 **Sveltery UI:** All eight styles use `data-popup-open:bg-accent` on the sub-triggers of the [Context Menu](/docs/components/context-menu), [Dropdown Menu](/docs/components/dropdown-menu) and [Menubar](/docs/components/menubar).
 
-**Why:** A Base UI submenu trigger gets [`data-popup-open`](https://github.com/mui/base-ui/blob/v1.9.0/packages/react/src/menu/submenu-trigger/MenuSubmenuTriggerDataAttributes.ts), not `data-open`. In upstream's context menu, the parent row loses its highlight when the pointer moves into the submenu. On the [ui.shadcn.com context menu preview](https://ui.shadcn.com/preview/base/context-menu-example), an open sub-trigger with the pointer in its submenu has `data-popup-open` and a transparent background. The highlight is intended: shadcn/ui's Radix variant keeps it, and Base UI's own [submenu demo](https://github.com/mui/base-ui/blob/v1.9.0/docs/src/app/(docs)/react/components/context-menu/demos/submenu/css-modules/index.module.css#L158) styles `[data-popup-open]`.
+**Why:** A Base UI submenu trigger gets [`data-popup-open`](https://github.com/mui/base-ui/blob/v1.9.0/packages/react/src/menu/submenu-trigger/MenuSubmenuTriggerDataAttributes.ts), not `data-open`. In upstream's context menu, the parent row loses its highlight when the pointer moves into the submenu. On the [ui.shadcn.com context menu preview](https://ui.shadcn.com/preview/base/context-menu-example), an open sub-trigger with the pointer in its submenu has `data-popup-open` and a transparent background. The highlight is intended: shadcn/ui's Radix variant keeps it, and Base UI's own [submenu demo](<https://github.com/mui/base-ui/blob/v1.9.0/docs/src/app/(docs)/react/components/context-menu/demos/submenu/css-modules/index.module.css#L158>) styles `[data-popup-open]`.
 
 **Decided:** Hugo Hsi, 2026-10-16
 
 ### Examples copied from the Radix variant use Base UI's attributes
 
-**Upstream:** The chevron in [`collapsible-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/collapsible-example.tsx#L110) rotates on `group-data-[state=open]`. The bookmark icons in [`toggle-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/toggle-example.tsx#L321) (also line 331) fill on `group-data-[state=on]/toggle`. These are Radix attributes.
+**Upstream:** The chevron in [`collapsible-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/collapsible-example.tsx#L110) rotates on `group-data-[state=open]`. The bookmark icons in [`toggle-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/toggle-example.tsx#L321) (also line 331) fill on `group-data-[state=on]/toggle`. These are Radix attributes. The menu buttons and the collapsible chevron in [`sidebar-demo.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/sidebar-demo.tsx#L223) use `data-[state=open]`, and its dropdown menus are `w-(--radix-dropdown-menu-trigger-width)`, a Radix variable.
 
-**Sveltery UI:** The [Collapsible](/docs/components/collapsible) example uses `group-data-panel-open:`, and the [Toggle](/docs/components/toggle) example uses `group-data-pressed/toggle:`.
+**Sveltery UI:** The [Collapsible](/docs/components/collapsible) example uses `group-data-panel-open:`, and the [Toggle](/docs/components/toggle) example uses `group-data-pressed/toggle:`. The [Sidebar](/docs/components/sidebar) demo uses `data-popup-open:`, `group-data-open/collapsible:` and `w-(--anchor-width)`.
 
-**Why:** Base UI never sets `data-state`, so upstream's chevron does not rotate and the bookmark does not fill when pressed.
+**Why:** Base UI never sets `data-state`, so upstream's chevron does not rotate and the bookmark does not fill when pressed. It has no `--radix-dropdown-menu-trigger-width`, so that class sets no width.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
 
@@ -114,6 +114,16 @@ Where upstream code misbehaves on Base UI, Sveltery UI fixes it instead of copyi
 **Sveltery UI:** [Radio Group](/docs/components/radio-group) items and the [Checkbox](/docs/components/checkbox) use `data-disabled:cursor-not-allowed data-disabled:opacity-50`, as upstream's switch already does.
 
 **Why:** In upstream, a disabled radio item looks the same as an enabled one, and a disabled checkbox dims only inside a `Field`, through the style's `group-has-disabled/field:opacity-50`. Base UI sets `data-disabled` on both when they are disabled.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### A disabled Accordion item is dimmed
+
+**Upstream:** The trigger in [`accordion.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/accordion.tsx#L36) dims with `aria-disabled:pointer-events-none aria-disabled:opacity-50`. Base UI 1.9.0 renders a disabled trigger as a native button with `disabled` and no `aria-disabled` ([`AccordionTrigger.tsx`](https://github.com/mui/base-ui/blob/v1.9.0/packages/react/src/accordion/trigger/AccordionTrigger.tsx#L44)).
+
+**Sveltery UI:** The [Accordion](/docs/components/accordion) trigger also uses `disabled:pointer-events-none disabled:opacity-50`.
+
+**Why:** With Base UI 1.9.0, a disabled Accordion item in upstream looks the same as an enabled one. The shadcn/ui site dims it only because it runs an older Base UI that sets `aria-disabled`.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
@@ -353,6 +363,36 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
 
+### The Sidebar page shows its RTL example inline
+
+**Upstream:** The [Sidebar page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/sidebar.mdx?plain=1#L550) links to the full-page `/view/base-nova/sidebar-rtl` instead of previewing it. Its Width section says to set `--sidebar-width-mobile` in the `style` prop, but [`sidebar.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/sidebar.tsx#L193) sets the mobile width from the `SIDEBAR_WIDTH_MOBILE` constant and never reads that variable.
+
+**Sveltery UI:** The [Sidebar](/docs/components/sidebar) page previews `SidebarRtlExample` in a frame under RTL, like the other RTL sections. The Width section names `--sidebar-width` and `--sidebar-width-icon` only, and says the mobile sheet uses `SIDEBAR_WIDTH_MOBILE`.
+
+**Why:** Sveltery UI has no `/view` page for examples, only for blocks. The variable does nothing in either port, so documenting it would mislead.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Sidebar changelog flips the trigger icon with `cn-rtl-flip`
+
+**Upstream:** The [Sidebar page changelog](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/sidebar.mdx?plain=1#L634) says to add `rtl:rotate-180` to the `SidebarTrigger` icon, but [`sidebar.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/sidebar.tsx#L280) uses `cn-rtl-flip`.
+
+**Sveltery UI:** The [Sidebar](/docs/components/sidebar#changelog) changelog says to add `class="cn-rtl-flip"`, which is what the component does.
+
+**Why:** Following upstream's prose would leave the copied icon different from the registry component.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Select Invalid snippet keeps its `Select`
+
+**Upstream:** The [Select page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/select.mdx?plain=1#L139) shows the Invalid snippet as a bare `SelectTrigger`.
+
+**Sveltery UI:** The [Select](/docs/components/select#invalid) snippet wraps the trigger in `<Select {items}>`.
+
+**Why:** A `SelectTrigger` outside a `Select` throws because it has no Select context, so the bare snippet fails when pasted.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ### Sidebar examples fit the preview frame
 
 **Upstream:** The sidebar examples size the provider with `min-h-svh` and the sidebar with `fixed h-svh`, for example in [`sidebar-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/sidebar-example.tsx).
@@ -362,6 +402,81 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Why:** The docs show each example in a preview frame. A sidebar sized to the viewport would overflow it. At phone widths, the inset content is taller than the frame, and `overflow-auto` lets you scroll it. Without it, the frame cuts the content off.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
+
+### The Card changelog edits the style stylesheet
+
+**Upstream:** The "Spacing Variable" changelog in [`card.mdx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/card.mdx) shows diffs to the class strings in `card.tsx`.
+
+**Sveltery UI:** The [Card](/docs/components/card) changelog shows the same changes to the `.cn-card`, `.cn-card-header`, `.cn-card-content` and `.cn-card-footer` rules in the style stylesheet, because the Svelte components carry only the `cn-*` class names.
+
+**Why:** The classes upstream's diff edits do not exist in the Svelte component files.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Calendar page has no Persian / Hijri / Jalali example
+
+**Upstream:** The [Calendar page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/calendar.mdx) shows a Persian calendar built on [`react-day-picker/persian`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/calendar-hijri.tsx#L12).
+
+**Sveltery UI:** The [Calendar](/docs/components/calendar) page keeps the section and says the Persian calendar is not available. It has no preview.
+
+**Why:** `@sveltery/day-picker` ports only the Gregorian calendar, so there is nothing to swap in. A Gregorian calendar with a Persian locale would look like the Persian calendar but show different dates.
+
+### The Button page has no `init --pointer` sentence
+
+**Upstream:** The [Button page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/button.mdx#L69) says the pointer cursor can be enabled with `npx shadcn@latest init --pointer`.
+
+**Sveltery UI:** The [Button](/docs/components/button) page shows only the CSS to add.
+
+**Why:** The `@sveltery/ui` CLI has no `--pointer` option, so the sentence would describe a command that fails.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### The Bubble variants example writes its ghost text as HTML
+
+**Upstream:** The ghost bubble in [`bubble-variants.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/bubble-variants.tsx#L42) renders its text through a `Markdown` component.
+
+**Sveltery UI:** The [Bubble](/docs/components/bubble) Variants example writes the same text with `<p>`, `<strong>` and `<code>`.
+
+**Why:** Sveltery UI has no Markdown component. The preview looks the same.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### The Breadcrumb separator example links to /docs/components
+
+**Upstream:** The Components link in [`breadcrumb-separator.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/breadcrumb-separator.tsx#L24) points to `/components`.
+
+**Sveltery UI:** The [Breadcrumb](/docs/components/breadcrumb) Custom separator example points it to `/docs/components`, as the Collapsed example already does.
+
+**Why:** The docs site prerenders every link, and `/components` is not a page here, so the build fails on it.
+### The Item avatar section does not name an `avatar` variant
+
+**Upstream:** The [Item page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/item.mdx) says "You can use `ItemMedia` with `variant="avatar"` to display an avatar." `ItemMedia` has only the `default`, `icon` and `image` variants, and the example uses the default.
+
+**Sveltery UI:** The [Item](/docs/components/item) page says "You can use `ItemMedia` to display an avatar."
+
+**Why:** `variant="avatar"` does nothing, so copying it from the page would mislead.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Item group example labels its icon buttons
+
+**Upstream:** [`item-group.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/item-group.tsx) renders an icon-only button with no accessible name.
+
+**Sveltery UI:** The [Item](/docs/components/item) group example adds `aria-label="Add {username}"` to each button.
+
+**Why:** A screen reader announces an unnamed button as just "button".
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Input OTP form example narrows its slots on small screens
+
+**Upstream:** [`input-otp-form.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/input-otp-form.tsx) gives each slot `w-11` and the separator `mx-2` at every width.
+
+**Sveltery UI:** The [Input OTP](/docs/components/input-otp) form example adds `max-sm:*:data-[slot=input-otp-slot]:w-9` to each group and `max-sm:mx-0` to the separator.
+
+**Why:** On a phone the card's content area is about 260px, and six `w-11` slots plus the separator need about 312px, so the last slots were clipped.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
 ## Forms
 

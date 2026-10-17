@@ -27,6 +27,7 @@
     "@sveltery/resizable": "workspace:*",
     "@sveltery/svelte": "workspace:*",
     "@sveltery/ui": "workspace:*",
+    "@tabler/icons-svelte-runes": "3.48.0",
     "@tanstack/svelte-table": "9.3.1",
     "ai": "7.0.136",
     "class-variance-authority": "0.7.1",

@@ -1,11 +1,17 @@
 <script lang="ts">
+  import GlobeIcon from '@lucide/svelte/icons/globe';
+  import ImageIcon from '@lucide/svelte/icons/image';
+  import MessageCircleDashedIcon from '@lucide/svelte/icons/message-circle-dashed';
+  import PaperclipIcon from '@lucide/svelte/icons/paperclip';
+  import PlusIcon from '@lucide/svelte/icons/plus';
+  import RotateCwIcon from '@lucide/svelte/icons/rotate-cw';
+  import TelescopeIcon from '@lucide/svelte/icons/telescope';
   import { onDestroy, type Snippet } from 'svelte';
   import type { HTMLButtonAttributes } from 'svelte/elements';
   import { Button } from '$registry/bases/base/ui/button';
   import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
   import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '$registry/bases/base/ui/dropdown-menu';
   import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '$registry/bases/base/ui/empty';
-  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
   import { InputGroupButton } from '$registry/bases/base/ui/input-group';
   import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerProvider, MessageScrollerViewport } from '$registry/bases/base/ui/message-scroller';
   import { Chat } from './message-scroller/chat.svelte.js';
@@ -29,7 +35,7 @@
         <CardDescription>How can I help you today?</CardDescription>
         <CardAction>
           <Button variant="outline" size="icon" aria-label="Reset conversation" title="Reset" disabled={chat.busy} onclick={() => chat.reset()}>
-            <IconPlaceholder lucide="RotateCwIcon" tabler="IconRotateClockwise" hugeicons="RotateClockwiseIcon" phosphor="ArrowClockwiseIcon" remixicon="RiRestartLine" />
+            <RotateCwIcon />
           </Button>
         </CardAction>
       </CardHeader>
@@ -38,7 +44,7 @@
           <Empty class="h-full">
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <IconPlaceholder lucide="MessageCircleDashedIcon" tabler="IconMessageCircle" hugeicons="Message01Icon" phosphor="ChatCircleIcon" remixicon="RiChat1Line" />
+                <MessageCircleDashedIcon />
               </EmptyMedia>
               <EmptyTitle>Morning, shadcn!</EmptyTitle>
               <EmptyDescription>What are we working on today? Press send to start a new conversation</EmptyDescription>
@@ -61,24 +67,24 @@
         <Composer {chat} empty="No messages queued. Reset the conversation.">
           <DropdownMenu>
             <DropdownMenuTrigger render={addButton}>
-              <IconPlaceholder lucide="PlusIcon" tabler="IconPlus" hugeicons="PlusSignIcon" phosphor="PlusIcon" remixicon="RiAddLine" />
+              <PlusIcon />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" side="top" class="w-44">
               <DropdownMenuItem>
-                <IconPlaceholder lucide="PaperclipIcon" tabler="IconPaperclip" hugeicons="AttachmentIcon" phosphor="PaperclipIcon" remixicon="RiAttachment2" />
+                <PaperclipIcon />
                 Add Photos & Files
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <IconPlaceholder lucide="ImageIcon" tabler="IconPhoto" hugeicons="ImageIcon" phosphor="ImageIcon" remixicon="RiImageLine" />
+                <ImageIcon />
                 Create Image
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <IconPlaceholder lucide="TelescopeIcon" tabler="IconTelescope" hugeicons="TelescopeIcon" phosphor="BinocularsIcon" remixicon="RiSearchEyeLine" />
+                <TelescopeIcon />
                 Deep Research
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <IconPlaceholder lucide="GlobeIcon" tabler="IconGlobe" hugeicons="Globe02Icon" phosphor="GlobeIcon" remixicon="RiGlobeLine" />
+                <GlobeIcon />
                 Web Search
               </DropdownMenuItem>
             </DropdownMenuContent>

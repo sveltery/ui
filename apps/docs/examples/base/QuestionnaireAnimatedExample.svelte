@@ -15,6 +15,7 @@
     QuestionnaireSubmit,
     QuestionnaireTitle,
   } from '$registry/bases/base/ui/questionnaire';
+  import { toast } from '$registry/bases/base/ui/toast';
 
   const items = [
     { name: 'task', required: true },
@@ -31,12 +32,10 @@
     entry.set(1);
   }
 
-  let result = $state('');
-
   function handleSubmit(event: SubmitEvent & { currentTarget: HTMLFormElement }) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    result = `Task: ${formData.get('task') ?? 'None'} · Review: ${formData.get('review') ?? 'None'} · Delivery: ${formData.get('delivery') ?? 'None'}`;
+    toast.add({ title: 'Agent workflow saved', description: `Task: ${formData.get('task') ?? 'None'} · Review: ${formData.get('review') ?? 'None'} · Delivery: ${formData.get('delivery') ?? 'None'}` });
   }
 </script>
 
@@ -83,7 +82,4 @@
     <QuestionnaireNext>Next</QuestionnaireNext>
     <QuestionnaireSubmit>Save workflow</QuestionnaireSubmit>
   </QuestionnaireActions>
-  {#if result}
-    <p role="status" class="mt-4 text-sm text-muted-foreground">{result}</p>
-  {/if}
 </Questionnaire>

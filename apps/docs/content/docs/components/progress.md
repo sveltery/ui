@@ -3,7 +3,7 @@ title: Progress
 description: Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.
 ---
 
-<ComponentPreview name="base/ProgressExample" />
+<ComponentPreview name="base/ProgressDemoExample" />
 
 ## Installation
 
@@ -52,12 +52,58 @@ The component folders import each other with relative paths, so keep them side b
 ```
 
 ```svelte
-<Progress value={56}>
+<Progress value={33} />
+```
+
+`value` is a plain prop: pass a number, or `null` for an indeterminate bar.
+
+## Composition
+
+### With label and value
+
+Use `ProgressLabel` and `ProgressValue` to add a label and value display.
+
+```svelte
+<script lang="ts">
+  import { Progress, ProgressLabel, ProgressValue } from '#lib/components/ui/progress';
+</script>
+
+<Progress value={56} class="w-full max-w-sm">
   <ProgressLabel>Upload progress</ProgressLabel>
   <ProgressValue />
 </Progress>
 ```
 
-## API reference
+```text
+Progress
+├── ProgressLabel
+├── ProgressValue
+└── ProgressTrack
+    └── ProgressIndicator
+```
 
-`Progress` is styled on top of the Sveltery Base `Progress` primitive, which reports the value to assistive technology. `Progress` renders the track and indicator after its children, so pass `ProgressLabel` and `ProgressValue` as children. `value` is a plain prop: pass a number, or `null` for an indeterminate bar. See the [Base UI Progress documentation](https://base-ui.com/react/components/progress) for the behavior it ports.
+`Progress` renders the track and indicator after its children, so pass `ProgressLabel` and `ProgressValue` as children.
+
+## Label
+
+Use `ProgressLabel` and `ProgressValue` to add a label and value display.
+
+<ComponentPreview name="base/ProgressLabelExample" />
+
+## Controlled
+
+A progress bar that can be controlled by a slider.
+
+<ComponentPreview name="base/ProgressControlledExample" />
+
+## RTL
+
+Wrap the progress bar in a [DirectionProvider](/docs/components/direction) and set `dir` on `Progress`. Use the buttons to switch the language.
+
+<ComponentPreview name="base/ProgressRtlExample" align="start" />
+
+## API Reference
+
+See the [Base UI Progress](https://base-ui.com/react/components/progress#api-reference) documentation.
+
+`Progress` is styled on top of the Sveltery Base `Progress` primitive, which reports the value to assistive technology. `ProgressValue` takes an optional `children` snippet that receives the formatted value and the raw value.
