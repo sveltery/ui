@@ -212,7 +212,7 @@ Wrap the menu in a [DirectionProvider](/docs/components/direction) and set `dir`
 
 <ComponentPreview name="base/CommandRtlExample" align="start" />
 
-## API reference
+## API Reference
 
 The [`@sveltery/command` README](https://github.com/sveltery/ui/tree/main/packages/command) documents the parts, the props and the keyboard behavior in full. The tables below summarize the props.
 

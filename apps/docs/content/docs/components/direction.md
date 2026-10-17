@@ -3,7 +3,9 @@ title: Direction
 description: A provider component that sets the text direction for your application.
 ---
 
-`DirectionProvider` sets the text direction, `ltr` or `rtl`, for the components inside it. It supports right-to-left languages such as Arabic, Hebrew and Persian. The preview below is in RTL mode. Use the buttons to switch the language.
+The `DirectionProvider` component is used to set the text direction (`ltr` or `rtl`) for your application. This is essential for supporting right-to-left languages like Arabic, Hebrew, and Persian.
+
+Here's a preview of the component in RTL mode. Use the language buttons to switch the language. To see more examples, look for the RTL section on components pages.
 
 <ComponentPreview name="base/DirectionExample" hideCode />
 
@@ -77,7 +79,7 @@ Set `dir` on the document and wrap the app in `DirectionProvider` with the same 
 
 ## useDirection
 
-`useDirection` reads the direction of the nearest `DirectionProvider`, or `ltr` when there is none. Call it while the component initializes. It returns an object, so read its `direction` property in the template or in `$derived` to stay in sync with the provider.
+The `useDirection` hook is used to get the current direction of the application. It reads the nearest `DirectionProvider`, or `ltr` when there is none. Call it while the component initializes. It returns an object, so read its `direction` property in the template or in `$derived` to stay in sync with the provider.
 
 ```svelte
 <script lang="ts">
@@ -89,6 +91,6 @@ Set `dir` on the document and wrap the app in `DirectionProvider` with the same 
 <div>Current direction: {reading.direction}</div>
 ```
 
-## API reference
+## API Reference
 
-See the [Base UI Direction Provider](https://base-ui.com/react/utils/direction-provider) documentation for more information.
+See the [Base UI Direction Provider](https://base-ui.com/react/utils/direction-provider#api-reference) documentation.
