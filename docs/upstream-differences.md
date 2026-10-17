@@ -8,10 +8,6 @@ shadcn/ui ships both Sonner (`sonner.tsx`, on the `sonner` library) and Toast (o
 
 Where upstream code imports `toast` from `sonner`, Sveltery UI imports `toast` from `$lib/components/ui/toast` and calls `toast.add({ title, description })` or `toast.promise()`. This covers the docs examples and blocks too.
 
-## Form and FormError
-
-`Field` and its parts are plain elements, as in shadcn/ui, and you wire them by hand. Sveltery UI also ships `Form`, which is Base `Form`, and `FormError`, which is Base `Form.Error`. shadcn/ui has neither. shadcn/ui's form pages build on React Hook Form and TanStack Form. Sveltery UI's form pages use SvelteKit remote forms and form actions with a plain `<form>`.
-
 ## Upstream bugs fixed on Base
 
 Where upstream code misbehaves on Base UI, Sveltery UI fixes it instead of copying it. Hugo Hsi decided on 2026-10-14 to keep these fixes and log each one here. Paths are under `apps/v4/registry/bases/base/` in shadcn-ui/ui at 4233ed1.
