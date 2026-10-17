@@ -1,81 +1,66 @@
 <script lang="ts">
-  import { AreaChart } from 'layerchart';
-  import { curveStep } from 'd3-shape';
-  import { scaleUtc } from 'd3-scale';
+  import { Area, AreaChart, CartesianGrid, XAxis } from '@sveltery/recharts';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';
-  import ActivityIcon from './icons/ActivityIcon.svelte';
+  import Activity from './icons/ActivityIcon.svelte';
 
   const chartData = [
-    { date: new Date('2024-01-01'), desktop: 186 },
-    { date: new Date('2024-02-01'), desktop: 305 },
-    { date: new Date('2024-03-01'), desktop: 237 },
-    { date: new Date('2024-04-01'), desktop: 73 },
-    { date: new Date('2024-05-01'), desktop: 209 },
-    { date: new Date('2024-06-01'), desktop: 214 },
-  ];
+    { month: "January", desktop: 186 },
+    { month: "February", desktop: 305 },
+    { month: "March", desktop: 237 },
+    { month: "April", desktop: 73 },
+    { month: "May", desktop: 209 },
+    { month: "June", desktop: 214 },
+  ]
 
   const chartConfig = {
-    desktop: { label: 'Desktop', color: 'var(--chart-1)', icon: ActivityIcon },
-  } satisfies ChartConfig;
+    desktop: {
+      label: "Desktop",
+      color: "var(--chart-1)",
+      icon: Activity,
+    },
+  } satisfies ChartConfig
 </script>
 
-<Card class="w-full max-w-md">
+<Card>
   <CardHeader>
     <CardTitle>Area Chart - Step</CardTitle>
     <CardDescription>Showing total visitors for the last 6 months</CardDescription>
   </CardHeader>
   <CardContent>
-    <ChartContainer aria-label="Area Chart - Step" config={chartConfig}>
+    <ChartContainer config={chartConfig}>
       <AreaChart
+        accessibilityLayer
         data={chartData}
-        x="date"
-        xScale={scaleUtc()}
-        series={[
-          {
-            key: 'desktop',
-            label: 'Desktop',
-            color: 'var(--color-desktop)',
-          },
-        ]}
-        seriesLayout="stack"
-        props={{
-          area: {
-            curve: curveStep,
-            'fill-opacity': 0.4,
-            line: { class: 'stroke-1' },
-            motion: 'tween',
-          },
-          xAxis: {
-            tickLength: 14,
-            format: (v: Date) => v.toLocaleDateString('en-US', { month: 'short' }),
-          },
-          yAxis: { format: () => '' },
+        margin={{
+          left: 12,
+          right: 12,
         }}
       >
-        {#snippet tooltip()}
-          <ChartTooltip hideLabel />
-        {/snippet}
+        <CartesianGrid vertical={false} />
+        <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} tickFormatter={(value) => value.slice(0, 3)} />
+        <ChartTooltip cursor={false}>
+          {#snippet content(props: TooltipContentArgs)}
+            <ChartTooltipContent hideLabel {...props} />
+          {/snippet}
+        </ChartTooltip>
+        <Area dataKey="desktop" type="step" fill="var(--color-desktop)" fillOpacity={0.4} stroke="var(--color-desktop)" />
       </AreaChart>
     </ChartContainer>
   </CardContent>
   <CardFooter>
     <div class="flex w-full items-start gap-2 text-sm">
       <div class="grid gap-2">
-        <div class="flex items-center gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <IconPlaceholder
+        <div class="flex items-center gap-2 leading-none font-medium">Trending up by 5.2% this month <IconPlaceholder
             lucide="TrendingUpIcon"
             tabler="IconTrendingUp"
             hugeicons="TradeUpIcon"
             phosphor="TrendUpIcon"
             remixicon="RiLineChartLine"
-            class="size-4"
-          />
-        </div>
-        <div class="text-muted-foreground flex items-center gap-2 leading-none">
-          January - June 2024
-        </div>
+            class="h-4 w-4"
+          /></div>
+        <div class="flex items-center gap-2 leading-none text-muted-foreground">January - June 2024</div>
       </div>
     </div>
   </CardFooter>

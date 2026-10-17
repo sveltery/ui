@@ -387,11 +387,21 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
 
+### The Command page documents filtering and the dialog
+
+**Upstream:** The [Command page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/command.mdx#L151-L153) has no section on filtering or on `CommandDialog`, and its API Reference sends readers to the [cmdk](https://github.com/dip/cmdk) README.
+
+**Sveltery UI:** The [Command](/docs/components/command) page adds a Filtering and ranking section (`keywords`, `filter`, `shouldFilter`) after Composition, and a Dialog section with a ⌘J example after Scrollable. Its API Reference links the `@sveltery/command` README and summarizes the props in tables.
+
+**Why:** The cmdk README documents the React API, which the Svelte port does not share in every detail, so the page covers what readers would otherwise have looked up there.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
 ### Navigation Menu example links go to Sveltery UI pages
 
 **Upstream:** The links in [`navigation-menu-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/navigation-menu-example.tsx#L24-L53) point at shadcn/ui's `/docs/primitives/*` routes, and the Typography link at [line 82](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/navigation-menu-example.tsx#L82) points at `/docs/primitives/typography`.
 
-**Sveltery UI:** The [Navigation Menu](/docs/components/navigation-menu) example links to the matching `/docs/components/*` pages, Typography included. The `/docs` and `/docs/installation` links keep upstream's values.
+**Sveltery UI:** The [Navigation Menu](/docs/components/navigation-menu) example links to the matching `/docs/components/*` pages. The Typography link goes to [Typeset](/docs/typeset), where upstream's site redirects Typography. The `/docs` and `/docs/installation` links keep upstream's values.
 
 **Why:** Upstream's `/docs/primitives/*` paths do not exist on this site, so the links would return 404.
 
@@ -417,6 +427,16 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
+### The Drawer page has no Vaul migration guide
+
+**Upstream:** The [Drawer page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/drawer.mdx) opens with a callout and ends with a "Migrating from Vaul" section for projects that installed the earlier Vaul-based drawer.
+
+**Sveltery UI:** The [Drawer](/docs/components/drawer) page leaves both out.
+
+**Why:** Sveltery UI never shipped a Vaul-based drawer, so there is nothing to migrate from.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ### The Select Invalid snippet keeps its `Select`
 
 **Upstream:** The [Select page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/select.mdx?plain=1#L139) shows the Invalid snippet as a bare `SelectTrigger`.
@@ -436,6 +456,16 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Why:** The docs show each example in a preview frame. A sidebar sized to the viewport would overflow it. At phone widths, the inset content is taller than the frame, and `overflow-auto` lets you scroll it. Without it, the frame cuts the content off.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
+
+### The Chart page holds the charts library
+
+**Upstream:** [`chart.mdx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/chart.mdx#L25) links to a separate [charts library](https://github.com/shadcn-ui/ui/tree/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/app/%28app%29/charts) at `/charts`, with one page per chart type.
+
+**Sveltery UI:** The [Chart](/docs/components/chart#charts-library) page has a Charts Library section after its guide. It shows the area, bar, line, pie, radar, radial and tooltip charts, each converted from upstream's `registry/new-york-v4/charts` file, and ends with the Examples and API reference sections of the other component pages.
+
+**Why:** These docs have no `/charts` route, so the link would return 404. The charts stay one click from the guide.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
 ### The Card changelog edits the style stylesheet
 
@@ -476,6 +506,26 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Why:** Sveltery UI has no Markdown component. The preview looks the same.
 
 **Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### The Field checkbox example checks "Sync Desktop & Documents folders" only
+
+**Upstream:** In [`field-checkbox.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/field-checkbox.tsx#L33-L40), the "Hard disks" `FieldLabel` has `defaultChecked`. A label ignores that prop, so the checkbox next to it stays unchecked.
+
+**Sveltery UI:** The [Field](/docs/components/field) example leaves `defaultChecked` off that label.
+
+**Why:** The prop does nothing on a label. The example renders the same without it, and it is not valid on a Svelte `label`.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Input Group examples use a native textarea and `navigator.clipboard`
+
+**Upstream:** The [Custom Input](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/input-group-custom.tsx) example uses `react-textarea-autosize`. The [Button](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/input-group-button.tsx) example copies with a `useCopyToClipboard` hook.
+
+**Sveltery UI:** The [Input Group](/docs/components/input-group) Custom Input example is a plain `textarea` with `field-sizing-content`. The Button example calls `navigator.clipboard.writeText`.
+
+**Why:** `react-textarea-autosize` and the React hook have no Svelte build in these docs. In browsers that support `field-sizing`, `field-sizing-content` makes a native `textarea` grow with its text, which is what the library does. Elsewhere the textarea keeps its height and scrolls.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
 ### The Breadcrumb separator example links to /docs/components
 
@@ -639,7 +689,7 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Sveltery UI:** The [Code Block](/docs/components/code-block) page leaves both out. Its RTL example renders in Rhea like the rest of the page, where upstream's [`code-block-rtl`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/code-block.mdx#L369) preview uses Nova.
 
-**Why:** Streamdown is a React library, so the Markdown example needs a Svelte Markdown renderer first. Typeset is not ported yet. A docs page renders every preview in one style.
+**Why:** Streamdown is a React library, so the Markdown example needs a Svelte Markdown renderer first. The Typeset example comes with the Markdown one, which renders its message inside `typeset`. A docs page renders every preview in one style.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 

@@ -1,98 +1,85 @@
 <script lang="ts">
+  import { Bar, BarChart, CartesianGrid, Rectangle, XAxis, type BarShapeProps, type SvelteArgs } from '@sveltery/recharts';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';
-  import { scaleBand } from 'd3-scale';
-  import { Bar, BarChart } from 'layerchart';
-  import { cubicInOut } from 'svelte/easing';
 
   const chartData = [
-    { browser: 'chrome', visitors: 187, color: 'var(--color-chrome)' },
-    { browser: 'safari', visitors: 200, color: 'var(--color-safari)' },
-    { browser: 'firefox', visitors: 275, color: 'var(--color-firefox)' },
-    { browser: 'edge', visitors: 173, color: 'var(--color-edge)' },
-    { browser: 'other', visitors: 90, color: 'var(--color-other)' },
-  ];
+    { browser: "chrome", visitors: 187, fill: "var(--color-chrome)" },
+    { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
+    { browser: "firefox", visitors: 275, fill: "var(--color-firefox)" },
+    { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
+    { browser: "other", visitors: 90, fill: "var(--color-other)" },
+  ]
 
   const chartConfig = {
-    visitors: { label: 'Visitors' },
-    chrome: { label: 'Chrome', color: 'var(--chart-1)' },
-    safari: { label: 'Safari', color: 'var(--chart-2)' },
-    firefox: { label: 'Firefox', color: 'var(--chart-3)' },
-    edge: { label: 'Edge', color: 'var(--chart-4)' },
-    other: { label: 'Other', color: 'var(--chart-5)' },
-  } satisfies ChartConfig;
+    visitors: {
+      label: "Visitors",
+    },
+    chrome: {
+      label: "Chrome",
+      color: "var(--chart-1)",
+    },
+    safari: {
+      label: "Safari",
+      color: "var(--chart-2)",
+    },
+    firefox: {
+      label: "Firefox",
+      color: "var(--chart-3)",
+    },
+    edge: {
+      label: "Edge",
+      color: "var(--chart-4)",
+    },
+    other: {
+      label: "Other",
+      color: "var(--chart-5)",
+    },
+  } satisfies ChartConfig
 
+  const ACTIVE_INDEX = 2
 </script>
 
-<Card class="w-full max-w-md">
+<Card>
   <CardHeader>
     <CardTitle>Bar Chart - Active</CardTitle>
     <CardDescription>January - June 2024</CardDescription>
   </CardHeader>
   <CardContent>
-    <ChartContainer aria-label="Bar Chart - Active" config={chartConfig}>
-      <BarChart
-        data={chartData}
-        x="browser"
-        c="color"
-        y="visitors"
-        cRange={chartData.map((c) => c.color)}
-        xScale={scaleBand().padding(0.25)}
-        axis="x"
-        rule={false}
-        props={{
-          xAxis: {
-            tickLength: 16,
-            format: (d) => chartConfig[d as keyof typeof chartConfig].label,
-          },
-          highlight: { area: { fill: 'none' } },
-        }}
-      >
-        {#snippet tooltip()}
-          <ChartTooltip hideLabel nameKey="visitors" />
-        {/snippet}
-        {#snippet marks({ context })}
-          {#each chartData as data, i (data.browser)}
-            <Bar
-              {data}
-              fill={data.color}
-              radius={8}
-              rounded="all"
-              initialY={context.height}
-              initialHeight={0}
-              motion={{
-                y: { type: 'tween', duration: 500, easing: cubicInOut },
-                height: { type: 'tween', duration: 500, easing: cubicInOut },
-              }}
-              fillOpacity={i === 2 ? 0.8 : undefined}
-              stroke={i === 2 ? data.color : undefined}
-              strokeWidth={i === 2 ? 2 : undefined}
-              stroke-dasharray={i === 2 ? 4 : undefined}
-              stroke-dashoffset={i === 2 ? 4 : undefined}
-            />
-          {/each}
-        {/snippet}
+    <ChartContainer config={chartConfig}>
+      <BarChart accessibilityLayer data={chartData}>
+        <CartesianGrid vertical={false} />
+        <XAxis
+          dataKey="browser"
+          tickLine={false}
+          tickMargin={10}
+          axisLine={false}
+          tickFormatter={(value) =>
+            chartConfig[value as keyof typeof chartConfig]?.label}
+        />
+        <ChartTooltip cursor={false}>
+          {#snippet content(props: TooltipContentArgs)}
+            <ChartTooltipContent hideLabel {...props} />
+          {/snippet}
+        </ChartTooltip>
+        <Bar dataKey="visitors" strokeWidth={2} radius={8}>
+          {#snippet shape({ index, ...props }: SvelteArgs<BarShapeProps>)}
+            {#if index === ACTIVE_INDEX}<Rectangle {...props} fillOpacity={0.8} stroke={props.payload.fill} strokeDasharray={4} strokeDashoffset={4} />{:else}<Rectangle {...props} />{/if}
+          {/snippet}
+        </Bar>
       </BarChart>
     </ChartContainer>
   </CardContent>
-  <CardFooter>
-    <div class="flex w-full items-start gap-2 text-sm">
-      <div class="grid gap-2">
-        <div class="flex items-center gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <IconPlaceholder
-            lucide="TrendingUpIcon"
-            tabler="IconTrendingUp"
-            hugeicons="TradeUpIcon"
-            phosphor="TrendUpIcon"
-            remixicon="RiLineChartLine"
-            class="size-4"
-          />
-        </div>
-        <div class="text-muted-foreground flex items-center gap-2 leading-none">
-          Showing total visitors for the last 6 months
-        </div>
-      </div>
-    </div>
+  <CardFooter class="flex-col items-start gap-2 text-sm">
+    <div class="flex gap-2 leading-none font-medium">Trending up by 5.2% this month <IconPlaceholder
+        lucide="TrendingUpIcon"
+        tabler="IconTrendingUp"
+        hugeicons="TradeUpIcon"
+        phosphor="TrendUpIcon"
+        remixicon="RiLineChartLine"
+        class="h-4 w-4"
+      /></div>
+    <div class="leading-none text-muted-foreground">Showing total visitors for the last 6 months</div>
   </CardFooter>
 </Card>

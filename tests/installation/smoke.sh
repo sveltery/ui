@@ -30,7 +30,8 @@ node -e '
   fs.writeFileSync(`${consumer}/package.json`, JSON.stringify({ name: "consumer", private: true, type: "module", packageManager: pkg.packageManager, dependencies: deps }));
   // Point any range on a packed package at its tarball too.
   const overrides = Object.entries(tarballs).map(([name, spec]) => `  "${name}": "${spec}"\n`).join("");
-  const workspace = fs.readFileSync(`${root}/pnpm-workspace.yaml`, "utf8").replace(/^packages:\n(  - .*\n)+/m, "");
+  // The consumer stands in for an app, which gets neither the workspace packages nor the dependency patches.
+  const workspace = fs.readFileSync(`${root}/pnpm-workspace.yaml`, "utf8").replace(/^packages:\n(  - .*\n)+/m, "").replace(/^patchedDependencies:\n(  .*\n)+/m, "");
   fs.writeFileSync(`${consumer}/pnpm-workspace.yaml`, /^overrides:\n/m.test(workspace) ? workspace.replace(/^overrides:\n/m, `overrides:\n${overrides}`) : `${workspace}overrides:\n${overrides}`);
 ' "$PWD" "$consumer"
 (cd "$consumer" && pnpm install --config.auto-install-peers=true >/dev/null && node --conditions=svelte check.mjs && node exports.mjs && pnpm exec tsc -p tsconfig.json && echo 'Every export of every package type-checks')
