@@ -148,7 +148,7 @@ Bind `layout` to read the sizes and to set them. The layout maps each panel `id`
 </ResizablePanelGroup>
 ```
 
-The server renders the default sizes, and the browser applies the saved ones when the page loads.
+The server renders the panels at equal sizes, and the browser applies the saved or default sizes when the group mounts. Pass `defaultLayout` to render other sizes on the server.
 
 ## Collapsible panels
 
@@ -182,21 +182,25 @@ Bind the panel with `bind:this` to collapse, expand or resize it from your own c
 
 ## Keyboard
 
-A handle is a focusable window splitter. It follows the WAI-ARIA pattern and reports the size of the panel before it in `aria-valuenow`, `aria-valuemin` and `aria-valuemax`.
+A handle is a focusable window splitter. It follows the WAI-ARIA pattern and reports the size of the panel on its left, or above it, in `aria-valuenow`, `aria-valuemin` and `aria-valuemax`.
 
 | Key | Action |
 | --- | --- |
 | Arrow Left, Arrow Right | Move a vertical handle by 5 percent in a horizontal group |
 | Arrow Up, Arrow Down | Move a horizontal handle by 5 percent in a vertical group |
 | Home, End | Move the handle as far as the panels allow |
-| Enter | Collapse or expand the panel before the handle, when it is collapsible |
+| Enter | Collapse or expand the panel on the left of or above the handle, when it is collapsible |
 | F6, Shift+F6 | Move focus to the next or previous handle in the group |
 
 Double-click a handle to reset the first panel beside it that has a `defaultSize` to that size. Set `disableDoubleClick` on the handle to turn this off.
 
+## Pointer
+
+A pointer grabs a handle from up to 5 pixels away, or 10 pixels on a touch screen, so a thin handle is easy to hit. While the pointer hovers or drags a handle, the page shows the resize cursor and the handle has `data-separator="hover"` or `data-separator="active"`. Where two groups cross, as in nested groups, one drag resizes both. Set `resizeTargetMinimumSize` on the group to change the grab area, and `disableCursor` to keep the page cursor.
+
 ## RTL
 
-A horizontal group follows the text direction. In a right-to-left page the first panel sits on the right, a drag moves the handle with the pointer, and Arrow Left and Arrow Right swap. Set `dir` on the group or one of its ancestors.
+A horizontal group follows the text direction. In a right-to-left page the first panel sits on the right. Panels are resized in the order they sit on screen, so a drag and the arrow keys move the handle the same way as in a left-to-right page. Set `dir` on the group or one of its ancestors.
 
 ```svelte
 <div dir="rtl">
@@ -220,6 +224,9 @@ A horizontal group follows the text direction. In a right-to-left page the first
 | `onLayoutChange` | `(layout) => void` | | Runs for every change, including each step of a drag |
 | `onLayoutChanged` | `(layout, { isUserInteraction }) => void` | | Runs once a change settles |
 | `disabled` | `boolean` | `false` | Turns off resizing for every handle |
+| `disableCursor` | `boolean` | `false` | Keeps the page cursor while a pointer hovers or drags a handle |
+| `resizeTargetMinimumSize` | `{ coarse: number, fine: number }` | `{ coarse: 20, fine: 10 }` | The smallest grab area of a handle in pixels, for touch and for mouse pointers |
+| `id` | `string` | generated | Set on the group as `id` and `data-testid` |
 | `class` | `string` | | Added to the group |
 
 ### ResizablePanel
@@ -234,7 +241,8 @@ A horizontal group follows the text direction. In a right-to-left page the first
 | `collapsedSize` | `number \| string` | `0` | The size when collapsed |
 | `collapsedThreshold` | `number \| string` | half way | How far past `minSize` the panel moves before it collapses, and past `collapsedSize` before it expands |
 | `onResize` | `(size, id, previous) => void` | | Runs when the panel size changes. A size is `{ asPercentage, inPixels }` |
-| `class` | `string` | | Added to the panel |
+| `class` | `string` | | Added to the element inside the panel that holds its content |
+| `style` | `string` | | Added to the element inside the panel that holds its content |
 
 A panel bound with `bind:this` has these methods.
 
@@ -255,7 +263,7 @@ A panel bound with `bind:this` has these methods.
 | `disableDoubleClick` | `boolean` | `false` | Stops a double click from resetting the panel beside the handle to its default size |
 | `class` | `string` | | Added to the handle |
 
-`ResizablePanelGroup`, `ResizablePanel` and `ResizableHandle` pass every other attribute to their `div`.
+`ResizablePanelGroup`, `ResizablePanel` and `ResizableHandle` pass every other attribute to their outer `div`.
 
 ### savedLayout
 

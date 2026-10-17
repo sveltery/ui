@@ -31,13 +31,24 @@ it('renders the group, panels and handle with the upstream slots and classes', (
   expect(group.style.flexDirection).toBe('row');
   expect(byId('vertical').style.flexDirection).toBe('column');
   expect(byId('vertical').classList.contains('extra')).toBe(true);
+  expect(group.dataset.group).toBe('true');
+  expect(group.dataset.testid).toBe('horizontal');
   const left = byId('left');
   expect(left.dataset.slot).toBe('resizable-panel');
-  expect(left.hasAttribute('data-panel')).toBe(true);
-  expect(left.classList.contains('left')).toBe(true);
+  expect(left.dataset.panel).toBe('true');
+  expect(left.dataset.testid).toBe('left');
+  expect(left.hasAttribute('class')).toBe(false);
   expect(left.style.overflow).toBe('hidden');
+  expect(left.style.display).toBe('flex');
+  const content = left.firstElementChild as HTMLElement;
+  expect(content.className).toBe('left');
+  expect(content.textContent).toBe('Left');
+  expect(content.style.flexGrow).toBe('1');
   const handle = byId('handle');
   expect(handle.dataset.slot).toBe('resizable-handle');
+  expect(handle.dataset.testid).toBe('handle');
+  expect(handle.style.cursor).toBe('');
+  expect(handle.style.flexGrow).toBe('0');
   expect(handle.className).toContain('cn-resizable-handle relative flex w-px items-center justify-center bg-border');
   expect(handle.className).toContain('[&[aria-orientation=horizontal]>div]:rotate-90');
   expect(handle.querySelector('div')!.className).toBe('cn-resizable-handle-icon z-10 flex shrink-0');
@@ -119,13 +130,12 @@ it('moves to the limits with Home and End and toggles a collapsible panel with E
 });
 
 it('leaves a key it does not handle alone and ignores Enter on a panel that cannot collapse', () => {
-  const { byId, press } = setup();
+  const { byId, grow, press } = setup();
   const unhandled = new KeyboardEvent('keydown', { key: 'a', bubbles: true, cancelable: true });
   byId('handle').dispatchEvent(unhandled);
   expect(unhandled.defaultPrevented).toBe(false);
-  const enter = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true });
-  byId('vertical-handle').dispatchEvent(enter);
-  expect(enter.defaultPrevented).toBe(false);
+  press('vertical-handle', 'Enter');
+  expect(grow('top')).toBe('25');
   press('handle', 'ArrowRight');
   expect(byId('handle').getAttribute('aria-valuenow')).toBe('35');
 });

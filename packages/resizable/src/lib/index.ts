@@ -7,4 +7,4 @@ export { adjustLayoutByDelta, clampPanelSize, resolveLayout, separatorRange, val
 export type { Layout, PanelConstraints, ResizeTrigger } from './layout.js';
 export { toPercent } from './units.js';
 export type { SizeInput, UnitContext } from './units.js';
-export type { GroupProps, LayoutChangeDetails, Orientation, PanelProps, PanelSize, SeparatorProps } from './types.js';
+export type { GroupProps, LayoutChangeDetails, Orientation, PanelProps, PanelSize, ResizeTargetMinimumSize, SeparatorProps } from './types.js';
