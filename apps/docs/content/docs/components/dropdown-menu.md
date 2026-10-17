@@ -3,7 +3,7 @@ title: Dropdown Menu
 description: Displays a menu to the user, such as a set of actions or functions, triggered by a button.
 ---
 
-<ComponentPreview name="base/DropdownMenuExample" />
+<ComponentPreview name="base/DropdownMenuDemoExample" align="start" />
 
 ## Installation
 
@@ -53,7 +53,12 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <DropdownMenu>
-  <DropdownMenuTrigger>Open</DropdownMenuTrigger>
+  <DropdownMenuTrigger>
+    {#snippet render(props, _state, content)}
+      <Button variant="outline" {...props}>{@render content?.()}</Button>
+    {/snippet}
+    Open
+  </DropdownMenuTrigger>
   <DropdownMenuContent>
     <DropdownMenuGroup>
       <DropdownMenuLabel>My Account</DropdownMenuLabel>
@@ -61,53 +66,126 @@ The component folders import each other with relative paths, so keep them side b
       <DropdownMenuItem>Billing</DropdownMenuItem>
     </DropdownMenuGroup>
     <DropdownMenuSeparator />
-    <DropdownMenuItem variant="destructive">Log out</DropdownMenuItem>
+    <DropdownMenuGroup>
+      <DropdownMenuItem>Team</DropdownMenuItem>
+      <DropdownMenuItem>Subscription</DropdownMenuItem>
+    </DropdownMenuGroup>
   </DropdownMenuContent>
 </DropdownMenu>
 ```
 
 The arrow keys move the highlight, Enter or a click activates an item and closes the menu, and Escape closes it and returns focus to the trigger. Bind `open` on `DropdownMenu` to read or change the state from outside.
 
-## Checkboxes and radio groups
+## Composition
 
-Bind `checked` on `DropdownMenuCheckboxItem` and `value` on `DropdownMenuRadioGroup`. Neither closes the menu when picked.
+Use the following composition to build a `DropdownMenu`.
 
-```svelte
-<script lang="ts">
-  let showStatusBar = $state(true);
-  let position = $state('bottom');
-</script>
-
-<DropdownMenuContent>
-  <DropdownMenuCheckboxItem bind:checked={showStatusBar}>Status Bar</DropdownMenuCheckboxItem>
-  <DropdownMenuSeparator />
-  <DropdownMenuRadioGroup bind:value={position}>
-    <DropdownMenuRadioItem value="top">Top</DropdownMenuRadioItem>
-    <DropdownMenuRadioItem value="bottom">Bottom</DropdownMenuRadioItem>
-  </DropdownMenuRadioGroup>
-</DropdownMenuContent>
+```text
+DropdownMenu
+├── DropdownMenuTrigger
+└── DropdownMenuContent
+    ├── DropdownMenuGroup
+    │   ├── DropdownMenuLabel
+    │   ├── DropdownMenuItem
+    │   └── DropdownMenuItem
+    ├── DropdownMenuSeparator
+    ├── DropdownMenuGroup
+    │   ├── DropdownMenuLabel
+    │   ├── DropdownMenuCheckboxItem
+    │   └── DropdownMenuCheckboxItem
+    ├── DropdownMenuSeparator
+    ├── DropdownMenuGroup
+    │   ├── DropdownMenuLabel
+    │   └── DropdownMenuRadioGroup
+    │       ├── DropdownMenuRadioItem
+    │       └── DropdownMenuRadioItem
+    └── DropdownMenuSub
+        ├── DropdownMenuSubTrigger
+        └── DropdownMenuSubContent
+            └── DropdownMenuGroup
+                ├── DropdownMenuLabel
+                ├── DropdownMenuItem
+                └── DropdownMenuItem
 ```
 
-## Submenus
+## Basic
 
-Wrap a `DropdownMenuSubTrigger` and a `DropdownMenuSubContent` in `DropdownMenuSub`. The submenu opens on hover, on Enter and on the arrow key toward its side, and the opposite arrow key closes it.
+A basic dropdown menu with labels and separators.
 
-```svelte
-<DropdownMenuSub>
-  <DropdownMenuSubTrigger>Invite users</DropdownMenuSubTrigger>
-  <DropdownMenuPortal>
-    <DropdownMenuSubContent>
-      <DropdownMenuItem>Email</DropdownMenuItem>
-      <DropdownMenuItem>Message</DropdownMenuItem>
-    </DropdownMenuSubContent>
-  </DropdownMenuPortal>
-</DropdownMenuSub>
-```
+<ComponentPreview name="base/DropdownMenuBasicExample" align="start" />
+
+## Submenu
+
+Use `DropdownMenuSub` to nest secondary actions. Wrap a `DropdownMenuSubTrigger` and a `DropdownMenuSubContent` in `DropdownMenuSub`. The submenu opens on hover, on Enter and on the arrow key toward its side, and the opposite arrow key closes it.
+
+<ComponentPreview name="base/DropdownMenuSubmenuExample" align="start" />
+
+## Shortcuts
+
+Add `DropdownMenuShortcut` to show keyboard hints.
+
+<ComponentPreview name="base/DropdownMenuShortcutsExample" align="start" />
+
+## Icons
+
+Combine icons with labels for quick scanning.
+
+<ComponentPreview name="base/DropdownMenuIconsExample" align="start" />
+
+## Checkboxes
+
+Use `DropdownMenuCheckboxItem` for toggles. Bind `checked` to read or change the state. Picking an item does not close the menu.
+
+<ComponentPreview name="base/DropdownMenuCheckboxesExample" align="start" />
+
+## Checkboxes Icons
+
+Add icons to checkbox items.
+
+<ComponentPreview name="base/DropdownMenuCheckboxesIconsExample" align="start" />
+
+## Radio Group
+
+Use `DropdownMenuRadioGroup` for exclusive choices. Bind `value` to read or change the selection. Picking an item does not close the menu.
+
+<ComponentPreview name="base/DropdownMenuRadioGroupExample" align="start" />
+
+## Radio Icons
+
+Show radio options with icons.
+
+<ComponentPreview name="base/DropdownMenuRadioIconsExample" align="start" />
+
+## Destructive
+
+Use `variant="destructive"` for irreversible actions.
+
+<ComponentPreview name="base/DropdownMenuDestructiveExample" align="start" />
+
+## Avatar
+
+An account switcher dropdown triggered by an avatar.
+
+<ComponentPreview name="base/DropdownMenuAvatarExample" align="start" />
+
+## Complex
+
+A richer example combining groups, icons, and submenus.
+
+<ComponentPreview name="base/DropdownMenuComplexExample" align="start" />
+
+## RTL
+
+Wrap the dropdown menu in a [DirectionProvider](/docs/components/direction) and set `dir` on `DropdownMenuContent` and `DropdownMenuSubContent`. Use the buttons to switch the language.
+
+<ComponentPreview name="base/DropdownMenuRtlExample" align="start" />
 
 ## Trigger
 
-`DropdownMenuTrigger` renders a `<button>`. Pass `class` to style it, for example with `buttonVariants`. To use another element, pass a `render` snippet and spread its props onto that element.
+`DropdownMenuTrigger` renders a `<button>`. Pass `class` to style it, for example with `buttonVariants`. To use another element, pass a `render` snippet and spread its props onto that element, as the examples above do with `Button`.
 
-## API reference
+## API Reference
 
-`DropdownMenu` is styled on top of the Sveltery Base `Menu` primitive, which owns its keyboard navigation, typeahead, focus handling and dismissal. `DropdownMenuContent` renders the Base portal, positioner and popup, and takes the positioner's `side`, `align`, `sideOffset` and `alignOffset` props. `DropdownMenuItem` takes `inset` and `variant` (`default` or `destructive`). See the [Base UI Menu documentation](https://base-ui.com/react/components/menu) for the behavior it ports.
+See the [Base UI Menu](https://base-ui.com/react/components/menu#api-reference) documentation.
+
+`DropdownMenuContent` renders the Base portal, positioner and popup, and takes the positioner's `side`, `align`, `sideOffset` and `alignOffset` props. `DropdownMenuItem`, `DropdownMenuCheckboxItem`, `DropdownMenuRadioItem`, `DropdownMenuLabel` and `DropdownMenuSubTrigger` take `inset`, and `DropdownMenuItem` also takes `variant` (`default` or `destructive`).

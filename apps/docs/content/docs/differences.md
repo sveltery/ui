@@ -343,6 +343,16 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
 
+### The Context Menu checkboxes start checked through state
+
+**Upstream:** The "Checkboxes" example in [`context-menu-checkboxes.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/context-menu-checkboxes.tsx) starts two items checked with `defaultChecked`.
+
+**Sveltery UI:** The [Context Menu](/docs/components/context-menu) example binds each item's `checked` to a `$state` value that starts `true` or `false`.
+
+**Why:** `ContextMenuCheckboxItem` always passes its bound `checked` (`false` by default) to Base, so `defaultChecked` never takes effect and the items start unchecked.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ## Forms
 
 ### The Forms guides cover SvelteKit forms instead of React form libraries
