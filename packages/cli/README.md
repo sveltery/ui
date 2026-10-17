@@ -64,7 +64,6 @@ An argument that is a URL is fetched as is, so you can add an item from another 
 ```sh
 npx @sveltery/ui@latest diff
 npx @sveltery/ui@latest update
-npx @sveltery/ui@latest list
 ```
 
 An item counts as installed when any of its files exists under `aliases.ui`. With no names, `diff` and `update` act on every installed item and the items they depend on. A named item that is not installed is an error.
@@ -79,7 +78,30 @@ An item counts as installed when any of its files exists under `aliases.ui`. Wit
 | `--no-install` | Do not install packages. |
 | `--cwd <path>` | The project root. Defaults to the current directory. |
 
-`list` prints one line per item in the registry with its type, and `installed` when the item is in your project. Pass `--json` for an array of `{ name, type, installed }`.
+## Search the registry
+
+```sh
+npx @sveltery/ui@latest search -q dialog
+```
+
+`search` (alias `list`) prints the items in the registry, with a type and a description. It needs no `components.json`.
+
+| Option | Description |
+| --- | --- |
+| `-q, --query <query>` | Rank and keep the items that match the query in their name, title or description. |
+| `-t, --type <type>` | Keep one item type, such as `ui` or `block`. Comma-separate several. |
+| `-l, --limit <number>` | Show at most this many items. Defaults to 100. |
+| `-o, --offset <number>` | Skip this many items. Defaults to 0. |
+| `--json` | Print `{ pagination, items }` as JSON. |
+| `--cwd <path>` | The project root. Defaults to the current directory. |
+
+## Find a component's docs
+
+```sh
+npx @sveltery/ui@latest docs button dropdown-menu
+```
+
+`docs` prints, for each component, the links to its docs page (`docs`), the same page as Markdown with every example inlined (`examples`) and, for a component styled on a Base UI component, Base UI's API reference (`api`). Pass `--json` for `{ base, results }`.
 
 ## See how the CLI reads your project
 

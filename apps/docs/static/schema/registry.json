@@ -83,8 +83,22 @@
               "registry:base"
             ]
           },
+          "title": {
+            "type": "string"
+          },
           "description": {
             "type": "string"
+          },
+          "meta": {
+            "type": "object",
+            "properties": {
+              "links": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }

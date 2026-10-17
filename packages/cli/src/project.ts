@@ -1,5 +1,6 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
+import * as util from 'node:util';
 import { importsTailwind } from './css.js';
 import { CliError } from './parse.js';
 
@@ -9,6 +10,15 @@ export function readJson(path: string): unknown {
   } catch (error) {
     throw new CliError(`Could not read ${path}: ${error instanceof Error ? error.message : String(error)}`);
   }
+}
+
+const ENV_FILES = ['.env.local', '.env.development.local', '.env.development', '.env'];
+
+/** The environment `${VAR}` placeholders in `registries` read: the process environment, then the project's env files in shadcn's order, earlier ones first. */
+export function loadEnv(cwd: string): Record<string, string | undefined> {
+  // util.parseEnv arrived in Node 20.12. Before that, only the process environment counts.
+  const files = ENV_FILES.map((file) => join(cwd, file)).filter((path) => existsSync(path) && util.parseEnv !== undefined);
+  return Object.assign({}, ...files.reverse().map((path) => util.parseEnv(readFileSync(path, 'utf8'))), process.env);
 }
 
 /** Every package the project's package.json declares, in any dependency field, with its range. */

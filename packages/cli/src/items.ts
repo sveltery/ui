@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import { CONFIG_FILE, parseConfig, type Config } from './config.js';
 import { CliError, literal, object, optional, ParseError, string } from './parse.js';
 import { missingPackages, planFile, type Plan, type PlannedFile } from './plan.js';
-import { aliasPath, readJson } from './project.js';
+import { aliasPath, loadEnv, readJson } from './project.js';
 import { fetchItem, openRegistry, parseItemRef, resolveItems, resolveRegistryUrl, styleNames, type ItemRef, type Registry, type RegistryFile, type RegistryItem, type StyleName } from './registry.js';
 import { applyTransforms, type TransformContext } from './transforms.js';
 
@@ -14,7 +14,7 @@ export async function openProject(cwd: string): Promise<Project> {
   const configPath = join(cwd, CONFIG_FILE);
   if (!existsSync(configPath)) throw new CliError(`No ${CONFIG_FILE} in ${cwd}. Run \`npx @sveltery/ui@latest init\` first.`);
   const config = parseConfig(readJson(configPath));
-  const registry = await openRegistry(resolveRegistryUrl(config.registry));
+  const registry = await openRegistry(resolveRegistryUrl(config.registry), { configs: config.registries ?? {}, env: loadEnv(cwd) });
   return { cwd, config, registry, uiDir: aliasPath(config.aliases.ui) };
 }
 
@@ -92,18 +92,21 @@ export function fetchAllItems({ registry, config }: Project): Promise<RegistryIt
 /** An item counts as installed when any of its files exists. */
 export const isInstalled = (project: Project, item: RegistryItem) => item.files.some((file) => existsSync(join(project.cwd, filePath(project, file))));
 
+/** What `diff` and `update` say when a scan finds nothing. A scan does not see items added by URL. */
+export const NONE_INSTALLED = 'No items from the registry are installed. Name an item you added by URL, or add one with `npx @sveltery/ui@latest add button`.';
+
 /**
- * The items `diff` and `update` act on, with their registry dependencies. Named items must be installed.
- * Unnamed, it is every installed item except `registry:lib` ones such as `shared`, which come in as dependencies of the items that need them.
+ * The items `diff` and `update` act on, with their registry dependencies. Named items and URLs must be installed.
+ * Unnamed, it is every installed item of the registry except `registry:lib` ones such as `shared`, which come in as dependencies of the items that need them.
+ * A scan cannot know which URLs were used, so it never includes an item that only a URL names.
  */
 export async function selectInstalled(project: Project, names: string[]): Promise<RegistryItem[]> {
   const { registry, config } = project;
   if (names.length > 0) {
     const refs = names.map(parseItemRef);
-    if (refs.some((ref) => ref.kind === 'url')) throw new CliError('Name installed items, such as `npx @sveltery/ui@latest diff button`. URLs only work with `add`.');
     const items = await resolveItems(registry, config.style, refs);
-    for (const name of names) {
-      if (!isInstalled(project, items.find((item) => item.name === name)!)) throw new CliError(`${name} is not installed. Run \`npx @sveltery/ui@latest add ${name}\` first.`);
+    for (const [index, ref] of refs.entries()) {
+      if (!isInstalled(project, await fetchItem(registry, config.style, ref))) throw new CliError(`${names[index]} is not installed. Run \`npx @sveltery/ui@latest add ${names[index]}\` first.`);
     }
     return items;
   }

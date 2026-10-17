@@ -44,7 +44,7 @@ See [CLI](/docs/cli) for more information. A full file looks like this:
 }
 ```
 
-`init` writes the keys on this page in this order and keeps any other keys you add. The CLI stops with `components.json is invalid` when a required key is missing or a key has a value it does not know. Every key is required except `$schema`, `menuAccent` and `registry`.
+`init` writes the keys on this page in this order and keeps any other keys you add. The CLI stops with `components.json is invalid` when a required key is missing or a key has a value it does not know. Every key is required except `$schema`, `menuAccent`, `registry` and `registries`.
 
 ## $schema
 
@@ -224,6 +224,45 @@ The root URL of the registry the CLI reads. It defaults to `https://ui.sveltery.
   "registry": "https://ui.sveltery.dev/r"
 }
 ```
+
+## registries
+
+The namespaced registries you install from with `@namespace/item`, such as `npx @sveltery/ui@latest add @acme/hello-card`. Each key is a namespace that starts with `@`. Each value is the URL of an item, with `{name}` where the item name goes. See [Namespaces](/docs/registry/namespace).
+
+```json title="components.json"
+{
+  "registries": {
+    "@acme": "https://acme.com/r/{name}.json",
+    "@internal": "https://registry.company.com/{style}/{name}.json"
+  }
+}
+```
+
+`{style}` is replaced with the project's `style`.
+
+### Authentication
+
+For a private registry, give an object with `url`, and `headers` or `params`:
+
+```json title="components.json"
+{
+  "registries": {
+    "@private": {
+      "url": "https://api.company.com/registry/{name}.json",
+      "headers": {
+        "Authorization": "Bearer ${REGISTRY_TOKEN}"
+      },
+      "params": {
+        "version": "latest"
+      }
+    }
+  }
+}
+```
+
+The CLI replaces each `${VAR}` with the environment variable of that name. It reads the variables from the environment, then from `.env.local`, `.env.development.local`, `.env.development` and `.env` in the project root. `params` become the query string, such as `?version=latest`. See [Authentication](/docs/registry/authentication).
+
+`@sveltery` is built in. It names the registry in the `registry` key, so `@sveltery/button` is the same as `button`. A `@sveltery` entry in `registries` replaces it.
 
 ## typescript
 
