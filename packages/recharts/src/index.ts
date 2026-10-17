@@ -3,3 +3,20 @@ export type { CustomScaleDefinition } from './util/scale/CustomScaleDefinition.j
 export type { Props as CellProps } from './component/Cell.js';
 export type { Props as LabelProps } from './component/Label.js';
 export type { Props as TextProps } from './component/Text.js';
+
+export { default as BarChart } from './chart/BarChart.svelte';
+export { default as LineChart } from './chart/LineChart.svelte';
+export { default as AreaChart } from './chart/AreaChart.svelte';
+export { default as ComposedChart } from './chart/ComposedChart.svelte';
+export { default as PieChart } from './chart/PieChart.svelte';
+export { default as RadarChart } from './chart/RadarChart.svelte';
+export { default as RadialBarChart } from './chart/RadialBarChart.svelte';
+export { default as ResponsiveContainer } from './component/ResponsiveContainer.svelte';
+export { default as Cell } from './component/Cell.svelte';
+export { default as Surface } from './container/Surface.svelte';
+export { default as Layer } from './container/Layer.svelte';
+export { useChartWidth, useChartHeight, useMargin } from './context/chartLayoutContext.svelte.js';
+export { usePlotArea } from './hooks.svelte.js';
+export { attrs } from './util/attrs.js';
+export type { Box } from './state/hooks.svelte.js';
+export type { SvelteProps, SvelteArgs } from './util/svelteProps.js';

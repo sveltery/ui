@@ -1,6 +1,6 @@
 // scripts/sync-upstream.mjs points recharts' imports from react here, so the vendored code reads in Svelte and DOM terms.
 import type { Snippet } from 'svelte';
-import type { AriaAttributes as SvelteAriaAttributes, DOMAttributes, SVGAttributes } from 'svelte/elements';
+import type { AriaAttributes as SvelteAriaAttributes, DOMAttributes, SVGAttributes as SvelteSVGAttributes } from 'svelte/elements';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -29,10 +29,12 @@ type CamelCase<S extends string> = S extends `${'aria' | 'data'}-${string}`
     ? `${Head}${Capitalize<CamelCase<Tail>>}`
     : S;
 
-type SvgAttributes = Omit<SVGAttributes<EventTarget>, keyof DOMAttributes<EventTarget> | 'class'>;
+type SvgAttributes = Omit<SvelteSVGAttributes<EventTarget>, keyof DOMAttributes<EventTarget> | 'class' | 'style' | 'tabindex'> & { style?: CSSProperties; tabIndex?: number };
 
 // React names SVG attributes in camelCase (strokeWidth for stroke-width), and recharts' props follow it.
-export type SVGProps<_T = unknown> = { [K in keyof SvgAttributes as K extends string ? CamelCase<K> : K]: SvgAttributes[K] };
+export type SVGAttributes<_T = unknown> = { [K in keyof SvgAttributes as K extends string ? CamelCase<K> : K]: SvgAttributes[K] };
+
+export type SVGProps<T = unknown> = SVGAttributes<T>;
 
 export type AriaAttributes = SvelteAriaAttributes;
 
