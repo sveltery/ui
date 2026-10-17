@@ -45,8 +45,36 @@ jobs:
     timeout-minutes: 5
     steps:
       - run: test "${{ needs.verify.result }}" = success
+  # One production docs build for every shard. A dev server per shard spent about 60s compiling its first page, then compiled each page again on first visit.
+  docs-build:
+    name: Docs build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+        with:
+          run_install: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: '24'
+      - run: bash scripts/bootstrap.sh
+      - run: bash -c 'source scripts/toolchain.sh; pnpm --filter @sveltery/docs build'
+      # The Cloudflare worker imports the server build, so wrangler needs all three.
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: docs-build
+          path: |
+            apps/docs/.svelte-kit/cloudflare/
+            apps/docs/.svelte-kit/cloudflare-tmp/
+            apps/docs/.svelte-kit/output/server/
+          include-hidden-files: true
+          retention-days: 1
   browser:
     name: Chromium (${{ matrix.shard }}/4)
+    needs: docs-build
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     strategy:
@@ -69,9 +97,24 @@ jobs:
       # The runner image already ships the system libraries Chromium needs.
       - name: Install Chromium
         run: bash -c 'source scripts/toolchain.sh; pnpm exec playwright install chromium'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: docs-build
+          path: apps/docs/.svelte-kit/
       # Shards split the specs by recorded run time. Two workers per runner: more saturates the four vCPUs and timing-sensitive tests fail.
       - name: Browser tests
-        run: bash -c 'source scripts/toolchain.sh; node scripts/browser-shard.mjs ${{ matrix.shard }} 4 > "$RUNNER_TEMP/specs.txt" && pnpm test:browser --project chromium --test-list "$RUNNER_TEMP/specs.txt" --workers 2'
+        env:
+          DOCS_BUILT: '1'
+          WRANGLER_SEND_METRICS: 'false'
+          PLAYWRIGHT_JSON_OUTPUT_FILE: ${{ runner.temp }}/report.json
+        run: bash -c 'source scripts/toolchain.sh; node scripts/browser-shard.mjs ${{ matrix.shard }} 4 > "$RUNNER_TEMP/specs.txt" && pnpm test:browser --project chromium --test-list "$RUNNER_TEMP/specs.txt" --workers 2 --reporter list,json'
+      # The four reports refresh tests/browser/timings.json, as scripts/browser-shard.mjs describes.
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: success() || failure()
+        with:
+          name: chromium-report-${{ matrix.shard }}
+          path: ${{ runner.temp }}/report.json
+          retention-days: 30
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: failure()
         with:
