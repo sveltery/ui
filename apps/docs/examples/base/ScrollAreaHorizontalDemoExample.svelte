@@ -25,8 +25,7 @@
           <img src={artwork.art} alt="Photo by {artwork.artist}" class="aspect-[3/4] h-fit w-fit object-cover" width="300" height="400" />
         </div>
         <figcaption class="pt-2 text-xs text-muted-foreground">
-          Photo by{" "}
-          <span class="font-semibold text-foreground">{artwork.artist}</span>
+          Photo by <span class="font-semibold text-foreground">{artwork.artist}</span>
         </figcaption>
       </figure>
     {/each}
