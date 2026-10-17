@@ -3,7 +3,7 @@ title: Skeleton
 description: Use to show a placeholder while content is loading.
 ---
 
-<ComponentPreview name="base/SkeletonExample" />
+<ComponentPreview name="base/SkeletonDemoExample" />
 
 ## Installation
 
@@ -52,5 +52,31 @@ The component folders import each other with relative paths, so keep them side b
 ```
 
 ```svelte
-<Skeleton class="h-5 w-24 rounded-full" />
+<Skeleton class="h-[20px] w-[100px] rounded-full" />
 ```
+
+## Avatar
+
+<ComponentPreview name="base/SkeletonAvatarExample" />
+
+## Card
+
+<ComponentPreview name="base/SkeletonCardExample" />
+
+## Text
+
+<ComponentPreview name="base/SkeletonTextExample" />
+
+## Form
+
+<ComponentPreview name="base/SkeletonFormExample" />
+
+## Table
+
+<ComponentPreview name="base/SkeletonTableExample" />
+
+## RTL
+
+Wrap the skeletons in a [DirectionProvider](/docs/components/direction) and set `dir` on the container. Use the buttons to switch the language.
+
+<ComponentPreview name="base/SkeletonRtlExample" align="start" />
