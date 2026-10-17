@@ -175,6 +175,15 @@ describe('init', () => {
     expect(plan.files.map((file) => file.path)).toEqual(['src/lib/components/ui/button/Button.svelte']);
   });
 
+  test('gives #lib/* an index.js fallback in a SvelteKit 3 app, keeping the indentation, once', async () => {
+    writeFileSync(join(cwd, 'package.json'), `{\n\t"devDependencies": ${JSON.stringify(JSON.parse(read('package.json')).devDependencies)},\n\t"imports": { "#lib": "./src/lib/index.js", "#lib/*": "./src/lib/*" }\n}\n`);
+    await init({ cwd, ...defaults });
+    const written = read('package.json');
+    expect([written.split('\n')[1]?.startsWith('\t"devDependencies"'), JSON.parse(written).imports]).toEqual([true, { '#lib': './src/lib/index.js', '#lib/*': ['./src/lib/*', './src/lib/*/index.js'] }]);
+    const second = await init({ cwd, ...defaults });
+    expect([read('package.json'), second.files.some((file) => file.path === 'package.json')]).toEqual([written, false]);
+  });
+
   test('stops before changing anything when Tailwind is missing', async () => {
     writeFileSync(join(cwd, 'package.json'), JSON.stringify({ devDependencies: { '@sveltejs/kit': '^2.0.0', svelte: '^5.0.0' } }));
     await expect(init({ cwd, ...defaults })).rejects.toThrow('Sveltery needs tailwindcss 4, and package.json does not list it. Run `npx sv add tailwindcss`, then run init again.');
