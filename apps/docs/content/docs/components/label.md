@@ -3,7 +3,13 @@ title: Label
 description: Renders an accessible label associated with controls.
 ---
 
-<ComponentPreview name="base/LabelExample" />
+<ComponentPreview name="base/LabelDemoExample" />
+
+<Callout>
+
+For form fields, use the [Field](/docs/components/field) component which includes built-in label, description, and error handling.
+
+</Callout>
 
 ## Installation
 
@@ -54,3 +60,26 @@ The component folders import each other with relative paths, so keep them side b
 ```svelte
 <Label for="email">Your email address</Label>
 ```
+
+## Label in Field
+
+For form fields, use the [Field](/docs/components/field) component which includes built-in `FieldLabel`, `FieldDescription`, and `FieldError` components.
+
+```svelte
+<Field>
+  <FieldLabel for="email">Your email address</FieldLabel>
+  <Input id="email" />
+</Field>
+```
+
+<ComponentPreview name="base/FieldDemoExample" />
+
+## RTL
+
+Wrap the label and its control in a [DirectionProvider](/docs/components/direction) and set `dir` on both. Use the buttons to switch the language.
+
+<ComponentPreview name="base/LabelRtlExample" align="start" />
+
+## API Reference
+
+See the [Base UI Label](https://base-ui.com/react/components/label#api-reference) documentation for more information.
