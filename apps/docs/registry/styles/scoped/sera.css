@@ -284,6 +284,11 @@
     @apply [&>svg]:size-3.5;
   }
 
+  /* MARK: Native Checkbox */
+  .cn-native-checkbox {
+    @apply border-input bg-transparent checked:bg-primary checked:text-primary-foreground dark:checked:bg-primary checked:border-primary aria-invalid:checked:border-primary aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 focus-visible:border-ring focus-visible:ring-ring/30 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 flex size-4.5 items-center justify-center rounded-none border transition-shadow group-has-disabled/field:opacity-50 focus-visible:ring-2 aria-invalid:ring-2 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-checked:border-input group-has-[:focus-visible]/field-label:checked:border-primary;
+  }
+
   /* MARK: Combobox */
   .cn-combobox-content {
     @apply bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 *:data-[slot=input-group]:bg-transparent *:data-[slot=input-group]:border-b-input max-h-72 min-w-36 overflow-hidden rounded-none shadow-md ring-1 duration-100 *:data-[slot=input-group]:m-1.5 *:data-[slot=input-group]:mb-0 *:data-[slot=input-group]:h-8 *:data-[slot=input-group]:border-transparent *:data-[slot=input-group]:focus-within:border-transparent *:data-[slot=input-group]:px-2.5;
@@ -1242,6 +1247,11 @@
     @apply size-3 border-none bg-primary transition-colors hover:ring-2 hover:ring-ring/30 focus-visible:ring-2 focus-visible:ring-ring/30 focus-visible:outline-hidden;
   }
 
+  /* MARK: Native Slider */
+  .cn-native-slider {
+    @apply [&::-webkit-slider-runnable-track]:bg-input/50 [&::-webkit-slider-runnable-track]:h-0.5 [&::-webkit-slider-runnable-track]:w-full [&::-moz-range-track]:bg-input/50 [&::-moz-range-track]:h-0.5 [&::-moz-range-track]:w-full [&::-moz-range-progress]:h-0.5 [&::-moz-range-progress]:bg-primary [&::-webkit-slider-thumb]:box-border [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:size-3 [&::-webkit-slider-thumb]:border-none [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:transition-colors hover:[&::-webkit-slider-thumb]:ring-2 hover:[&::-webkit-slider-thumb]:ring-ring/30 focus-visible:[&::-webkit-slider-thumb]:ring-2 focus-visible:[&::-webkit-slider-thumb]:ring-ring/30 focus-visible:[&::-webkit-slider-thumb]:outline-hidden [&::-moz-range-thumb]:box-border [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:size-3 [&::-moz-range-thumb]:border-none [&::-moz-range-thumb]:bg-primary [&::-moz-range-thumb]:transition-colors hover:[&::-moz-range-thumb]:ring-2 hover:[&::-moz-range-thumb]:ring-ring/30 focus-visible:[&::-moz-range-thumb]:ring-2 focus-visible:[&::-moz-range-thumb]:ring-ring/30 focus-visible:[&::-moz-range-thumb]:outline-hidden [&::-webkit-slider-thumb]:mt-[calc((0.5-3)*var(--spacing)/2)];
+  }
+
   /* MARK: Toast */
   .cn-toast {
     @apply rounded-none!;
@@ -1262,6 +1272,15 @@
 
   .cn-switch-thumb-aria {
     @apply dark:not-data-selected:bg-foreground dark:data-selected:bg-primary-foreground data-selected:translate-x-[calc(100%+2px)] not-data-selected:translate-x-0.25;
+  }
+
+  /* MARK: Native Switch */
+  .cn-native-switch {
+    @apply checked:bg-primary not-checked:bg-input checked:border-primary border not-checked:border-input/50 focus-visible:border-ring focus-visible:ring-ring/30 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 shrink-0 rounded-none focus-visible:ring-2 aria-invalid:ring-2 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-checked:border-input/50 group-has-[:focus-visible]/field-label:checked:border-primary data-[size=default]:h-4.5 data-[size=default]:w-8.25 data-[size=sm]:h-3.5 data-[size=sm]:w-6.25;
+  }
+
+  .cn-native-switch-thumb {
+    @apply bg-background dark:peer-not-checked:bg-foreground dark:peer-checked:bg-primary-foreground group-data-[size=default]/switch:size-3.5 group-data-[size=sm]/switch:size-2.5 peer-checked:translate-x-[calc(100%+2px)] peer-not-checked:translate-x-0.25 ml-px;
   }
 
   /* MARK: Table */

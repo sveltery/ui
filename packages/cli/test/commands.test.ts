@@ -149,7 +149,7 @@ describe('init', () => {
 `);
     expect(first.files.map((file) => file.status)).toEqual(['new', 'changed']);
     expect(first.dependencies).toEqual(['class-variance-authority@^0.7.1', 'tw-animate-css@^1.4.0', '@tabler/icons-svelte@^3.48.0']);
-    expect(first.devDependencies).toEqual(['@sveltery/ui@^0.1.1']);
+    expect(first.devDependencies).toEqual(['@sveltery/ui@^0.2.0']);
 
     const config = read('components.json');
     const css = read('src/app.css');
@@ -173,6 +173,15 @@ describe('init', () => {
     expect(JSON.parse(read('components.json')).aliases).toEqual({ components: '#lib/components', ui: '#lib/components/ui', utils: '#lib/utils', lib: '#lib', hooks: '#lib/hooks' });
     const plan = await add(['button'], { cwd, ...defaults, overwrite: false, all: false, dryRun: true });
     expect(plan.files.map((file) => file.path)).toEqual(['src/lib/components/ui/button/Button.svelte']);
+  });
+
+  test('gives #lib/* an index.js fallback in a SvelteKit 3 app, keeping the indentation, once', async () => {
+    writeFileSync(join(cwd, 'package.json'), `{\n\t"devDependencies": ${JSON.stringify(JSON.parse(read('package.json')).devDependencies)},\n\t"imports": { "#lib": "./src/lib/index.js", "#lib/*": "./src/lib/*" }\n}\n`);
+    await init({ cwd, ...defaults });
+    const written = read('package.json');
+    expect([written.split('\n')[1]?.startsWith('\t"devDependencies"'), JSON.parse(written).imports]).toEqual([true, { '#lib': './src/lib/index.js', '#lib/*': ['./src/lib/*', './src/lib/*/index.js'] }]);
+    const second = await init({ cwd, ...defaults });
+    expect([read('package.json'), second.files.some((file) => file.path === 'package.json')]).toEqual([written, false]);
   });
 
   test('stops before changing anything when Tailwind is missing', async () => {
@@ -249,7 +258,7 @@ describe('init', () => {
 }
 `);
       expect(first.dependencies).toEqual(['class-variance-authority@^0.7.1', 'tw-animate-css@^1.4.0', '@tabler/icons-svelte@^3.48.0', '@fontsource-variable/inter', '@fontsource-variable/playfair-display']);
-      expect(first.devDependencies).toEqual([`${cliPackage}@^0.1.1`]);
+      expect(first.devDependencies).toEqual([`${cliPackage}@^0.2.0`]);
 
       const config = read('components.json');
       const css = read('src/app.css');
