@@ -970,3 +970,13 @@ The old `list` command marked the items in your project as `installed` and had n
 **Why:** The CLI already parses Svelte components with `svelte/compiler`. A second parser for modules would add a large dependency for the rare module that contains `</script>`. Listing the file tells you which one to change by hand.
 
 **Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `migrate rtl` scans Svelte files and flags review files by path
+
+**Upstream:** [`migrate-rtl.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/migrate-rtl.ts#L76) transforms `**/*.{js,ts,jsx,tsx}` under the `ui` alias, or under a directory you pass, where it skips `node_modules`. It [flags](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/migrate-rtl.ts#L142) a file for manual review when its file name is `sidebar.tsx`, `pagination.tsx` or `calendar.tsx`.
+
+**Sveltery UI:** [`migrate rtl`](/docs/cli#rtl) transforms `.svelte`, `.js` and `.ts` files, including `.mjs`, `.cjs`, `.mts` and `.cts`. It skips `node_modules`, `.git`, `.svelte-kit`, `dist`, `build` and other build output folders. It flags a file for manual review when any part of its path is `sidebar`, `pagination` or `calendar`, such as `sidebar/SidebarMenu.svelte`.
+
+**Why:** Sveltery components are `.svelte` files, and each component has its own folder of several files. A file-name match would find none of them.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
