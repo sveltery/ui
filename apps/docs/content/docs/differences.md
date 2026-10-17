@@ -533,3 +533,25 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Why:** The other rows make room during the drag, as they do upstream.
 
 **Decided:** Hugo Hsi, 2026-10-14
+
+## CLI
+
+### `apply` with no preset prints the Create page link
+
+**Upstream:** [`apply.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/apply.ts#L140) calls [`promptToOpenPresetBuilder`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/preset/presets.ts#L53), which prints the link and then asks "Open in browser?" unless `--yes` is set.
+
+**Sveltery UI:** [`apply`](/docs/cli#apply) prints the link and the command to run next, and exits.
+
+**Why:** The link is clickable in most terminals, and the CLI does not need a package that starts a browser on each platform.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `apply` changes only the project it runs in
+
+**Upstream:** After it applies the preset, [`apply.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/apply.ts#L438) copies the style, base color, icon library and menu settings into the `components.json` of each linked workspace.
+
+**Sveltery UI:** [`apply`](/docs/cli#apply) changes only the project at `--cwd`. In a [monorepo](/docs/monorepo), run it in each package that has a `components.json`.
+
+**Why:** This CLI does not resolve workspaces yet, so it has no list of linked projects to update.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17

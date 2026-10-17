@@ -149,6 +149,24 @@ try {
   // shadcn@4.21.1 has no gray base color either, so the code is rejected rather than mapped.
   await assert.rejects(capture('npm', [...cliExec, 'init', '--preset', 'btLmMa', '--no-install'], grayApp, env), (error) => /Invalid baseColor "gray"/.test(error.output), 'init prints the reason from /init');
 
+  step('sveltery apply lyra re-adds the installed items, and apply --only theme keeps them');
+  const applyApp = join(work, 'apply');
+  mkdirSync(applyApp);
+  for (const file of ['package.json', 'src']) cpSync(join(app, file), join(applyApp, file), { recursive: true });
+  await run('npm', [...cliExec, 'init', '--preset', 'nova', '--no-install'], applyApp, env);
+  await run('npm', [...cliExec, 'add', 'dialog', '-y', '--no-install'], applyApp, env);
+  const dialogContent = join(applyApp, 'src/lib/components/ui/dialog/DialogContent.svelte');
+  assert.match(readFileSync(dialogContent, 'utf8'), /from '@lucide\/svelte\/icons\/x'/, 'nova uses lucide');
+  await run('npm', [...cliExec, 'apply', 'lyra', '-y', '--no-install'], applyApp, env);
+  const applied = JSON.parse(readFileSync(join(applyApp, 'components.json'), 'utf8'));
+  assert.deepEqual([applied.style, applied.iconLibrary], ['lyra', 'phosphor'], 'apply writes the preset to components.json');
+  const phosphorDialog = readFileSync(dialogContent, 'utf8');
+  assert.match(phosphorDialog, /from 'phosphor-svelte\/lib\/X'/, 'apply re-adds the dialog with phosphor icons');
+  await run('npm', [...cliExec, 'apply', 'sera', '--only', 'theme', '-y', '--no-install'], applyApp, env);
+  const themed = JSON.parse(readFileSync(join(applyApp, 'components.json'), 'utf8'));
+  assert.deepEqual([themed.style, themed.iconLibrary, themed.tailwind.baseColor], ['lyra', 'phosphor', 'taupe'], 'apply --only theme changes only the theme');
+  assert.equal(readFileSync(dialogContent, 'utf8'), phosphorDialog, 'apply --only theme leaves the components alone');
+
   // Each icon library gets its own copy of the app with every item, so their icon props are type-checked against the real packages.
   for (const icons of ['lucide', 'tabler', 'hugeicons', 'phosphor', 'remixicon']) {
     step(`sveltery init --icons ${icons}, add --all and blocks, check and build`);

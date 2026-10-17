@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import { confirm, log, select } from '@clack/prompts';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, test, vi } from 'vitest';
 import { add } from '../src/commands/add.js';
+import { apply, type ApplyOptions } from '../src/commands/apply.js';
 import { diff } from '../src/commands/diff.js';
 import { baseDependencies, init } from '../src/commands/init.js';
 import { list } from '../src/commands/list.js';
@@ -67,6 +68,7 @@ const registryFiles: Record<string, unknown> = {
 
 const font = (name: string, variable: string, family: string, dependency: string) =>
   item(name, { type: 'registry:font', files: [], font: { family, provider: 'google', import: name, variable, dependency } });
+registryFiles['styles/vega/button.json'] = item('button', { files: [{ type: 'registry:ui', target: 'button/Button.svelte', content: button.replace('px-2.5', 'px-3') }] });
 registryFiles['styles/vega/font-inter.json'] = font('font-inter', '--font-sans', "'Inter Variable', sans-serif", '@fontsource-variable/inter');
 registryFiles['styles/vega/font-heading-playfair-display.json'] = font('font-heading-playfair-display', '--font-heading', "'Playfair Display Variable', serif", '@fontsource-variable/playfair-display');
 
@@ -85,6 +87,14 @@ const initItem = item('init', {
   },
 });
 
+/** What /init serves for `only=theme`: the theme part alone, as the docs route builds it. */
+const themeItem = item('nova-theme', {
+  type: 'registry:base',
+  config: { menuColor: 'inverted', menuAccent: 'bold', tailwind: { baseColor: 'neutral' } },
+  files: [],
+  cssVars: { light: { background: 'oklch(0.99 0 0)' }, dark: { background: 'oklch(0.2 0 0)' } },
+});
+
 let server: Server;
 let registryUrl: string;
 let origin: string;
@@ -96,7 +106,7 @@ beforeAll(async () => {
     const path = request.url ?? '';
     if (path.startsWith('/init')) initRequests.push(path);
     if (path.includes('baseColor=gray')) return void response.writeHead(400, { 'content-type': 'application/json' }).end(JSON.stringify({ error: 'Invalid baseColor "gray"' }));
-    const body = path.startsWith('/init') ? initItem : registryFiles[path.replace(/^\/r\//, '')];
+    const body = path.startsWith('/init') ? (path.includes('only=theme') ? themeItem : initItem) : registryFiles[path.replace(/^\/r\//, '')];
     response.writeHead(body ? 200 : 404, { 'content-type': 'application/json' }).end(body ? JSON.stringify(body) : '{}');
   });
   await new Promise<void>((done) => server.listen(0, '127.0.0.1', done));
@@ -354,6 +364,93 @@ describe('init', () => {
       await init({ cwd, ...defaults, yes: false, preset: true });
       expect(initRequests[0]).toContain('/init?style=maia&');
     });
+  });
+});
+
+describe('apply', () => {
+  const buttonPath = 'src/lib/components/ui/button/Button.svelte';
+  const options = (rest: Partial<ApplyOptions> = {}): ApplyOptions => ({ cwd, yes: true, silent: false, install: false, ...rest });
+
+  beforeEach(async () => {
+    vi.mocked(confirm).mockReset();
+    await init({ cwd, ...defaults });
+    await add(['button'], { cwd, ...defaults, overwrite: false, all: false, dryRun: false });
+    writeFileSync(join(cwd, buttonPath), 'mine\n');
+  });
+
+  test('writes the preset like init --preset and re-adds installed items with the new style and icon library', async () => {
+    const plan = await apply('b0', options());
+    expect(initRequests).toEqual(['/init?style=nova&baseColor=neutral&theme=neutral&iconLibrary=lucide&font=inter&menuAccent=subtle&menuColor=default&radius=default&preset=b0']);
+    expect(JSON.parse(read('components.json'))).toMatchObject({ style: 'vega', iconLibrary: 'tabler', menuColor: 'inverted-translucent', menuAccent: 'bold' });
+    expect(read('src/app.css')).toContain("@import '@fontsource-variable/inter';");
+    expect(plan.files.map((file) => [file.path, file.status])).toEqual([
+      ['components.json', 'changed'],
+      ['src/app.css', 'changed'],
+      [buttonPath, 'changed'],
+    ]);
+    expect(read(buttonPath)).toBe(`<script lang="ts">
+  import { IconChevronRight } from '@tabler/icons-svelte';
+  let { children } = $props();
+</script>
+<button class="px-3">{@render children?.()}<IconChevronRight /></button>
+`);
+    expect(plan.dependencies).toContain('@tabler/icons-svelte@^3.48.0');
+  });
+
+  test('--only theme sends only=theme, keeps the style and icon library, and leaves the components alone', async () => {
+    await apply(undefined, options({ preset: 'b0', only: 'theme' }));
+    expect(initRequests[0]).toMatch(/&preset=b0&only=theme$/);
+    expect(JSON.parse(read('components.json'))).toMatchObject({ style: 'nova', iconLibrary: 'lucide', menuColor: 'inverted', menuAccent: 'bold' });
+    expect(read('src/app.css')).toContain('--background: oklch(0.99 0 0);');
+    expect(read(buttonPath)).toBe('mine\n');
+  });
+
+  test('takes only from an /init URL, and --only overrides it', async () => {
+    await apply(`${origin}/init?preset=b0&only=theme`, options());
+    await apply(`${origin}/init?preset=b0&only=font`, options({ only: 'theme' }));
+    expect(initRequests).toEqual(['/init?preset=b0&only=theme', '/init?preset=b0&only=theme']);
+    expect(read(buttonPath)).toBe('mine\n');
+  });
+
+  test('lists the items it will re-add and asks, defaulting to no', async () => {
+    vi.mocked(confirm).mockResolvedValueOnce(false);
+    const warn = vi.spyOn(log, 'warn').mockImplementation(() => {});
+    try {
+      await expect(apply('b0', options({ yes: false }))).rejects.toThrow('Cancelled.');
+      expect(warn.mock.calls[0]![0]).toContain('The following components will be re-installed:\n  - button');
+    } finally {
+      warn.mockRestore();
+    }
+    expect(vi.mocked(confirm).mock.calls[0]![0]).toMatchObject({ message: 'Would you like to continue?', initialValue: false });
+    expect([initRequests, read(buttonPath)]).toEqual([[], 'mine\n']);
+  });
+
+  test('without a preset, points at the Create page and writes nothing', async () => {
+    const config = read('components.json');
+    const info = vi.spyOn(log, 'info').mockImplementation(() => {});
+    try {
+      expect(await apply(undefined, options())).toEqual({ files: [], dependencies: [], devDependencies: [] });
+      expect(info).toHaveBeenCalledWith(`Build your custom preset on ${origin}/create.\nThen run \`npx @sveltery/ui@latest apply --preset <preset>\` with the preset code or URL from the page.`);
+    } finally {
+      info.mockRestore();
+    }
+    expect([initRequests, read('components.json')]).toEqual([[], config]);
+  });
+
+  test.each([
+    [{ only: true as const }, 'b0', 'Missing value for --only.'],
+    [{ only: 'theme,icons' }, 'b0', 'Invalid value for --only: theme,icons.'],
+    [{ only: 'theme' }, undefined, 'Missing preset for --only.'],
+    [{ preset: 'nova' }, 'sera', 'Received two different presets.'],
+    [{}, 'nebula', 'Unknown preset "nebula".'],
+  ])('rejects %o with %s', async (rest, preset, message) => {
+    await expect(apply(preset, options(rest))).rejects.toThrow(message);
+    expect(initRequests).toEqual([]);
+  });
+
+  test('needs a project that ran init', async () => {
+    rmSync(join(cwd, 'components.json'));
+    await expect(apply('b0', options())).rejects.toThrow(`No components.json in ${cwd}. The apply command only works in a project that ran init. Run \`npx @sveltery/ui@latest init --preset b0\` first.`);
   });
 });
 
