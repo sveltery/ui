@@ -78,4 +78,4 @@ Run `update` to apply the changes. It shows the diff for each file you changed a
 npx @sveltery/ui@latest update
 ```
 
-`npx @sveltery/ui@latest search` shows every component, and `search -q dialog` finds one. See [CLI](/docs/cli) for all commands and options.
+`npx @sveltery/ui@latest search @sveltery` shows every component, and `search @sveltery -q dialog` finds one. See [CLI](/docs/cli) for all commands and options.

@@ -136,7 +136,7 @@ export function resolveRegistryUrl(configured: string | undefined): string {
 /** A GET the CLI sends: the URL, the headers a namespace adds, and the URL errors print, with `${VAR}` placeholders instead of their values. */
 export type ItemRequest = { url: string; headers: Record<string, string>; displayUrl: string };
 
-const plainRequest = (url: string): ItemRequest => ({ url, headers: {}, displayUrl: url });
+export const plainRequest = (url: string): ItemRequest => ({ url, headers: {}, displayUrl: url });
 
 async function fetchJson<T>({ url, headers, displayUrl }: ItemRequest, parser: Parser<T>): Promise<T> {
   let response: Response;
@@ -215,12 +215,14 @@ export function parseItemRef(value: string): ItemRef {
     }
     return { kind: 'namespaced', namespace: namespaced[1]!, name };
   }
+  const [owner = '', repo = '', ...item] = value.split('#')[0]!.split('/');
+  if (item.length > 0 && GITHUB_OWNER.test(owner) && GITHUB_REPO.test(repo)) throw new CliError('GitHub items such as owner/repo/item are not supported yet.');
   throw new CliError(`"${value}" is neither an item name, an @namespace/item name, nor an http(s) URL.`);
 }
 
 const ENV_VAR = /\$\{(\w+)\}/g;
 
-function namespaceRequest({ configs, env }: Namespaces, style: StyleName, namespace: string, name: string): ItemRequest {
+export function namespaceRequest({ configs, env }: Namespaces, style: StyleName, namespace: string, name: string): ItemRequest {
   const config = configs[namespace];
   if (!config) {
     throw new CliError(`Unknown registry "${namespace}". Make sure it is defined under "registries" in your components.json file:\n{\n  "registries": {\n    "${namespace}": "[URL_TO_REGISTRY]"\n  }\n}`);
@@ -277,19 +279,15 @@ const catalogItem = object({ name: string, type: string, title: optional(string)
 const searchPagination = object({ total: number, offset: number, limit: number, hasMore: literal(true, false) });
 export type SearchPagination = ReturnType<typeof searchPagination>;
 
-/** A namespace's `registry` item: a built registry.json, or a dynamic registry's search answer, which has `pagination`. Only the fields `search` reads are checked. */
+/** A registry's catalog: a registry.json, or a dynamic registry's search answer, which has `pagination`. Only the fields `search` reads are checked. */
 const registryCatalog = object({ name: string, homepage: string, include: optional(array(string)), items: array(catalogItem), pagination: optional(searchPagination) });
 export type RegistryCatalog = ReturnType<typeof registryCatalog>;
 
-/** What `search` forwards to a namespace, so a dynamic registry can filter and page on the server. `types` are full names such as `registry:ui`. */
+/** What `search` forwards to a namespace or URL, so a dynamic registry can filter and page on the server. `types` are full names such as `registry:ui`. */
 export type CatalogSearch = { query?: string; types?: string[]; limit?: number; offset?: number };
 
-/**
- * Where the item named `registry` of `namespace`, as `@namespace/registry`, is served, with the search as `q`, `type`, `limit` and `offset`.
- * Throws when an environment variable the namespace needs is not set.
- */
-export function catalogRequest(registry: Registry, style: StyleName, namespace: string, search: CatalogSearch): ItemRequest {
-  const request = namespaceRequest(registry.namespaces, style, namespace, 'registry');
+/** `request` with the search as `q`, `type`, `limit` and `offset`, so a dynamic registry can filter and page on the server. */
+export function catalogRequest(request: ItemRequest, search: CatalogSearch): ItemRequest {
   const fields = { q: search.query || undefined, type: search.types?.length ? search.types.join(',') : undefined, limit: search.limit, offset: search.offset };
   const entries = Object.entries(fields).flatMap(([key, value]): [string, string][] => (value === undefined ? [] : [[key, String(value)]]));
   // As upstream, each field replaces a parameter of the same name. The display URL keeps `${VAR}` unparsed, so it appends them.
@@ -301,12 +299,36 @@ export function catalogRequest(registry: Registry, style: StyleName, namespace: 
   return { ...request, url: url && entries.length > 0 ? url.toString() : request.url, displayUrl };
 }
 
-export async function fetchCatalog(request: ItemRequest, namespace: string): Promise<RegistryCatalog> {
-  const catalog = await fetchJson(request, registryCatalog);
-  if (catalog.include?.length) {
-    throw new CliError(`Registry catalog "${namespace}/registry" uses "include", but a registry must serve the resolved catalog. Run \`npx @sveltery/ui@latest build\` and serve the registry.json it writes.`);
+export function fetchCatalog(request: ItemRequest): Promise<RegistryCatalog> {
+  return fetchJson(request, registryCatalog);
+}
+
+/** A GitHub repository whose root `registry.json` is a registry, written `owner/repo` or `owner/repo#ref`. */
+export type GitHubSource = { owner: string; repo: string; ref?: string };
+
+const GITHUB_OWNER = /^(?!.*--)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$/;
+const GITHUB_REPO = /^[a-zA-Z0-9._-]+$/;
+
+/** Upstream's reading of a GitHub source: undefined when `value` is not one, and an error when its ref could not name a branch, tag or commit. */
+export function parseGitHubSource(value: string): GitHubSource | undefined {
+  const hash = value.indexOf('#');
+  const parts = (hash === -1 ? value : value.slice(0, hash)).split('/');
+  if (parts.length !== 2) return undefined;
+  const [owner, repo] = parts as [string, string];
+  if (!GITHUB_OWNER.test(owner) || !GITHUB_REPO.test(repo) || repo === '.' || repo === '..') return undefined;
+  if (hash === -1) return { owner, repo };
+  const ref = value.slice(hash + 1);
+  // A . or .. segment would resolve, in the URL, into another repository.
+  // eslint-disable-next-line no-control-regex -- a ref goes into a URL, so control characters are rejected as upstream does.
+  if (!ref || /[\x00-\x1F\x7F\s]/.test(ref) || ref.startsWith('-') || ref.split('/').some((segment) => segment === '.' || segment === '..')) {
+    throw new CliError(`Invalid GitHub ref in registry source "${value}". Use a non-empty branch, tag, or commit SHA without whitespace, control characters, leading dashes, or . or .. segments.`);
   }
-  return catalog;
+  return { owner, repo, ref };
+}
+
+/** The repository's root `registry.json` at `ref`, or at the default branch. */
+export function gitHubCatalogRequest({ owner, repo, ref = 'HEAD' }: GitHubSource): ItemRequest {
+  return plainRequest(`https://raw.githubusercontent.com/${owner}/${repo}/${ref.split('/').map((segment) => encodeURIComponent(segment)).join('/')}/registry.json`);
 }
 
 /** Throws when a named ref is not in the registry's manifest, before any item is fetched. URLs are not checked. */
