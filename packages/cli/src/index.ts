@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 import { log } from '@clack/prompts';
 import { Command } from 'commander';
 import { add } from './commands/add.js';
+import { apply } from './commands/apply.js';
 import { build } from './commands/build.js';
 import { diff } from './commands/diff.js';
 import { docs } from './commands/docs.js';
@@ -32,6 +33,18 @@ program
   .option('--cwd <path>', 'the project root', '.')
   .option('--no-install', 'do not install packages')
   .action(async (options) => void (await init({ ...options, cwd: resolve(options.cwd) })));
+
+program
+  .command('apply')
+  .description('apply a preset to a project that ran init')
+  .argument('[preset]', 'the preset: a name such as nova, a preset code, or an /init URL')
+  .option('--preset <preset>', 'the preset, as an option')
+  .option('--only [parts]', 'apply only parts of the preset: theme, font')
+  .option('-y, --yes', 'do not ask to continue', false)
+  .option('-s, --silent', 'do not print the plan or the package manager output', false)
+  .option('--no-install', 'do not install packages')
+  .option('--cwd <path>', 'the project root', '.')
+  .action(async (preset: string | undefined, options) => void (await apply(preset, { ...options, cwd: resolve(options.cwd) })));
 
 program
   .command('add')
