@@ -231,6 +231,8 @@ try {
   await lucideCli('migrate', 'cn', 'src/lib/*', '-y');
   assert.equal(readFileSync(join(lucideApp, 'src/lib/legacy.ts'), 'utf8'), "export { cn as cx } from 'cn';\n", 'migrate cn re-exports the helper from cn');
   assert.equal(readFileSync(join(lucideApp, 'src/lib/html.ts'), 'utf8'), html, 'migrate cn leaves a module it cannot parse as it is');
+  // html.ts imports clsx, which the app does not install, so it would fail the check below.
+  rmSync(join(lucideApp, 'src/lib/html.ts'));
   await run('pnpm', ['run', 'check'], lucideApp);
 
   step('sveltery init -y');
