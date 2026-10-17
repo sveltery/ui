@@ -141,7 +141,10 @@ class Converter {
         return;
       }
       if (ts.isIdentifier(n) && this.setters.has(n.text)) {
-        edits.push({ start: n.getStart(this.file), end: n.getEnd(), text: `(value) => (${this.setters.get(n.text)} = value)` });
+        // Base UI's Select reports null when nothing is selected, which a string state skips.
+        const select = this.docs && ts.isJsxExpression(n.parent) && ts.isJsxAttribute(n.parent.parent) && n.parent.parent.name.getText(this.file) === 'onValueChange';
+        const assign = `${this.setters.get(n.text)} = value`;
+        edits.push({ start: n.getStart(this.file), end: n.getEnd(), text: select ? `(value) => value !== null && (${assign})` : `(value) => (${assign})` });
         return;
       }
       if (ts.isTypeReferenceNode(n) && n.typeName.getText(this.file) === 'React.ComponentProps') {
@@ -253,6 +256,11 @@ class Converter {
         lines.push(`  import ${[...names.keys()][0]} from '${specifier}';`);
         continue;
       }
+      // A module imported only for types gets `import type`, which the dependency scan skips.
+      if ([...names.values()].every(Boolean)) {
+        lines.push(`  import type { ${[...names.keys()].join(', ')} } from '${specifier}';`);
+        continue;
+      }
       const list = [...names].map(([name, type]) => (type ? `type ${name}` : name));
       lines.push(`  import { ${list.join(', ')} } from '${specifier}';`);
     }
@@ -333,6 +341,11 @@ class Converter {
             this.snippets.add(name);
             continue;
           }
+          const init = UNWRAP(d.initializer);
+          if (ts.isCallExpression(init) && init.expression.getText(this.file) === 'React.useMemo') {
+            parts.push(`{const ${d.name.getText(this.file)} = $derived.by(${this.code(init.arguments[0], indent)})}`);
+            continue;
+          }
           const value = this.code(d.initializer, indent);
           parts.push(`{const ${d.name.getText(this.file)} = ${ts.isLiteralExpression(d.initializer) ? value : `$derived(${value})`}}`);
         }
@@ -378,6 +391,8 @@ class Converter {
 
   childExpression(node, indent) {
     const n = UNWRAP(node);
+    // A string child such as {" "} is text.
+    if (ts.isStringLiteral(n)) return n.text.replace(/[{}<]/g, (c) => `&#${c.charCodeAt(0)};`);
     if (ts.isBinaryExpression(n) && n.operatorToken.kind === ts.SyntaxKind.AmpersandAmpersandToken && this.jsxLike(n.right)) {
       return `{#if ${this.code(n.left, indent)}}${this.expressionTemplate(n.right, indent)}{/if}`;
     }

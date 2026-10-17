@@ -1,6 +1,6 @@
 <script lang="ts">
   import { cn } from 'cn';
-  import { type HTMLAttributes } from 'svelte/elements';
+  import type { HTMLAttributes } from 'svelte/elements';
 </script>
 
 {#snippet TooltipDemo({
