@@ -631,6 +631,11 @@ describe('diff', () => {
       expect(await diff([], { cwd })).toBe('Everything is up to date.');
     });
 
+    test('a missing file names the URL in the update hint', async () => {
+      rmSync(join(cwd, buttonPath));
+      expect((await diff([helloUrl], { cwd })).split('\n').at(-1)).toBe(`1 file in the registry is not in your project yet. \`npx @sveltery/ui@latest update ${helloUrl}\` adds it.`);
+    });
+
     test('a URL that the registry does not serve is a request error', async () => {
       await expect(diff([`${origin}/r/elsewhere/missing.json`], { cwd })).rejects.toThrow(`GET ${origin}/r/elsewhere/missing.json failed with 404 Not Found`);
     });
@@ -638,7 +643,7 @@ describe('diff', () => {
 
   test('says so when no item is installed', async () => {
     rmSync(join(cwd, 'src/lib'), { recursive: true });
-    expect(await diff([], { cwd })).toBe('No items are installed. Add one with `npx @sveltery/ui@latest add button`.');
+    expect(await diff([], { cwd })).toBe('No items from the registry are installed. Name an item you added by URL, or add one with `npx @sveltery/ui@latest add button`.');
   });
 });
 

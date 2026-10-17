@@ -1,4 +1,4 @@
-import { openProject, planItems, selectInstalled } from '../items.js';
+import { NONE_INSTALLED, openProject, planItems, selectInstalled } from '../items.js';
 import { count, filePatch } from '../plan.js';
 
 /** Prints what the registry would change in the installed items, and returns the text it printed. Writes nothing. */
@@ -15,8 +15,9 @@ export async function diff(names: string[], options: { cwd: string }): Promise<s
     const owners = new Set(changed.map((file) => file.item));
     lines.push(`${count(changed.length, 'file differs', 'files differ')} in ${count(owners.size, 'item', 'items')}`);
   }
-  if (added.length > 0) lines.push(`${count(added.length, 'file', 'files')} in the registry ${added.length === 1 ? 'is' : 'are'} not in your project yet. \`npx @sveltery/ui@latest update\` adds ${added.length === 1 ? 'it' : 'them'}.`);
-  if (lines.length === 0) lines.push(items.length === 0 ? 'No items are installed. Add one with `npx @sveltery/ui@latest add button`.' : 'Everything is up to date.');
+  const updateCommand = ['npx @sveltery/ui@latest update', ...names].join(' ');
+  if (added.length > 0) lines.push(`${count(added.length, 'file', 'files')} in the registry ${added.length === 1 ? 'is' : 'are'} not in your project yet. \`${updateCommand}\` adds ${added.length === 1 ? 'it' : 'them'}.`);
+  if (lines.length === 0) lines.push(items.length === 0 ? NONE_INSTALLED : 'Everything is up to date.');
   const output = lines.join('\n');
   console.log(output);
   return output;

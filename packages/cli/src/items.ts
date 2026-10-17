@@ -61,6 +61,9 @@ export function fetchAllItems({ registry, config }: Project): Promise<RegistryIt
 /** An item counts as installed when any of its files exists. */
 export const isInstalled = (project: Project, item: RegistryItem) => item.files.some((file) => existsSync(join(project.cwd, filePath(project, file))));
 
+/** What `diff` and `update` say when a scan finds nothing. A scan does not see items added by URL. */
+export const NONE_INSTALLED = 'No items from the registry are installed. Name an item you added by URL, or add one with `npx @sveltery/ui@latest add button`.';
+
 /**
  * The items `diff` and `update` act on, with their registry dependencies. Named items and URLs must be installed.
  * Unnamed, it is every installed item of the registry except `registry:lib` ones such as `shared`, which come in as dependencies of the items that need them.
