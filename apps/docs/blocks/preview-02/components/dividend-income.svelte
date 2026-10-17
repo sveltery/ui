@@ -1,64 +1,64 @@
 <script lang="ts">
-  import { scaleBand } from 'd3-scale';
-  import { BarChart } from 'layerchart';
+  import { Bar, BarChart } from '@sveltery/recharts';
   import { Button } from '$registry/bases/base/ui/button';
   import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
-  import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '$registry/bases/base/ui/item';
+  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '$registry/bases/base/ui/item';
 
   const HOLDINGS = [
     {
-      name: 'Vanguard VIG',
-      shares: '450 Shares',
-      amount: '$1,842.10',
+      name: "Vanguard VIG",
+      shares: "450 Shares",
+      amount: "$1,842.10",
       data: [
-        { q: 'Q1', value: 380 },
-        { q: 'Q2', value: 420 },
-        { q: 'Q3', value: 390 },
-        { q: 'Q4', value: 652 }
-      ]
+        { q: "Q1", value: 380 },
+        { q: "Q2", value: 420 },
+        { q: "Q3", value: 390 },
+        { q: "Q4", value: 652 },
+      ],
     },
     {
-      name: 'S&P 500 VOO',
-      shares: '112 Shares',
-      amount: '$928.40',
+      name: "S&P 500 VOO",
+      shares: "112 Shares",
+      amount: "$928.40",
       data: [
-        { q: 'Q1', value: 180 },
-        { q: 'Q2', value: 210 },
-        { q: 'Q3', value: 320 },
-        { q: 'Q4', value: 218 }
-      ]
+        { q: "Q1", value: 180 },
+        { q: "Q2", value: 210 },
+        { q: "Q3", value: 320 },
+        { q: "Q4", value: 218 },
+      ],
     },
     {
-      name: 'Apple AAPL',
-      shares: '85 Shares',
-      amount: '$340.00',
+      name: "Apple AAPL",
+      shares: "85 Shares",
+      amount: "$340.00",
       data: [
-        { q: 'Q1', value: 60 },
-        { q: 'Q2', value: 70 },
-        { q: 'Q3', value: 120 },
-        { q: 'Q4', value: 90 }
-      ]
+        { q: "Q1", value: 60 },
+        { q: "Q2", value: 70 },
+        { q: "Q3", value: 120 },
+        { q: "Q4", value: 90 },
+      ],
     },
     {
-      name: 'Realty Income',
-      shares: '320 Shares',
-      amount: '$1,139.50',
+      name: "Realty Income",
+      shares: "320 Shares",
+      amount: "$1,139.50",
       data: [
-        { q: 'Q1', value: 240 },
-        { q: 'Q2', value: 260 },
-        { q: 'Q3', value: 280 },
-        { q: 'Q4', value: 360 }
-      ]
-    }
-  ];
+        { q: "Q1", value: 240 },
+        { q: "Q2", value: 260 },
+        { q: "Q3", value: 280 },
+        { q: "Q4", value: 360 },
+      ],
+    },
+  ]
+
   const miniChartConfig = {
     value: {
-      label: 'Dividend',
-      color: 'var(--chart-2)'
-    }
-  } satisfies ChartConfig;
+      label: "Dividend",
+      color: "var(--chart-2)",
+    },
+  } satisfies ChartConfig
 </script>
 
 <Card>
@@ -79,24 +79,14 @@
             <ItemTitle>{holding.name}</ItemTitle>
             <ItemDescription>{holding.shares}</ItemDescription>
           </ItemContent>
-          <ChartContainer aria-label="{holding.name} quarterly dividends" config={miniChartConfig} class="hidden h-8 w-24 md:block">
-            <BarChart
-              data={holding.data}
-              x="q"
-              xScale={scaleBand().padding(0.25)}
-              series={[{ key: 'value', label: 'Dividend', color: 'var(--color-value)' }]}
-              axis={false}
-              grid={false}
-              rule={false}
-              padding={0}
-              props={{
-                bars: { stroke: 'none', strokeWidth: 0, rounded: 'top', radius: 3 },
-                highlight: { area: { fill: 'none' } }
-              }}
-            >
-              {#snippet tooltip()}
-                <ChartTooltip hideLabel />
-              {/snippet}
+          <ChartContainer config={miniChartConfig} class="hidden h-8 w-24 md:block">
+            <BarChart data={holding.data} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
+              <ChartTooltip cursor={false}>
+                {#snippet content(props: TooltipContentArgs)}
+                  <ChartTooltipContent hideLabel {...props} />
+                {/snippet}
+              </ChartTooltip>
+              <Bar dataKey="value" fill="var(--color-value)" radius={[3, 3, 0, 0]} />
             </BarChart>
           </ChartContainer>
           <span class="hidden text-sm font-semibold tabular-nums md:block">{holding.amount}</span>

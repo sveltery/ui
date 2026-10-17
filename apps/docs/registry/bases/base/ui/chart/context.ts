@@ -1,32 +1,34 @@
 import { createContext, type Component } from 'svelte';
-import type { ChartState } from 'layerchart';
+
+// Format: { THEME_NAME: CSS_SELECTOR }
+export const THEMES = { light: '', dark: '.dark' } as const;
 
 export type ChartConfig = Record<
   string,
   { label?: string; icon?: Component } & (
     | { color?: string; theme?: never }
-    | { color?: never; theme: { light: string; dark: string } }
+    | { color?: never; theme: Record<keyof typeof THEMES, string> }
   )
 >;
 
-export type ChartRow = Record<string, unknown>;
+type ChartContextProps = { readonly config: ChartConfig };
 
-export type ChartContainerContext = {
-  readonly config: ChartConfig;
-  /** Called by `ChartTooltip` so the container can drive its tooltip from the keyboard. Returns the cleanup. */
-  registerTooltip(chart: ChartState<ChartRow>): () => void;
-};
+export const [useChart, setChart] = createContext<ChartContextProps>();
 
-export const [getChartContainer, setChartContainer] = createContext<ChartContainerContext>();
+export function getPayloadConfigFromPayload(config: ChartConfig, payload: unknown, key: string) {
+  if (typeof payload !== 'object' || payload === null) {
+    return undefined;
+  }
 
-/** The config key for a series or data row. A row field named by `key` wins when it holds a config key (`nameKey="browser"` on `{ browser: 'chrome' }`). */
-export function configKey(config: ChartConfig, row: ChartRow | null, key: string): string {
-  const value = row?.[key];
-  return typeof value === 'string' && value in config ? value : key;
-}
+  const payloadPayload = 'payload' in payload && typeof payload.payload === 'object' && payload.payload !== null ? payload.payload : undefined;
 
-/** The CSS color for a config key: the per-chart variable when the config defines a color, otherwise nothing. */
-export function configColor(config: ChartConfig, key: string): string | undefined {
-  const entry = config[key];
-  return entry?.color || entry?.theme ? `var(--color-${key})` : undefined;
+  let configLabelKey: string = key;
+
+  if (key in payload && typeof payload[key as keyof typeof payload] === 'string') {
+    configLabelKey = payload[key as keyof typeof payload] as string;
+  } else if (payloadPayload && key in payloadPayload && typeof payloadPayload[key as keyof typeof payloadPayload] === 'string') {
+    configLabelKey = payloadPayload[key as keyof typeof payloadPayload] as string;
+  }
+
+  return configLabelKey in config ? config[configLabelKey] : config[key];
 }

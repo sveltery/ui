@@ -102,6 +102,45 @@
       "type": "string",
       "description": "The registry root URL. SVELTERY_REGISTRY_URL overrides it."
     },
+    "registries": {
+      "type": "object",
+      "description": "Namespaced registries for `add @namespace/item`. Each value is a URL with `{name}`, or an object with `url`, `params` and `headers`. `${VAR}` reads an environment variable.",
+      "propertyNames": {
+        "pattern": "^@[a-zA-Z0-9](?:[a-zA-Z0-9-_]*[a-zA-Z0-9])?$"
+      },
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "type": "string",
+            "pattern": "\\{name\\}"
+          },
+          {
+            "type": "object",
+            "required": [
+              "url"
+            ],
+            "properties": {
+              "url": {
+                "type": "string",
+                "pattern": "\\{name\\}"
+              },
+              "params": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "headers": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
     "typescript": {
       "const": true
     }
