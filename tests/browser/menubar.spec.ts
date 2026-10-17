@@ -126,6 +126,10 @@ test('Escape closes the menu and returns focus to its trigger', async ({ page })
 test('a submenu opens with ArrowRight or hover, shows the open style and closes with ArrowLeft', async ({ page }) => {
   await trigger(page, 'File').click();
   await expect(page.getByRole('menu')).toBeFocused();
+  // The File trigger's blur check waits one timer task. A loaded browser can run the keys
+  // below first, so focus reaches the submenu before that check, which then closes the menu
+  // (sveltery/base#341). Timers with equal delays run in order, so this waits for the check.
+  await page.evaluate(() => new Promise((resolve) => setTimeout(resolve)));
   const share = page.getByRole('menuitem', { name: 'Share' });
   await page.keyboard.press('ArrowUp');
   await expect(page.getByRole('menuitem', { name: 'Delete' })).toBeFocused();
