@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { REGEXP_ONLY_DIGITS } from '@sveltery/input-otp';
   import { Badge } from '$registry/bases/base/ui/badge';
   import { Checkbox } from '$registry/bases/base/ui/checkbox';
   import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
@@ -559,84 +560,84 @@
     <FieldGroup>
       <Field>
         <FieldLabel for="otp-basic">Verification Code</FieldLabel>
-        <InputOTP id="otp-basic" length={6}>
+        <InputOTP id="otp-basic" maxLength={6}>
           <InputOTPGroup>
-            <InputOTPSlot />
-            <InputOTPSlot />
-            <InputOTPSlot />
-            <InputOTPSlot />
-            <InputOTPSlot />
-            <InputOTPSlot />
+            <InputOTPSlot index={0} />
+            <InputOTPSlot index={1} />
+            <InputOTPSlot index={2} />
+            <InputOTPSlot index={3} />
+            <InputOTPSlot index={4} />
+            <InputOTPSlot index={5} />
           </InputOTPGroup>
         </InputOTP>
       </Field>
       <Field>
         <FieldLabel for="otp-with-desc">Enter OTP</FieldLabel>
-        <InputOTP id="otp-with-desc" length={6} bind:value={otpValue}>
+        <InputOTP id="otp-with-desc" maxLength={6} bind:value={otpValue}>
           <InputOTPGroup>
-            <InputOTPSlot />
-            <InputOTPSlot />
-            <InputOTPSlot />
-            <InputOTPSlot />
-            <InputOTPSlot />
-            <InputOTPSlot />
+            <InputOTPSlot index={0} />
+            <InputOTPSlot index={1} />
+            <InputOTPSlot index={2} />
+            <InputOTPSlot index={3} />
+            <InputOTPSlot index={4} />
+            <InputOTPSlot index={5} />
           </InputOTPGroup>
         </InputOTP>
         <FieldDescription>Enter the 6-digit code sent to your email.</FieldDescription>
       </Field>
       <Field>
         <FieldLabel for="otp-separator">Two-Factor Authentication</FieldLabel>
-        <InputOTP id="otp-separator" length={6}>
+        <InputOTP id="otp-separator" maxLength={6}>
           <InputOTPGroup>
-            <InputOTPSlot />
-            <InputOTPSlot />
-            <InputOTPSlot />
+            <InputOTPSlot index={0} />
+            <InputOTPSlot index={1} />
+            <InputOTPSlot index={2} />
           </InputOTPGroup>
           <InputOTPSeparator />
           <InputOTPGroup>
-            <InputOTPSlot />
-            <InputOTPSlot />
-            <InputOTPSlot />
+            <InputOTPSlot index={3} />
+            <InputOTPSlot index={4} />
+            <InputOTPSlot index={5} />
           </InputOTPGroup>
         </InputOTP>
         <FieldDescription>Enter the code from your authenticator app.</FieldDescription>
       </Field>
       <Field>
         <FieldLabel for="otp-pin">PIN Code</FieldLabel>
-        <InputOTP id="otp-pin" length={4} validationType="numeric" bind:value={pinValue}>
+        <InputOTP id="otp-pin" maxLength={4} pattern={REGEXP_ONLY_DIGITS} bind:value={pinValue}>
           <InputOTPGroup>
-            <InputOTPSlot />
-            <InputOTPSlot />
-            <InputOTPSlot />
-            <InputOTPSlot />
+            <InputOTPSlot index={0} />
+            <InputOTPSlot index={1} />
+            <InputOTPSlot index={2} />
+            <InputOTPSlot index={3} />
           </InputOTPGroup>
         </InputOTP>
         <FieldDescription>Enter your 4-digit PIN (numbers only).</FieldDescription>
       </Field>
       <Field data-invalid>
         <FieldLabel for="otp-invalid">Invalid OTP</FieldLabel>
-        <InputOTP id="otp-invalid" length={6}>
+        <InputOTP id="otp-invalid" maxLength={6}>
           <InputOTPGroup>
-            <InputOTPSlot aria-invalid />
-            <InputOTPSlot aria-invalid />
-            <InputOTPSlot aria-invalid />
-            <InputOTPSlot aria-invalid />
-            <InputOTPSlot aria-invalid />
-            <InputOTPSlot aria-invalid />
+            <InputOTPSlot index={0} aria-invalid />
+            <InputOTPSlot index={1} aria-invalid />
+            <InputOTPSlot index={2} aria-invalid />
+            <InputOTPSlot index={3} aria-invalid />
+            <InputOTPSlot index={4} aria-invalid />
+            <InputOTPSlot index={5} aria-invalid />
           </InputOTPGroup>
         </InputOTP>
         <FieldDescription>This OTP field contains validation errors.</FieldDescription>
       </Field>
       <Field data-disabled>
         <FieldLabel for="otp-disabled-field">Disabled OTP</FieldLabel>
-        <InputOTP id="otp-disabled-field" length={6} disabled>
+        <InputOTP id="otp-disabled-field" maxLength={6} disabled>
           <InputOTPGroup>
-            <InputOTPSlot />
-            <InputOTPSlot />
-            <InputOTPSlot />
-            <InputOTPSlot />
-            <InputOTPSlot />
-            <InputOTPSlot />
+            <InputOTPSlot index={0} />
+            <InputOTPSlot index={1} />
+            <InputOTPSlot index={2} />
+            <InputOTPSlot index={3} />
+            <InputOTPSlot index={4} />
+            <InputOTPSlot index={5} />
           </InputOTPGroup>
         </InputOTP>
         <FieldDescription>This OTP field is currently disabled.</FieldDescription>

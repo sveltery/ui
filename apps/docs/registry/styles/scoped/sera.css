@@ -1033,7 +1033,7 @@
   }
 
   .cn-input-otp-slot {
-    @apply border-transparent border-b-input bg-transparent focus:border-b-ring aria-invalid:border-b-destructive dark:aria-invalid:border-b-destructive/50 size-10 border text-sm transition-[color,border-color] outline-none first:rounded-none last:rounded-none;
+    @apply border-transparent border-b-input bg-transparent data-[active=true]:border-b-ring aria-invalid:border-b-destructive dark:aria-invalid:border-b-destructive/50 size-10 border text-sm transition-[color,border-color] outline-none first:rounded-none last:rounded-none;
   }
 
   .cn-input-otp-caret-line {

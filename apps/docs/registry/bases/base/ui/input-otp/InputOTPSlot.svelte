@@ -1,6 +1,9 @@
 <script lang="ts">
-  import { OTPField as Primitive, type OTPFieldInputProps } from '@sveltery/base/otp-field';
+  import { getOTPInputContext } from '@sveltery/input-otp';
   import { cn } from 'cn';
-  let { class: classProp, ...props }: OTPFieldInputProps = $props();
+  import type { InputOTPSlotProps } from './index.js';
+  let { index, class: classProp, ...props }: InputOTPSlotProps = $props();
+  const context = getOTPInputContext();
+  const slot = $derived(context.slots[index]);
 </script>
-<Primitive.Input data-slot="input-otp-slot" {...props} class={cn('cn-input-otp-slot relative flex items-center justify-center text-center focus:z-10 disabled:cursor-not-allowed', classProp)} />
+<div data-slot="input-otp-slot" data-active={slot?.isActive} {...props} class={cn('cn-input-otp-slot relative flex items-center justify-center data-[active=true]:z-10', classProp)}>{slot?.char}{#if slot?.hasFakeCaret}<div class="cn-input-otp-caret pointer-events-none absolute inset-0 flex items-center justify-center"><div class="cn-input-otp-caret-line"></div></div>{/if}</div>
