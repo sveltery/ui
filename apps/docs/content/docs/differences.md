@@ -363,6 +363,16 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
 
+### The Chart page holds the charts library
+
+**Upstream:** [`chart.mdx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/chart.mdx#L25) links to a separate [charts library](https://github.com/shadcn-ui/ui/tree/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/app/%28app%29/charts) at `/charts`, with one page per chart type.
+
+**Sveltery UI:** The [Chart](/docs/components/chart#charts-library) page has a Charts Library section after its guide. It shows the area, bar, line, pie, radar, radial and tooltip charts, each converted from upstream's `registry/new-york-v4/charts` file, and ends with the Examples and API reference sections of the other component pages.
+
+**Why:** These docs have no `/charts` route, so the link would return 404. The charts stay one click from the guide.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ## Forms
 
 ### The Forms guides cover SvelteKit forms instead of React form libraries
