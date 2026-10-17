@@ -143,6 +143,18 @@ The CLI installs the items an item depends on before the item itself. Then run i
 
 Share the item URLs with your users. They need a project that ran `init`, because the CLI reads `components.json` to find the `ui` directory, the style and the icon library.
 
+To give your registry a short name, tell your users to add it to `registries` in `components.json`:
+
+```json title="components.json"
+{
+  "registries": {
+    "@acme": "https://example.com/r/{name}.json"
+  }
+}
+```
+
+They can then install `@acme/hello-card`. See [Namespaces](/docs/registry/namespace).
+
 ## Guidelines
 
 - Give each item a `name`, `title` and `description`.

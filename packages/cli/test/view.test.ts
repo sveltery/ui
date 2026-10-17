@@ -95,7 +95,7 @@ describe('view', () => {
   });
 
   test('rejects an argument that is neither a name nor a URL', async () => {
-    await expect(view(['./local.json'], { cwd })).rejects.toThrow('"./local.json" is neither an item name nor an http(s) URL.');
+    await expect(view(['./local.json'], { cwd })).rejects.toThrow('"./local.json" is neither an item name, an @namespace/item name, nor an http(s) URL.');
   });
 
   test('rejects a components.json with an unknown style', async () => {
