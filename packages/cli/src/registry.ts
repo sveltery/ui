@@ -215,12 +215,14 @@ export function parseItemRef(value: string): ItemRef {
     }
     return { kind: 'namespaced', namespace: namespaced[1]!, name };
   }
+  const [owner = '', repo = '', ...item] = value.split('#')[0]!.split('/');
+  if (item.length > 0 && GITHUB_OWNER.test(owner) && GITHUB_REPO.test(repo)) throw new CliError('GitHub items such as owner/repo/item are not supported yet.');
   throw new CliError(`"${value}" is neither an item name, an @namespace/item name, nor an http(s) URL.`);
 }
 
 const ENV_VAR = /\$\{(\w+)\}/g;
 
-function namespaceRequest({ configs, env }: Namespaces, style: StyleName, namespace: string, name: string): ItemRequest {
+export function namespaceRequest({ configs, env }: Namespaces, style: StyleName, namespace: string, name: string): ItemRequest {
   const config = configs[namespace];
   if (!config) {
     throw new CliError(`Unknown registry "${namespace}". Make sure it is defined under "registries" in your components.json file:\n{\n  "registries": {\n    "${namespace}": "[URL_TO_REGISTRY]"\n  }\n}`);
@@ -316,9 +318,10 @@ export function parseGitHubSource(value: string): GitHubSource | undefined {
   if (!GITHUB_OWNER.test(owner) || !GITHUB_REPO.test(repo) || repo === '.' || repo === '..') return undefined;
   if (hash === -1) return { owner, repo };
   const ref = value.slice(hash + 1);
+  // A . or .. segment would resolve, in the URL, into another repository.
   // eslint-disable-next-line no-control-regex -- a ref goes into a URL, so control characters are rejected as upstream does.
-  if (!ref || /[\x00-\x1F\x7F\s]/.test(ref) || ref.startsWith('-')) {
-    throw new CliError(`Invalid GitHub ref in registry source "${value}". Use a non-empty branch, tag, or commit SHA without whitespace, control characters or leading dashes.`);
+  if (!ref || /[\x00-\x1F\x7F\s]/.test(ref) || ref.startsWith('-') || ref.split('/').some((segment) => segment === '.' || segment === '..')) {
+    throw new CliError(`Invalid GitHub ref in registry source "${value}". Use a non-empty branch, tag, or commit SHA without whitespace, control characters, leading dashes, or . or .. segments.`);
   }
   return { owner, repo, ref };
 }

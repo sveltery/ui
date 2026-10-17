@@ -4,6 +4,7 @@ import { createServer, type Server } from 'node:http';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, test, vi } from 'vitest';
+import { add } from '../src/commands/add.js';
 import { search, SEARCH_CONCURRENCY, type SearchOptions } from '../src/commands/search.js';
 
 const longDescription = 'A form for people who already have an account to sign in with their email and password, or with a provider such as GitHub.';
@@ -48,7 +49,6 @@ let server: Server;
 let origin: string;
 let cwd: string;
 let requests: string[] = [];
-const namespaceRequests = () => requests.filter((url) => !url.startsWith('/r/index.json'));
 
 beforeAll(async () => {
   server = createServer((request, response) => {
@@ -189,7 +189,13 @@ Showing 1-2 of 2
     configure({ '@acme': `${origin}/acme/{name}.json`, '@dynamic': `${origin}/dynamic/{name}.json` });
     await expect(search(['@other'], { cwd, json: false })).rejects.toThrow('Unknown registry "@other". The namespaces you can search are @sveltery, @acme, @dynamic.');
     await expect(search(['acme', `${origin}/public/registry.json`], { cwd, json: false })).rejects.toThrow('Invalid registry namespace: "acme". Registry names must start with @');
-    expect(namespaceRequests()).toEqual([]);
+    expect(requests).toEqual([]);
+  });
+
+  test('sends no request for a namespace that components.json does not define', async () => {
+    configure({ '@acme': acme() });
+    await expect(search(['@nope'], { cwd, json: false })).rejects.toThrow('Unknown registry "@nope".');
+    expect(requests).toEqual([]);
   });
 
   test('rejects a --limit or --offset that is not a whole number', async () => {
@@ -251,7 +257,7 @@ Showing 2-4 of 44
 - @acme/greet-dialog (block) · @acme
 
 More items available. Use --offset 4 to see the next page.`);
-    expect(namespaceRequests().sort()).toEqual(['/acme/registry.json?q=dialog&limit=4', '/dynamic/registry.json?q=dialog&limit=4']);
+    expect(requests.filter((url) => !url.startsWith('/r/')).sort()).toEqual(['/acme/registry.json?q=dialog&limit=4', '/dynamic/registry.json?q=dialog&limit=4']);
   });
 
   test('a @sveltery entry in registries replaces the built-in registry when @sveltery is named', async () => {
@@ -259,12 +265,12 @@ More items available. Use --offset 4 to see the next page.`);
     expect(await print(['@sveltery'], { limit: '1' })).toContain('- @sveltery/hello (ui) — Says hello.');
   });
 
-  test('stops before any namespace request when an environment variable is missing', async () => {
+  test('stops before any request when an environment variable is missing', async () => {
     rmSync(join(cwd, '.env.local'));
     delete process.env.ACME_TOKEN;
     configure({ '@acme': acme() });
-    await expect(search(['@acme'], { cwd, json: false })).rejects.toThrow('Registry "@acme" requires the following environment variables:\n\n  • ACME_TOKEN');
-    expect(namespaceRequests()).toEqual([]);
+    await expect(search(['@sveltery', '@acme'], { cwd, json: false })).rejects.toThrow('Registry "@acme" requires the following environment variables:\n\n  • ACME_TOKEN');
+    expect(requests).toEqual([]);
   });
 
   test('sends no request, not even with the credentials that are set, when another registry is missing an environment variable', async () => {
@@ -278,7 +284,7 @@ More items available. Use --offset 4 to see the next page.`);
     } finally {
       fetched.mockRestore();
     }
-    expect(namespaceRequests()).toEqual([]);
+    expect(requests).toEqual([]);
   });
 
   test('names a rejected token and prints ${VAR} instead of its value', async () => {
@@ -315,7 +321,7 @@ Showing 1-41 of 41
 
 - @dynamic/server-pick (ui) · @dynamic — Picked by the server.
 - @acme/greet-dialog (block) · @acme`);
-    expect(namespaceRequests().sort()).toEqual(['/acme/registry.json?q=dialog&limit=100', '/dynamic/registry.json?q=dialog&limit=100']);
+    expect(requests.sort()).toEqual(['/acme/registry.json?q=dialog&limit=100', '/dynamic/registry.json?q=dialog&limit=100']);
   });
 
   test('leaves out @sveltery, even when registries sets it, as upstream leaves out its built-in registries', async () => {
@@ -325,7 +331,7 @@ Showing 1-2 of 2
 
 - @acme/hello (ui) — Says hello.
 - @acme/greet-dialog (block)`);
-    expect(namespaceRequests()).toEqual(['/acme/registry.json?limit=100&offset=0']);
+    expect(requests).toEqual(['/acme/registry.json?limit=100&offset=0']);
   });
 
   test('asks for a registry, before any request, when there is no components.json', async () => {
@@ -341,7 +347,7 @@ Showing 1-2 of 2
     await expect(search([], { cwd, json: false })).rejects.toThrow(message);
     configure({ '@sveltery': acme() });
     await expect(search([], { cwd, json: false })).rejects.toThrow(message);
-    expect(namespaceRequests()).toEqual([]);
+    expect(requests).toEqual([]);
   });
 
   test('skips a registry that fails, or lacks an environment variable, names it, and searches the rest', async () => {
@@ -359,7 +365,7 @@ Showing 1-1 of 1
 
 - @acme/hello (ui) · @acme — Says hello.`);
     // @beta's URL is @acme's, so a request without @acme's token would mean @beta's was sent.
-    expect(namespaceRequests().sort()).toEqual(['/acme/registry.json?q=hello&limit=100', '/gone/registry.json?q=hello&limit=100']);
+    expect(requests.sort()).toEqual(['/acme/registry.json?q=hello&limit=100', '/gone/registry.json?q=hello&limit=100']);
     const results = JSON.parse(await print([], { json: true, query: 'hello' }));
     expect(results.errors).toEqual([
       { registry: '@beta', message: expect.stringContaining('BETA_TOKEN') },
@@ -382,6 +388,24 @@ No items found in @gone.`);
     expect(JSON.parse(await print([], { json: true })).errors).toBeUndefined();
   });
 
+  test('searches the namespaces while the Sveltery registry is unreachable, as it is not searched', async () => {
+    const closed = createServer();
+    await new Promise<void>((done) => closed.listen(0, '127.0.0.1', done));
+    const address = closed.address();
+    await new Promise((done) => closed.close(done));
+    const unreachable = `http://127.0.0.1:${typeof address === 'object' && address ? address.port : 0}/r`;
+    process.env.SVELTERY_REGISTRY_URL = unreachable;
+    try {
+      configure({ '@acme': acme() });
+      expect(await print(['@acme'], { query: 'hello' })).toContain('- @acme/hello (ui) — Says hello.');
+      expect(JSON.parse(await print([], { json: true })).errors).toBeUndefined();
+      expect(process.exitCode).toBeUndefined();
+      await expect(search(['@sveltery'], { cwd, json: false })).rejects.toThrow(`Could not reach ${unreachable}/index.json`);
+    } finally {
+      process.env.SVELTERY_REGISTRY_URL = `${origin}/r`;
+    }
+  });
+
   test(`fetches at most ${SEARCH_CONCURRENCY} registries at once`, async () => {
     const names = Array.from({ length: SEARCH_CONCURRENCY + 2 }, (_, index) => `@r${index}`);
     configure(Object.fromEntries(names.map((name) => [name, `${origin}/public/{name}.json?from=${name}`])));
@@ -402,7 +426,7 @@ No items found in @gone.`);
     } finally {
       fetched.mockRestore();
     }
-    expect([most, namespaceRequests().length]).toEqual([SEARCH_CONCURRENCY, names.length]);
+    expect([most, requests.length]).toEqual([SEARCH_CONCURRENCY, names.length]);
   });
 });
 
@@ -413,7 +437,7 @@ describe('search <url>', () => {
 Showing 1-1 of 1
 
 - ${origin}/public/hello.json (ui) — Says hello.`);
-    expect(namespaceRequests()).toEqual(['/public/registry.json?q=hello&limit=100&offset=0']);
+    expect(requests).toEqual(['/public/registry.json?q=hello&limit=100&offset=0']);
     expect(JSON.parse(await print([url], { json: true, query: 'hello' })).items).toEqual([
       { name: 'hello', title: 'Hello', type: 'registry:ui', description: 'Says hello.', registry: url, addCommandArgument: `${origin}/public/hello.json` },
     ]);
@@ -422,7 +446,7 @@ Showing 1-1 of 1
   test('keeps the URL\'s own query, the search replacing a parameter of the same name, and pages a dynamic registry on the server', async () => {
     const url = `${origin}/dynamic/registry.json?token=abc&limit=999`;
     expect(await print([url], { query: 'zzzz', limit: '1', offset: '10' })).toContain(`- ${origin}/dynamic/server-pick.json?token=abc&limit=999 (ui) — Picked by the server.`);
-    expect(namespaceRequests()).toEqual(['/dynamic/registry.json?token=abc&limit=1&q=zzzz&offset=10']);
+    expect(requests).toEqual(['/dynamic/registry.json?token=abc&limit=1&q=zzzz&offset=10']);
   });
 
   test('searches a URL alongside @sveltery', async () => {
@@ -477,7 +501,30 @@ Showing 1-1 of 1
   test('rejects a ref that cannot name a branch, tag or commit before it fetches anything', async () => {
     await expect(search(['acme/ui#-x'], { cwd, json: false })).rejects.toThrow('Invalid GitHub ref in registry source "acme/ui#-x".');
     await expect(search(['acme/ui#'], { cwd, json: false })).rejects.toThrow('Invalid GitHub ref in registry source "acme/ui#".');
+    await expect(search(['alice/safe#../../mallory/evil/main'], { cwd, json: false })).rejects.toThrow('Invalid GitHub ref in registry source "alice/safe#../../mallory/evil/main".');
+    await expect(search(['alice/safe#main/./x'], { cwd, json: false })).rejects.toThrow('Invalid GitHub ref in registry source "alice/safe#main/./x".');
     expect(fetched).toEqual([]);
+  });
+
+  test('add says it does not install the owner/repo/name address that a result gives yet', async () => {
+    writeFileSync(
+      join(cwd, 'components.json'),
+      JSON.stringify({
+        style: 'nova',
+        iconLibrary: 'lucide',
+        menuColor: 'default',
+        tailwind: { css: 'src/app.css', baseColor: 'neutral' },
+        aliases: { components: '$lib/components', ui: '$lib/components/ui', utils: '$lib/utils', lib: '$lib', hooks: '$lib/hooks' },
+        typescript: true,
+      }),
+    );
+    const addresses = [...JSON.parse(await print(['acme/ui'], { json: true, query: 'hello' })).items, ...JSON.parse(await print(['acme/ui#v1.0'], { json: true })).items].map(
+      (item: { addCommandArgument: string }) => item.addCommandArgument,
+    );
+    expect(addresses).toEqual(['acme/ui/hello', 'acme/ui/hello#v1.0']);
+    for (const address of addresses) {
+      await expect(add([address], { cwd, yes: true, overwrite: false, all: false, dryRun: true, install: false })).rejects.toThrow('GitHub items such as owner/repo/item are not supported yet.');
+    }
   });
 
   test('names a repository without a registry.json, and one whose registry.json uses include', async () => {

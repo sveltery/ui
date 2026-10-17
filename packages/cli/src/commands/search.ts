@@ -2,21 +2,23 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import fuzzysort from 'fuzzysort';
 import { CONFIG_FILE } from '../config.js';
-import { catalogStyle, openCatalog } from '../items.js';
+import { catalogStyle, readCatalog } from '../items.js';
 import { CliError } from '../parse.js';
 import {
   BUILTIN_NAMESPACE,
   catalogRequest,
   fetchCatalog,
   gitHubCatalogRequest,
-  itemRequest,
   itemTypeNames,
+  namespaceRequest,
+  openRegistry,
   parseGitHubSource,
   plainRequest,
   type CatalogSearch,
   type GitHubSource,
   type ItemRequest,
-  type Registry,
+  type Namespaces,
+  type RegistryManifest,
   type SearchPagination,
 } from '../registry.js';
 
@@ -70,10 +72,10 @@ const SEARCH_EXAMPLE = '`npx @sveltery/ui@latest search @sveltery`';
 const isUrl = (value: string) => /^https?:\/\//.test(value);
 
 /** Throws, before any request, for an argument that is no URL, GitHub source or namespace that components.json defines. */
-function assertSearchable(registry: Registry, requested: string[]): void {
+function assertSearchable(namespaces: Namespaces, requested: string[]): void {
   const invalid = requested.find((address) => !address.startsWith('@') && !isUrl(address) && !parseGitHubSource(address));
   if (invalid !== undefined) throw new CliError(`Invalid registry namespace: "${invalid}". Registry names must start with @ (e.g., @sveltery, @acme), or pass a registry URL or a GitHub source such as owner/repo.`);
-  const known = [...new Set([BUILTIN_NAMESPACE, ...Object.keys(registry.namespaces.configs)])];
+  const known = [...new Set([BUILTIN_NAMESPACE, ...Object.keys(namespaces.configs)])];
   const unknown = requested.filter((address) => address.startsWith('@') && !known.includes(address));
   if (unknown.length > 0) {
     throw new CliError(`Unknown registry ${unknown.map((value) => `"${value}"`).join(', ')}. The namespaces you can search are ${known.join(', ')}. Define a namespace under "registries" in your components.json file to search it.`);
@@ -127,8 +129,11 @@ const toSearchItem = (entry: { name: string; title?: string; type: string; descr
   addCommandArgument: addCommandArgument(target, entry.name),
 });
 
-async function readSource(registry: Registry, target: Target): Promise<Source> {
-  if (target.kind === 'manifest') return { items: [...registry.manifest.items, ...registry.manifest.blocks].map((entry) => toSearchItem(entry, target)) };
+async function readSource(readManifest: () => Promise<RegistryManifest>, target: Target): Promise<Source> {
+  if (target.kind === 'manifest') {
+    const { items, blocks } = await readManifest();
+    return { items: [...items, ...blocks].map((entry) => toSearchItem(entry, target)) };
+  }
   const catalog = await fetchCatalog(target.request);
   if (catalog.include?.length) {
     throw new CliError(
@@ -202,22 +207,22 @@ export async function search(requested: string[], options: SearchOptions): Promi
   if (searchAll && !existsSync(join(options.cwd, CONFIG_FILE))) {
     throw new CliError(`Provide a registry or namespace to search, e.g. ${SEARCH_EXAMPLE}.\n\nIf you have a ${CONFIG_FILE} with registries configured, run \`npx @sveltery/ui@latest search\` with no arguments to search all of them.`);
   }
-  const { registry, style } = await openCatalog(options.cwd);
-  if (!searchAll) assertSearchable(registry, requested);
+  const { url, namespaces, style } = readCatalog(options.cwd);
+  if (!searchAll) assertSearchable(namespaces, requested);
   // As upstream, a registry named twice is searched twice.
-  const registries = searchAll ? Object.keys(registry.namespaces.configs).filter((namespace) => namespace !== BUILTIN_NAMESPACE) : requested;
+  const registries = searchAll ? Object.keys(namespaces.configs).filter((namespace) => namespace !== BUILTIN_NAMESPACE) : requested;
   if (registries.length === 0) throw new CliError(`No registries are configured in ${CONFIG_FILE}.\nProvide a registry or namespace to search, e.g. ${SEARCH_EXAMPLE}.`);
   // One registry pages on the server. Several are asked for every item up to the end of the page, which is then cut here.
   const types = filters.types?.map((type) => `registry:${type}`);
   const forwarded: CatalogSearch =
     registries.length === 1 ? { query: filters.query, types, limit, offset } : { query: filters.query, types, limit: limit === undefined ? undefined : (offset ?? 0) + limit };
   const toTarget = (address: string): Target => {
-    if (address === BUILTIN_NAMESPACE && !registry.namespaces.configs[BUILTIN_NAMESPACE]) return { kind: 'manifest', address };
+    if (address === BUILTIN_NAMESPACE && !namespaces.configs[BUILTIN_NAMESPACE]) return { kind: 'manifest', address };
     if (isUrl(address)) return { kind: 'url', address, request: catalogRequest(plainRequest(address), forwarded) };
     // A GitHub registry is a file, with no server to search, so nothing is forwarded.
     const source = parseGitHubSource(address);
     if (source) return { kind: 'github', address, source, request: gitHubCatalogRequest(source) };
-    return { kind: 'namespace', address, request: catalogRequest(itemRequest(registry, catalogStyle(style), { kind: 'namespaced', namespace: address, name: 'registry' }), forwarded) };
+    return { kind: 'namespace', address, request: catalogRequest(namespaceRequest(namespaces, catalogStyle(style), address, 'registry'), forwarded) };
   };
   type Outcome = { source: Source } | { error: string };
   // As upstream, a search of every registry skips one that fails, even for a missing environment variable. A search of the
@@ -233,7 +238,10 @@ export async function search(requested: string[], options: SearchOptions): Promi
       return skip(error);
     }
   });
-  const settled = await mapSettled(targets, SEARCH_CONCURRENCY, async (target): Promise<Outcome> => ('error' in target ? target : { source: await readSource(registry, target) }));
+  // Sveltery's index.json is fetched only when @sveltery is searched.
+  let manifest: Promise<RegistryManifest> | undefined;
+  const readManifest = () => (manifest ??= openRegistry(url, namespaces).then((registry) => registry.manifest));
+  const settled = await mapSettled(targets, SEARCH_CONCURRENCY, async (target): Promise<Outcome> => ('error' in target ? target : { source: await readSource(readManifest, target) }));
   const outcomes = settled.map((outcome) => (outcome.status === 'fulfilled' ? outcome.value : skip(outcome.reason)));
   const sources = outcomes.flatMap((outcome) => ('source' in outcome ? [outcome.source] : []));
   const errors = outcomes.flatMap((outcome, index) => ('error' in outcome ? [{ registry: registries[index]!, message: outcome.error }] : []));

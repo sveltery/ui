@@ -92,7 +92,7 @@ npx @sveltery/ui@latest search @sveltery -q dialog
 | `-t, --type <type>` | Keep one item type, such as `ui` or `block`. Comma-separate several. |
 | `-l, --limit <number>` | Show at most this many items. Defaults to 100. |
 | `-o, --offset <number>` | Skip this many items. Defaults to 0. |
-| `--json` | Print `{ pagination, items }` as JSON. |
+| `--json` | Print `{ pagination, items, errors }` as JSON. `errors` lists the registries that a search of every registry skipped. |
 | `--cwd <path>` | The project root. Defaults to the current directory. |
 
 ## Find a component's docs
