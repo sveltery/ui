@@ -16,7 +16,7 @@ function swap(source: string, edits: [from: string, to: string][]): string {
   return source;
 }
 
-const ctx = (iconLibrary: IconLibraryName, fontHeading = false, menuColor: PresetMenuColor = 'default'): TransformContext => ({ iconLibrary, menuColor, fontHeading });
+const ctx = (iconLibrary: IconLibraryName, fontHeading = false, menuColor: PresetMenuColor = 'default'): TransformContext => ({ iconLibrary, menuColor, fontHeading, aliases: { ui: '$lib/components/ui', components: '$lib/components' } });
 const placeholderImport = "import { IconPlaceholder } from '../icons/index.js';";
 const selectIcon = '<IconPlaceholder lucide="CheckIcon" tabler="IconCheck" hugeicons="Tick02Icon" phosphor="CheckIcon" remixicon="RiCheckLine" class="cn-select-item-indicator-icon pointer-events-none" />';
 const spinnerOpen = `<IconPlaceholder
