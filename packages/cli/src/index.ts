@@ -8,6 +8,7 @@ import { init } from './commands/init.js';
 import { list } from './commands/list.js';
 import { migrateRtl, migrations } from './commands/migrate.js';
 import { update } from './commands/update.js';
+import { view } from './commands/view.js';
 import { CliError } from './parse.js';
 import { version } from './version.js';
 
@@ -81,6 +82,13 @@ program
     }
     await migrateRtl({ cwd: resolve(options.cwd), yes: options.yes, path });
   });
+
+program
+  .command('view')
+  .description('view items from the registry')
+  .argument('<items...>', 'item names, or URLs of registry items')
+  .option('--cwd <path>', 'the project root', '.')
+  .action(async (items: string[], options) => void (await view(items, { cwd: resolve(options.cwd) })));
 
 try {
   await program.parseAsync();

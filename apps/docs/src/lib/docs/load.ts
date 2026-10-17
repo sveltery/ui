@@ -1,11 +1,12 @@
 import { error } from '@sveltejs/kit';
+import { remoteFormPages } from '../../params';
 import type { DocModule } from './types';
 
 const modules = import.meta.glob<DocModule>(['/content/docs/**/*.md', '!**/README.md']);
 const sources = import.meta.glob<string>(['/content/docs/**/*.md', '!**/README.md'], { query: '?raw', import: 'default' });
 
-/** Pages with their own route, such as a page whose demo posts to a form action, which cannot be prerendered. */
-const routed = ['forms/form-actions'];
+/** Pages that render on each request, because their demo posts a form. */
+const routed = ['forms/form-actions', ...remoteFormPages];
 
 const file = (slug: string) => {
   const path = [`/content/docs/${slug}.md`, `/content/docs/${slug ? `${slug}/` : ''}index.md`].find((candidate) => candidate in modules);
