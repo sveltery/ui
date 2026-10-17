@@ -235,11 +235,18 @@ If you're upgrading from a previous version of the `Calendar` component, you'll 
 
 ### Import the `Locale` type.
 
-Add `Locale` to your type imports from `date-fns`:
+In `types.ts`, import `Locale` from `date-fns` and add a `locale` prop to `CalendarDayButtonProps`:
 
 ```diff
-  import { DayPicker, defaultClassNames } from '@sveltery/day-picker';
+  import type { CalendarDay, DayPickerProps, Modifiers } from '@sveltery/day-picker';
 + import type { Locale } from 'date-fns';
+  import type { ButtonProps, ButtonVariants } from '../button/index.js';
+
+  export type CalendarDayButtonProps = ButtonProps & {
+    day: CalendarDay;
+    modifiers: Modifiers;
++   locale?: Partial<Locale>;
+  };
 ```
 
 ### Add `locale` prop to the Calendar component.

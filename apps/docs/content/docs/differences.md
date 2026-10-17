@@ -375,7 +375,7 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 ### The Calendar page has no Persian / Hijri / Jalali example
 
-**Upstream:** The [Calendar page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/calendar.mdx) shows a Persian calendar built on [`react-day-picker/persian`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/calendar-hijri.tsx#L16).
+**Upstream:** The [Calendar page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/calendar.mdx) shows a Persian calendar built on [`react-day-picker/persian`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/calendar-hijri.tsx#L12).
 
 **Sveltery UI:** The [Calendar](/docs/components/calendar) page keeps the section and says the Persian calendar is not available. It has no preview.
 

@@ -183,7 +183,7 @@ Replace the hard-coded gap and vertical padding with `--card-spacing`, and set t
 ```diff
   .cn-card {
     @apply ring-foreground/10 bg-card text-card-foreground overflow-hidden rounded-xl text-sm ring-1 ...;
--   @apply flex flex-col gap-4 py-4 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 ...;
+-   @apply gap-4 py-4 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 ...;
 +   @apply gap-(--card-spacing) py-(--card-spacing) [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 ...;
   }
 ```

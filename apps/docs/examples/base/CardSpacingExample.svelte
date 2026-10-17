@@ -18,10 +18,12 @@
 
 <div class="mx-auto grid w-full max-w-sm gap-4">
   <ToggleGroup
-    value={[spacing]}
-    onValueChange={(value) => {
-      if (value[0]) spacing = value[0];
-    }}
+    bind:value={
+      () => [spacing],
+      (value) => {
+        if (value[0]) spacing = value[0];
+      }
+    }
     variant="outline"
     size="sm"
     class="justify-center"
