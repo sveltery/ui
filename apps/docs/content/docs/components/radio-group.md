@@ -75,6 +75,10 @@ Bind `value` to read or change the selection.
 <RadioGroup bind:value={density}>...</RadioGroup>
 ```
 
+## Without JavaScript
+
+`RadioGroup` needs JavaScript for the keyboard and for a remote form's `as()` spread. For a form that must work before the page hydrates, use [Native Radio Group](/docs/components/native-radio-group), a styled native input that looks the same.
+
 ## API reference
 
 `RadioGroup` is styled on top of the Sveltery Base `RadioGroup` and `Radio` primitives, which own the selection, arrow-key navigation and the hidden inputs that take part in form submission. `RadioGroup` keeps the HTML form semantics: `name` submits the checked value, `defaultValue` sets the initial selection, and `bind:value` shares it with the parent. See the [Base UI Radio Group documentation](https://base-ui.com/react/components/radio-group) and the [Radio documentation](https://base-ui.com/react/components/radio) for the behavior they port.

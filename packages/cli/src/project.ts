@@ -65,6 +65,20 @@ export function libAlias(cwd: string): '$lib' | '#lib' {
   return manifest.imports?.['#lib/*'] !== undefined ? '#lib' : '$lib';
 }
 
+const LIB_PATTERN = './src/lib/*';
+
+// package.json with SvelteKit 3's `"#lib/*": "./src/lib/*"` given a `./src/lib/*/index.js` fallback, or undefined when
+// the mapping is anything else. Vite resolves `#lib/components/ui/button` to the directory's index, but TypeScript does
+// not look in a directory behind `imports`; it does try each target of an array.
+export function withLibIndexFallback(cwd: string): string | undefined {
+  const raw = readFileSync(join(cwd, 'package.json'), 'utf8');
+  const manifest = JSON.parse(raw) as { imports?: Record<string, unknown> };
+  if (manifest.imports?.['#lib/*'] !== LIB_PATTERN) return undefined;
+  manifest.imports['#lib/*'] = [LIB_PATTERN, './src/lib/*/index.js'];
+  const indent = /^[ \t]+(?=")/m.exec(raw)?.[0] ?? '  ';
+  return `${JSON.stringify(manifest, null, indent)}\n`;
+}
+
 /** The directory an alias such as `$lib/components/ui` names, relative to `cwd`. */
 export function aliasPath(alias: string): string {
   if (/^[$#]lib(\/|$)/.test(alias)) return join('src/lib', alias.slice('$lib'.length));

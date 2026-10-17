@@ -4,6 +4,8 @@
   import isPlainObject from 'es-toolkit/compat/isPlainObject';
   import Layer from '../container/Layer.svelte';
   import Rectangle from '../shape/Rectangle.svelte';
+  import Trapezoid from '../shape/Trapezoid.svelte';
+  import Sector from '../shape/Sector.svelte';
   import Symbols from '../shape/Symbols.svelte';
   import Curve from '../shape/Curve.svelte';
   import RenderProp from './RenderProp.svelte';
@@ -28,6 +30,10 @@
 {#snippet ShapeSelector(elementProps: Record<string, unknown>)}
   {#if shapeType === 'rectangle'}
     <Rectangle {...elementProps} />
+  {:else if shapeType === 'trapezoid'}
+    <Trapezoid {...elementProps} />
+  {:else if shapeType === 'sector'}
+    <Sector {...elementProps} />
   {:else if shapeType === 'symbols'}
     <Symbols {...elementProps} />
   {:else if shapeType === 'curve'}
