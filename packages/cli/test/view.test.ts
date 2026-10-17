@@ -29,6 +29,7 @@ const registryFiles: Record<string, unknown> = {
   'styles/nova/login-01.json': item('login-01', { type: 'registry:block' }),
   'styles/vega/button.json': item('button', { description: 'The vega button.' }),
   'extra/hello-card.json': item('hello-card', { title: 'Hello card' }),
+  'acme/vega/hello.json': item('hello', { description: 'The acme hello.' }),
 };
 
 let server: Server;
@@ -37,6 +38,8 @@ let cwd: string;
 
 beforeAll(async () => {
   server = createServer((request, response) => {
+    // The @acme registry wants a bearer token.
+    if (request.url?.startsWith('/acme/') && request.headers.authorization !== 'Bearer s3cret') return void response.writeHead(401).end();
     const body = registryFiles[(request.url ?? '').replace(/^\//, '').replace(/^r\//, '')];
     response.writeHead(body ? 200 : 404, { 'content-type': 'application/json' }).end(body ? JSON.stringify(body) : '{}');
   });
@@ -77,6 +80,16 @@ describe('view', () => {
 
   test('fetches an item URL as is', async () => {
     expect(JSON.parse(await print([`${origin}/extra/hello-card.json`]))).toEqual([registryFiles['extra/hello-card.json']]);
+  });
+
+  test('fetches an @namespace/item from the registries in components.json, with the token from .env.local and the project style', async () => {
+    writeFileSync(join(cwd, 'components.json'), JSON.stringify({ style: 'vega', registries: { '@acme': { url: `${origin}/acme/{style}/{name}.json`, headers: { Authorization: 'Bearer ${ACME_TOKEN}' } } } }));
+    writeFileSync(join(cwd, '.env.local'), 'ACME_TOKEN=s3cret\n');
+    expect(JSON.parse(await print(['@acme/hello', 'button']))).toEqual([registryFiles['acme/vega/hello.json'], registryFiles['styles/vega/button.json']]);
+  });
+
+  test('names a namespace that components.json does not configure', async () => {
+    await expect(view(['@acme/hello'], { cwd })).rejects.toThrow('Unknown registry "@acme". Make sure it is defined under "registries" in your components.json file:');
   });
 
   test('takes the style from components.json', async () => {
