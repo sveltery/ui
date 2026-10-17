@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { commandScore, defaultFilter } from '@sveltery/command';
+import { defaultFilter } from '@sveltery/command';
+import { commandScore } from '../../packages/command/src/lib/command-score.js';
 import { rank, step, stepGroup, type GroupEntry, type ItemEntry } from '../../packages/command/src/lib/rank.js';
 
 type Group = GroupEntry & { name: string };
@@ -29,30 +30,27 @@ const filter = (value: string, search: string) => (value.includes(search) ? 1 / 
 const names = (entries: readonly { name: string }[]) => entries.map((entry) => entry.name);
 
 describe('rank', () => {
-  it('keeps document order and emits no slots without a search', () => {
+  it('keeps document order and moves nothing without a search', () => {
     const view = rank({ items, groups, search: '', filter });
     expect(names(view.ordered)).toEqual(['apple', 'banana', 'hammer', 'saw', 'pineapple', 'web']);
     expect(names(view.navigable)).toEqual(['apple', 'banana', 'hammer', 'pineapple', 'web']);
     expect(view.count).toBe(5);
-    expect(view.itemSlot.size).toBe(0);
-    expect(view.groupSlot.size).toBe(0);
+    expect(view.ranked).toBe(false);
+    expect(view.looseMoved).toEqual([]);
+    expect(view.groupMoved.size).toBe(0);
   });
 
   it('hides non-matches, sorts by score and puts ungrouped items before groups', () => {
     const view = rank({ items, groups, search: 'a', filter });
-    // apple 1, banana 1/2, hammer 1/2, saw 1/2, pineapple 1/5, web force-mounted and unscored.
-    expect(names(view.ordered)).toEqual(['pineapple', 'web', 'apple', 'banana', 'hammer', 'saw']);
+    // apple 1, banana 1/2, hammer 1/2, saw 1/2, pineapple 1/5, web force-mounted and unscored. Disabled saw is not
+    // moved, as in cmdk, so it stays ahead of the items that move to the end of its group.
+    expect(names(view.ordered)).toEqual(['pineapple', 'web', 'apple', 'banana', 'saw', 'hammer']);
     expect(names(view.navigable)).toEqual(['pineapple', 'web', 'apple', 'banana', 'hammer']);
     expect(view.count).toBe(5);
-    expect([...view.itemSlot].map(([entry, slot]) => `${entry.name}:${slot}`)).toEqual([
-      'pineapple:1',
-      'web:2',
-      'apple:1',
-      'banana:2',
-      'hammer:1',
-      'saw:2'
-    ]);
-    expect([...view.groupSlot].map(([group, slot]) => `${group.name}:${slot}`)).toEqual(['fruits:3', 'tools:4']);
+    expect(view.ranked).toBe(true);
+    expect(names(view.looseMoved)).toEqual(['pineapple', 'web']);
+    expect([...view.groupMoved].map(([group, moved]) => `${group.name}:${names(moved)}`)).toEqual(['fruits:apple,banana', 'tools:hammer']);
+    expect(names(view.groupOrder)).toEqual(['fruits', 'tools']);
   });
 
   it('orders groups by their best item and hides empty ones', () => {
@@ -74,7 +72,7 @@ describe('rank', () => {
   it('neither filters nor sorts without a filter', () => {
     const view = rank({ items, groups, search: 'zzz', filter: null });
     expect(names(view.ordered)).toEqual(['apple', 'banana', 'hammer', 'saw', 'pineapple', 'web']);
-    expect(view.itemSlot.size).toBe(0);
+    expect(view.ranked).toBe(false);
   });
 
   it('shows unmeasured items unscored and skips them in navigation', () => {

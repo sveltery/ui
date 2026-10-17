@@ -156,6 +156,7 @@
         props={{
           spline: { curve: curveMonotoneX, motion: 'tween', strokeWidth: 2 },
           xAxis: {
+            tickLength: 14,
             format: (v: Date) => {
               return v.toLocaleDateString('en-US', {
                 month: 'short',

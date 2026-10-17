@@ -1,7 +1,7 @@
 import type { Formatters, Labels } from './types.js';
 
 export const defaultFormatters: Formatters = {
-  formatCaption: (month, lib) => lib.formatMonthYear(month),
+  formatCaption: (month, lib) => lib.format(month, 'LLLL y'),
   formatDay: (date, lib) => lib.format(date, 'd'),
   formatMonthDropdown: (month, lib) => lib.format(month, 'LLLL'),
   formatYearDropdown: (year, lib) => lib.format(year, 'yyyy'),
@@ -20,7 +20,7 @@ export const defaultLabels: Labels = {
     const label = lib.format(date, 'PPPP');
     return modifiers.today ? `Today, ${label}` : label;
   },
-  labelGrid: (month, lib) => lib.formatMonthYear(month),
+  labelGrid: (month, lib) => lib.format(month, 'LLLL y'),
   labelMonthDropdown: () => 'Choose the Month',
   labelYearDropdown: () => 'Choose the Year',
   labelNav: () => '',

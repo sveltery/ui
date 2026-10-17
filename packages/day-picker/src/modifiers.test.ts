@@ -1,27 +1,25 @@
 import { describe, expect, it } from 'vitest';
 import { DateLib } from './date-lib.js';
 import { createDay } from './grid.js';
-import { getDayModifiers, type ModifierContext } from './modifiers.js';
+import { createGetModifiers, type ModifierContext } from './modifiers.js';
 
 const lib = new DateLib();
 const d = (month: number, day: number) => new Date(2024, month - 1, day);
 const march = d(3, 1);
 const context: ModifierContext = { today: d(3, 13), showOutsideDays: true };
-const modifiersOf = (date: Date, overrides: Partial<ModifierContext> = {}, displayMonth = march) =>
-  getDayModifiers(createDay(date, displayMonth, lib), { ...context, ...overrides }, lib);
+const modifiersOf = (date: Date, overrides: Partial<ModifierContext> = {}, displayMonth = march) => {
+  const day = createDay(date, displayMonth, lib);
+  return createGetModifiers([day], { ...context, ...overrides }, lib)(day);
+};
 
-describe('getDayModifiers', () => {
-  it('starts with every flag off and no selection', () => {
+describe('createGetModifiers', () => {
+  it('starts with every flag off and leaves the selection states out', () => {
     expect(modifiersOf(d(3, 5))).toEqual({
       disabled: false,
       hidden: false,
       outside: false,
       today: false,
       focused: false,
-      selected: false,
-      range_start: false,
-      range_middle: false,
-      range_end: false,
     });
   });
 
@@ -64,17 +62,23 @@ describe('getDayModifiers', () => {
     expect(modifiersOf(d(4, 1), { navStart, navEnd }, d(4, 1)).hidden).toBe(true);
   });
 
-  it('adds the custom modifiers by name', () => {
-    const modifiers = { weekend: { dayOfWeek: [0, 6] }, booked: [d(3, 5)], unused: undefined };
-    expect(modifiersOf(d(3, 10), { modifiers })).toMatchObject({ weekend: true, booked: false, unused: false });
-    expect(modifiersOf(d(3, 5), { modifiers })).toMatchObject({ weekend: false, booked: true });
+  it('adds the custom modifiers that match a displayed day, and leaves out the rest', () => {
+    const days = [createDay(d(3, 5), march, lib), createDay(d(3, 10), march, lib)];
+    const modifiers = { weekend: { dayOfWeek: [0, 6] }, booked: [d(3, 5)], elsewhere: d(4, 1), unused: undefined };
+    const getModifiers = createGetModifiers(days, { ...context, modifiers }, lib);
+    expect(getModifiers(days[1])).toEqual(expect.objectContaining({ weekend: true, booked: false }));
+    expect(getModifiers(days[0])).toEqual(expect.objectContaining({ weekend: false, booked: true }));
+    expect(getModifiers(days[0])).not.toHaveProperty('elsewhere');
+    expect(getModifiers(days[0])).not.toHaveProperty('unused');
   });
 
   it('lets custom modifiers override the built-in ones', () => {
-    const modifiers = { disabled: d(3, 5), today: d(3, 6), focused: d(3, 7) };
-    expect(modifiersOf(d(3, 5), { modifiers }).disabled).toBe(true);
-    expect(modifiersOf(d(3, 13), { modifiers }).today).toBe(false);
-    expect(modifiersOf(d(3, 6), { modifiers }).today).toBe(true);
-    expect(modifiersOf(d(3, 7), { modifiers }).focused).toBe(true);
+    const days = [5, 6, 7, 13].map((day) => createDay(d(3, day), march, lib));
+    const getModifiers = createGetModifiers(days, { ...context, modifiers: { disabled: d(3, 5), today: d(3, 6), focused: d(3, 7) } }, lib);
+    const [fifth, sixth, seventh, thirteenth] = days.map(getModifiers);
+    expect(fifth.disabled).toBe(true);
+    expect(thirteenth.today).toBe(false);
+    expect(sixth.today).toBe(true);
+    expect(seventh.focused).toBe(true);
   });
 });

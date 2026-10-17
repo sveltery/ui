@@ -53,7 +53,7 @@ Change the imports to match your project setup.
 
 ## About
 
-The `Calendar` component is built on `@sveltery/day-picker`, a Svelte port of [React DayPicker](https://daypicker.dev) v9. It takes the same props, with three Svelte changes:
+The `Calendar` component is built on `@sveltery/day-picker`, a Svelte port of [React DayPicker](https://daypicker.dev) v9.8.1, the version shadcn/ui uses. It takes the same props, with three Svelte changes:
 
 - `selected` and `month` are bindable, so there is no controlled `selected` plus `onSelect` pair to keep in sync.
 - The `components` prop becomes snippet props: `dayButton`, `chevron`, `weekNumber`, `root` and `footer`. Each snippet gets the attributes to spread on its element, and `dayButton` and `weekNumber` also get the formatted `text`.
@@ -159,4 +159,4 @@ You can use the `Calendar` component to build a date picker. See the [Date Picke
 
 ## API Reference
 
-See the [React DayPicker documentation](https://daypicker.dev) for every prop. The props it lists work the same here, except the three Svelte changes in [About](#about). `animate`, `broadcastCalendar`, `numerals`, the non-Gregorian calendars and the deprecated `fromYear`, `toYear`, `fromMonth` and `toMonth` are not ported.
+See the [React DayPicker documentation](https://daypicker.dev) for every prop. The props it lists work the same here, except the three Svelte changes in [About](#about). `animate`, `broadcastCalendar`, `numerals`, the non-Gregorian calendars and the deprecated `fromYear`, `toYear`, `fromMonth` and `toMonth` are not ported. Neither are props added after v9.8.1, such as `reverseYears` and `resetOnSelect`.

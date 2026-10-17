@@ -86,7 +86,7 @@
             axis="x"
             props={{
               area: { curve: curveNatural, 'fill-opacity': 0.4, line: { class: 'stroke-1' }, motion: 'tween' },
-              xAxis: { format: shortMonth },
+              xAxis: { tickLength: 14, format: shortMonth },
             }}
           >
             {#snippet tooltip()}
@@ -137,7 +137,7 @@
                 },
               },
               highlight: { area: { fill: 'none' } },
-              xAxis: { format: (month: string) => month.slice(0, 3) },
+              xAxis: { tickLength: 16, format: (month: string) => month.slice(0, 3) },
             }}
           >
             {#snippet tooltip()}
@@ -173,7 +173,7 @@
             ]}
             props={{
               spline: { curve: curveNatural, motion: 'tween', strokeWidth: 2 },
-              xAxis: { format: shortMonth },
+              xAxis: { tickLength: 14, format: shortMonth },
               highlight: { points: { r: 4 } },
             }}
           >

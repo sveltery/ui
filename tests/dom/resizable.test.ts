@@ -1,13 +1,39 @@
-import { afterEach, expect, it } from 'vitest';
+import { afterAll, afterEach, beforeAll, expect, it } from 'vitest';
 import { createRawSnippet, flushSync, mount, unmount } from 'svelte';
-import { savedLayout } from '@sveltery/resizable';
+import type { GroupImperativeHandle, PanelImperativeHandle } from '@sveltery/resizable';
 import ResizableFixture from './ResizableFixture.svelte';
 import ResizableHandleChildren from './ResizableHandleChildren.svelte';
+import { savedLayout } from './savedLayout.svelte.js';
 
 let instance: ReturnType<typeof mount> | undefined;
 afterEach(async () => { if (instance) await unmount(instance); document.body.replaceChildren(); });
 
-type Fixture = { read(): Record<string, number> | undefined; write(next: Record<string, number>): void; changeLog(): string[]; sideBar(): { collapse(): void; expand(): void; resize(size: string): void; isCollapsed(): boolean; getSize(): { asPercentage: number } } };
+// jsdom lays nothing out, so each panel is 100px square, laid end to end along its group, and nothing resizes.
+const sizeOf = (element: Element) => (element instanceof HTMLElement && element.dataset.panel ? 100 : 0);
+function layOut(element: HTMLElement): DOMRect {
+  const parent = element.parentElement;
+  if (!parent?.dataset.group) return new DOMRect(0, 0, [...element.children].reduce((total, child) => total + sizeOf(child), 0), 100);
+  const offset = [...parent.children].slice(0, [...parent.children].indexOf(element)).reduce((total, child) => total + sizeOf(child), 0);
+  return parent.style.flexDirection === 'column' ? new DOMRect(0, offset, 100, sizeOf(element)) : new DOMRect(offset, 0, sizeOf(element), 100);
+}
+const layout: Record<string, (element: HTMLElement) => unknown> = {
+  offsetWidth: sizeOf,
+  offsetHeight: sizeOf,
+  offsetLeft: (element) => layOut(element).x,
+  offsetTop: (element) => layOut(element).y,
+  getBoundingClientRect: (element) => () => layOut(element)
+};
+const native = Object.fromEntries(Object.keys(layout).map((key) => [key, Object.getOwnPropertyDescriptor(HTMLElement.prototype, key) ?? Object.getOwnPropertyDescriptor(Element.prototype, key)!]));
+beforeAll(() => {
+  for (const [key, read] of Object.entries(layout)) Object.defineProperty(HTMLElement.prototype, key, { configurable: true, get() { return read(this); } });
+  globalThis.ResizeObserver = class { observe() {} unobserve() {} disconnect() {} };
+});
+afterAll(() => {
+  for (const [key, descriptor] of Object.entries(native)) Object.defineProperty(HTMLElement.prototype, key, descriptor);
+  delete (globalThis as Partial<typeof globalThis>).ResizeObserver;
+});
+
+type Fixture = { groupApi(): GroupImperativeHandle; panelApi(): PanelImperativeHandle; changeLog(): string[] };
 
 function setup() {
   instance = mount(ResizableFixture, { target: document.body });
@@ -31,13 +57,24 @@ it('renders the group, panels and handle with the upstream slots and classes', (
   expect(group.style.flexDirection).toBe('row');
   expect(byId('vertical').style.flexDirection).toBe('column');
   expect(byId('vertical').classList.contains('extra')).toBe(true);
+  expect(group.dataset.group).toBe('true');
+  expect(group.dataset.testid).toBe('horizontal');
   const left = byId('left');
   expect(left.dataset.slot).toBe('resizable-panel');
-  expect(left.hasAttribute('data-panel')).toBe(true);
-  expect(left.classList.contains('left')).toBe(true);
+  expect(left.dataset.panel).toBe('true');
+  expect(left.dataset.testid).toBe('left');
+  expect(left.hasAttribute('class')).toBe(false);
   expect(left.style.overflow).toBe('hidden');
+  expect(left.style.display).toBe('flex');
+  const content = left.firstElementChild as HTMLElement;
+  expect(content.className).toBe('left');
+  expect(content.textContent).toBe('Left');
+  expect(content.style.flexGrow).toBe('1');
   const handle = byId('handle');
   expect(handle.dataset.slot).toBe('resizable-handle');
+  expect(handle.dataset.testid).toBe('handle');
+  expect(handle.style.cursor).toBe('');
+  expect(handle.style.flexGrow).toBe('0');
   expect(handle.className).toContain('cn-resizable-handle relative flex w-px items-center justify-center bg-border');
   expect(handle.className).toContain('[&[aria-orientation=horizontal]>div]:rotate-90');
   expect(handle.querySelector('div')!.className).toBe('cn-resizable-handle-icon z-10 flex shrink-0');
@@ -50,7 +87,7 @@ it('lays panels out from their default sizes', () => {
   expect(grow('right')).toBe('70');
   expect(grow('top')).toBe('25');
   expect(grow('bottom')).toBe('75');
-  expect(fixture.read()).toEqual({ left: 30, right: 70 });
+  expect(fixture.groupApi().getLayout()).toEqual({ left: 30, right: 70 });
 });
 
 it('gives the handle the separator role and the value of the panel before it', () => {
@@ -72,13 +109,13 @@ it('gives the handle the separator role and the value of the panel before it', (
   expect(vertical.getAttribute('aria-valuemax')).toBe('100');
 });
 
-it('resizes with the arrow keys and follows bind:layout', () => {
+it('resizes with the arrow keys', () => {
   const { grow, now, press, fixture } = setup();
   press('handle', 'ArrowRight');
   expect(now('handle')).toBe('35');
   expect(grow('left')).toBe('35');
   expect(grow('right')).toBe('65');
-  expect(fixture.read()).toEqual({ left: 35, right: 65 });
+  expect(fixture.groupApi().getLayout()).toEqual({ left: 35, right: 65 });
   press('handle', 'ArrowLeft');
   press('handle', 'ArrowLeft');
   expect(grow('left')).toBe('25');
@@ -100,65 +137,62 @@ it('resizes a vertical group with ArrowUp and ArrowDown and ignores the horizont
 });
 
 it('moves to the limits with Home and End and toggles a collapsible panel with Enter', () => {
-  const { byId, grow, now, press, fixture } = setup();
+  const { grow, now, press, fixture } = setup();
   press('handle', 'Home');
   expect(grow('left')).toBe('0');
   expect(grow('right')).toBe('100');
   expect(now('handle')).toBe('0');
-  expect(byId('left').hasAttribute('data-collapsed')).toBe(true);
+  expect(fixture.panelApi().isCollapsed()).toBe(true);
   press('handle', 'End');
   expect(grow('left')).toBe('80');
   expect(grow('right')).toBe('20');
-  expect(byId('left').hasAttribute('data-collapsed')).toBe(false);
+  expect(fixture.panelApi().isCollapsed()).toBe(false);
   press('handle', 'Enter');
   expect(grow('left')).toBe('0');
-  expect(byId('left').hasAttribute('data-collapsed')).toBe(true);
+  expect(fixture.panelApi().isCollapsed()).toBe(true);
   press('handle', 'Enter');
   expect(grow('left')).toBe('80');
-  expect(fixture.read()).toEqual({ left: 80, right: 20 });
+  expect(fixture.groupApi().getLayout()).toEqual({ left: 80, right: 20 });
 });
 
 it('leaves a key it does not handle alone and ignores Enter on a panel that cannot collapse', () => {
-  const { byId, press } = setup();
+  const { byId, grow, press } = setup();
   const unhandled = new KeyboardEvent('keydown', { key: 'a', bubbles: true, cancelable: true });
   byId('handle').dispatchEvent(unhandled);
   expect(unhandled.defaultPrevented).toBe(false);
-  const enter = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true });
-  byId('vertical-handle').dispatchEvent(enter);
-  expect(enter.defaultPrevented).toBe(false);
+  press('vertical-handle', 'Enter');
+  expect(grow('top')).toBe('25');
   press('handle', 'ArrowRight');
   expect(byId('handle').getAttribute('aria-valuenow')).toBe('35');
 });
 
-it('applies a layout the parent binds', () => {
+it('applies a layout set through the group API after validating it', () => {
   const { grow, now, fixture } = setup();
-  fixture.write({ left: 60, right: 40 });
+  expect(fixture.groupApi().setLayout({ left: 60, right: 40 })).toEqual({ left: 60, right: 40 });
   flushSync();
   expect(grow('left')).toBe('60');
   expect(grow('right')).toBe('40');
   expect(now('handle')).toBe('60');
-  fixture.write({ left: 4, right: 96 });
+  expect(fixture.groupApi().setLayout({ left: 4, right: 96 })).toEqual({ left: 0, right: 100 });
   flushSync();
   expect(grow('left')).toBe('0');
-  expect(fixture.read()).toEqual({ left: 0, right: 100 });
+  expect(fixture.groupApi().getLayout()).toEqual({ left: 0, right: 100 });
 });
 
-it('reports a settled change with whether the user caused it', () => {
+it('reports each settled layout once', () => {
   const { press, fixture } = setup();
-  expect(fixture.changeLog()).toEqual(['{"left":30,"right":70} false']);
+  expect(fixture.changeLog()).toEqual(['{"left":30,"right":70}']);
   press('handle', 'ArrowRight');
-  flushSync();
-  expect(fixture.changeLog()).toEqual(['{"left":30,"right":70} false', '{"left":35,"right":65} true']);
+  expect(fixture.changeLog()).toEqual(['{"left":30,"right":70}', '{"left":35,"right":65}']);
   press('handle', 'End');
   press('handle', 'End');
-  flushSync();
-  expect(fixture.changeLog().at(-1)).toBe('{"left":80,"right":20} true');
+  expect(fixture.changeLog().at(-1)).toBe('{"left":80,"right":20}');
   expect(fixture.changeLog().length).toBe(3);
 });
 
 it('collapses, expands and resizes a panel through its methods', () => {
   const { grow, fixture } = setup();
-  const panel = fixture.sideBar();
+  const panel = fixture.panelApi();
   expect(panel.isCollapsed()).toBe(false);
   panel.collapse();
   flushSync();
@@ -178,22 +212,12 @@ it('collapses, expands and resizes a panel through its methods', () => {
 it('saves a layout in storage and restores it', () => {
   const store = new Map<string, string>();
   const storage = { getItem: (key: string) => store.get(key) ?? null, setItem: (key: string, value: string) => void store.set(key, value) };
-  const first = savedLayout({ id: 'editor', storage });
-  expect(first.id).toBe('editor');
+  const read = () => savedLayout({ id: 'editor', storage });
+  const first = read();
   expect(first.defaultLayout).toBeUndefined();
   first.onLayoutChanged({ left: 40, right: 60 });
-  expect(store.get('sveltery-resizable:editor')).toBe('{"left":40,"right":60}');
-  expect(savedLayout({ id: 'editor', storage }).defaultLayout).toEqual({ left: 40, right: 60 });
-});
-
-it('ignores storage that is unreadable, malformed or blocked', () => {
-  const blocked = { getItem: () => { throw new Error('blocked'); }, setItem: () => { throw new Error('blocked'); } };
-  const saved = savedLayout({ id: 'editor', storage: blocked });
-  expect(saved.defaultLayout).toBeUndefined();
-  expect(() => saved.onLayoutChanged({ left: 40, right: 60 })).not.toThrow();
-  for (const stored of ['not json', '[1,2]', '{"left":"wide"}', 'null']) {
-    expect(savedLayout({ id: 'editor', storage: { getItem: () => stored, setItem: () => {} } }).defaultLayout).toBeUndefined();
-  }
+  expect(store.get('react-resizable-panels:editor')).toBe('{"left":40,"right":60}');
+  expect(read().defaultLayout).toEqual({ left: 40, right: 60 });
 });
 
 it('a handle renders its grip and drops any children', () => {

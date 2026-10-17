@@ -175,7 +175,7 @@
         seriesLayout="stack"
         axis="x"
         padding={{ left: 12, right: 12, bottom: 20 }}
-        props={{ xAxis: { ticks: timeRange === '7d' ? 7 : undefined, format: formatDate } }}
+        props={{ xAxis: { tickLength: 14, ticks: timeRange === '7d' ? 7 : undefined, format: formatDate } }}
       >
         {#snippet marks({ context })}
           <defs>

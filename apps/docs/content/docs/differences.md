@@ -1,0 +1,395 @@
+---
+title: Differences from shadcn/ui
+description: Where Sveltery UI deliberately differs from shadcn/ui's Base UI variant and from Base UI.
+order: 4
+---
+
+<!--
+This page is the one list of deliberate differences from upstream. To add an entry, copy this section under the
+`##` group it belongs to and fill it in. Link upstream files at the pinned commits below, not at main.
+
+### <What differs, in a few words>
+
+**Upstream:** <what shadcn/ui or Base UI does, with a link to the file and line>
+
+**Sveltery UI:** <what ours does, with a link to the component page>
+
+**Why:** <the user-visible effect of upstream's behavior and why ours is different>
+
+**Decided:** <name>, <YYYY-MM-DD>
+-->
+
+Sveltery UI ports [shadcn/ui](https://ui.shadcn.com)'s Base UI variant to Svelte, on a port of [Base UI](https://base-ui.com) 1.9.0. Upstream is the reference. Components, styles and examples follow it unless an entry on this page says otherwise, and each entry has the maintainer's sign-off. Translations from React to Svelte, such as `class` for `className` or snippets for render functions, are not listed.
+
+The upstream links point at shadcn/ui commit [`d2fba50`](https://github.com/shadcn-ui/ui/tree/d2fba50ee5b9113008b5bb908563527b7efd2f27) and Base UI [`v1.9.0`](https://github.com/mui/base-ui/tree/v1.9.0).
+
+## Open state on Base UI triggers
+
+Base UI marks an open trigger with its own attributes. A collapsible trigger gets [`data-panel-open`](https://github.com/mui/base-ui/blob/v1.9.0/packages/react/src/utils/collapsibleOpenStateMapping.ts), and a menu, popover or submenu trigger gets [`data-popup-open`](https://github.com/mui/base-ui/blob/v1.9.0/packages/react/src/utils/popupStateMapping.ts). It never sets `data-open` or `data-state` on a trigger, so upstream classes that use them never match.
+
+### Sidebar examples and blocks style open triggers with Base UI's attributes
+
+**Upstream:** Some sidebar examples and blocks style an open trigger with the `data-open:` variant:
+
+- The collapsible chevron in [`sidebar-inset-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/sidebar-inset-example.tsx#L224) and in the `nav-workspaces.tsx` of [sidebar-10](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/blocks/sidebar-10/components/nav-workspaces.tsx#L48) and [sidebar-15](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/blocks/sidebar-15/components/nav-workspaces.tsx#L48) uses `data-open:rotate-90`.
+- The menu buttons in [`sidebar-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/sidebar-example.tsx#L182) and [`sidebar-icon-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/sidebar-icon-example.tsx#L248) (also line 385) use `data-open:bg-sidebar-accent`.
+- The menu triggers in the [sidebar-01](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/blocks/sidebar-01/components/version-switcher.tsx#L34) and [sidebar-02](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/blocks/sidebar-02/components/version-switcher.tsx#L34) version switchers, the [sidebar-07 team switcher](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/blocks/sidebar-07/components/team-switcher.tsx#L45), the [sidebar-09 user menu](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/blocks/sidebar-09/components/nav-user.tsx#L43), the [sidebar-10 actions menu](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/blocks/sidebar-10/components/nav-actions.tsx#L213) and the [dashboard-01 row menu](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/blocks/dashboard-01/components/data-table.tsx#L323) use `data-open:bg-*`.
+- The folder chevron in [sidebar-11](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/blocks/sidebar-11/components/app-sidebar.tsx#L132) rotates on `[data-state=open]` on the collapsible root.
+- All eight styles give `.cn-sidebar-menu-button` `data-open:hover:bg-sidebar-accent`, for example [`style-nova.css`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/styles/style-nova.css#L1167).
+
+**Sveltery UI:** The [Sidebar](/docs/components/sidebar) examples and the [blocks](/blocks) use `data-panel-open:` on collapsible triggers and `data-popup-open:` on menu triggers. Sidebar-11 matches `[data-open]`, which Base UI sets on the collapsible root. The styles use `data-popup-open:hover:` on `.cn-sidebar-menu-button`.
+
+**Why:** With upstream's classes, the chevrons do not rotate and the menu buttons lose their highlight while the menu is open. Upstream's own [`sidebar-floating-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/sidebar-floating-example.tsx#L198) already uses `data-popup-open:`. The `.cn-sidebar-menu-button` change has no visible effect, because `hover:` paints the same color.
+
+**Decided:** Hugo Hsi, 2026-10-14 (blocks) and 2026-10-16 (examples and styles)
+
+### Menu sub-triggers stay highlighted while the submenu is open
+
+**Upstream:** All eight styles highlight an open sub-trigger with `data-open:bg-accent`. In [`style-nova.css`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/styles/style-nova.css#L451) that is line 451 for the context menu, line 574 for the dropdown menu and line 847 for the menubar. The dropdown menu's [`dropdown-menu.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/dropdown-menu.tsx#L116) adds `data-popup-open:bg-accent` to its sub-trigger, and the menubar reuses that sub-trigger. The context menu's [`context-menu.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/context-menu.tsx#L118) does not.
+
+**Sveltery UI:** All eight styles use `data-popup-open:bg-accent` on the sub-triggers of the [Context Menu](/docs/components/context-menu), [Dropdown Menu](/docs/components/dropdown-menu) and [Menubar](/docs/components/menubar).
+
+**Why:** A Base UI submenu trigger gets [`data-popup-open`](https://github.com/mui/base-ui/blob/v1.9.0/packages/react/src/menu/submenu-trigger/MenuSubmenuTriggerDataAttributes.ts), not `data-open`. In upstream's context menu, the parent row loses its highlight when the pointer moves into the submenu. On the [ui.shadcn.com context menu preview](https://ui.shadcn.com/preview/base/context-menu-example), an open sub-trigger with the pointer in its submenu has `data-popup-open` and a transparent background. The highlight is intended: shadcn/ui's Radix variant keeps it, and Base UI's own [submenu demo](https://github.com/mui/base-ui/blob/v1.9.0/docs/src/app/(docs)/react/components/context-menu/demos/submenu/css-modules/index.module.css#L158) styles `[data-popup-open]`.
+
+**Decided:** Hugo Hsi, 2026-10-16
+
+### Examples copied from the Radix variant use Base UI's attributes
+
+**Upstream:** The chevron in [`collapsible-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/collapsible-example.tsx#L110) rotates on `group-data-[state=open]`. The bookmark icons in [`toggle-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/toggle-example.tsx#L321) (also line 331) fill on `group-data-[state=on]/toggle`. These are Radix attributes.
+
+**Sveltery UI:** The [Collapsible](/docs/components/collapsible) example uses `group-data-panel-open:`, and the [Toggle](/docs/components/toggle) example uses `group-data-pressed/toggle:`.
+
+**Why:** Base UI never sets `data-state`, so upstream's chevron does not rotate and the bookmark does not fill when pressed.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-16
+
+## Upstream bugs fixed on Base
+
+Where upstream code misbehaves on Base UI, Sveltery UI fixes it instead of copying it.
+
+### Toggle Group passes its orientation to Base UI
+
+**Upstream:** [`toggle-group.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/toggle-group.tsx#L28) takes `orientation` out of the props and never passes it to Base UI's toggle group.
+
+**Sveltery UI:** [Toggle Group](/docs/components/toggle-group) passes `orientation` to Base UI's toggle group as well as to `data-orientation`.
+
+**Why:** Upstream's vertical group keeps horizontal keyboard navigation.
+
+**Decided:** Hugo Hsi, 2026-10-14
+
+### A Toggle Group item outside a group keeps its own variant and size
+
+**Upstream:** The default `ToggleGroupContext` in [`toggle-group.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/toggle-group.tsx#L11-L21) sets `variant` and `size` to `"default"`, and the item reads [`context.variant || variant`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/toggle-group.tsx#L71-L78).
+
+**Sveltery UI:** [Toggle Group](/docs/components/toggle-group) leaves `variant` and `size` undefined outside a group.
+
+**Why:** In upstream, an item outside a group ignores its own `variant` and `size`.
+
+**Decided:** Hugo Hsi, 2026-10-14
+
+### Tabs pass their orientation to Base UI
+
+**Upstream:** [`tabs.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/tabs.tsx#L9-L15) takes `orientation` out of the props for `data-orientation` and never passes it to Base UI's tabs.
+
+**Sveltery UI:** [Tabs](/docs/components/tabs) passes `orientation` to Base UI's tabs as well.
+
+**Why:** In upstream's [vertical example](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/tabs-example.tsx#L306), the list, triggers and panels report a horizontal orientation. The list has no `aria-orientation="vertical"`, and Left and Right still move focus instead of Up and Down.
+
+**Decided:** Hugo Hsi, 2026-10-14
+
+### Slider renders one thumb for a number value
+
+**Upstream:** [`slider.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/slider.tsx#L12-L16) renders one thumb per entry of the array `value`, else of the array `defaultValue`, else of `[min, max]`.
+
+**Sveltery UI:** [Slider](/docs/components/slider) renders one thumb per entry of an array value, and one thumb for a number value or no value.
+
+**Why:** In upstream, a number value or no value renders two thumbs at the same index. The slider then has two tab stops, and a form posts the name twice.
+
+**Decided:** Hugo Hsi, 2026-10-14
+
+### The Combobox trigger stays out of the tab order
+
+**Upstream:** [`combobox.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/combobox.tsx#L85-L88) renders `InputGroupButton render={<ComboboxTrigger />}`. That passes Base UI's `Button` props to the combobox trigger, and its `tabIndex={0}` overrides the trigger's own [`tabIndex={-1}`](https://github.com/mui/base-ui/blob/v1.9.0/packages/react/src/combobox/trigger/ComboboxTrigger.tsx#L157).
+
+**Sveltery UI:** The [Combobox](/docs/components/combobox) trigger keeps `tabindex="-1"`.
+
+**Why:** In upstream, the trigger is a second tab stop after the input. Base UI and shadcn/ui's Radix variant (`asChild`) keep it out of the tab order.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-16
+
+### Blocks work on Base UI
+
+**Upstream:** These blocks misbehave on Base UI:
+
+- In the [sidebar-01](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/blocks/sidebar-01/components/version-switcher.tsx#L65) and [sidebar-02](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/blocks/sidebar-02/components/version-switcher.tsx#L65) version switchers, the menu items use `onSelect`, which Base UI menu items never call. Picking a version does nothing.
+- In the [sidebar-09 user menu](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/blocks/sidebar-09/components/nav-user.tsx#L70), `DropdownMenuLabel` sits outside a `DropdownMenuGroup`, which Base UI requires.
+- The dashboard-01 [time-range Select](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/blocks/dashboard-01/components/chart-area-interactive.tsx#L191) has no `items`, so Base UI shows the raw value ("7d") instead of its label.
+- The dashboard-01 [data table](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/blocks/dashboard-01/components/data-table.tsx#L402) resets to page 1 when a reorder replaces its data, so a row moved on page 2 jumps the view to page 1.
+
+**Sveltery UI:** The [blocks](/blocks) use `onclick` on the version items, wrap the user menu label in the group, pass `items` to the time-range Select, and set `autoResetPageIndex: false` on the data table.
+
+**Why:** Each fix makes the block do what its upstream code intends.
+
+**Decided:** Hugo Hsi, 2026-10-14
+
+### A panel's `resize()` takes every size unit
+
+**Upstream:** shadcn d2fba50 locks react-resizable-panels 4.5.8. Its panel [`resize()`](https://github.com/bvaughn/react-resizable-panels/blob/4.5.8/lib/global/utils/getImperativePanelMethods.ts#L164-L183) reads a string with `parseFloat`, so `resize("300px")` sets the panel to 300 percent, which the layout then clamps, and `resize("10rem")` to 10 percent. Its own documentation says the method takes pixels, `rem`, `em`, `vh` and `vw`.
+
+**Sveltery UI:** `resize()` on a [Resizable](/docs/components/resizable) panel converts every unit from the measured group, with the change react-resizable-panels made in [4.7.3](https://github.com/bvaughn/react-resizable-panels/commit/e8dd4300a1db74b127d91e77fc81b16ed0bd4af8). The package otherwise runs 4.5.8's code unchanged.
+
+**Why:** A size with a unit resizes the panel to that size, as upstream documents and later fixed.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### Arrow keys move focus in the Calendar
+
+**Upstream:** `CalendarDayButton` in [`calendar.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/calendar.tsx#L216-L218) creates a ref and focuses it when the day is focused, but never passes the ref to its `Button`. The Radix variant's [`calendar.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/radix/ui/calendar.tsx#L223) passes `ref={ref}`.
+
+**Sveltery UI:** In the [Calendar](/docs/components/calendar), the arrow keys move keyboard focus to the next day.
+
+**Why:** In upstream, the arrow keys move the focus ring (`data-focused`) but keyboard focus stays where it was. Enter then selects the day that kept focus, not the one with the ring, and screen readers announce no move. The Radix variant shows the intent.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### Calendar month and year dropdowns have a border
+
+**Upstream:** The dropdown root in [`calendar.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/calendar.tsx#L76) uses `cn-calendar-dropdown-root`, which each style defines with a border and focus ring, for example [`style-nova.css`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/styles/style-nova.css#L235-L237). The registry build leaves that class uninlined, in the served [`base-nova/calendar.json`](https://ui.shadcn.com/r/styles/base-nova/calendar.json) too, and the site has no rule for it. The month and year dropdowns on ui.shadcn.com have no border and no focus ring.
+
+**Sveltery UI:** The [Calendar](/docs/components/calendar) dropdowns get the style's border and focus ring.
+
+**Why:** The style files define the class for this element, so the missing border is a build gap, not a design choice. Without it, a focused dropdown shows no focus ring.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+## Command menu
+
+shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/command.tsx) is built on [cmdk](https://github.com/pacocoursey/cmdk) 1.1.1, and Sveltery UI's [Command](/docs/components/command) on its port, `@sveltery/command`. The links below point at cmdk commit [`dd2250e`](https://github.com/pacocoursey/cmdk/tree/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3), which is 1.1.1 with README changes. The port renders the same elements and attributes as cmdk, except where an entry here says otherwise.
+
+### `aria-activedescendant` always names the selected item
+
+**Upstream:** cmdk sets `selectedItemId` by reading the selected item from the DOM in a scheduled callback ([index.tsx:251](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L251)). When the menu opens or the search changes, that callback runs in the same pass that picks the new item ([index.tsx:1050](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L1050)), before React renders the selection, so it finds the previous item or none. The input and list take `aria-activedescendant` from it ([index.tsx:814](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L814), [index.tsx:866](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L866)). On [ui.shadcn.com's command preview](https://ui.shadcn.com/preview/base/command-example), the attribute is missing when the menu opens and names the item selected before the last search.
+
+**Sveltery UI:** The input and list always point `aria-activedescendant` at the selected item.
+
+**Why:** Screen readers announce the active option from `aria-activedescendant`, so upstream announces nothing on open and the wrong item after a search.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### Results stay ranked when the search changes in one step
+
+**Upstream:** cmdk sorts the items as soon as the search changes ([index.tsx:238](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L238)), before React renders the items the new search brings back. Those items stay registered while hidden ([index.tsx:672](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L672), [index.tsx:702](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L702)), so nothing sorts again once they render, and React appends them after the items already shown. On the preview, searching "ca" and then pasting "e" lists Calendar above Search Emoji, though Search Emoji scores higher. Typing "e" into an empty search lists Search Emoji first.
+
+**Sveltery UI:** Results are in score order whatever the previous search was.
+
+**Why:** Pasting, replacing the selected text, or setting the search from code would otherwise show a worse match first and select it.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### Clearing the search restores the declared order
+
+**Upstream:** With no search, cmdk's sort returns before moving anything ([index.tsx:369](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L369)), so items that stayed mounted keep the last ranked order. On the preview, searching "e" and clearing it lists Search Emoji above Calendar, and a different search leaves a different order.
+
+**Sveltery UI:** With no search, items are in the order they are written.
+
+**Why:** Upstream's order after clearing depends on the previous search, so the same menu opens in different orders.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### Opening the menu does not scroll the page
+
+**Upstream:** cmdk scrolls the selected item into view on every selection change except the pointer's ([index.tsx:256](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L256)). It also scrolls once when the menu mounts ([index.tsx:221](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L221)).
+
+**Sveltery UI:** Only keyboard moves and a new search scroll the selection into view.
+
+**Why:** An inline menu below the fold scrolls the page to itself when it mounts.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### `onValueChange` fires without a bound value
+
+**Upstream:** cmdk calls `onValueChange` only when `value` is controlled ([index.tsx:261](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L261)).
+
+**Sveltery UI:** `onValueChange` fires for every change of the selected value, whether or not `value` is bound.
+
+**Why:** Upstream's callback never runs for an uncontrolled menu, which reads as broken to whoever passes it.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### A group of force-mounted items stays visible
+
+**Upstream:** A force-mounted item does not register with cmdk ([index.tsx:672](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L672)), so its group counts no matches and hides while searching ([index.tsx:736](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L736)), taking the item with it.
+
+**Sveltery UI:** A group that holds only force-mounted items stays visible while searching. The docs search menu relies on this for its search results group.
+
+**Why:** `forceMount` exists to keep the item on screen.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### Empty does not flash on the server
+
+**Upstream:** cmdk's count of matches starts at 0 ([index.tsx:179](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L179)) and Empty renders while it is 0 ([index.tsx:900](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L900)), so server-rendered markup shows "No results" above the full list until the client mounts.
+
+**Sveltery UI:** Empty renders only after the menu mounts.
+
+**Why:** The empty message would flash on every server-rendered page with a command menu.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### Parts render in their List or Group
+
+**Upstream:** cmdk sorts by moving item nodes in the DOM, and an element wrapped around a grouped item moves with it ([index.tsx:410](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L410)). Other markup in the list or a group stays where it is written until a search moves the items after it.
+
+**Sveltery UI:** Svelte cannot move the nodes it renders, so List and each Group render their items, groups, separators and empty and loading states themselves, in cmdk's order, with a comment where each part is written. An element wrapped around a part stays empty, other markup written in List or Group renders before its parts, and context set between List or Group and an item does not reach the item's content.
+
+**Why:** Rendering the parts from their container is how Svelte can show cmdk's DOM order while it owns every node.
+
+**Decided:** Hugo Hsi, 2026-10-17
+
+### Only the menu in use moves focus
+
+**Upstream:** When the selection changes and any command menu's input or root has focus, cmdk moves focus to its own input ([index.tsx:245](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L245)). With two menus on a page, items loading into one take focus from the other's input.
+
+**Sveltery UI:** Focus moves to the input only when that menu's own input or root has focus.
+
+**Why:** Typing in one menu should not be interrupted by another.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### Groups are ordered by their best match
+
+**Upstream:** cmdk means to move groups by their best item's score, but looks each group up by `data-value` equal to its encoded internal id ([index.tsx:422](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L422)). A group's `data-value` is its heading, so the lookup never matches and groups keep their template order.
+
+**Sveltery UI:** While searching, a group whose best item scores higher comes first. Ties keep the template order.
+
+**Why:** cmdk's own comment says groups sort by their highest item score ([index.tsx:367](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L367)), and with upstream's order the best match can sit below weaker ones.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### Only one item is selected when values repeat
+
+**Upstream:** cmdk marks an item selected when its value equals the selected value ([index.tsx:681](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L681)), so every item sharing that value is highlighted together.
+
+**Sveltery UI:** Only the item reached with the keyboard or pointer is selected, and the arrow keys walk each duplicate in turn.
+
+**Why:** With upstream, two rows light up and `aria-activedescendant` can name only one of them.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### Item click and pointer handlers run
+
+**Upstream:** cmdk's item passes its props to the element and then sets its own `onPointerMove` and `onClick` ([index.tsx:709](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L709), [index.tsx:718](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L718)), so handlers given to an item never run.
+
+**Sveltery UI:** An item runs its `onclick` and `onpointermove` and then selects or activates as cmdk does.
+
+**Why:** A handler that silently never runs looks like a bug to whoever passes it.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+## Example content
+
+### The Toggle Group select starts on one of its items
+
+**Upstream:** The "With Input and Select" example in [`toggle-group-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/toggle-group-example.tsx#L343) sets `defaultValue={items[0]}`, an object, while each `SelectItem` has a string `value`.
+
+**Sveltery UI:** The [Toggle Group](/docs/components/toggle-group) example gives each item the object as its value, so the default matches an item.
+
+**Why:** In upstream, no item matches the value. Base UI finds no selected item and skips the item-aligned position, so the popup opens from the edge of the trigger instead of over the selected item.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-16
+
+### Every icon in the Button example has `data-icon`
+
+**Upstream:** In [`button-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/button-example.tsx#L186), the small outline button's trailing icon has no `data-icon`. Its sibling buttons all have `data-icon="inline-end"`.
+
+**Sveltery UI:** The [Button](/docs/components/button) example gives that icon `data-icon="inline-end"` too.
+
+**Why:** `data-icon` sets the button's padding next to the icon, so upstream's outline button is spaced differently from its siblings.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-16
+
+### The Dialog form example submits
+
+**Upstream:** In the "With Form" example of [`dialog-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/dialog-example.tsx#L83-L116), the `form` wraps the trigger and the dialog content. The content renders in a portal outside the form, so **Save changes** does not submit it.
+
+**Sveltery UI:** The [Dialog](/docs/components/dialog) example puts the `form` inside the dialog content.
+
+**Why:** A submit button must submit its form.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-16
+
+### Navigation Menu example links go to Sveltery UI pages
+
+**Upstream:** The links in [`navigation-menu-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/navigation-menu-example.tsx#L24-L53) point at shadcn/ui's `/docs/primitives/*` routes, and the Typography link at [line 82](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/navigation-menu-example.tsx#L82) points at `/docs/primitives/typography`.
+
+**Sveltery UI:** The [Navigation Menu](/docs/components/navigation-menu) example links to the matching `/docs/components/*` pages. Typography links to `#`, because these docs have no Typography page. The `/docs` and `/docs/installation` links keep upstream's values.
+
+**Why:** Upstream's `/docs/primitives/*` paths do not exist on this site, so the links would return 404.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-16
+
+### Sidebar examples fit the preview frame
+
+**Upstream:** The sidebar examples size the provider with `min-h-svh` and the sidebar with `fixed h-svh`, for example in [`sidebar-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/sidebar-example.tsx).
+
+**Sveltery UI:** The [Sidebar](/docs/components/sidebar) examples in the docs use `h-full min-h-0` on the provider and `absolute h-full` on the sidebar.
+
+**Why:** The docs show each example in a preview frame. A sidebar sized to the viewport would overflow it.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-16
+
+## Forms
+
+### The Forms guides cover SvelteKit forms instead of React form libraries
+
+**Upstream:** The [Forms](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/forms/index.mdx) section has a guide for each of [React Hook Form](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/forms/react-hook-form.mdx), [TanStack Form](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/forms/tanstack-form.mdx) and [Formisch](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/forms/formisch.mdx), and lists `useActionState` as coming soon. Each guide keeps the form state in the library and passes it to the `Field` parts.
+
+**Sveltery UI:** The [Forms](/docs/forms) section covers a native `<form>`, [SvelteKit remote forms](/docs/forms/remote-forms) and [SvelteKit form actions](/docs/forms/form-actions). Each page uses the same [Field](/docs/components/field) parts.
+
+**Why:** Upstream's guides are written for React. SvelteKit keeps form state in remote forms and form actions, so Sveltery UI's guides show those. `Field` is a plain `div` that holds no form state, like upstream's [`field.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/field.tsx#L64-L72), so the same parts work with each of them.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-16
+
+## Toast
+
+### Toasts use Toast, not Sonner
+
+**Upstream:** The Base UI variant ships a Sonner component in [`sonner.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/sonner.tsx), and its examples and blocks call `toast()` from `sonner`, for example in [`combobox-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/combobox-example.tsx). The site's [`layout.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/app/layout.tsx#L115) shows those toasts with the Radix variant's Sonner `Toaster` at the top center.
+
+**Sveltery UI:** There is no Sonner component. The examples and blocks import `toast` from [Toast](/docs/components/toast), which is built on Base UI's toast, and call `toast.add({ title, description })` or `toast.promise()`. This includes the [Marker](/docs/components/marker) and [Bubble](/docs/components/bubble) examples. Toasts show at the bottom of the window, on the right on wider screens.
+
+**Why:** ui.shadcn.com does not list Sonner among the Base UI components, so the Sonner files in the Base UI variant are left over from the Radix variant. Toast already has Sonner's behavior (stacking, swipe to dismiss, typed toasts, promise toasts), so a second toast system would be redundant.
+
+**Decided:** Hugo Hsi, 2026-10-14 (no Sonner) and 2026-10-16 (examples)
+
+## Rendering and timing
+
+### A trigger keeps its own `data-slot` through `render`
+
+**Upstream:** [`button.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/button.tsx#L43) has no `"use client"`, and the docs examples are Server Components. Next.js renders `<Button>` on the server, so a trigger's `render={<Button />}` arrives as a finished element with `data-slot="button"`, and Base UI's [`mergeProps`](https://github.com/mui/base-ui/blob/v1.9.0/packages/react/src/internals/useRenderElement.tsx#L171) lets that slot win. In a Client Component, the same code ends with the trigger's slot, because `Button` spreads its props after `data-slot="button"`. Upstream shows both: the corner close button in the client file [`sheet.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/sheet.tsx#L63-L71) is `data-slot="sheet-close"`, and the footer close in [`sheet-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/sheet-example.tsx#L56) is `data-slot="button"`.
+
+**Sveltery UI:** Svelte has no Server Components. An element rendered through a trigger keeps the trigger's `data-slot`, such as `dialog-trigger`, `popover-trigger` or `sheet-close`, as Base UI does in client code.
+
+**Why:** It has no visible effect. Only the rhea and luma styles' `cn-code-block-actions` rule selects `data-slot=button`, and no code block example puts a trigger there.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-16
+
+### Menus fade in from the first frame
+
+**Upstream:** On ui.shadcn.com's preview pages, a menu popup mounts with `cn-menu-translucent`, and the site's menu color script removes that class about a frame later. The first frame paints the menu fully opaque, and then the `enter` fade starts from transparent.
+
+**Sveltery UI:** The [Dropdown Menu](/docs/components/dropdown-menu) and the other menus start the `enter` fade on their first frame, as Base UI 1.9.0 does.
+
+**Why:** The one-frame flash comes from site chrome, not from Base UI or the components. Base UI 1.9.0 and Sveltery UI paint the same frames when they run side by side.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-16
+
+### Data table rows move while you drag
+
+**Upstream:** The dashboard-01 [data table](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/blocks/dashboard-01/components/data-table.tsx#L421) reorders rows in `onDragEnd`, and React's sortable preset moves the other rows while a row is dragged.
+
+**Sveltery UI:** `@dnd-kit/svelte` leaves that live sorting out. The [blocks](/blocks) data table reorders in `onDragOver` and restores the earlier order when a drag is cancelled.
+
+**Why:** The other rows make room during the drag, as they do upstream.
+
+**Decided:** Hugo Hsi, 2026-10-14

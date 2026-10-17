@@ -36,7 +36,10 @@ export interface WeekNumberSnippetProps {
 export interface ChevronSnippetProps {
   orientation: 'left' | 'right' | 'up' | 'down';
   class: string;
-  disabled: boolean;
+  /** Width and height in pixels. Set to `18` in the caption dropdowns, otherwise unset for a 24px icon. */
+  size?: number;
+  /** Set on the chevron of a disabled navigation button. */
+  disabled?: true;
 }
 
 export interface RootSnippetProps {
@@ -44,7 +47,13 @@ export interface RootSnippetProps {
   props: HTMLAttributes<HTMLDivElement> & { children: Snippet };
 }
 
-interface CommonProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'dir' | 'hidden' | 'autofocus'> {
+/** The attributes react-day-picker forwards to its root element, plus any `data-*` attribute. */
+type RootAttributes = Pick<HTMLAttributes<HTMLDivElement>, 'class' | 'style' | 'id' | 'lang' | 'title' | 'role' | 'aria-label'> & {
+  nonce?: string;
+  [key: `data-${string}`]: unknown;
+};
+
+interface CommonProps extends RootAttributes {
   /** The first displayed month. Use `bind:month` to read or drive it. */
   month?: Date;
   /** The month shown first when `month` is unset. Defaults to the month of `today`. */
@@ -63,7 +72,6 @@ interface CommonProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children' | 
   /** `around` puts the buttons around the caption instead of in a shared nav. */
   navLayout?: 'around' | 'after';
   captionLayout?: CaptionLayout;
-  reverseYears?: boolean;
   /** Always render six weeks per month. */
   fixedWeeks?: boolean;
   /** Use ISO weeks: Monday first, ISO week numbers. */
@@ -113,7 +121,6 @@ interface NoSelection {
   min?: never;
   max?: never;
   excludeDisabled?: never;
-  resetOnSelect?: never;
 }
 
 export interface SingleProps extends Omit<NoSelection, 'required'> {
@@ -146,8 +153,6 @@ export interface RangeProps {
   max?: number;
   /** Restart the range when it would include a disabled day. */
   excludeDisabled?: boolean;
-  /** Start a new range on the next click once a range is complete. */
-  resetOnSelect?: boolean;
   onSelect?: SelectHandler<DateRange | undefined>;
 }
 
@@ -158,62 +163,3 @@ export interface NoModeProps extends NoSelection {
 }
 
 export type DayPickerProps = CommonProps & (SingleProps | MultipleProps | RangeProps | NoModeProps);
-
-type OwnKey = Exclude<keyof CommonProps | keyof SingleProps | keyof MultipleProps | keyof RangeProps, keyof Omit<HTMLAttributes<HTMLDivElement>, 'dir' | 'hidden' | 'autofocus'>>;
-
-/** The props DayPicker reads itself. The rest are attributes of the root element. */
-export const ownProps: Record<OwnKey, true> = {
-  month: true,
-  defaultMonth: true,
-  onMonthChange: true,
-  startMonth: true,
-  endMonth: true,
-  numberOfMonths: true,
-  pagedNavigation: true,
-  reverseMonths: true,
-  disableNavigation: true,
-  hideNavigation: true,
-  navLayout: true,
-  captionLayout: true,
-  reverseYears: true,
-  fixedWeeks: true,
-  ISOWeek: true,
-  showOutsideDays: true,
-  showWeekNumber: true,
-  hideWeekdays: true,
-  disabled: true,
-  hidden: true,
-  modifiers: true,
-  modifiersClassNames: true,
-  today: true,
-  locale: true,
-  weekStartsOn: true,
-  firstWeekContainsDate: true,
-  timeZone: true,
-  dir: true,
-  autofocus: true,
-  classNames: true,
-  formatters: true,
-  labels: true,
-  onDayClick: true,
-  onDayFocus: true,
-  onDayBlur: true,
-  onDayKeyDown: true,
-  onDayMouseEnter: true,
-  onDayMouseLeave: true,
-  onNextClick: true,
-  onPrevClick: true,
-  root: true,
-  chevron: true,
-  dayButton: true,
-  weekNumber: true,
-  footer: true,
-  mode: true,
-  selected: true,
-  required: true,
-  min: true,
-  max: true,
-  excludeDisabled: true,
-  resetOnSelect: true,
-  onSelect: true,
-};

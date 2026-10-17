@@ -64,7 +64,7 @@
               props={{
                 bars: { stroke: 'none', strokeWidth: 0, rounded: 'top', radius: 3 },
                 highlight: { area: { fill: 'none' } },
-                xAxis: { format: (month: string) => month.slice(0, 1), tickLength: 0, class: 'text-[10px]' }
+                xAxis: { format: (month: string) => month.slice(0, 1), tickLength: 10, class: 'text-[10px]' }
               }}
             >
               {#snippet tooltip()}

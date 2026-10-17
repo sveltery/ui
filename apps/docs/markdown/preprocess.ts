@@ -5,7 +5,7 @@ import { applyTransforms, type TransformContext } from '../../../packages/cli/sr
 import { buildRegistry } from '../registry/build';
 import { readRegistryInput } from '../registry/read';
 import type { RegistryItem, RegistryOutput } from '../registry/types';
-import { highlight, packageManagerCommands, parseMeta } from './highlight';
+import { highlight, isCollapsible, packageManagerCommands, parseMeta } from './highlight';
 
 /** The Code view shows what `npx @sveltery/ui@latest init -y` then `add` writes: the nova style with Lucide icons. */
 const SOURCE_STYLE = 'nova';
@@ -13,6 +13,10 @@ const SOURCE_CONFIG: TransformContext = { iconLibrary: 'lucide', fontHeading: fa
 
 /** Components every markdown page can use without importing them, like upstream's mdx-components map. */
 const GLOBAL_COMPONENTS = ['CodeBlock', 'ComponentPreview', 'ComponentSource', 'ComponentsList', 'Callout', 'Steps'];
+
+const PREVIEW_PEEK_LINES = 3;
+
+const scrollableTables = (code: string) => code.replace(/<table>([\s\S]*?)<\/table>/g, '<div class="typeset-scroll scroll-fade-x scrollbar-none *:[table]:w-full"><table>$1</table></div>');
 
 const LANGUAGES: Record<string, string> = { '.svelte': 'svelte', '.ts': 'ts', '.js': 'js', '.css': 'css', '.json': 'json' };
 
@@ -30,10 +34,10 @@ const attribute = (attrs: string, name: string) => attrs.match(new RegExp(`\\b${
 /** mdsvex `highlight.highlighter`: renders fenced code as a `<CodeBlock>` with build-time Shiki HTML. */
 export async function highlightCodeBlock(code: string, lang: string | null | undefined, meta: string | null | undefined) {
   const options = parseMeta(meta);
-  const html = await highlight(code, lang ?? 'text', options);
-  const variants = packageManagerCommands(code.trim());
-  const commands = variants && Object.fromEntries(await Promise.all(Object.entries(variants).map(async ([pm, command]) => [pm, { raw: command, html: await highlight(command, 'bash') }])));
-  return `<CodeBlock html={${literal(html)}} raw={${literal(code)}}${commands ? ` commands={${literal(commands)}}` : ''} />`;
+  const commands = packageManagerCommands(code.trim());
+  if (commands) return `<CodeBlock commands={${literal(commands)}} />`;
+  const props = { html: await highlight(code, lang ?? 'text', options), raw: code, title: options.title, lang: lang ?? 'text', collapsible: isCollapsible(code, options) };
+  return `<CodeBlock {...${literal(props)}} />`;
 }
 
 /**
@@ -58,7 +62,8 @@ export function docsComponents({ examples, repoRoot }: { examples: string; repoR
         const raw = readFileSync(file, 'utf8');
         const id = `__example${imports.length}`;
         imports.push(`import ${id} from ${literal(`./${relative(dirname(filename), file)}`)};`);
-        return `<ComponentPreview${attrs} component={${id}} source={${literal({ raw, html: await highlight(raw, 'svelte') })}} />`;
+        const [html, peek] = await Promise.all([highlight(raw, 'svelte', {}, 'source'), highlight(raw.split('\n').slice(0, PREVIEW_PEEK_LINES).join('\n'), 'svelte', {}, 'source')]);
+        return `<ComponentPreview${attrs} component={${id}} source={${literal({ raw, html, peek })}} />`;
       });
 
       code = await replaceAsync(code, /<ComponentSource\b([^>]*?)\s*\/>/g, async (_tag, attrs) => {
@@ -70,9 +75,11 @@ export function docsComponents({ examples, repoRoot }: { examples: string; repoR
         const entries = [...item.files, ...shared]
           .map((file) => ({ title: `src/lib/components/ui/${file.target}`, raw: applyTransforms(file, SOURCE_CONFIG).content, lang: LANGUAGES[extname(file.target)] ?? 'text' }))
           .sort((a, b) => Number(a.title.endsWith('index.ts')) - Number(b.title.endsWith('index.ts')));
-        const files = await Promise.all(entries.map(async ({ title, raw, lang }) => ({ title, raw, html: await highlight(raw, lang, { title }) })));
+        const files = await Promise.all(entries.map(async ({ title, raw, lang }) => ({ title, raw, lang, html: await highlight(raw, lang, {}, 'source') })));
         return `<ComponentSource${attrs} files={${literal(files)}} requires={${literal(requires)}} />`;
       });
+
+      code = scrollableTables(code);
 
       for (const component of GLOBAL_COMPONENTS) {
         if (new RegExp(`<${component}\\b`).test(code)) imports.push(`import ${component} from '$lib/components/docs/${component}.svelte';`);

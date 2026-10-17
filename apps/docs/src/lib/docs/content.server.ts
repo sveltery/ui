@@ -1,7 +1,10 @@
 import type { DocPage, Frontmatter, NavSection } from './types';
 
-/** Sidebar sections, in order. A page's section is its folder under `content/docs`. */
-const SECTIONS: Record<string, string> = { '': 'Get Started', components: 'Components', forms: 'Forms' };
+/** Sidebar sections, in upstream's folder order. A page's section is its folder under `content/docs`. */
+const SECTIONS: Record<string, string> = { components: 'Components', '': 'Get Started', forms: 'Forms' };
+
+/** The sidebar's Sections group, like upstream's `TOP_LEVEL_SECTIONS`. */
+const TOP_LEVEL = ['/docs', '/docs/components', '/docs/installation', '/docs/theming', '/docs/forms'];
 
 const metadata = import.meta.glob<Frontmatter>(['/content/docs/**/*.md', '!**/README.md'], { eager: true, import: 'metadata' });
 
@@ -33,4 +36,11 @@ export const nav: NavSection[] = Object.entries(SECTIONS).map(([id, title]) => {
 export const pages: DocPage[] = nav.flatMap((section) => {
   const index = section.href ? entries.find((entry) => entry.href === section.href) : undefined;
   return [...(index ? [page(index)] : []), ...section.pages];
+});
+
+/** The top-level pages, in sidebar order. */
+export const sections: DocPage[] = TOP_LEVEL.map((href) => {
+  const entry = entries.find((candidate) => candidate.href === href);
+  if (!entry) throw new Error(`content.server.ts: section "${href}" has no page in content/docs`);
+  return page(entry);
 });

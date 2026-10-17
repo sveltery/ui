@@ -45,10 +45,10 @@ function active() {
   const id = el('input').getAttribute('aria-activedescendant');
   return id ? document.getElementById(id)?.dataset.testid : undefined;
 }
-const shown = () => [...document.querySelectorAll<HTMLElement>('[cmdk-item]')].filter((item) => !item.hidden).map((item) => item.dataset.testid);
+const shown = () => [...document.querySelectorAll<HTMLElement>('[cmdk-item]')].map((item) => item.dataset.testid);
 
 describe('Command hydration', () => {
-  it('adopts the server markup without warnings, then filters and keeps the bound selection', () => {
+  it('adopts the server markup without warnings, then filters, ranks and keeps the bound selection', () => {
     document.body.innerHTML = serverHtml;
     const serverElements = [...document.body.querySelectorAll('*')];
     const serverApple = el('apple');
@@ -61,11 +61,12 @@ describe('Command hydration', () => {
     flushSync();
 
     expect([...warn.mock.calls, ...error.mock.calls]).toEqual([]);
-    expect(serverElements.filter((element) => !element.isConnected)).toEqual([]);
+    // Only the items the search filters out unmount. The rest are the server's own nodes, moved into ranked order.
+    const removed = serverElements.filter((element) => !element.isConnected).map((element) => element.dataset.testid);
+    expect(removed).toEqual(['apple', 'banana', 'asparagus']);
+    expect(serverApple.isConnected).toBe(false);
     expect(document.querySelector('[cmdk-empty]')).toBe(null);
-    expect(serverApple.hidden).toBe(true);
-    expect(shown()).toEqual(['pineapple', 'carrot', 'cabbage', 'settings']);
-    expect(el('settings').style.order).toBe('1');
+    expect(shown()).toEqual(['settings', 'cabbage', 'carrot', 'pineapple']);
     expect(active()).toBe('carrot');
     expect(el('state').textContent).toBe(`c|Carrot|4|${el('carrot').id}`);
   });
