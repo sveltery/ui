@@ -212,6 +212,36 @@ Options:
 
 ---
 
+## eject
+
+Use the `eject` command to drop the `@sveltery/ui` package from your project. Your CSS file imports `@sveltery/ui/tailwind.css`, which holds the custom variants and animations the components use.
+
+```bash
+npx @sveltery/ui@latest eject
+```
+
+`eject` replaces that import with the file's contents, under a comment that names the version. Then it removes `@sveltery/ui` from `package.json` with your package manager. It asks before it changes anything. The default answer is no.
+
+After `eject`, updates to `tailwind.css` no longer reach your project. You can still run the CLI with `npx`. A later `init` or `apply` adds the import and the dev dependency again.
+
+**Options**
+
+```txt
+Usage: sveltery eject [options]
+
+inline @sveltery/ui/tailwind.css into your CSS file and remove the @sveltery/ui
+dependency
+
+Options:
+  -y, --yes     do not ask to continue (default: false)
+  -s, --silent  do not print the warnings or the package manager output
+                (default: false)
+  --cwd <path>  the project root (default: ".")
+  -h, --help    display help for command
+```
+
+---
+
 ## Environment variables
 
 `SVELTERY_REGISTRY_URL` sets the registry root, for example a preview deploy's `/r` URL. It takes precedence over the `registry` key in `components.json`. `init` writes the URL it used to that key.
@@ -222,4 +252,4 @@ SVELTERY_REGISTRY_URL=https://preview.example.com/r npx @sveltery/ui@latest add 
 
 ## Not supported
 
-The shadcn CLI has commands and options that this CLI does not have yet: `apply`, `preset`, `view`, `search`, `build`, `docs`, `info`, `migrate` and `eject`, namespaced registries, local file paths as items, JavaScript output and the RTL transform. See [Registry](/docs/registry), [JavaScript](/docs/javascript) and [RTL](/docs/rtl) for what works today.
+The shadcn CLI has commands and options that this CLI does not have yet: `apply`, `preset`, `view`, `search`, `build`, `docs`, `info` and `migrate`, namespaced registries, local file paths as items, JavaScript output and the RTL transform. See [Registry](/docs/registry), [JavaScript](/docs/javascript) and [RTL](/docs/rtl) for what works today.

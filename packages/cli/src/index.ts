@@ -4,11 +4,12 @@ import { log } from '@clack/prompts';
 import { Command } from 'commander';
 import { add } from './commands/add.js';
 import { diff } from './commands/diff.js';
+import { eject } from './commands/eject.js';
 import { init } from './commands/init.js';
 import { list } from './commands/list.js';
 import { update } from './commands/update.js';
 import { CliError } from './parse.js';
-import { version } from './version.js';
+import { cliPackage, version } from './version.js';
 
 const program = new Command('sveltery').description('Add Sveltery UI components to a Svelte app.').version(version);
 
@@ -59,6 +60,14 @@ program
   .option('--json', 'print the items as JSON', false)
   .option('--cwd <path>', 'the project root', '.')
   .action(async (options) => void (await list({ ...options, cwd: resolve(options.cwd) })));
+
+program
+  .command('eject')
+  .description(`inline ${cliPackage}/tailwind.css into your CSS file and remove the ${cliPackage} dependency`)
+  .option('-y, --yes', 'do not ask to continue', false)
+  .option('-s, --silent', 'do not print the warnings or the package manager output', false)
+  .option('--cwd <path>', 'the project root', '.')
+  .action(async (options) => void (await eject({ ...options, cwd: resolve(options.cwd) })));
 
 try {
   await program.parseAsync();
