@@ -532,6 +532,38 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Hugo Hsi, 2026-10-14 (no Sonner) and 2026-10-16 (examples)
 
+## Code Block
+
+### Code Block takes plain text in `code` and highlighted lines as HTML
+
+**Upstream:** [`CodeBlockContent`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/code-block.tsx#L147) takes a string child or `CodeBlockLine` children, and [`CodeBlockLine`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/code-block.tsx#L208) checks whether its children are empty. [`useHighlightedCode(code, language)`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/hooks/use-highlighted-code.ts) returns one React node per line.
+
+**Sveltery UI:** [Code Block](/docs/components/code-block) takes plain text in a `code` prop on `CodeBlockContent`, and `CodeBlockLine` children otherwise. `useHighlightedCode(() => code, () => language)` returns an object whose `lines` holds one escaped HTML string per line, rendered with `{@html}`. `CodeBlockLine` watches its rendered content to add the newline that keeps an empty line in a copied selection.
+
+**Why:** A Svelte snippet cannot be read as a string or checked for emptiness, and a line of highlighted tokens is markup, not a value a Svelte component can hold. Copying a selection keeps blank lines as upstream's does.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### `add code-block` puts the highlighter in the code-block folder
+
+**Upstream:** `add code-block` also installs the [`use-highlighted-code`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/hooks/_registry.ts#L15) item, which writes `hooks/use-highlighted-code.ts` and `lib/highlighter.tsx`, with Shiki 3.
+
+**Sveltery UI:** `add code-block` writes `use-highlighted-code.svelte.ts` and `highlighter.ts` into `components/ui/code-block`, and `code-block` exports `useHighlightedCode`, `loadHighlighter` and `highlightCode`. It depends on Shiki 4, which the docs already use.
+
+**Why:** The registry here builds one item per component folder and finds its dependencies from its imports, so the highlighter goes where `add code-block` installs it.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Code Block page has no Markdown or Typeset example, and its RTL example uses Rhea
+
+**Upstream:** The [Code Block page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/code-block.mdx#L355) shows a block inside a `typeset` container and a chat message rendered with Streamdown, whose `components.code` routes fenced code to a `CodeBlock`.
+
+**Sveltery UI:** The [Code Block](/docs/components/code-block) page leaves both out. Its RTL example renders in Rhea like the rest of the page, where upstream's [`code-block-rtl`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/code-block.mdx#L369) preview uses Nova.
+
+**Why:** Streamdown is a React library, so the Markdown example needs a Svelte Markdown renderer first. Typeset is not ported yet. A docs page renders every preview in one style.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ## Rendering and timing
 
 ### A trigger keeps its own `data-slot` through `render`
