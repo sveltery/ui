@@ -373,6 +373,16 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
 
+### The Button page has no `init --pointer` sentence
+
+**Upstream:** The [Button page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/button.mdx#L69) says the pointer cursor can be enabled with `npx shadcn@latest init --pointer`.
+
+**Sveltery UI:** The [Button](/docs/components/button) page shows only the CSS to add.
+
+**Why:** The `@sveltery/ui` CLI has no `--pointer` option, so the sentence would describe a command that fails.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
 ### The Bubble variants example writes its ghost text as HTML
 
 **Upstream:** The ghost bubble in [`bubble-variants.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/bubble-variants.tsx#L42) renders its text through a `Markdown` component.
@@ -390,7 +400,6 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Sveltery UI:** The [Breadcrumb](/docs/components/breadcrumb) Custom separator example points it to `/docs/components`, as the Collapsed example already does.
 
 **Why:** The docs site prerenders every link, and `/components` is not a page here, so the build fails on it.
-
 ### Empty examples use Lucide icons where upstream uses Tabler
 
 **Upstream:** [`empty-demo.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/empty-demo.tsx), [`empty-outline.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/empty-outline.tsx) and [`empty-background.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/empty-background.tsx) import `IconFolderCode`, `IconCloud` and `IconBell` from `@tabler/icons-react`.

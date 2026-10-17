@@ -13,14 +13,13 @@
     QuestionnaireSubmit,
     QuestionnaireTitle,
   } from '$registry/bases/base/ui/questionnaire';
+  import { toast } from '$registry/bases/base/ui/toast';
 
   const items = [{ choices: [{ value: 'inspect' }, { value: 'implement' }, { value: 'review' }], name: 'task', required: true }];
 
-  let result = $state('');
-
   function handleSubmit(event: SubmitEvent & { currentTarget: HTMLFormElement }) {
     event.preventDefault();
-    result = `Task: ${new FormData(event.currentTarget).get('task') ?? 'None'}`;
+    toast.add({ title: 'Task selected', description: `Task: ${new FormData(event.currentTarget).get('task') ?? 'None'}` });
   }
 </script>
 
@@ -41,7 +40,4 @@
     <QuestionnaireNext>Next</QuestionnaireNext>
     <QuestionnaireSubmit>Save answers</QuestionnaireSubmit>
   </QuestionnaireActions>
-  {#if result}
-    <p role="status" class="mt-4 text-sm text-muted-foreground">{result}</p>
-  {/if}
 </Questionnaire>

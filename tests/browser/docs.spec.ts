@@ -52,7 +52,7 @@ test('the D key toggles dark mode outside text fields, and the theme toggle swit
 
 test('a docs page keeps step titles out of the TOC, the Installation section shows the CLI command first and the manual steps on the Manual tab, ComponentPreview renders the example and reveals its source as an app that ran add imports it, and the page links to its markdown', async ({ page, request, context, browserName }) => {
   await visit(page, '/docs/components/button', 30_000);
-  await expect(page.getByRole('navigation', { name: 'On this page' }).getByRole('link')).toHaveText(['Installation', 'Usage', 'API reference']);
+  await expect(page.getByRole('navigation', { name: 'On this page' }).getByRole('link')).toHaveText(['Installation', 'Usage', 'Cursor', 'Size', 'Default', 'Outline', 'Secondary', 'Ghost', 'Destructive', 'Link', 'Icon', 'With Icon', 'Rounded', 'Spinner', 'Button Group', 'As Link', 'RTL', 'API Reference', 'Button']);
 
   const cli = page.getByRole('tab', { name: 'CLI', exact: true });
   const manual = page.getByRole('tab', { name: 'Manual', exact: true });
@@ -68,9 +68,9 @@ test('a docs page keeps step titles out of the TOC, the Installation section sho
   await expect(page.locator('[data-slot=component-source]')).toBeHidden();
 
   const preview = page.locator('[data-slot=component-preview]').first();
-  await expect(preview.getByRole('button', { name: 'Secondary' }).first()).toBeVisible();
+  await expect(preview.getByRole('button', { name: 'Button', exact: true })).toBeVisible();
   await preview.getByRole('button', { name: 'View Code' }).click();
-  const imports = "import { Button, buttonVariants } from '#lib/components/ui/button';";
+  const imports = "import { Button } from '#lib/components/ui/button';";
   await expect(preview.locator('[data-slot=code] pre')).toContainText(imports);
   await expect(preview.locator('[data-slot=code] pre')).not.toContainText('$registry/');
   if (browserName === 'chromium') await context.grantPermissions(['clipboard-read', 'clipboard-write']);
@@ -104,8 +104,8 @@ test('the Drawer page renders its examples in the Rhea style, and other pages st
 
   await page.getByRole('navigation', { name: 'Docs' }).getByRole('link', { name: 'Button', exact: true }).click();
   await expect(page.getByRole('heading', { level: 1, name: 'Button' })).toBeVisible();
-  const button = page.locator('[data-slot=component-preview]').first().getByRole('button', { name: 'Secondary' }).first();
-  await expect(button).toHaveCSS('border-radius', '8px');
+  const button = page.locator('[data-slot=component-preview]').first().getByRole('button', { name: 'Button', exact: true });
+  await expect(button).toHaveCSS('border-radius', '10px');
 });
 
 test('docs tooltips open without the default delay, like the upstream site', async ({ page }) => {

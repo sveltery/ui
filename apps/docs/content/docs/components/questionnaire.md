@@ -5,10 +5,6 @@ description: A multi-step questionnaire with single-choice, multiple-choice, fre
 
 <ComponentPreview name="base/QuestionnaireDemoExample" align="end" />
 
-## About
-
-Questionnaire is built on `@sveltery/svelte/questionnaire`, a Svelte module that takes its design from `@shadcn/react/questionnaire`. It presents one question at a time and manages answers, progress, validation and navigation on top of native form controls.
-
 ## Installation
 
 <InstallTabs>
@@ -145,8 +141,6 @@ Define the collection once: pass it to `Questionnaire` for server-rendered progr
 
 ## Composition
 
-Use the following composition to build a `Questionnaire`:
-
 ```text
 Questionnaire
 ├── QuestionnaireProgress
@@ -194,51 +188,21 @@ Assign a letter or number key to each answer with `shortcuts`. `"letters"` assig
 
 <ComponentPreview name="base/QuestionnaireShortcutsExample" align="end" />
 
-## Disabled Choice
-
-Set `disabled` on a `QuestionnaireChoice` to make one answer unavailable. A disabled choice cannot be selected, is skipped by shortcuts and is left out of `FormData`. Use `QuestionnaireChoiceDescription` for the muted line under a choice label.
-
-<ComponentPreview name="base/QuestionnaireDisabledExample" align="end" />
-
-## No Description
-
-`QuestionnaireDescription` is optional. Leave it out when the title is enough and the item still keeps its progress, choices and shortcuts.
-
-<ComponentPreview name="base/QuestionnaireNoDescriptionExample" align="end" />
-
-## Validation
-
-Questionnaire validates the active item before moving forward and validates all enabled items when the form submits.
-
-- A required item is valid after it has an answer.
-- An optional item is valid after it has an answer or is explicitly skipped.
-- Disabled items and answers are ignored.
-
-`required` does not add visible "Required" text. Say it in the `QuestionnaireTitle` or `QuestionnaireDescription`. When validation fails, Questionnaire keeps or opens the invalid item and focuses an answer. `QuestionnaireError` stays hidden until its item is invalid, and its children replace the default message.
-
-```svelte
-<QuestionnaireItem name="scope" required>
-  <QuestionnaireTitle>What should the project include? (Required)</QuestionnaireTitle>
-  <QuestionnaireChoices>…</QuestionnaireChoices>
-  <QuestionnaireError>Please choose a project scope.</QuestionnaireError>
-</QuestionnaireItem>
-```
-
 ## Custom Validation
 
-Combine `bind:item` with your own check to return to an invalid item and present its error. Set `invalid` on the item, render the message in `QuestionnaireError`, and move `item` to the first invalid item.
+Combine controlled navigation with your own validator to return to an invalid item and present its error. Set `invalid` on the item, render the message in `QuestionnaireError`, and move `bind:item` to the first invalid item.
 
 <ComponentPreview name="base/QuestionnaireValidationExample" align="end" />
 
 ## Controlled
 
-Bind `item` to control the active item from host state, such as returning to an invalid step. `onItemChange` runs whenever navigation requests a different item.
+Control the active item from host state, such as returning to an invalid step. Bind `item`, and use `onItemChange` to observe navigation requests.
 
 <ComponentPreview name="base/QuestionnaireControlledExample" align="end" />
 
 ## Resume
 
-Restore a saved active item and default answers with `defaultItem`, `defaultChecked` and `defaultValue`, then reset changes back to that saved state with a `type="reset"` button.
+Restore a saved active item and default answers, then reset changes back to that saved state. Pass `defaultItem`, `defaultChecked` and `defaultValue`, and add a `type="reset"` button.
 
 <ComponentPreview name="base/QuestionnaireResumeExample" align="end" />
 
@@ -250,7 +214,7 @@ Disable items that do not apply to the user's earlier answers. Disabled items ar
 
 ## Navigation State
 
-Navigation actions stay enabled by default so activating Next or Submit can show a validation error. Read item status to opt into disabled navigation and custom action styling. `data-status` carries the active item's status, so you can restyle an action without reading it in script.
+Read item status to opt into disabled navigation and custom action styling. Navigation actions stay enabled by default so activating Next or Submit can show a validation error. `data-status` carries the active item's status, so you can restyle an action without reading it in script.
 
 <ComponentPreview name="base/QuestionnaireNavigationStateExample" align="end" />
 
@@ -260,7 +224,7 @@ Navigation actions stay enabled by default so activating Next or Submit can show
 
 ## Custom Progress
 
-`QuestionnaireProgress` renders `Question {current} of {total}` by default. Use the `render` snippet to change its element or format, and pass a localized `aria-label` when needed.
+Use the Progress render state to build a custom progress indicator. `QuestionnaireProgress` renders `Question {current} of {total}` by default. Use the `render` snippet to change its element or format, and pass a localized `aria-label` when needed.
 
 <ComponentPreview name="base/QuestionnaireProgressExample" align="end" />
 
@@ -303,6 +267,36 @@ Compose Questionnaire with Card slots while keeping the question title and descr
 Compose Questionnaire inside a Dialog while keeping cancellation and dismissal host-owned. Closing the dialog cancels the flow, while `QuestionnaireSkip` records an intentional unanswered item.
 
 <ComponentPreview name="base/QuestionnaireDialogExample" align="end" />
+
+## Disabled Choice
+
+Set `disabled` on a `QuestionnaireChoice` to make one answer unavailable. A disabled choice cannot be selected, is skipped by shortcuts and is left out of `FormData`. Use `QuestionnaireChoiceDescription` for the muted line under a choice label.
+
+<ComponentPreview name="base/QuestionnaireDisabledExample" align="end" />
+
+## No Description
+
+`QuestionnaireDescription` is optional. Leave it out when the title is enough and the item still keeps its progress, choices and shortcuts.
+
+<ComponentPreview name="base/QuestionnaireNoDescriptionExample" align="end" />
+
+## Validation
+
+Questionnaire validates the active item before moving forward and validates all enabled items when the form submits.
+
+- A required item is valid after it has an answer.
+- An optional item is valid after it has an answer or is explicitly skipped.
+- Disabled items and answers are ignored.
+
+`required` does not add visible "Required" text. Say it in the `QuestionnaireTitle` or `QuestionnaireDescription`. When validation fails, Questionnaire keeps or opens the invalid item and focuses an answer. `QuestionnaireError` stays hidden until its item is invalid, and its children replace the default message.
+
+```svelte
+<QuestionnaireItem name="scope" required>
+  <QuestionnaireTitle>What should the project include? (Required)</QuestionnaireTitle>
+  <QuestionnaireChoices>…</QuestionnaireChoices>
+  <QuestionnaireError>Please choose a project scope.</QuestionnaireError>
+</QuestionnaireItem>
+```
 
 ## Custom render targets
 
@@ -371,13 +365,13 @@ When the design has no visible label, use `aria-label`:
 <QuestionnaireInput aria-label="Other answer" placeholder="Type another answer…" />
 ```
 
-## Examples
+## Unstyled
 
-<ComponentPreview name="base/QuestionnaireExample" />
+The behavior in `Questionnaire` comes from `@sveltery/svelte/questionnaire`. To use it directly with your own markup and styles, import the parts from that module. The styled components on this page add the classes and the Button props.
 
 ## API Reference
 
-Every part accepts the native attributes of its element and a `class`. Navigation parts also accept the Button `size` and `variant` props. `QuestionnaireActions` is a styled-only layout `div`, and `QuestionnaireChoiceDescription` is a styled `span` for text under a choice label.
+The props, data attributes, and render states for every part are listed below. Every part accepts the native attributes of its element and a `class`. The styled components inherit the corresponding unstyled props. Navigation components also accept Button `size` and `variant` props, and `QuestionnaireActions` is a styled-only layout `div`. `QuestionnaireChoiceDescription` is a styled `span` for text under a choice label.
 
 The styled `QuestionnaireChoice` composes the native input, the visual indicator, the label and the shortcut hint for you. Every part also takes a `render` snippet. It receives `(props, state)`, or `(props, state, children)` for a part with children, and the render states are listed per part below.
 

@@ -1,3 +1,4 @@
+import { blocks } from '#blocks/registry';
 import manifest from '../../package.json';
 import { buildRegistry, type RegistryInput } from '../../registry/build';
 import { workspaceRangeVersions } from '../../registry/items';
@@ -10,6 +11,7 @@ const raw = (files: Record<string, string>, prefix: string) => Object.fromEntrie
 const sources = import.meta.glob<string>(['../../registry/bases/base/ui/*/*.{svelte,ts}', '!../../registry/bases/base/ui/icons/*'], { query: '?raw', import: 'default', eager: true });
 const styles = import.meta.glob<string>('../../registry/styles/scoped/*.css', { query: '?raw', import: 'default', eager: true });
 const themes = import.meta.glob<string>('../../registry/styles/themes.css', { query: '?raw', import: 'default', eager: true });
+const blockSources = import.meta.glob<string>('../../blocks/*/**/*.{svelte,json}', { query: '?raw', import: 'default', eager: true });
 const manifests = import.meta.glob<{ name: string; version: string }>('../../../../packages/*/package.json', { import: 'default', eager: true });
 
 const input: RegistryInput = {
@@ -18,6 +20,7 @@ const input: RegistryInput = {
   themes: Object.values(themes)[0]!,
   uiManifest: manifest,
   workspaceVersions: workspaceRangeVersions(Object.values(manifests)),
+  blocks: blocks.map(({ name, description, route }) => ({ name, description, route, files: raw(Object.fromEntries(Object.entries(blockSources).filter(([path]) => path.startsWith(`../../blocks/${name}/`))), `../../blocks/${name}/`) })),
   origin: site.url,
 };
 

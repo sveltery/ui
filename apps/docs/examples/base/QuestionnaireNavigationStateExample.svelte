@@ -14,6 +14,7 @@
     QuestionnaireTitle,
     type QuestionnaireItemStatus,
   } from '$registry/bases/base/ui/questionnaire';
+  import { toast } from '$registry/bases/base/ui/toast';
 
   const items = [
     { name: 'permission', required: true },
@@ -25,12 +26,11 @@
   let item = $state('permission');
   let statuses = $state<Record<ItemName, QuestionnaireItemStatus>>({ permission: 'unanswered', verification: 'unanswered' });
   const unanswered = $derived(statuses[item as ItemName] === 'unanswered');
-  let result = $state('');
 
   function handleSubmit(event: SubmitEvent & { currentTarget: HTMLFormElement }) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    result = `Permission: ${formData.get('permission') ?? 'None'} · Verification: ${formData.get('verification') ?? 'None'}`;
+    toast.add({ title: 'Permissions saved', description: `Permission: ${formData.get('permission') ?? 'None'} · Verification: ${formData.get('verification') ?? 'None'}` });
   }
 </script>
 
@@ -63,7 +63,4 @@
     <QuestionnaireNext class="data-[status=unanswered]:opacity-50" disabled={unanswered} variant="secondary">Next</QuestionnaireNext>
     <QuestionnaireSubmit disabled={unanswered}>Save permissions</QuestionnaireSubmit>
   </QuestionnaireActions>
-  {#if result}
-    <p role="status" class="mt-4 text-sm text-muted-foreground">{result}</p>
-  {/if}
 </Questionnaire>
