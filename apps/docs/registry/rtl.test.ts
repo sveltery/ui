@@ -17,6 +17,13 @@ describe('renderSource', () => {
     expect(rtl).not.toContain('text-left');
   });
 
+  it('maps the class of merged props, which a style inlines', () => {
+    expect(render('sidebar/SidebarMenuAction.svelte', false)).toMatch(/\bright-1\b/);
+    const rtl = render('sidebar/SidebarMenuAction.svelte', true);
+    expect(rtl).toMatch(/\bend-1\b/);
+    expect(rtl).not.toMatch(/\bright-1\b/);
+  });
+
   it('flips the icons marked cn-rtl-flip', () => {
     expect(render('breadcrumb/BreadcrumbSeparator.svelte', false)).toContain('class="cn-rtl-flip"');
     expect(render('breadcrumb/BreadcrumbSeparator.svelte', true)).toContain('class="rtl:rotate-180"');

@@ -194,12 +194,19 @@ function classStrings(root: unknown): (StringLiteral | Node)[] {
         for (const property of properties(variant.value)) if (isString(property.value)) strings.push(property.value);
       }
     }
+    // { ...props, class: cn(...) }, Svelte's spelling of upstream's mergeProps({ className: cn(...) }): a string, or the arguments of a cn() call.
+    // The spread tells merged props from plain objects such as a cva compound variant's { size: 'sm', class: '...' }.
+    if (node.type === 'ObjectExpression' && (node.properties as Node[]).some((p) => p.type === 'SpreadElement')) {
+      const property = (node.properties as Node[]).find((p) => p.type === 'Property' && !p.computed && propertyName(p) === 'class');
+      if (isString(property?.value)) strings.push(property.value);
+      if (isCall(property?.value, 'cn')) for (const arg of property.value.arguments as Node[]) strings.push(...argumentStrings(arg, { binary: true }));
+    }
     if (node.type !== 'Attribute') continue;
     if (node.name === 'class') {
       const text = staticText(node);
       if (text) strings.push(text);
-      // class={...}: the arguments of its first cn() call.
-      const cn = Array.isArray(node.value) ? undefined : nodes(node.value).find((n) => isCall(n, 'cn'));
+      // class={...} or class="{...}": the arguments of its first cn() call.
+      const cn = nodes(node.value).find((n) => isCall(n, 'cn'));
       for (const arg of (cn?.arguments as Node[]) ?? []) strings.push(...argumentStrings(arg, { binary: true }));
     }
     // classNames={{ ... }}: the arguments of each property's call, then its own string unless it is named variant.
@@ -233,7 +240,8 @@ function sideStrings(root: unknown, component: string | undefined): (StringLiter
   return strings;
 }
 
-const quoted = (value: string, quote: string) => quote + value.replaceAll('\\', '\\\\').replaceAll(quote, `\\${quote}`) + quote;
+const quoted = (value: string, quote: string) =>
+  quote + value.replaceAll('\\', '\\\\').replaceAll(quote, `\\${quote}`).replaceAll('\n', '\\n').replaceAll('\r', '\\r') + quote;
 
 // Svelte's parser reads TypeScript only inside a <script>, so a .ts file is wrapped in one and its offsets shifted back.
 const WRAP_START = '<script module lang="ts">\n';
@@ -261,7 +269,9 @@ export function transformDirection(path: string, source: string): string {
       if (next !== undefined && next !== node.value) edits.push({ start, end, text: quoted(next, node.raw[0]!) });
     } else {
       const next = map(node.raw);
-      if (next !== undefined && next !== node.raw) edits.push({ start, end, text: next });
+      // An unquoted class=a gains a space when a class is added, so it takes quotes.
+      const unquoted = source[start - 1] === '=';
+      if (next !== undefined && next !== node.raw) edits.push({ start, end, text: unquoted && /\s/.test(next) ? `"${next}"` : next });
     }
   };
   for (const node of classStrings(root)) edit(node, applyRtlMapping);
