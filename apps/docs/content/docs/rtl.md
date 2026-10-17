@@ -143,10 +143,6 @@ Popovers, tooltips and menus render in a portal at the end of `<body>`. With `di
 
 If you installed components before you turned on RTL, migrate them with the CLI.
 
-<Steps>
-
-### Run the migrate command
-
 ```bash
 npx @sveltery/ui@latest migrate rtl [path]
 ```
@@ -176,5 +172,3 @@ Add the direction component, then wrap your app in `DirectionProvider` as [Get s
 ```bash
 npx @sveltery/ui@latest add direction
 ```
-
-</Steps>
