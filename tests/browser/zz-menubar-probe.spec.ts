@@ -12,8 +12,17 @@ test.beforeEach(async ({ page }) => {
     const d = (el: any) => (el instanceof Element ? `${el.tagName}${el.getAttribute('role') ? '[' + el.getAttribute('role') + ']' : ''}"${(el.textContent ?? '').trim().slice(0, 12)}"` : String(el));
     const t0 = performance.now();
     const at = () => (performance.now() - t0).toFixed(1);
-    for (const type of ['focusin', 'focusout', 'keydown', 'pointerdown', 'pointermove', 'pointerenter', 'mousemove'])
+    for (const type of ['focusin', 'focusout', 'keydown', 'pointerdown', 'pointermove', 'pointerenter', 'mousemove', 'pointerup', 'mouseup', 'click', 'blur', 'focus'])
       document.addEventListener(type, (e: any) => log.push(`${at()} ${type} t=${d(e.target)} r=${d(e.relatedTarget)} ${e.key ?? ''}`), true);
+    const dispatch = EventTarget.prototype.dispatchEvent;
+    EventTarget.prototype.dispatchEvent = function (event: Event) {
+      if (event instanceof CustomEvent) {
+        const detail = event.detail ?? {};
+        const stack = (new Error().stack ?? '').split('\n').slice(2, 7).map((line) => line.trim().replace(/https?:\/\/[^/]+/, '')).join(' < ');
+        log.push(`${at()} custom ${event.type} open=${detail.open} reason=${detail.reason} node=${detail.nodeId} parent=${detail.parentNodeId} :: ${stack}`);
+      }
+      return dispatch.call(this, event);
+    };
     new MutationObserver((ms) => {
       for (const m of ms) {
         if (m.type === 'attributes') log.push(`${at()} attr ${m.attributeName}=${(m.target as Element).getAttribute(m.attributeName!)} on ${d(m.target)}`);
