@@ -1,5 +1,5 @@
 import { log } from '@clack/prompts';
-import { openProject, planItems, selectInstalled } from '../items.js';
+import { NONE_INSTALLED, openProject, planItems, selectInstalled } from '../items.js';
 import { executePlan, filePatch, formatPlan, type Plan, type PlannedFile } from '../plan.js';
 import { ask } from '../prompt.js';
 
@@ -12,7 +12,7 @@ export async function update(names: string[], options: UpdateOptions): Promise<P
   const full = planItems(project, items);
   const plan = { ...full, files: full.files.filter((file) => file.status !== 'identical') };
   if (plan.files.length === 0 && plan.dependencies.length === 0) {
-    log.success(items.length === 0 ? 'No items are installed. Add one with `npx @sveltery/ui@latest add button`.' : 'Everything is up to date.');
+    log.success(items.length === 0 ? NONE_INSTALLED : 'Everything is up to date.');
     return plan;
   }
   log.info(formatPlan(plan, { showIdentical: false }));
