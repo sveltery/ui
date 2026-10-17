@@ -287,6 +287,8 @@ You can add an addon to the combobox by using the `InputGroupAddon` component in
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the combobox in a [DirectionProvider](/docs/components/direction) and set `dir` on `ComboboxContent`. Use the language selector to switch the language.
 
 <ComponentPreview name="base/ComboboxRtlExample" direction="rtl" align="start" />

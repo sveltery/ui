@@ -138,6 +138,8 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the menubar in a [DirectionProvider](/docs/components/direction) and set `dir` on `Menubar` and `MenubarContent`. Use the language selector to switch the language.
 
 <ComponentPreview name="base/MenubarRtlExample" direction="rtl" align="start" />

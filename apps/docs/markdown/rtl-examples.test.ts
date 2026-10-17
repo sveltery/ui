@@ -36,3 +36,10 @@ describe('RTL previews', () => {
     expect(name).toMatch(/RtlExample$/);
   });
 });
+
+// As upstream's component pages do, now that `init --rtl` sets up the transform.
+describe.each(globSync('content/docs/components/*.md', { cwd: docs }).filter((page) => /^## RTL$/m.test(readFileSync(join(docs, page), 'utf8'))))('%s', (page) => {
+  it('opens its RTL section with a link to the RTL guide', () => {
+    expect(readFileSync(join(docs, page), 'utf8')).toContain('## RTL\n\nTo enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).\n');
+  });
+});

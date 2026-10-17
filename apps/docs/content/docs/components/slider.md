@@ -112,6 +112,8 @@ Use the `disabled` prop to disable the slider.
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the slider in a [DirectionProvider](/docs/components/direction) and set `dir` on `Slider`. Use the language selector to switch the language.
 
 <ComponentPreview name="base/SliderRtlExample" direction="rtl" align="start" />

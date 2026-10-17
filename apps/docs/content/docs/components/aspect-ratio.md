@@ -71,6 +71,8 @@ A portrait aspect ratio component using the `ratio={9 / 16}` prop. This is usefu
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the figure in a [DirectionProvider](/docs/components/direction) and set `dir` on it. Use the language selector to switch the language.
 
 <ComponentPreview name="base/AspectRatioRtlExample" direction="rtl" />

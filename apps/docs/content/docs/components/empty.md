@@ -111,6 +111,8 @@ You can add an `InputGroup` component to the `EmptyContent` component.
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the empty state in a [DirectionProvider](/docs/components/direction) and set `dir` on `Empty`. Use the language selector to switch the language.
 
 <ComponentPreview name="base/EmptyRtlExample" direction="rtl" align="start" />

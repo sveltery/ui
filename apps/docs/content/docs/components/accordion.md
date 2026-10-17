@@ -123,6 +123,8 @@ Wrap the `Accordion` in a `Card` component.
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the accordion in a [DirectionProvider](/docs/components/direction) and set `dir` on `Accordion`. Use the language selector to switch the language.
 
 <ComponentPreview name="base/AccordionRtlExample" direction="rtl" align="start" />

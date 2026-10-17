@@ -208,6 +208,8 @@ Press ⌘J or Ctrl+J to open the menu below. A `<svelte:window onkeydown>` handl
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the menu in a [DirectionProvider](/docs/components/direction) and set `dir` on `Command` and `CommandInput`. Use the language selector to switch the language.
 
 <ComponentPreview name="base/CommandRtlExample" direction="rtl" align="start" />
