@@ -1,0 +1,41 @@
+diff --git a/src/state/selectors/selectTooltipEventType.ts b/src/state/selectors/selectTooltipEventType.ts
+index 315e224..697ef47 100644
+--- a/src/state/selectors/selectTooltipEventType.ts
++++ b/src/state/selectors/selectTooltipEventType.ts
+@@ -1,6 +1,5 @@
+ import { RechartsRootState } from '../store.js';
+ import { TooltipEventType } from '../../util/types.js';
+-import { useAppSelector } from '../hooks.js';
+ import { SharedTooltipSettings } from '../tooltipSlice.js';
+
+ export const selectDefaultTooltipEventType = (state: RechartsRootState): TooltipEventType =>
+@@ -29,7 +28,3 @@ export function selectTooltipEventType(state: RechartsRootState, shared: SharedT
+   const validateTooltipEventTypes = selectValidateTooltipEventTypes(state);
+   return combineTooltipEventType(shared, defaultTooltipEventType, validateTooltipEventTypes);
+ }
+-
+-export function useTooltipEventType(shared: SharedTooltipSettings): TooltipEventType | undefined {
+-  return useAppSelector(state => selectTooltipEventType(state, shared));
+-}
+diff --git a/src/state/selectors/selectors.ts b/src/state/selectors/selectors.ts
+index 18cf263..8dae147 100644
+--- a/src/state/selectors/selectors.ts
++++ b/src/state/selectors/selectors.ts
+@@ -1,6 +1,5 @@
+ import { createSelector } from 'reselect';
+ import sortBy from 'es-toolkit/compat/sortBy';
+-import { useAppSelector } from '../hooks.js';
+ import { RechartsRootState } from '../store.js';
+ import {
+   ActiveTooltipProps,
+@@ -47,10 +46,6 @@ import {
+ } from '../../util/getActiveCoordinate.js';
+ import { inRangeOfSector } from '../../util/PolarUtils.js';
+
+-export const useChartName = (): string | undefined => {
+-  return useAppSelector(selectChartName);
+-};
+-
+ const pickTooltipEventType = (
+   _state: RechartsRootState,
+   tooltipEventType: TooltipEventType | undefined,
