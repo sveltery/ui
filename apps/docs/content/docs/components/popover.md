@@ -117,9 +117,9 @@ A popover with form fields inside.
 
 ## RTL
 
-Wrap the popover in a [DirectionProvider](/docs/components/direction) and set `dir` on `PopoverContent`. Use the buttons to switch the language.
+Wrap the popover in a [DirectionProvider](/docs/components/direction) and set `dir` on `PopoverContent`. Use the language selector to switch the language.
 
-<ComponentPreview name="base/PopoverRtlExample" align="start" />
+<ComponentPreview name="base/PopoverRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 

@@ -103,9 +103,9 @@ Long content can scroll while the header stays in view.
 
 ## RTL
 
-Wrap the dialog in a [DirectionProvider](/docs/components/direction) and set `dir` on `DialogContent`. Use the buttons to switch the language.
+Wrap the dialog in a [DirectionProvider](/docs/components/direction) and set `dir` on `DialogContent`. Use the language selector to switch the language.
 
-<ComponentPreview name="base/DialogRtlExample" align="start" />
+<ComponentPreview name="base/DialogRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 

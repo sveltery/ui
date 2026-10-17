@@ -13,7 +13,7 @@
     AlertDialogTrigger
   } from '$registry/bases/base/ui/alert-dialog';
   import { Button } from '$registry/bases/base/ui/button';
-  import { DirectionProvider } from '$registry/bases/base/ui/direction';
+  import { useLanguage } from '$lib/components/docs/language.svelte';
 
   const translations = {
     en: {
@@ -57,56 +57,47 @@
     }
   } as const;
 
-  let language = $state<keyof typeof translations>('ar');
-  const t = $derived(translations[language]);
-  const lang = $derived(t.dir === 'rtl' ? language : undefined);
+  const language = useLanguage();
+  const t = $derived(translations[language.current]);
+  const lang = $derived(t.dir === 'rtl' ? language.current : undefined);
 </script>
 
 <div class="flex flex-col gap-4">
-  <div class="flex gap-2">
-    {#each Object.keys(translations) as code (code)}
-      <Button variant={language === code ? 'default' : 'outline'} size="sm" onclick={() => (language = code as keyof typeof translations)}>
-        {code}
-      </Button>
-    {/each}
+  <div class="flex gap-4" dir={t.dir}>
+    <AlertDialog>
+      <AlertDialogTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+        {t.showDialog}
+      </AlertDialogTrigger>
+      <AlertDialogContent dir={t.dir} data-lang={lang}>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{t.title}</AlertDialogTitle>
+          <AlertDialogDescription>{t.description}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>{t.cancel}</AlertDialogCancel>
+          <AlertDialogAction>{t.continue}</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+    <AlertDialog>
+      <AlertDialogTrigger>
+        {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+        {t.showDialogSm}
+      </AlertDialogTrigger>
+      <AlertDialogContent size="sm" dir={t.dir} data-lang={lang}>
+        <AlertDialogHeader>
+          <AlertDialogMedia>
+            <BluetoothIcon />
+          </AlertDialogMedia>
+          <AlertDialogTitle>{t.smallTitle}</AlertDialogTitle>
+          <AlertDialogDescription>{t.smallDescription}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>{t.dontAllow}</AlertDialogCancel>
+          <AlertDialogAction>{t.allow}</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   </div>
-  <DirectionProvider direction={t.dir}>
-    <div class="flex gap-4" dir={t.dir}>
-      <AlertDialog>
-        <AlertDialogTrigger>
-          {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
-          {t.showDialog}
-        </AlertDialogTrigger>
-        <AlertDialogContent dir={t.dir} data-lang={lang}>
-          <AlertDialogHeader>
-            <AlertDialogTitle>{t.title}</AlertDialogTitle>
-            <AlertDialogDescription>{t.description}</AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>{t.cancel}</AlertDialogCancel>
-            <AlertDialogAction>{t.continue}</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-      <AlertDialog>
-        <AlertDialogTrigger>
-          {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
-          {t.showDialogSm}
-        </AlertDialogTrigger>
-        <AlertDialogContent size="sm" dir={t.dir} data-lang={lang}>
-          <AlertDialogHeader>
-            <AlertDialogMedia>
-              <BluetoothIcon />
-            </AlertDialogMedia>
-            <AlertDialogTitle>{t.smallTitle}</AlertDialogTitle>
-            <AlertDialogDescription>{t.smallDescription}</AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>{t.dontAllow}</AlertDialogCancel>
-            <AlertDialogAction>{t.allow}</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </div>
-  </DirectionProvider>
 </div>

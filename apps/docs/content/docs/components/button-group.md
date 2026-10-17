@@ -152,9 +152,9 @@ Use with a `Popover` component.
 
 ## RTL
 
-Wrap the button group in a [DirectionProvider](/docs/components/direction) and set `dir` on the dropdown menu content. Use the buttons to switch the language.
+Wrap the button group in a [DirectionProvider](/docs/components/direction) and set `dir` on the dropdown menu content. Use the language selector to switch the language.
 
-<ComponentPreview name="base/ButtonGroupRtlExample" />
+<ComponentPreview name="base/ButtonGroupRtlExample" direction="rtl" />
 
 ## API Reference
 

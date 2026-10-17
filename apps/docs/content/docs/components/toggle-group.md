@@ -125,9 +125,9 @@ A custom toggle group example.
 
 ## RTL
 
-Wrap the toggle group in a [DirectionProvider](/docs/components/direction) and set `dir` on `ToggleGroup`. Use the buttons to switch the language.
+Wrap the toggle group in a [DirectionProvider](/docs/components/direction) and set `dir` on `ToggleGroup`. Use the language selector to switch the language.
 
-<ComponentPreview name="base/ToggleGroupRtlExample" align="start" />
+<ComponentPreview name="base/ToggleGroupRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 

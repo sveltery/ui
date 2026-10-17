@@ -123,9 +123,9 @@ Wrap the `Accordion` in a `Card` component.
 
 ## RTL
 
-Wrap the accordion in a [DirectionProvider](/docs/components/direction) and set `dir` on `Accordion`. Use the buttons to switch the language.
+Wrap the accordion in a [DirectionProvider](/docs/components/direction) and set `dir` on `Accordion`. Use the language selector to switch the language.
 
-<ComponentPreview name="base/AccordionRtlExample" align="start" />
+<ComponentPreview name="base/AccordionRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 

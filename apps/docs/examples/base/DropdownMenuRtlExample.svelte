@@ -3,7 +3,6 @@
   import SettingsIcon from '@lucide/svelte/icons/settings';
   import UserIcon from '@lucide/svelte/icons/user';
   import { Button } from '$registry/bases/base/ui/button';
-  import { DirectionProvider } from '$registry/bases/base/ui/direction';
   import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -21,6 +20,7 @@
     DropdownMenuSubTrigger,
     DropdownMenuTrigger
   } from '$registry/bases/base/ui/dropdown-menu';
+  import { useLanguage } from '$lib/components/docs/language.svelte';
 
   const translations = {
     en: {
@@ -115,107 +115,98 @@
     }
   } as const;
 
-  let language = $state<keyof typeof translations>('ar');
+  const language = useLanguage();
   let showStatusBar = $state(true);
   let showActivityBar = $state(false);
   let showPanel = $state(false);
   let position = $state('bottom');
-  const dir = $derived(translations[language].dir);
-  const t = $derived(translations[language].values);
-  const lang = $derived(dir === 'rtl' ? language : undefined);
+  const dir = $derived(translations[language.current].dir);
+  const t = $derived(translations[language.current].values);
+  const lang = $derived(dir === 'rtl' ? language.current : undefined);
 </script>
 
 <div class="flex flex-col items-start gap-4">
-  <div class="flex gap-2">
-    {#each Object.keys(translations) as code (code)}
-      <Button variant={language === code ? 'default' : 'outline'} size="sm" onclick={() => (language = code as keyof typeof translations)}>
-        {code}
-      </Button>
-    {/each}
-  </div>
-  <DirectionProvider direction={dir}>
-    <DropdownMenu>
-      <DropdownMenuTrigger>
-        {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
-        {t.open}
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align={dir === 'rtl' ? 'end' : 'start'} {dir} class="w-36" data-lang={lang}>
-        <DropdownMenuGroup>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger>{t.account}</DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuSubContent {dir} data-lang={lang}>
-                <DropdownMenuGroup>
-                  <DropdownMenuItem>
-                    <UserIcon />
-                    {t.profile}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <CreditCardIcon />
-                    {t.billing}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <SettingsIcon />
-                    {t.settings}
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-              </DropdownMenuSubContent>
-            </DropdownMenuPortal>
-          </DropdownMenuSub>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuLabel>{t.team}</DropdownMenuLabel>
-          <DropdownMenuItem>{t.team}</DropdownMenuItem>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger>{t.inviteUsers}</DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuSubContent {dir} data-lang={lang}>
-                <DropdownMenuItem>{t.email}</DropdownMenuItem>
-                <DropdownMenuItem>{t.message}</DropdownMenuItem>
-                <DropdownMenuSub>
-                  <DropdownMenuSubTrigger>{t.more}</DropdownMenuSubTrigger>
-                  <DropdownMenuPortal>
-                    <DropdownMenuSubContent {dir} data-lang={lang}>
-                      <DropdownMenuItem>{t.calendar}</DropdownMenuItem>
-                      <DropdownMenuItem>{t.chat}</DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem>{t.webhook}</DropdownMenuItem>
-                    </DropdownMenuSubContent>
-                  </DropdownMenuPortal>
-                </DropdownMenuSub>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>{t.advanced}</DropdownMenuItem>
-              </DropdownMenuSubContent>
-            </DropdownMenuPortal>
-          </DropdownMenuSub>
-          <DropdownMenuItem>
-            {t.newTeam}
-            <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuLabel>{t.view}</DropdownMenuLabel>
-          <DropdownMenuCheckboxItem bind:checked={showStatusBar}>{t.statusBar}</DropdownMenuCheckboxItem>
-          <DropdownMenuCheckboxItem bind:checked={showActivityBar}>{t.activityBar}</DropdownMenuCheckboxItem>
-          <DropdownMenuCheckboxItem bind:checked={showPanel}>{t.panel}</DropdownMenuCheckboxItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuLabel>{t.position}</DropdownMenuLabel>
-          <DropdownMenuRadioGroup bind:value={position}>
-            <DropdownMenuRadioItem value="top">{t.top}</DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="bottom">{t.bottom}</DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="right">{t.right}</DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="left">{t.left}</DropdownMenuRadioItem>
-          </DropdownMenuRadioGroup>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem variant="destructive">{t.logout}</DropdownMenuItem>
-        </DropdownMenuGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  </DirectionProvider>
+  <DropdownMenu>
+    <DropdownMenuTrigger>
+      {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+      {t.open}
+    </DropdownMenuTrigger>
+    <DropdownMenuContent align={dir === 'rtl' ? 'end' : 'start'} {dir} class="w-36" data-lang={lang}>
+      <DropdownMenuGroup>
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger>{t.account}</DropdownMenuSubTrigger>
+          <DropdownMenuPortal>
+            <DropdownMenuSubContent {dir} data-lang={lang}>
+              <DropdownMenuGroup>
+                <DropdownMenuItem>
+                  <UserIcon />
+                  {t.profile}
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <CreditCardIcon />
+                  {t.billing}
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <SettingsIcon />
+                  {t.settings}
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuSubContent>
+          </DropdownMenuPortal>
+        </DropdownMenuSub>
+      </DropdownMenuGroup>
+      <DropdownMenuSeparator />
+      <DropdownMenuGroup>
+        <DropdownMenuLabel>{t.team}</DropdownMenuLabel>
+        <DropdownMenuItem>{t.team}</DropdownMenuItem>
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger>{t.inviteUsers}</DropdownMenuSubTrigger>
+          <DropdownMenuPortal>
+            <DropdownMenuSubContent {dir} data-lang={lang}>
+              <DropdownMenuItem>{t.email}</DropdownMenuItem>
+              <DropdownMenuItem>{t.message}</DropdownMenuItem>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>{t.more}</DropdownMenuSubTrigger>
+                <DropdownMenuPortal>
+                  <DropdownMenuSubContent {dir} data-lang={lang}>
+                    <DropdownMenuItem>{t.calendar}</DropdownMenuItem>
+                    <DropdownMenuItem>{t.chat}</DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>{t.webhook}</DropdownMenuItem>
+                  </DropdownMenuSubContent>
+                </DropdownMenuPortal>
+              </DropdownMenuSub>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>{t.advanced}</DropdownMenuItem>
+            </DropdownMenuSubContent>
+          </DropdownMenuPortal>
+        </DropdownMenuSub>
+        <DropdownMenuItem>
+          {t.newTeam}
+          <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
+        </DropdownMenuItem>
+      </DropdownMenuGroup>
+      <DropdownMenuSeparator />
+      <DropdownMenuGroup>
+        <DropdownMenuLabel>{t.view}</DropdownMenuLabel>
+        <DropdownMenuCheckboxItem bind:checked={showStatusBar}>{t.statusBar}</DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem bind:checked={showActivityBar}>{t.activityBar}</DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem bind:checked={showPanel}>{t.panel}</DropdownMenuCheckboxItem>
+      </DropdownMenuGroup>
+      <DropdownMenuSeparator />
+      <DropdownMenuGroup>
+        <DropdownMenuLabel>{t.position}</DropdownMenuLabel>
+        <DropdownMenuRadioGroup bind:value={position}>
+          <DropdownMenuRadioItem value="top">{t.top}</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="bottom">{t.bottom}</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="right">{t.right}</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="left">{t.left}</DropdownMenuRadioItem>
+        </DropdownMenuRadioGroup>
+      </DropdownMenuGroup>
+      <DropdownMenuSeparator />
+      <DropdownMenuGroup>
+        <DropdownMenuItem variant="destructive">{t.logout}</DropdownMenuItem>
+      </DropdownMenuGroup>
+    </DropdownMenuContent>
+  </DropdownMenu>
 </div>

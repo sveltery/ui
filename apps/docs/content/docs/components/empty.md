@@ -111,9 +111,9 @@ You can add an `InputGroup` component to the `EmptyContent` component.
 
 ## RTL
 
-Wrap the empty state in a [DirectionProvider](/docs/components/direction) and set `dir` on `Empty`. Use the buttons to switch the language.
+Wrap the empty state in a [DirectionProvider](/docs/components/direction) and set `dir` on `Empty`. Use the language selector to switch the language.
 
-<ComponentPreview name="base/EmptyRtlExample" align="start" />
+<ComponentPreview name="base/EmptyRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 

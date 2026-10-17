@@ -1,11 +1,11 @@
 <script lang="ts">
   import { Button } from '$registry/bases/base/ui/button';
   import { Checkbox } from '$registry/bases/base/ui/checkbox';
-  import { DirectionProvider } from '$registry/bases/base/ui/direction';
   import { Field, FieldDescription, FieldGroup, FieldLabel, FieldLegend, FieldSeparator, FieldSet } from '$registry/bases/base/ui/field';
   import { Input } from '$registry/bases/base/ui/input';
   import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '$registry/bases/base/ui/select';
   import { Textarea } from '$registry/bases/base/ui/textarea';
+  import { useLanguage } from '$lib/components/docs/language.svelte';
 
   const months = [
     { label: 'MM', value: null },
@@ -135,8 +135,8 @@
     },
   } as const;
 
-  let language = $state<keyof typeof translations>('ar');
-  const tr = $derived(translations[language]);
+  const language = useLanguage();
+  const tr = $derived(translations[language.current]);
   const t = $derived(tr.values);
   const dir = $derived(tr.dir);
 
@@ -147,93 +147,84 @@
 </script>
 
 <div class="flex w-full max-w-md flex-col gap-4">
-  <div class="flex gap-2">
-    {#each Object.keys(translations) as code (code)}
-      <Button variant={language === code ? 'default' : 'outline'} size="sm" onclick={() => (language = code as keyof typeof translations)}>
-        {code}
-      </Button>
-    {/each}
+  <div class="w-full max-w-md py-6" {dir}>
+    <form>
+      <FieldGroup>
+        <FieldSet>
+          <FieldLegend>{t.paymentMethod}</FieldLegend>
+          <FieldDescription>{t.secureTransactions}</FieldDescription>
+          <FieldGroup>
+            <Field>
+              <FieldLabel for="checkout-7j9-card-name-43j-rtl">{t.nameOnCard}</FieldLabel>
+              <Input id="checkout-7j9-card-name-43j-rtl" placeholder="Evil Rabbit" required />
+            </Field>
+            <Field>
+              <FieldLabel for="checkout-7j9-card-number-uw1-rtl">{t.cardNumber}</FieldLabel>
+              <Input id="checkout-7j9-card-number-uw1-rtl" placeholder="1234 5678 9012 3456" required />
+              <FieldDescription>{t.cardNumberDescription}</FieldDescription>
+            </Field>
+            <div class="grid grid-cols-3 gap-4">
+              <Field>
+                <FieldLabel for="checkout-exp-month-ts6-rtl">{t.month}</FieldLabel>
+                <Select items={months}>
+                  <SelectTrigger id="checkout-exp-month-ts6-rtl">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent {dir}>
+                    <SelectGroup>
+                      {#each months as item (item.value)}
+                        <SelectItem value={item.value}>{getMonthLabel(item.value)}</SelectItem>
+                      {/each}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </Field>
+              <Field>
+                <FieldLabel for="checkout-7j9-exp-year-f59-rtl">{t.year}</FieldLabel>
+                <Select items={years}>
+                  <SelectTrigger id="checkout-7j9-exp-year-f59-rtl">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent {dir}>
+                    <SelectGroup>
+                      {#each years as item (item.value)}
+                        <SelectItem value={item.value}>{item.label}</SelectItem>
+                      {/each}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </Field>
+              <Field>
+                <FieldLabel for="checkout-7j9-cvv-rtl">{t.cvv}</FieldLabel>
+                <Input id="checkout-7j9-cvv-rtl" placeholder="123" required />
+              </Field>
+            </div>
+          </FieldGroup>
+        </FieldSet>
+        <FieldSeparator />
+        <FieldSet>
+          <FieldLegend>{t.billingAddress}</FieldLegend>
+          <FieldDescription>{t.billingAddressDescription}</FieldDescription>
+          <FieldGroup>
+            <Field orientation="horizontal">
+              <Checkbox id="checkout-7j9-same-as-shipping-wgm-rtl" defaultChecked />
+              <FieldLabel for="checkout-7j9-same-as-shipping-wgm-rtl" class="font-normal">{t.sameAsShipping}</FieldLabel>
+            </Field>
+          </FieldGroup>
+        </FieldSet>
+        <FieldSet>
+          <FieldGroup>
+            <Field>
+              <FieldLabel for="checkout-7j9-optional-comments-rtl">{t.comments}</FieldLabel>
+              <Textarea id="checkout-7j9-optional-comments-rtl" placeholder={t.commentsPlaceholder} class="resize-none" />
+            </Field>
+          </FieldGroup>
+        </FieldSet>
+        <Field orientation="horizontal">
+          <Button type="submit">{t.submit}</Button>
+          <Button variant="outline" type="button">{t.cancel}</Button>
+        </Field>
+      </FieldGroup>
+    </form>
   </div>
-  <DirectionProvider direction={dir}>
-    <div class="w-full max-w-md py-6" {dir}>
-      <form>
-        <FieldGroup>
-          <FieldSet>
-            <FieldLegend>{t.paymentMethod}</FieldLegend>
-            <FieldDescription>{t.secureTransactions}</FieldDescription>
-            <FieldGroup>
-              <Field>
-                <FieldLabel for="checkout-7j9-card-name-43j-rtl">{t.nameOnCard}</FieldLabel>
-                <Input id="checkout-7j9-card-name-43j-rtl" placeholder="Evil Rabbit" required />
-              </Field>
-              <Field>
-                <FieldLabel for="checkout-7j9-card-number-uw1-rtl">{t.cardNumber}</FieldLabel>
-                <Input id="checkout-7j9-card-number-uw1-rtl" placeholder="1234 5678 9012 3456" required />
-                <FieldDescription>{t.cardNumberDescription}</FieldDescription>
-              </Field>
-              <div class="grid grid-cols-3 gap-4">
-                <Field>
-                  <FieldLabel for="checkout-exp-month-ts6-rtl">{t.month}</FieldLabel>
-                  <Select items={months}>
-                    <SelectTrigger id="checkout-exp-month-ts6-rtl">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent {dir}>
-                      <SelectGroup>
-                        {#each months as item (item.value)}
-                          <SelectItem value={item.value}>{getMonthLabel(item.value)}</SelectItem>
-                        {/each}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </Field>
-                <Field>
-                  <FieldLabel for="checkout-7j9-exp-year-f59-rtl">{t.year}</FieldLabel>
-                  <Select items={years}>
-                    <SelectTrigger id="checkout-7j9-exp-year-f59-rtl">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent {dir}>
-                      <SelectGroup>
-                        {#each years as item (item.value)}
-                          <SelectItem value={item.value}>{item.label}</SelectItem>
-                        {/each}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </Field>
-                <Field>
-                  <FieldLabel for="checkout-7j9-cvv-rtl">{t.cvv}</FieldLabel>
-                  <Input id="checkout-7j9-cvv-rtl" placeholder="123" required />
-                </Field>
-              </div>
-            </FieldGroup>
-          </FieldSet>
-          <FieldSeparator />
-          <FieldSet>
-            <FieldLegend>{t.billingAddress}</FieldLegend>
-            <FieldDescription>{t.billingAddressDescription}</FieldDescription>
-            <FieldGroup>
-              <Field orientation="horizontal">
-                <Checkbox id="checkout-7j9-same-as-shipping-wgm-rtl" defaultChecked />
-                <FieldLabel for="checkout-7j9-same-as-shipping-wgm-rtl" class="font-normal">{t.sameAsShipping}</FieldLabel>
-              </Field>
-            </FieldGroup>
-          </FieldSet>
-          <FieldSet>
-            <FieldGroup>
-              <Field>
-                <FieldLabel for="checkout-7j9-optional-comments-rtl">{t.comments}</FieldLabel>
-                <Textarea id="checkout-7j9-optional-comments-rtl" placeholder={t.commentsPlaceholder} class="resize-none" />
-              </Field>
-            </FieldGroup>
-          </FieldSet>
-          <Field orientation="horizontal">
-            <Button type="submit">{t.submit}</Button>
-            <Button variant="outline" type="button">{t.cancel}</Button>
-          </Field>
-        </FieldGroup>
-      </form>
-    </div>
-  </DirectionProvider>
 </div>

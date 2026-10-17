@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { Button } from '$registry/bases/base/ui/button';
-  import { DirectionProvider } from '$registry/bases/base/ui/direction';
   import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from '$registry/bases/base/ui/select';
+  import { useLanguage } from '$lib/components/docs/language.svelte';
 
   const translations = {
     en: {
@@ -48,9 +47,9 @@
     }
   } as const;
 
-  let language = $state<keyof typeof translations>('ar');
+  const language = useLanguage();
   let selected = $state<string | null>(null);
-  const t = $derived(translations[language]);
+  const t = $derived(translations[language.current]);
   const fruits = $derived([
     { label: t.apple, value: 'apple' },
     { label: t.banana, value: 'banana' },
@@ -67,33 +66,24 @@
 </script>
 
 <div class="flex w-full max-w-sm flex-col gap-4">
-  <div class="flex gap-2">
-    {#each Object.keys(translations) as code (code)}
-      <Button variant={language === code ? 'default' : 'outline'} size="sm" onclick={() => (language = code as keyof typeof translations)}>
-        {code}
-      </Button>
-    {/each}
-  </div>
-  <DirectionProvider direction={t.dir}>
-    <Select {items} bind:value={selected}>
-      <SelectTrigger class="w-32" dir={t.dir}>
-        <SelectValue />
-      </SelectTrigger>
-      <SelectContent dir={t.dir} data-lang={t.dir === 'rtl' ? language : undefined}>
-        <SelectGroup>
-          <SelectLabel>{t.fruits}</SelectLabel>
-          {#each fruits as item (item.value)}
-            <SelectItem value={item.value}>{item.label}</SelectItem>
-          {/each}
-        </SelectGroup>
-        <SelectSeparator />
-        <SelectGroup>
-          <SelectLabel>{t.vegetables}</SelectLabel>
-          {#each vegetables as item (item.value)}
-            <SelectItem value={item.value}>{item.label}</SelectItem>
-          {/each}
-        </SelectGroup>
-      </SelectContent>
-    </Select>
-  </DirectionProvider>
+  <Select {items} bind:value={selected}>
+    <SelectTrigger class="w-32" dir={t.dir}>
+      <SelectValue />
+    </SelectTrigger>
+    <SelectContent dir={t.dir} data-lang={t.dir === 'rtl' ? language.current : undefined}>
+      <SelectGroup>
+        <SelectLabel>{t.fruits}</SelectLabel>
+        {#each fruits as item (item.value)}
+          <SelectItem value={item.value}>{item.label}</SelectItem>
+        {/each}
+      </SelectGroup>
+      <SelectSeparator />
+      <SelectGroup>
+        <SelectLabel>{t.vegetables}</SelectLabel>
+        {#each vegetables as item (item.value)}
+          <SelectItem value={item.value}>{item.label}</SelectItem>
+        {/each}
+      </SelectGroup>
+    </SelectContent>
+  </Select>
 </div>

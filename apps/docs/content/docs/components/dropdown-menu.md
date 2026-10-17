@@ -177,9 +177,9 @@ A richer example combining groups, icons, and submenus.
 
 ## RTL
 
-Wrap the dropdown menu in a [DirectionProvider](/docs/components/direction) and set `dir` on `DropdownMenuContent` and `DropdownMenuSubContent`. Use the buttons to switch the language.
+Wrap the dropdown menu in a [DirectionProvider](/docs/components/direction) and set `dir` on `DropdownMenuContent` and `DropdownMenuSubContent`. Use the language selector to switch the language.
 
-<ComponentPreview name="base/DropdownMenuRtlExample" align="start" />
+<ComponentPreview name="base/DropdownMenuRtlExample" direction="rtl" align="start" />
 
 ## Trigger
 

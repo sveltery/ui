@@ -102,9 +102,9 @@ You can customize the alert colors by adding custom classes such as `bg-amber-50
 
 ## RTL
 
-Wrap the alerts in a [DirectionProvider](/docs/components/direction) and set `dir` on their container. Use the buttons to switch the language.
+Wrap the alerts in a [DirectionProvider](/docs/components/direction) and set `dir` on their container. Use the language selector to switch the language.
 
-<ComponentPreview name="base/AlertRtlExample" />
+<ComponentPreview name="base/AlertRtlExample" direction="rtl" />
 
 ## API Reference
 

@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { Button } from '$registry/bases/base/ui/button';
-  import { DirectionProvider } from '$registry/bases/base/ui/direction';
   import {
     Menubar,
     MenubarCheckboxItem,
@@ -17,6 +15,7 @@
     MenubarSubTrigger,
     MenubarTrigger
   } from '$registry/bases/base/ui/menubar';
+  import { useLanguage } from '$lib/components/docs/language.svelte';
 
   const translations = {
     en: {
@@ -135,137 +134,128 @@
     },
   } as const;
 
-  let language = $state<keyof typeof translations>('ar');
+  const language = useLanguage();
   let profile = $state('benoit');
-  const dir = $derived(translations[language].dir);
-  const t = $derived(translations[language].values);
+  const dir = $derived(translations[language.current].dir);
+  const t = $derived(translations[language.current].values);
   const align = $derived(dir === 'rtl' ? 'end' : 'start');
-  const lang = $derived(dir === 'rtl' ? language : undefined);
+  const lang = $derived(dir === 'rtl' ? language.current : undefined);
 </script>
 
 <div class="flex w-full max-w-sm flex-col gap-4">
-  <div class="flex gap-2">
-    {#each Object.keys(translations) as code (code)}
-      <Button variant={language === code ? 'default' : 'outline'} size="sm" onclick={() => (language = code as keyof typeof translations)}>
-        {code}
-      </Button>
-    {/each}
-  </div>
-  <DirectionProvider direction={dir}>
-    <Menubar class="w-72" {dir}>
-      <MenubarMenu>
-        <MenubarTrigger>{t.file}</MenubarTrigger>
-        <MenubarContent {dir} {align}>
-          <MenubarGroup>
-            <MenubarItem>
-              {t.newTab} <MenubarShortcut>⌘T</MenubarShortcut>
-            </MenubarItem>
-            <MenubarItem>
-              {t.newWindow} <MenubarShortcut>⌘N</MenubarShortcut>
-            </MenubarItem>
-            <MenubarItem disabled>{t.newIncognitoWindow}</MenubarItem>
-          </MenubarGroup>
-          <MenubarSeparator />
-          <MenubarGroup>
-            <MenubarSub>
-              <MenubarSubTrigger>{t.share}</MenubarSubTrigger>
-              <MenubarSubContent {dir} data-lang={lang}>
-                <MenubarGroup>
-                  <MenubarItem>{t.emailLink}</MenubarItem>
-                  <MenubarItem>{t.messages}</MenubarItem>
-                  <MenubarItem>{t.notes}</MenubarItem>
-                </MenubarGroup>
-              </MenubarSubContent>
-            </MenubarSub>
-          </MenubarGroup>
-          <MenubarSeparator />
-          <MenubarGroup>
-            <MenubarItem>
-              {t.print} <MenubarShortcut>⌘P</MenubarShortcut>
-            </MenubarItem>
-          </MenubarGroup>
-        </MenubarContent>
-      </MenubarMenu>
-      <MenubarMenu>
-        <MenubarTrigger>{t.edit}</MenubarTrigger>
-        <MenubarContent {dir} {align} data-lang={lang}>
-          <MenubarGroup>
-            <MenubarItem>
-              {t.undo} <MenubarShortcut>⌘Z</MenubarShortcut>
-            </MenubarItem>
-            <MenubarItem>
-              {t.redo} <MenubarShortcut>⇧⌘Z</MenubarShortcut>
-            </MenubarItem>
-          </MenubarGroup>
-          <MenubarSeparator />
-          <MenubarGroup>
-            <MenubarSub>
-              <MenubarSubTrigger>{t.find}</MenubarSubTrigger>
-              <MenubarSubContent {dir} data-lang={lang}>
-                <MenubarGroup>
-                  <MenubarItem>{t.searchTheWeb}</MenubarItem>
-                </MenubarGroup>
-                <MenubarSeparator />
-                <MenubarGroup>
-                  <MenubarItem>{t.findItem}</MenubarItem>
-                  <MenubarItem>{t.findNext}</MenubarItem>
-                  <MenubarItem>{t.findPrevious}</MenubarItem>
-                </MenubarGroup>
-              </MenubarSubContent>
-            </MenubarSub>
-          </MenubarGroup>
-          <MenubarSeparator />
-          <MenubarGroup>
-            <MenubarItem>{t.cut}</MenubarItem>
-            <MenubarItem>{t.copy}</MenubarItem>
-            <MenubarItem>{t.paste}</MenubarItem>
-          </MenubarGroup>
-        </MenubarContent>
-      </MenubarMenu>
-      <MenubarMenu>
-        <MenubarTrigger>{t.view}</MenubarTrigger>
-        <MenubarContent class="w-44" {dir} {align} data-lang={lang}>
-          <MenubarGroup>
-            <MenubarCheckboxItem>{t.bookmarksBar}</MenubarCheckboxItem>
-            <MenubarCheckboxItem checked>{t.fullUrls}</MenubarCheckboxItem>
-          </MenubarGroup>
-          <MenubarSeparator />
-          <MenubarGroup>
-            <MenubarItem inset>
-              {t.reload} <MenubarShortcut>⌘R</MenubarShortcut>
-            </MenubarItem>
-            <MenubarItem disabled inset>
-              {t.forceReload} <MenubarShortcut>⇧⌘R</MenubarShortcut>
-            </MenubarItem>
-          </MenubarGroup>
-          <MenubarSeparator />
-          <MenubarGroup>
-            <MenubarItem inset>{t.toggleFullscreen}</MenubarItem>
-          </MenubarGroup>
-          <MenubarSeparator />
-          <MenubarGroup>
-            <MenubarItem inset>{t.hideSidebar}</MenubarItem>
-          </MenubarGroup>
-        </MenubarContent>
-      </MenubarMenu>
-      <MenubarMenu>
-        <MenubarTrigger>{t.profiles}</MenubarTrigger>
-        <MenubarContent {dir} {align} data-lang={lang}>
-          <MenubarRadioGroup bind:value={profile}>
-            <MenubarRadioItem value="andy">{t.andy}</MenubarRadioItem>
-            <MenubarRadioItem value="benoit">{t.benoit}</MenubarRadioItem>
-            <MenubarRadioItem value="Luis">{t.luis}</MenubarRadioItem>
-          </MenubarRadioGroup>
-          <MenubarSeparator />
-          <MenubarGroup>
-            <MenubarItem inset>{t.editProfile}</MenubarItem>
-          </MenubarGroup>
-          <MenubarSeparator />
-          <MenubarGroup>
-            <MenubarItem inset>{t.addProfile}</MenubarItem>
-          </MenubarGroup>
-        </MenubarContent>
-      </MenubarMenu>
-    </Menubar>
-  </DirectionProvider>
+  <Menubar class="w-72" {dir}>
+    <MenubarMenu>
+      <MenubarTrigger>{t.file}</MenubarTrigger>
+      <MenubarContent {dir} {align}>
+        <MenubarGroup>
+          <MenubarItem>
+            {t.newTab} <MenubarShortcut>⌘T</MenubarShortcut>
+          </MenubarItem>
+          <MenubarItem>
+            {t.newWindow} <MenubarShortcut>⌘N</MenubarShortcut>
+          </MenubarItem>
+          <MenubarItem disabled>{t.newIncognitoWindow}</MenubarItem>
+        </MenubarGroup>
+        <MenubarSeparator />
+        <MenubarGroup>
+          <MenubarSub>
+            <MenubarSubTrigger>{t.share}</MenubarSubTrigger>
+            <MenubarSubContent {dir} data-lang={lang}>
+              <MenubarGroup>
+                <MenubarItem>{t.emailLink}</MenubarItem>
+                <MenubarItem>{t.messages}</MenubarItem>
+                <MenubarItem>{t.notes}</MenubarItem>
+              </MenubarGroup>
+            </MenubarSubContent>
+          </MenubarSub>
+        </MenubarGroup>
+        <MenubarSeparator />
+        <MenubarGroup>
+          <MenubarItem>
+            {t.print} <MenubarShortcut>⌘P</MenubarShortcut>
+          </MenubarItem>
+        </MenubarGroup>
+      </MenubarContent>
+    </MenubarMenu>
+    <MenubarMenu>
+      <MenubarTrigger>{t.edit}</MenubarTrigger>
+      <MenubarContent {dir} {align} data-lang={lang}>
+        <MenubarGroup>
+          <MenubarItem>
+            {t.undo} <MenubarShortcut>⌘Z</MenubarShortcut>
+          </MenubarItem>
+          <MenubarItem>
+            {t.redo} <MenubarShortcut>⇧⌘Z</MenubarShortcut>
+          </MenubarItem>
+        </MenubarGroup>
+        <MenubarSeparator />
+        <MenubarGroup>
+          <MenubarSub>
+            <MenubarSubTrigger>{t.find}</MenubarSubTrigger>
+            <MenubarSubContent {dir} data-lang={lang}>
+              <MenubarGroup>
+                <MenubarItem>{t.searchTheWeb}</MenubarItem>
+              </MenubarGroup>
+              <MenubarSeparator />
+              <MenubarGroup>
+                <MenubarItem>{t.findItem}</MenubarItem>
+                <MenubarItem>{t.findNext}</MenubarItem>
+                <MenubarItem>{t.findPrevious}</MenubarItem>
+              </MenubarGroup>
+            </MenubarSubContent>
+          </MenubarSub>
+        </MenubarGroup>
+        <MenubarSeparator />
+        <MenubarGroup>
+          <MenubarItem>{t.cut}</MenubarItem>
+          <MenubarItem>{t.copy}</MenubarItem>
+          <MenubarItem>{t.paste}</MenubarItem>
+        </MenubarGroup>
+      </MenubarContent>
+    </MenubarMenu>
+    <MenubarMenu>
+      <MenubarTrigger>{t.view}</MenubarTrigger>
+      <MenubarContent class="w-44" {dir} {align} data-lang={lang}>
+        <MenubarGroup>
+          <MenubarCheckboxItem>{t.bookmarksBar}</MenubarCheckboxItem>
+          <MenubarCheckboxItem checked>{t.fullUrls}</MenubarCheckboxItem>
+        </MenubarGroup>
+        <MenubarSeparator />
+        <MenubarGroup>
+          <MenubarItem inset>
+            {t.reload} <MenubarShortcut>⌘R</MenubarShortcut>
+          </MenubarItem>
+          <MenubarItem disabled inset>
+            {t.forceReload} <MenubarShortcut>⇧⌘R</MenubarShortcut>
+          </MenubarItem>
+        </MenubarGroup>
+        <MenubarSeparator />
+        <MenubarGroup>
+          <MenubarItem inset>{t.toggleFullscreen}</MenubarItem>
+        </MenubarGroup>
+        <MenubarSeparator />
+        <MenubarGroup>
+          <MenubarItem inset>{t.hideSidebar}</MenubarItem>
+        </MenubarGroup>
+      </MenubarContent>
+    </MenubarMenu>
+    <MenubarMenu>
+      <MenubarTrigger>{t.profiles}</MenubarTrigger>
+      <MenubarContent {dir} {align} data-lang={lang}>
+        <MenubarRadioGroup bind:value={profile}>
+          <MenubarRadioItem value="andy">{t.andy}</MenubarRadioItem>
+          <MenubarRadioItem value="benoit">{t.benoit}</MenubarRadioItem>
+          <MenubarRadioItem value="Luis">{t.luis}</MenubarRadioItem>
+        </MenubarRadioGroup>
+        <MenubarSeparator />
+        <MenubarGroup>
+          <MenubarItem inset>{t.editProfile}</MenubarItem>
+        </MenubarGroup>
+        <MenubarSeparator />
+        <MenubarGroup>
+          <MenubarItem inset>{t.addProfile}</MenubarItem>
+        </MenubarGroup>
+      </MenubarContent>
+    </MenubarMenu>
+  </Menubar>
 </div>
