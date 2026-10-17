@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "vite dev --host 127.0.0.1",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-    "build": "pnpm --filter @sveltery/resizable --filter @sveltery/svelte --filter @sveltery/command build && vite build && node search-index.mjs",
+    "build": "pnpm --filter @sveltery/resizable --filter @sveltery/svelte --filter @sveltery/command --filter @sveltery/recharts build && vite build && node search-index.mjs",
     "preview": "wrangler dev --port 4173",
     "deploy": "wrangler deploy"
   },
@@ -24,6 +24,7 @@
     "@sveltery/command": "workspace:*",
     "@sveltery/day-picker": "workspace:*",
     "@sveltery/input-otp": "workspace:*",
+    "@sveltery/recharts": "workspace:*",
     "@sveltery/resizable": "workspace:*",
     "@sveltery/svelte": "workspace:*",
     "@sveltery/ui": "workspace:*",
@@ -32,10 +33,7 @@
     "ai": "7.0.136",
     "class-variance-authority": "0.7.1",
     "cn": "0.2.2",
-    "d3-scale": "4.0.2",
-    "d3-shape": "3.2.0",
     "date-fns": "4.4.0",
-    "layerchart": "2.7.0",
     "uqr": "0.1.3",
     "zod": "3.25.76"
   },
@@ -70,8 +68,6 @@
     "@sveltejs/adapter-cloudflare": "8.0.0",
     "@sveltejs/kit": "3.0.1",
     "@sveltery/base": "^0.2.0",
-    "@types/d3-scale": "4.0.9",
-    "@types/d3-shape": "3.2.0",
     "embla-carousel": "8.6.0",
     "embla-carousel-autoplay": "8.6.0",
     "mdsvex": "0.12.8",
