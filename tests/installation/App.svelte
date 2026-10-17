@@ -1,7 +1,7 @@
 <script lang="ts">
   import * as Command from '@sveltery/command';
-  import * as MessageScroller from '@sveltery/message-scroller';
-  import * as Questionnaire from '@sveltery/questionnaire';
+  import * as MessageScroller from '@sveltery/svelte/message-scroller';
+  import * as Questionnaire from '@sveltery/svelte/questionnaire';
   import * as Resizable from '@sveltery/resizable';
 </script>
 <Command.Root data-slot="command"><Command.Input data-slot="command-input" placeholder="Search" /><Command.List data-slot="command-list"><Command.Empty data-slot="command-empty">No results.</Command.Empty><Command.Group data-slot="command-group" heading="Suggestions"><Command.Item data-slot="command-item">Calendar</Command.Item><Command.Item data-slot="command-item" value="calc">Calculator</Command.Item></Command.Group></Command.List></Command.Root>

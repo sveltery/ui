@@ -6,8 +6,8 @@ export default defineConfig({
     alias: [
       { find: /^\$ui\//, replacement: new URL('./apps/docs/registry/bases/base/ui/', import.meta.url).pathname },
       { find: /^@sveltery\/command$/, replacement: new URL('./packages/command/src/lib/index.ts', import.meta.url).pathname },
-      { find: /^@sveltery\/message-scroller$/, replacement: new URL('./packages/message-scroller/src/lib/index.ts', import.meta.url).pathname },
-      { find: /^@sveltery\/questionnaire$/, replacement: new URL('./packages/questionnaire/src/lib/index.ts', import.meta.url).pathname },
+      { find: /^@sveltery\/svelte\/message-scroller$/, replacement: new URL('./packages/svelte/src/message-scroller/index.ts', import.meta.url).pathname },
+      { find: /^@sveltery\/svelte\/questionnaire$/, replacement: new URL('./packages/svelte/src/questionnaire/index.ts', import.meta.url).pathname },
       { find: /^@sveltery\/resizable$/, replacement: new URL('./packages/resizable/src/lib/index.ts', import.meta.url).pathname },
     ],
     conditions: ['browser'],

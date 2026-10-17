@@ -8,7 +8,7 @@ import {
   getMessageScrollerScrollable,
   getNewScrollAnchor,
   getUnanchoredScrollAnchor,
-} from "../../packages/message-scroller/src/lib/geometry.js"
+} from "../../packages/svelte/src/message-scroller/geometry.js"
 
 // jsdom does not compute layout, so each element's rect, scroll position, and
 // dimensions are stubbed directly. Rects are expressed in viewport (client)

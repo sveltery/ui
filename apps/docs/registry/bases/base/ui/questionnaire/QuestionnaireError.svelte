@@ -1,5 +1,5 @@
 <script lang="ts">
-  import * as Primitive from '@sveltery/questionnaire';
+  import * as Primitive from '@sveltery/svelte/questionnaire';
   import { cn } from 'cn';
   import type { QuestionnaireErrorProps } from './types.js';
   let { class: classProp, ...props }: QuestionnaireErrorProps = $props();

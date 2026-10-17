@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Item } from '@sveltery/message-scroller';
+  import { Item } from '@sveltery/svelte/message-scroller';
   import { cn } from 'cn';
   import type { MessageScrollerItemProps } from './types.js';
   let { class: classProp, scrollAnchor = false, children, ...props }: MessageScrollerItemProps = $props();
