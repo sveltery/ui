@@ -2,6 +2,7 @@
   import { Button } from '$registry/bases/base/ui/button';
   import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
   import { DirectionProvider } from '$registry/bases/base/ui/direction';
+  import { Input } from '$registry/bases/base/ui/input';
   import { Label } from '$registry/bases/base/ui/label';
 
   const translations = {
@@ -11,6 +12,7 @@
       description: 'Enter your email below to login to your account',
       signUp: 'Sign Up',
       email: 'Email',
+      emailPlaceholder: 'm@example.com',
       password: 'Password',
       forgotPassword: 'Forgot your password?',
       login: 'Login',
@@ -22,6 +24,7 @@
       description: 'أدخل بريدك الإلكتروني أدناه لتسجيل الدخول إلى حسابك',
       signUp: 'إنشاء حساب',
       email: 'البريد الإلكتروني',
+      emailPlaceholder: 'm@example.com',
       password: 'كلمة المرور',
       forgotPassword: 'نسيت كلمة المرور؟',
       login: 'تسجيل الدخول',
@@ -33,6 +36,7 @@
       description: 'הזן את האימייל שלך למטה כדי להתחבר לחשבון שלך',
       signUp: 'הירשם',
       email: 'אימייל',
+      emailPlaceholder: 'm@example.com',
       password: 'סיסמה',
       forgotPassword: 'שכחת את הסיסמה?',
       login: 'התחבר',
@@ -42,7 +46,6 @@
 
   let language = $state<keyof typeof translations>('ar');
   const t = $derived(translations[language]);
-  const inputClass = 'h-8 w-full rounded-lg border border-border bg-transparent px-2.5 text-sm';
 </script>
 
 <div class="flex w-full max-w-sm flex-col gap-4">
@@ -67,7 +70,7 @@
           <div class="flex flex-col gap-6">
             <div class="grid gap-2">
               <Label for="email-rtl">{t.email}</Label>
-              <input id="email-rtl" type="email" placeholder="m@example.com" required class={inputClass} />
+              <Input id="email-rtl" type="email" placeholder={t.emailPlaceholder} required />
             </div>
             <div class="grid gap-2">
               <div class="flex items-center">
@@ -75,7 +78,7 @@
                 <!-- svelte-ignore a11y_invalid_attribute -->
                 <a href="#" class="ms-auto inline-block text-sm underline-offset-4 hover:underline">{t.forgotPassword}</a>
               </div>
-              <input id="password-rtl" type="password" required class={inputClass} />
+              <Input id="password-rtl" type="password" required />
             </div>
           </div>
         </form>
