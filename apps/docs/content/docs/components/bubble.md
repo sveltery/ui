@@ -1,6 +1,6 @@
 ---
 title: Bubble
-description: Displays conversational content in a message bubble. Supports variants, alignment, grouping, and reactions.
+description: Displays conversational content in a message bubble. Supports variants, alignment, grouping, reactions, and collapsible content.
 style: rhea
 ---
 

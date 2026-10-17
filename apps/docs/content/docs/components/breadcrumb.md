@@ -3,7 +3,7 @@ title: Breadcrumb
 description: Displays the path to the current resource using a hierarchy of links.
 ---
 
-<ComponentPreview name="base/BreadcrumbDemoExample" />
+<ComponentPreview name="base/BreadcrumbDemoExample" class="[&_[data-slot=preview]]:p-2" />
 
 ## Installation
 
@@ -108,7 +108,7 @@ You can compose `<BreadcrumbItem />` with a `<DropdownMenu />` to create a dropd
 
 We provide a `<BreadcrumbEllipsis />` component to show a collapsed state when the breadcrumb is too long.
 
-<ComponentPreview name="base/BreadcrumbEllipsisExample" />
+<ComponentPreview name="base/BreadcrumbEllipsisExample" class="[&_[data-slot=preview]]:p-2" />
 
 ## Link component
 
@@ -129,7 +129,7 @@ To use a custom link component from your routing library, you can use the `rende
 
 Wrap the breadcrumb in a [DirectionProvider](/docs/components/direction) and set `dir` on `Breadcrumb` and `DropdownMenuContent`. Use the buttons to switch the language.
 
-<ComponentPreview name="base/BreadcrumbRtlExample" />
+<ComponentPreview name="base/BreadcrumbRtlExample" class="[&_[data-slot=preview]]:p-2" />
 
 ## API Reference
 
