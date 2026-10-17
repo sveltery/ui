@@ -3,7 +3,12 @@ title: Native Select
 description: A styled native HTML select element with consistent design system integration.
 ---
 
+<script lang="ts">
+  import InfoIcon from '@lucide/svelte/icons/info';
+</script>
+
 <Callout variant="info">
+{#snippet icon()}<InfoIcon class="translate-y-[3px]!" />{/snippet}
 
 For a styled select component, see the [Select](/docs/components/select) component.
 
