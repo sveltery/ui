@@ -241,6 +241,7 @@ export async function migrateRtl(options: Pick<MigrateOptions, 'cwd' | 'yes' | '
 
   // Transform every file before writing anything, so a file the parser rejects is skipped rather than stopping the run halfway.
   const changes: { path: string; file: string; content: string }[] = [];
+  const unparsed: { name: string; reason: string }[] = [];
   for (const file of files) {
     const path = resolve(base, file);
     const content = fs.readFileSync(path, 'utf8');
@@ -248,7 +249,7 @@ export async function migrateRtl(options: Pick<MigrateOptions, 'cwd' | 'yes' | '
       const next = transformDirection(file, content);
       if (next !== content) changes.push({ path, file, content: next });
     } catch (error) {
-      log.warn(`Skipped ${file}: ${error instanceof Error ? error.message : String(error)}`);
+      unparsed.push({ name: relative(cwd, path), reason: `could not parse (${error instanceof Error ? error.message : String(error)})` });
     }
   }
 
@@ -257,6 +258,7 @@ export async function migrateRtl(options: Pick<MigrateOptions, 'cwd' | 'yes' | '
   for (const { path, content } of changes) fs.writeFileSync(path, content);
   const transformed = changes.map(({ file }) => file);
   log.success(`Migration complete. ${transformed.length} file(s) transformed.`);
+  warnSkipped(unparsed, 'file');
 
   const review = files.filter((file) => file.split(/[\\/]/).some((part) => NEEDS_MANUAL_REVIEW.includes(part.replace(SOURCE, '').toLowerCase())));
   if (review.length > 0) {

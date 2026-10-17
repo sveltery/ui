@@ -965,7 +965,7 @@ The old `list` command marked the items in your project as `installed` and had n
 
 **Upstream:** [`cn/transform.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/cn/transform.ts#L70) and [`migrate-icons.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/migrate-icons.ts#L331) parse each file with ts-morph, which recovers from a syntax error and transforms the rest of the file.
 
-**Sveltery UI:** [`migrate`](/docs/cli#migrate) parses each file with `svelte/compiler`, which reads a `.ts` or `.js` module as the body of a `<script>` tag. A file that does not parse stays as it is. `migrate cn` lists it for manual review, and `migrate icons` lists it as skipped, with "could not parse" and the parser's message. `migrate rtl` warns that it skipped the file, with the parser's message. A module that contains `</script>`, as in a string, is such a file. A leading `#!` line parses.
+**Sveltery UI:** [`migrate`](/docs/cli#migrate) parses each file with `svelte/compiler`, which reads a `.ts` or `.js` module as the body of a `<script>` tag. A file that does not parse stays as it is. `migrate cn` lists it for manual review, and `migrate icons` and `migrate rtl` list it as skipped, with "could not parse" and the parser's message. A module that contains `</script>`, as in a string, is such a file. A leading `#!` line parses.
 
 **Why:** The CLI already parses Svelte components with `svelte/compiler`. A second parser for modules would add a large dependency for the rare module that contains `</script>`. Listing the file tells you which one to change by hand.
 

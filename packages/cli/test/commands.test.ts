@@ -696,8 +696,14 @@ describe('migrate', () => {
 
     test('skips a file the parser rejects and migrates the rest', async () => {
       writeFileSync(join(cwd, ui, 'card/snippet.ts'), "export const s = '</script>';\n");
-      const result = await migrateRtl({ cwd, yes: true });
-      expect(result.transformed.sort()).toEqual(['card/Card.svelte', 'card/variants.ts']);
+      const warn = vi.spyOn(log, 'warn').mockImplementation(() => {});
+      try {
+        const result = await migrateRtl({ cwd, yes: true });
+        expect(result.transformed.sort()).toEqual(['card/Card.svelte', 'card/variants.ts']);
+        expect(warn).toHaveBeenCalledWith(expect.stringContaining(`Skipped 1 file. These were left untouched:\n  - ${ui}/card/snippet.ts: could not parse (`));
+      } finally {
+        warn.mockRestore();
+      }
       expect(read(`${ui}/card/snippet.ts`)).toBe("export const s = '</script>';\n");
     });
 
