@@ -20,11 +20,13 @@ const CODE = /\.(svelte|[cm]?[jt]s)$/;
  * `examples/` is loaded once per variant, tagged `?style=<variant>`, and the components under
  * `registry/bases/base/ui` get their `cn-*` tokens inlined by `inlineStyle`. A module inherits its importer's tag;
  * an untagged importer takes the variant of the first `zones` directory it is in, or `nova`. An import that names
- * its own tag, such as a docs page in another style importing its examples, keeps it. Modules imported by an
- * `*RtlExample.svelte`, and every module they import, are tagged `&dir=rtl` as well and render right to left.
+ * its own tag, such as a docs page in another style importing its examples, keeps it. `shared` modules stay
+ * untagged: the toast manager is one instance, so a toast raised from an example in any style reaches the site's `Toaster`.
+ * Modules imported by an `*RtlExample.svelte`, and every module they import, are tagged `&dir=rtl` as well and render right to left.
  */
 export function registryStyles({ root, zones }: { root: string; zones: Record<string, Variant> }): Plugin {
   const ui = join(root, 'registry/bases/base/ui/');
+  const shared = new Set([join(ui, 'toast/toast.ts')]);
   const tagged = ['registry/bases/', 'blocks/', 'examples/'].map((dir) => join(root, dir));
   const zoneDirs = Object.entries(zones).map(([dir, variant]) => [join(root, dir), variant] as const);
   const sheets = new Map<StyleName, { css: string; sheet: StyleSheet }>();
@@ -54,7 +56,7 @@ export function registryStyles({ root, zones }: { root: string; zones: Record<st
       const [, tag, dir] = (TAG.exec(source) ?? []) as [string, Variant?, string?];
       if (!importer || ('scan' in options && options.scan) || (source.includes('?') && !tag)) return null;
       const resolved = await this.resolve(source.replace(TAG, ''), importer, { ...options, skipSelf: true });
-      if (!resolved || resolved.external || resolved.id.includes('?') || !CODE.test(resolved.id) || !tagged.some((dir) => resolved.id.startsWith(dir))) return resolved;
+      if (!resolved || resolved.external || resolved.id.includes('?') || !CODE.test(resolved.id) || !tagged.some((dir) => resolved.id.startsWith(dir)) || shared.has(resolved.id)) return resolved;
       const rtl = tag ? Boolean(dir) : isRtl(importer);
       return { ...resolved, id: `${resolved.id}?style=${tag ?? variantOf(importer)}${rtl ? '&dir=rtl' : ''}` };
     },

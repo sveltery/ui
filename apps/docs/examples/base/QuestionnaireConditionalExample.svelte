@@ -13,16 +13,15 @@
     QuestionnaireSubmit,
     QuestionnaireTitle,
   } from '$registry/bases/base/ui/questionnaire';
+  import { toast } from '$registry/bases/base/ui/toast';
 
   let runtime = $state('local');
   const items = $derived([{ name: 'runtime', required: true }, { disabled: runtime !== 'cloud', name: 'environment', required: true }, { name: 'approval', required: true }]);
 
-  let result = $state('');
-
   function handleSubmit(event: SubmitEvent & { currentTarget: HTMLFormElement }) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    result = `Runtime: ${formData.get('runtime') ?? 'None'} · Environment: ${formData.get('environment') ?? 'Not applicable'} · Approval: ${formData.get('approval') ?? 'None'}`;
+    toast.add({ title: 'Execution plan saved', description: `Runtime: ${formData.get('runtime') ?? 'None'} · Environment: ${formData.get('environment') ?? 'Not applicable'} · Approval: ${formData.get('approval') ?? 'None'}` });
   }
 </script>
 
@@ -64,7 +63,4 @@
     <QuestionnaireNext>Next</QuestionnaireNext>
     <QuestionnaireSubmit>Save execution plan</QuestionnaireSubmit>
   </QuestionnaireActions>
-  {#if result}
-    <p role="status" class="mt-4 text-sm text-muted-foreground">{result}</p>
-  {/if}
 </Questionnaire>

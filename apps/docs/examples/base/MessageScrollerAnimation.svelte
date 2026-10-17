@@ -1,9 +1,11 @@
 <script lang="ts">
+  import ArrowUpIcon from '@lucide/svelte/icons/arrow-up';
+  import MessageCircleDashedIcon from '@lucide/svelte/icons/message-circle-dashed';
+  import RotateCwIcon from '@lucide/svelte/icons/rotate-cw';
   import { onDestroy } from 'svelte';
   import { Button } from '$registry/bases/base/ui/button';
   import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
   import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '$registry/bases/base/ui/empty';
-  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
   import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerProvider, MessageScrollerViewport } from '$registry/bases/base/ui/message-scroller';
   import { NativeSelect, NativeSelectOption } from '$registry/bases/base/ui/native-select';
   import { animations, type AnimationId } from './message-scroller/animations.js';
@@ -39,7 +41,7 @@
       <CardDescription>Choose how user messages are animated when they are added to the conversation.</CardDescription>
       <CardAction class="flex items-center gap-2">
         <Button type="button" variant="outline" size="icon" aria-label="Reset animated messages" title="Reset" disabled={chat.messages.length === 0 || chat.busy} onclick={() => chat.reset()}>
-          <IconPlaceholder lucide="RotateCwIcon" tabler="IconRotateClockwise" hugeicons="RotateClockwiseIcon" phosphor="ArrowClockwiseIcon" remixicon="RiRestartLine" />
+          <RotateCwIcon />
         </Button>
       </CardAction>
     </CardHeader>
@@ -48,7 +50,7 @@
         <Empty class="h-full">
           <EmptyHeader>
             <EmptyMedia variant="icon">
-              <IconPlaceholder lucide="MessageCircleDashedIcon" tabler="IconMessageCircle" hugeicons="Message01Icon" phosphor="ChatCircleIcon" remixicon="RiChat1Line" />
+              <MessageCircleDashedIcon />
             </EmptyMedia>
             <EmptyTitle>No Messages Yet</EmptyTitle>
             <EmptyDescription>Click the button below to send the first message.</EmptyDescription>
@@ -76,7 +78,7 @@
         {/each}
       </NativeSelect>
       <Button type="button" size="icon" class="ml-auto" disabled={!chat.next || chat.busy} onclick={() => chat.send()}>
-        <IconPlaceholder lucide="ArrowUpIcon" tabler="IconArrowUp" hugeicons="ArrowUp02Icon" phosphor="ArrowUpIcon" remixicon="RiArrowUpLine" />
+        <ArrowUpIcon />
         <span class="sr-only">Send Message</span>
       </Button>
     </CardFooter>

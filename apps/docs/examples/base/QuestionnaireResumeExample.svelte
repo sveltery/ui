@@ -15,19 +15,18 @@
     QuestionnaireSubmit,
     QuestionnaireTitle,
   } from '$registry/bases/base/ui/questionnaire';
+  import { toast } from '$registry/bases/base/ui/toast';
 
   const items = [{ name: 'change', required: true }, { name: 'verification', required: true }, { name: 'notes' }];
-
-  let result = $state('');
 
   function handleSubmit(event: SubmitEvent & { currentTarget: HTMLFormElement }) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    result = `Migration: ${formData.get('change') ?? 'None'} · Verification: ${formData.getAll('verification').join(', ') || 'None'} · Notes: ${formData.get('notes') || 'None'}`;
+    toast.add({ title: 'Draft updated', description: `Migration: ${formData.get('change') ?? 'None'} · Verification: ${formData.getAll('verification').join(', ') || 'None'} · Notes: ${formData.get('notes') || 'None'}` });
   }
 </script>
 
-<Questionnaire class="mx-auto max-w-md" defaultItem="verification" {items} onreset={() => (result = 'Saved answers restored')} onsubmit={handleSubmit}>
+<Questionnaire class="mx-auto max-w-md" defaultItem="verification" {items} onreset={() => toast.add({ title: 'Saved answers restored' })} onsubmit={handleSubmit}>
   <QuestionnaireProgress />
 
   <QuestionnaireItem name="change" required>
@@ -63,7 +62,4 @@
     <QuestionnaireNext>Next</QuestionnaireNext>
     <QuestionnaireSubmit>Update draft</QuestionnaireSubmit>
   </QuestionnaireActions>
-  {#if result}
-    <p role="status" class="mt-4 text-sm text-muted-foreground">{result}</p>
-  {/if}
 </Questionnaire>
