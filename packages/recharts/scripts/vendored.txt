@@ -1,4 +1,5 @@
 src/animation/AnimationManager.ts
+src/animation/JavascriptAnimate.ts
 src/animation/configUpdate.ts
 src/animation/createDefaultAnimationManager.ts
 src/animation/easing.ts
@@ -15,6 +16,11 @@ src/cartesian/Scatter.ts
 src/cartesian/getCartesianPosition.ts
 src/cartesian/getEquidistantTicks.ts
 src/cartesian/getTicks.ts
+src/chart/CartesianChart.ts
+src/chart/PieChart.ts
+src/chart/PolarChart.ts
+src/chart/RadarChart.ts
+src/chart/RadialBarChart.ts
 src/chart/SunburstChart.ts
 src/chart/types.ts
 src/component/Cell.ts
@@ -27,6 +33,8 @@ src/component/Legend.ts
 src/component/ResponsiveContainer.ts
 src/component/Text.ts
 src/component/responsiveContainerUtils.ts
+src/container/Layer.ts
+src/container/Surface.ts
 src/context/brushUpdateContext.ts
 src/context/chartLayoutContext.ts
 src/context/tooltipContext.ts
@@ -50,7 +58,6 @@ src/state/errorBarSlice.ts
 src/state/eventSettingsSlice.ts
 src/state/externalEventsMiddleware.ts
 src/state/graphicalItemsSlice.ts
-src/state/hooks.ts
 src/state/keyboardEventsMiddleware.ts
 src/state/layoutSlice.ts
 src/state/legendSlice.ts

@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join, posix } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
-import { COMMIT, EXTRACTED_VALUES, SPECS, TEST_SETUP, VENDORED } from './upstream.mjs';
+import { COMMIT, EXTRACTED_VALUES, REPLACED, SPECS, TEST_SETUP, VENDORED } from './upstream.mjs';
 
 const REACT_MODULES = new Set(['react', 'react-dom', 'react-is', 'react-redux']);
 const SHIM = 'src/react.js';
@@ -147,11 +147,12 @@ function rewriteSpecifiers(path, text) {
 
 const vendored = new Set(VENDORED.map((path) => `src/${path}`));
 const outputs = new Map();
-const queue = ['types.d.ts', ...vendored, ...SPECS.map((path) => `test/${path}`), ...TEST_SETUP.map((path) => `test/${path}`)];
+const replaced = new Set(REPLACED);
+const queue = ['types.d.ts', ...vendored, ...Object.keys(EXTRACTED_VALUES), ...SPECS.map((path) => `test/${path}`), ...TEST_SETUP.map((path) => `test/${path}`)];
 while (queue.length) {
   const path = queue.shift();
   const target = path.replace(/\.tsx$/, '.ts');
-  if (outputs.has(target)) continue;
+  if (outputs.has(target) || replaced.has(path)) continue;
   const text = read(path);
   const file = parse(path, text);
   const extracted = path.startsWith('src/') && !vendored.has(path) && !isTypeOnlyModule(file);
@@ -169,6 +170,8 @@ while (queue.length) {
 const listPath = join(pkg, 'scripts/vendored.txt');
 const previous = existsSync(listPath) ? readFileSync(listPath, 'utf8').split('\n').filter(Boolean) : [];
 const current = [...outputs.keys()].sort();
+const handWritten = current.filter((path) => !previous.includes(path) && existsSync(join(pkg, path)));
+if (handWritten.length) throw new Error(`These generated paths would overwrite hand-written files: ${handWritten.join(', ')}.`);
 
 if (flag === '--check') {
   const scratch = mkdtempSync(join(tmpdir(), 'recharts-sync-'));
