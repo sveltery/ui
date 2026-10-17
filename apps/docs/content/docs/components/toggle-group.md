@@ -125,9 +125,11 @@ A custom toggle group example.
 
 ## RTL
 
-Wrap the toggle group in a [DirectionProvider](/docs/components/direction) and set `dir` on `ToggleGroup`. Use the buttons to switch the language.
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
 
-<ComponentPreview name="base/ToggleGroupRtlExample" align="start" />
+Wrap the toggle group in a [DirectionProvider](/docs/components/direction) and set `dir` on `ToggleGroup`. Use the language selector to switch the language.
+
+<ComponentPreview name="base/ToggleGroupRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 

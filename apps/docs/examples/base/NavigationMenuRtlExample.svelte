@@ -2,8 +2,6 @@
   import CircleAlertIcon from '@lucide/svelte/icons/circle-alert';
   import CircleCheckIcon from '@lucide/svelte/icons/circle-check';
   import CircleDashedIcon from '@lucide/svelte/icons/circle-dashed';
-  import { Button } from '$registry/bases/base/ui/button';
-  import { DirectionProvider } from '$registry/bases/base/ui/direction';
   import {
     NavigationMenu,
     NavigationMenuContent,
@@ -13,6 +11,7 @@
     NavigationMenuTrigger,
     navigationMenuTriggerStyle
   } from '$registry/bases/base/ui/navigation-menu';
+  import { useLanguage } from '$lib/components/docs/language.svelte';
 
   const translations = {
     en: {
@@ -116,10 +115,10 @@
     { titleKey: 'tooltip', descriptionKey: 'tooltipDesc', href: '/docs/components/tooltip' }
   ] as const;
 
-  let language = $state<keyof typeof translations>('ar');
-  const dir = $derived(translations[language].dir);
-  const t = $derived(translations[language].values);
-  const lang = $derived(dir === 'rtl' ? language : undefined);
+  const language = useLanguage();
+  const dir = $derived(translations[language.current].dir);
+  const t = $derived(translations[language.current].values);
+  const lang = $derived(dir === 'rtl' ? language.current : undefined);
 </script>
 
 {#snippet ListItem(title: string, href: string, description: string)}
@@ -134,61 +133,52 @@
 {/snippet}
 
 <div class="flex w-full flex-col items-start gap-4">
-  <div class="flex gap-2">
-    {#each Object.keys(translations) as code (code)}
-      <Button variant={language === code ? 'default' : 'outline'} size="sm" onclick={() => (language = code as keyof typeof translations)}>
-        {code}
-      </Button>
-    {/each}
-  </div>
-  <DirectionProvider direction={dir}>
-    <NavigationMenu {dir} align={dir === 'rtl' ? 'end' : 'start'}>
-      <NavigationMenuList>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>{t.gettingStarted}</NavigationMenuTrigger>
-          <NavigationMenuContent {dir} data-lang={lang}>
-            <ul class="w-96">
-              {@render ListItem(t.introduction, '/docs', t.introductionDesc)}
-              {@render ListItem(t.installation, '/docs/installation', t.installationDesc)}
-              {@render ListItem(t.typography, '/docs/components/typography', t.typographyDesc)}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-        <NavigationMenuItem class="hidden md:flex">
-          <NavigationMenuTrigger>{t.components}</NavigationMenuTrigger>
-          <NavigationMenuContent {dir} data-lang={lang}>
-            <ul class="grid w-[400px] gap-2 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-              {#each components as component (component.titleKey)}
-                {@render ListItem(t[component.titleKey], component.href, t[component.descriptionKey])}
-              {/each}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>{t.withIcon}</NavigationMenuTrigger>
-          <NavigationMenuContent {dir} data-lang={lang}>
-            <ul class="grid w-[200px]">
-              <li>
-                <NavigationMenuLink href="#" class="flex-row items-center gap-2">
-                  <CircleAlertIcon />
-                  {t.backlog}
-                </NavigationMenuLink>
-                <NavigationMenuLink href="#" class="flex-row items-center gap-2">
-                  <CircleDashedIcon />
-                  {t.toDo}
-                </NavigationMenuLink>
-                <NavigationMenuLink href="#" class="flex-row items-center gap-2">
-                  <CircleCheckIcon />
-                  {t.done}
-                </NavigationMenuLink>
-              </li>
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuLink href="/docs" class={navigationMenuTriggerStyle()} data-lang={lang}>{t.docs}</NavigationMenuLink>
-        </NavigationMenuItem>
-      </NavigationMenuList>
-    </NavigationMenu>
-  </DirectionProvider>
+  <NavigationMenu {dir} align={dir === 'rtl' ? 'end' : 'start'}>
+    <NavigationMenuList>
+      <NavigationMenuItem>
+        <NavigationMenuTrigger>{t.gettingStarted}</NavigationMenuTrigger>
+        <NavigationMenuContent {dir} data-lang={lang}>
+          <ul class="w-96">
+            {@render ListItem(t.introduction, '/docs', t.introductionDesc)}
+            {@render ListItem(t.installation, '/docs/installation', t.installationDesc)}
+            {@render ListItem(t.typography, '/docs/components/typography', t.typographyDesc)}
+          </ul>
+        </NavigationMenuContent>
+      </NavigationMenuItem>
+      <NavigationMenuItem class="hidden md:flex">
+        <NavigationMenuTrigger>{t.components}</NavigationMenuTrigger>
+        <NavigationMenuContent {dir} data-lang={lang}>
+          <ul class="grid w-[400px] gap-2 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+            {#each components as component (component.titleKey)}
+              {@render ListItem(t[component.titleKey], component.href, t[component.descriptionKey])}
+            {/each}
+          </ul>
+        </NavigationMenuContent>
+      </NavigationMenuItem>
+      <NavigationMenuItem>
+        <NavigationMenuTrigger>{t.withIcon}</NavigationMenuTrigger>
+        <NavigationMenuContent {dir} data-lang={lang}>
+          <ul class="grid w-[200px]">
+            <li>
+              <NavigationMenuLink href="#" class="flex-row items-center gap-2">
+                <CircleAlertIcon />
+                {t.backlog}
+              </NavigationMenuLink>
+              <NavigationMenuLink href="#" class="flex-row items-center gap-2">
+                <CircleDashedIcon />
+                {t.toDo}
+              </NavigationMenuLink>
+              <NavigationMenuLink href="#" class="flex-row items-center gap-2">
+                <CircleCheckIcon />
+                {t.done}
+              </NavigationMenuLink>
+            </li>
+          </ul>
+        </NavigationMenuContent>
+      </NavigationMenuItem>
+      <NavigationMenuItem>
+        <NavigationMenuLink href="/docs" class={navigationMenuTriggerStyle()} data-lang={lang}>{t.docs}</NavigationMenuLink>
+      </NavigationMenuItem>
+    </NavigationMenuList>
+  </NavigationMenu>
 </div>

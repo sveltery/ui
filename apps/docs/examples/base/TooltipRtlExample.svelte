@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Button } from '$registry/bases/base/ui/button';
-  import { DirectionProvider } from '$registry/bases/base/ui/direction';
   import { Tooltip, TooltipContent, TooltipTrigger } from '$registry/bases/base/ui/tooltip';
+  import { useLanguage } from '$lib/components/docs/language.svelte';
 
   const translations = {
     en: {
@@ -45,47 +45,38 @@
   const physicalSides = ['left', 'top', 'bottom', 'right'] as const;
   const logicalSides = ['inline-start', 'inline-end'] as const;
 
-  let language = $state<keyof typeof translations>('ar');
-  const dir = $derived(translations[language].dir);
-  const t = $derived(translations[language].values);
+  const language = useLanguage();
+  const dir = $derived(translations[language.current].dir);
+  const t = $derived(translations[language.current].values);
 </script>
 
 <div class="flex w-full max-w-sm flex-col gap-4">
-  <div class="flex gap-2">
-    {#each Object.keys(translations) as code (code)}
-      <Button variant={language === code ? 'default' : 'outline'} size="sm" onclick={() => (language = code as keyof typeof translations)}>
-        {code}
-      </Button>
-    {/each}
-  </div>
-  <DirectionProvider direction={dir}>
-    <div class="grid gap-4">
-      <div class="flex flex-wrap justify-center gap-2">
-        {#each physicalSides as side (side)}
-          <Tooltip>
-            <TooltipTrigger>
-              {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
-              {t[side]}
-            </TooltipTrigger>
-            <TooltipContent {side} {dir}>
-              {t.content}
-            </TooltipContent>
-          </Tooltip>
-        {/each}
-      </div>
-      <div class="flex flex-wrap justify-center gap-2">
-        {#each logicalSides as side (side)}
-          <Tooltip>
-            <TooltipTrigger>
-              {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
-              {t[side]}
-            </TooltipTrigger>
-            <TooltipContent {side} {dir}>
-              {t.content}
-            </TooltipContent>
-          </Tooltip>
-        {/each}
-      </div>
+  <div class="grid gap-4">
+    <div class="flex flex-wrap justify-center gap-2">
+      {#each physicalSides as side (side)}
+        <Tooltip>
+          <TooltipTrigger>
+            {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+            {t[side]}
+          </TooltipTrigger>
+          <TooltipContent {side} {dir}>
+            {t.content}
+          </TooltipContent>
+        </Tooltip>
+      {/each}
     </div>
-  </DirectionProvider>
+    <div class="flex flex-wrap justify-center gap-2">
+      {#each logicalSides as side (side)}
+        <Tooltip>
+          <TooltipTrigger>
+            {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+            {t[side]}
+          </TooltipTrigger>
+          <TooltipContent {side} {dir}>
+            {t.content}
+          </TooltipContent>
+        </Tooltip>
+      {/each}
+    </div>
+  </div>
 </div>

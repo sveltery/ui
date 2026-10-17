@@ -163,9 +163,11 @@ Give `InputOTP` a `name` and it submits its value with its form. To label it, pu
 
 ## RTL
 
-Wrap the field in a [DirectionProvider](/docs/components/direction) and set `dir` on the `Field` and the `InputOTP`. Use the buttons to switch the language.
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
 
-<ComponentPreview name="base/InputOTPRtlExample" align="start" />
+Wrap the field in a [DirectionProvider](/docs/components/direction) and set `dir` on the `Field` and the `InputOTP`. Use the language selector to switch the language.
+
+<ComponentPreview name="base/InputOTPRtlExample" direction="rtl" align="start" />
 
 ## Without JavaScript
 

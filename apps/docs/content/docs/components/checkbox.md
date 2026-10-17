@@ -116,9 +116,11 @@ Use multiple fields to create a checkbox list.
 
 ## RTL
 
-Wrap the checkboxes in a [DirectionProvider](/docs/components/direction) and set `dir` on the field group. Use the buttons to switch the language.
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
 
-<ComponentPreview name="base/CheckboxRtlExample" />
+Wrap the checkboxes in a [DirectionProvider](/docs/components/direction) and set `dir` on the field group. Use the language selector to switch the language.
+
+<ComponentPreview name="base/CheckboxRtlExample" direction="rtl" />
 
 ## Without JavaScript
 

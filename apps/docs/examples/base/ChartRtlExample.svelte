@@ -1,8 +1,7 @@
 <script lang="ts">
   import { Bar, BarChart, CartesianGrid, XAxis, type LegendContentProps, type SvelteArgs } from '@sveltery/recharts';
-  import { Button } from '$registry/bases/base/ui/button';
   import { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
-  import { DirectionProvider } from '$registry/bases/base/ui/direction';
+  import { useLanguage } from '$lib/components/docs/language.svelte';
 
   const translations = {
     en: {
@@ -55,9 +54,9 @@
     { month: 'june', desktop: 214, mobile: 140 }
   ];
 
-  let language = $state<keyof typeof translations>('ar');
-  const dir = $derived(translations[language].dir);
-  const t = $derived(translations[language].values);
+  const language = useLanguage();
+  const dir = $derived(translations[language.current].dir);
+  const t = $derived(translations[language.current].values);
 
   const chartConfig = $derived({
     desktop: {
@@ -72,40 +71,31 @@
 </script>
 
 <div class="flex w-full flex-col gap-4">
-  <div class="flex gap-2">
-    {#each Object.keys(translations) as code (code)}
-      <Button variant={language === code ? 'default' : 'outline'} size="sm" onclick={() => (language = code as keyof typeof translations)}>
-        {code}
-      </Button>
-    {/each}
+  <div {dir}>
+    <ChartContainer config={chartConfig} class="min-h-[200px] w-full">
+      <BarChart accessibilityLayer data={chartData}>
+        <CartesianGrid vertical={false} orientation={dir === 'rtl' ? 'right' : 'left'} />
+        <XAxis
+          dataKey="month"
+          tickLine={false}
+          tickMargin={10}
+          axisLine={false}
+          tickFormatter={(value) => t[value as keyof typeof t].slice(0, 3)}
+          reversed={dir === 'rtl'}
+        />
+        <ChartTooltip labelClassName="w-32">
+          {#snippet content(props: TooltipContentArgs)}
+            <ChartTooltipContent labelFormatter={(value) => t[value as keyof typeof t]} {...props} />
+          {/snippet}
+        </ChartTooltip>
+        <ChartLegend>
+          {#snippet content(props: SvelteArgs<LegendContentProps>)}
+            <ChartLegendContent {...props} />
+          {/snippet}
+        </ChartLegend>
+        <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
+        <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+      </BarChart>
+    </ChartContainer>
   </div>
-  <DirectionProvider direction={dir}>
-    <div {dir}>
-      <ChartContainer config={chartConfig} class="min-h-[200px] w-full">
-        <BarChart accessibilityLayer data={chartData}>
-          <CartesianGrid vertical={false} orientation={dir === 'rtl' ? 'right' : 'left'} />
-          <XAxis
-            dataKey="month"
-            tickLine={false}
-            tickMargin={10}
-            axisLine={false}
-            tickFormatter={(value) => t[value as keyof typeof t].slice(0, 3)}
-            reversed={dir === 'rtl'}
-          />
-          <ChartTooltip labelClassName="w-32">
-            {#snippet content(props: TooltipContentArgs)}
-              <ChartTooltipContent labelFormatter={(value) => t[value as keyof typeof t]} {...props} />
-            {/snippet}
-          </ChartTooltip>
-          <ChartLegend>
-            {#snippet content(props: SvelteArgs<LegendContentProps>)}
-              <ChartLegendContent {...props} />
-            {/snippet}
-          </ChartLegend>
-          <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
-          <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
-        </BarChart>
-      </ChartContainer>
-    </div>
-  </DirectionProvider>
 </div>

@@ -89,9 +89,11 @@ Use the `size` prop to change the size of the toggle.
 
 ## RTL
 
-Wrap the toggle in a [DirectionProvider](/docs/components/direction) and set `dir` on `Toggle`. Use the buttons to switch the language.
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
 
-<ComponentPreview name="base/ToggleRtlExample" align="start" />
+Wrap the toggle in a [DirectionProvider](/docs/components/direction) and set `dir` on `Toggle`. Use the language selector to switch the language.
+
+<ComponentPreview name="base/ToggleRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 

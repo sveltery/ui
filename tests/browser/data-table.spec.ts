@@ -11,6 +11,12 @@ async function open(page: Page, example: string) {
   return preview;
 }
 
+/** Picks a language in the RTL preview's selector. */
+async function pick(page: Page, preview: Locator, language: 'English' | 'Hebrew (עברית)') {
+  await preview.locator('[data-name="language-selector"]').click();
+  await page.getByRole('option', { name: language }).click();
+}
+
 const emails = (table: Locator) => table.locator('tbody td:nth-child(3)');
 
 test.describe('demo table', () => {
@@ -88,12 +94,12 @@ test.describe('RTL example', () => {
     await expect(table.getByPlaceholder('تصفية البريد الإلكتروني...')).toBeVisible();
     await expect(table.getByRole('columnheader', { name: 'الحالة' })).toBeVisible();
     await expect(table.getByText('0 من 5 صف(وف) محدد.')).toBeVisible();
-    await table.getByRole('button', { name: 'en', exact: true }).click();
+    await pick(page, table, 'English');
     await expect(container).toHaveAttribute('dir', 'ltr');
     await expect(table.getByPlaceholder('Filter emails...')).toBeVisible();
     await expect(table.getByRole('columnheader', { name: 'Status' })).toBeVisible();
     await expect(table.getByText('0 of 5 row(s) selected.')).toBeVisible();
-    await table.getByRole('button', { name: 'he', exact: true }).click();
+    await pick(page, table, 'Hebrew (עברית)');
     await expect(container).toHaveAttribute('dir', 'rtl');
     await expect(table.getByText('0 מתוך 5 שורות נבחרו.')).toBeVisible();
   });
@@ -109,7 +115,7 @@ test.describe('RTL example', () => {
     await expect(menu).toHaveAttribute('dir', 'rtl');
     await page.keyboard.press('Escape');
     await expect(menu).toHaveCount(0);
-    await table.getByRole('button', { name: 'en', exact: true }).click();
+    await pick(page, table, 'English');
     await table.getByRole('button', { name: 'Columns' }).click();
     await expect(menu).toHaveAttribute('dir', 'ltr');
     await page.keyboard.press('Escape');

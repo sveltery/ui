@@ -11,9 +11,30 @@ description: A popup that displays information related to an element when the el
 
 <InstallTab value="cli">
 
+<Steps>
+
+### Run the following command
+
 ```bash
 npx @sveltery/ui@latest add tooltip
 ```
+
+### Add the `TooltipProvider` to the root of your app
+
+```svelte showLineNumbers title="src/routes/+layout.svelte" {3,8-10}
+<script lang="ts">
+  import './layout.css';
+  import { TooltipProvider } from '#lib/components/ui/tooltip';
+
+  let { children } = $props();
+</script>
+
+<TooltipProvider>
+  {@render children()}
+</TooltipProvider>
+```
+
+</Steps>
 
 </InstallTab>
 
@@ -36,6 +57,21 @@ Copy the following files into `src/lib/components/ui/tooltip`.
 ### Update the import paths
 
 The component folders import each other with relative paths, so keep them side by side. If you place them elsewhere, change the imports to match your project setup.
+
+### Add the `TooltipProvider` to the root of your app
+
+```svelte showLineNumbers title="src/routes/+layout.svelte" {3,8-10}
+<script lang="ts">
+  import './layout.css';
+  import { TooltipProvider } from '#lib/components/ui/tooltip';
+
+  let { children } = $props();
+</script>
+
+<TooltipProvider>
+  {@render children()}
+</TooltipProvider>
+```
 
 </Steps>
 
@@ -72,21 +108,6 @@ Tooltip
 └── TooltipContent
 ```
 
-## Provider
-
-`TooltipProvider` shares delays across the tooltips inside it. Once one tooltip opens, the next opens at once while the pointer moves between triggers. It sets `delay` to `0` by default. Without a provider, a tooltip waits 600 ms, which you can change with `delay` on `TooltipTrigger`.
-
-```svelte
-<TooltipProvider>
-  <Tooltip>…</Tooltip>
-  <Tooltip>…</Tooltip>
-</TooltipProvider>
-```
-
-## Trigger
-
-`TooltipTrigger` renders a `<button>`. Pass `class` to style it, for example with `buttonVariants`. To use another element or component, pass a `render` snippet and spread its props onto that element.
-
 ## Side
 
 Use the `side` prop to change the position of the tooltip.
@@ -105,9 +126,11 @@ Show a tooltip on a disabled button by wrapping it with a span. A disabled butto
 
 ## RTL
 
-Wrap the tooltips in a [DirectionProvider](/docs/components/direction) and set `dir` on `TooltipContent`. Use the buttons to switch the language.
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
 
-<ComponentPreview name="base/TooltipRtlExample" />
+Wrap the tooltips in a [DirectionProvider](/docs/components/direction) and set `dir` on `TooltipContent`. Use the language selector to switch the language.
+
+<ComponentPreview name="base/TooltipRtlExample" direction="rtl" />
 
 ## API Reference
 

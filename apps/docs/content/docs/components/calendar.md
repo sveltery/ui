@@ -164,21 +164,6 @@ Or use fixed values:
 />
 ```
 
-## Custom Days
-
-The preview above also renders each day with its own markup. Pass a `dayButton` snippet and spread `props` on `CalendarDayButton` so it keeps its handlers, ARIA and focus.
-
-```svelte
-<Calendar mode="range" bind:selected={range}>
-  {#snippet dayButton({ day, modifiers, props, text })}
-    <CalendarDayButton {day} {modifiers} {...props}>
-      {text}
-      {#if !modifiers.outside}<span>$100</span>{/if}
-    </CalendarDayButton>
-  {/snippet}
-</Calendar>
-```
-
 ## Week Numbers
 
 Use `showWeekNumber` to show week numbers.
@@ -187,27 +172,13 @@ Use `showWeekNumber` to show week numbers.
 
 `ISOWeek` uses ISO weeks, and `weekStartsOn` sets the first day of the week.
 
-## Keyboard
-
-The grid follows the [WAI-ARIA date picker pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/datepicker-dialog/). One day takes Tab focus: the selected day, else today, else the first day that can be focused.
-
-| Key | Moves focus to |
-| --- | --- |
-| Arrow Left and Arrow Right | The previous or next day. `dir="rtl"` swaps them |
-| Arrow Up and Arrow Down | The same day in the previous or next week |
-| Page Up and Page Down | The same day in the previous or next month |
-| Shift with Page Up or Page Down | The same day in the previous or next year |
-| Shift with an arrow key | The same day in the previous or next month (left and right) or year (up and down) |
-| Home and End | The first or last day of the week |
-| Enter and Space | Selects the focused day |
-
-Focus skips disabled and hidden days and changes month when it leaves the displayed months.
-
 ## RTL
 
-Wrap the calendar in a [DirectionProvider](/docs/components/direction) and pass `dir`. Use the buttons to switch the language.
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
 
-<ComponentPreview name="base/CalendarRtlExample" />
+Wrap the calendar in a [DirectionProvider](/docs/components/direction) and pass `dir`. Use the language selector to switch the language.
+
+<ComponentPreview name="base/CalendarRtlExample" direction="rtl" />
 
 When using RTL, import the locale from `date-fns/locale` and pass both the `locale` and `dir` props to the Calendar component:
 

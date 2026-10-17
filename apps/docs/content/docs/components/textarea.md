@@ -93,6 +93,8 @@ Pair with `Button` to create a textarea with a submit button.
 
 ## RTL
 
-Wrap the field in a [DirectionProvider](/docs/components/direction) and set `dir` on `Field`, `FieldLabel`, `Textarea` and `FieldDescription`. Use the buttons to switch the language.
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
 
-<ComponentPreview name="base/TextareaRtlExample" align="start" />
+Wrap the field in a [DirectionProvider](/docs/components/direction) and set `dir` on `Field`, `FieldLabel`, `Textarea` and `FieldDescription`. Use the language selector to switch the language.
+
+<ComponentPreview name="base/TextareaRtlExample" direction="rtl" align="start" />

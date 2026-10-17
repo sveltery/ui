@@ -77,6 +77,8 @@ The component folders import each other with relative paths, so keep them side b
 
 ## RTL
 
-Wrap the skeletons in a [DirectionProvider](/docs/components/direction) and set `dir` on the container. Use the buttons to switch the language.
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
 
-<ComponentPreview name="base/SkeletonRtlExample" align="start" />
+Wrap the skeletons in a [DirectionProvider](/docs/components/direction) and set `dir` on the container. Use the language selector to switch the language.
+
+<ComponentPreview name="base/SkeletonRtlExample" direction="rtl" align="start" />

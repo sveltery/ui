@@ -617,9 +617,11 @@ This prop adds keyboard access and screen reader support to your charts.
 
 ## RTL
 
-Wrap the chart in a [DirectionProvider](/docs/components/direction), set `dir` on its container, and mirror the axis with `reversed`. Use the buttons to switch the language.
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
 
-<ComponentPreview name="base/ChartRtlExample" class="[&_[data-slot=preview]]:h-92" />
+Wrap the chart in a [DirectionProvider](/docs/components/direction), set `dir` on its container, and mirror the axis with `reversed`. Use the language selector to switch the language.
+
+<ComponentPreview name="base/ChartRtlExample" direction="rtl" class="[&_[data-slot=preview]]:h-92" />
 
 ## Charts Library
 

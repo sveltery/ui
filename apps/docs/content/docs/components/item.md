@@ -50,7 +50,7 @@ The component folders import each other with relative paths, so keep them side b
 ```svelte
 <script lang="ts">
   import { Button } from '#lib/components/ui/button';
-  import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from '#lib/components/ui/item';
+  import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '#lib/components/ui/item';
 </script>
 ```
 
@@ -160,9 +160,11 @@ Use the `render` snippet to render the item as a link. Spread `props` onto the a
 
 ## RTL
 
-Wrap the items in a [DirectionProvider](/docs/components/direction) and set `dir` on them. Use the buttons to switch the language.
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
 
-<ComponentPreview name="base/ItemRtlExample" align="start" />
+Wrap the items in a [DirectionProvider](/docs/components/direction) and set `dir` on them. Use the language selector to switch the language.
+
+<ComponentPreview name="base/ItemRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 

@@ -98,9 +98,11 @@ A progress bar that can be controlled by a slider.
 
 ## RTL
 
-Wrap the progress bar in a [DirectionProvider](/docs/components/direction) and set `dir` on `Progress`. Use the buttons to switch the language.
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
 
-<ComponentPreview name="base/ProgressRtlExample" align="start" />
+Wrap the progress bar in a [DirectionProvider](/docs/components/direction) and set `dir` on `Progress`. Use the language selector to switch the language.
+
+<ComponentPreview name="base/ProgressRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 

@@ -85,18 +85,6 @@ Bind `open` to control the state.
 </Collapsible>
 ```
 
-## Custom Trigger
-
-Pass a `render` snippet to `CollapsibleTrigger` to render another element, such as a `Button`. Spread `props` onto it and render `children`.
-
-```svelte
-{#snippet button(props, state, children)}
-  <Button {...props} variant="outline" size="icon">{@render children?.()}</Button>
-{/snippet}
-
-<CollapsibleTrigger render={button}>…</CollapsibleTrigger>
-```
-
 ## Basic
 
 <ComponentPreview name="base/CollapsibleBasicExample" align="start" />
@@ -115,9 +103,11 @@ Use nested collapsibles to build a file tree.
 
 ## RTL
 
-Wrap the collapsible in a [DirectionProvider](/docs/components/direction) and set `dir` on `Collapsible`. Use the buttons to switch the language.
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
 
-<ComponentPreview name="base/CollapsibleRtlExample" align="start" />
+Wrap the collapsible in a [DirectionProvider](/docs/components/direction) and set `dir` on `Collapsible`. Use the language selector to switch the language.
+
+<ComponentPreview name="base/CollapsibleRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 

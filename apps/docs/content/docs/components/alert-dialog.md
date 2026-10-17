@@ -147,9 +147,11 @@ Use the `AlertDialogAction` component to add a destructive action button to the 
 
 ## RTL
 
-Wrap the alert dialog in a [DirectionProvider](/docs/components/direction) and set `dir` on `AlertDialogContent`. Use the buttons to switch the language.
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
 
-<ComponentPreview name="base/AlertDialogRtlExample" />
+Wrap the alert dialog in a [DirectionProvider](/docs/components/direction) and set `dir` on `AlertDialogContent`. Use the language selector to switch the language.
+
+<ComponentPreview name="base/AlertDialogRtlExample" direction="rtl" />
 
 ## API Reference
 

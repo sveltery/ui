@@ -25,7 +25,6 @@
   } from '@tanstack/svelte-table';
   import { Button } from '$registry/bases/base/ui/button';
   import { Checkbox } from '$registry/bases/base/ui/checkbox';
-  import { DirectionProvider } from '$registry/bases/base/ui/direction';
   import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -38,6 +37,7 @@
   } from '$registry/bases/base/ui/dropdown-menu';
   import { Input } from '$registry/bases/base/ui/input';
   import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '$registry/bases/base/ui/table';
+  import { useLanguage } from '$lib/components/docs/language.svelte';
 
   const translations = {
     en: {
@@ -177,11 +177,11 @@
     }
   ];
 
-  let language = $state<keyof typeof translations>('ar');
-  const dir = $derived(translations[language].dir);
-  const t = $derived(translations[language].values);
+  const language = useLanguage();
+  const dir = $derived(translations[language.current].dir);
+  const t = $derived(translations[language.current].values);
   const align = $derived(dir === 'rtl' ? 'start' : 'end');
-  const lang = $derived(dir === 'rtl' ? language : undefined);
+  const lang = $derived(dir === 'rtl' ? language.current : undefined);
 
   const columns = $derived(
     columnHelper.columns([
@@ -281,84 +281,75 @@
 {/snippet}
 
 <div class="flex w-full flex-col gap-4">
-  <div class="flex gap-2">
-    {#each Object.keys(translations) as code (code)}
-      <Button variant={language === code ? 'default' : 'outline'} size="sm" onclick={() => (language = code as keyof typeof translations)}>
-        {code}
-      </Button>
-    {/each}
-  </div>
-  <DirectionProvider direction={dir}>
-    <div class="w-full" {dir}>
-      <div class="flex items-center gap-2 py-4">
-        <Input
-          placeholder={t.filterEmails}
-          value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
-          oninput={(event) => table.getColumn('email')?.setFilterValue(event.currentTarget.value)}
-          class="max-w-sm"
-        />
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            {#snippet render(props, _state, children)}
-              <Button {...props} variant="outline" class={[props.class, 'ms-auto']}>{@render children?.()}</Button>
-            {/snippet}
-            {t.columns} <ChevronDownIcon />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent {dir} {align} data-lang={lang}>
-            <DropdownMenuGroup>
-              {#each table.getAllColumns().filter((column) => column.getCanHide()) as column (column.id)}
-                <DropdownMenuCheckboxItem class="capitalize" checked={column.getIsVisible()} onCheckedChange={(value) => column.toggleVisibility(value)}>
-                  {column.id}
-                </DropdownMenuCheckboxItem>
+  <div class="w-full" {dir}>
+    <div class="flex items-center gap-2 py-4">
+      <Input
+        placeholder={t.filterEmails}
+        value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
+        oninput={(event) => table.getColumn('email')?.setFilterValue(event.currentTarget.value)}
+        class="max-w-sm"
+      />
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          {#snippet render(props, _state, children)}
+            <Button {...props} variant="outline" class={[props.class, 'ms-auto']}>{@render children?.()}</Button>
+          {/snippet}
+          {t.columns} <ChevronDownIcon />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent {dir} {align} data-lang={lang}>
+          <DropdownMenuGroup>
+            {#each table.getAllColumns().filter((column) => column.getCanHide()) as column (column.id)}
+              <DropdownMenuCheckboxItem class="capitalize" checked={column.getIsVisible()} onCheckedChange={(value) => column.toggleVisibility(value)}>
+                {column.id}
+              </DropdownMenuCheckboxItem>
+            {/each}
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+    <div class="overflow-hidden rounded-md border">
+      <Table>
+        <TableHeader>
+          {#each table.getHeaderGroups() as headerGroup (headerGroup.id)}
+            <TableRow>
+              {#each headerGroup.headers as header (header.id)}
+                <TableHead>
+                  {#if !header.isPlaceholder}
+                    <FlexRender {header} />
+                  {/if}
+                </TableHead>
               {/each}
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            </TableRow>
+          {/each}
+        </TableHeader>
+        <TableBody>
+          {#each table.getRowModel().rows as row (row.id)}
+            <TableRow data-state={row.getIsSelected() ? 'selected' : undefined}>
+              {#each row.getVisibleCells() as cell (cell.id)}
+                <TableCell>
+                  <FlexRender {cell} />
+                </TableCell>
+              {/each}
+            </TableRow>
+          {:else}
+            <TableRow>
+              <TableCell colspan={columns.length} class="h-24 text-center">{t.noResults}</TableCell>
+            </TableRow>
+          {/each}
+        </TableBody>
+      </Table>
+    </div>
+    <div class="flex items-center justify-end gap-2 py-4">
+      <div class="flex-1 text-sm text-muted-foreground">
+        {table.getFilteredSelectedRowModel().rows.length}
+        {t.rowsSelected}
+        {table.getFilteredRowModel().rows.length}
+        {t.rowsSelectedSuffix}
       </div>
-      <div class="overflow-hidden rounded-md border">
-        <Table>
-          <TableHeader>
-            {#each table.getHeaderGroups() as headerGroup (headerGroup.id)}
-              <TableRow>
-                {#each headerGroup.headers as header (header.id)}
-                  <TableHead>
-                    {#if !header.isPlaceholder}
-                      <FlexRender {header} />
-                    {/if}
-                  </TableHead>
-                {/each}
-              </TableRow>
-            {/each}
-          </TableHeader>
-          <TableBody>
-            {#each table.getRowModel().rows as row (row.id)}
-              <TableRow data-state={row.getIsSelected() ? 'selected' : undefined}>
-                {#each row.getVisibleCells() as cell (cell.id)}
-                  <TableCell>
-                    <FlexRender {cell} />
-                  </TableCell>
-                {/each}
-              </TableRow>
-            {:else}
-              <TableRow>
-                <TableCell colspan={columns.length} class="h-24 text-center">{t.noResults}</TableCell>
-              </TableRow>
-            {/each}
-          </TableBody>
-        </Table>
-      </div>
-      <div class="flex items-center justify-end gap-2 py-4">
-        <div class="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length}
-          {t.rowsSelected}
-          {table.getFilteredRowModel().rows.length}
-          {t.rowsSelectedSuffix}
-        </div>
-        <div class="flex gap-2">
-          <Button variant="outline" size="sm" onclick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>{t.previous}</Button>
-          <Button variant="outline" size="sm" onclick={() => table.nextPage()} disabled={!table.getCanNextPage()}>{t.next}</Button>
-        </div>
+      <div class="flex gap-2">
+        <Button variant="outline" size="sm" onclick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>{t.previous}</Button>
+        <Button variant="outline" size="sm" onclick={() => table.nextPage()} disabled={!table.getCanNextPage()}>{t.next}</Button>
       </div>
     </div>
-  </DirectionProvider>
+  </div>
 </div>

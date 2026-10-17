@@ -66,10 +66,6 @@ The component folders import each other with relative paths, so keep them side b
 
 Hovering or clicking a trigger opens its content in a shared popup below the menu. Moving to another trigger swaps the content, and Escape or a press outside closes it. The arrow keys move focus between triggers and links.
 
-## Link
-
-`NavigationMenuLink` renders an `<a>`. Pass `active` to mark the current page, which sets `aria-current="page"` and `data-active`. Pass `closeOnClick` to close the menu when the link is clicked.
-
 ## Value
 
 Bind `value` to read or change the open item from outside. Give each `NavigationMenuItem` a `value`. A `null` value closes the menu.
@@ -126,9 +122,11 @@ Use `navigationMenuTriggerStyle` to style a top-level link like a trigger. To us
 
 ## RTL
 
-Wrap the menu in a [DirectionProvider](/docs/components/direction) and set `dir` on `NavigationMenu` and `NavigationMenuContent`. Pass `align="end"` to `NavigationMenu` so the popup lines up with the menu in right-to-left text. Use the buttons to switch the language.
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
 
-<ComponentPreview name="base/NavigationMenuRtlExample" align="start" />
+Wrap the menu in a [DirectionProvider](/docs/components/direction) and set `dir` on `NavigationMenu` and `NavigationMenuContent`. Pass `align="end"` to `NavigationMenu` so the popup lines up with the menu in right-to-left text. Use the language selector to switch the language.
+
+<ComponentPreview name="base/NavigationMenuRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 

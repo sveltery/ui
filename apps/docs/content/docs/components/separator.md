@@ -75,9 +75,11 @@ Horizontal separators between list items.
 
 ## RTL
 
-Set `dir` on the container, as the `Separator` follows the layout direction. Use the buttons to switch the language.
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
 
-<ComponentPreview name="base/SeparatorRtlExample" align="start" />
+Set `dir` on the container, as the `Separator` follows the layout direction. Use the language selector to switch the language.
+
+<ComponentPreview name="base/SeparatorRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 

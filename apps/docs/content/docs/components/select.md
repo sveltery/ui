@@ -108,52 +108,6 @@ Bind `value` to read or change the selection from outside, or pass `defaultValue
 </Select>
 ```
 
-## Multiple selection
-
-Set `multiple` to let the user pick several items. The value becomes an array, and the popup stays open while the user picks. Pass a function to `SelectValue` to format the selection.
-
-```svelte
-<Select {items} multiple defaultValue={[]}>
-  <SelectTrigger class="w-72">
-    <SelectValue>
-      {#snippet children(value)}
-        {(value as string[]).length === 0 ? 'Select fruits' : `${(value as string[]).length} fruits selected`}
-      {/snippet}
-    </SelectValue>
-  </SelectTrigger>
-  <SelectContent>
-    <SelectGroup>
-      {#each items as item (item.value)}
-        <SelectItem value={item.value}>{item.label}</SelectItem>
-      {/each}
-    </SelectGroup>
-  </SelectContent>
-</Select>
-```
-
-## Object values
-
-An item value can be an object. Pass `itemToStringValue` so the form value and the hidden input get a string, and `itemToStringLabel` when the object has no `label`.
-
-```svelte
-<Select defaultValue={plans[0]} itemToStringValue={(plan) => plan.name}>
-  <SelectTrigger class="h-auto! w-72">
-    <SelectValue>
-      {#snippet children(value)}
-        {(value as Plan).name}
-      {/snippet}
-    </SelectValue>
-  </SelectTrigger>
-  <SelectContent>
-    <SelectGroup>
-      {#each plans as plan (plan.name)}
-        <SelectItem value={plan}>{plan.name}</SelectItem>
-      {/each}
-    </SelectGroup>
-  </SelectContent>
-</Select>
-```
-
 ## Forms
 
 Give `Select` a `name` and it submits with its form through a hidden input, and a form reset restores `defaultValue`. Set `required` to block submission until the user picks a value.
@@ -213,9 +167,11 @@ Add the `data-invalid` attribute to the `Field` component and the `aria-invalid`
 
 ## RTL
 
-Wrap the select in a [DirectionProvider](/docs/components/direction) and set `dir` on `SelectTrigger` and `SelectContent`. Use the buttons to switch the language.
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
 
-<ComponentPreview name="base/SelectRtlExample" align="start" />
+Wrap the select in a [DirectionProvider](/docs/components/direction) and set `dir` on `SelectTrigger` and `SelectContent`. Use the language selector to switch the language.
+
+<ComponentPreview name="base/SelectRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 

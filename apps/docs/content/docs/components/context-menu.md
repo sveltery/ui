@@ -152,9 +152,11 @@ Control submenu placement with side and align props. `side` defaults to `right`.
 
 ## RTL
 
-Wrap the context menu in a [DirectionProvider](/docs/components/direction) and set `dir` on `ContextMenuContent` and `ContextMenuSubContent`. Use the buttons to switch the language.
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
 
-<ComponentPreview name="base/ContextMenuRtlExample" align="start" />
+Wrap the context menu in a [DirectionProvider](/docs/components/direction) and set `dir` on `ContextMenuContent` and `ContextMenuSubContent`. Use the language selector to switch the language.
+
+<ComponentPreview name="base/ContextMenuRtlExample" direction="rtl" align="start" />
 
 Use `side="inline-end"` to place the menu on the logical right side of the trigger.
 
@@ -169,10 +171,6 @@ Use `side="inline-end"` to place the menu on the logical right side of the trigg
   </ContextMenuContent>
 </ContextMenu>
 ```
-
-## Trigger
-
-`ContextMenuTrigger` renders a `<div>` that covers the area to listen on. Pass `class` to size and style it. To use another element, pass a `render` snippet and spread its props onto that element.
 
 ## API Reference
 

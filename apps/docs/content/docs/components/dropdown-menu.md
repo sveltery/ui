@@ -177,13 +177,11 @@ A richer example combining groups, icons, and submenus.
 
 ## RTL
 
-Wrap the dropdown menu in a [DirectionProvider](/docs/components/direction) and set `dir` on `DropdownMenuContent` and `DropdownMenuSubContent`. Use the buttons to switch the language.
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
 
-<ComponentPreview name="base/DropdownMenuRtlExample" align="start" />
+Wrap the dropdown menu in a [DirectionProvider](/docs/components/direction) and set `dir` on `DropdownMenuContent` and `DropdownMenuSubContent`. Use the language selector to switch the language.
 
-## Trigger
-
-`DropdownMenuTrigger` renders a `<button>`. Pass `class` to style it, for example with `buttonVariants`. To use another element, pass a `render` snippet and spread its props onto that element, as the examples above do with `Button`.
+<ComponentPreview name="base/DropdownMenuRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 

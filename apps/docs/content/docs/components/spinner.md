@@ -101,6 +101,8 @@ Add a spinner to a badge to indicate a loading state. Place the `<Spinner />` be
 
 ## RTL
 
-Wrap the spinner in a [DirectionProvider](/docs/components/direction) and set `dir` on the container. Use the buttons to switch the language.
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
 
-<ComponentPreview name="base/SpinnerRtlExample" align="start" />
+Wrap the spinner in a [DirectionProvider](/docs/components/direction) and set `dir` on the container. Use the language selector to switch the language.
+
+<ComponentPreview name="base/SpinnerRtlExample" direction="rtl" align="start" />

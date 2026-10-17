@@ -1,7 +1,6 @@
 <script lang="ts">
   import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '$registry/bases/base/ui/accordion';
-  import { Button } from '$registry/bases/base/ui/button';
-  import { DirectionProvider } from '$registry/bases/base/ui/direction';
+  import { useLanguage } from '$lib/components/docs/language.svelte';
 
   const translations = {
     en: {
@@ -47,26 +46,17 @@
     { value: 'item-3', question: 'question3', answer: 'answer3' }
   ] as const;
 
-  let language = $state<keyof typeof translations>('ar');
-  const t = $derived(translations[language]);
+  const language = useLanguage();
+  const t = $derived(translations[language.current]);
 </script>
 
 <div class="flex w-full max-w-md flex-col gap-4">
-  <div class="flex gap-2">
-    {#each Object.keys(translations) as code (code)}
-      <Button variant={language === code ? 'default' : 'outline'} size="sm" onclick={() => (language = code as keyof typeof translations)}>
-        {code}
-      </Button>
+  <Accordion value={['item-1']} dir={t.dir}>
+    {#each items as item (item.value)}
+      <AccordionItem value={item.value}>
+        <AccordionTrigger>{t[item.question]}</AccordionTrigger>
+        <AccordionContent>{t[item.answer]}</AccordionContent>
+      </AccordionItem>
     {/each}
-  </div>
-  <DirectionProvider direction={t.dir}>
-    <Accordion value={['item-1']} dir={t.dir}>
-      {#each items as item (item.value)}
-        <AccordionItem value={item.value}>
-          <AccordionTrigger>{t[item.question]}</AccordionTrigger>
-          <AccordionContent>{t[item.answer]}</AccordionContent>
-        </AccordionItem>
-      {/each}
-    </Accordion>
-  </DirectionProvider>
+  </Accordion>
 </div>

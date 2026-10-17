@@ -55,13 +55,9 @@ Base UI marks an open trigger with its own attributes. A collapsible trigger get
 
 ### Examples copied from the Radix variant use Base UI's attributes
 
-**Upstream:** The chevron in [`collapsible-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/collapsible-example.tsx#L110) rotates on `group-data-[state=open]`, as does the folder chevron in [`collapsible-file-tree.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/collapsible-file-tree.tsx#L74). The bookmark icons in [`toggle-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/toggle-example.tsx#L321) (also line 331) fill on `group-data-[state=on]/toggle`. These are Radix attributes.
+**Upstream:** The chevron in [`collapsible-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/collapsible-example.tsx#L110) rotates on `group-data-[state=open]`, as does the folder chevron in [`collapsible-file-tree.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/collapsible-file-tree.tsx#L74). The bookmark icons in [`toggle-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/toggle-example.tsx#L321) (also line 331) fill on `group-data-[state=on]/toggle`. These are Radix attributes. The menu buttons and the collapsible chevron in [`sidebar-demo.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/sidebar-demo.tsx#L223) use `data-[state=open]`, and its dropdown menus are `w-(--radix-dropdown-menu-trigger-width)`, a Radix variable.
 
-**Sveltery UI:** The [Collapsible](/docs/components/collapsible) kitchen-sink and file tree examples use `group-data-panel-open:`, and the [Toggle](/docs/components/toggle) example uses `group-data-pressed/toggle:`.
-
-**Upstream:** The chevron in [`collapsible-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/collapsible-example.tsx#L110) rotates on `group-data-[state=open]`. The bookmark icons in [`toggle-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/toggle-example.tsx#L321) (also line 331) fill on `group-data-[state=on]/toggle`. These are Radix attributes. The menu buttons and the collapsible chevron in [`sidebar-demo.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/sidebar-demo.tsx#L223) use `data-[state=open]`, and its dropdown menus are `w-(--radix-dropdown-menu-trigger-width)`, a Radix variable.
-
-**Sveltery UI:** The [Collapsible](/docs/components/collapsible) example uses `group-data-panel-open:`, and the Toggle preview example (`ToggleExample.svelte`) uses `group-data-pressed/toggle:`. The [Sidebar](/docs/components/sidebar) demo uses `data-popup-open:`, `group-data-open/collapsible:` and `w-(--anchor-width)`.
+**Sveltery UI:** The [Collapsible](/docs/components/collapsible) kitchen-sink and file tree examples use `group-data-panel-open:`, and the [Toggle](/docs/components/toggle) example uses `group-data-pressed/toggle:`. The [Sidebar](/docs/components/sidebar) demo uses `data-popup-open:`, `group-data-open/collapsible:` and `w-(--anchor-width)`.
 
 **Why:** Base UI never sets `data-state`, so upstream's chevron does not rotate and the bookmark does not fill when pressed. It has no `--radix-dropdown-menu-trigger-width`, so that class sets no width.
 
@@ -607,6 +603,40 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
+## Component page sections
+
+Each component page follows its [upstream page](https://github.com/shadcn-ui/ui/tree/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base) section for section. [`scripts/docs-sections.mjs`](https://github.com/sveltery/ui/blob/main/scripts/docs-sections.mjs) lists the sections that differ, and the entries below cover the ones only Sveltery UI has.
+
+### Pages show how to bind their state
+
+**Upstream:** The Accordion, Alert Dialog, Combobox, Navigation Menu, Native Select, Select, Sheet, Slider, Switch, Tabs, Textarea, Toggle and Toggle Group pages have no section on reading or setting the component's state. A few examples pass `value` and `onValueChange`.
+
+**Sveltery UI:** Each of those pages has a section that binds the state with `bind:`, such as [Accordion](/docs/components/accordion#binding-the-value), [Alert Dialog](/docs/components/alert-dialog#closing), [Combobox](/docs/components/combobox#binding-the-value), [Navigation Menu](/docs/components/navigation-menu#value), [Native Select](/docs/components/native-select#binding-a-value), [Select](/docs/components/select#binding-the-value), [Sheet](/docs/components/sheet#binding-the-open-state), [Slider](/docs/components/slider#value), [Switch](/docs/components/switch#checked-state), [Tabs](/docs/components/tabs#value), [Textarea](/docs/components/textarea#value), [Toggle](/docs/components/toggle#pressed-state) and [Toggle Group](/docs/components/toggle-group#value).
+
+**Why:** A Svelte component takes a bindable prop where a React one takes a value and a change handler, so the upstream pattern does not carry over.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### Pages document forms and pages without JavaScript
+
+**Upstream:** The component pages say nothing about what a control submits with its form, about remote forms, or about a page before it hydrates.
+
+**Sveltery UI:** Forms sections on [Checkbox](/docs/components/checkbox#forms), [Combobox](/docs/components/combobox#forms), [Date Picker](/docs/components/date-picker#in-a-form), [Native Select](/docs/components/native-select#forms), [Select](/docs/components/select#forms), [Slider](/docs/components/slider#forms) and [Switch](/docs/components/switch#forms) say what each submits. [Input](/docs/components/input#remote-forms) and [Native Select](/docs/components/native-select#remote-forms) show remote form fields, and Input also covers native input types and one-time codes. Without JavaScript sections on Checkbox, Input OTP, Radio Group, Select, Slider, Switch and Toggle Group, and the Date Picker's Native date input section, name the control to use before the page hydrates. Native Select also has a Multiple section.
+
+**Why:** SvelteKit forms work before the page hydrates, and remote form fields spread onto native controls, so a reader needs to know which controls submit and which need JavaScript.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### Pages document the Svelte API where upstream links a React API
+
+**Upstream:** The API Reference of [Questionnaire](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/questionnaire.mdx#L361) and [Message Scroller](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/message-scroller.mdx#L628) links to `@shadcn/react` pages, [Resizable](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/resizable.mdx#L110) links to the react-resizable-panels README, and [Toast](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/toast.mdx#L138) links to the Base UI Toast docs.
+
+**Sveltery UI:** [Questionnaire](/docs/components/questionnaire#validation) carries the `@shadcn/react` page's Validation, Custom render targets, Native forms, Keyboard and Data attributes sections and its prop tables. [Message Scroller](/docs/components/message-scroller#api-reference) has prop tables for each part. [Resizable](/docs/components/resizable#api-reference) has Sizes, Layout, Persistence, Collapsible panels, Keyboard and Pointer sections and prop tables. [Toast](/docs/components/toast#custom-layout) has a Custom layout section and tables for `Toaster`, `toast` and the parts.
+
+**Why:** The `@shadcn/react` pages do not exist on this site. The react-resizable-panels README shows a React API the Svelte port changes in places, such as bound props in place of refs. The Base UI Toast docs do not cover `Toaster` and the `toast` object, which replace Sonner here (see "Toasts use Toast, not Sonner"). This is the same call as "The Command page documents filtering and the dialog".
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
 ## Forms
 
 ### The Forms guides cover SvelteKit forms instead of React form libraries
@@ -683,13 +713,23 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
-### The Code Block page has no Markdown or Typeset example, and its RTL example uses Rhea
+### The Code Block Markdown example renders with svelte-streamdown
 
-**Upstream:** The [Code Block page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/code-block.mdx#L355) shows a block inside a `typeset` container and a chat message rendered with Streamdown, whose `components.code` routes fenced code to a `CodeBlock`.
+**Upstream:** The [Code Block page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/code-block.mdx#L449) renders a chat message with Streamdown. Its [`code-block-markdown`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/code-block-markdown.tsx) example passes `components.code`, checks `data-block` to tell fenced code from inline code, and reads `useIsCodeFenceIncomplete` while `isAnimating` is set.
 
-**Sveltery UI:** The [Code Block](/docs/components/code-block) page leaves both out. Its RTL example renders in Rhea like the rest of the page, where upstream's [`code-block-rtl`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/code-block.mdx#L369) preview uses Nova.
+**Sveltery UI:** The [Code Block](/docs/components/code-block#markdown) Markdown example renders with [svelte-streamdown](https://github.com/beynar/svelte-streamdown). Fenced code goes to its `code` snippet and inline code to its `codespan` snippet. The snippet's `incomplete` is combined with the message's streaming state, where upstream gates it with `isAnimating`.
 
-**Why:** Streamdown is a React library, so the Markdown example needs a Svelte Markdown renderer first. The Typeset example comes with the Markdown one, which renders its message inside `typeset`. A docs page renders every preview in one style.
+**Why:** Streamdown is a React library. svelte-streamdown is a maintained Svelte 5 port that completes unfinished Markdown and code fences while a message streams.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Code Block RTL example uses Rhea
+
+**Upstream:** The [`code-block-rtl`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/code-block.mdx#L369) preview uses Nova.
+
+**Sveltery UI:** The [Code Block](/docs/components/code-block#rtl) RTL example renders in Rhea like the rest of the page.
+
+**Why:** A docs page renders every preview in one style.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
@@ -799,13 +839,13 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
-### The RTL example sets its own direction
+### The RTL section says where to set `dir`
 
 **Upstream:** The [RTL section](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/data-table.mdx#L891) links the RTL configuration guide, and the preview takes `direction="rtl"` from the docs site's language selector.
 
-**Sveltery UI:** The section links the [RTL guide](/docs/rtl) too. It then names the [DirectionProvider](/docs/components/direction), and the example has its own language buttons and sets `dir` on the table and on each menu.
+**Sveltery UI:** The section links the [RTL guide](/docs/rtl) too. It then names the [DirectionProvider](/docs/components/direction) and says to set `dir` on the table and on each menu, as the example does.
 
-**Why:** These docs have no language selector that gives a preview its direction, so a Svelte example sets its own.
+**Why:** The preview hides its code, so the section names the two places a copied table needs `dir`, as the other RTL sections on these docs do.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
@@ -859,17 +899,19 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Why:** An item named `../../registry` overwrote the source `registry.json`, and a path such as `/etc/hostname` put a file from outside the project into the published JSON. `add` installs only names of this form, so the check rejects no item that `add` could install by name.
 
-### Search takes one registry and no installed mark
+### Search defaults to `@sveltery` and takes namespaces only
 
-**Upstream:** [`search`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/search.ts#L37) (alias `list`) takes any number of registries: namespaces such as `@shadcn`, GitHub sources and URLs. With none, it searches every registry in `components.json` and stops when there is no `components.json`. Each result's `addCommandArgument` is the [namespaced address](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/registry/search.ts#L317) that `add` takes, and a search of several registries lists which registry a result is from.
+**Upstream:** [`search`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/search.ts#L37) (alias `list`) takes any number of registries: namespaces such as `@shadcn`, GitHub sources and URLs. With none, it searches every registry in `components.json` except the built-in ones, [stops](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/search.ts#L128) when there is no `components.json`, and [skips](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/search.ts#L209) a registry that fails, listing it under `errors`. A namespace that `components.json` does not list is [looked up](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/search.ts#L153) in shadcn's directory of registries. Each result's `addCommandArgument` is the [namespaced address](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/registry/search.ts#L317) that `add` takes, `@shadcn/button` included.
 
-**Sveltery UI:** `search` knows one registry, `@sveltery`, which is the registry `SVELTERY_REGISTRY_URL` or `components.json` points at. With no argument it searches that one, with or without a `components.json`. Any other registry is an error. `addCommandArgument` is the bare item name, because `add` takes names and URLs only, and `registry` is `@sveltery`. Results come from the manifest `index.json`, which gained an optional `title` for each item so that a search needs one request.
+**Sveltery UI:** [`search`](/docs/cli#search) takes `@sveltery` and the namespaces of `registries` in `components.json`. With no argument it searches `@sveltery`, which is the registry `SVELTERY_REGISTRY_URL` or `components.json` points at, with or without a `components.json`, and reads its manifest even when `registries` sets `@sveltery`. A URL, a GitHub source or a namespace that `registries` does not list is an error that names the registries you can search. For a namespace it does what upstream does: it [fetches the item named `registry`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/registry/api.ts#L127) with the search as query parameters, keeps the page and `pagination` of a registry that sends them, and gives `add` the `@namespace/name` form. A `@sveltery` result has the bare item name as `addCommandArgument`, and it comes from the manifest `index.json`, which gained an optional `title` for each item so that a search needs one request. A `@sveltery` entry in `registries` makes a `search @sveltery` treat it as a namespace like the others. Every registry's environment variables are checked before any request is sent, as upstream does. A registry named twice is searched once, where upstream searches it twice.
 
-`--type` accepts the six types this registry has (`ui`, `lib`, `theme`, `block`, `base`, `font`) and rejects any other, such as `hook`. Upstream accepts every type of its schema and prints "No items found of type hook" for one the registry lacks.
+`--type` accepts the six types that `add` can install (`ui`, `lib`, `theme`, `block`, `base`, `font`) and rejects any other, such as `hook`. Upstream accepts every type of its schema and prints "No items found of type hook" for one the registry lacks.
 
 The old `list` command marked the items in your project as `installed` and had no types, pagination or query. `list` is now an alias of `search`, which prints upstream's output, and the mark is gone.
 
-**Why:** The registry is the only one the CLI reads until namespaced registries land. The installed mark would need one request for each item to read its file list, and it would add a field to upstream's JSON shape.
+**Why:** Sveltery UI has no directory of namespaces to look an unknown one up in. Searching `@sveltery` with no argument keeps `npx @sveltery/ui@latest search` useful in a project without `registries`, where upstream stops. The CLI does not read GitHub registries, and `search` of a registry URL is not supported yet. A bare name installs the same item as `@sveltery/name`, so the `@sveltery` results keep the shorter form. The installed mark would need one request for each item to read its file list, and it would add a field to upstream's JSON shape. The Sveltery UI registry serves `index.json`, not a `registry.json` for each style, so the default search reads the manifest whatever `registries` says. `add` rejects an item of any other type, so a search for one would list nothing that you can install.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
 
 ### Docs links come from the registry's index and have no base
 

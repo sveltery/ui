@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { Button } from '$registry/bases/base/ui/button';
-  import { DirectionProvider } from '$registry/bases/base/ui/direction';
   import { NativeSelect, NativeSelectOption } from '$registry/bases/base/ui/native-select';
+  import { useLanguage } from '$lib/components/docs/language.svelte';
 
   const translations = {
     en: {
@@ -30,25 +29,16 @@
     }
   } as const;
 
-  let language = $state<keyof typeof translations>('ar');
-  const t = $derived(translations[language]);
+  const language = useLanguage();
+  const t = $derived(translations[language.current]);
 </script>
 
 <div class="flex w-full max-w-sm flex-col gap-4">
-  <div class="flex gap-2">
-    {#each Object.keys(translations) as code (code)}
-      <Button variant={language === code ? 'default' : 'outline'} size="sm" onclick={() => (language = code as keyof typeof translations)}>
-        {code}
-      </Button>
-    {/each}
-  </div>
-  <DirectionProvider direction={t.dir}>
-    <NativeSelect dir={t.dir}>
-      <NativeSelectOption value="">{t.placeholder}</NativeSelectOption>
-      <NativeSelectOption value="todo">{t.todo}</NativeSelectOption>
-      <NativeSelectOption value="in-progress">{t.inProgress}</NativeSelectOption>
-      <NativeSelectOption value="done">{t.done}</NativeSelectOption>
-      <NativeSelectOption value="cancelled">{t.cancelled}</NativeSelectOption>
-    </NativeSelect>
-  </DirectionProvider>
+  <NativeSelect dir={t.dir}>
+    <NativeSelectOption value="">{t.placeholder}</NativeSelectOption>
+    <NativeSelectOption value="todo">{t.todo}</NativeSelectOption>
+    <NativeSelectOption value="in-progress">{t.inProgress}</NativeSelectOption>
+    <NativeSelectOption value="done">{t.done}</NativeSelectOption>
+    <NativeSelectOption value="cancelled">{t.cancelled}</NativeSelectOption>
+  </NativeSelect>
 </div>
