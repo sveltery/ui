@@ -5,7 +5,7 @@
   let fontWeight = $state<string | undefined>('normal');
 </script>
 
-<Field class="max-w-xs">
+<Field>
   <FieldLabel>Font Weight</FieldLabel>
   <ToggleGroup bind:value={() => (fontWeight ? [fontWeight] : []), (value) => (fontWeight = value[0])} variant="outline" spacing={2} size="lg">
     <ToggleGroupItem value="light" aria-label="Light" class="flex size-16 flex-col items-center justify-center rounded-xl">

@@ -121,7 +121,7 @@ Use `orientation="vertical"` for vertical toggle groups.
 
 A custom toggle group example.
 
-<ComponentPreview name="base/ToggleGroupFontWeightSelectorExample" />
+<ComponentPreview name="base/ToggleGroupFontWeightSelectorExample" class="[&_[data-slot=field]]:max-w-xs" />
 
 ## RTL
 
@@ -134,9 +134,3 @@ Wrap the toggle group in a [DirectionProvider](/docs/components/direction) and s
 See the [Base UI Toggle Group](https://base-ui.com/react/components/toggle-group#api-reference) documentation.
 
 `ToggleGroup` and `ToggleGroupItem` are styled on top of the Sveltery Base `ToggleGroup` and `Toggle` primitives, which own the pressed state, roving focus and accessibility. `variant` and `size` on the group apply to every item. Without them, each item uses its own. `spacing` is the gap between items in spacing units, and with `spacing={0}` outline items join into one bar. Arrow keys follow `orientation`.
-
-## Changelog
-
-### 2026-05-17 Default Spacing
-
-Changed the default `spacing` from `0` to `2` so toggle groups render with space between items by default. Use `spacing={0}` for connected items.

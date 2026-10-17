@@ -3,7 +3,7 @@
   import { Textarea } from '$registry/bases/base/ui/textarea';
 </script>
 
-<Field data-invalid class="max-w-xs">
+<Field data-invalid>
   <FieldLabel for="textarea-invalid">Message</FieldLabel>
   <Textarea id="textarea-invalid" placeholder="Type your message here." aria-invalid />
   <FieldDescription>Please enter a valid message.</FieldDescription>
