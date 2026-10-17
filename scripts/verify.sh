@@ -26,4 +26,5 @@ if runs build; then
   bash scripts/check-remote-fields.sh
   bash tests/installation/smoke.sh
   node .github/check-docs.mjs
+  node scripts/check-docs-site.mjs
 fi
