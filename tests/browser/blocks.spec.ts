@@ -112,6 +112,7 @@ test('the size toggles resize the preview, the Code tab shows the files in their
   await viewer.getByRole('button', { name: 'Desktop' }).click();
   await expect.poll(async () => Math.round((await panel.boundingBox())!.width)).toBe(Math.round(full));
 
+  await expect(viewer.locator('iframe')).toBeVisible();
   await viewer.getByRole('tab', { name: 'Code' }).click();
   await expect(viewer.locator('iframe')).toBeHidden();
   const caption = viewer.locator('figcaption');
@@ -259,10 +260,12 @@ test('sidebar-07 renders, collapses to icons hiding the project list, shows nav 
   await expect(page.locator(sidebar)).toHaveAttribute('data-state', 'expanded');
   await expect(page.getByText('Projects', { exact: true })).toBeVisible();
   const models = page.getByRole('button', { name: 'Models' });
-  await models.hover();
-  await page.waitForTimeout(800);
   // Base UI gives the tooltip popup no role.
   const tooltip = page.locator('[data-slot=tooltip-content]');
+  // While expanded the tooltip still opens after its delay, with its content hidden.
+  await models.hover();
+  await expect(models).toHaveAttribute('data-popup-open', '');
+  await expect(tooltip).toHaveAttribute('data-open', '');
   await expect(tooltip).toBeHidden();
   await page.locator(trigger).click();
   await expect(page.locator(sidebar)).toHaveAttribute('data-state', 'collapsed');
@@ -467,6 +470,7 @@ test('sidebar-11 opens and closes the file tree folders and rotates an open fold
   await expect(page.getByText('layout.tsx', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'app', exact: true }).click();
   await expect(page.getByText('layout.tsx', { exact: true })).toBeHidden();
+  await expect(page.getByText('footer.tsx', { exact: true })).toBeVisible();
   await components.click();
   await expect(page.getByText('footer.tsx', { exact: true })).toBeHidden();
   await expect.poll(() => style(chevron, 'rotate')).toBe('none');

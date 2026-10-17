@@ -84,6 +84,7 @@ beforeAll(async () => {
   server = createServer((request, response) => {
     const path = request.url ?? '';
     if (path.startsWith('/init')) initRequests.push(path);
+    if (path.includes('baseColor=gray')) return void response.writeHead(400, { 'content-type': 'application/json' }).end(JSON.stringify({ error: 'Invalid baseColor "gray"' }));
     const body = path.startsWith('/init') ? initItem : registryFiles[path.replace(/^\/r\//, '')];
     response.writeHead(body ? 200 : 404, { 'content-type': 'application/json' }).end(body ? JSON.stringify(body) : '{}');
   });
@@ -149,7 +150,7 @@ describe('init', () => {
 `);
     expect(first.files.map((file) => file.status)).toEqual(['new', 'changed']);
     expect(first.dependencies).toEqual(['class-variance-authority@^0.7.1', 'tw-animate-css@^1.4.0', '@tabler/icons-svelte@^3.48.0']);
-    expect(first.devDependencies).toEqual(['@sveltery/ui@^0.1.1']);
+    expect(first.devDependencies).toEqual(['@sveltery/ui@^0.2.0']);
 
     const config = read('components.json');
     const css = read('src/app.css');
@@ -258,7 +259,7 @@ describe('init', () => {
 }
 `);
       expect(first.dependencies).toEqual(['class-variance-authority@^0.7.1', 'tw-animate-css@^1.4.0', '@tabler/icons-svelte@^3.48.0', '@fontsource-variable/inter', '@fontsource-variable/playfair-display']);
-      expect(first.devDependencies).toEqual([`${cliPackage}@^0.1.1`]);
+      expect(first.devDependencies).toEqual([`${cliPackage}@^0.2.0`]);
 
       const config = read('components.json');
       const css = read('src/app.css');
@@ -306,6 +307,11 @@ describe('init', () => {
       const url = `${registryUrl}/styles/nova/button.json`;
       await expect(init({ cwd, ...defaults, preset: url })).rejects.toThrow(`${url} is a registry:ui item, and a preset must be a registry:base item.`);
       expect([initRequests, existsSync(join(cwd, 'components.json'))]).toEqual([[], false]);
+    });
+
+    test('prints the reason /init gives for rejecting a preset', async () => {
+      await expect(init({ cwd, ...defaults, preset: 'btLmMa' })).rejects.toThrow(/failed with 400 Bad Request: Invalid baseColor "gray"$/);
+      expect(existsSync(join(cwd, 'components.json'))).toBe(false);
     });
 
     test('--preset without a value uses nova with --yes', async () => {

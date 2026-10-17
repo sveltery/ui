@@ -47,7 +47,9 @@ test('Nova animation holds exit presence, removes it after completion and cancel
   await expect(popup).toHaveCount(0); await expect(page.locator('[data-slot=dialog-overlay]')).toHaveCount(0);
   await page.getByTestId('trigger').press('Enter'); await expect(popup).toBeVisible();
   await page.getByTestId('owner-close').evaluate((node: HTMLButtonElement) => { node.click(); requestAnimationFrame(() => (document.querySelector('[data-testid=reopen]') as HTMLButtonElement).click()); });
-  await expect(popup).toHaveAttribute('data-open', ''); await page.waitForTimeout(180); await expect(popup).toBeVisible();
+  await expect(popup).toHaveAttribute('data-open', '');
+  // Once every animation on the popup has ended, a close that was not canceled would have removed it.
+  await expect.poll(() => popup.evaluate(node => node.getAnimations().length)).toBe(0); await expect(popup).toBeVisible();
   const state = JSON.parse(await page.getByTestId('state').textContent() ?? '{}'); expect(state.open).toBe(true); expect(state.completions.filter((value: boolean) => !value)).toHaveLength(1);
   await page.keyboard.press('Escape'); await expect(popup).toHaveCount(0);
 });
