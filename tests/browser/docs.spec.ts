@@ -110,7 +110,7 @@ test('a docs page keeps step titles out of the TOC, the Installation section sho
 
 test('the Drawer page renders its examples in the Rhea style, and other pages stay in Nova', async ({ page }) => {
   await visit(page, '/docs/components/drawer');
-  await page.locator('[data-slot=component-preview]').first().getByRole('button', { name: 'right', exact: true }).first().click();
+  await page.locator('[data-slot=component-preview]').first().getByRole('button', { name: 'Open Drawer', exact: true }).first().click();
   const drawer = page.locator('[data-slot=drawer-popup]');
   await expect.poll(() => drawer.evaluate((node) => {
     const box = node.getBoundingClientRect();

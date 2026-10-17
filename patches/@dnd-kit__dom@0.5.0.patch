@@ -1,0 +1,36 @@
+diff --git a/index.cjs b/index.cjs
+index f132ea74a0dc8e612a16ad5a3200af4cf517f3d7..d5c7d9058b68a54feae471f56e6f9c6f36f20729 100644
+--- a/index.cjs
++++ b/index.cjs
+@@ -709,8 +709,11 @@ function createDocumentMutationObserver(element, placeholder, feedbackElement) {
+     for (const entry of entries) {
+       if (entry.addedNodes.length === 0) continue;
+       for (const node of Array.from(entry.addedNodes)) {
+-        if (node.contains(element) && element.nextElementSibling !== placeholder) {
+-          element.insertAdjacentElement("afterend", placeholder);
++        if (node.contains(element)) {
++          // Re-inserting an open popover closes it, even when the placeholder moved along with it.
++          if (element.nextElementSibling !== placeholder) {
++            element.insertAdjacentElement("afterend", placeholder);
++          }
+           utilities.showPopover(feedbackElement);
+           return;
+         }
+diff --git a/index.js b/index.js
+index 3791186e08d435e2217ed2380d49e9ce83f41e8b..41c9fea0d416ed4e1e4773e2fdb904e755566655 100644
+--- a/index.js
++++ b/index.js
+@@ -708,8 +708,11 @@ function createDocumentMutationObserver(element, placeholder, feedbackElement) {
+     for (const entry of entries) {
+       if (entry.addedNodes.length === 0) continue;
+       for (const node of Array.from(entry.addedNodes)) {
+-        if (node.contains(element) && element.nextElementSibling !== placeholder) {
+-          element.insertAdjacentElement("afterend", placeholder);
++        if (node.contains(element)) {
++          // Re-inserting an open popover closes it, even when the placeholder moved along with it.
++          if (element.nextElementSibling !== placeholder) {
++            element.insertAdjacentElement("afterend", placeholder);
++          }
+           showPopover(feedbackElement);
+           return;
+         }
