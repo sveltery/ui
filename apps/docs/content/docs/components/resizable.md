@@ -275,26 +275,3 @@ A bound `panelRef` has these methods.
 | `storage` | `{ getItem, setItem }` | `localStorage` | Where to keep the layout |
 
 It returns `{ defaultLayout, onLayoutChanged }` to pass to a `ResizablePanelGroup`.
-
-## Changelog
-
-### 2025-02-02 `react-resizable-panels` v4
-
-Updated to `react-resizable-panels` v4. See the [v4.0.0 release notes](https://github.com/bvaughn/react-resizable-panels/releases/tag/4.0.0) for full details. `@sveltery/resizable` follows the v4 API, so sizes are strings such as `"50%"`.
-
-If you use `react-resizable-panels` primitives directly, note the following changes:
-
-| v3                           | v4                      |
-| ---------------------------- | ----------------------- |
-| `PanelGroup`                 | `Group`                 |
-| `PanelResizeHandle`          | `Separator`             |
-| `direction` prop             | `orientation` prop      |
-| `defaultSize={50}`           | `defaultSize="50%"`     |
-| `onLayout`                   | `onLayoutChange`        |
-| `ImperativePanelHandle`      | `PanelImperativeHandle` |
-| `ref` prop on Panel          | `panelRef` prop         |
-| `data-panel-group-direction` | `aria-orientation`      |
-
-<Callout>
-  The Sveltery UI wrapper components (`ResizablePanelGroup`, `ResizablePanel`, `ResizableHandle`) remain unchanged.
-</Callout>
