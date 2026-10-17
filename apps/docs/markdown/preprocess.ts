@@ -52,6 +52,9 @@ export function docsComponents({ examples, repoRoot }: { examples: string; repoR
     async markup({ content, filename }) {
       if (!filename?.endsWith('.md')) return;
       const imports: string[] = [];
+      // A page in another style imports its examples in that style; registry/vite.ts reads the tag.
+      const style = /^style:\s*([a-z]+)\s*$/m.exec(readFileSync(filename, 'utf8').split(/^---$/m)[1] ?? '')?.[1];
+      const tag = style ? `?style=${style}` : '';
 
       if (/<\/Component(Preview|Source)>/.test(content)) throw new Error(`${filename}: write ComponentPreview and ComponentSource as self-closing tags`);
 
@@ -61,7 +64,7 @@ export function docsComponents({ examples, repoRoot }: { examples: string; repoR
         if (!name || !existsSync(file)) throw new Error(`${filename}: ComponentPreview example "${name}" not found at ${file}`);
         const raw = readFileSync(file, 'utf8');
         const id = `__example${imports.length}`;
-        imports.push(`import ${id} from ${literal(`./${relative(dirname(filename), file)}`)};`);
+        imports.push(`import ${id} from ${literal(`./${relative(dirname(filename), file)}${tag}`)};`);
         const [html, peek] = await Promise.all([highlight(raw, 'svelte', {}, 'source'), highlight(raw.split('\n').slice(0, PREVIEW_PEEK_LINES).join('\n'), 'svelte', {}, 'source')]);
         return `<ComponentPreview${attrs} component={${id}} source={${literal({ raw, html, peek })}} />`;
       });

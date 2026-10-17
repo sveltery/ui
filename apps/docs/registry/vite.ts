@@ -17,7 +17,8 @@ const CODE = /\.(svelte|[cm]?[jt]s)$/;
  * Renders registry components the way the CLI installs them: each module under `registry/bases/`, `blocks/` and
  * `examples/` is loaded once per variant, tagged `?style=<variant>`, and the components under
  * `registry/bases/base/ui` get their `cn-*` tokens inlined by `inlineStyle`. A module inherits its importer's tag;
- * an untagged importer takes the variant of the first `zones` directory it is in, or `nova`.
+ * an untagged importer takes the variant of the first `zones` directory it is in, or `nova`. An import that names
+ * its own tag, such as a docs page in another style importing its examples, keeps it.
  */
 export function registryStyles({ root, zones }: { root: string; zones: Record<string, Variant> }): Plugin {
   const ui = join(root, 'registry/bases/base/ui/');
@@ -46,10 +47,11 @@ export function registryStyles({ root, zones }: { root: string; zones: Record<st
     enforce: 'pre',
     async resolveId(source, importer, options) {
       // The dependency scan cannot load tagged ids, and it only needs the bare files.
-      if (!importer || ('scan' in options && options.scan) || source.includes('?')) return null;
-      const resolved = await this.resolve(source, importer, { ...options, skipSelf: true });
+      const tag = TAG.exec(source)?.[1] as Variant | undefined;
+      if (!importer || ('scan' in options && options.scan) || (source.includes('?') && !tag)) return null;
+      const resolved = await this.resolve(source.replace(TAG, ''), importer, { ...options, skipSelf: true });
       if (!resolved || resolved.external || resolved.id.includes('?') || !CODE.test(resolved.id) || !tagged.some((dir) => resolved.id.startsWith(dir))) return resolved;
-      return { ...resolved, id: `${resolved.id}?style=${variantOf(importer)}` };
+      return { ...resolved, id: `${resolved.id}?style=${tag ?? variantOf(importer)}` };
     },
     transform(code, id) {
       const variant = TAG.exec(id)?.[1] as Variant | undefined;
