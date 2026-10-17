@@ -24,7 +24,7 @@ const registryFiles: Record<string, unknown> = {
     items: [{ name: 'button', type: 'registry:ui' }, { name: 'dialog', type: 'registry:ui' }],
     blocks: [{ name: 'login-01', type: 'registry:block' }],
   },
-  'styles/nova/button.json': item('button', { dependencies: ['cn@^0.2.2'] }),
+  'styles/nova/button.json': item('button', { dependencies: ['cn@^0.2.2'], docs: 'Use it for actions.', meta: { since: '1.2' } }),
   'styles/nova/dialog.json': item('dialog', { registryDependencies: ['button'] }),
   'styles/nova/login-01.json': item('login-01', { type: 'registry:block' }),
   'styles/vega/button.json': item('button', { description: 'The vega button.' }),
@@ -67,6 +67,10 @@ describe('view', () => {
     expect(JSON.parse(await print(['dialog', 'button']))).toEqual([registryFiles['styles/nova/dialog.json'], registryFiles['styles/nova/button.json']]);
   });
 
+  test('prints fields the CLI does not read, as the registry serves them', async () => {
+    expect(JSON.parse(await print(['button']))[0]).toMatchObject({ docs: 'Use it for actions.', meta: { since: '1.2' } });
+  });
+
   test('prints the JSON with two-space indentation', async () => {
     expect((await print(['login-01'])).split('\n').slice(0, 3)).toEqual(['[', '  {', '    "$schema": "https://example.test/schema/registry-item.json",']);
   });
@@ -96,6 +100,8 @@ describe('view', () => {
 
   test('rejects a components.json with an unknown style', async () => {
     writeFileSync(join(cwd, 'components.json'), JSON.stringify({ style: 'bogus' }));
-    await expect(view(['button'], { cwd })).rejects.toThrow('components.json is invalid. style: expected "vega" or "nova"');
+    await expect(view(['button'], { cwd })).rejects.toThrow(
+      'components.json is invalid. style: expected "vega" or "nova" or "maia" or "lyra" or "mira" or "luma" or "sera" or "rhea", got "bogus".',
+    );
   });
 });

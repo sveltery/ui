@@ -174,6 +174,11 @@ export function fetchItem(registry: Registry, style: StyleName, ref: ItemRef): P
   return fetched;
 }
 
+/** The item exactly as the registry serves it, after checking that the CLI can read it. Not cached: `view` fetches each item once. */
+export function fetchRawItem(registry: Registry, style: StyleName, ref: ItemRef): Promise<unknown> {
+  return fetchJson(itemUrl(registry, style, ref), (json, path) => (registryItem(json, path), json));
+}
+
 /** Throws when a named ref is not in the registry's manifest, before any item is fetched. URLs are not checked. */
 export function assertListed(registry: Registry, refs: ItemRef[]): void {
   const known = new Set([...registry.manifest.items, ...registry.manifest.blocks].map((item) => item.name));

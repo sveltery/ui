@@ -185,10 +185,9 @@ try {
   assert.equal((await cli('diff')).trim(), 'Everything is up to date.');
 
   step('sveltery view button and an item URL');
-  const served = (path) => JSON.parse(readFileSync(join(registryDir, path), 'utf8'));
-  const viewed = JSON.parse(await cli('view', 'button', `${env.SVELTERY_REGISTRY_URL}/styles/nova/card.json`));
-  assert.deepEqual(viewed.map((viewedItem) => viewedItem.name), ['button', 'card'], 'view prints the items in argument order');
-  assert.deepEqual(viewed[0].files, served('styles/nova/button.json').files, 'view prints the files the registry serves');
+  const served = (name) => JSON.parse(readFileSync(join(registryDir, `styles/${config.style}/${name}.json`), 'utf8'));
+  const viewed = JSON.parse(await cli('view', 'button', `${env.SVELTERY_REGISTRY_URL}/styles/${config.style}/card.json`));
+  assert.deepEqual(viewed, [served('button'), served('card')], 'view prints the items as the registry serves them, in argument order');
 
   writeFileSync(
     join(app, 'src/routes/+page.svelte'),
