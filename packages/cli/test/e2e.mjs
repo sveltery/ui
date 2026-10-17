@@ -184,6 +184,12 @@ try {
   assert.equal(readFileSync(buttonFile, 'utf8'), pristine, 'update -y restores the registry version');
   assert.equal((await cli('diff')).trim(), 'Everything is up to date.');
 
+  step('sveltery view button and an item URL');
+  const served = (path) => JSON.parse(readFileSync(join(registryDir, path), 'utf8'));
+  const viewed = JSON.parse(await cli('view', 'button', `${env.SVELTERY_REGISTRY_URL}/styles/nova/card.json`));
+  assert.deepEqual(viewed.map((viewedItem) => viewedItem.name), ['button', 'card'], 'view prints the items in argument order');
+  assert.deepEqual(viewed[0].files, served('styles/nova/button.json').files, 'view prints the files the registry serves');
+
   writeFileSync(
     join(app, 'src/routes/+page.svelte'),
     // The import form the docs print, an explicit index, and a deep import of one file.
