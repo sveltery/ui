@@ -71,7 +71,7 @@ jobs:
         run: bash -c 'source scripts/toolchain.sh; pnpm exec playwright install chromium'
       # Shards split the specs by recorded run time. Two workers per runner: more saturates the four vCPUs and timing-sensitive tests fail.
       - name: Browser tests
-        run: bash -c 'source scripts/toolchain.sh; node scripts/browser-shard.mjs ${{ matrix.shard }} 4 > "$RUNNER_TEMP/specs.txt"; pnpm test:browser --project chromium --test-list "$RUNNER_TEMP/specs.txt" --workers 2'
+        run: bash -c 'source scripts/toolchain.sh; node scripts/browser-shard.mjs ${{ matrix.shard }} 4 > "$RUNNER_TEMP/specs.txt" && pnpm test:browser --project chromium --test-list "$RUNNER_TEMP/specs.txt" --workers 2'
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: failure()
         with:

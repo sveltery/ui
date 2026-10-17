@@ -7,6 +7,9 @@
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
+// Playwright's default testMatch.
+const isTestFile = /\.(spec|test)\.[cm]?[jt]sx?$/;
+
 export function assignShards(seconds, total) {
   const shards = Array.from({ length: total }, () => ({ seconds: 0, files: [] }));
   for (const [file, cost] of Object.entries(seconds).sort(([a, x], [b, y]) => y - x || a.localeCompare(b))) {
@@ -21,7 +24,7 @@ export function specSeconds(dir) {
   const timings = JSON.parse(readFileSync(`${dir}/timings.json`, 'utf8'));
   const known = Object.values(timings).sort((a, b) => a - b);
   const median = known[Math.floor(known.length / 2)] ?? 1;
-  const specs = readdirSync(dir, { recursive: true }).filter((file) => file.endsWith('.spec.ts'));
+  const specs = readdirSync(dir, { recursive: true }).filter((file) => isTestFile.test(file));
   return Object.fromEntries(specs.map((file) => [file, timings[file] ?? median]));
 }
 

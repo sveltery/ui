@@ -7,7 +7,7 @@ import { spawnSync } from 'node:child_process';
 import { assignShards, recordedSeconds, specSeconds } from '../browser-shard.mjs';
 
 test('the shards run every browser spec exactly once', () => {
-  const specs = readdirSync('tests/browser', { recursive: true }).filter((file) => file.endsWith('.spec.ts')).sort();
+  const specs = readdirSync('tests/browser', { recursive: true }).filter((file) => /\.(spec|test)\.[cm]?[jt]sx?$/.test(file)).sort();
   for (const total of [1, 4, 6]) {
     const listed = [];
     for (let current = 1; current <= total; current++) {
