@@ -43,7 +43,7 @@
   },
   "scripts": {
     "build": "svelte-package --input src",
-    "check": "svelte-check --tsconfig ./tsconfig.json && tsc -p test/tsconfig.json",
+    "check": "svelte-check --tsconfig ./tsconfig.json && svelte-check --tsconfig ./test/tsconfig.json",
     "prepack": "pnpm run build && publint --strict"
   },
   "dependencies": {

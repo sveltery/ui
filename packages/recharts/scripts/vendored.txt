@@ -33,6 +33,8 @@ src/component/Legend.ts
 src/component/ResponsiveContainer.ts
 src/component/Text.ts
 src/component/responsiveContainerUtils.ts
+src/container/Layer.ts
+src/container/Surface.ts
 src/context/brushUpdateContext.ts
 src/context/chartLayoutContext.ts
 src/context/tooltipContext.ts

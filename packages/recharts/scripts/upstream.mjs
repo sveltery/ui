@@ -149,6 +149,8 @@ export const EXTRACTED_VALUES = {
   'src/chart/RadarChart.tsx': ['defaultRadarChartProps'],
   'src/chart/RadialBarChart.tsx': ['defaultRadialBarChartProps'],
   'src/animation/JavascriptAnimate.tsx': ['defaultJavascriptAnimateProps'],
+  'src/container/Surface.tsx': [],
+  'src/container/Layer.tsx': [],
 };
 
 // Upstream modules that a hand-written Svelte module replaces. They are never written, even while an unpatched upstream import still reaches them.
