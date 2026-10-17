@@ -2,7 +2,7 @@
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
   import ArrowUpRightIcon from '@lucide/svelte/icons/arrow-up-right';
-  import FolderCodeIcon from '@lucide/svelte/icons/folder-code';
+  import IconFolderCode from '@tabler/icons-svelte-runes/icons/folder-code';
   import { Button } from '$registry/bases/base/ui/button';
   import { DirectionProvider } from '$registry/bases/base/ui/direction';
   import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '$registry/bases/base/ui/empty';
@@ -55,7 +55,7 @@
     <Empty dir={t.dir}>
       <EmptyHeader>
         <EmptyMedia variant="icon">
-          <FolderCodeIcon />
+          <IconFolderCode />
         </EmptyMedia>
         <EmptyTitle>{t.title}</EmptyTitle>
         <EmptyDescription>{t.description}</EmptyDescription>
