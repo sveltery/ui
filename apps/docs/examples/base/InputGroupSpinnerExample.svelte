@@ -1,0 +1,36 @@
+<script lang="ts">
+  import LoaderIcon from '@lucide/svelte/icons/loader';
+  import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from '$registry/bases/base/ui/input-group';
+  import { Spinner } from '$registry/bases/base/ui/spinner';
+</script>
+
+<div class="grid w-full max-w-sm gap-4">
+  <InputGroup>
+    <InputGroupInput placeholder="Searching..." />
+    <InputGroupAddon align="inline-end">
+      <Spinner />
+    </InputGroupAddon>
+  </InputGroup>
+  <InputGroup>
+    <InputGroupInput placeholder="Processing..." />
+    <InputGroupAddon>
+      <Spinner />
+    </InputGroupAddon>
+  </InputGroup>
+  <InputGroup>
+    <InputGroupInput placeholder="Saving changes..." />
+    <InputGroupAddon align="inline-end">
+      <InputGroupText>Saving...</InputGroupText>
+      <Spinner />
+    </InputGroupAddon>
+  </InputGroup>
+  <InputGroup>
+    <InputGroupInput placeholder="Refreshing data..." />
+    <InputGroupAddon>
+      <LoaderIcon class="animate-spin" />
+    </InputGroupAddon>
+    <InputGroupAddon align="inline-end">
+      <InputGroupText class="text-muted-foreground">Please wait...</InputGroupText>
+    </InputGroupAddon>
+  </InputGroup>
+</div>

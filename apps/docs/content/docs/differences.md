@@ -497,6 +497,26 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
 
+### The Field checkbox example checks "Sync Desktop & Documents folders" only
+
+**Upstream:** In [`field-checkbox.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/field-checkbox.tsx#L33-L40), the "Hard disks" `FieldLabel` has `defaultChecked`. A label ignores that prop, so the checkbox next to it stays unchecked.
+
+**Sveltery UI:** The [Field](/docs/components/field) example leaves `defaultChecked` off that label.
+
+**Why:** The prop does nothing on a label. The example renders the same without it, and it is not valid on a Svelte `label`.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Input Group examples use a native textarea and `navigator.clipboard`
+
+**Upstream:** The [Custom Input](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/input-group-custom.tsx) example uses `react-textarea-autosize`. The [Button](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/input-group-button.tsx) example copies with a `useCopyToClipboard` hook.
+
+**Sveltery UI:** The [Input Group](/docs/components/input-group) Custom Input example is a plain `textarea` with `field-sizing-content`. The Button example calls `navigator.clipboard.writeText`.
+
+**Why:** `react-textarea-autosize` and the React hook have no Svelte build in these docs. In browsers that support `field-sizing`, `field-sizing-content` makes a native `textarea` grow with its text, which is what the library does. Elsewhere the textarea keeps its height and scrolls.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ### The Breadcrumb separator example links to /docs/components
 
 **Upstream:** The Components link in [`breadcrumb-separator.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/breadcrumb-separator.tsx#L24) points to `/components`.
@@ -858,5 +878,23 @@ The old `list` command marked the items in your project as `installed` and had n
 **Sveltery UI:** [`docs`](/docs/cli#docs) has no `--base`, and `meta.links` of an item in [`index.json`](/docs/registry/registry-json) is not nested by base. The build writes `docs` (the component's page) and `examples` (the same page as Markdown, which inlines every example's source) for each item. It writes `api` from a table of the items that are styled on a Base UI component, and a test checks that the item's docs page links the same Base UI page. Upstream's `api` link is not always a Base UI page, so the table leaves out the items Base UI has no page for (`aspect-ratio`, `calendar`, `carousel`, `command`, `input-otp`, `resizable`, `sonner`) and those items get no `api` link; `hover-card` links Base UI's `preview-card`. The warning for an item with no links goes to stderr, where upstream writes it to stdout, so `--json` stays parseable. The JSON keeps `base: "base"` in the report and in each result, to keep upstream's shape.
 
 **Why:** There is one variant, so `--base` has nothing to choose. The examples are Svelte files in this repository, not files that the site serves, so the page with the examples inlined is what an agent can read.
+
+### An `@namespace/item` name cannot expand environment variables
+
+**Upstream:** [`buildUrlFromRegistryConfig`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/registry/builder.ts#L71-L75) puts the item name into the namespace's URL template and then expands `${VAR}` in the result. A `registryDependencies` entry such as `@acme/${AWS_SECRET_ACCESS_KEY}` in a fetched item sends that secret to the `@acme` server.
+
+**Sveltery UI:** The CLI expands `${VAR}` in the template before it puts the item name in. It stops with an error for an item name that contains `${`, `?`, `#` or a `..` segment. See [Namespaces](/docs/registry/namespace#url-placeholders).
+
+**Why:** An item from one registry can name dependencies on any namespace you configured. Its author must not be able to read your environment variables, or to send your credentials to another path on that server.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### Registry errors print `${VAR}`, not its value
+
+**Upstream:** [`RegistryUnauthorizedError`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/registry/errors.ts#L122) and the other fetch errors print the expanded item URL. A token in a namespace's `params` appears in the terminal and in CI logs.
+
+**Sveltery UI:** Errors print the item URL with each `${VAR}` as written in `components.json`, such as `https://registry.company.com/button.json?token=${REGISTRY_TOKEN}`. When `fetch` rejects a header value, the error does not quote the value. See [Authentication](/docs/registry/authentication).
+
+**Why:** An error message is often pasted into an issue or kept in a build log, and it must not carry a credential.
 
 **Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
