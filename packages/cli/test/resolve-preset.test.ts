@@ -77,4 +77,13 @@ describe('resolveProjectPreset', () => {
   test('treats a missing CSS file as showing nothing', () => {
     expect(resolveWith(null).fallbacks).toEqual(['theme', 'chartColor', 'font', 'fontHeading', 'radius']);
   });
+
+  test('treats CSS that does not parse as showing nothing', () => {
+    expect(resolveWith(':root { --primary: oklch(0.205 0 0);\n').fallbacks).toEqual(['theme', 'chartColor', 'font', 'fontHeading', 'radius']);
+  });
+
+  test('treats a CSS path that is a directory as showing nothing', () => {
+    mkdirSync(join(cwd, 'src/app.css'));
+    expect(resolveWith(null).fallbacks).toEqual(['theme', 'chartColor', 'font', 'fontHeading', 'radius']);
+  });
 });

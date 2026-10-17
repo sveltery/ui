@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import postcss from 'postcss';
 import { findColorFamily } from './colors.js';
@@ -47,8 +47,12 @@ function declarations(node: { nodes?: postcss.ChildNode[] }, into: Record<string
 
 function readCssState(path: string): CssState {
   const state: CssState = { rootVars: {}, darkVars: {}, themeVars: {}, imports: [] };
-  if (!existsSync(path)) return state;
-  const root = postcss.parse(readFileSync(path, 'utf8'));
+  let root: postcss.Root;
+  try {
+    root = postcss.parse(readFileSync(path, 'utf8'));
+  } catch {
+    return state;
+  }
   root.walkAtRules('import', (atRule) => {
     const source = /^url\((['"]?)(.+?)\1\)$/.exec(atRule.params.trim())?.[2] ?? /^(['"])(.+?)\1$/.exec(atRule.params.trim())?.[2];
     if (source) state.imports.push(source);

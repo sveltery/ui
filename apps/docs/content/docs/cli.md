@@ -205,12 +205,12 @@ npx @sveltery/ui@latest preset decode b4xFeBLg4O
   url          https://ui.sveltery.dev/create?preset=b4xFeBLg4O
 ```
 
-- `preset decode <code>` prints what a code sets. An older code does not carry every value, so `decode` fills in the chart color from the theme, marks it with `*` and says so. `--json` prints `code`, `version`, `values`, `derived` and `url`.
+- `preset decode <code>` prints what a code sets. An older code does not carry every value, so `decode` fills in the chart color the older code implied, marks it with `*` and says so. `--json` prints `code`, `version`, `values`, `derived` and `url`.
 - `preset url <code>` prints the link to the [Create page](/create) with the code loaded.
 - `preset open <code>` prints that link and opens it in your browser, with `open` on macOS, `start` on Windows and `xdg-open` elsewhere.
 - `preset resolve` (alias `preset info`) reads your `components.json` and CSS file and prints the preset they add up to, in the same form as `decode`. A `*` marks a value your project does not show, which takes the style's default. `--json` prints `code`, `values` and `fallbacks`, or `null` when there is no `components.json`.
 
-The Create page link uses the origin of `SVELTERY_REGISTRY_URL`, and `https://ui.sveltery.dev` without it. A code that is not a preset code is an error. See [differences](/docs/differences#preset-resolve-reads-the-css-of-a-svelte-project) for how `resolve` differs from the shadcn CLI.
+The Create page link uses the origin of `SVELTERY_REGISTRY_URL`, and `https://ui.sveltery.dev` without it. `preset resolve` also honors the `registry` key in `components.json`, with `SVELTERY_REGISTRY_URL` taking precedence. A code that is not a preset code is an error. See [differences](/docs/differences#preset-resolve-reads-the-css-of-a-svelte-project) for how `resolve` differs from the shadcn CLI.
 
 **Options**
 
