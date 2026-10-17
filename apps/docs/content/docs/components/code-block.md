@@ -246,6 +246,12 @@ Put a `CodeBlock` between paragraphs inside a [Message](/docs/components/message
 
 <ComponentPreview name="base/CodeBlockChatExample" />
 
+## Typeset
+
+A `CodeBlock` inside a [`typeset`](/docs/typeset) container keeps its own styles and gets the same space above as a paragraph.
+
+<ComponentPreview name="base/CodeBlockTypesetExample" />
+
 ## RTL
 
 To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
@@ -326,6 +332,22 @@ export async function load() {
 While the code streams, `useHighlightedCode` tokenizes only the new lines, starting where the last line left off. Lines that did not change keep the same strings, so Svelte leaves their DOM alone.
 
 <ComponentPreview name="base/CodeBlockStreamingExample" />
+
+### Markdown
+
+Render the message with [svelte-streamdown](https://github.com/beynar/svelte-streamdown) and route fenced code to a `CodeBlock` with its `code` snippet. Inline code goes to the `codespan` snippet, so it stays inline.
+
+<ComponentPreview name="base/CodeBlockMarkdownExample" />
+
+The `code` snippet's `incomplete` is `true` for the last block until its closing fence arrives. Use it to disable the copy button while the code is incomplete. Combine it with your own streaming flag, so a finished message whose fence never closed is not treated as incomplete.
+
+```svelte showLineNumbers
+<Streamdown content={text}>
+  {#snippet code({ token, incomplete })}
+    <MarkdownCodeBlock code={token.text} language={token.lang ?? ''} incomplete={incomplete && isStreaming} />
+  {/snippet}
+</Streamdown>
+```
 
 ## Accessibility
 
