@@ -323,6 +323,26 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 ## Example content
 
+### The Field checkbox example checks "Sync Desktop & Documents folders" only
+
+**Upstream:** In [`field-checkbox.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/field-checkbox.tsx#L33-L40), the "Hard disks" `FieldLabel` has `defaultChecked`. A label ignores that prop, so the checkbox next to it stays unchecked.
+
+**Sveltery UI:** The [Field](/docs/components/field) example leaves `defaultChecked` off that label.
+
+**Why:** The prop does nothing on a label. The example renders the same without it, and it is not valid on a Svelte `label`.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Input Group examples use a native textarea and `navigator.clipboard`
+
+**Upstream:** The [Custom Input](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/input-group-custom.tsx) example uses `react-textarea-autosize`. The [Button](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/input-group-button.tsx) example copies with a `useCopyToClipboard` hook.
+
+**Sveltery UI:** The [Input Group](/docs/components/input-group) Custom Input example is a plain `textarea` with `field-sizing-content`. The Button example calls `navigator.clipboard.writeText`.
+
+**Why:** `react-textarea-autosize` and the React hook have no Svelte build in these docs. In browsers that support `field-sizing`, `field-sizing-content` makes a native `textarea` grow with its text, which is what the library does. Elsewhere the textarea keeps its height and scrolls.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ### The Toggle Group select starts on one of its items
 
 **Upstream:** The "With Input and Select" example in [`toggle-group-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/toggle-group-example.tsx#L343) sets `defaultValue={items[0]}`, an object, while each `SelectItem` has a string `value`.
@@ -403,26 +423,6 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
 
-### The Field checkbox example checks "Sync Desktop & Documents folders" only
-
-**Upstream:** In [`field-checkbox.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/field-checkbox.tsx#L33-L40), the "Hard disks" `FieldLabel` has `defaultChecked`. A label ignores that prop, so the checkbox next to it stays unchecked.
-
-**Sveltery UI:** The [Field](/docs/components/field) example leaves `defaultChecked` off that label.
-
-**Why:** The prop does nothing on a label. The example renders the same without it, and it is not valid on a Svelte `label`.
-
-**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
-
-### The Input Group examples use a native textarea and `navigator.clipboard`
-
-**Upstream:** The [Custom Input](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/input-group-custom.tsx) example uses `react-textarea-autosize`. The [Button](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/input-group-button.tsx) example copies with a `useCopyToClipboard` hook.
-
-**Sveltery UI:** The [Input Group](/docs/components/input-group) Custom Input example is a plain `textarea` with `field-sizing-content`. The Button example calls `navigator.clipboard.writeText`.
-
-**Why:** `react-textarea-autosize` and the React hook have no Svelte build in these docs. In browsers that support `field-sizing`, `field-sizing-content` makes a native `textarea` grow with its text, which is what the library does. Elsewhere the textarea keeps its height and scrolls.
-
-**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
-
 ### The Card changelog edits the style stylesheet
 
 **Upstream:** The "Spacing Variable" changelog in [`card.mdx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/card.mdx) shows diffs to the class strings in `card.tsx`.
@@ -490,6 +490,36 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Sveltery UI:** The [Item](/docs/components/item) group example adds `aria-label="Add {username}"` to each button.
 
 **Why:** A screen reader announces an unnamed button as just "button".
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Pagination page has a SvelteKit section instead of Next.js
+
+**Upstream:** The [Pagination page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/pagination.mdx?plain=1#L116) has a Next.js section that edits `pagination.tsx` to render Next.js's `<Link />`.
+
+**Sveltery UI:** The [Pagination](/docs/components/pagination#sveltekit) page has a SvelteKit section saying `PaginationLink` already renders an `<a>` that SvelteKit's router handles.
+
+**Why:** The Next.js steps don't apply to Svelte, and SvelteKit needs no change to the component.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Marker page does not link the Shimmer utility or AI Elements
+
+**Upstream:** The [Marker page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/marker.mdx?plain=1#L82) links the `shimmer` utility page (also line 113) and the AI Elements Checkpoint page (line 123).
+
+**Sveltery UI:** The [Marker](/docs/components/marker) page keeps the same prose and examples without those links.
+
+**Why:** These docs have no utility pages and no AI Elements, so the links would 404.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Resizable page has no changelog
+
+**Upstream:** The [Resizable page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/resizable.mdx?plain=1#L114) ends with a changelog for the move to `react-resizable-panels` v4.
+
+**Sveltery UI:** The [Resizable](/docs/components/resizable) page ends at its API Reference.
+
+**Why:** `@sveltery/resizable` never had the v3 API, so the migration steps describe nothing a Sveltery user has.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 

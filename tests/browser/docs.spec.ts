@@ -30,6 +30,23 @@ test('Cmd+K search opens and goes to the chosen page', async ({ page }) => {
   await expect(page.getByRole('dialog')).toHaveCount(0);
 });
 
+test('Cmd+K lists full-text hits in Pagefind order, even when the query matches only page text', async ({ page }) => {
+  // The dev server has no Pagefind index, so this one stands in with hits whose titles share nothing with the query.
+  const hit = (url: string, title: string) => `{ id: '${url}', data: async () => ({ url: '${url}', excerpt: '', meta: { title: '${title}' } }) }`;
+  await page.route(/\/pagefind\/pagefind\.js/, (route) => route.fulfill({
+    contentType: 'text/javascript',
+    body: `export const debouncedSearch = async () => ({ results: [${hit('/docs/components/textarea.html', 'Textarea')}, ${hit('/docs/components/button.html', 'Button')}] });`,
+  }));
+  await visit(page, '/docs');
+  await page.keyboard.press('ControlOrMeta+k');
+  await page.getByRole('combobox').fill('grows with its content');
+  const results = page.getByRole('group', { name: 'Search Results' }).getByRole('option');
+  await expect(results).toHaveText(['Textarea', 'Button']);
+  await expect(page.getByText('No results found.')).toHaveCount(0);
+  await results.last().click();
+  await expect(page).toHaveURL('/docs/components/button');
+});
+
 test('the D key toggles dark mode outside text fields, and the theme toggle switches dark mode and remembers it', async ({ page }) => {
   await visit(page, '/');
   const html = page.locator('html');
