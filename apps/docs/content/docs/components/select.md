@@ -167,6 +167,10 @@ Give `Select` a `name` and it submits with its form through a hidden input, and 
 </form>
 ```
 
+## Without JavaScript
+
+`Select` needs JavaScript to open. For a form that must work before the page hydrates, or for a remote form's `as('select')` and `as('select multiple')` spreads, use [Native Select](/docs/components/native-select).
+
 ## Align Item With Trigger
 
 Use `alignItemWithTrigger` on `SelectContent` to control whether the selected item aligns with the trigger. When `true` (default), the popup positions so the selected item appears over the trigger. When `false`, the popup aligns to the trigger edge like a menu, and `side` and `align` apply.

@@ -68,3 +68,7 @@ export const signup = form(signupSchema, async (data, issue) => {
 `as()` gives the control the field's `name`, `type`, value and `aria-invalid`. `FieldError` shows the field's issues, and renders nothing while there are none. When the handler returns, `f.result` holds its return value and the form resets.
 
 The form also works before the page hydrates and with JavaScript off: the browser checks the constraints, the form posts to the server, and the page renders again with the issues.
+
+## Controls
+
+`as()` describes a native input, so it spreads onto a control that renders one: [Input](/docs/components/input#remote-forms), [Textarea](/docs/components/textarea), [Native Select](/docs/components/native-select#remote-forms), [Native Checkbox](/docs/components/native-checkbox#remote-forms), [Native Switch](/docs/components/native-switch#remote-forms), [Native Radio Group](/docs/components/native-radio-group#remote-forms) and [Native Slider](/docs/components/native-slider#remote-forms). `InputGroupInput`, `InputGroupTextarea` and `Button` with `as('submit', value)` take it as well.
