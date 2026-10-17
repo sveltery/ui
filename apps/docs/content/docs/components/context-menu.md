@@ -3,7 +3,7 @@ title: Context Menu
 description: Displays a menu of actions triggered by a right click.
 ---
 
-<ComponentPreview name="base/ContextMenuExample" />
+<ComponentPreview name="base/ContextMenuDemoExample" align="start" />
 
 ## Installation
 
@@ -96,47 +96,67 @@ ContextMenu
                 └── ContextMenuItem
 ```
 
-## Checkboxes and radio groups
+## Basic
 
-Bind `checked` on `ContextMenuCheckboxItem` and `value` on `ContextMenuRadioGroup`. Neither closes the menu when picked.
+A simple context menu with a few actions.
 
-```svelte
-<script lang="ts">
-  let showBookmarksBar = $state(true);
-  let theme = $state('light');
-</script>
+<ComponentPreview name="base/ContextMenuBasicExample" align="start" />
 
-<ContextMenuContent>
-  <ContextMenuCheckboxItem bind:checked={showBookmarksBar}>Show Bookmarks Bar</ContextMenuCheckboxItem>
-  <ContextMenuSeparator />
-  <ContextMenuRadioGroup bind:value={theme}>
-    <ContextMenuRadioItem value="light">Light</ContextMenuRadioItem>
-    <ContextMenuRadioItem value="dark">Dark</ContextMenuRadioItem>
-  </ContextMenuRadioGroup>
-</ContextMenuContent>
-```
+## Submenu
 
-## Submenus
+Use `ContextMenuSub` to nest secondary actions. Wrap a `ContextMenuSubTrigger` and a `ContextMenuSubContent` in `ContextMenuSub`. The submenu opens on hover, on Enter and on the arrow key toward its side, and the opposite arrow key closes it.
 
-Wrap a `ContextMenuSubTrigger` and a `ContextMenuSubContent` in `ContextMenuSub`. The submenu opens on hover, on Enter and on the arrow key toward its side, and the opposite arrow key closes it.
+<ComponentPreview name="base/ContextMenuSubmenuExample" align="start" />
 
-```svelte
-<ContextMenuSub>
-  <ContextMenuSubTrigger>More Tools</ContextMenuSubTrigger>
-  <ContextMenuSubContent>
-    <ContextMenuItem>Save Page...</ContextMenuItem>
-    <ContextMenuItem>Developer Tools</ContextMenuItem>
-  </ContextMenuSubContent>
-</ContextMenuSub>
-```
+## Shortcuts
 
-## Destructive items
+Add `ContextMenuShortcut` to show keyboard hints.
 
-Set `variant="destructive"` on `ContextMenuItem` to style an item as destructive.
+<ComponentPreview name="base/ContextMenuShortcutsExample" align="start" />
+
+## Groups
+
+Group related actions and separate them with dividers.
+
+<ComponentPreview name="base/ContextMenuGroupsExample" align="start" />
+
+## Icons
+
+Combine icons with labels for quick scanning.
+
+<ComponentPreview name="base/ContextMenuIconsExample" align="start" />
+
+## Checkboxes
+
+Use `ContextMenuCheckboxItem` for toggles. Bind `checked` to read or change the state. Picking an item does not close the menu.
+
+<ComponentPreview name="base/ContextMenuCheckboxesExample" align="start" />
+
+## Radio
+
+Use `ContextMenuRadioItem` for exclusive choices. Bind `value` on `ContextMenuRadioGroup` to read or change the selection. Picking an item does not close the menu.
+
+<ComponentPreview name="base/ContextMenuRadioExample" align="start" />
+
+## Destructive
+
+Use `variant="destructive"` to style the menu item as destructive.
+
+<ComponentPreview name="base/ContextMenuDestructiveExample" align="start" />
 
 ## Sides
 
-Pass `side` to `ContextMenuContent` to choose where the menu sits against the pointer. It defaults to `right`. Use `inline-start` or `inline-end` to follow the text direction, which flips them in right-to-left layouts.
+Control submenu placement with side and align props. `side` defaults to `right`. Use `inline-start` or `inline-end` to follow the text direction, which flips them in right-to-left layouts.
+
+<ComponentPreview name="base/ContextMenuSidesExample" align="start" />
+
+## RTL
+
+Wrap the context menu in a [DirectionProvider](/docs/components/direction) and set `dir` on `ContextMenuContent` and `ContextMenuSubContent`. Use the buttons to switch the language.
+
+<ComponentPreview name="base/ContextMenuRtlExample" align="start" />
+
+Use `side="inline-end"` to place the menu on the logical right side of the trigger.
 
 ```svelte
 <ContextMenu>
@@ -144,6 +164,8 @@ Pass `side` to `ContextMenuContent` to choose where the menu sits against the po
   <ContextMenuContent side="inline-end">
     <ContextMenuItem>Profile</ContextMenuItem>
     <ContextMenuItem>Billing</ContextMenuItem>
+    <ContextMenuItem>Team</ContextMenuItem>
+    <ContextMenuItem>Subscription</ContextMenuItem>
   </ContextMenuContent>
 </ContextMenu>
 ```
@@ -152,6 +174,8 @@ Pass `side` to `ContextMenuContent` to choose where the menu sits against the po
 
 `ContextMenuTrigger` renders a `<div>` that covers the area to listen on. Pass `class` to size and style it. To use another element, pass a `render` snippet and spread its props onto that element.
 
-## API reference
+## API Reference
 
-`ContextMenu` is styled on top of the Sveltery Base `ContextMenu` primitive, which owns pointer anchoring, long press, keyboard navigation, typeahead, focus handling and dismissal. `ContextMenuContent` renders the Base portal, positioner and popup, and takes the positioner's `side`, `align`, `sideOffset` and `alignOffset` props. `ContextMenuItem`, `ContextMenuCheckboxItem`, `ContextMenuRadioItem`, `ContextMenuLabel` and `ContextMenuSubTrigger` take `inset`, and `ContextMenuItem` also takes `variant` (`default` or `destructive`). See the [Base UI Context Menu documentation](https://base-ui.com/react/components/context-menu) for the behavior it ports.
+See the [Base UI Context Menu](https://base-ui.com/react/components/context-menu#api-reference) documentation.
+
+`ContextMenuContent` renders the Base portal, positioner and popup, and takes the positioner's `side`, `align`, `sideOffset` and `alignOffset` props. `ContextMenuItem`, `ContextMenuCheckboxItem`, `ContextMenuRadioItem`, `ContextMenuLabel` and `ContextMenuSubTrigger` take `inset`, and `ContextMenuItem` also takes `variant` (`default` or `destructive`).

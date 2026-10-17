@@ -49,7 +49,7 @@ Base UI marks an open trigger with its own attributes. A collapsible trigger get
 
 **Sveltery UI:** All eight styles use `data-popup-open:bg-accent` on the sub-triggers of the [Context Menu](/docs/components/context-menu), [Dropdown Menu](/docs/components/dropdown-menu) and [Menubar](/docs/components/menubar).
 
-**Why:** A Base UI submenu trigger gets [`data-popup-open`](https://github.com/mui/base-ui/blob/v1.9.0/packages/react/src/menu/submenu-trigger/MenuSubmenuTriggerDataAttributes.ts), not `data-open`. In upstream's context menu, the parent row loses its highlight when the pointer moves into the submenu. On the [ui.shadcn.com context menu preview](https://ui.shadcn.com/preview/base/context-menu-example), an open sub-trigger with the pointer in its submenu has `data-popup-open` and a transparent background. The highlight is intended: shadcn/ui's Radix variant keeps it, and Base UI's own [submenu demo](https://github.com/mui/base-ui/blob/v1.9.0/docs/src/app/(docs)/react/components/context-menu/demos/submenu/css-modules/index.module.css#L158) styles `[data-popup-open]`.
+**Why:** A Base UI submenu trigger gets [`data-popup-open`](https://github.com/mui/base-ui/blob/v1.9.0/packages/react/src/menu/submenu-trigger/MenuSubmenuTriggerDataAttributes.ts), not `data-open`. In upstream's context menu, the parent row loses its highlight when the pointer moves into the submenu. On the [ui.shadcn.com context menu preview](https://ui.shadcn.com/preview/base/context-menu-example), an open sub-trigger with the pointer in its submenu has `data-popup-open` and a transparent background. The highlight is intended: shadcn/ui's Radix variant keeps it, and Base UI's own [submenu demo](<https://github.com/mui/base-ui/blob/v1.9.0/docs/src/app/(docs)/react/components/context-menu/demos/submenu/css-modules/index.module.css#L158>) styles `[data-popup-open]`.
 
 **Decided:** Hugo Hsi, 2026-10-16
 
@@ -114,6 +114,16 @@ Where upstream code misbehaves on Base UI, Sveltery UI fixes it instead of copyi
 **Sveltery UI:** [Radio Group](/docs/components/radio-group) items and the [Checkbox](/docs/components/checkbox) use `data-disabled:cursor-not-allowed data-disabled:opacity-50`, as upstream's switch already does.
 
 **Why:** In upstream, a disabled radio item looks the same as an enabled one, and a disabled checkbox dims only inside a `Field`, through the style's `group-has-disabled/field:opacity-50`. Base UI sets `data-disabled` on both when they are disabled.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### A disabled Accordion item is dimmed
+
+**Upstream:** The trigger in [`accordion.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/accordion.tsx#L36) dims with `aria-disabled:pointer-events-none aria-disabled:opacity-50`. Base UI 1.9.0 renders a disabled trigger as a native button with `disabled` and no `aria-disabled` ([`AccordionTrigger.tsx`](https://github.com/mui/base-ui/blob/v1.9.0/packages/react/src/accordion/trigger/AccordionTrigger.tsx#L44)).
+
+**Sveltery UI:** The [Accordion](/docs/components/accordion) trigger also uses `disabled:pointer-events-none disabled:opacity-50`.
+
+**Why:** With Base UI 1.9.0, a disabled Accordion item in upstream looks the same as an enabled one. The shadcn/ui site dims it only because it runs an older Base UI that sets `aria-disabled`.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
@@ -362,6 +372,54 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Why:** The docs show each example in a preview frame. A sidebar sized to the viewport would overflow it. At phone widths, the inset content is taller than the frame, and `overflow-auto` lets you scroll it. Without it, the frame cuts the content off.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
+
+### The Bubble variants example writes its ghost text as HTML
+
+**Upstream:** The ghost bubble in [`bubble-variants.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/bubble-variants.tsx#L42) renders its text through a `Markdown` component.
+
+**Sveltery UI:** The [Bubble](/docs/components/bubble) Variants example writes the same text with `<p>`, `<strong>` and `<code>`.
+
+**Why:** Sveltery UI has no Markdown component. The preview looks the same.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### The Breadcrumb separator example links to /docs/components
+
+**Upstream:** The Components link in [`breadcrumb-separator.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/breadcrumb-separator.tsx#L24) points to `/components`.
+
+**Sveltery UI:** The [Breadcrumb](/docs/components/breadcrumb) Custom separator example points it to `/docs/components`, as the Collapsed example already does.
+
+**Why:** The docs site prerenders every link, and `/components` is not a page here, so the build fails on it.
+
+### Empty examples use Lucide icons where upstream uses Tabler
+
+**Upstream:** [`empty-demo.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/empty-demo.tsx), [`empty-outline.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/empty-outline.tsx) and [`empty-background.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/empty-background.tsx) import `IconFolderCode`, `IconCloud` and `IconBell` from `@tabler/icons-react`.
+
+**Sveltery UI:** The [Empty](/docs/components/empty) examples import `FolderCodeIcon`, `CloudIcon` and `BellIcon` from `@lucide/svelte`.
+
+**Why:** The docs site depends on `@lucide/svelte` only. The Lucide icons draw the same folder, cloud and bell.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Item avatar section does not name an `avatar` variant
+
+**Upstream:** The [Item page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/item.mdx) says "You can use `ItemMedia` with `variant="avatar"` to display an avatar." `ItemMedia` has only the `default`, `icon` and `image` variants, and the example uses the default.
+
+**Sveltery UI:** The [Item](/docs/components/item) page says "You can use `ItemMedia` to display an avatar."
+
+**Why:** `variant="avatar"` does nothing, so copying it from the page would mislead.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Item group example labels its icon buttons
+
+**Upstream:** [`item-group.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/item-group.tsx) renders an icon-only button with no accessible name.
+
+**Sveltery UI:** The [Item](/docs/components/item) group example adds `aria-label="Add {username}"` to each button.
+
+**Why:** A screen reader announces an unnamed button as just "button".
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
 ## Forms
 

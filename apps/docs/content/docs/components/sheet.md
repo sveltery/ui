@@ -3,7 +3,7 @@ title: Sheet
 description: Extends the Dialog component to display content that complements the main content of the screen.
 ---
 
-<ComponentPreview name="base/SheetExample" />
+<ComponentPreview name="base/SheetDemoExample" />
 
 ## Installation
 
@@ -48,24 +48,69 @@ The component folders import each other with relative paths, so keep them side b
 ```svelte
 <script lang="ts">
   import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '#lib/components/ui/sheet';
-  let open = $state(false);
 </script>
 ```
 
 ```svelte
-<Sheet bind:open>
+<Sheet>
   <SheetTrigger>Open</SheetTrigger>
-  <SheetContent side="right">
+  <SheetContent>
     <SheetHeader>
       <SheetTitle>Are you absolutely sure?</SheetTitle>
-      <SheetDescription>This action cannot be undone. It permanently deletes your account.</SheetDescription>
+      <SheetDescription>This action cannot be undone.</SheetDescription>
     </SheetHeader>
   </SheetContent>
 </Sheet>
 ```
 
+## Composition
+
+Use the following composition to build a `Sheet`.
+
+```text
+Sheet
+├── SheetTrigger
+└── SheetContent
+    ├── SheetHeader
+    │   ├── SheetTitle
+    │   └── SheetDescription
+    └── SheetFooter
+```
+
+## Binding the open state
+
+Bind `open` to read or change the state of the sheet from your code.
+
+```svelte
+<script lang="ts">
+  let open = $state(false);
+</script>
+
+<Sheet bind:open>
+  ...
+</Sheet>
+```
+
+## Side
+
+Use the `side` prop on `SheetContent` to set the edge of the screen where the sheet appears. Values are `top`, `right`, `bottom`, or `left`.
+
+<ComponentPreview name="base/SheetSideExample" />
+
+## No Close Button
+
+Use `showCloseButton={false}` on `SheetContent` to hide the close button.
+
+<ComponentPreview name="base/SheetNoCloseButtonExample" />
+
+## RTL
+
+Wrap the sheet in a [DirectionProvider](/docs/components/direction) and set `dir` on `SheetContent`. Use the buttons to switch the language.
+
+<ComponentPreview name="base/SheetRtlExample" align="start" />
+
+## API Reference
+
+See the [Base UI Dialog](https://base-ui.com/react/components/dialog#api-reference) documentation.
+
 `SheetContent` takes `side` (`top`, `right`, `bottom` or `left`, default `right`) and `showCloseButton` (default `true`).
-
-## API reference
-
-`Sheet` is styled on top of the Sveltery Base `Dialog` primitive, which owns its behavior, focus handling and accessibility. See the [Base UI Dialog documentation](https://base-ui.com/react/components/dialog) for the behavior it ports.

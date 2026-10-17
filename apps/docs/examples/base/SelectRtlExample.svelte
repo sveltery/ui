@@ -79,7 +79,7 @@
       <SelectTrigger class="w-32" dir={t.dir}>
         <SelectValue />
       </SelectTrigger>
-      <SelectContent dir={t.dir}>
+      <SelectContent dir={t.dir} data-lang={t.dir === 'rtl' ? language : undefined}>
         <SelectGroup>
           <SelectLabel>{t.fruits}</SelectLabel>
           {#each fruits as item (item.value)}
