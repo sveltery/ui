@@ -15,7 +15,7 @@ import { RequiresDefaultProps } from '../util/resolveDefaultProps.js';
 import { WithIdRequired } from '../util/useUniqueId.js';
 import { ZIndexable } from '../zIndex/ZIndexLayer.js';
 import { DefaultZIndexes } from '../zIndex/DefaultZIndexes.js';
-const STABLE_EMPTY_ARRAY: readonly RadialBarDataItem[] = [];
+export const STABLE_EMPTY_ARRAY: readonly RadialBarDataItem[] = [];
 export type RadialBarDataItem = SectorProps &
   PolarViewBoxRequired &
   TooltipTriggerInfo & {
@@ -174,7 +174,7 @@ export type RadialBarProps<DataPointType = any, DataValueType = any> = Omit<
   'ref' | keyof InternalRadialBarProps<DataPointType, DataValueType>
 > &
   Omit<InternalRadialBarProps<DataPointType, DataValueType>, 'sectors'>;
-type InternalProps = WithIdRequired<PropsWithDefaults> & Pick<InternalRadialBarProps, 'sectors'>;
+export type InternalProps = WithIdRequired<PropsWithDefaults> & Pick<InternalRadialBarProps, 'sectors'>;
 export const defaultRadialBarProps = {
   angleAxisId: 0,
   animationBegin: 0,

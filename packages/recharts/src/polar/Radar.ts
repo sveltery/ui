@@ -1,10 +1,11 @@
 import { MouseEvent, ReactElement, SVGProps } from '../react.js';
 import last from 'es-toolkit/compat/last';
-import { isNullish } from '../util/DataUtils.js';
+import { interpolate, isNullish } from '../util/DataUtils.js';
 import { polarToCartesian } from '../util/PolarUtils.js';
-import { getValueByDataKey } from '../util/ChartUtils.js';
+import { getTooltipNameProp, getValueByDataKey } from '../util/ChartUtils.js';
 import { ImplicitLabelListType } from '../component/LabelList.js';
 import { ActiveDotType, AnimationDuration, AnimationTiming, DataConsumer, DataKey, DotType, LegendType, TooltipType } from '../util/types.js';
+import type { LegendPayload } from '../component/DefaultLegendContent.js';
 import { RequiresDefaultProps } from '../util/resolveDefaultProps.js';
 import { WithIdRequired } from '../util/useUniqueId.js';
 import { ZIndexable } from '../zIndex/ZIndexLayer.js';
@@ -132,6 +133,22 @@ export type RadarComposedData = {
   baseLinePoints: RadarPoint[];
   isRange: boolean;
 };
+export function getLegendItemColor(stroke: string | undefined, fill: string | undefined): string | undefined {
+  return stroke && stroke !== 'none' ? stroke : fill;
+}
+export const computeLegendPayloadFromRadarSectors = (props: PropsWithDefaults): ReadonlyArray<LegendPayload> => {
+  const { dataKey, name, stroke, fill, legendType, hide } = props;
+  return [
+    {
+      inactive: hide,
+      dataKey,
+      type: legendType,
+      color: getLegendItemColor(stroke, fill),
+      value: getTooltipNameProp(name, dataKey),
+      payload: props,
+    },
+  ];
+};
 export function computeRadarPoints({
   radiusAxis,
   angleAxis,
@@ -195,6 +212,25 @@ export function computeRadarPoints({
 
   return { points, isRange, baseLinePoints };
 }
+export const interpolatePolarPoint =
+  (prevPoints: ReadonlyArray<RadarPoint> | undefined, prevPointsDiffFactor: number, t: number) =>
+  (entry: RadarPoint, index: number) => {
+    const prev = prevPoints && prevPoints[Math.floor(index * prevPointsDiffFactor)];
+
+    if (prev) {
+      return {
+        ...entry,
+        x: interpolate(prev.x, entry.x, t),
+        y: interpolate(prev.y, entry.y, t),
+      };
+    }
+
+    return {
+      ...entry,
+      x: interpolate(entry.cx, entry.x, t),
+      y: interpolate(entry.cy, entry.y, t),
+    };
+  };
 export const defaultRadarProps = {
   activeDot: true,
   angleAxisId: 0,
