@@ -12,6 +12,8 @@
   } from '$registry/bases/base/ui/trace';
 
   let controlled = $state(false);
+  let running = $state(false);
+  let userOpen = $state<boolean>();
 </script>
 
 <div data-testid="lines">
@@ -65,6 +67,16 @@
   </TraceCollapsible>
   <button type="button" onclick={() => (controlled = !controlled)}>Toggle pnpm output</button>
   <output>{controlled ? 'open' : 'closed'}</output>
+</div>
+
+<div data-testid="follows-running">
+  <TraceCollapsible bind:open={() => userOpen ?? running, (next) => (userOpen = next)}>
+    <TraceCollapsibleTrigger>
+      <TraceLine status={running ? 'running' : undefined}><TraceTitle>{running ? 'Thinking' : 'Thought'}</TraceTitle></TraceLine>
+    </TraceCollapsibleTrigger>
+    <TraceCollapsibleContent>reasoning text</TraceCollapsibleContent>
+  </TraceCollapsible>
+  <button type="button" onclick={() => (running = !running)}>Toggle running</button>
 </div>
 
 <div data-testid="kept">
