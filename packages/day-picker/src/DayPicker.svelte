@@ -1,5 +1,5 @@
 <!--
-  A date picker grid. Ports react-day-picker v9.14.0 DayPicker.tsx with the markup of v9.8.1, the version shadcn/ui renders; MIT, see THIRD_PARTY_NOTICES.md.
+  A date picker grid. Ports react-day-picker v9.8.1 DayPicker.tsx, the version shadcn/ui renders; MIT, see THIRD_PARTY_NOTICES.md.
 -->
 <script lang="ts">
   import { untrack } from 'svelte';

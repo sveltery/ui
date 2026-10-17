@@ -1,6 +1,6 @@
 # Third-party notices
 
-The calendar grid, matchers, selection rules, keyboard navigation, labels and markup port [react-day-picker](https://github.com/gpbl/react-day-picker) v9.14.0, with the markup of v9.8.1, under the MIT License below.
+The calendar grid, matchers, selection rules, keyboard navigation, labels and markup port [react-day-picker](https://github.com/gpbl/react-day-picker) v9.8.1 under the MIT License below.
 
 The MIT License (MIT)
 
