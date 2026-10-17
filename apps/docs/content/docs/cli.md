@@ -279,6 +279,35 @@ Options:
 
 ---
 
+## view
+
+Use the `view` command to print registry items as JSON. It never writes anything and needs no `components.json`.
+
+```bash
+npx @sveltery/ui@latest view button
+```
+
+`view` prints one JSON array with an object for each argument, in the order you gave them. Each object is the item as the registry serves it, with the content of its files. It does not fetch the items they depend on. An argument is an item name, or the URL of an item.
+
+The item name resolves in the style from `components.json`, or `nova` when there is none. The registry is `SVELTERY_REGISTRY_URL`, else the `registry` key of `components.json`, else the Sveltery registry.
+
+**Options**
+
+```txt
+Usage: sveltery view [options] <items...>
+
+view items from the registry
+
+Arguments:
+  items         item names, or URLs of registry items
+
+Options:
+  --cwd <path>  the project root (default: ".")
+  -h, --help    display help for command
+```
+
+---
+
 ## list
 
 Use the `list` command to see every item in the registry. Items in your project are marked `installed`.
@@ -320,4 +349,4 @@ SVELTERY_REGISTRY_URL=https://preview.example.com/r npx @sveltery/ui@latest add 
 
 ## Not supported
 
-The shadcn CLI has commands and options that this CLI does not have yet: `apply`, `view`, `search`, `build`, `docs`, `info`, `migrate` and `eject`, namespaced registries, local file paths as items, JavaScript output and the RTL transform. See [Registry](/docs/registry), [JavaScript](/docs/javascript) and [RTL](/docs/rtl) for what works today.
+The shadcn CLI has commands and options that this CLI does not have yet: `apply`, `search`, `build`, `docs`, `info`, `migrate` and `eject`, namespaced registries, local file paths as items, JavaScript output and the RTL transform. See [Registry](/docs/registry), [JavaScript](/docs/javascript) and [RTL](/docs/rtl) for what works today.

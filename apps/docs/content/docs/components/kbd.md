@@ -3,7 +3,7 @@ title: Kbd
 description: Used to display textual user input from keyboard.
 ---
 
-<ComponentPreview name="base/KbdExample" />
+<ComponentPreview name="base/KbdDemoExample" />
 
 ## Installation
 
@@ -52,8 +52,75 @@ The component folders import each other with relative paths, so keep them side b
 ```
 
 ```svelte
+<Kbd>Ctrl</Kbd>
+```
+
+## Composition
+
+Use the following composition to build `Kbd` and `KbdGroup`:
+
+```text
+Kbd
+KbdGroup
+├── Kbd
+└── Kbd
+```
+
+## Group
+
+Use the `KbdGroup` component to group keyboard keys together.
+
+<ComponentPreview name="base/KbdGroupExample" />
+
+## Button
+
+Use the `Kbd` component inside a `Button` component to display a keyboard key inside a button.
+
+<ComponentPreview name="base/KbdButtonExample" />
+
+## Tooltip
+
+You can use the `Kbd` component inside a `Tooltip` component to display a tooltip with a keyboard key.
+
+<ComponentPreview name="base/KbdTooltipExample" />
+
+## Input Group
+
+You can use the `Kbd` component inside a `InputGroupAddon` component to display a keyboard key inside an input group.
+
+<ComponentPreview name="base/KbdInputGroupExample" />
+
+## RTL
+
+Wrap the keys in a [DirectionProvider](/docs/components/direction) and set `dir` on their container. Use the buttons to switch the language.
+
+<ComponentPreview name="base/KbdRtlExample" align="start" />
+
+## API Reference
+
+### Kbd
+
+Use the `Kbd` component to display a keyboard key.
+
+| Prop    | Type     | Default |
+| ------- | -------- | ------- |
+| `class` | `string` | -       |
+
+```svelte
+<Kbd>Ctrl</Kbd>
+```
+
+### KbdGroup
+
+Use the `KbdGroup` component to group `Kbd` components together.
+
+| Prop    | Type     | Default |
+| ------- | -------- | ------- |
+| `class` | `string` | -       |
+
+```svelte
 <KbdGroup>
   <Kbd>Ctrl</Kbd>
-  <Kbd>K</Kbd>
+  <Kbd>B</Kbd>
 </KbdGroup>
 ```
