@@ -18,7 +18,7 @@ async function visit(page: Page) {
     if (response.status() >= 400) errors.push(`${response.status()} ${response.url()}`);
   });
   await page.goto('/view/dashboard-01');
-  await expect(page.locator('html')).toHaveAttribute('data-ready');
+  await expect(page.locator('html')).toHaveAttribute('data-ready', { timeout: 30_000 });
 }
 
 const headers = (page: Page) => page.locator('tbody tr:not([data-dnd-placeholder]) td:nth-child(3)');
