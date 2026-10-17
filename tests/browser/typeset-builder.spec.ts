@@ -93,7 +93,7 @@ test('Shuffle keeps locked choices and the specimen', async ({ page }) => {
 test('the docs panel writes the preset and wrapper for the picks, and copies the stylesheet', async ({ page, context, request }) => {
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
   await visit(page, '/typeset?heading=merriweather&mono=jetbrains-mono&scale=16&measure=60&item=chat');
-  const panel = page.getByRole('tabpanel');
+  const panel = page.getByRole('tabpanel', { name: 'Docs' });
   await expect(panel).toContainText(`.typeset-chat {
   --typeset-font-body: var(--font-geist);
   --typeset-font-heading: var(--font-merriweather);
@@ -112,6 +112,6 @@ test('the docs panel writes the preset and wrapper for the picks, and copies the
   expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(css);
 
   await page.getByRole('tab', { name: 'Prompt' }).click();
-  await expect(page.getByRole('tabpanel')).toContainText('Install shadcn/typeset in this project.');
-  await expect(page.getByRole('tabpanel')).toContainText('--typeset-font-heading: var(--font-merriweather);');
+  await expect(page.getByRole('tabpanel', { name: 'Prompt' })).toContainText('Install shadcn/typeset in this project.');
+  await expect(page.getByRole('tabpanel', { name: 'Prompt' })).toContainText('--typeset-font-heading: var(--font-merriweather);');
 });
