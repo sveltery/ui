@@ -11,7 +11,7 @@ if runs static; then
   node scripts/generate-icons.mjs --check
   pnpm lint
 fi
-pnpm --filter @sveltery/resizable --filter @sveltery/svelte --filter @sveltery/command build
+pnpm --filter @sveltery/resizable --filter @sveltery/svelte --filter @sveltery/command --filter @sveltery/recharts build
 if runs static; then pnpm check; fi
 if runs unit; then
   # The docs registry tests extend the docs app's generated tsconfig, which check or build would otherwise create.
