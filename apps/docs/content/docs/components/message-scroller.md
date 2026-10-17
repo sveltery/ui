@@ -170,12 +170,6 @@ MessageScrollerProvider
   indicator, separator, join/leave event, or "load earlier" row.
 - **`MessageScrollerButton`** — the scroll control. Scrolls to the start or end of the transcript and is inert until there is content in its direction.
 
-## Example
-
-A complete chat with a composer, a thinking marker while the reply is pending, and a stop button.
-
-<ComponentPreview name="base/MessageScrollerExample" />
-
 ## Core Concepts
 
 ### Anchoring Turns
@@ -473,10 +467,6 @@ Read the properties where you use them. Destructuring `scrollable` or
 `visibility` copies the value once and stops following the scroller.
 
 <ComponentPreview name="base/MessageScrollerScrollable" />
-
-The example below turns the same two flags into a status bar.
-
-<ComponentPreview name="base/MessageScrollerState" />
 
 ## Performance
 
