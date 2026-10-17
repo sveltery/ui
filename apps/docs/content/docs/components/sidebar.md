@@ -548,9 +548,9 @@ Here are some tips for styling the sidebar based on different states.
 
 ## RTL
 
-Wrap the sidebar in a [DirectionProvider](/docs/components/direction), then set `dir` on `Sidebar` and `side` to match. Use the buttons to switch the language.
+Wrap the sidebar in a [DirectionProvider](/docs/components/direction), then set `dir` on `Sidebar` and `side` to match. Use the language selector to switch the language.
 
-<ComponentPreview name="base/SidebarRtlExample" />
+<ComponentPreview name="base/SidebarRtlExample" direction="rtl" />
 
 ## Changelog
 

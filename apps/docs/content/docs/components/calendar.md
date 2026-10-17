@@ -174,9 +174,9 @@ Use `showWeekNumber` to show week numbers.
 
 ## RTL
 
-Wrap the calendar in a [DirectionProvider](/docs/components/direction) and pass `dir`. Use the buttons to switch the language.
+Wrap the calendar in a [DirectionProvider](/docs/components/direction) and pass `dir`. Use the language selector to switch the language.
 
-<ComponentPreview name="base/CalendarRtlExample" />
+<ComponentPreview name="base/CalendarRtlExample" direction="rtl" />
 
 When using RTL, import the locale from `date-fns/locale` and pass both the `locale` and `dir` props to the Calendar component:
 

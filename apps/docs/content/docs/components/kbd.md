@@ -92,9 +92,9 @@ You can use the `Kbd` component inside a `InputGroupAddon` component to display 
 
 ## RTL
 
-Wrap the keys in a [DirectionProvider](/docs/components/direction) and set `dir` on their container. Use the buttons to switch the language.
+Wrap the keys in a [DirectionProvider](/docs/components/direction) and set `dir` on their container. Use the language selector to switch the language.
 
-<ComponentPreview name="base/KbdRtlExample" align="start" />
+<ComponentPreview name="base/KbdRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 

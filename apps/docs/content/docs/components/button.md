@@ -138,9 +138,9 @@ You can use the `buttonVariants` helper to make a link look like a button.
 
 ## RTL
 
-Wrap the buttons in a [DirectionProvider](/docs/components/direction) and set `dir` on their container. Use the buttons to switch the language.
+Wrap the buttons in a [DirectionProvider](/docs/components/direction) and set `dir` on their container. Use the language selector to switch the language.
 
-<ComponentPreview name="base/ButtonRtlExample" />
+<ComponentPreview name="base/ButtonRtlExample" direction="rtl" />
 
 ## API Reference
 

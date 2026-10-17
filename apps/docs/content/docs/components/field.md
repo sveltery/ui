@@ -193,9 +193,9 @@ Stack `Field` components with `FieldGroup`. Add `FieldSeparator` to divide them.
 
 ## RTL
 
-Wrap the form in a [DirectionProvider](/docs/components/direction) and set `dir` on the container. Use the buttons to switch the language.
+Wrap the form in a [DirectionProvider](/docs/components/direction) and set `dir` on the container. Use the language selector to switch the language.
 
-<ComponentPreview name="base/FieldRtlExample" align="start" class="[&_[data-slot=preview]]:max-h-none" />
+<ComponentPreview name="base/FieldRtlExample" direction="rtl" align="start" class="[&_[data-slot=preview]]:max-h-none" />
 
 ## Responsive Layout
 

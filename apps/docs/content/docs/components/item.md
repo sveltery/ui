@@ -160,9 +160,9 @@ Use the `render` snippet to render the item as a link. Spread `props` onto the a
 
 ## RTL
 
-Wrap the items in a [DirectionProvider](/docs/components/direction) and set `dir` on them. Use the buttons to switch the language.
+Wrap the items in a [DirectionProvider](/docs/components/direction) and set `dir` on them. Use the language selector to switch the language.
 
-<ComponentPreview name="base/ItemRtlExample" align="start" />
+<ComponentPreview name="base/ItemRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 

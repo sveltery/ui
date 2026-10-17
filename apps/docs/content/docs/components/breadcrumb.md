@@ -127,9 +127,9 @@ To use a custom link component from your routing library, you can use the `rende
 
 ## RTL
 
-Wrap the breadcrumb in a [DirectionProvider](/docs/components/direction) and set `dir` on `Breadcrumb` and `DropdownMenuContent`. Use the buttons to switch the language.
+Wrap the breadcrumb in a [DirectionProvider](/docs/components/direction) and set `dir` on `Breadcrumb` and `DropdownMenuContent`. Use the language selector to switch the language.
 
-<ComponentPreview name="base/BreadcrumbRtlExample" class="[&_[data-slot=preview]]:p-2" />
+<ComponentPreview name="base/BreadcrumbRtlExample" direction="rtl" class="[&_[data-slot=preview]]:p-2" />
 
 ## API Reference
 

@@ -243,9 +243,9 @@ You can use the `plugins` prop to add plugins to the carousel.
 
 ## RTL
 
-Wrap the carousel in a [DirectionProvider](/docs/components/direction), set `dir` on `Carousel` and use the buttons to switch the language.
+Wrap the carousel in a [DirectionProvider](/docs/components/direction), set `dir` on `Carousel` and use the language selector to switch the language.
 
-<ComponentPreview name="base/CarouselRtlExample" align="start" />
+<ComponentPreview name="base/CarouselRtlExample" direction="rtl" align="start" />
 
 When localizing the carousel for RTL languages, you need to set the `direction` option in the `opts` prop to match the text direction. This ensures the carousel scrolls in the correct direction.
 

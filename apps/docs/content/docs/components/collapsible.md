@@ -103,9 +103,9 @@ Use nested collapsibles to build a file tree.
 
 ## RTL
 
-Wrap the collapsible in a [DirectionProvider](/docs/components/direction) and set `dir` on `Collapsible`. Use the buttons to switch the language.
+Wrap the collapsible in a [DirectionProvider](/docs/components/direction) and set `dir` on `Collapsible`. Use the language selector to switch the language.
 
-<ComponentPreview name="base/CollapsibleRtlExample" align="start" />
+<ComponentPreview name="base/CollapsibleRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 

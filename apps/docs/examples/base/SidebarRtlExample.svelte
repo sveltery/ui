@@ -22,9 +22,7 @@
   import SquareTerminal from '@lucide/svelte/icons/square-terminal';
   import Trash2 from '@lucide/svelte/icons/trash-2';
   import { Avatar, AvatarFallback, AvatarImage } from '$registry/bases/base/ui/avatar';
-  import { Button } from '$registry/bases/base/ui/button';
   import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '$registry/bases/base/ui/collapsible';
-  import { DirectionProvider } from '$registry/bases/base/ui/direction';
   import {
     DropdownMenu,
     DropdownMenuContent,
@@ -53,6 +51,7 @@
     SidebarRail,
     SidebarTrigger
   } from '$registry/bases/base/ui/sidebar';
+  import { useLanguage } from '$lib/components/docs/language.svelte';
 
   const translations = {
     en: {
@@ -168,9 +167,9 @@
     }
   } as const;
 
-  let language = $state<keyof typeof translations>('ar');
-  const dir = $derived(translations[language].dir);
-  const t = $derived(translations[language].values);
+  const language = useLanguage();
+  const dir = $derived(translations[language.current].dir);
+  const t = $derived(translations[language.current].values);
 
   const navMain = $derived([
     {
@@ -247,185 +246,176 @@
   <SidebarMenuAction {...props} showOnHover>{@render children?.()}</SidebarMenuAction>
 {/snippet}
 
-<DirectionProvider direction={dir}>
-  <div class="relative h-[32rem] w-full transform-gpu overflow-hidden rounded-lg border" {dir}>
-    <div class="absolute top-4 right-4 z-10 flex gap-2 rtl:right-auto rtl:left-4" dir="ltr">
-      {#each Object.keys(translations) as code (code)}
-        <Button variant={language === code ? 'default' : 'outline'} size="sm" onclick={() => (language = code as keyof typeof translations)}>
-          {code}
-        </Button>
-      {/each}
-    </div>
-    <SidebarProvider class="h-full min-h-0">
-      <Sidebar collapsible="icon" {dir} side={dir === 'ltr' ? 'left' : 'right'} variant="floating" class="absolute h-full">
-        <SidebarHeader>
+<div class="relative h-[32rem] w-full transform-gpu overflow-hidden rounded-lg border" {dir}>
+  <SidebarProvider class="h-full min-h-0">
+    <Sidebar collapsible="icon" {dir} side={dir === 'ltr' ? 'left' : 'right'} variant="floating" class="absolute h-full">
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton size="lg" render={teamLink}>
+              <div class="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                <GalleryVerticalEnd class="size-4" />
+              </div>
+              <div class="flex flex-col gap-0.5 leading-none">
+                <span class="font-medium">{t.teamName}</span>
+                <span class="">{t.teamPlan}</span>
+              </div>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>{t.platform}</SidebarGroupLabel>
           <SidebarMenu>
+            {#each navMain as item (item.icon)}
+              {#snippet trigger(props: RenderProps, _state: unknown, children?: Snippet)}
+                <SidebarMenuButton {...props} tooltip={item.title}>{@render children?.()}</SidebarMenuButton>
+              {/snippet}
+              {#snippet menuItem(props: RenderProps, _state: unknown, children?: Snippet)}
+                <SidebarMenuItem {...props}>{@render children?.()}</SidebarMenuItem>
+              {/snippet}
+              <Collapsible open={item.isActive} class="group/collapsible" render={menuItem}>
+                <CollapsibleTrigger render={trigger}>
+                  <item.icon />
+                  <span>{item.title}</span>
+                  <ChevronRight class="ms-auto transition-transform duration-200 group-data-open/collapsible:rotate-90 rtl:rotate-180 rtl:group-data-open/collapsible:rotate-90" />
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <SidebarMenuSub>
+                    {#each item.items as subItem (subItem.title)}
+                      <SidebarMenuSubItem>
+                        <SidebarMenuSubButton href={subItem.url}>
+                          <span>{subItem.title}</span>
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
+                    {/each}
+                  </SidebarMenuSub>
+                </CollapsibleContent>
+              </Collapsible>
+            {/each}
+          </SidebarMenu>
+        </SidebarGroup>
+        <SidebarGroup class="group-data-[collapsible=icon]:hidden">
+          <SidebarGroupLabel>{t.projects}</SidebarGroupLabel>
+          <SidebarMenu>
+            {#each projects as item (item.icon)}
+              <SidebarMenuItem>
+                <SidebarMenuButton>
+                  {#snippet render(props: RenderProps, _state: unknown, children?: Snippet)}
+                    <a href={item.url} {...props}>{@render children?.()}</a>
+                  {/snippet}
+                  <item.icon />
+                  <span>{item.name}</span>
+                </SidebarMenuButton>
+                <DropdownMenu>
+                  <DropdownMenuTrigger render={moreAction}>
+                    <MoreHorizontal />
+                    <span class="sr-only">{t.more}</span>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent class="w-48 rounded-lg" side={isMobile.current ? 'bottom' : 'inline-end'} align={isMobile.current ? 'end' : 'start'} {dir}>
+                    <DropdownMenuGroup>
+                      <DropdownMenuItem>
+                        <Folder class="text-muted-foreground" />
+                        <span>{t.viewProject}</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Forward class="text-muted-foreground" />
+                        <span>{t.shareProject}</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup>
+                      <DropdownMenuItem>
+                        <Trash2 class="text-muted-foreground" />
+                        <span>{t.deleteProject}</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </SidebarMenuItem>
+            {/each}
             <SidebarMenuItem>
-              <SidebarMenuButton size="lg" render={teamLink}>
-                <div class="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <GalleryVerticalEnd class="size-4" />
-                </div>
-                <div class="flex flex-col gap-0.5 leading-none">
-                  <span class="font-medium">{t.teamName}</span>
-                  <span class="">{t.teamPlan}</span>
-                </div>
+              <SidebarMenuButton class="text-sidebar-foreground/70">
+                <MoreHorizontal class="text-sidebar-foreground/70" />
+                <span>{t.more}</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupLabel>{t.platform}</SidebarGroupLabel>
-            <SidebarMenu>
-              {#each navMain as item (item.icon)}
-                {#snippet trigger(props: RenderProps, _state: unknown, children?: Snippet)}
-                  <SidebarMenuButton {...props} tooltip={item.title}>{@render children?.()}</SidebarMenuButton>
-                {/snippet}
-                {#snippet menuItem(props: RenderProps, _state: unknown, children?: Snippet)}
-                  <SidebarMenuItem {...props}>{@render children?.()}</SidebarMenuItem>
-                {/snippet}
-                <Collapsible open={item.isActive} class="group/collapsible" render={menuItem}>
-                  <CollapsibleTrigger render={trigger}>
-                    <item.icon />
-                    <span>{item.title}</span>
-                    <ChevronRight class="ms-auto transition-transform duration-200 group-data-open/collapsible:rotate-90 rtl:rotate-180 rtl:group-data-open/collapsible:rotate-90" />
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <SidebarMenuSub>
-                      {#each item.items as subItem (subItem.title)}
-                        <SidebarMenuSubItem>
-                          <SidebarMenuSubButton href={subItem.url}>
-                            <span>{subItem.title}</span>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-                      {/each}
-                    </SidebarMenuSub>
-                  </CollapsibleContent>
-                </Collapsible>
-              {/each}
-            </SidebarMenu>
-          </SidebarGroup>
-          <SidebarGroup class="group-data-[collapsible=icon]:hidden">
-            <SidebarGroupLabel>{t.projects}</SidebarGroupLabel>
-            <SidebarMenu>
-              {#each projects as item (item.icon)}
-                <SidebarMenuItem>
-                  <SidebarMenuButton>
-                    {#snippet render(props: RenderProps, _state: unknown, children?: Snippet)}
-                      <a href={item.url} {...props}>{@render children?.()}</a>
-                    {/snippet}
-                    <item.icon />
-                    <span>{item.name}</span>
-                  </SidebarMenuButton>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger render={moreAction}>
-                      <MoreHorizontal />
-                      <span class="sr-only">{t.more}</span>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent class="w-48 rounded-lg" side={isMobile.current ? 'bottom' : 'inline-end'} align={isMobile.current ? 'end' : 'start'} {dir}>
-                      <DropdownMenuGroup>
-                        <DropdownMenuItem>
-                          <Folder class="text-muted-foreground" />
-                          <span>{t.viewProject}</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <Forward class="text-muted-foreground" />
-                          <span>{t.shareProject}</span>
-                        </DropdownMenuItem>
-                      </DropdownMenuGroup>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuGroup>
-                        <DropdownMenuItem>
-                          <Trash2 class="text-muted-foreground" />
-                          <span>{t.deleteProject}</span>
-                        </DropdownMenuItem>
-                      </DropdownMenuGroup>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </SidebarMenuItem>
-              {/each}
-              <SidebarMenuItem>
-                <SidebarMenuButton class="text-sidebar-foreground/70">
-                  <MoreHorizontal class="text-sidebar-foreground/70" />
-                  <span>{t.more}</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroup>
-        </SidebarContent>
-        <SidebarFooter>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <DropdownMenu>
-                <DropdownMenuTrigger render={userButton}>
-                  <Avatar class="rounded-lg">
-                    <AvatarImage src={user.avatar} alt={user.name} />
-                    <AvatarFallback class="rounded-lg">CN</AvatarFallback>
-                  </Avatar>
-                  <div class="grid flex-1 text-start text-sm leading-tight">
-                    <span class="truncate font-medium">{user.name}</span>
-                    <span class="truncate text-xs">{user.email}</span>
-                  </div>
-                  <ChevronsUpDown class="ms-auto size-4" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent class="w-(--anchor-width) min-w-56 rounded-lg" side={isMobile.current ? 'bottom' : 'inline-end'} align="end" sideOffset={4} {dir}>
-                  <DropdownMenuGroup>
-                    <DropdownMenuLabel class="p-0 font-normal">
-                      <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                        <Avatar>
-                          <AvatarImage src={user.avatar} alt={user.name} />
-                          <AvatarFallback class="rounded-lg">CN</AvatarFallback>
-                        </Avatar>
-                        <div class="grid flex-1 text-start text-sm leading-tight">
-                          <span class="truncate font-medium">{user.name}</span>
-                          <span class="truncate text-xs">{user.email}</span>
-                        </div>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger render={userButton}>
+                <Avatar class="rounded-lg">
+                  <AvatarImage src={user.avatar} alt={user.name} />
+                  <AvatarFallback class="rounded-lg">CN</AvatarFallback>
+                </Avatar>
+                <div class="grid flex-1 text-start text-sm leading-tight">
+                  <span class="truncate font-medium">{user.name}</span>
+                  <span class="truncate text-xs">{user.email}</span>
+                </div>
+                <ChevronsUpDown class="ms-auto size-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent class="w-(--anchor-width) min-w-56 rounded-lg" side={isMobile.current ? 'bottom' : 'inline-end'} align="end" sideOffset={4} {dir}>
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel class="p-0 font-normal">
+                    <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                      <Avatar>
+                        <AvatarImage src={user.avatar} alt={user.name} />
+                        <AvatarFallback class="rounded-lg">CN</AvatarFallback>
+                      </Avatar>
+                      <div class="grid flex-1 text-start text-sm leading-tight">
+                        <span class="truncate font-medium">{user.name}</span>
+                        <span class="truncate text-xs">{user.email}</span>
                       </div>
-                    </DropdownMenuLabel>
-                  </DropdownMenuGroup>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                      <Sparkles />
-                      {t.upgradeToPro}
-                    </DropdownMenuItem>
-                  </DropdownMenuGroup>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                      <BadgeCheck />
-                      {t.account}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <CreditCard />
-                      {t.billing}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Bell />
-                      {t.notifications}
-                    </DropdownMenuItem>
-                  </DropdownMenuGroup>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                      <LogOut />
-                      {t.logOut}
-                    </DropdownMenuItem>
-                  </DropdownMenuGroup>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarFooter>
-        <SidebarRail />
-      </Sidebar>
-      <SidebarInset class="min-w-0 overflow-auto">
-        <header class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12" {dir}>
-          <div class="flex items-center gap-2 px-4">
-            <SidebarTrigger class="-ml-1" />
-          </div>
-        </header>
-      </SidebarInset>
-    </SidebarProvider>
-  </div>
-</DirectionProvider>
+                    </div>
+                  </DropdownMenuLabel>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>
+                    <Sparkles />
+                    {t.upgradeToPro}
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>
+                    <BadgeCheck />
+                    {t.account}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <CreditCard />
+                    {t.billing}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Bell />
+                    {t.notifications}
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>
+                    <LogOut />
+                    {t.logOut}
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
+      <SidebarRail />
+    </Sidebar>
+    <SidebarInset class="min-w-0 overflow-auto">
+      <header class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12" {dir}>
+        <div class="flex items-center gap-2 px-4">
+          <SidebarTrigger class="-ml-1" />
+        </div>
+      </header>
+    </SidebarInset>
+  </SidebarProvider>
+</div>

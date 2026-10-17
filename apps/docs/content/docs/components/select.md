@@ -167,9 +167,9 @@ Add the `data-invalid` attribute to the `Field` component and the `aria-invalid`
 
 ## RTL
 
-Wrap the select in a [DirectionProvider](/docs/components/direction) and set `dir` on `SelectTrigger` and `SelectContent`. Use the buttons to switch the language.
+Wrap the select in a [DirectionProvider](/docs/components/direction) and set `dir` on `SelectTrigger` and `SelectContent`. Use the language selector to switch the language.
 
-<ComponentPreview name="base/SelectRtlExample" align="start" />
+<ComponentPreview name="base/SelectRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 
