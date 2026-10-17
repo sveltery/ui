@@ -81,10 +81,10 @@ An item counts as installed when any of its files exists under `aliases.ui`. Wit
 ## Search the registry
 
 ```sh
-npx @sveltery/ui@latest search -q dialog
+npx @sveltery/ui@latest search @sveltery -q dialog
 ```
 
-`search` (alias `list`) prints the items in the registry, with a type and a description. It needs no `components.json`.
+`search` (alias `list`) prints the items of the registries you name, with a type and a description. Searching `@sveltery`, the Sveltery UI registry, needs no `components.json`. With no registry, `search` searches every namespace in the `registries` of `components.json` except `@sveltery`.
 
 | Option | Description |
 | --- | --- |
@@ -92,7 +92,7 @@ npx @sveltery/ui@latest search -q dialog
 | `-t, --type <type>` | Keep one item type, such as `ui` or `block`. Comma-separate several. |
 | `-l, --limit <number>` | Show at most this many items. Defaults to 100. |
 | `-o, --offset <number>` | Skip this many items. Defaults to 0. |
-| `--json` | Print `{ pagination, items }` as JSON. |
+| `--json` | Print `{ pagination, items, errors }` as JSON. `errors` lists the registries that a search of every registry skipped. |
 | `--cwd <path>` | The project root. Defaults to the current directory. |
 
 ## Find a component's docs

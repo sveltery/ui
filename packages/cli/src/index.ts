@@ -81,7 +81,7 @@ program
   .command('search')
   .alias('list')
   .description('search items from registries')
-  .argument('[registries...]', 'the registry namespaces to search, such as @acme from the registries in components.json. When omitted, searches @sveltery.')
+  .argument('[registries...]', 'the registry addresses to search. Supports namespaces, GitHub sources and URLs. When omitted, searches all registries configured in components.json.')
   .option('-q, --query <query>', 'query string')
   .option('-t, --type <type>', 'filter by item type, e.g. ui, block. Comma-separated for multiple.')
   .option('-l, --limit <number>', 'maximum number of items to display', '100')
