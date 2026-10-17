@@ -373,6 +373,24 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
 
+### The Bubble variants example writes its ghost text as HTML
+
+**Upstream:** The ghost bubble in [`bubble-variants.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/bubble-variants.tsx#L42) renders its text through a `Markdown` component.
+
+**Sveltery UI:** The [Bubble](/docs/components/bubble) Variants example writes the same text with `<p>`, `<strong>` and `<code>`.
+
+**Why:** Sveltery UI has no Markdown component. The preview looks the same.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### The Breadcrumb separator example links to /docs/components
+
+**Upstream:** The Components link in [`breadcrumb-separator.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/breadcrumb-separator.tsx#L24) points to `/components`.
+
+**Sveltery UI:** The [Breadcrumb](/docs/components/breadcrumb) Custom separator example points it to `/docs/components`, as the Collapsed example already does.
+
+**Why:** The docs site prerenders every link, and `/components` is not a page here, so the build fails on it.
+
 ### Empty examples use Lucide icons where upstream uses Tabler
 
 **Upstream:** [`empty-demo.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/empty-demo.tsx), [`empty-outline.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/empty-outline.tsx) and [`empty-background.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/empty-background.tsx) import `IconFolderCode`, `IconCloud` and `IconBell` from `@tabler/icons-react`.
