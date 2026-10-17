@@ -104,7 +104,7 @@ Use `bind:value` to read or set the code. `onComplete` runs with the code when t
 
 ## In a form
 
-Give `InputOTP` a `name` and it submits its value with its form. A native reset restores `defaultValue`. To label it, put it in a [Field](/docs/components/field) and pair the `FieldLabel` with the `InputOTP` `id`.
+Give `InputOTP` a `name` and it submits its value with its form. To label it, put it in a [Field](/docs/components/field) and pair the `FieldLabel` with the `InputOTP` `id`.
 
 ```svelte
 <Field>

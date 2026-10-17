@@ -76,15 +76,6 @@ test('inserting a whole code at once, as a paste or a one-time-code autofill doe
   await expect(page.getByTestId('value')).toHaveText('987654');
 });
 
-test('a native reset restores the default code', async ({ page }) => {
-  await code(page).focus();
-  await page.keyboard.type('3456');
-  await expect(page.getByTestId('value')).toHaveText('123456');
-  await page.getByRole('button', { name: 'Reset' }).click();
-  await expect(page.getByTestId('value')).toHaveText('12');
-  await expect.poll(() => texts(page)).toEqual(['1', '2', '', '', '', '']);
-});
-
 test('a disabled input shows its code and cannot be focused', async ({ page }) => {
   const disabled = page.getByRole('textbox', { name: 'Disabled' });
   await expect(disabled).toBeDisabled();

@@ -73,6 +73,7 @@
     containerClass,
     noScriptCSSFallback = NOSCRIPT_CSS_FALLBACK,
     ref = $bindable(null),
+    render,
     children,
     oninput,
     onpaste,
@@ -172,14 +173,9 @@
     const resizeObserver = new ResizeObserver(updateRootHeight);
     resizeObserver.observe(input);
 
-    // Mirrors a native input: a form reset restores `defaultValue`.
-    const onReset = () => setTimeout(() => (value = input.value));
-    input.form?.addEventListener('reset', onReset);
-
     return () => {
       document.removeEventListener('selectionchange', onDocumentSelectionChange, { capture: true });
       resizeObserver.disconnect();
-      input.form?.removeEventListener('reset', onReset);
     };
   });
 
@@ -314,7 +310,7 @@
 
 <div
   bind:this={container}
-  data-input-otp-container
+  data-input-otp-container="true"
   style:position="relative"
   style:cursor={props.disabled ? 'default' : 'text'}
   style:user-select="none"
@@ -322,7 +318,11 @@
   style:pointer-events="none"
   class={containerClass}
 >
-  {@render children?.(renderProps)}
+  {#if render}
+    {@render render(renderProps)}
+  {:else}
+    {@render children?.()}
+  {/if}
 
   <div style="position: absolute; inset: 0; pointer-events: none;">
     <input

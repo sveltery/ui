@@ -20,7 +20,7 @@ npm install @sveltery/input-otp
 </script>
 
 <OTPInput maxLength={6} pattern={REGEXP_ONLY_DIGITS} bind:value onComplete={(code) => console.log(code)}>
-  {#snippet children({ slots })}
+  {#snippet render({ slots })}
     {#each slots as slot, index (index)}
       <div data-active={slot.isActive}>{slot.char ?? slot.placeholderChar}</div>
     {/each}
@@ -28,7 +28,7 @@ npm install @sveltery/input-otp
 </OTPInput>
 ```
 
-`children` receives the render props: `slots` (each with `char`, `placeholderChar`, `isActive` and `hasFakeCaret`), `isFocused` and `isHovering`. A component inside `OTPInput` reads the same object with `getOTPInputContext()`. Other input attributes, such as `id`, `name` and `disabled`, go to the input, and `containerClass` goes to the element that holds the slots.
+`render` receives the render props: `slots` (each with `char`, `placeholderChar`, `isActive` and `hasFakeCaret`), `isFocused` and `isHovering`. Without `render`, `children` renders, and a component inside it reads the same object with `getOTPInputContext()`, as the styled Input OTP slots do. Other input attributes, such as `id`, `name` and `disabled`, go to the input, and `containerClass` goes to the element that holds the slots.
 
 Add the styled version to your app with `npx @sveltery/ui@latest add input-otp`.
 

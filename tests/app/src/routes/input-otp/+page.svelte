@@ -24,7 +24,6 @@
     </InputOTP>
   </Field>
   <button type="submit">Submit</button>
-  <button type="reset">Reset</button>
 </form>
 <Field>
   <FieldLabel for="disabled">Disabled</FieldLabel>

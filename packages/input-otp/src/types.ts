@@ -8,7 +8,7 @@ export interface SlotProps {
   hasFakeCaret: boolean;
 }
 
-/** What the slots render from. Passed to `children` and read with `getOTPInputContext()`. */
+/** What the slots render from. Passed to `render` and read with `getOTPInputContext()`. */
 export interface RenderProps {
   readonly slots: SlotProps[];
   readonly isFocused: boolean;
@@ -37,5 +37,7 @@ export interface OTPInputProps extends Omit<HTMLInputAttributes, 'value' | 'maxl
   noScriptCSSFallback?: string | null;
   /** The hidden input. Bindable. */
   ref?: HTMLInputElement | null;
-  children?: Snippet<[RenderProps]>;
+  /** Renders the slots from the render props. Without it, `children` renders and reads them with `getOTPInputContext()`. */
+  render?: Snippet<[RenderProps]>;
+  children?: Snippet;
 }
