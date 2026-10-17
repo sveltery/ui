@@ -2,6 +2,7 @@ export { getRelativeCoordinate } from './util/getRelativeCoordinate.js';
 export type { CustomScaleDefinition } from './util/scale/CustomScaleDefinition.js';
 export type { Props as CellProps } from './component/Cell.js';
 export type { LabelProps } from './component/Label.hooks.svelte.js';
+export type { Props as LabelContentProps } from './component/Label.js';
 export type { LabelListProps } from './component/LabelList.hooks.svelte.js';
 export type { LabelListEntry } from './component/LabelList.js';
 export type { Props as TextProps, RenderableText, TextAnchor, TextVerticalAnchor } from './component/Text.js';
