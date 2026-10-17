@@ -21,8 +21,9 @@ npx @sveltery/ui@latest add tooltip
 
 ### Add the `TooltipProvider` to the root of your app
 
-```svelte showLineNumbers title="src/routes/+layout.svelte" {2,7-9}
+```svelte showLineNumbers title="src/routes/+layout.svelte" {3,8-10}
 <script lang="ts">
+  import './layout.css';
   import { TooltipProvider } from '#lib/components/ui/tooltip';
 
   let { children } = $props();
@@ -59,8 +60,9 @@ The component folders import each other with relative paths, so keep them side b
 
 ### Add the `TooltipProvider` to the root of your app
 
-```svelte showLineNumbers title="src/routes/+layout.svelte" {2,7-9}
+```svelte showLineNumbers title="src/routes/+layout.svelte" {3,8-10}
 <script lang="ts">
+  import './layout.css';
   import { TooltipProvider } from '#lib/components/ui/tooltip';
 
   let { children } = $props();
