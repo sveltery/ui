@@ -245,5 +245,5 @@ export const defaultRadarProps = {
   radiusAxisId: 0,
   zIndex: DefaultZIndexes.area,
 } as const satisfies Partial<Props>;
-type PropsWithDefaults = RequiresDefaultProps<Props, typeof defaultRadarProps>;
+export type PropsWithDefaults = RequiresDefaultProps<Props, typeof defaultRadarProps>;
 export type InternalRadarProps = WithIdRequired<PropsWithDefaults> & RadarComposedData;

@@ -192,7 +192,7 @@ export const defaultRadialBarProps = {
   radiusAxisId: 0,
   zIndex: DefaultZIndexes.bar,
 } as const satisfies Partial<RadialBarProps>;
-type PropsWithDefaults<DataPointType = any, DataValueType = any> = RequiresDefaultProps<
+export type PropsWithDefaults<DataPointType = any, DataValueType = any> = RequiresDefaultProps<
   RadialBarProps<DataPointType, DataValueType>,
   typeof defaultRadialBarProps
 >;
