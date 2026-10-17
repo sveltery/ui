@@ -11,15 +11,15 @@
     QuestionnaireSubmit,
     QuestionnaireTitle,
   } from '$registry/bases/base/ui/questionnaire';
+  import { toast } from '$registry/bases/base/ui/toast';
 
   const items = [{ choices: [{ value: 'inspect' }, { value: 'tests' }, { value: 'patch' }], name: 'action', required: true }];
 
   let style = $state<'none' | 'letters' | 'numbers'>('letters');
-  let result = $state('');
 
   function handleSubmit(event: SubmitEvent & { currentTarget: HTMLFormElement }) {
     event.preventDefault();
-    result = `Action: ${new FormData(event.currentTarget).get('action') ?? 'None'} · Shortcuts: ${style}`;
+    toast.add({ title: 'Next action selected', description: `Action: ${new FormData(event.currentTarget).get('action') ?? 'None'} · Shortcuts: ${style}` });
   }
 </script>
 
@@ -45,8 +45,5 @@
     <QuestionnaireActions>
       <QuestionnaireSubmit>Confirm action</QuestionnaireSubmit>
     </QuestionnaireActions>
-    {#if result}
-      <p role="status" class="mt-4 text-sm text-muted-foreground">{result}</p>
-    {/if}
   </Questionnaire>
 </div>
