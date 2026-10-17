@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { setContainer } from './parts.svelte.js';
   import { CommandModel, setCommand } from './root-state.svelte.js';
   import type { CommandRootProps } from './types.js';
   import { VISUALLY_HIDDEN_STYLE } from './utils.js';
@@ -30,6 +31,8 @@
     get onValueChange() { return onValueChange; }
   });
   setCommand(root);
+  // A Root inside another menu's List renders its own parts in place.
+  setContainer(undefined);
 
   $effect(() => root.reconcile());
   $effect(() => root.followSelection());

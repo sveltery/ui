@@ -19,6 +19,7 @@
   aria-activedescendant={root.selectedItem?.id}
   aria-label={label}
   id={root.ids.list}
+  {@attach root.observe}
 >
   <div cmdk-list-sizer="" {@attach trackListHeight}>{@render children?.()}{#each container.parts as part (part)}{@render part.view()}{/each}</div>
 </div>

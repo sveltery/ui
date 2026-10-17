@@ -41,6 +41,9 @@ export class CommandModel {
   readonly #groups = new Set<GroupModel>();
   #sequence = 0;
   #element: HTMLElement | undefined;
+  /** Where anchors are read: Root, and a List rendered outside it, for example in a portal. */
+  // eslint-disable-next-line svelte/prefer-svelte-reactivity -- changes bump `#layout`
+  readonly #scopes = new Set<HTMLElement>();
   #search = $state.raw<SearchSource>();
   /** `#search` without reactivity, for the unlink, which runs in a teardown. */
   #linked: SearchSource | undefined;
@@ -81,11 +84,14 @@ export class CommandModel {
     void this.#layout;
     // eslint-disable-next-line svelte/prefer-svelte-reactivity -- built and returned in one derivation
     const anchors = new Map<string, Comment>();
-    if (!this.#element) return anchors;
-    const walker = document.createTreeWalker(this.#element, NodeFilter.SHOW_COMMENT);
-    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
-      const text = (node as Comment).data;
-      if (text.startsWith(ANCHOR_PREFIX)) anchors.set(text.slice(ANCHOR_PREFIX.length), node as Comment);
+    const scopes = [...this.#scopes];
+    for (const scope of scopes) {
+      if (scopes.some((other) => other !== scope && other.contains(scope))) continue;
+      const walker = document.createTreeWalker(scope, NodeFilter.SHOW_COMMENT);
+      for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+        const text = (node as Comment).data;
+        if (text.startsWith(ANCHOR_PREFIX)) anchors.set(text.slice(ANCHOR_PREFIX.length), node as Comment);
+      }
     }
     return anchors;
   });
@@ -192,8 +198,8 @@ export class CommandModel {
     const value = item?.value ?? '';
     if (value === this.value) return;
     const focused = document.activeElement;
-    if (focused?.hasAttribute('cmdk-input') || focused?.hasAttribute('cmdk-root')) {
-      (this.#element?.querySelector<HTMLElement>('[cmdk-input]') ?? this.#element?.querySelector<HTMLElement>('[cmdk-list]'))?.focus();
+    if (focused && (focused === this.#element || focused.id === this.ids.input)) {
+      (document.getElementById(this.ids.input) ?? document.getElementById(this.ids.list))?.focus();
     }
     this.#options.value = value;
     this.#options.onValueChange?.(value);
@@ -285,17 +291,29 @@ export class CommandModel {
     if (item) this.pick(item, true);
   }
 
-  attach: Attachment<HTMLElement> = (element) => {
-    this.#element = element;
+  /** Reads anchors and text changes under `element`. List calls it too, which matters only when it renders outside Root. */
+  observe: Attachment<HTMLElement> = (element) => {
+    this.#scopes.add(element);
     this.relayout();
-    this.settled = true;
     const observer = new MutationObserver((records) => {
+      if (element !== this.#element && this.#element?.contains(element)) return;
       this.#measure();
       if (records.some((record) => record.type === 'childList')) this.#layout += 1;
     });
     observer.observe(element, { childList: true, characterData: true, subtree: true });
     return () => {
       observer.disconnect();
+      this.#scopes.delete(element);
+      this.relayout();
+    };
+  };
+
+  attach: Attachment<HTMLElement> = (element) => {
+    this.#element = element;
+    const release = this.observe(element);
+    this.settled = true;
+    return () => {
+      release?.();
       this.#element = undefined;
     };
   };

@@ -168,7 +168,7 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 ### Opening the menu does not scroll the page
 
-**Upstream:** cmdk scrolls the selected item into view on every selection change except the pointer's ([index.tsx:256](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L256)), including the automatic selection when the menu mounts and a write to the controlled `value` ([index.tsx:213](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L213)).
+**Upstream:** cmdk scrolls the selected item into view on every selection change except the pointer's ([index.tsx:256](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L256)). It also scrolls once when the menu mounts ([index.tsx:221](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L221)).
 
 **Sveltery UI:** Only keyboard moves and a new search scroll the selection into view.
 
@@ -208,13 +208,23 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 ### Parts render in their List or Group
 
-**Upstream:** cmdk sorts by moving item nodes in the DOM, and an element wrapped around an item moves with it ([index.tsx:410](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L410)).
+**Upstream:** cmdk sorts by moving item nodes in the DOM, and an element wrapped around a grouped item moves with it ([index.tsx:410](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L410)). Other markup in the list or a group stays where it is written until a search moves the items after it.
 
-**Sveltery UI:** Svelte cannot move the nodes it renders, so List and each Group render their items, groups, separators and empty and loading states themselves, in cmdk's order, with a comment where each part is written. An element wrapped around a part stays empty, and context set between List or Group and an item does not reach the item's content.
+**Sveltery UI:** Svelte cannot move the nodes it renders, so List and each Group render their items, groups, separators and empty and loading states themselves, in cmdk's order, with a comment where each part is written. An element wrapped around a part stays empty, other markup written in List or Group renders before its parts, and context set between List or Group and an item does not reach the item's content.
 
 **Why:** Rendering the parts from their container is how Svelte can show cmdk's DOM order while it owns every node.
 
 **Decided:** Hugo Hsi, 2026-10-17
+
+### Only the menu in use moves focus
+
+**Upstream:** When the selection changes and any command menu's input or root has focus, cmdk moves focus to its own input ([index.tsx:245](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx#L245)). With two menus on a page, items loading into one take focus from the other's input.
+
+**Sveltery UI:** Focus moves to the input only when that menu's own input or root has focus.
+
+**Why:** Typing in one menu should not be interrupted by another.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
 ### Groups are ordered by their best match
 

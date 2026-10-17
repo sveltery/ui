@@ -125,6 +125,7 @@ This package matches cmdk 1.1.1. It renders the same elements, attributes and AR
 - **`aria-activedescendant` always names the selected item.** cmdk leaves it out when the menu opens and names the previous item after a search.
 - **Results are in score order whatever the previous search was.** cmdk ranks the items a search brings back below the ones already shown, so pasting a search can list a worse match first.
 - **Clearing the search restores the declared order.** cmdk keeps the last ranked order for items that stayed mounted.
+- **Only the menu in use moves focus.** cmdk moves focus to its input when any menu's input or root has focus.
 - **Groups are ordered by their best match while searching.** cmdk means to, but its lookup never finds the group.
 - **Selection follows the item, not its value.** cmdk tracks only the value, so items that share a value are selected together. Here the arrow keys and the pointer reach each of them, and only the picked one is selected. Writing the bound `value` selects the first item with that value, unless the selected item already has it.
 - **Only keyboard moves and a new search scroll the selection into view.** The automatic selection on mount, the pointer, a click and a write to the bound `value` do not, so an inline menu does not scroll the page when it mounts.
@@ -137,4 +138,5 @@ This package matches cmdk 1.1.1. It renders the same elements, attributes and AR
 Svelte cannot move the nodes it renders, so List and each Group render their parts themselves, in ranked order, and each part renders only a comment where you write it. Two things follow:
 
 - **An element you wrap around an Item, Group, Separator, Empty or Loading stays empty.** The part renders directly in its List or Group, so put classes and attributes on the part itself. A `{#each}` or `{#if}` around parts is fine.
+- **Other markup written in List or Group renders before its parts.** cmdk keeps it in place until a search moves the items after it. Render it as Empty, Loading or an Item, or outside List.
 - **Context set between List or Group and an Item does not reach the Item's content.** The content renders where List or Group renders it, so it sees the context from List or Group and above.

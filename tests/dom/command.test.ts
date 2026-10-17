@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, onTestFinished, vi } from 'vitest';
 import { flushSync, mount, tick, unmount } from 'svelte';
 import CommandDuplicateFixture from './CommandDuplicateFixture.svelte';
 import CommandDynamicFixture from './CommandDynamicFixture.svelte';
+import CommandEdgeFixture from './CommandEdgeFixture.svelte';
 import CommandFixture from './CommandFixture.svelte';
 
 type Bound = { bound(): { value: string; search: string }; setValue(value: string): void };
@@ -632,5 +633,37 @@ describe('Command with changing items', () => {
     expect(query('text')).not.toBe(null);
     expect(query('one')).toBe(null);
     expect(active()).toBe('text');
+  });
+});
+
+describe('Command outside the usual layout', () => {
+  type Edge = { setItems(items: string[]): void; setLate(items: string[]): void };
+  function setupEdge() {
+    instance = mount(CommandEdgeFixture, { target: document.body });
+    flushSync();
+    return instance as unknown as Edge;
+  }
+  const order = () => [...document.querySelectorAll<HTMLElement>('[data-testid="portaled"] ~ * [cmdk-list-sizer] > [cmdk-item]')].map((item) => item.dataset.testid);
+
+  it('keeps the markup order of a List rendered outside Root', async () => {
+    const fixture = setupEdge();
+    fixture.setItems(['c', 'a', 'b']);
+    flushSync();
+    await tick();
+    expect(order()).toEqual(['c', 'a', 'b']);
+  });
+
+  it('renders the parts of a Root nested in another List in place', () => {
+    setupEdge();
+    expect(el('nested').contains(el('inner'))).toBe(true);
+  });
+
+  it("leaves focus alone when another menu's selection changes", () => {
+    const fixture = setupEdge();
+    el('other-input').focus();
+    input().focus();
+    fixture.setLate(['x', 'y']);
+    flushSync();
+    expect(document.activeElement).toBe(input());
   });
 });

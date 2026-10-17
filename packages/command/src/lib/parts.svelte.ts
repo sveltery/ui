@@ -55,7 +55,7 @@ export class Container {
   });
 }
 
-const [getContainer, setContainer, hasContainer] = createContext<Container>();
+const [getContainer, setContainer, hasContainer] = createContext<Container | undefined>();
 export { setContainer };
 
 /**

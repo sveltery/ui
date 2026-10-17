@@ -24,7 +24,7 @@
     {...rest}
     cmdk-group=""
     role="presentation"
-    data-value={value ?? (typeof heading === 'string' ? heading.trim() : group.headingElement?.textContent?.trim())}
+    data-value={value?.trim() ?? (typeof heading === 'string' ? heading.trim() : group.headingElement?.textContent?.trim())}
     hidden={group.hidden}
   >
     {#if heading}
