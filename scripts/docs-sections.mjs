@@ -11,6 +11,7 @@ if (!upstreamRoot) {
 }
 const upstreamDir = join(upstreamRoot, 'apps/v4/content/docs/components/base');
 const oursDir = 'apps/docs/content/docs/components';
+const baseUiPages = new Set([...readFileSync('apps/docs/registry/links.ts', 'utf8').matchAll(/^ {2}'?([a-z-]+)'?: '(?:components|utils)\//gmu)].map((match) => match[1]));
 
 const rtlGuide = 'To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).';
 
@@ -56,6 +57,8 @@ for (const page of pages) {
   }
   const ours = headings(join(oursDir, `${page}.md`));
   const theirs = headings(upstreamFile);
+  // An item in BASE_UI_PAGES has an `api` link, and links.test.ts checks that its page links the same Base UI page.
+  if (baseUiPages.has(page)) theirs.push({ level: 2, text: 'API Reference' });
   const theirKeys = new Set(theirs.map((heading) => key(heading.text)));
   const ourKeys = new Set(ours.map((heading) => key(heading.text)));
   const extra = ours.filter((heading) => !theirKeys.has(key(heading.text)));

@@ -197,3 +197,9 @@ Spread a [remote form](/docs/forms/remote-forms) field onto `Input` with `as()` 
 Wrap the field in a [DirectionProvider](/docs/components/direction) and set `dir` on the `Field` and the `Input`. Use the buttons to switch the language.
 
 <ComponentPreview name="base/InputRtlExample" align="start" />
+
+## API Reference
+
+See the [Base UI Input](https://base-ui.com/react/components/input#api-reference) documentation.
+
+`Input` is styled on top of the Sveltery Base `Input` primitive, which owns its behavior and its integration with Base fields and forms.
