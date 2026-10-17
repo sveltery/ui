@@ -86,6 +86,10 @@ Each thumb holds a range input, so the slider submits one entry per thumb under 
 </form>
 ```
 
+## Without JavaScript
+
+`Slider` needs JavaScript for the keyboard and for a remote form's `as()` spread. For a form that must work before the page hydrates, use [Native Slider](/docs/components/native-slider), a styled native input that looks the same.
+
 ## API reference
 
 `Slider` is styled on top of the Sveltery Base `Slider` primitive, which owns its value, pointer and keyboard behavior and accessibility. See the [Base UI Slider documentation](https://base-ui.com/react/components/slider) for the behavior it ports.

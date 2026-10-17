@@ -108,6 +108,10 @@ Arrow keys follow the orientation.
 </ToggleGroup>
 ```
 
+## Without JavaScript
+
+`ToggleGroup` needs JavaScript. To get the same look in a form that works without it, hide native checkboxes or radios inside labels that carry the Toggle's classes. See the toggle style on [Native Checkbox](/docs/components/native-checkbox#toggle-style) and its [remote form example](/docs/components/native-select#remote-forms).
+
 ## API reference
 
 `ToggleGroup` and `ToggleGroupItem` are styled on top of the Sveltery Base `ToggleGroup` and `Toggle` primitives, which own the pressed state, roving focus and accessibility. See the [Base UI Toggle Group documentation](https://base-ui.com/react/components/toggle-group) for the behavior they port.

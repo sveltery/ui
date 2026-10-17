@@ -135,3 +135,7 @@ A popover trigger is a button, so it submits nothing. Put a hidden input with th
   <Button type="submit">Book</Button>
 </form>
 ```
+
+## Native date input
+
+The date picker needs JavaScript to open its calendar. For a form that must work without it, use [Input](/docs/components/input#input-types) with `type="date"`, or a remote form field's `as('date')`. Sveltery UI has no separate date component.
