@@ -108,7 +108,7 @@
   <Example title="File Tree" class="items-center">
     <Card class="mx-auto w-full max-w-[16rem] gap-2" size="sm">
       <CardHeader>
-        <Tabs defaultValue="explorer">
+        <Tabs value="explorer">
           <TabsList class="w-full">
             <TabsTrigger value="explorer">Explorer</TabsTrigger>
             <TabsTrigger value="settings">Outline</TabsTrigger>

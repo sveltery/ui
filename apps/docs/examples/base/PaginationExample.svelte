@@ -44,11 +44,21 @@
   <Example title="Simple">
     <Pagination>
       <PaginationContent>
-        {#each [1, 2, 3, 4, 5] as page (page)}
-          <PaginationItem>
-            <PaginationLink href="#" isActive={page === 2}>{page}</PaginationLink>
-          </PaginationItem>
-        {/each}
+        <PaginationItem>
+          <PaginationLink href="#">1</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#" isActive>2</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">3</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">4</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">5</PaginationLink>
+        </PaginationItem>
       </PaginationContent>
     </Pagination>
   </Example>
