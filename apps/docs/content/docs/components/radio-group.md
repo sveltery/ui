@@ -121,9 +121,9 @@ Use `aria-invalid` on `RadioGroupItem` and `data-invalid` on `Field` to show val
 
 ## RTL
 
-Wrap the radio group in a [DirectionProvider](/docs/components/direction) and set `dir` on `RadioGroup`, `RadioGroupItem`, `FieldLabel` and `FieldDescription`. Use the buttons to switch the language.
+Wrap the radio group in a [DirectionProvider](/docs/components/direction) and set `dir` on `RadioGroup`, `RadioGroupItem`, `FieldLabel` and `FieldDescription`. Use the language selector to switch the language.
 
-<ComponentPreview name="base/RadioGroupRtlExample" align="start" />
+<ComponentPreview name="base/RadioGroupRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 

@@ -204,9 +204,9 @@ A pointer grabs a handle from up to 5 pixels away, or 10 pixels on a touch scree
 
 ## RTL
 
-A horizontal group follows the text direction. In a right-to-left page the first panel sits on the right. Panels are resized in the order they sit on screen, so a drag and the arrow keys move the handle the same way as in a left-to-right page. Set `dir` on the group or one of its ancestors. Use the buttons to switch the language.
+A horizontal group follows the text direction. In a right-to-left page the first panel sits on the right. Panels are resized in the order they sit on screen, so a drag and the arrow keys move the handle the same way as in a left-to-right page. Set `dir` on the group or one of its ancestors. Use the language selector to switch the language.
 
-<ComponentPreview name="base/ResizableRtlExample" align="start" />
+<ComponentPreview name="base/ResizableRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 

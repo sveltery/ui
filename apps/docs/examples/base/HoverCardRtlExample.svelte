@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Button } from '$registry/bases/base/ui/button';
-  import { DirectionProvider } from '$registry/bases/base/ui/direction';
   import { HoverCard, HoverCardContent, HoverCardTrigger } from '$registry/bases/base/ui/hover-card';
+  import { useLanguage } from '$lib/components/docs/language.svelte';
 
   const translations = {
     en: {
@@ -39,14 +39,12 @@
     },
   } as const;
 
-  type Language = keyof typeof translations;
-
   const physicalSides = ['left', 'top', 'bottom', 'right'] as const;
   const logicalSides = ['inline-start', 'inline-end'] as const;
   type Side = (typeof physicalSides)[number] | (typeof logicalSides)[number];
 
-  let language = $state<Language>('ar');
-  const t = $derived(translations[language]);
+  const language = useLanguage();
+  const t = $derived(translations[language.current]);
 </script>
 
 {#snippet sideGroup(sides: readonly Side[])}
@@ -67,17 +65,8 @@
 {/snippet}
 
 <div class="grid gap-4">
-  <div class="flex justify-center gap-2">
-    {#each Object.keys(translations) as code (code)}
-      <Button variant={language === code ? 'default' : 'outline'} size="sm" onclick={() => (language = code as Language)}>
-        {code}
-      </Button>
-    {/each}
+  <div class="grid gap-4">
+    {@render sideGroup(physicalSides)}
+    {@render sideGroup(logicalSides)}
   </div>
-  <DirectionProvider direction={t.dir}>
-    <div class="grid gap-4">
-      {@render sideGroup(physicalSides)}
-      {@render sideGroup(logicalSides)}
-    </div>
-  </DirectionProvider>
 </div>

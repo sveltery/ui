@@ -194,9 +194,9 @@ Spread a [remote form](/docs/forms/remote-forms) field onto `Input` with `as()` 
 
 ## RTL
 
-Wrap the field in a [DirectionProvider](/docs/components/direction) and set `dir` on the `Field` and the `Input`. Use the buttons to switch the language.
+Wrap the field in a [DirectionProvider](/docs/components/direction) and set `dir` on the `Field` and the `Input`. Use the language selector to switch the language.
 
-<ComponentPreview name="base/InputRtlExample" align="start" />
+<ComponentPreview name="base/InputRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 

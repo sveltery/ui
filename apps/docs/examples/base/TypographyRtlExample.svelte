@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Button } from '$registry/bases/base/ui/button';
+  import { useLanguage } from '$lib/components/docs/language.svelte';
 
   const translations = {
     en: {
@@ -97,18 +97,11 @@
     }
   } as const;
 
-  let language = $state<keyof typeof translations>('ar');
-  const t = $derived(translations[language]);
+  const language = useLanguage();
+  const t = $derived(translations[language.current]);
 </script>
 
 <div class="flex w-full flex-col gap-4">
-  <div class="flex gap-2">
-    {#each Object.keys(translations) as code (code)}
-      <Button variant={language === code ? 'default' : 'outline'} size="sm" onclick={() => (language = code as keyof typeof translations)}>
-        {code}
-      </Button>
-    {/each}
-  </div>
   <div dir={t.dir}>
     <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-balance">
       {t.title}

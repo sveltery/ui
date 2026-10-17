@@ -61,6 +61,6 @@ We do not ship any typography styles by default. This page is an example of how 
 
 ## RTL
 
-To lay out text right to left, set `dir="rtl"` on a parent element, or wrap the content in a [DirectionProvider](/docs/components/direction). Use the buttons to switch the language.
+To lay out text right to left, set `dir="rtl"` on a parent element, or wrap the content in a [DirectionProvider](/docs/components/direction). Use the language selector to switch the language.
 
-<ComponentPreview name="base/TypographyRtlExample" class="[&_[data-slot=preview]]:max-h-none" />
+<ComponentPreview name="base/TypographyRtlExample" direction="rtl" class="[&_[data-slot=preview]]:max-h-none" />

@@ -152,9 +152,9 @@ Control submenu placement with side and align props. `side` defaults to `right`.
 
 ## RTL
 
-Wrap the context menu in a [DirectionProvider](/docs/components/direction) and set `dir` on `ContextMenuContent` and `ContextMenuSubContent`. Use the buttons to switch the language.
+Wrap the context menu in a [DirectionProvider](/docs/components/direction) and set `dir` on `ContextMenuContent` and `ContextMenuSubContent`. Use the language selector to switch the language.
 
-<ComponentPreview name="base/ContextMenuRtlExample" align="start" />
+<ComponentPreview name="base/ContextMenuRtlExample" direction="rtl" align="start" />
 
 Use `side="inline-end"` to place the menu on the logical right side of the trigger.
 

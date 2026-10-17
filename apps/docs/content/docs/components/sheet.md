@@ -105,9 +105,9 @@ Use `showCloseButton={false}` on `SheetContent` to hide the close button.
 
 ## RTL
 
-Wrap the sheet in a [DirectionProvider](/docs/components/direction) and set `dir` on `SheetContent`. Use the buttons to switch the language.
+Wrap the sheet in a [DirectionProvider](/docs/components/direction) and set `dir` on `SheetContent`. Use the language selector to switch the language.
 
-<ComponentPreview name="base/SheetRtlExample" align="start" />
+<ComponentPreview name="base/SheetRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 

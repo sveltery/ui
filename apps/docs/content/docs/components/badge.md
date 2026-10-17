@@ -96,9 +96,9 @@ You can customize the colors of a badge by adding custom classes such as `bg-gre
 
 ## RTL
 
-Wrap the badges in a [DirectionProvider](/docs/components/direction) and set `dir` on their container. Use the buttons to switch the language.
+Wrap the badges in a [DirectionProvider](/docs/components/direction) and set `dir` on their container. Use the language selector to switch the language.
 
-<ComponentPreview name="base/BadgeRtlExample" />
+<ComponentPreview name="base/BadgeRtlExample" direction="rtl" />
 
 ## API Reference
 

@@ -147,9 +147,9 @@ Use the `AlertDialogAction` component to add a destructive action button to the 
 
 ## RTL
 
-Wrap the alert dialog in a [DirectionProvider](/docs/components/direction) and set `dir` on `AlertDialogContent`. Use the buttons to switch the language.
+Wrap the alert dialog in a [DirectionProvider](/docs/components/direction) and set `dir` on `AlertDialogContent`. Use the language selector to switch the language.
 
-<ComponentPreview name="base/AlertDialogRtlExample" />
+<ComponentPreview name="base/AlertDialogRtlExample" direction="rtl" />
 
 ## API Reference
 

@@ -749,13 +749,13 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
-### The RTL example sets its own direction
+### The RTL section says where to set `dir`
 
 **Upstream:** The [RTL section](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/data-table.mdx#L891) links the RTL configuration guide, and the preview takes `direction="rtl"` from the docs site's language selector.
 
-**Sveltery UI:** The section links the [RTL guide](/docs/rtl) too. It then names the [DirectionProvider](/docs/components/direction), and the example has its own language buttons and sets `dir` on the table and on each menu.
+**Sveltery UI:** The section links the [RTL guide](/docs/rtl) too. It then names the [DirectionProvider](/docs/components/direction) and says to set `dir` on the table and on each menu, as the example does.
 
-**Why:** These docs have no language selector that gives a preview its direction, so a Svelte example sets its own.
+**Why:** The preview hides its code, so the section names the two places a copied table needs `dir`, as the other RTL sections on these docs do.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 

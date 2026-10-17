@@ -71,9 +71,9 @@ A portrait aspect ratio component using the `ratio={9 / 16}` prop. This is usefu
 
 ## RTL
 
-Wrap the figure in a [DirectionProvider](/docs/components/direction) and set `dir` on it. Use the buttons to switch the language.
+Wrap the figure in a [DirectionProvider](/docs/components/direction) and set `dir` on it. Use the language selector to switch the language.
 
-<ComponentPreview name="base/AspectRatioRtlExample" />
+<ComponentPreview name="base/AspectRatioRtlExample" direction="rtl" />
 
 ## API Reference
 

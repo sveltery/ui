@@ -287,9 +287,9 @@ You can add an addon to the combobox by using the `InputGroupAddon` component in
 
 ## RTL
 
-Wrap the combobox in a [DirectionProvider](/docs/components/direction) and set `dir` on `ComboboxContent`. Use the buttons to switch the language.
+Wrap the combobox in a [DirectionProvider](/docs/components/direction) and set `dir` on `ComboboxContent`. Use the language selector to switch the language.
 
-<ComponentPreview name="base/ComboboxRtlExample" align="start" />
+<ComponentPreview name="base/ComboboxRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 

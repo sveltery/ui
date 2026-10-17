@@ -77,6 +77,6 @@ The component folders import each other with relative paths, so keep them side b
 
 ## RTL
 
-Wrap the skeletons in a [DirectionProvider](/docs/components/direction) and set `dir` on the container. Use the buttons to switch the language.
+Wrap the skeletons in a [DirectionProvider](/docs/components/direction) and set `dir` on the container. Use the language selector to switch the language.
 
-<ComponentPreview name="base/SkeletonRtlExample" align="start" />
+<ComponentPreview name="base/SkeletonRtlExample" direction="rtl" align="start" />

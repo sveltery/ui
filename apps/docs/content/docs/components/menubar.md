@@ -138,9 +138,9 @@ Use `MenubarSub`, `MenubarSubTrigger`, and `MenubarSubContent` for nested menus.
 
 ## RTL
 
-Wrap the menubar in a [DirectionProvider](/docs/components/direction) and set `dir` on `Menubar` and `MenubarContent`. Use the buttons to switch the language.
+Wrap the menubar in a [DirectionProvider](/docs/components/direction) and set `dir` on `Menubar` and `MenubarContent`. Use the language selector to switch the language.
 
-<ComponentPreview name="base/MenubarRtlExample" align="start" />
+<ComponentPreview name="base/MenubarRtlExample" direction="rtl" align="start" />
 
 ## API Reference
 

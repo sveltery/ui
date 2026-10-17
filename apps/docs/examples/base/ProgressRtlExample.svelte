@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { Button } from '$registry/bases/base/ui/button';
-  import { DirectionProvider } from '$registry/bases/base/ui/direction';
   import { Progress, ProgressLabel, ProgressValue } from '$registry/bases/base/ui/progress';
+  import { useLanguage } from '$lib/components/docs/language.svelte';
 
   const translations = {
     en: { dir: 'ltr', values: { label: 'Upload progress' } },
@@ -19,31 +18,22 @@
       .join('');
   }
 
-  let language = $state<keyof typeof translations>('ar');
-  const dir = $derived(translations[language].dir);
-  const t = $derived(translations[language].values);
+  const language = useLanguage();
+  const dir = $derived(translations[language.current].dir);
+  const t = $derived(translations[language.current].values);
 
   function formatNumber(num: number): string {
-    return language === 'ar' ? toArabicNumerals(num) : num.toString();
+    return language.current === 'ar' ? toArabicNumerals(num) : num.toString();
   }
 </script>
 
 <div class="flex w-full max-w-sm flex-col gap-4">
-  <div class="flex gap-2">
-    {#each Object.keys(translations) as code (code)}
-      <Button variant={language === code ? 'default' : 'outline'} size="sm" onclick={() => (language = code as keyof typeof translations)}>
-        {code}
-      </Button>
-    {/each}
-  </div>
-  <DirectionProvider direction={dir}>
-    <Progress value={56} class="w-full max-w-sm" {dir}>
-      <ProgressLabel>{t.label}</ProgressLabel>
-      <ProgressValue>
-        {#snippet children(value)}
-          <span class="ms-auto">{formatNumber(parseFloat(value ?? '0'))}%</span>
-        {/snippet}
-      </ProgressValue>
-    </Progress>
-  </DirectionProvider>
+  <Progress value={56} class="w-full max-w-sm" {dir}>
+    <ProgressLabel>{t.label}</ProgressLabel>
+    <ProgressValue>
+      {#snippet children(value)}
+        <span class="ms-auto">{formatNumber(parseFloat(value ?? '0'))}%</span>
+      {/snippet}
+    </ProgressValue>
+  </Progress>
 </div>

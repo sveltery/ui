@@ -6,7 +6,7 @@ order: 5
 
 Sveltery UI components support right-to-left (RTL) layouts. Text alignment, positioning and directional styles adapt for languages such as Arabic, Hebrew and Persian. Sveltery Base reads the direction for keyboard navigation and popup placement.
 
-<ComponentPreview name="base/DirectionExample" hideCode />
+<ComponentPreview name="base/CardRtlExample" direction="rtl" hideCode />
 
 When you add components, the CLI turns physical positioning classes into logical ones, so your components work in both LTR and RTL layouts.
 
