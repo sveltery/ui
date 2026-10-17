@@ -127,6 +127,8 @@ To use a custom link component from your routing library, you can use the `rende
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the breadcrumb in a [DirectionProvider](/docs/components/direction) and set `dir` on `Breadcrumb` and `DropdownMenuContent`. Use the language selector to switch the language.
 
 <ComponentPreview name="base/BreadcrumbRtlExample" direction="rtl" class="[&_[data-slot=preview]]:p-2" />

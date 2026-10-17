@@ -114,6 +114,8 @@ Use the `size` prop to change the size of the switch.
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the switch in a [DirectionProvider](/docs/components/direction) and set `dir` on the field parts and the switch. Use the language selector to switch the language.
 
 <ComponentPreview name="base/SwitchRtlExample" direction="rtl" align="start" />

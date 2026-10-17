@@ -111,6 +111,8 @@ npm install chrono-node
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the date picker in a [DirectionProvider](/docs/components/direction) and set `dir` on `PopoverTrigger`, `PopoverContent` and `Calendar`. Pass a `locale` to `Calendar` to translate the month and weekday names. Use the language selector to switch the language.
 
 <ComponentPreview name="base/DatePickerRtlExample" direction="rtl" align="start" />

@@ -76,6 +76,8 @@ For form fields, use the [Field](/docs/components/field) component which include
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the label and its control in a [DirectionProvider](/docs/components/direction) and set `dir` on both. Use the language selector to switch the language.
 
 <ComponentPreview name="base/LabelRtlExample" direction="rtl" align="start" />

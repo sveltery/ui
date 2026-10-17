@@ -105,6 +105,8 @@ Use `showCloseButton={false}` on `SheetContent` to hide the close button.
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the sheet in a [DirectionProvider](/docs/components/direction) and set `dir` on `SheetContent`. Use the language selector to switch the language.
 
 <ComponentPreview name="base/SheetRtlExample" direction="rtl" align="start" />

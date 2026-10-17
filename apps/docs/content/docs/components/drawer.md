@@ -190,10 +190,6 @@ You can combine the `Dialog` and `Drawer` components to create a responsive dial
 
 <ComponentPreview name="base/DrawerDialogExample" />
 
-## Trigger
-
-`DrawerTrigger` and `DrawerClose` render a `<button>`. Pass `class` to style them, for example with `buttonVariants`. To use another element, pass a `render` snippet and spread its props onto that element.
-
 ## API Reference
 
 See the [Base UI Drawer](https://base-ui.com/react/components/drawer#api-reference) documentation.

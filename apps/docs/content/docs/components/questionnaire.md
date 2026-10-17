@@ -268,18 +268,6 @@ Compose Questionnaire inside a Dialog while keeping cancellation and dismissal h
 
 <ComponentPreview name="base/QuestionnaireDialogExample" align="end" />
 
-## Disabled Choice
-
-Set `disabled` on a `QuestionnaireChoice` to make one answer unavailable. A disabled choice cannot be selected, is skipped by shortcuts and is left out of `FormData`. Use `QuestionnaireChoiceDescription` for the muted line under a choice label.
-
-<ComponentPreview name="base/QuestionnaireDisabledExample" align="end" />
-
-## No Description
-
-`QuestionnaireDescription` is optional. Leave it out when the title is enough and the item still keeps its progress, choices and shortcuts.
-
-<ComponentPreview name="base/QuestionnaireNoDescriptionExample" align="end" />
-
 ## Validation
 
 Questionnaire validates the active item before moving forward and validates all enabled items when the form submits.

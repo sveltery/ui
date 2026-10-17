@@ -103,6 +103,8 @@ Long content can scroll while the header stays in view.
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the dialog in a [DirectionProvider](/docs/components/direction) and set `dir` on `DialogContent`. Use the language selector to switch the language.
 
 <ComponentPreview name="base/DialogRtlExample" direction="rtl" align="start" />

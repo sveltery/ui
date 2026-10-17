@@ -138,6 +138,8 @@ You can use the `buttonVariants` helper to make a link look like a button.
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the buttons in a [DirectionProvider](/docs/components/direction) and set `dir` on their container. Use the language selector to switch the language.
 
 <ComponentPreview name="base/ButtonRtlExample" direction="rtl" />
