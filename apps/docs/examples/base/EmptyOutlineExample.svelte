@@ -1,5 +1,5 @@
 <script lang="ts">
-  import CloudIcon from '@lucide/svelte/icons/cloud';
+  import IconCloud from '@tabler/icons-svelte-runes/icons/cloud';
   import { Button } from '$registry/bases/base/ui/button';
   import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '$registry/bases/base/ui/empty';
 </script>
@@ -7,7 +7,7 @@
 <Empty class="border border-dashed">
   <EmptyHeader>
     <EmptyMedia variant="icon">
-      <CloudIcon />
+      <IconCloud />
     </EmptyMedia>
     <EmptyTitle>Cloud Storage Empty</EmptyTitle>
     <EmptyDescription>Upload files to your cloud storage to access them anywhere.</EmptyDescription>
