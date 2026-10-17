@@ -75,7 +75,7 @@ npx @sveltery/ui@latest apply sera
 
 `apply` takes the same presets as `init --preset`: a preset name such as `nova`, a preset code from the [Create page](/create), or the URL of an `/init` item. It writes the preset's settings, theme and fonts the way `init --preset` does. Then it adds your installed items again and overwrites them, so a new style or icon library reaches your components. It lists those items and asks before it continues. The default answer is no, so commit or stash your changes first.
 
-To apply part of a preset, pass `--only` with `theme`, `font` or both. A partial apply changes `components.json` and your CSS file and leaves your components alone.
+To apply part of a preset, pass `--only` with `theme`, `font` or both. A partial apply leaves your components alone and keeps `style` and `iconLibrary` in `components.json`. With `theme`, it changes the base color, menu color and menu accent in `components.json`, and the color variables in your CSS file. With `font`, it changes only your CSS file, which gets the font imports and variables, and installs the font packages.
 
 ```bash
 npx @sveltery/ui@latest apply sera --only theme,font

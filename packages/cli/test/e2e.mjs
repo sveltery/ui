@@ -167,6 +167,21 @@ try {
   assert.deepEqual([themed.style, themed.iconLibrary, themed.tailwind.baseColor], ['lyra', 'phosphor', 'taupe'], 'apply --only theme changes only the theme');
   assert.equal(readFileSync(dialogContent, 'utf8'), phosphorDialog, 'apply --only theme leaves the components alone');
 
+  step('sveltery init -y keeps a bold menuAccent from components.json in the theme');
+  const boldApp = join(work, 'menu-accent-bold');
+  mkdirSync(boldApp);
+  for (const file of ['package.json', 'src']) cpSync(join(app, file), join(boldApp, file), { recursive: true });
+  writeFileSync(join(boldApp, 'components.json'), JSON.stringify({ menuAccent: 'bold' }));
+  await run('npm', [...cliExec, 'init', '-y', '--no-install'], boldApp, env);
+  const boldCss = readFileSync(join(boldApp, JSON.parse(readFileSync(join(boldApp, 'components.json'), 'utf8')).tailwind.css), 'utf8');
+  const modes = [...boldCss.matchAll(/^(?::root|\.dark) \{([^}]*)\}/gm)].map((match) => match[1]);
+  assert.equal(modes.length, 2, 'the theme has a light and a dark block');
+  for (const block of modes) {
+    const value = (name) => new RegExp(`--${name}: ([^;]+);`).exec(block)?.[1];
+    assert.equal(value('accent'), value('primary'), 'a bold menu accent is the primary color');
+    assert.equal(value('accent-foreground'), value('primary-foreground'), 'a bold menu accent foreground is the primary foreground');
+  }
+
   // Each icon library gets its own copy of the app with every item, so their icon props are type-checked against the real packages.
   for (const icons of ['lucide', 'tabler', 'hugeicons', 'phosphor', 'remixicon']) {
     step(`sveltery init --icons ${icons}, add --all and blocks, check and build`);
