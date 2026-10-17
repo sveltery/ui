@@ -4,7 +4,7 @@ Composable SVG charts for Svelte 5, ported from [recharts](https://github.com/re
 
 ## Updating from upstream
 
-`node scripts/sync-upstream.mjs <recharts checkout>` copies the framework-free files listed in `scripts/upstream.mjs` into `src` at their upstream paths, along with the React-free upstream specs into `test`. Each relative import gains `.js`, and imports from `react` point to `src/react.ts`, which gives React's types Svelte and DOM meanings. For a module that is bound to React, the script keeps only its types and the pure functions that `scripts/upstream.mjs` names. It then applies the patches in `patches/` and writes the list of files it owns to `scripts/vendored.txt`.
+`node scripts/sync-upstream.mjs <recharts checkout>` copies the framework-free files listed in `scripts/upstream.mjs` into `src` at their upstream paths, along with the React-free upstream specs into `test`. Each relative import gains `.js`, and imports from `react` point to `src/react.ts`, which gives React's types Svelte and DOM meanings. For a module that is bound to React, the script keeps only its types and the values that `scripts/upstream.mjs` names in `EXTRACTED_VALUES`, such as pure functions and `default*Props` constants. It skips the upstream modules listed in `REPLACED`, which a hand-written Svelte module replaces. It then applies the patches in `patches/` and writes the list of files it owns to `scripts/vendored.txt`. It refuses to overwrite a file that exists but is not in that list, so a generated path never replaces a hand-written one.
 
 Add `--check` to compare the committed files with a fresh copy instead of writing them. The checkout must be at recharts commit `a1044db` (tag `v3.8.0`).
 

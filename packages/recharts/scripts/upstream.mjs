@@ -143,7 +143,16 @@ export const EXTRACTED_VALUES = {
   'src/polar/Radar.tsx': ['computeRadarPoints'],
   'src/polar/RadialBar.tsx': ['computeRadialBarDataItems'],
   'src/util/BarUtils.tsx': ['minPointSizeCallback'],
+  'src/chart/CartesianChart.tsx': ['defaultCartesianChartProps'],
+  'src/chart/PolarChart.tsx': ['defaultPolarChartProps'],
+  'src/chart/PieChart.tsx': ['defaultPieChartProps'],
+  'src/chart/RadarChart.tsx': ['defaultRadarChartProps'],
+  'src/chart/RadialBarChart.tsx': ['defaultRadialBarChartProps'],
+  'src/animation/JavascriptAnimate.tsx': ['defaultJavascriptAnimateProps'],
 };
+
+// Upstream modules that a hand-written Svelte module replaces. They are never written, even while an unpatched upstream import still reaches them.
+export const REPLACED = ['src/state/hooks.ts'];
 
 export const SPECS = [
   'animation/easing.spec.ts',
