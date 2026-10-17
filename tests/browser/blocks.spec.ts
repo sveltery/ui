@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
 import { blocks as registry } from '../../apps/docs/blocks/registry';
 
 test.use({ baseURL: 'http://127.0.0.1:5175' });
@@ -58,19 +58,36 @@ async function visit(page: Page, path: string) {
   await expect(page.locator('html')).toHaveAttribute('data-ready', { timeout: 30_000 });
 }
 
+const style = (locator: Locator, property: string) => locator.evaluate((el, p) => getComputedStyle(el).getPropertyValue(p), property);
+
 test('every registered block has a row here', () => {
   expect(Object.keys(blocks)).toEqual(registry.map(({ name }) => name));
 });
 
-for (const [name, text] of Object.entries(blocks)) {
+/** Blocks whose feature tests (dashboard-01 in its own spec) visit the page and expect its line, so they skip the render-only test. */
+const renderedElsewhere = new Set(['preview', 'preview-02', 'dashboard-01', 'sidebar-01', 'sidebar-02', 'sidebar-03', 'sidebar-04', 'sidebar-05', 'sidebar-06', 'sidebar-07', 'sidebar-08', 'sidebar-09', 'sidebar-10', 'sidebar-11', 'sidebar-12', 'sidebar-13', 'sidebar-14', 'sidebar-15', 'sidebar-16']);
+
+for (const [name, text] of Object.entries(blocks).filter(([name]) => !renderedElsewhere.has(name))) {
   test(`${name} renders on its own page`, async ({ page }) => {
     await visit(page, `/view/${name}`);
     await expect(page.getByText(text, { exact: true }).first()).toBeVisible();
   });
 }
 
-test('the category nav lists each category and its blocks', async ({ page }) => {
+test('the Code tab keeps a block data file beside its page, and the category nav lists each category and its blocks', async ({ page }) => {
   await visit(page, '/blocks');
+  const viewer = page.locator('#dashboard-01');
+  await expect(viewer.locator('iframe')).toHaveAttribute('src', '/view/dashboard-01');
+  await viewer.getByRole('tab', { name: 'Code' }).click();
+  const caption = viewer.locator('figcaption');
+  await expect(caption).toHaveText('src/routes/dashboard/+page.svelte Copy');
+  await expect(viewer.locator('pre')).toContainText("import data from './data.json';");
+
+  await viewer.getByRole('button', { name: 'data.json' }).click();
+  await expect(caption).toHaveText('src/routes/dashboard/data.json Copy');
+  await expect(viewer.locator('pre code')).toHaveAttribute('data-language', 'json');
+  await expect(viewer.locator('pre')).toContainText('"header": "Cover page"');
+
   const nav = page.getByRole('navigation', { name: 'Blocks' });
   await expect(nav.getByRole('link')).toHaveText(['Featured', 'Sidebar', 'Login', 'Signup']);
   await expect(nav.getByRole('link', { name: 'Featured' })).toHaveAttribute('aria-current', 'page');
@@ -84,9 +101,17 @@ test('the category nav lists each category and its blocks', async ({ page }) => 
   await expect(page.locator('#login-01').getByRole('link', { name: 'A simple login form' })).toHaveAttribute('href', '#login-01');
 });
 
-test('the Code tab shows the files in their app paths', async ({ page }) => {
+test('the size toggles resize the preview, the Code tab shows the files in their app paths, and a preview follows the docs theme toggle', async ({ page }) => {
   await visit(page, '/blocks/login');
   const viewer = page.locator('#login-01');
+  const panel = viewer.locator('[data-slot=resizable-panel]').first();
+  const full = (await panel.boundingBox())!.width;
+
+  await viewer.getByRole('button', { name: 'Mobile' }).click();
+  await expect.poll(async () => Math.round(((await panel.boundingBox())!.width / full) * 10)).toBe(3);
+  await viewer.getByRole('button', { name: 'Desktop' }).click();
+  await expect.poll(async () => Math.round((await panel.boundingBox())!.width)).toBe(Math.round(full));
+
   await viewer.getByRole('tab', { name: 'Code' }).click();
   await expect(viewer.locator('iframe')).toBeHidden();
   const caption = viewer.locator('figcaption');
@@ -103,37 +128,7 @@ test('the Code tab shows the files in their app paths', async ({ page }) => {
 
   await viewer.getByRole('tab', { name: 'Preview' }).click();
   await expect(viewer.locator('iframe')).toBeVisible();
-});
 
-test('the Code tab keeps a block data file beside its page', async ({ page }) => {
-  await visit(page, '/blocks');
-  const viewer = page.locator('#dashboard-01');
-  await expect(viewer.locator('iframe')).toHaveAttribute('src', '/view/dashboard-01');
-  await viewer.getByRole('tab', { name: 'Code' }).click();
-  const caption = viewer.locator('figcaption');
-  await expect(caption).toHaveText('src/routes/dashboard/+page.svelte Copy');
-  await expect(viewer.locator('pre')).toContainText("import data from './data.json';");
-
-  await viewer.getByRole('button', { name: 'data.json' }).click();
-  await expect(caption).toHaveText('src/routes/dashboard/data.json Copy');
-  await expect(viewer.locator('pre code')).toHaveAttribute('data-language', 'json');
-  await expect(viewer.locator('pre')).toContainText('"header": "Cover page"');
-});
-
-test('the size toggles resize the preview', async ({ page }) => {
-  await visit(page, '/blocks/login');
-  const viewer = page.locator('#login-01');
-  const panel = viewer.locator('[data-slot=resizable-panel]').first();
-  const full = (await panel.boundingBox())!.width;
-
-  await viewer.getByRole('button', { name: 'Mobile' }).click();
-  await expect.poll(async () => Math.round(((await panel.boundingBox())!.width / full) * 10)).toBe(3);
-  await viewer.getByRole('button', { name: 'Desktop' }).click();
-  await expect.poll(async () => Math.round((await panel.boundingBox())!.width)).toBe(Math.round(full));
-});
-
-test('a preview follows the docs theme toggle', async ({ page }) => {
-  await visit(page, '/blocks/login');
   const preview = page.locator('#login-01 iframe');
   await preview.scrollIntoViewIfNeeded();
   const html = page.frameLocator('#login-01 iframe').locator('html');
@@ -148,8 +143,10 @@ const sidebar = '[data-slot=sidebar]';
 const trigger = '[data-slot=sidebar-trigger]';
 
 for (const name of sidebarBlocks) {
-  test(`${name} trigger collapses and expands the sidebar`, async ({ page }) => {
+  // sidebar-07 checks its trigger in its collapse test below.
+  if (name !== 'sidebar-07') test(`${name} renders and its trigger collapses and expands the sidebar`, async ({ page }) => {
     await visit(page, `/view/${name}`);
+    await expect(page.getByText(blocks[name], { exact: true }).first()).toBeVisible();
     await expect(page.locator(sidebar)).toHaveAttribute('data-state', 'expanded');
     await page.locator(trigger).click();
     await expect(page.locator(sidebar)).toHaveAttribute('data-state', 'collapsed');
@@ -170,10 +167,23 @@ for (const name of sidebarBlocks) {
 }
 
 for (const name of ['sidebar-01', 'sidebar-02']) {
-  test(`${name} version switcher changes the shown version`, async ({ page }) => {
+  test(`${name} version switcher changes the shown version${name === 'sidebar-01' ? ' and highlights while open' : ''}`, async ({ page }) => {
     await visit(page, `/view/${name}`);
     const switcher = page.getByRole('button', { name: 'Documentation v1.0.1' });
-    await switcher.click();
+    if (name === 'sidebar-01') {
+      const trigger = page.getByRole('button', { name: /^Documentation v/ });
+      await page.mouse.move(1, 1);
+      await expect(trigger).not.toHaveAttribute('data-popup-open');
+      const closed = await style(trigger, 'background-color');
+      expect(closed).toBe('rgba(0, 0, 0, 0)');
+
+      await trigger.click();
+      await expect(page.getByRole('menu')).toBeVisible();
+      await page.mouse.move(1, 1);
+      await expect(trigger).toHaveAttribute('data-popup-open', '');
+      await expect(trigger).not.toHaveAttribute('data-open');
+      await expect.poll(() => style(trigger, 'background-color')).not.toBe(closed);
+    } else await switcher.click();
     await expect(page.getByRole('menuitem')).toHaveText(['v1.0.1', 'v1.1.0-alpha', 'v2.0.0-beta1']);
     await page.getByRole('menuitem', { name: 'v2.0.0-beta1' }).click();
     await expect(page.getByRole('menuitem')).toHaveCount(0);
@@ -243,17 +253,11 @@ test('sidebar-06 opens each section as a dropdown menu of links', async ({ page 
   await expect(page.getByRole('button', { name: 'Subscribe' })).toBeVisible();
 });
 
-test('sidebar-07 collapses to icons and hides the project list', async ({ page }) => {
+test('sidebar-07 renders, collapses to icons hiding the project list, shows nav tooltips only while collapsed, and expands again', async ({ page }) => {
   await visit(page, '/view/sidebar-07');
+  await expect(page.getByText(blocks['sidebar-07'], { exact: true }).first()).toBeVisible();
+  await expect(page.locator(sidebar)).toHaveAttribute('data-state', 'expanded');
   await expect(page.getByText('Projects', { exact: true })).toBeVisible();
-  await page.locator(trigger).click();
-  await expect(page.locator(sidebar)).toHaveAttribute('data-collapsible', 'icon');
-  await expect(page.locator('[data-slot=sidebar-container]')).toHaveCSS('width', '48px');
-  await expect(page.getByText('Projects', { exact: true })).toBeHidden();
-});
-
-test('sidebar-07 shows nav tooltips only while collapsed', async ({ page }) => {
-  await visit(page, '/view/sidebar-07');
   const models = page.getByRole('button', { name: 'Models' });
   await models.hover();
   await page.waitForTimeout(800);
@@ -261,33 +265,40 @@ test('sidebar-07 shows nav tooltips only while collapsed', async ({ page }) => {
   const tooltip = page.locator('[data-slot=tooltip-content]');
   await expect(tooltip).toBeHidden();
   await page.locator(trigger).click();
+  await expect(page.locator(sidebar)).toHaveAttribute('data-state', 'collapsed');
   await expect(page.locator(sidebar)).toHaveAttribute('data-collapsible', 'icon');
+  await expect(page.locator('[data-slot=sidebar-container]')).toHaveCSS('width', '48px');
+  await expect(page.getByText('Projects', { exact: true })).toBeHidden();
   await page.mouse.move(600, 400);
   await models.hover();
   await expect(tooltip).toBeVisible();
   await expect(tooltip).toHaveText('Models');
+  await page.locator(trigger).click();
+  await expect(page.locator(sidebar)).toHaveAttribute('data-state', 'expanded');
 });
 
-test('sidebar-07 team switcher changes the active team', async ({ page }) => {
+test('sidebar-07 platform sections open their submenus and rotate their chevron, the team switcher changes the active team, and the project and user menus open', async ({ page }) => {
   await visit(page, '/view/sidebar-07');
+  const models = page.getByRole('button', { name: 'Models' });
+  const chevron = models.locator('svg').last();
+  const root = page.locator('[class~="group/collapsible"]').filter({ has: models });
+  await expect(page.getByRole('link', { name: 'History' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Genesis' })).toBeHidden();
+  await expect(root).toHaveAttribute('data-closed', '');
+  expect(await style(chevron, 'rotate')).toBe('none');
+  await models.click();
+  await expect(page.getByRole('link', { name: 'Genesis' })).toBeVisible();
+  await expect(root).toHaveAttribute('data-open', '');
+  await expect(models).not.toHaveAttribute('data-open');
+  await expect.poll(() => style(chevron, 'rotate')).toBe('90deg');
+  await page.getByRole('button', { name: 'Playground' }).click();
+  await expect(page.getByRole('link', { name: 'History' })).toBeHidden();
+
   await page.getByRole('button', { name: 'Acme Inc Enterprise' }).click();
   await expect(page.getByRole('menuitem')).toHaveText(['Acme Inc ⌘1', 'Acme Corp. ⌘2', 'Evil Corp. ⌘3', 'Add team']);
   await page.getByRole('menuitem', { name: 'Evil Corp.' }).click();
   await expect(page.getByRole('button', { name: 'Evil Corp. Free' })).toBeVisible();
-});
 
-test('sidebar-07 platform sections open their submenus', async ({ page }) => {
-  await visit(page, '/view/sidebar-07');
-  await expect(page.getByRole('link', { name: 'History' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Genesis' })).toBeHidden();
-  await page.getByRole('button', { name: 'Models' }).click();
-  await expect(page.getByRole('link', { name: 'Genesis' })).toBeVisible();
-  await page.getByRole('button', { name: 'Playground' }).click();
-  await expect(page.getByRole('link', { name: 'History' })).toBeHidden();
-});
-
-test('sidebar-07 project and user menus open', async ({ page }) => {
-  await visit(page, '/view/sidebar-07');
   const project = page.locator('[data-slot=sidebar-menu-item]', { hasText: 'Design Engineering' });
   await project.hover();
   await project.getByRole('button', { name: 'More' }).click();
@@ -299,16 +310,13 @@ test('sidebar-07 project and user menus open', async ({ page }) => {
   await expect(page.getByRole('menuitem')).toHaveText(['Upgrade to Pro', 'Account', 'Billing', 'Notifications', 'Log out']);
 });
 
-test('sidebar-08 is an inset sidebar with a secondary menu', async ({ page }) => {
+test('sidebar-08 is an inset sidebar with a secondary menu, its toggle buttons open the submenus, and its project and user menus open', async ({ page }) => {
   await visit(page, '/view/sidebar-08');
   await expect(page.locator(sidebar)).toHaveAttribute('data-variant', 'inset');
   await expect(page.getByRole('link', { name: 'Support' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Feedback' })).toBeVisible();
   await expect(page.getByText('Acme Inc', { exact: true })).toBeVisible();
-});
 
-test('sidebar-08 toggle buttons open the submenus', async ({ page }) => {
-  await visit(page, '/view/sidebar-08');
   await expect(page.getByRole('link', { name: 'History' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Genesis' })).toBeHidden();
   const models = page.getByRole('listitem').filter({ has: page.getByRole('link', { name: 'Models', exact: true }) });
@@ -316,10 +324,7 @@ test('sidebar-08 toggle buttons open the submenus', async ({ page }) => {
   await expect(page.getByRole('link', { name: 'Genesis' })).toBeVisible();
   await models.getByRole('button', { name: 'Toggle' }).click();
   await expect(page.getByRole('link', { name: 'Genesis' })).toBeHidden();
-});
 
-test('sidebar-08 project and user menus open', async ({ page }) => {
-  await visit(page, '/view/sidebar-08');
   const project = page.locator('[data-slot=sidebar-menu-item]', { hasText: 'Sales & Marketing' });
   await project.hover();
   await project.getByRole('button', { name: 'More' }).click();
@@ -336,8 +341,9 @@ const desktopSidebar = (page: Page) => page.locator('[data-slot=sidebar][data-st
 const triggerFor = (page: Page, name: string) => (name === 'sidebar-16' ? page.locator('header button').first() : page.locator('[data-slot=sidebar-trigger]'));
 
 for (const name of ['sidebar-09', 'sidebar-10', 'sidebar-11', 'sidebar-12', 'sidebar-14', 'sidebar-15', 'sidebar-16']) {
-  test(`${name} collapses and expands from its trigger`, async ({ page }) => {
+  test(`${name} renders and collapses and expands from its trigger`, async ({ page }) => {
     await visit(page, `/view/${name}`);
+    await expect(page.getByText(blocks[name], { exact: true }).first()).toBeVisible();
     await expect(desktopSidebar(page)).toHaveAttribute('data-state', 'expanded');
     await triggerFor(page, name).click();
     await expect(desktopSidebar(page)).toHaveAttribute('data-state', 'collapsed');
@@ -372,8 +378,13 @@ test('sidebar-09 shows the picked folder and a shorter mail list', async ({ page
   await expect(mails).toHaveCount(5);
 });
 
-test('sidebar-09 opens the user menu and picking a folder reopens a collapsed sidebar', async ({ page }) => {
+test('sidebar-09 opens the user menu, highlighting its trigger while open, and picking a folder reopens a collapsed sidebar', async ({ page }) => {
   await visit(page, '/view/sidebar-09');
+  const user = page.locator('[data-sidebar=footer] [data-sidebar=menu-button]');
+  await page.mouse.move(1, 1);
+  await expect(user).not.toHaveAttribute('data-popup-open');
+  expect(await style(user, 'background-color')).toBe('rgba(0, 0, 0, 0)');
+
   await page.locator('[data-slot=sidebar-trigger]').click();
   await expect(desktopSidebar(page)).toHaveAttribute('data-state', 'collapsed');
   await page.getByRole('button', { name: 'Sent' }).click();
@@ -381,46 +392,59 @@ test('sidebar-09 opens the user menu and picking a folder reopens a collapsed si
   await expect(page.locator('[data-slot=sidebar-header] div.text-base')).toHaveText('Sent');
 
   await page.getByRole('button', { name: /shadcn/ }).click();
+  await expect(page.getByRole('menu')).toBeVisible();
+  await page.mouse.move(1, 1);
+  await expect(user).toHaveAttribute('data-popup-open', '');
+  await expect.poll(() => style(user, 'background-color')).toBe('oklch(0.97 0 0)');
   await expect(page.getByRole('menuitem', { name: 'Upgrade to Pro' })).toBeVisible();
   await expect(page.getByRole('menuitem', { name: 'Log out' })).toBeVisible();
 });
 
-test('sidebar-10 opens its actions popover on load and closes it with Escape', async ({ page }) => {
+test('sidebar-10 opens its actions popover on load marking its trigger, closes it with Escape, and switches the team', async ({ page }) => {
   await visit(page, '/view/sidebar-10');
   const popover = page.locator('[data-slot=popover-content]');
+  const popup = page.getByRole('dialog');
+  const actions = page.locator('[data-slot=popover-trigger]');
+  await expect(popover).toBeVisible();
   await expect(popover.getByRole('button', { name: 'Customize Page' })).toBeVisible();
   await expect(popover.getByRole('button', { name: 'Move to Trash' })).toBeVisible();
+  await expect(popup.getByText('Customize Page')).toBeVisible();
+  await expect(actions).toHaveAttribute('data-popup-open', '');
   // The popover opens on mount, after its trigger registers, and still anchors to the trigger's right edge.
-  const trigger = (await page.locator('[data-slot=popover-trigger]').boundingBox())!;
-  await expect.poll(async () => Math.round(((await popover.boundingBox())!).x + ((await popover.boundingBox())!).width)).toBe(Math.round(trigger.x + trigger.width));
+  const box = (await actions.boundingBox())!;
+  await expect.poll(async () => Math.round(((await popover.boundingBox())!).x + ((await popover.boundingBox())!).width)).toBe(Math.round(box.x + box.width));
   await page.keyboard.press('Escape');
   await expect(popover).toBeHidden();
-  await page.locator('[data-slot=popover-trigger]').click();
+  await expect(popup).toBeHidden();
+  await expect(actions).not.toHaveAttribute('data-popup-open');
+  await actions.click();
   await expect(popover.getByRole('button', { name: 'Export' })).toBeVisible();
-});
+  await expect(popup.getByText('Customize Page')).toBeVisible();
+  await expect(actions).toHaveAttribute('data-popup-open', '');
 
-test('sidebar-10 switches the team', async ({ page }) => {
-  await visit(page, '/view/sidebar-10');
-  await expect(page.locator('[data-slot=popover-content]')).toBeVisible();
+  await expect(popover).toBeVisible();
   await page.keyboard.press('Escape');
-  await expect(page.locator('[data-slot=popover-content]')).toBeHidden();
-  const trigger = page.getByRole('button', { name: 'Acme Inc' });
-  await trigger.click();
+  await expect(popover).toBeHidden();
+  const team = page.getByRole('button', { name: 'Acme Inc' });
+  await team.click();
   await expect(page.getByRole('menuitem', { name: /Acme Corp\./ })).toContainText('⌘2');
   await page.getByRole('menuitem', { name: /Evil Corp\./ }).click();
   await expect(page.getByRole('button', { name: 'Evil Corp.' })).toBeVisible();
-  await expect(trigger).toBeHidden();
+  await expect(team).toBeHidden();
 });
 
-test('sidebar-10 expands a workspace and opens a favorite menu', async ({ page }) => {
+test('sidebar-10 expands a workspace rotating its chevron, and opens a favorite menu', async ({ page }) => {
   await visit(page, '/view/sidebar-10');
   await expect(page.locator('[data-slot=popover-content]')).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(page.locator('[data-slot=popover-content]')).toBeHidden();
   await expect(page.getByText('Daily Journal & Reflection')).toBeHidden();
   const toggle = page.locator('[data-slot=sidebar-menu-item]', { hasText: 'Personal Life Management' }).locator('[data-slot=sidebar-menu-action]').first();
+  expect(await style(toggle, 'rotate')).toBe('none');
   await toggle.click();
   await expect(page.getByText('Daily Journal & Reflection')).toBeVisible();
+  await expect(toggle).toHaveAttribute('data-panel-open', '');
+  await expect.poll(() => style(toggle, 'rotate')).toBe('90deg');
   await toggle.click();
   await expect(page.getByText('Daily Journal & Reflection')).toBeHidden();
 
@@ -429,8 +453,11 @@ test('sidebar-10 expands a workspace and opens a favorite menu', async ({ page }
   await expect(page.getByRole('menuitem', { name: 'Open in New Tab' })).toBeVisible();
 });
 
-test('sidebar-11 opens and closes the file tree folders', async ({ page }) => {
+test('sidebar-11 opens and closes the file tree folders and rotates an open folder chevron', async ({ page }) => {
   await visit(page, '/view/sidebar-11');
+  const components = page.getByRole('button', { name: 'components', exact: true });
+  const chevron = components.locator('svg').first();
+  await expect.poll(() => style(chevron, 'rotate')).toBe('90deg');
   await expect(page.getByText('button.tsx', { exact: true }).first()).toBeVisible();
   await expect(page.getByText('layout.tsx', { exact: true })).toBeHidden();
   await page.getByRole('button', { name: 'app', exact: true }).click();
@@ -440,11 +467,12 @@ test('sidebar-11 opens and closes the file tree folders', async ({ page }) => {
   await expect(page.getByText('layout.tsx', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'app', exact: true }).click();
   await expect(page.getByText('layout.tsx', { exact: true })).toBeHidden();
-  await page.getByRole('button', { name: 'components', exact: true }).click();
+  await components.click();
   await expect(page.getByText('footer.tsx', { exact: true })).toBeHidden();
+  await expect.poll(() => style(chevron, 'rotate')).toBe('none');
 });
 
-test('sidebar-12 opens a calendar group and picks a day', async ({ page }) => {
+test('sidebar-12 opens a calendar group, picks a day, and opens the user menu', async ({ page }) => {
   await visit(page, '/view/sidebar-12');
   await expect(page.getByRole('button', { name: 'Personal' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Holidays' })).toBeHidden();
@@ -456,16 +484,14 @@ test('sidebar-12 opens a calendar group and picks a day', async ({ page }) => {
   await expect(selected).toHaveText('12');
   await page.locator('[data-slot=calendar] button[data-day]', { hasText: /^15$/ }).first().click();
   await expect(selected).toHaveText('15');
-});
 
-test('sidebar-12 opens the user menu', async ({ page }) => {
-  await visit(page, '/view/sidebar-12');
   await page.getByRole('button', { name: /shadcn/ }).click();
   await expect(page.getByRole('menuitem', { name: 'Billing' })).toBeVisible();
 });
 
-test('sidebar-13 shows the settings dialog open, closes it, and reopens it', async ({ page }) => {
+test('sidebar-13 renders with the settings dialog open, closes it, and reopens it', async ({ page }) => {
   await visit(page, '/view/sidebar-13');
+  await expect(page.getByText(blocks['sidebar-13'], { exact: true }).first()).toBeVisible();
   const dialog = page.getByRole('dialog', { name: 'Settings' });
   await expect(dialog).toBeVisible();
   await expect(dialog.locator('[data-slot=sidebar] a')).toHaveCount(12);
@@ -492,8 +518,16 @@ test('sidebar-14 puts the sidebar on the right', async ({ page }) => {
   await expect(page.locator('[data-slot=sidebar] a[data-active=true]')).toHaveText('Data Fetching');
 });
 
-test('sidebar-15 shows a left sidebar and a calendar sidebar on the right', async ({ page }) => {
+test('sidebar-15 expanding a workspace rotates its chevron, and it shows a left sidebar and a calendar sidebar on the right', async ({ page }) => {
   await visit(page, '/view/sidebar-15');
+  const item = page.locator('[data-sidebar=menu-item]').filter({ hasText: 'Personal Life Management' });
+  const toggle = item.locator('[data-sidebar=menu-action]').first();
+  expect(await style(toggle, 'rotate')).toBe('none');
+
+  await toggle.click();
+  await expect(toggle).toHaveAttribute('data-panel-open', '');
+  await expect.poll(() => style(toggle, 'rotate')).toBe('90deg');
+
   await expect(page.getByText('Workspaces', { exact: true })).toBeVisible();
   await expect(page.getByText('My Calendars', { exact: true })).toBeVisible();
   await expect(desktopSidebar(page)).toHaveCount(1);
@@ -514,31 +548,19 @@ test('sidebar-16 expands the navigation sections and opens a project menu', asyn
 
 const target = '[data-slot=capture-target]';
 
-test('preview lays its cards out in seven columns with five charts', async ({ page }) => {
+test('preview renders, lays its cards out in seven columns with five charts and sixteen icons, and its waveform card toggles its processing and mode buttons', async ({ page }) => {
   await visit(page, '/view/preview');
+  await expect(page.getByText(blocks.preview, { exact: true }).first()).toBeVisible();
   await expect(page.locator(`${target} > div`)).toHaveCount(7);
   await expect(page.locator(`${target} [data-slot=card]`)).toHaveCount(32);
   await expect(page.locator(`${target} [data-slot=chart]`)).toHaveCount(5);
-});
 
-test('the preview icon grid renders sixteen icons', async ({ page }) => {
-  await visit(page, '/view/preview');
   const tiles = page.locator(`${target} .grid-cols-8 > div`);
   await expect(tiles).toHaveCount(16);
   await expect(tiles.locator('svg')).toHaveCount(16);
   await expect(tiles.first().locator('svg')).toHaveClass(/lucide-copy/);
   await expect(tiles.last().locator('svg')).toHaveClass(/lucide-settings/);
-});
 
-test('preview-02 lays its cards out in six columns with nine charts', async ({ page }) => {
-  await visit(page, '/view/preview-02');
-  await expect(page.locator(`${target} > div`)).toHaveCount(6);
-  await expect(page.locator(`${target} [data-slot=card]`)).toHaveCount(37);
-  await expect(page.locator(`${target} [data-slot=chart]`)).toHaveCount(9);
-});
-
-test('the preview waveform card toggles its processing and mode buttons', async ({ page }) => {
-  await visit(page, '/view/preview');
   const card = page.locator('[data-slot=card]').filter({ hasText: 'Live Audio Waveform' });
   await expect(card.getByRole('img')).toHaveAttribute('aria-label', 'Processing audio');
   await card.getByRole('button', { name: 'Stop Processing' }).click();
@@ -548,18 +570,20 @@ test('the preview waveform card toggles its processing and mode buttons', async 
   await expect(card.getByRole('button', { name: 'Scrolling' })).toBeVisible();
 });
 
-test('the preview-02 kitchen island applies a scene to its sliders', async ({ page }) => {
+test('preview-02 renders, lays its cards out in six columns with nine charts, its kitchen island applies a scene to its sliders, and its notification card selects all and shows the mixed state', async ({ page }) => {
   await visit(page, '/view/preview-02');
-  const card = page.locator('[data-slot=card]').filter({ hasText: 'Kitchen Island' });
-  const sliders = card.getByRole('slider');
+  await expect(page.getByText(blocks['preview-02'], { exact: true }).first()).toBeVisible();
+  await expect(page.locator(`${target} > div`)).toHaveCount(6);
+  await expect(page.locator(`${target} [data-slot=card]`)).toHaveCount(37);
+  await expect(page.locator(`${target} [data-slot=chart]`)).toHaveCount(9);
+
+  const island = page.locator('[data-slot=card]').filter({ hasText: 'Kitchen Island' });
+  const sliders = island.getByRole('slider');
   await expect(sliders).toHaveCount(4);
   await expect(sliders.evaluateAll((inputs) => inputs.map((input) => (input as HTMLInputElement).value))).resolves.toEqual(['90', '70', '30', '0']);
-  await card.getByRole('button', { name: 'Dining' }).click();
+  await island.getByRole('button', { name: 'Dining' }).click();
   await expect(sliders.evaluateAll((inputs) => inputs.map((input) => (input as HTMLInputElement).value))).resolves.toEqual(['50', '40', '20', '60']);
-});
 
-test('the preview-02 notification card selects all and shows the mixed state', async ({ page }) => {
-  await visit(page, '/view/preview-02');
   const card = page.locator('[data-slot=card]').filter({ hasText: 'Choose what you want to be notified about.' });
   const all = card.getByRole('checkbox', { name: 'Select all' });
   await expect(all).toHaveAttribute('aria-checked', 'mixed');
