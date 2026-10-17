@@ -4,6 +4,10 @@ description: A styling system for HTML and rendered markdown, from blog posts to
 order: 3.5
 ---
 
+<script lang="ts">
+  import { buttonVariants } from '$registry/bases/base/ui/button';
+</script>
+
 You render markdown and get back plain unstyled HTML: headings, paragraphs, lists, and tables. So you style the elements one by one: font sizes, line heights, spacing.
 
 You do it for your blog. Then you do it again for the docs. Then again for the chat app. Every time you're fighting the same thing: sizing and spacing.
@@ -22,6 +26,8 @@ A typeset is just a small preset class. You can have multiple typesets in your a
   --typeset-flow: 1.25em;
 }
 ```
+
+<a href="/typeset" data-slot="button" class="{buttonVariants({ size: 'sm' })} mt-6">Build your typeset</a>
 
 ---
 
@@ -44,7 +50,7 @@ So we sat down and condensed everything into three controls: size, leading, and 
 
 ## Building Your Typeset
 
-Create your typeset in the typeset builder. Pick your fonts and rhythm, then preview them on docs, chat, articles, and other real content.
+Create your typeset in the [typeset builder](/typeset). Pick your fonts and rhythm, then preview them on docs, chat, articles, and other real content.
 
 The panel gives you the `typeset.css` file, the font setup for your framework, a preset class with your choices, and the wrapper to add around your content.
 
