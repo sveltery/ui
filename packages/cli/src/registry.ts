@@ -44,6 +44,7 @@ const cssTree: Parser<CssTree> = record(cssValue);
 const registryBaseConfig = object({
   style: optional(literal(...styleNames)),
   iconLibrary: optional(literal(...iconLibraryNames)),
+  rtl: optional(literal(true, false)),
   menuColor: optional(literal(...PRESET_MENU_COLORS)),
   menuAccent: optional(literal(...PRESET_MENU_ACCENTS)),
   tailwind: optional(object({ baseColor: optional(literal(...baseColors)) })),
@@ -73,6 +74,7 @@ const itemCommon = {
   files: array(registryFile),
   cssVars: optional(cssVars),
   css: optional(cssTree),
+  docs: optional(string),
 };
 
 const plainItem = object({ ...itemCommon, type: literal('registry:ui', 'registry:lib', 'registry:theme', 'registry:block') });
