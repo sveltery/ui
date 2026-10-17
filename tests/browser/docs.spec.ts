@@ -143,16 +143,15 @@ test('the mobile menu opens as a popover and closes on navigation', async ({ pag
   await expect(menu).toBeHidden();
 });
 
-test('the Field Horizontal Fields example offers Favorite Fruit and shows the chosen fruit', async ({ page }) => {
+test('the Field Select example offers the departments and shows the chosen one', async ({ page }) => {
   await visit(page, '/docs/components/field', 30_000);
-  const section = page.locator('[data-slot=example]').filter({ hasText: 'Horizontal Fields' });
-  const fruit = section.getByLabel('Favorite Fruit');
-  await expect(fruit).toHaveText('Select a fruit');
-  await fruit.click();
-  await expect(page.locator('[role=listbox]:visible').getByRole('option')).toHaveText(['Select a fruit', 'Apple', 'Banana', 'Orange']);
-  await page.locator('[role=listbox]:visible').getByRole('option', { name: 'Banana', exact: true }).click();
+  const department = page.locator('[data-name="base/FieldSelectExample"]').getByRole('combobox');
+  await expect(department).toHaveText('Choose department');
+  await department.click();
+  await expect(page.locator('[role=listbox]:visible').getByRole('option')).toHaveText(['Choose department', 'Engineering', 'Design', 'Marketing', 'Sales', 'Customer Support', 'Human Resources', 'Finance', 'Operations']);
+  await page.locator('[role=listbox]:visible').getByRole('option', { name: 'Design', exact: true }).click();
   await expect(page.locator('[role=listbox]:visible').getByRole('option')).toHaveCount(0);
-  await expect(fruit).toHaveText('Banana');
+  await expect(department).toHaveText('Design');
 });
 
 test('the Input Form example labels each control and describes the email field', async ({ page }) => {
