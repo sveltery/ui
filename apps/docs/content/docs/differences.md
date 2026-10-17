@@ -441,6 +441,16 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
+### The Toggle Group page has no changelog
+
+**Upstream:** The [Toggle Group page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/toggle-group.mdx?plain=1#L131) ends with a changelog for the default `spacing` moving from `0` to `2`.
+
+**Sveltery UI:** The [Toggle Group](/docs/components/toggle-group) page ends at its API Reference. Its `spacing` already defaults to `2`.
+
+**Why:** Sveltery's Toggle Group shipped with a default of `2`, so there is no change to migrate from.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ## Forms
 
 ### The Forms guides cover SvelteKit forms instead of React form libraries
