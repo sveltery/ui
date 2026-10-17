@@ -181,33 +181,73 @@ Options:
 
 ---
 
-## list
+## search
 
-Use the `list` command to see every item in the registry. Items in your project are marked `installed`.
+Use the `search` command to find items in the registry. `list` is an alias. It never writes anything and needs no `components.json`.
 
 ```bash
-npx @sveltery/ui@latest list
+npx @sveltery/ui@latest search -q dialog
 ```
 
 ```txt
-accordion           registry:ui
-alert               registry:ui
-alert-dialog        registry:ui
+Found 3 items matching "dialog" in @sveltery
+Showing 1-3 of 3
+
+- dialog (ui)
+- alert-dialog (ui)
+- sidebar-13 (block) — A sidebar in a dialog.
 ```
 
-Pass `--json` for an array of `{ name, type, installed }`.
+`search` ranks the items by how well the query matches their name, title and description, as the shadcn CLI does. With no query it prints every item in registry order: the components, then the blocks. A line shows the argument to give `add`, the item type and a shortened description.
+
+`--type` keeps items of one type. It takes `ui`, `block`, `lib`, `theme`, `base` or `font`, or the same with a `registry:` prefix, and several types separated by commas. `--limit` and `--offset` page through the results, and the last line gives the `--offset` of the next page. `--limit 0` shows everything.
+
+`--json` prints `pagination` and `items` instead. Each item has `name`, `title`, `type`, `description`, `registry` and `addCommandArgument`. This is `search -q dialog -t ui --json`:
+
+```json
+{
+  "pagination": { "total": 2, "offset": 0, "limit": 100, "hasMore": false },
+  "items": [
+    {
+      "name": "dialog",
+      "title": "Dialog",
+      "type": "registry:ui",
+      "registry": "@sveltery",
+      "addCommandArgument": "dialog"
+    },
+    {
+      "name": "alert-dialog",
+      "title": "Alert Dialog",
+      "type": "registry:ui",
+      "registry": "@sveltery",
+      "addCommandArgument": "alert-dialog"
+    }
+  ]
+}
+```
+
+The only registry is `@sveltery`, the Sveltery UI registry that `SVELTERY_REGISTRY_URL` or `components.json` points at. Pass it to be explicit. Any other registry is an error. See [differences](/docs/differences#search-takes-one-registry-and-no-installed-mark).
 
 **Options**
 
 ```txt
-Usage: sveltery list [options]
+Usage: sveltery search|list [options] [registries...]
 
-list the registry's items and mark the installed ones
+search items from registries
+
+Arguments:
+  registries             the registries to search; the only one is @sveltery,
+                         the default
 
 Options:
-  --json        print the items as JSON (default: false)
-  --cwd <path>  the project root (default: ".")
-  -h, --help    display help for command
+  -q, --query <query>    query string
+  -t, --type <type>      filter by item type, e.g. ui, block. Comma-separated
+                         for multiple.
+  -l, --limit <number>   maximum number of items to display (default: "100")
+  -o, --offset <number>  number of items to skip (default: "0")
+  --json                 output as JSON. (default: false)
+  --cwd <path>           the project root (default: ".")
+  -h, --help             display help for command
 ```
 
 ---

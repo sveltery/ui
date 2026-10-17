@@ -58,8 +58,8 @@ export function buildRegistry(input: RegistryInput): RegistryOutput {
     styles: [...styleNames],
     baseColors: [...baseColors],
     iconLibraries: [...iconLibraries],
-    items: plans.filter((plan) => plan.name !== 'shared').map(({ name, type }) => ({ name, type })),
-    blocks: blocks.map(({ name, type, description }) => ({ name, type, description })),
+    items: plans.filter((plan) => plan.name !== 'shared').map(({ name, type, title }) => ({ name, type, title })),
+    blocks: blocks.map(({ name, type, title, description }) => ({ name, type, title, description })),
   };
   output.set('index.json', manifest);
 

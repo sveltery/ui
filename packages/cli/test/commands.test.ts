@@ -8,7 +8,6 @@ import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, test, vi 
 import { add } from '../src/commands/add.js';
 import { diff } from '../src/commands/diff.js';
 import { baseDependencies, init } from '../src/commands/init.js';
-import { list } from '../src/commands/list.js';
 import { update } from '../src/commands/update.js';
 import { cliPackage } from '../src/version.js';
 
@@ -558,39 +557,5 @@ describe('update', () => {
     rmSync(join(cwd, 'src/lib'), { recursive: true });
     expect((await update([], { cwd, ...defaults })).files).toEqual([]);
     expect(existsSync(join(cwd, 'src/lib'))).toBe(false);
-  });
-});
-
-describe('list', () => {
-  const print = async (json: boolean) => {
-    const log = vi.spyOn(console, 'log').mockImplementation(() => {});
-    try {
-      await list({ cwd, json });
-      return log.mock.calls.map(([line]) => line).join('\n');
-    } finally {
-      log.mockRestore();
-    }
-  };
-  beforeEach(() => init({ cwd, ...defaults }));
-
-  test('prints every item with its type, and marks the installed ones', async () => {
-    expect(await print(false)).toBe(`button  registry:ui
-dialog  registry:ui`);
-    await add(['button'], { cwd, ...defaults, overwrite: false, all: false, dryRun: false });
-    expect(await print(false)).toBe(`button  registry:ui  installed
-dialog  registry:ui`);
-  });
-
-  test('--json prints the entries', async () => {
-    await add(['dialog'], { cwd, ...defaults, overwrite: false, all: false, dryRun: false });
-    expect(JSON.parse(await print(true))).toEqual([
-      { name: 'button', type: 'registry:ui', installed: true },
-      { name: 'dialog', type: 'registry:ui', installed: true },
-    ]);
-  });
-
-  test('asks for init when there is no components.json', async () => {
-    rmSync(join(cwd, 'components.json'));
-    await expect(list({ cwd, json: false })).rejects.toThrow('Run `npx @sveltery/ui@latest init` first.');
   });
 });

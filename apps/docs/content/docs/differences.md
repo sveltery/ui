@@ -533,3 +533,17 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Why:** The other rows make room during the drag, as they do upstream.
 
 **Decided:** Hugo Hsi, 2026-10-14
+
+## Command line
+
+### Search takes one registry and no installed mark
+
+**Upstream:** [`search`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/search.ts#L37) (alias `list`) takes any number of registries: namespaces such as `@shadcn`, GitHub sources and URLs. With none, it searches every registry in `components.json` and stops when there is no `components.json`. Each result's `addCommandArgument` is the [namespaced address](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/registry/search.ts#L317) that `add` takes, and a search of several registries lists which registry a result is from.
+
+**Sveltery UI:** `search` knows one registry, `@sveltery`, which is the registry `SVELTERY_REGISTRY_URL` or `components.json` points at. With no argument it searches that one, with or without a `components.json`. Any other registry is an error. `addCommandArgument` is the bare item name, because `add` takes names and URLs only, and `registry` is `@sveltery`. Results come from the manifest `index.json`, which gained an optional `title` for each item so that a search needs one request.
+
+The old `list` command marked the items in your project as `installed` and had no types, pagination or query. `list` is now an alias of `search`, which prints upstream's output, and the mark is gone.
+
+**Why:** The registry is the only one the CLI reads until namespaced registries land. The installed mark would need one request for each item to read its file list, and it would add a field to upstream's JSON shape.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17

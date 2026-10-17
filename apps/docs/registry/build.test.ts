@@ -144,12 +144,12 @@ describe('index files', () => {
       baseColors: ['neutral', 'stone', 'zinc', 'mauve', 'olive', 'mist', 'taupe'],
       iconLibraries: ['lucide', 'tabler', 'hugeicons', 'phosphor', 'remixicon'],
       items: [
-        { name: 'accordion', type: 'registry:ui' },
-        { name: 'alert', type: 'registry:ui' },
-        { name: 'alert-dialog', type: 'registry:ui' },
-        { name: 'aspect-ratio', type: 'registry:ui' },
+        { name: 'accordion', type: 'registry:ui', title: 'Accordion' },
+        { name: 'alert', type: 'registry:ui', title: 'Alert' },
+        { name: 'alert-dialog', type: 'registry:ui', title: 'Alert Dialog' },
+        { name: 'aspect-ratio', type: 'registry:ui', title: 'Aspect Ratio' },
       ],
-      blocks: [{ name: 'preview', type: 'registry:block', description: 'Preview' }],
+      blocks: [{ name: 'preview', type: 'registry:block', title: 'Preview', description: 'Preview' }],
     });
     expect(manifest.items.map((entry) => entry.name)).not.toContain('shared');
     expect(manifest.items.map((entry) => entry.name)).toContain('button');

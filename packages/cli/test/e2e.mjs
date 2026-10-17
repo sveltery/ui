@@ -184,6 +184,14 @@ try {
   assert.equal(readFileSync(buttonFile, 'utf8'), pristine, 'update -y restores the registry version');
   assert.equal((await cli('diff')).trim(), 'Everything is up to date.');
 
+  step('sveltery search and list');
+  const found = JSON.parse(await cli('search', '-q', 'dialog', '-t', 'ui', '--json'));
+  assert.deepEqual(found.items.map((entry) => entry.name), ['dialog', 'alert-dialog'], 'search ranks the exact name first');
+  assert.deepEqual(found.items[0], { name: 'dialog', title: 'Dialog', type: 'registry:ui', registry: '@sveltery', addCommandArgument: 'dialog' });
+  const listed = await cli('list', '-t', 'block', '-l', '2', '-o', '1');
+  assert.match(listed, new RegExp(`^Showing 2-3 of ${registry.get('index.json').blocks.length}$`, 'm'), 'list is search with paging');
+  await assert.rejects(cli('search', '@acme'), (error) => /Unknown registry "@acme"/.test(error.output), 'search names the registries it does not know');
+
   writeFileSync(
     join(app, 'src/routes/+page.svelte'),
     // The import form the docs print, an explicit index, and a deep import of one file.

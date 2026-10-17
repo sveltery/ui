@@ -89,9 +89,9 @@ export type RegistryManifest = {
   baseColors: BaseColor[];
   iconLibraries: IconLibrary[];
   /** Installable items, in name order. Internal items such as `shared` are left out. */
-  items: { name: string; type: RegistryItem['type']; description?: string }[];
+  items: { name: string; type: RegistryItem['type']; title?: string; description?: string }[];
   /** `registry:block` items, kept out of `items` because a 0.1 CLI rejects their type there. */
-  blocks: { name: string; type: 'registry:block'; description?: string }[];
+  blocks: { name: string; type: 'registry:block'; title?: string; description?: string }[];
 };
 
 /**
