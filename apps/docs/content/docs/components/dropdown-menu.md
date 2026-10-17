@@ -47,6 +47,7 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <script lang="ts">
+  import { Button } from '#lib/components/ui/button';
   import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '#lib/components/ui/dropdown-menu';
 </script>
 ```
@@ -186,6 +187,6 @@ Wrap the dropdown menu in a [DirectionProvider](/docs/components/direction) and 
 
 ## API Reference
 
-See the [Base UI Menu](https://base-ui.com/react/components/menu#api-reference) documentation.
+See the [Base UI documentation](https://base-ui.com/react/components/menu) for the full API reference.
 
 `DropdownMenuContent` renders the Base portal, positioner and popup, and takes the positioner's `side`, `align`, `sideOffset` and `alignOffset` props. `DropdownMenuItem`, `DropdownMenuCheckboxItem`, `DropdownMenuRadioItem`, `DropdownMenuLabel` and `DropdownMenuSubTrigger` take `inset`, and `DropdownMenuItem` also takes `variant` (`default` or `destructive`).
