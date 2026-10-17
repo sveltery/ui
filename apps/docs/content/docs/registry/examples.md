@@ -114,9 +114,19 @@ A module with no component. Its files still go to the `ui` directory.
 
 ### Custom preset
 
-A `registry:base` item is a preset. Pass its URL to `init --preset`. `init` takes the style, icon library, menu color and base color from `config`, merges `cssVars` into the theme in your CSS file, and installs the fonts it lists in `registryDependencies`.
+A `registry:base` item is a preset. Pass its URL to `init --preset`. `init` takes the style, icon library and menu color from `config`, writes the tokens in `cssVars` and the rules in `css` into your CSS file, and installs the fonts it lists in `registryDependencies`.
 
-```json title="acme.json"
+With a preset, `init` does not read the base color's theme item. `config.tailwind.baseColor` only sets the value in `components.json`. So a preset must carry the whole theme: the `@theme inline` mappings in `cssVars.theme`, every token in `light` and `dark`, and the imports and base layer in `css`. A preset that lists only a few tokens leaves the rest undefined in a new project.
+
+The easiest start is a preset that Sveltery UI serves. Build one on the [Create page](/create), take the URL of its `init` command, and save the JSON it returns:
+
+```bash
+curl "https://ui.sveltery.dev/init?style=nova&baseColor=neutral&theme=neutral&iconLibrary=lucide&font=inter&menuAccent=subtle&menuColor=default&radius=default" -o acme.json
+```
+
+Change `name` to your own, edit the tokens, and serve the file. This excerpt shows the keys you are most likely to change:
+
+```json title="acme.json (excerpt)"
 {
   "$schema": "https://ui.sveltery.dev/schema/registry-item.json",
   "name": "acme",
@@ -125,6 +135,7 @@ A `registry:base` item is a preset. Pass its URL to `init --preset`. `init` take
     "style": "nova",
     "iconLibrary": "lucide",
     "menuColor": "default",
+    "menuAccent": "subtle",
     "tailwind": { "baseColor": "neutral" }
   },
   "registryDependencies": ["font-inter"],
@@ -146,6 +157,4 @@ A `registry:base` item is a preset. Pass its URL to `init --preset`. `init` take
 npx @sveltery/ui@latest init --preset https://example.com/r/acme.json
 ```
 
-This preset keeps the base color's tokens and changes only `primary` and `primary-foreground`. `font-inter` is one of the font items that Sveltery UI's registry serves. `init` installs `@fontsource-variable/inter`, imports it in your CSS file and sets `--font-sans`.
-
-The [Create page](/create) builds a full preset and prints its `init` command.
+`font-inter` is one of the font items that Sveltery UI's registry serves. `init` installs `@fontsource-variable/inter`, imports it in your CSS file and sets `--font-sans`.

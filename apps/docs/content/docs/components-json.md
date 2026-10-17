@@ -44,7 +44,7 @@ See [CLI](/docs/cli) for more information. A full file looks like this:
 }
 ```
 
-`init` writes the keys on this page in this order and keeps any other keys you add. The CLI stops with `components.json is invalid` when a key on this page is missing or has a value it does not know.
+`init` writes the keys on this page in this order and keeps any other keys you add. The CLI stops with `components.json is invalid` when a required key is missing or a key has a value it does not know. Every key is required except `$schema`, `menuAccent` and `registry`.
 
 ## $schema
 
@@ -66,7 +66,7 @@ The style of your components: `nova`, `vega`, `maia`, `lyra`, `mira`, `luma`, `s
 }
 ```
 
-To change the style, run `init --style <name>`, then run `update`. `init` changes only `components.json` and your CSS file. `update` shows how each installed component differs in the new style and asks before it overwrites it.
+To change the style, run `init --style <name>`, then run `update`. `init` does not touch your components. `update` shows how each installed component differs in the new style and asks before it overwrites it.
 
 ## iconLibrary
 

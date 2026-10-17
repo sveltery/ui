@@ -123,7 +123,7 @@ Then run `pnpm install` at the root.
 
 ### Add components
 
-Run `add` with `--cwd` pointing at the shared package. You can run it from the root or from any workspace.
+Run `add` with `--cwd` pointing at the shared package. `--cwd` is relative to where you run the command, so from `apps/web` it is `--cwd ../../packages/ui`.
 
 ```bash
 npx @sveltery/ui@latest add button --cwd packages/ui

@@ -43,7 +43,7 @@ Required. The URL of the schema.
 
 ### name
 
-Required. The name of the item. A name in another item's `registryDependencies` refers to this name in the project's registry.
+Required. The name of the item. A name in another item's `registryDependencies` refers to this name in the project's registry. Use lowercase letters, digits and hyphens, starting with a letter or digit, so that `add` accepts it.
 
 ```json title="registry-item.json"
 {
@@ -111,7 +111,7 @@ The items this item builds on. The CLI installs them first.
 }
 ```
 
-- A name, such as `button`, is an item of the project's registry in the project's style.
+- A name, such as `button`, is an item of the project's registry in the project's style. It must use lowercase letters, digits and hyphens.
 - A URL starting with `http://` or `https://` is fetched as is.
 
 ### files

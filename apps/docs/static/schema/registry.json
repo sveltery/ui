@@ -24,19 +24,42 @@
     "styles": {
       "type": "array",
       "items": {
-        "type": "string"
+        "enum": [
+          "vega",
+          "nova",
+          "maia",
+          "lyra",
+          "mira",
+          "luma",
+          "sera",
+          "rhea"
+        ]
       }
     },
     "baseColors": {
       "type": "array",
       "items": {
-        "type": "string"
+        "enum": [
+          "neutral",
+          "stone",
+          "zinc",
+          "mauve",
+          "olive",
+          "mist",
+          "taupe"
+        ]
       }
     },
     "iconLibraries": {
       "type": "array",
       "items": {
-        "type": "string"
+        "enum": [
+          "lucide",
+          "tabler",
+          "hugeicons",
+          "phosphor",
+          "remixicon"
+        ]
       }
     },
     "items": {
@@ -52,7 +75,13 @@
             "type": "string"
           },
           "type": {
-            "type": "string"
+            "enum": [
+              "registry:ui",
+              "registry:lib",
+              "registry:theme",
+              "registry:font",
+              "registry:base"
+            ]
           },
           "description": {
             "type": "string"
