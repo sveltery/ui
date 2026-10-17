@@ -901,7 +901,7 @@ The old `list` command marked the items in your project as `installed` and had n
 
 **Upstream:** [`info`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/info.ts#L94-L145) prints `rsc`, `typescript` and `tailwindConfig` for the project, and `rsc`, `typescript`, `base` and `rtl` for the configuration. It reads the framework version only for Next.js, and `tailwindVersion` is `v3` or `v4`. It lists the `.tsx` and `.jsx` files in the ui folder that match a registry item, prints each configured registry, and stops with a message in a monorepo root. Its links include the example source of a component.
 
-**Sveltery UI:** [`info`](/docs/cli#info) leaves out `rsc`, `typescript`, `tailwindConfig`, `base` and `rtl`. Svelte has no server components or JSX, `components.json` has `typescript: true` only, Tailwind CSS 4 has no config file, the Base UI variant is the only one, and `init --rtl` is not supported. The project shows the framework version (SvelteKit's or Vite's), `svelteVersion` and `tailwindVersion` as versions, such as `4.1.2`, taken from `node_modules` when the package is installed and from `package.json` otherwise. The installed items are the manifest items that have a folder under `aliases.ui`. `registry` is the one registry the CLI reads. It does not stop in a monorepo root, because the CLI has no workspace detection and takes `--cwd`, and it has no example link, because a component's page shows its examples.
+**Sveltery UI:** [`info`](/docs/cli#info) leaves out `rsc`, `typescript`, `tailwindConfig` and `base`. Svelte has no server components or JSX, `components.json` has `typescript: true` only, Tailwind CSS 4 has no config file, and the Base UI variant is the only one. The project shows the framework version (SvelteKit's or Vite's), `svelteVersion` and `tailwindVersion` as versions, such as `4.1.2`, taken from `node_modules` when the package is installed and from `package.json` otherwise. The installed items are the manifest items that have a folder under `aliases.ui`. `registry` is the one registry the CLI reads. It does not stop in a monorepo root, because the CLI has no workspace detection and takes `--cwd`, and it has no example link, because a component's page shows its examples.
 
 **Why:** Each omitted field only has a value in a React or Next.js project, or in a setup that this CLI does not have. A version is more useful than `v4` for a bug report.
 
@@ -948,5 +948,85 @@ The old `list` command marked the items in your project as `installed` and had n
 **Sveltery UI:** [`eject`](/docs/cli#eject) says that the directory has no `components.json` and to run `init` first.
 
 **Why:** This CLI does not resolve workspaces yet. The [Monorepo](/docs/monorepo) page tells you to run the CLI in the package with `--cwd`.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `migrate icons` maps icons from the registry's components
+
+**Upstream:** [`migrate-icons.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/migrate-icons.ts#L118) fetches `icons/index.json`, a list with one entry per icon that names it in each library.
+
+**Sveltery UI:** [`migrate icons`](/docs/cli#icons) reads the icon names from the `IconPlaceholder` tags in the registry's items and blocks. Where components pair one icon with different icons in the target library, it takes the pairing they use most.
+
+**Why:** The registry serves no icon list. The placeholders already name each icon in every library, so the mapping cannot drift from the components. On the registry at this commit, the migration changes 40 files in a lucide project with every item. For each library, 36 to 40 of them match the files an `init --icons <library>` project gets. The others use an icon that other components pair with the same lucide icon, such as a chevron in place of Select's selector icon.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `migrate --yes` does not ask for `--from` or `--to`
+
+**Upstream:** [`migrate-icons.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/migrate-icons.ts#L148) and [`migrate-base-color.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/migrate-base-color.ts#L79) ask for a missing `--from` or `--to` even with `--yes`. `--yes` skips only the confirmation.
+
+**Sveltery UI:** With `--yes`, [`migrate`](/docs/cli#migrate) takes the value in `components.json` as the source and stops with an error when `--to` is missing.
+
+**Why:** In this CLI, `--yes` means that a command does not prompt, so it can run in CI. A prompt there fails with "No terminal to confirm in. Re-run with --yes.", which `--yes` does not fix.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `migrate cn` leaves CommonJS requires for manual review
+
+**Upstream:** [`specifiers.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/cn/specifiers.ts#L201) moves `require("clsx")` and `require("tailwind-merge")` calls to `cn`.
+
+**Sveltery UI:** [`migrate cn`](/docs/cli#cn) leaves each `require` call as it is and lists it for manual review.
+
+**Why:** Svelte components and SvelteKit apps are ES modules, so a `require` of these packages is rare. Porting upstream's CommonJS rewrite would add a second set of binding rules for little use.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `migrate` has no `radix` migration
+
+**Upstream:** [`migrate.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/migrate.ts#L28) lists a `radix` migration. [`migrate-radix.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/migrate-radix.ts#L315) moves `@radix-ui/react-*` imports to the `radix-ui` package.
+
+**Sveltery UI:** [`migrate`](/docs/cli#migrate) lists `cn`, `icons`, `base-color` and `rtl`. `migrate radix` stops with an error that says why there is no `radix` migration.
+
+**Why:** The migration rewrites React imports. A Svelte project does not import `@radix-ui/react-*`, so the migration has nothing to change.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `migrate --no-install` skips package changes
+
+**Upstream:** [`migrate.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/migrate.ts#L56) has no `--no-install` option. [`migrate-icons.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/migrate-icons.ts#L209) always installs the new icon library, and [`cn/index.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/cn/index.ts#L106) always removes `clsx` and `tailwind-merge`.
+
+**Sveltery UI:** With `--no-install`, [`migrate`](/docs/cli#migrate) changes the files and does not install or remove packages.
+
+**Why:** `init`, `add` and `update` in this CLI take `--no-install` too, so a project that manages packages itself, or a CI step without network access, can still run a migration.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `migrate` glob patterns need Node 22
+
+**Upstream:** [`migrate-icons.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/migrate-icons.ts#L75) matches a glob pattern with `fast-glob`, which runs on every Node version that [`package.json`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/package.json#L67) allows (`>=20.18.1`).
+
+**Sveltery UI:** [`migrate`](/docs/cli#migrate) matches a glob pattern with Node's `fs.globSync`, which Node 22 added. The CLI allows Node 20 and later. On Node 20, a glob pattern stops with "A glob pattern needs Node 22 or later. Pass a file or directory instead.", and a file or directory path works.
+
+**Why:** Node 20 reached end of life in April 2026, and `fs.globSync` saves a dependency. A Node 20 user can pass a file or directory instead.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `migrate` lists a file that does not parse and leaves it as it is
+
+**Upstream:** [`cn/transform.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/cn/transform.ts#L70) and [`migrate-icons.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/migrate-icons.ts#L331) parse each file with ts-morph, which recovers from a syntax error and transforms the rest of the file.
+
+**Sveltery UI:** [`migrate`](/docs/cli#migrate) parses each file with `svelte/compiler`, which reads a `.ts` or `.js` module as the body of a `<script>` tag. A file that does not parse stays as it is. `migrate cn` lists it for manual review, and `migrate icons` and `migrate rtl` list it as skipped, with "could not parse" and the parser's message. A module that contains `</script>`, as in a string, is such a file. A leading `#!` line parses.
+
+**Why:** The CLI already parses Svelte components with `svelte/compiler`. A second parser for modules would add a large dependency for the rare module that contains `</script>`. Listing the file tells you which one to change by hand.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `migrate rtl` scans Svelte files and flags review files by path
+
+**Upstream:** [`migrate-rtl.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/migrate-rtl.ts#L76) transforms `**/*.{js,ts,jsx,tsx}` under the `ui` alias, or under a directory you pass, where it skips `node_modules`. It [flags](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/migrations/migrate-rtl.ts#L142) a file for manual review when its file name is `sidebar.tsx`, `pagination.tsx` or `calendar.tsx`.
+
+**Sveltery UI:** [`migrate rtl`](/docs/cli#rtl) transforms `.svelte`, `.js` and `.ts` files, including `.mjs`, `.cjs`, `.mts` and `.cts`. It skips `node_modules`, `.git`, `.svelte-kit`, `dist`, `build` and other build output folders. It flags a file for manual review when any part of its path is `sidebar`, `pagination` or `calendar`, such as `sidebar/SidebarMenu.svelte`.
+
+**Why:** Sveltery components are `.svelte` files, and each component has its own folder of several files. A file-name match would find none of them.
 
 **Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
