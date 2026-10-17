@@ -12,6 +12,7 @@ import { diff } from '../src/commands/diff.js';
 import { baseDependencies, init, initMonorepo } from '../src/commands/init.js';
 import { migrate, migrateRtl, type MigrateOptions } from '../src/commands/migrate.js';
 import { update } from '../src/commands/update.js';
+import { view } from '../src/commands/view.js';
 import { formatPlan } from '../src/plan.js';
 import { monorepoFiles } from '../src/template.js';
 import { cliPackage } from '../src/version.js';
@@ -1010,11 +1011,110 @@ describe('namespaced registries', () => {
     await expect(add(['@acme/hello'], { ...addOptions, cwd })).rejects.toThrow('registries.@acme: expected a URL with a {name} placeholder');
   });
 
+  test('refuses a @sveltery entry in registries, as upstream refuses to override a built-in registry', async () => {
+    configure({ '@sveltery': acme(), '@acme': acme() });
+    process.env.ACME_TOKEN = 's3cret';
+    for (const name of ['@sveltery/button', 'button', '@acme/greet']) {
+      await expect(add([name], { ...addOptions, cwd })).rejects.toThrow('"@sveltery" is a built-in registry and cannot be overridden. Remove it from "registries" in components.json; set "registry" to install bare names from another registry.');
+    }
+    expect(acmeRequests).toEqual([]);
+  });
+
   test('@sveltery names the project registry, and init keeps registries', async () => {
     expect((await add(['@sveltery/button'], { ...addOptions, cwd })).files.map((file) => file.path)).toEqual(['src/lib/components/ui/button/Button.svelte']);
     configure({ '@acme': acme() });
     await init({ cwd, ...defaults });
     expect(JSON.parse(read('components.json')).registries).toEqual({ '@acme': acme() });
+  });
+});
+
+describe('GitHub items', () => {
+  const addOptions = { ...defaults, overwrite: false, all: false, dryRun: false };
+  const raw = 'https://raw.githubusercontent.com';
+  const helloFile = { path: 'src/lib/components/ui/hello/Hello.svelte', type: 'registry:ui' };
+  // Root registry.json files as `build` reads them: each file has a path in the repository, not content.
+  const repository: Record<string, unknown> = {
+    [`${raw}/acme/ui/HEAD/registry.json`]: {
+      name: 'acme',
+      homepage: 'https://github.com/acme/ui',
+      items: [
+        { name: 'hello', type: 'registry:ui', registryDependencies: ['acme/ui/greet', 'button'], files: [helloFile] },
+        { name: 'greet', type: 'registry:lib', files: [{ path: './src/lib/components/ui/greet/index.ts', type: 'registry:ui' }] },
+        { name: 'broken', type: 'registry:ui', files: [{ path: 'src/lib/components/ui/broken/Broken.svelte', type: 'registry:ui' }] },
+      ],
+    },
+    [`${raw}/acme/ui/HEAD/src/lib/components/ui/hello/Hello.svelte`]: '<p>Hello</p>\n',
+    [`${raw}/acme/ui/HEAD/src/lib/components/ui/greet/index.ts`]: 'export const greet = 1;\n',
+    [`${raw}/acme/ui/v1.0/registry.json`]: { name: 'acme', homepage: 'https://github.com/acme/ui', items: [{ name: 'hello', type: 'registry:ui', files: [helloFile] }] },
+    [`${raw}/acme/ui/v1.0/src/lib/components/ui/hello/Hello.svelte`]: '<p>Hello v1</p>\n',
+    [`${raw}/acme/split/HEAD/registry.json`]: { name: 'acme', homepage: 'https://github.com/acme/split', include: ['ui/registry.json'] },
+    [`${raw}/acme/evil/HEAD/registry.json`]: { name: 'acme', homepage: 'https://github.com/acme/evil', items: [{ name: 'evil', type: 'registry:ui', files: [{ path: '../evil/Evil.svelte', type: 'registry:ui' }] }] },
+  };
+  const realFetch = globalThis.fetch;
+  let fetched: string[];
+  beforeEach(async () => {
+    await init({ cwd, ...defaults });
+    fetched = [];
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async (input, init) => {
+      const url = String(input);
+      if (!url.startsWith(`${raw}/`)) return realFetch(input, init);
+      fetched.push(url);
+      const body = repository[url];
+      if (body === undefined) return new Response('404: Not Found', { status: 404, statusText: 'Not Found' });
+      return typeof body === 'string' ? new Response(body) : Response.json(body);
+    });
+  });
+  afterEach(() => vi.restoreAllMocks());
+
+  test('adds an item from the default branch, reading registry.json once, with its registryDependencies in the same repository and in the project registry', async () => {
+    const plan = await add(['acme/ui/hello'], { ...addOptions, cwd });
+    expect(plan.files.map((file) => file.path)).toEqual(['src/lib/components/ui/greet/index.ts', 'src/lib/components/ui/button/Button.svelte', 'src/lib/components/ui/hello/Hello.svelte']);
+    expect(read('src/lib/components/ui/hello/Hello.svelte')).toBe('<p>Hello</p>\n');
+    expect(read('src/lib/components/ui/greet/index.ts')).toBe('export const greet = 1;\n');
+    expect(fetched).toEqual([`${raw}/acme/ui/HEAD/registry.json`, `${raw}/acme/ui/HEAD/src/lib/components/ui/hello/Hello.svelte`, `${raw}/acme/ui/HEAD/src/lib/components/ui/greet/index.ts`]);
+    expect(await diff(['acme/ui/hello'], { cwd })).toBe('Everything is up to date.');
+  });
+
+  test('adds an item at the ref after #', async () => {
+    expect((await add(['acme/ui/hello#v1.0'], { ...addOptions, cwd })).files.map((file) => file.path)).toEqual(['src/lib/components/ui/hello/Hello.svelte']);
+    expect(read('src/lib/components/ui/hello/Hello.svelte')).toBe('<p>Hello v1</p>\n');
+    expect(fetched).toEqual([`${raw}/acme/ui/v1.0/registry.json`, `${raw}/acme/ui/v1.0/src/lib/components/ui/hello/Hello.svelte`]);
+  });
+
+  test('view prints the item that the registry.json entry and its files make', async () => {
+    const log = vi.spyOn(console, 'log').mockImplementation(() => {});
+    await view(['acme/ui/hello#v1.0'], { cwd });
+    expect(JSON.parse(log.mock.calls[0]![0] as string)).toEqual([
+      {
+        $schema: 'https://ui.sveltery.dev/schema/registry-item.json',
+        name: 'hello',
+        type: 'registry:ui',
+        files: [{ path: 'src/lib/components/ui/hello/Hello.svelte', type: 'registry:ui', target: 'hello/Hello.svelte', content: '<p>Hello v1</p>\n' }],
+      },
+    ]);
+  });
+
+  test('names a missing item, a missing file, a repository without registry.json, and one that uses include', async () => {
+    await expect(add(['acme/ui/nope'], { ...addOptions, cwd })).rejects.toThrow('Registry item "nope" was not found in acme/ui. Check that the item name exists in the resolved registry catalog.');
+    await expect(add(['acme/ui/nope#v1.0'], { ...addOptions, cwd })).rejects.toThrow('Registry item "nope" was not found in acme/ui#v1.0. Check');
+    await expect(add(['acme/ui/broken'], { ...addOptions, cwd })).rejects.toThrow(
+      `Failed to read file "src/lib/components/ui/broken/Broken.svelte" for registry item "broken" (registry.json items[2]). Expected file at src/lib/components/ui/broken/Broken.svelte. GET ${raw}/acme/ui/HEAD/src/lib/components/ui/broken/Broken.svelte failed with 404 Not Found`,
+    );
+    await expect(add(['acme/none/hello'], { ...addOptions, cwd })).rejects.toThrow(`GET ${raw}/acme/none/HEAD/registry.json failed with 404 Not Found`);
+    await expect(add(['acme/split/hello'], { ...addOptions, cwd })).rejects.toThrow('Registry acme/split uses "include", which the CLI does not resolve in a GitHub registry yet.');
+    expect(existsSync(join(cwd, 'src/lib/components/ui/hello'))).toBe(false);
+  });
+
+  test('rejects a file path that leaves the repository root before it reads any file', async () => {
+    await expect(add(['acme/evil/evil'], { ...addOptions, cwd })).rejects.toThrow('Invalid file path "../evil/Evil.svelte" for item "evil" in registry.json: file paths cannot use parent-directory traversal.');
+    expect(fetched).toEqual([`${raw}/acme/evil/HEAD/registry.json`]);
+  });
+
+  test('rejects a ref that cannot name a branch, tag or commit before it fetches anything', async () => {
+    for (const address of ['acme/ui/hello#-x', 'acme/ui/hello#', 'alice/safe/hello#../../mallory/evil/main', 'acme/ui/hello#main/./x', 'acme/ui/hello#a b']) {
+      await expect(add([address], { ...addOptions, cwd })).rejects.toThrow(`Invalid GitHub ref in item address "${address}".`);
+    }
+    expect(fetched).toEqual([]);
   });
 });
 
@@ -1112,7 +1212,7 @@ describe('diff', () => {
 
   test('says so when no item is installed', async () => {
     rmSync(join(cwd, 'src/lib'), { recursive: true });
-    expect(await diff([], { cwd })).toBe('No items from the registry are installed. Name an item you added by URL, or add one with `npx @sveltery/ui@latest add button`.');
+    expect(await diff([], { cwd })).toBe('No items from the registry are installed. Name an item you added by URL or from GitHub, or add one with `npx @sveltery/ui@latest add button`.');
   });
 });
 

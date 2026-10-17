@@ -275,7 +275,7 @@ For a private registry, give an object with `url`, and `headers` or `params`:
 
 The CLI replaces each `${VAR}` with the environment variable of that name. It reads the variables from the environment, then from `.env.local`, `.env.development.local`, `.env.development` and `.env` in the project root. `params` become the query string, such as `?version=latest`. See [Authentication](/docs/registry/authentication).
 
-`@sveltery` is built in. It names the registry in the `registry` key, so `@sveltery/button` is the same as `button`. A `@sveltery` entry in `registries` replaces it.
+`@sveltery` is built in. It names the registry in the `registry` key, so `@sveltery/button` is the same as `button`. A `@sveltery` entry in `registries` is an error. See [The built-in namespace](/docs/registry/namespace#the-built-in-namespace).
 
 ## typescript
 

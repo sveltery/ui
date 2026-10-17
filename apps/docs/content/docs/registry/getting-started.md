@@ -155,6 +155,14 @@ To give your registry a short name, tell your users to add it to `registries` in
 
 They can then install `@acme/hello-card`. See [Namespaces](/docs/registry/namespace).
 
+If `registry.json` is at the root of a public GitHub repository, your users can install its items without a server:
+
+```bash
+npx @sveltery/ui@latest add acme/ui/hello-card
+```
+
+The CLI reads `registry.json` from the default branch, finds the item, and reads each of its files from the repository at the `path` that `registry.json` gives. After `#`, name a branch, tag or commit to read instead, such as `acme/ui/hello-card#v1.0`. A `registryDependencies` entry such as `acme/ui/format-name` names another item of the repository. Without `#ref`, it is read from the default branch, even when the item that lists it was installed at a ref. The CLI does not resolve `include` in a GitHub registry yet, and it cannot read a private repository. See [differences](/docs/differences#a-github-registry-is-read-at-its-ref-without-include-or-sign-in).
+
 ## Guidelines
 
 - Give each item a `name`, `title` and `description`.

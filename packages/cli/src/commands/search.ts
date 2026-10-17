@@ -8,7 +8,7 @@ import {
   BUILTIN_NAMESPACE,
   catalogRequest,
   fetchCatalog,
-  gitHubCatalogRequest,
+  gitHubFileRequest,
   itemTypeNames,
   namespaceRequest,
   openRegistry,
@@ -75,7 +75,7 @@ const isUrl = (value: string) => /^https?:\/\//.test(value);
 function assertSearchable(namespaces: Namespaces, requested: string[]): void {
   const invalid = requested.find((address) => !address.startsWith('@') && !isUrl(address) && !parseGitHubSource(address));
   if (invalid !== undefined) throw new CliError(`Invalid registry namespace: "${invalid}". Registry names must start with @ (e.g., @sveltery, @acme), or pass a registry URL or a GitHub source such as owner/repo.`);
-  const known = [...new Set([BUILTIN_NAMESPACE, ...Object.keys(namespaces.configs)])];
+  const known = [BUILTIN_NAMESPACE, ...Object.keys(namespaces.configs)];
   const unknown = requested.filter((address) => address.startsWith('@') && !known.includes(address));
   if (unknown.length > 0) {
     throw new CliError(`Unknown registry ${unknown.map((value) => `"${value}"`).join(', ')}. The namespaces you can search are ${known.join(', ')}. Define a namespace under "registries" in your components.json file to search it.`);
@@ -197,7 +197,7 @@ export function formatResults(results: SearchResults, filters: { query?: string;
 
 /**
  * Prints the items of the registries matching the filters, as upstream's `search` does, and returns them.
- * With no registry, it searches every namespace in components.json except the built-in `@sveltery`, skips one that fails, and sets exit code 1 when all fail.
+ * With no registry, it searches every namespace in components.json, skips one that fails, and sets exit code 1 when all fail.
  */
 export async function search(requested: string[], options: SearchOptions): Promise<SearchResults> {
   const filters = { query: options.query, types: parseTypes(options.type) };
@@ -210,18 +210,18 @@ export async function search(requested: string[], options: SearchOptions): Promi
   const { url, namespaces, style } = readCatalog(options.cwd);
   if (!searchAll) assertSearchable(namespaces, requested);
   // As upstream, a registry named twice is searched twice.
-  const registries = searchAll ? Object.keys(namespaces.configs).filter((namespace) => namespace !== BUILTIN_NAMESPACE) : requested;
+  const registries = searchAll ? Object.keys(namespaces.configs) : requested;
   if (registries.length === 0) throw new CliError(`No registries are configured in ${CONFIG_FILE}.\nProvide a registry or namespace to search, e.g. ${SEARCH_EXAMPLE}.`);
   // One registry pages on the server. Several are asked for every item up to the end of the page, which is then cut here.
   const types = filters.types?.map((type) => `registry:${type}`);
   const forwarded: CatalogSearch =
     registries.length === 1 ? { query: filters.query, types, limit, offset } : { query: filters.query, types, limit: limit === undefined ? undefined : (offset ?? 0) + limit };
   const toTarget = (address: string): Target => {
-    if (address === BUILTIN_NAMESPACE && !namespaces.configs[BUILTIN_NAMESPACE]) return { kind: 'manifest', address };
+    if (address === BUILTIN_NAMESPACE) return { kind: 'manifest', address };
     if (isUrl(address)) return { kind: 'url', address, request: catalogRequest(plainRequest(address), forwarded) };
     // A GitHub registry is a file, with no server to search, so nothing is forwarded.
     const source = parseGitHubSource(address);
-    if (source) return { kind: 'github', address, source, request: gitHubCatalogRequest(source) };
+    if (source) return { kind: 'github', address, source, request: gitHubFileRequest(source, 'registry.json') };
     return { kind: 'namespace', address, request: catalogRequest(namespaceRequest(namespaces, catalogStyle(style), address, 'registry'), forwarded) };
   };
   type Outcome = { source: Source } | { error: string };

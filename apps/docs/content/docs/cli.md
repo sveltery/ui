@@ -101,6 +101,12 @@ An argument such as `@acme/hello-card` installs `hello-card` from the registry t
 npx @sveltery/ui@latest add @acme/hello-card
 ```
 
+An argument such as `acme/ui/hello-card` installs `hello-card` from the `registry.json` at the root of the public GitHub repository `acme/ui`, at its default branch. After `#`, name a branch, tag or commit to read instead. `add` reads each file of the item from the repository at the same ref. See [Publish your registry](/docs/registry/getting-started#publish-your-registry).
+
+```bash
+npx @sveltery/ui@latest add acme/ui/hello-card#v1.0
+```
+
 **Options**
 
 ```txt
@@ -109,7 +115,8 @@ Usage: sveltery add [options] [items...]
 add components to the project
 
 Arguments:
-  items            item names, @namespace/item names, or URLs of registry items
+  items            item names, @namespace/item names, owner/repo/item GitHub
+                   items, or URLs of registry items
 
 Options:
   -y, --yes        do not ask to continue; changed files are skipped unless
@@ -162,7 +169,7 @@ npx @sveltery/ui@latest diff
 
 An item counts as installed when any of its files exists in the project. With no names, `diff` checks every installed item of the configured registry and the items they depend on. A named item that is not installed is an error.
 
-An argument that is a URL works like a name. `diff` fetches the item and its registry dependencies, as `add` does, and compares them with your files. The item must be installed, and the URL must be the one you added it with, because a project does not record where an item came from. An unnamed `diff` cannot know which URLs you used, so it does not check items that only a URL names. To check one, pass its URL.
+An argument that is a URL or a GitHub item (`owner/repo/item`) works like a name. `diff` fetches the item and its registry dependencies, as `add` does, and compares them with your files. The item must be installed, and the address must be the one you added it with, because a project does not record where an item came from. For a GitHub item, pass the same `#ref` to stay on the ref you added it at, or a new one to compare with that ref. An unnamed `diff` cannot know which URLs or GitHub items you used, so it does not check items that only one of them names. To check one, pass its address.
 
 ```bash
 npx @sveltery/ui@latest diff https://example.com/r/hello-card.json
@@ -178,8 +185,8 @@ Usage: sveltery diff [options] [items...]
 show how the registry versions of installed items differ from your files
 
 Arguments:
-  items         item names or URLs; every installed item of the registry when
-                omitted
+  items         item names, @namespace/item names, owner/repo/item GitHub items,
+                or URLs; every installed item of the registry when omitted
 
 Options:
   --cwd <path>  the project root (default: ".")
@@ -198,7 +205,7 @@ npx @sveltery/ui@latest update
 
 `update` plans the same files as `add`, including new files, new items an item now depends on and missing packages. For each changed file, it shows the diff and asks whether to overwrite it. The default answer is no. It writes new files without asking.
 
-Like `diff`, it takes item names and URLs, and with no arguments it updates every installed item of the configured registry, but not items that only a URL names. To update one, pass its URL. See [diff](#diff).
+Like `diff`, it takes item names, URLs and `owner/repo/item` GitHub items, and with no arguments it updates every installed item of the configured registry, but not items that only a URL or a GitHub repository names. To update one, pass its URL or `owner/repo/item`. For a GitHub item, pass the same `#ref` to stay on it, or a new one to move to it. See [diff](#diff).
 
 ```bash
 npx @sveltery/ui@latest update https://example.com/r/hello-card.json
@@ -213,8 +220,8 @@ re-add installed items, showing each changed file's diff and asking before it
 overwrites
 
 Arguments:
-  items         item names or URLs; every installed item of the registry when
-                omitted
+  items         item names, @namespace/item names, owner/repo/item GitHub items,
+                or URLs; every installed item of the registry when omitted
 
 Options:
   -y, --yes     overwrite changed files without asking (default: false)
@@ -395,7 +402,8 @@ Usage: sveltery view [options] <items...>
 view items from the registry
 
 Arguments:
-  items         item names, @namespace/item names, or URLs of registry items
+  items         item names, @namespace/item names, owner/repo/item GitHub items,
+                or URLs of registry items
 
 Options:
   --cwd <path>  the project root (default: ".")
@@ -463,7 +471,7 @@ npx @sveltery/ui@latest search @acme -q card
 npx @sveltery/ui@latest search https://acme.com/r/registry.json
 ```
 
-A GitHub source, `owner/repo` or `owner/repo#ref`, reads the `registry.json` at the root of a public repository, at the default branch or at the branch, tag or commit after `#`. `search` filters it itself and gives each result as `owner/repo/name`. `add` does not install that form yet. See [differences](/docs/differences#search-reads-a-github-registry-at-its-ref-without-include-or-sign-in).
+A GitHub source, `owner/repo` or `owner/repo#ref`, reads the `registry.json` at the root of a public repository, at the default branch or at the branch, tag or commit after `#`. `search` filters it itself and gives each result as `owner/repo/name`, which `add` installs. See [differences](/docs/differences#a-github-registry-is-read-at-its-ref-without-include-or-sign-in).
 
 Pass several registries to search them together. Each line then names its registry. A registry named twice is searched twice, as upstream does. A namespace that `registries` does not list is an error. See [differences](/docs/differences#search-gives-sveltery-items-by-bare-name-and-looks-up-no-directory).
 
@@ -753,4 +761,4 @@ SVELTERY_REGISTRY_URL=https://preview.example.com/r npx @sveltery/ui@latest add 
 
 ## Not supported
 
-The shadcn CLI has commands and options that this CLI does not have yet: `registry add`, local file paths as items, GitHub items such as `owner/repo/item` and JavaScript output. See [Registry](/docs/registry) and [JavaScript](/docs/javascript) for what works today.
+The shadcn CLI has commands and options that this CLI does not have yet: `registry add`, local file paths as items and JavaScript output. See [Registry](/docs/registry) and [JavaScript](/docs/javascript) for what works today.
