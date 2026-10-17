@@ -1,7 +1,7 @@
 // Builds the registry from this checkout, serves it, and drives the packed CLI through a fresh SvelteKit app.
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
-import { cpSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
@@ -58,6 +58,8 @@ const server = createServer(async (request, response) => {
     response.writeHead(init.status, { 'content-type': 'application/json' }).end(await init.text());
     return;
   }
+  // A namespaced registry that wants a bearer token.
+  if (request.url?.startsWith('/r/private/') && request.headers.authorization !== 'Bearer s3cret') return void response.writeHead(401).end();
   try {
     const body = readFileSync(join(registryDir, decodeURIComponent(new URL(request.url ?? '/', 'http://x').pathname.replace(/^\/r\//, ''))));
     response.writeHead(200, { 'content-type': 'application/json' }).end(body);
@@ -140,6 +142,24 @@ try {
     for (const target of expected.imports) assert.match(presetCss, new RegExp(`@import ['"]${target}['"];`), `${code} imports ${target}`);
     for (const line of [`--primary: ${expected.primary};`, ...expected.fonts]) assert.ok(presetCss.includes(line), `${code} writes ${line}`);
     assert.match(presetCss, /html \{\s*@apply font-sans;/, `${code} applies the body font to html`);
+    const presetInfo = JSON.parse(await capture('npm', [...cliExec, 'info', '--json'], presetApp, env));
+    assert.deepEqual([presetInfo.preset.code, presetInfo.preset.fallbacks], [code, []], `info reads ${code} back from the files init wrote`);
+    const resolved = JSON.parse(await capture('npm', [...cliExec, 'preset', 'resolve', '--json'], presetApp, env));
+    assert.deepEqual([resolved.code, resolved.fallbacks], [code, []], `preset resolve reads ${code} back from the files init wrote`);
+  }
+
+  step('sveltery preset decode, url and open');
+  const decoded = JSON.parse(await capture('npm', [...cliExec, 'preset', 'decode', 'b4xFeBLg4O', '--json'], app, env));
+  assert.deepEqual([decoded.values.style, decoded.values.fontHeading, decoded.derived, decoded.url], ['sera', 'playfair-display', [], `${origin}/create?preset=b4xFeBLg4O`]);
+  assert.equal((await capture('npm', [...cliExec, 'preset', 'url', 'b0'], app, env)).trim(), `${origin}/create?preset=b0`);
+  // A stand-in opener records the URL it was given, because CI has no browser.
+  const opener = join(work, 'bin');
+  mkdirSync(opener);
+  writeFileSync(join(opener, process.platform === 'darwin' ? 'open' : 'xdg-open'), `#!/bin/sh\nprintf '%s' "$1" > "${join(work, 'opened-url')}"\n`, { mode: 0o755 });
+  if (process.platform !== 'win32') {
+    await capture('npm', [...cliExec, 'preset', 'open', 'b0'], app, { ...env, PATH: `${opener}:${process.env.PATH}` });
+    for (let attempt = 0; !existsSync(join(work, 'opened-url')) && attempt < 100; attempt++) await new Promise((done) => setTimeout(done, 50));
+    assert.equal(readFileSync(join(work, 'opened-url'), 'utf8'), `${origin}/create?preset=b0`, 'preset open hands the Create page URL to the system opener');
   }
 
   step('sveltery init --preset btLmMa prints why /init rejects a gray base color');
@@ -148,6 +168,24 @@ try {
   for (const file of ['package.json', 'src']) cpSync(join(app, file), join(grayApp, file), { recursive: true });
   // shadcn@4.21.1 has no gray base color either, so the code is rejected rather than mapped.
   await assert.rejects(capture('npm', [...cliExec, 'init', '--preset', 'btLmMa', '--no-install'], grayApp, env), (error) => /Invalid baseColor "gray"/.test(error.output), 'init prints the reason from /init');
+
+  step('sveltery apply lyra re-adds the installed items, and apply --only theme keeps them');
+  const applyApp = join(work, 'apply');
+  mkdirSync(applyApp);
+  for (const file of ['package.json', 'src']) cpSync(join(app, file), join(applyApp, file), { recursive: true });
+  await run('npm', [...cliExec, 'init', '--preset', 'nova', '--no-install'], applyApp, env);
+  await run('npm', [...cliExec, 'add', 'dialog', '-y', '--no-install'], applyApp, env);
+  const dialogContent = join(applyApp, 'src/lib/components/ui/dialog/DialogContent.svelte');
+  assert.match(readFileSync(dialogContent, 'utf8'), /from '@lucide\/svelte\/icons\/x'/, 'nova uses lucide');
+  await run('npm', [...cliExec, 'apply', 'lyra', '-y', '--no-install'], applyApp, env);
+  const applied = JSON.parse(readFileSync(join(applyApp, 'components.json'), 'utf8'));
+  assert.deepEqual([applied.style, applied.iconLibrary], ['lyra', 'phosphor'], 'apply writes the preset to components.json');
+  const phosphorDialog = readFileSync(dialogContent, 'utf8');
+  assert.match(phosphorDialog, /from 'phosphor-svelte\/lib\/X'/, 'apply re-adds the dialog with phosphor icons');
+  await run('npm', [...cliExec, 'apply', 'sera', '--only', 'theme', '-y', '--no-install'], applyApp, env);
+  const themed = JSON.parse(readFileSync(join(applyApp, 'components.json'), 'utf8'));
+  assert.deepEqual([themed.style, themed.iconLibrary, themed.tailwind.baseColor], ['lyra', 'phosphor', 'taupe'], 'apply --only theme changes only the theme');
+  assert.equal(readFileSync(dialogContent, 'utf8'), phosphorDialog, 'apply --only theme leaves the components alone');
 
   step('sveltery init -y keeps a bold menuAccent from components.json in the theme');
   const boldApp = join(work, 'menu-accent-bold');
@@ -203,6 +241,62 @@ try {
   const served = (name) => JSON.parse(readFileSync(join(registryDir, `styles/${config.style}/${name}.json`), 'utf8'));
   const viewed = JSON.parse(await cli('view', 'button', `${env.SVELTERY_REGISTRY_URL}/styles/${config.style}/card.json`));
   assert.deepEqual(viewed, [served('button'), served('card')], 'view prints the items as the registry serves them, in argument order');
+
+  step('sveltery diff, update and add --diff on an item added by its URL');
+  const buttonUrl = `${env.SVELTERY_REGISTRY_URL}/styles/${config.style}/button.json`;
+  await cli('add', buttonUrl, '-y', '--no-install');
+  writeFileSync(buttonFile, pristine.replace(firstLine, `${firstLine} <!-- edited locally -->`));
+  assert.match(await cli('diff', buttonUrl), /^-.*edited locally/m, 'diff <url> shows the edited line');
+  assert.match(await cli('add', buttonUrl, '--diff'), /^-.*edited locally/m, 'add <url> --diff shows the edited line');
+  await cli('update', buttonUrl, '-y', '--no-install');
+  assert.equal(readFileSync(buttonFile, 'utf8'), pristine, 'update <url> -y restores the registry version');
+  assert.equal((await cli('diff', buttonUrl)).trim(), 'Everything is up to date.');
+
+  step('sveltery build a third-party registry, then add its item by URL');
+  const author = join(work, 'author');
+  const helloSource = "<script lang=\"ts\">\n  import { Button } from '../button';\n</script>\n<Button>Hello</Button>\n";
+  mkdirSync(join(author, 'src/lib/components/ui/hello'), { recursive: true });
+  writeFileSync(join(author, 'src/lib/components/ui/hello/Hello.svelte'), helloSource);
+  const helloFiles = [{ path: 'src/lib/components/ui/hello/Hello.svelte', type: 'registry:ui' }];
+  writeFileSync(join(author, 'registry.json'), JSON.stringify({ name: 'acme', homepage: 'https://acme.test', items: [{ name: 'hello', type: 'registry:ui', registryDependencies: ['button'], files: helloFiles }] }));
+  await cli('build', '--cwd', author, '--output', join(registryDir, 'acme'));
+  await cli('add', `${origin}/r/acme/hello.json`, '-y');
+  assert.equal(readFileSync(join(app, config.aliases.ui.replace(/^[$#]lib/, 'src/lib'), 'hello/Hello.svelte'), 'utf8'), helloSource, 'add installs the item build wrote');
+
+  step('sveltery search and list');
+  const found = JSON.parse(await cli('search', '-q', 'dialog', '-t', 'ui', '--json'));
+  assert.deepEqual(found.items.map((entry) => entry.name), ['dialog', 'alert-dialog'], 'search ranks the exact name first');
+  assert.deepEqual(found.items[0], { name: 'dialog', title: 'Dialog', type: 'registry:ui', registry: '@sveltery', addCommandArgument: 'dialog' });
+  const listed = await cli('list', '-t', 'block', '-l', '2', '-o', '1');
+  assert.match(listed, new RegExp(`^Showing 2-3 of ${registry.get('index.json').blocks.length}$`, 'm'), 'list is search with paging');
+  await assert.rejects(cli('search', '@acme'), (error) => /Unknown registry "@acme"/.test(error.output), 'search names the registries it does not know');
+
+  step('sveltery docs dropdown-menu');
+  const documented = JSON.parse(await cli('docs', 'dropdown-menu', 'card', '--json'));
+  assert.deepEqual(documented.results[0].links, {
+    docs: `${origin}/docs/components/dropdown-menu`,
+    examples: `${origin}/docs/components/dropdown-menu.md`,
+    api: 'https://base-ui.com/react/components/menu.md',
+  });
+  assert.deepEqual(Object.keys(documented.results[1].links), ['docs', 'examples'], 'a component with no Base UI page has no api link');
+
+  step('sveltery add @acme/hello from a registry that wants a bearer token');
+  mkdirSync(join(registryDir, 'private'), { recursive: true });
+  writeFileSync(
+    join(registryDir, 'private/hello.json'),
+    JSON.stringify({ $schema: `${origin}/schema/registry-item.json`, name: 'hello', type: 'registry:ui', registryDependencies: ['button'], files: [{ type: 'registry:ui', target: 'private-hello/Hello.svelte', content: helloSource }] }),
+  );
+  writeFileSync(join(app, 'components.json'), JSON.stringify({ ...config, registries: { '@acme': { url: `${origin}/r/private/{name}.json`, headers: { Authorization: 'Bearer ${ACME_TOKEN}' } } } }, null, 2));
+  writeFileSync(join(app, '.env.local'), 'ACME_TOKEN=s3cret\n');
+  await cli('add', '@acme/hello', '-y');
+  assert.equal(readFileSync(join(app, config.aliases.ui.replace(/^[$#]lib/, 'src/lib'), 'private-hello/Hello.svelte'), 'utf8'), helloSource, 'add installs the namespaced item with the token from .env.local');
+
+  step('sveltery info');
+  const projectInfo = JSON.parse(await cli('info', '--json'));
+  assert.equal(projectInfo.project.framework, 'SvelteKit');
+  assert.equal(projectInfo.project.tailwindCss, config.tailwind.css);
+  assert.deepEqual(projectInfo.components, ['button', 'dialog'], 'info lists the items add installed');
+  assert.deepEqual(projectInfo.preset.fallbacks, ['font', 'fontHeading', 'menuAccent'], 'a plain init writes no fonts or menuAccent, so info falls back for them');
 
   step('sveltery eject -y, so the build and render below run on the inlined tailwind.css');
   await cli('eject', '-y');
