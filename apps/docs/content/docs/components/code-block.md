@@ -6,7 +6,7 @@ style: rhea
 
 <ComponentPreview name="base/CodeBlockDemoExample" />
 
-`CodeBlock` displays code, terminal output, logs and diffs. It has a header with a title and actions, line numbers, wrapping, diff and highlighted lines, and a small size for tool output in a Trace.
+`CodeBlock` displays code, terminal output, logs and diffs. It has a header with a title and actions, line numbers, wrapping, diff and highlighted lines, and a small size for tool output in a [Trace](/docs/components/trace).
 
 Syntax highlighting is optional and lives in a separate function, so a block that only shows plain output stays small.
 
@@ -218,7 +218,7 @@ To keep a long block from taking over the page, raise the cap instead of removin
 
 ## Size
 
-Use `size="sm"` for tool and Trace output. It has tighter padding and `text-xs` text.
+Use `size="sm"` for tool and [Trace](/docs/components/trace) output. It has tighter padding and `text-xs` text.
 
 <ComponentPreview name="base/CodeBlockSizeExample" />
 
@@ -227,6 +227,12 @@ Use `size="sm"` for tool and Trace output. It has tighter padding and `text-xs` 
 Use `variant="destructive"` for errors and failed output.
 
 <ComponentPreview name="base/CodeBlockDestructiveExample" />
+
+## Trace
+
+Put a `CodeBlock` with `size="sm"` in `TraceCollapsibleContent` for tool and terminal output. Add `wrap` and a `max-h-64` class to `CodeBlockContent` so long output wraps and scrolls inside the trace. The block sets its own text color, so `TraceCollapsibleContent` does not mute it.
+
+<ComponentPreview name="base/CodeBlockTraceExample" />
 
 ## Tabs
 
