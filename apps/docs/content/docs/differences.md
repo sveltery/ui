@@ -582,6 +582,8 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Sveltery UI:** `search` knows one registry, `@sveltery`, which is the registry `SVELTERY_REGISTRY_URL` or `components.json` points at. With no argument it searches that one, with or without a `components.json`. Any other registry is an error. `addCommandArgument` is the bare item name, because `add` takes names and URLs only, and `registry` is `@sveltery`. Results come from the manifest `index.json`, which gained an optional `title` for each item so that a search needs one request.
 
+`--type` accepts the six types this registry has (`ui`, `lib`, `theme`, `block`, `base`, `font`) and rejects any other, such as `hook`. Upstream accepts every type of its schema and prints "No items found of type hook" for one the registry lacks.
+
 The old `list` command marked the items in your project as `installed` and had no types, pagination or query. `list` is now an alias of `search`, which prints upstream's output, and the mark is gone.
 
 **Why:** The registry is the only one the CLI reads until namespaced registries land. The installed mark would need one request for each item to read its file list, and it would add a field to upstream's JSON shape.

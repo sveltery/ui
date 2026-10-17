@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { mkdtempSync, rmSync } from 'node:fs';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { createServer, type Server } from 'node:http';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -29,9 +29,11 @@ const manifest = {
 
 let server: Server;
 let cwd: string;
+let requests = 0;
 
 beforeAll(async () => {
   server = createServer((request, response) => {
+    requests++;
     const found = request.url === '/r/index.json';
     response.writeHead(found ? 200 : 404, { 'content-type': 'application/json' }).end(found ? JSON.stringify(manifest) : '{}');
   });
@@ -40,7 +42,10 @@ beforeAll(async () => {
   process.env.SVELTERY_REGISTRY_URL = `http://127.0.0.1:${typeof address === 'object' && address ? address.port : 0}/r`;
 });
 afterAll(() => void server.close());
-beforeEach(() => void (cwd = mkdtempSync(join(tmpdir(), 'sveltery-search-'))));
+beforeEach(() => {
+  cwd = mkdtempSync(join(tmpdir(), 'sveltery-search-'));
+  requests = 0;
+});
 afterEach(() => rmSync(cwd, { recursive: true, force: true }));
 
 async function print(registries: string[], options: Partial<SearchOptions> = {}) {
@@ -98,6 +103,15 @@ Showing 1-2 of 2
   test('rejects an unknown type before it fetches anything', async () => {
     await expect(search([], { cwd, json: false, type: 'ui,hook,page' })).rejects.toThrow('Unknown types: hook, page. Valid types: ui, lib, theme, block, base, font.');
     await expect(search([], { cwd, json: false, type: 'hook' })).rejects.toThrow('Unknown type: hook.');
+    expect(requests).toBe(0);
+  });
+
+  test('works in a project whose components.json names another style set', async () => {
+    writeFileSync(join(cwd, 'components.json'), JSON.stringify({ style: 'new-york' }));
+    expect(await print([], { query: 'badge', limit: '1' })).toBe(`Found 1 item matching "badge" in @sveltery
+Showing 1-1 of 1
+
+- badge (ui) — Displays a badge.`);
   });
 
   test('--limit and --offset page through the items and say where the next page starts', async () => {
