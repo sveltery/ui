@@ -3,7 +3,7 @@ title: Alert Dialog
 description: A modal dialog that interrupts the user with important content and expects a response.
 ---
 
-<ComponentPreview name="base/AlertDialogExample" />
+<ComponentPreview name="base/AlertDialogDemoExample" />
 
 ## Installation
 
@@ -63,11 +63,17 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <AlertDialog>
-  <AlertDialogTrigger>Show Dialog</AlertDialogTrigger>
+  <AlertDialogTrigger>
+    {#snippet render(props, _state, content)}<Button variant="outline" {...props}>{@render content?.()}</Button>{/snippet}
+    Show Dialog
+  </AlertDialogTrigger>
   <AlertDialogContent>
     <AlertDialogHeader>
       <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-      <AlertDialogDescription>This action cannot be undone. It permanently deletes your account.</AlertDialogDescription>
+      <AlertDialogDescription>
+        This action cannot be undone. This will permanently delete your account
+        from our servers.
+      </AlertDialogDescription>
     </AlertDialogHeader>
     <AlertDialogFooter>
       <AlertDialogCancel>Cancel</AlertDialogCancel>
@@ -75,6 +81,23 @@ The component folders import each other with relative paths, so keep them side b
     </AlertDialogFooter>
   </AlertDialogContent>
 </AlertDialog>
+```
+
+## Composition
+
+Use the following composition to build an `AlertDialog`:
+
+```text
+AlertDialog
+├── AlertDialogTrigger
+└── AlertDialogContent
+    ├── AlertDialogHeader
+    │   ├── AlertDialogMedia
+    │   ├── AlertDialogTitle
+    │   └── AlertDialogDescription
+    └── AlertDialogFooter
+        ├── AlertDialogCancel
+        └── AlertDialogAction
 ```
 
 ## Closing
@@ -92,10 +115,50 @@ An alert dialog is always modal, and a press outside it does not close it. `Aler
 </AlertDialog>
 ```
 
-## Size
+## Basic
 
-`size="sm"` on `AlertDialogContent` makes a narrow dialog with the footer buttons side by side.
+A basic alert dialog with a title, description, and cancel and continue buttons.
 
-## API reference
+<ComponentPreview name="base/AlertDialogBasicExample" />
 
-`AlertDialog` is styled on top of the Sveltery Base `AlertDialog` primitive, which owns its behavior, focus handling and accessibility. See the [Base UI Alert Dialog documentation](https://base-ui.com/react/components/alert-dialog) for the behavior it ports.
+## Small
+
+Use the `size="sm"` prop to make the alert dialog smaller.
+
+<ComponentPreview name="base/AlertDialogSmallExample" />
+
+## Media
+
+Use the `AlertDialogMedia` component to add a media element such as an icon or image to the alert dialog.
+
+<ComponentPreview name="base/AlertDialogMediaExample" />
+
+## Small with Media
+
+Use the `size="sm"` prop to make the alert dialog smaller and the `AlertDialogMedia` component to add a media element such as an icon or image to the alert dialog.
+
+<ComponentPreview name="base/AlertDialogSmallMediaExample" />
+
+## Destructive
+
+Use the `AlertDialogAction` component to add a destructive action button to the alert dialog.
+
+<ComponentPreview name="base/AlertDialogDestructiveExample" />
+
+## RTL
+
+Wrap the alert dialog in a [DirectionProvider](/docs/components/direction) and set `dir` on `AlertDialogContent`. Use the buttons to switch the language.
+
+<ComponentPreview name="base/AlertDialogRtlExample" />
+
+## API Reference
+
+### size
+
+Use the `size` prop on the `AlertDialogContent` component to control the size of the alert dialog. It accepts the following values:
+
+| Prop   | Type                | Default     |
+| ------ | ------------------- | ----------- |
+| `size` | `"default" \| "sm"` | `"default"` |
+
+`AlertDialog` is styled on top of the Sveltery Base `AlertDialog` primitive, which owns its behavior, focus handling and accessibility. For more information about the other components and their props, see the [Base UI documentation](https://base-ui.com/react/components/alert-dialog#api-reference).

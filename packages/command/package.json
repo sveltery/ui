@@ -1,6 +1,6 @@
 {
   "name": "@sveltery/command",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A headless command menu for Svelte 5, ported from cmdk.",
   "keywords": [
     "svelte",

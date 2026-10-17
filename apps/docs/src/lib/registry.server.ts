@@ -1,5 +1,6 @@
 import manifest from '../../package.json';
 import { buildRegistry, type RegistryInput } from '../../registry/build';
+import { workspaceRangeVersions } from '../../registry/items';
 import { styleNames, type StyleName } from '../../registry/types';
 import { site } from './site';
 
@@ -16,7 +17,7 @@ const input: RegistryInput = {
   styles: Object.fromEntries(styleNames.map((style) => [style, styles[`../../registry/styles/scoped/${style}.css`]])) as Record<StyleName, string>,
   themes: Object.values(themes)[0]!,
   uiManifest: manifest,
-  workspaceVersions: Object.fromEntries(Object.values(manifests).map(({ name, version }) => [name, version])),
+  workspaceVersions: workspaceRangeVersions(Object.values(manifests)),
   origin: site.url,
 };
 
