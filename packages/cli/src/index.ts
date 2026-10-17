@@ -4,9 +4,13 @@ import { log } from '@clack/prompts';
 import { Command } from 'commander';
 import { add } from './commands/add.js';
 import { apply } from './commands/apply.js';
+import { build } from './commands/build.js';
 import { diff } from './commands/diff.js';
+import { docs } from './commands/docs.js';
+import { info } from './commands/info.js';
 import { init } from './commands/init.js';
-import { list } from './commands/list.js';
+import { presetDecode, presetOpen, presetResolve, presetUrl } from './commands/preset.js';
+import { search } from './commands/search.js';
 import { update } from './commands/update.js';
 import { view } from './commands/view.js';
 import { CliError } from './parse.js';
@@ -42,11 +46,13 @@ program
 program
   .command('add')
   .description('add components to the project')
-  .argument('[items...]', 'item names, or URLs of registry items')
+  .argument('[items...]', 'item names, @namespace/item names, or URLs of registry items')
   .option('-y, --yes', 'do not ask to continue; changed files are skipped unless --overwrite is set', false)
   .option('-o, --overwrite', 'overwrite changed files', false)
   .option('-a, --all', 'add every item', false)
   .option('--dry-run', 'show the plan and stop', false)
+  .option('--diff [path]', 'show the diff of each file that would change, or of the file matching path; implies --dry-run')
+  .option('--view [path]', 'show the contents of each file that would be written, or of the file matching path; implies --dry-run')
   .option('--no-install', 'do not install packages')
   .option('--cwd <path>', 'the project root', '.')
   .action(async (items: string[], options) => void (await add(items, { ...options, cwd: resolve(options.cwd) })));
@@ -54,25 +60,31 @@ program
 program
   .command('diff')
   .description('show how the registry versions of installed items differ from your files')
-  .argument('[items...]', 'item names; every installed item when omitted')
+  .argument('[items...]', 'item names or URLs; every installed item of the registry when omitted')
   .option('--cwd <path>', 'the project root', '.')
   .action(async (items: string[], options) => void (await diff(items, { cwd: resolve(options.cwd) })));
 
 program
   .command('update')
   .description('re-add installed items, showing each changed file\'s diff and asking before it overwrites')
-  .argument('[items...]', 'item names; every installed item when omitted')
+  .argument('[items...]', 'item names or URLs; every installed item of the registry when omitted')
   .option('-y, --yes', 'overwrite changed files without asking', false)
   .option('--no-install', 'do not install packages')
   .option('--cwd <path>', 'the project root', '.')
   .action(async (items: string[], options) => void (await update(items, { ...options, cwd: resolve(options.cwd) })));
 
 program
-  .command('list')
-  .description('list the registry\'s items and mark the installed ones')
-  .option('--json', 'print the items as JSON', false)
+  .command('search')
+  .alias('list')
+  .description('search items from registries')
+  .argument('[registries...]', 'the registries to search; the only one is @sveltery, the default')
+  .option('-q, --query <query>', 'query string')
+  .option('-t, --type <type>', 'filter by item type, e.g. ui, block. Comma-separated for multiple.')
+  .option('-l, --limit <number>', 'maximum number of items to display', '100')
+  .option('-o, --offset <number>', 'number of items to skip', '0')
+  .option('--json', 'output as JSON.', false)
   .option('--cwd <path>', 'the project root', '.')
-  .action(async (options) => void (await list({ ...options, cwd: resolve(options.cwd) })));
+  .action(async (registries: string[], options) => void (await search(registries, { ...options, cwd: resolve(options.cwd) })));
 
 program
   .command('view')
@@ -80,6 +92,61 @@ program
   .argument('<items...>', 'item names, or URLs of registry items')
   .option('--cwd <path>', 'the project root', '.')
   .action(async (items: string[], options) => void (await view(items, { cwd: resolve(options.cwd) })));
+
+program
+  .command('build')
+  .description('build components for a registry')
+  .argument('[registry]', 'path to registry.json file', './registry.json')
+  .option('-o, --output <path>', 'destination directory for json files', './static/r')
+  .option('-c, --cwd <path>', 'the working directory', '.')
+  .action((registry: string, options) => void build(registry, options));
+
+program
+  .command('docs')
+  .description('get docs, api references and usage examples for components')
+  .argument('<components...>', 'component names')
+  .option('--json', 'output as JSON.', false)
+  .option('--cwd <path>', 'the project root', '.')
+  .action(async (components: string[], options) => void (await docs(components, { ...options, cwd: resolve(options.cwd) })));
+
+program
+  .command('info')
+  .description('get information about your project')
+  .option('--json', 'output as JSON.', false)
+  .option('--cwd <path>', 'the project root', '.')
+  .action(async (options) => void (await info({ ...options, cwd: resolve(options.cwd) })));
+
+const preset = program
+  .command('preset')
+  .description('manage presets')
+  .action(() => preset.outputHelp());
+
+preset
+  .command('decode')
+  .description('decode a preset code')
+  .argument('<code>', 'the preset code to decode')
+  .option('--json', 'output as JSON.', false)
+  .action((code: string, options) => void presetDecode(code, options));
+
+preset
+  .command('url')
+  .description('get the create URL for a preset code')
+  .argument('<code>', 'the preset code')
+  .action((code: string) => void presetUrl(code));
+
+preset
+  .command('open')
+  .description('open a preset code in the browser')
+  .argument('<code>', 'the preset code')
+  .action(async (code: string) => void (await presetOpen(code)));
+
+preset
+  .command('resolve')
+  .alias('info')
+  .description('resolve a preset from your project')
+  .option('--json', 'output as JSON.', false)
+  .option('--cwd <path>', 'the project root', '.')
+  .action((options) => void presetResolve({ ...options, cwd: resolve(options.cwd) }));
 
 try {
   await program.parseAsync();

@@ -1,6 +1,6 @@
 import { CliError, literal, object, optional, ParseError, string, type InferShape } from './parse.js';
 import { PRESET_MENU_ACCENTS, PRESET_MENU_COLORS } from './preset/preset.js';
-import { baseColors, iconLibraryNames, styleNames, type BaseColor, type IconLibraryName, type StyleName } from './registry.js';
+import { baseColors, iconLibraryNames, namespaceConfigs, styleNames, type BaseColor, type IconLibraryName, type StyleName } from './registry.js';
 
 export const CONFIG_FILE = 'components.json';
 
@@ -34,6 +34,7 @@ const configShape = {
   tailwind: object({ css: string, baseColor: literal(...baseColors) }),
   aliases: object({ components: string, ui: string, utils: string, lib: string, hooks: string }),
   registry: optional(string),
+  registries: optional(namespaceConfigs),
   typescript: literal(true),
 };
 
@@ -45,6 +46,7 @@ export type Config = InferShape<typeof configShape>;
 
 const hints: Record<string, string> = {
   typescript: 'Only TypeScript projects are supported.',
+  registries: 'See https://ui.sveltery.dev/docs/components-json#registries.',
 };
 
 export function parseConfig(json: unknown): Config {

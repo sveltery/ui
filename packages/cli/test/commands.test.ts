@@ -7,9 +7,9 @@ import { confirm, log, select } from '@clack/prompts';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, test, vi } from 'vitest';
 import { add } from '../src/commands/add.js';
 import { apply, type ApplyOptions } from '../src/commands/apply.js';
+import { build } from '../src/commands/build.js';
 import { diff } from '../src/commands/diff.js';
 import { baseDependencies, init } from '../src/commands/init.js';
-import { list } from '../src/commands/list.js';
 import { update } from '../src/commands/update.js';
 import { cliPackage } from '../src/version.js';
 
@@ -59,6 +59,7 @@ const registryFiles: Record<string, unknown> = {
     ],
   }),
   'styles/nova/shared.json': item('shared', { type: 'registry:lib', files: [{ type: 'registry:ui', target: 'shared/render.ts', content: 'export const render = () => {};\n' }] }),
+  'elsewhere/hello.json': item('hello', { registryDependencies: ['button'], files: [{ type: 'registry:ui', target: 'hello/Hello.svelte', content: '<p>hello</p>\n' }] }),
   'themes/neutral.json': item('neutral', {
     type: 'registry:theme',
     files: [],
@@ -100,13 +101,21 @@ let registryUrl: string;
 let origin: string;
 let cwd: string;
 let initRequests: string[];
+let acmeRequests: string[];
 
 beforeAll(async () => {
   server = createServer((request, response) => {
     const path = request.url ?? '';
     if (path.startsWith('/init')) initRequests.push(path);
     if (path.includes('baseColor=gray')) return void response.writeHead(400, { 'content-type': 'application/json' }).end(JSON.stringify({ error: 'Invalid baseColor "gray"' }));
-    const body = path.startsWith('/init') ? (path.includes('only=theme') ? themeItem : initItem) : registryFiles[path.replace(/^\/r\//, '')];
+    // The @acme registry wants a bearer token or a token parameter, and serves its items in the style the URL names.
+    if (path.startsWith('/acme/')) {
+      acmeRequests.push(path);
+      if (request.headers.authorization !== 'Bearer s3cret' && !path.endsWith('?token=s3cret')) {
+        return void response.writeHead(401, { 'content-type': 'application/json' }).end(JSON.stringify({ error: 'Unauthorized', message: 'Set ACME_TOKEN.' }));
+      }
+    }
+    const body = path.startsWith('/init') ? (path.includes('only=theme') ? themeItem : initItem) : registryFiles[path.replace(/\?.*/, '').replace(/^\/r\//, '').replace(/^\//, '')];
     response.writeHead(body ? 200 : 404, { 'content-type': 'application/json' }).end(body ? JSON.stringify(body) : '{}');
   });
   await new Promise<void>((done) => server.listen(0, '127.0.0.1', done));
@@ -118,6 +127,7 @@ afterAll(() => void server.close());
 
 beforeEach(() => {
   initRequests = [];
+  acmeRequests = [];
   process.stdin.isTTY = true;
   vi.mocked(select).mockReset();
   process.env.SVELTERY_REGISTRY_URL = registryUrl;
@@ -472,7 +482,7 @@ describe('apply', () => {
 
 describe('add', () => {
   beforeEach(() => init({ cwd, ...defaults }));
-  const options = (extra: { overwrite?: boolean; all?: boolean; dryRun?: boolean } = {}) => ({ ...defaults, overwrite: false, all: false, dryRun: false, cwd, ...extra });
+  const options = (extra: { overwrite?: boolean; all?: boolean; dryRun?: boolean; diff?: string | true; view?: string | true } = {}) => ({ ...defaults, overwrite: false, all: false, dryRun: false, cwd, ...extra });
 
   test('writes items and their registry dependencies with transforms applied', async () => {
     const plan = await add(['dialog'], options());
@@ -513,6 +523,100 @@ describe('add', () => {
     expect(existsSync(join(cwd, 'src/lib'))).toBe(false);
   });
 
+  describe('--diff and --view', () => {
+    const buttonPath = 'src/lib/components/ui/button/Button.svelte';
+    const titlePath = 'src/lib/components/ui/dialog/DialogTitle.svelte';
+    const printed = async (args: string[], extra: Parameters<typeof options>[0]) => {
+      const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
+      try {
+        await add(args, options(extra));
+        return spy.mock.calls.map(([line]) => line);
+      } finally {
+        spy.mockRestore();
+      }
+    };
+
+    test('--diff prints the diff of each file that would change, and writes nothing', async () => {
+      await add(['button', 'dialog'], options());
+      writeFileSync(join(cwd, buttonPath), read(buttonPath).replace('px-2.5', 'px-4'));
+      rmSync(join(cwd, titlePath));
+      const edited = read(buttonPath);
+      expect(await printed(['dialog'], { diff: true })).toEqual([
+        `--- a/${buttonPath}
++++ b/${buttonPath}
+@@ -2,4 +2,4 @@
+   import ChevronRightIcon from '@lucide/svelte/icons/chevron-right';
+   let { children } = $props();
+ </script>
+-<button class="px-4">{@render children?.()}<ChevronRightIcon /></button>
++<button class="px-2.5">{@render children?.()}<ChevronRightIcon /></button>
+
+--- /dev/null
++++ b/${titlePath}
+@@ -0,0 +1,4 @@
++<script lang="ts">
++  import { render } from '../shared/render.js';
++</script>
++<h2 class="text-base">{@render render()}</h2>`,
+      ]);
+      expect([read(buttonPath), existsSync(join(cwd, titlePath))]).toEqual([edited, false]);
+    });
+
+    test('--diff <path> shows the files whose path contains it, and says when none does', async () => {
+      await add(['button', 'dialog'], options());
+      writeFileSync(join(cwd, buttonPath), 'mine\n');
+      writeFileSync(join(cwd, titlePath), 'mine\n');
+      const [onlyButton] = await printed(['dialog'], { diff: 'button/Button' });
+      expect([onlyButton.startsWith(`--- a/${buttonPath}\n`), onlyButton.includes(titlePath)]).toEqual([true, false]);
+      expect(await printed(['dialog'], { diff: 'render.ts' })).toEqual(['src/lib/components/ui/shared/render.ts is identical to the registry version.']);
+      expect(await printed(['dialog'], { diff: 'nothing' })).toEqual(['No file matching "nothing" found.']);
+    });
+
+    test('--diff says so when nothing would change', async () => {
+      await add(['button'], options());
+      expect(await printed(['button'], { diff: true })).toEqual(['No changes.']);
+    });
+
+    test('--diff shows five files at most, and --diff <path> shows one of the rest', async () => {
+      const files = Array.from({ length: 7 }, (_, index) => ({ type: 'registry:ui', target: `many/File${index}.ts`, content: `export const n = ${index};\n` }));
+      registryFiles['styles/nova/many.json'] = item('many', { files });
+      try {
+        const [overview] = await printed([`${registryUrl}/styles/nova/many.json`], { diff: true });
+        expect([overview.match(/^\+\+\+ /gm)?.length, overview.endsWith('Showing 5 of 7 files. Use --diff <path> to show one file.')]).toEqual([5, true]);
+        expect(await printed([`${registryUrl}/styles/nova/many.json`], { diff: 'File6' })).toEqual([
+          '--- /dev/null\n+++ b/src/lib/components/ui/many/File6.ts\n@@ -0,0 +1,1 @@\n+export const n = 6;',
+        ]);
+      } finally {
+        delete registryFiles['styles/nova/many.json'];
+      }
+    });
+
+    test('--view prints the contents the files would have, and writes nothing', async () => {
+      expect(await printed(['button'], { view: true })).toEqual([
+        `${buttonPath} (new, 5 lines)
+<script lang="ts">
+  import ChevronRightIcon from '@lucide/svelte/icons/chevron-right';
+  let { children } = $props();
+</script>
+<button class="px-2.5">{@render children?.()}<ChevronRightIcon /></button>`,
+      ]);
+      expect(existsSync(join(cwd, 'src/lib'))).toBe(false);
+      expect(await printed(['dialog'], { view: 'DialogTitle' })).toEqual([
+        `${titlePath} (new, 4 lines)
+<script lang="ts">
+  import { render } from '../shared/render.js';
+</script>
+<h2 class="text-base">{@render render()}</h2>`,
+      ]);
+    });
+
+    test('--view marks a changed file as changed', async () => {
+      await add(['button'], options());
+      writeFileSync(join(cwd, buttonPath), 'mine\n');
+      expect((await printed(['button'], { view: 'Button.svelte' }))[0].split('\n')[0]).toBe(`${buttonPath} (changed, 5 lines)`);
+    });
+  });
+
   test('adds a block: its page in the route, its components under the components alias, its imports on the aliases', async () => {
     const plan = await add(['login-01'], options());
     expect(plan.files.map((file) => file.path)).toEqual([
@@ -532,6 +636,23 @@ describe('add', () => {
     expect(plan.files.map((file) => file.path)).toEqual(['src/lib/components/ui/button/Button.svelte']);
   });
 
+  test('adds an item that build wrote', async () => {
+    const source = mkdtempSync(join(tmpdir(), 'sveltery-source-'));
+    try {
+      mkdirSync(join(source, 'src/lib/components/ui/hello'), { recursive: true });
+      writeFileSync(join(source, 'src/lib/components/ui/hello/Hello.svelte'), '<p>Hello</p>\n');
+      const files = [{ path: 'src/lib/components/ui/hello/Hello.svelte', type: 'registry:ui' }];
+      writeFileSync(join(source, 'registry.json'), JSON.stringify({ name: 'acme', homepage: 'https://acme.test', items: [{ name: 'hello', type: 'registry:ui', registryDependencies: ['button'], files }] }));
+      build('registry.json', { cwd: source, output: 'static/r' });
+      registryFiles['acme/hello.json'] = JSON.parse(readFileSync(join(source, 'static/r/hello.json'), 'utf8'));
+    } finally {
+      rmSync(source, { recursive: true, force: true });
+    }
+    const plan = await add([`${registryUrl}/acme/hello.json`], options());
+    expect(plan.files.map((file) => file.path)).toEqual(['src/lib/components/ui/button/Button.svelte', 'src/lib/components/ui/hello/Hello.svelte']);
+    expect(read('src/lib/components/ui/hello/Hello.svelte')).toBe('<p>Hello</p>\n');
+  });
+
   test('names unknown items, failed requests and newer registries', async () => {
     await expect(add(['buton'], options())).rejects.toThrow('Not in the registry: buton. Available items: button, dialog, login-01.');
     await expect(add([`${registryUrl}/styles/nova/missing.json`], options())).rejects.toThrow(`GET ${registryUrl}/styles/nova/missing.json failed with 404 Not Found`);
@@ -548,6 +669,94 @@ describe('add', () => {
     await expect(add([`${registryUrl}/styles/nova/evil.json`], options())).rejects.toThrow(
       `${registryUrl}/styles/nova/evil.json is not a valid registry response. files[0].target: expected a relative path without ".." segments, got "../../../../escape.js"`,
     );
+  });
+});
+
+describe('namespaced registries', () => {
+  const addOptions = { ...defaults, overwrite: false, all: false, dryRun: false };
+  const hello = '<p>Hello</p>\n';
+  beforeAll(() => {
+    registryFiles['acme/nova/hello.json'] = item('hello', { registryDependencies: ['button', '@acme/greet'], files: [{ type: 'registry:ui', target: 'hello/Hello.svelte', content: hello }] });
+    registryFiles['acme/nova/greet.json'] = item('greet', { type: 'registry:lib', files: [{ type: 'registry:ui', target: 'greet/index.ts', content: 'export const greet = 1;\n' }] });
+  });
+  beforeEach(() => init({ cwd, ...defaults }));
+  afterEach(() => void delete process.env.ACME_TOKEN);
+  const configure = (registries: unknown) => writeFileSync(join(cwd, 'components.json'), JSON.stringify({ ...JSON.parse(read('components.json')), registries }));
+  const acme = () => ({ url: `${origin}/acme/{style}/{name}.json`, headers: { Authorization: 'Bearer ${ACME_TOKEN}' } });
+
+  test('adds @namespace/item with its headers, and namespaced registryDependencies', async () => {
+    configure({ '@acme': acme() });
+    process.env.ACME_TOKEN = 's3cret';
+    const plan = await add(['@acme/hello'], { ...addOptions, cwd });
+    expect(plan.files.map((file) => file.path)).toEqual([
+      'src/lib/components/ui/button/Button.svelte',
+      'src/lib/components/ui/greet/index.ts',
+      'src/lib/components/ui/hello/Hello.svelte',
+    ]);
+    expect(read('src/lib/components/ui/hello/Hello.svelte')).toBe(hello);
+    expect(await diff(['@acme/hello'], { cwd })).toBe('Everything is up to date.');
+  });
+
+  test('reads the token from .env.local, and the process environment wins', async () => {
+    configure({ '@acme': acme() });
+    writeFileSync(join(cwd, '.env'), 'ACME_TOKEN=wrong\n');
+    writeFileSync(join(cwd, '.env.local'), 'ACME_TOKEN=s3cret\n');
+    expect((await add(['@acme/greet'], { ...addOptions, cwd })).files.map((file) => file.path)).toEqual(['src/lib/components/ui/greet/index.ts']);
+    process.env.ACME_TOKEN = 'wrong';
+    await expect(add(['@acme/greet'], { ...addOptions, cwd })).rejects.toThrow(
+      `You are not authorized to access the item at ${origin}/acme/nova/greet.json. If this is a remote registry, you may need to authenticate.\n[Unauthorized] Set ACME_TOKEN.\nCheck your authentication credentials and environment variables.`,
+    );
+  });
+
+  test('sends params as a query string', async () => {
+    configure({ '@acme': { url: `${origin}/acme/{style}/{name}.json`, params: { token: '${ACME_TOKEN}' } } });
+    process.env.ACME_TOKEN = 's3cret';
+    expect((await add(['@acme/greet'], { ...addOptions, cwd })).files.map((file) => file.path)).toEqual(['src/lib/components/ui/greet/index.ts']);
+    expect(acmeRequests).toEqual(['/acme/nova/greet.json?token=s3cret']);
+  });
+
+  test('prints ${VAR} in place of the values it expands to', async () => {
+    configure({ '@acme': { url: `${origin}/acme/{style}/{name}.json`, params: { token: '${ACME_TOKEN}' } } });
+    process.env.ACME_TOKEN = 'wrong';
+    await expect(add(['@acme/greet'], { ...addOptions, cwd })).rejects.toMatchObject({
+      message: `You are not authorized to access the item at ${origin}/acme/nova/greet.json?token=\${ACME_TOKEN}. If this is a remote registry, you may need to authenticate.\n[Unauthorized] Set ACME_TOKEN.\nCheck your authentication credentials and environment variables.`,
+    });
+    configure({ '@acme': acme() });
+    process.env.ACME_TOKEN = 's3\ncret';
+    await expect(add(['@acme/greet'], { ...addOptions, cwd })).rejects.toMatchObject({ message: `Could not reach ${origin}/acme/nova/greet.json: a header name or value is not valid` });
+  });
+
+  test('rejects an item name that would expand a variable or leave the namespace path', async () => {
+    configure({ '@acme': acme() });
+    process.env.ACME_TOKEN = 's3cret';
+    registryFiles['acme/nova/leak.json'] = item('leak', { registryDependencies: ['@acme/${ACME_TOKEN}'], files: [] });
+    await expect(add(['@acme/leak'], { ...addOptions, cwd })).rejects.toThrow('"@acme/${ACME_TOKEN}" is not a valid item name. An @namespace/item name cannot contain "${", "?", "#" or a ".." segment.');
+    expect(acmeRequests).toEqual(['/acme/nova/leak.json']);
+    for (const name of ['@acme/greet?x=1', '@acme/greet#x', '@acme/../r/index', '@acme/a/%2e%2e/greet']) {
+      await expect(add([name], { ...addOptions, cwd })).rejects.toThrow(`"${name}" is not a valid item name.`);
+    }
+    expect(acmeRequests).toEqual(['/acme/nova/leak.json']);
+  });
+
+  test('names an unknown namespace, a missing variable and an invalid registries entry', async () => {
+    await expect(add(['@nope/hello'], { ...addOptions, cwd })).rejects.toThrow(
+      'Unknown registry "@nope". Make sure it is defined under "registries" in your components.json file:\n{\n  "registries": {\n    "@nope": "[URL_TO_REGISTRY]"\n  }\n}',
+    );
+    configure({ '@acme': acme() });
+    await expect(add(['@acme/hello'], { ...addOptions, cwd })).rejects.toThrow(
+      'Registry "@acme" requires the following environment variables:\n\n  • ACME_TOKEN\n\nSet the required environment variables to your .env or .env.local file.',
+    );
+    configure({ acme: `${origin}/acme/{name}.json` });
+    await expect(add(['@acme/hello'], { ...addOptions, cwd })).rejects.toThrow('components.json is invalid. registries.acme: registry names must start with @, such as @acme.');
+    configure({ '@acme': `${origin}/acme/hello.json` });
+    await expect(add(['@acme/hello'], { ...addOptions, cwd })).rejects.toThrow('registries.@acme: expected a URL with a {name} placeholder');
+  });
+
+  test('@sveltery names the project registry, and init keeps registries', async () => {
+    expect((await add(['@sveltery/button'], { ...addOptions, cwd })).files.map((file) => file.path)).toEqual(['src/lib/components/ui/button/Button.svelte']);
+    configure({ '@acme': acme() });
+    await init({ cwd, ...defaults });
+    expect(JSON.parse(read('components.json')).registries).toEqual({ '@acme': acme() });
   });
 });
 
@@ -600,16 +809,52 @@ describe('diff', () => {
     expect(await diff([], { cwd })).toBe('Everything is up to date.');
   });
 
-  test('errors on an item that is not installed, not in the registry, or a URL', async () => {
+  test('errors on an item that is not installed or not in the registry', async () => {
     rmSync(join(cwd, 'src/lib/components/ui/dialog'), { recursive: true });
     await expect(diff(['dialog'], { cwd })).rejects.toThrow('dialog is not installed. Run `npx @sveltery/ui@latest add dialog` first.');
     await expect(diff(['buton'], { cwd })).rejects.toThrow('Not in the registry: buton.');
-    await expect(diff([`${registryUrl}/styles/nova/button.json`], { cwd })).rejects.toThrow('URLs only work with `add`.');
+  });
+
+  describe('items added by URL', () => {
+    const helloPath = 'src/lib/components/ui/hello/Hello.svelte';
+    let helloUrl: string;
+    beforeEach(() => {
+      helloUrl = `${origin}/r/elsewhere/hello.json`;
+      return add([helloUrl], { cwd, ...addOptions });
+    });
+
+    test('a URL counts as installed when its file exists, and diffs against its own item and its registry dependencies', async () => {
+      expect(await diff([helloUrl], { cwd })).toBe('Everything is up to date.');
+      writeFileSync(join(cwd, helloPath), '<p>mine</p>\n');
+      editButton();
+      const output = await diff([helloUrl], { cwd });
+      expect([output.includes(`--- a/${helloPath}\n+++ b/${helloPath}\n@@ -1,1 +1,1 @@\n-<p>mine</p>\n+<p>hello</p>`), output.includes(`--- a/${buttonPath}`), output.split('\n').at(-1)]).toEqual([true, true, '2 files differ in 2 items']);
+      expect((await diff(['button'], { cwd })).includes(helloPath)).toBe(false);
+    });
+
+    test('a URL whose files are gone is not installed', async () => {
+      rmSync(join(cwd, 'src/lib/components/ui/hello'), { recursive: true });
+      await expect(diff([helloUrl], { cwd })).rejects.toThrow(`${helloUrl} is not installed. Run \`npx @sveltery/ui@latest add ${helloUrl}\` first.`);
+    });
+
+    test('naming no item checks the registry\'s items, not the URLs', async () => {
+      writeFileSync(join(cwd, helloPath), '<p>mine</p>\n');
+      expect(await diff([], { cwd })).toBe('Everything is up to date.');
+    });
+
+    test('a missing file names the URL in the update hint', async () => {
+      rmSync(join(cwd, buttonPath));
+      expect((await diff([helloUrl], { cwd })).split('\n').at(-1)).toBe(`1 file in the registry is not in your project yet. \`npx @sveltery/ui@latest update ${helloUrl}\` adds it.`);
+    });
+
+    test('a URL that the registry does not serve is a request error', async () => {
+      await expect(diff([`${origin}/r/elsewhere/missing.json`], { cwd })).rejects.toThrow(`GET ${origin}/r/elsewhere/missing.json failed with 404 Not Found`);
+    });
   });
 
   test('says so when no item is installed', async () => {
     rmSync(join(cwd, 'src/lib'), { recursive: true });
-    expect(await diff([], { cwd })).toBe('No items are installed. Add one with `npx @sveltery/ui@latest add button`.');
+    expect(await diff([], { cwd })).toBe('No items from the registry are installed. Name an item you added by URL, or add one with `npx @sveltery/ui@latest add button`.');
   });
 });
 
@@ -661,6 +906,20 @@ describe('update', () => {
     await expect(update(['nope'], { cwd, ...defaults })).rejects.toThrow('Not in the registry: nope.');
   });
 
+  test('a URL limits the update to that item and its registry dependencies, and needs it installed', async () => {
+    const helloUrl = `${origin}/r/elsewhere/hello.json`;
+    const helloPath = 'src/lib/components/ui/hello/Hello.svelte';
+    await expect(update([helloUrl], { cwd, ...defaults })).rejects.toThrow(`${helloUrl} is not installed. Run \`npx @sveltery/ui@latest add ${helloUrl}\` first.`);
+    await add([helloUrl], { cwd, ...addOptions });
+    writeFileSync(join(cwd, helloPath), 'mine\n');
+    writeFileSync(join(cwd, buttonPath), 'my button\n');
+    writeFileSync(join(cwd, titlePath), 'my title\n');
+    const plan = await update([helloUrl], { cwd, ...defaults });
+    expect(plan.files.map((file) => file.path)).toEqual([buttonPath, helloPath]);
+    expect([read(helloPath), read(titlePath)]).toEqual(['<p>hello</p>\n', 'my title\n']);
+    expect(await diff([helloUrl], { cwd })).toBe('Everything is up to date.');
+  });
+
   test('reports the packages an item now needs', async () => {
     writeFileSync(join(cwd, 'package.json'), JSON.stringify({ devDependencies: { '@sveltejs/kit': '^2.0.0', svelte: '^5.0.0', tailwindcss: '^4.0.0' } }));
     const plan = await update(['button'], { cwd, ...defaults });
@@ -671,39 +930,5 @@ describe('update', () => {
     rmSync(join(cwd, 'src/lib'), { recursive: true });
     expect((await update([], { cwd, ...defaults })).files).toEqual([]);
     expect(existsSync(join(cwd, 'src/lib'))).toBe(false);
-  });
-});
-
-describe('list', () => {
-  const print = async (json: boolean) => {
-    const log = vi.spyOn(console, 'log').mockImplementation(() => {});
-    try {
-      await list({ cwd, json });
-      return log.mock.calls.map(([line]) => line).join('\n');
-    } finally {
-      log.mockRestore();
-    }
-  };
-  beforeEach(() => init({ cwd, ...defaults }));
-
-  test('prints every item with its type, and marks the installed ones', async () => {
-    expect(await print(false)).toBe(`button  registry:ui
-dialog  registry:ui`);
-    await add(['button'], { cwd, ...defaults, overwrite: false, all: false, dryRun: false });
-    expect(await print(false)).toBe(`button  registry:ui  installed
-dialog  registry:ui`);
-  });
-
-  test('--json prints the entries', async () => {
-    await add(['dialog'], { cwd, ...defaults, overwrite: false, all: false, dryRun: false });
-    expect(JSON.parse(await print(true))).toEqual([
-      { name: 'button', type: 'registry:ui', installed: true },
-      { name: 'dialog', type: 'registry:ui', installed: true },
-    ]);
-  });
-
-  test('asks for init when there is no components.json', async () => {
-    rmSync(join(cwd, 'components.json'));
-    await expect(list({ cwd, json: false })).rejects.toThrow('Run `npx @sveltery/ui@latest init` first.');
   });
 });

@@ -161,6 +161,7 @@ export async function planInit(options: InitOptions): Promise<{ plan: Plan; proj
     tailwind: { css: cssPath, baseColor },
     aliases: { ...defaultAliases(libAlias(cwd)), ...Object.fromEntries(Object.entries(existingAliases).filter(([, value]) => typeof value === 'string')) },
     registry: registry.url,
+    registries: existingConfig.registries,
     typescript: true,
   });
   // Known keys first in a fixed order, then the user's own keys, so a second run writes the same bytes.
