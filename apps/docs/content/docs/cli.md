@@ -553,7 +553,7 @@ npx @sveltery/ui@latest info
 `info` prints these groups:
 
 - **Project.** The framework (`SvelteKit`, `Vite` or `Manual`) and its version, and the Svelte and Tailwind CSS versions. A version is the one in `node_modules` when the package is installed, else the one in `package.json`. It also shows whether the project has a `src` folder, the CSS file that imports Tailwind, and the import alias (`$lib` or `#lib`) of a SvelteKit app.
-- **Configuration.** The `style`, `iconLibrary`, `menuColor` and `menuAccent` from `components.json`, and the registry the CLI reads.
+- **Configuration.** The `style`, `iconLibrary`, `rtl`, `menuColor` and `menuAccent` from `components.json`, and the registry the CLI reads.
 - **Preset.** The preset code that your `components.json` and CSS add up to, its values, and the [Create page](/create) link for it. A `*` marks a value that the project does not show, so it takes the style's default. Use `init --preset` with the code to make the same setup in another app.
 - **Aliases** and **Resolved Paths.** Where each alias points, as absolute paths.
 - **Installed Components.** The registry items that have a folder under `aliases.ui`.
@@ -563,6 +563,7 @@ npx @sveltery/ui@latest info
 Configuration
   style        sera
   iconLibrary  lucide
+  rtl          No
   menuColor    default
   menuAccent   subtle
   registry     https://ui.sveltery.dev/r
