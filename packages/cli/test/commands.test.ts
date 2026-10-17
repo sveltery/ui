@@ -96,6 +96,7 @@ afterAll(() => void server.close());
 
 beforeEach(() => {
   initRequests = [];
+  process.stdin.isTTY = true;
   vi.mocked(select).mockReset();
   process.env.SVELTERY_REGISTRY_URL = registryUrl;
   cwd = mkdtempSync(join(tmpdir(), 'sveltery-cli-'));
@@ -103,7 +104,10 @@ beforeEach(() => {
   mkdirSync(join(cwd, 'src'));
   writeFileSync(join(cwd, 'src/app.css'), "@import 'tailwindcss';\n");
 });
-afterEach(() => rmSync(cwd, { recursive: true, force: true }));
+afterEach(() => {
+  rmSync(cwd, { recursive: true, force: true });
+  process.stdin.isTTY = false;
+});
 
 const read = (path: string) => readFileSync(join(cwd, path), 'utf8');
 const defaults = { yes: true, install: false };
@@ -145,7 +149,7 @@ describe('init', () => {
 `);
     expect(first.files.map((file) => file.status)).toEqual(['new', 'changed']);
     expect(first.dependencies).toEqual(['class-variance-authority@^0.7.1', 'tw-animate-css@^1.4.0', '@tabler/icons-svelte@^3.48.0']);
-    expect(first.devDependencies).toEqual(['@sveltery/ui@^0.1.0']);
+    expect(first.devDependencies).toEqual(['@sveltery/ui@^0.1.1']);
 
     const config = read('components.json');
     const css = read('src/app.css');
@@ -245,7 +249,7 @@ describe('init', () => {
 }
 `);
       expect(first.dependencies).toEqual(['class-variance-authority@^0.7.1', 'tw-animate-css@^1.4.0', '@tabler/icons-svelte@^3.48.0', '@fontsource-variable/inter', '@fontsource-variable/playfair-display']);
-      expect(first.devDependencies).toEqual([`${cliPackage}@^0.1.0`]);
+      expect(first.devDependencies).toEqual([`${cliPackage}@^0.1.1`]);
 
       const config = read('components.json');
       const css = read('src/app.css');
