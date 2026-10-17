@@ -31,7 +31,7 @@ import { cliPackage, version } from '../version.js';
 import { promptForPreset, resolvePresetUrl } from './preset.js';
 import { choose } from '../prompt.js';
 
-export type InitOptions = { cwd: string; yes: boolean; install: boolean; style?: string; icons?: string; baseColor?: string; css?: string; preset?: string | true };
+export type InitOptions = { cwd: string; yes: boolean; install: boolean; style?: string; icons?: string; baseColor?: string; css?: string; preset?: string | true; rtl?: boolean };
 
 /** Packages every copied component relies on, at the ranges the registry source uses. */
 export const baseDependencies = ['cn@^0.2.2', 'class-variance-authority@^0.7.1', 'tw-animate-css@^1.4.0'];
@@ -43,6 +43,7 @@ function pick<T extends string>(flag: string, value: string | undefined, options
 }
 
 const valid = <T extends string>(value: unknown, options: readonly T[]) => ((options as readonly unknown[]).includes(value) ? (value as T) : undefined);
+const bool = (value: unknown) => (typeof value === 'boolean' ? value : undefined);
 
 /** What `init` writes, whether it came from flags and prompts or from a preset. */
 type Settings = {
@@ -51,11 +52,14 @@ type Settings = {
   baseColor: BaseColor;
   menuColor: PresetMenuColor;
   menuAccent?: PresetMenuAccent;
+  rtl: boolean;
   cssVars: CssVars;
   cssTrees: CssTree[];
   dependencies: string[];
   /** Items with files to write, usually none. */
   items: RegistryItem[];
+  /** The preset's notes, such as how to set up RTL. */
+  docs?: string;
 };
 
 /** The parts of an existing components.json that fill in what the flags or the preset leave out. */
@@ -87,6 +91,7 @@ async function settingsFromFlags(options: InitOptions, registry: Registry, exist
     baseColor,
     menuColor: valid(existing.config.menuColor, PRESET_MENU_COLORS) ?? 'default',
     menuAccent: valid(existing.config.menuAccent, PRESET_MENU_ACCENTS),
+    rtl: options.rtl ?? bool(existing.config.rtl) ?? false,
     cssVars: theme.cssVars ?? {},
     cssTrees: [DEFAULT_CSS],
     dependencies: [...baseDependencies, ...iconLibraries[iconLibrary].packages],
@@ -94,7 +99,7 @@ async function settingsFromFlags(options: InitOptions, registry: Registry, exist
   };
 }
 
-async function settingsFromPreset(url: string, registry: Registry, existing: Existing): Promise<Settings> {
+async function settingsFromPreset(url: string, options: InitOptions, registry: Registry, existing: Existing): Promise<Settings> {
   const ref: ItemRef = { kind: 'url', url };
   // A URL ref ignores the style, which the item itself names.
   const base = await fetchItem(registry, 'nova', ref);
@@ -113,10 +118,13 @@ async function settingsFromPreset(url: string, registry: Registry, existing: Exi
     baseColor: config.tailwind?.baseColor ?? valid(existing.tailwind.baseColor, baseColors) ?? stylePresets[style].baseColor,
     menuColor: config.menuColor ?? valid(existing.config.menuColor, PRESET_MENU_COLORS) ?? 'default',
     menuAccent: config.menuAccent ?? valid(existing.config.menuAccent, PRESET_MENU_ACCENTS),
+    // The flag wins over the preset, as upstream's init sets config.rtl last.
+    rtl: options.rtl ?? config.rtl ?? bool(existing.config.rtl) ?? false,
     cssVars: { ...base.cssVars, theme: { ...base.cssVars?.theme, ...fonts.theme } },
     cssTrees: [DEFAULT_CSS, base.css ?? {}, fonts.css],
     dependencies: [...baseDependencies, ...iconLibraries[iconLibrary].packages, ...(base.dependencies ?? []), ...fonts.dependencies, ...items.flatMap((item) => item.dependencies ?? [])],
     items,
+    docs: base.docs,
   };
 }
 
@@ -137,21 +145,22 @@ export async function init(options: InitOptions): Promise<Plan> {
     }
     const preset = options.preset === true ? (options.yes ? 'nova' : await promptForPreset(registryUrl)) : options.preset;
     if (preset === undefined) return { files: [], dependencies: [], devDependencies: [] };
-    presetUrl = resolvePresetUrl(registryUrl, preset);
+    presetUrl = resolvePresetUrl(registryUrl, preset, options.rtl);
   }
 
   const existingCss = typeof existingTailwind.css === 'string' && existsSync(join(cwd, existingTailwind.css)) ? existingTailwind.css : undefined;
   const cssPath = findCssFile(cwd, options.css ?? existingCss);
 
   const registry = await openRegistry(registryUrl);
-  const settings = presetUrl === undefined ? await settingsFromFlags(options, registry, existing) : await settingsFromPreset(presetUrl, registry, existing);
-  const { style, iconLibrary, baseColor, menuColor, menuAccent } = settings;
+  const settings = presetUrl === undefined ? await settingsFromFlags(options, registry, existing) : await settingsFromPreset(presetUrl, options, registry, existing);
+  const { style, iconLibrary, baseColor, menuColor, menuAccent, rtl } = settings;
 
   const existingAliases = typeof existingConfig.aliases === 'object' && existingConfig.aliases !== null ? (existingConfig.aliases as Record<string, unknown>) : {};
   const config: Config = parseConfig({
     $schema: new URL('/schema.json', registry.url).href,
     style,
     iconLibrary,
+    rtl,
     menuColor,
     menuAccent,
     tailwind: { css: cssPath, baseColor },
@@ -184,5 +193,6 @@ export async function init(options: InitOptions): Promise<Plan> {
   log.info(formatPlan(plan, { showIdentical: false }));
   await executePlan(plan, { cwd, install: options.install });
   log.success(`Ready. Add a component with \`npx sveltery add button\`.`);
+  if (settings.docs) log.info(settings.docs);
   return plan;
 }

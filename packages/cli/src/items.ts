@@ -25,6 +25,7 @@ export function planItems({ cwd, config, uiDir }: Project, items: RegistryItem[]
     iconLibrary: config.iconLibrary,
     menuColor: config.menuColor,
     fontHeading: (css ?? (existsSync(cssPath) ? readFileSync(cssPath, 'utf8') : '')).includes('--font-heading'),
+    rtl: config.rtl ?? false,
   };
   const files = new Map<string, PlannedFile>();
   const dependencies: string[] = [];

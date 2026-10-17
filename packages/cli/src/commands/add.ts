@@ -33,5 +33,6 @@ export async function add(args: string[], options: AddOptions): Promise<Plan> {
   const executed = { ...plan, files: toWrite };
   await executePlan(executed, { cwd, install: options.install });
   log.success(`Added ${items.map((item) => item.name).join(', ')}.`);
+  for (const item of items) if (item.docs) log.info(item.docs);
   return executed;
 }

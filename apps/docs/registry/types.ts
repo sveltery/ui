@@ -32,6 +32,7 @@ export type CssValue = string | (string | Record<string, string>)[] | CssTree;
 export type RegistryBaseConfig = {
   style?: StyleName;
   iconLibrary?: IconLibrary;
+  rtl?: boolean;
   menuColor?: PresetMenuColor;
   menuAccent?: PresetMenuAccent;
   tailwind?: { baseColor?: BaseColor };
@@ -61,6 +62,8 @@ type RegistryItemCommon = {
   files: RegistryFile[];
   cssVars?: CssVars;
   css?: CssTree;
+  /** Printed after the item installs, as upstream's `docs`. */
+  docs?: string;
 };
 
 /** As upstream, a `registry:base` item may carry `config` and a `registry:font` item must carry `font`. */
