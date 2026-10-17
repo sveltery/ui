@@ -117,6 +117,16 @@ Where upstream code misbehaves on Base UI, Sveltery UI fixes it instead of copyi
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
+### The Switch thumb is centered at every position
+
+**Upstream:** Five styles give the default switch a fractional track height: `h-[18.4px]` in Lyra, Maia, Nova and Vega, for example [`style-nova.css`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/styles/style-nova.css#L1251), and `h-[16.6px]` in [`style-mira.css`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/styles/style-mira.css#L1253). The thumb then sits 1.2px or 1.3px inside the track.
+
+**Sveltery UI:** The [Switch](/docs/components/switch) track is `h-[18px]` in those four styles and `h-[16px]` in Mira, so the thumb sits 1px inside it.
+
+**Why:** The browser rounds the track and the thumb to whole device pixels, and a fractional inset rounds differently at the top and the bottom. Depending on where the switch lands on the page, the track shows one more pixel above or below the thumb.
+
+**Decided:** Hugo Hsi, 2026-10-17
+
 ### The Combobox trigger stays out of the tab order
 
 **Upstream:** [`combobox.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/combobox.tsx#L85-L88) renders `InputGroupButton render={<ComboboxTrigger />}`. That passes Base UI's `Button` props to the combobox trigger, and its `tabIndex={0}` overrides the trigger's own [`tabIndex={-1}`](https://github.com/mui/base-ui/blob/v1.9.0/packages/react/src/combobox/trigger/ComboboxTrigger.tsx#L157).
