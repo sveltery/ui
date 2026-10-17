@@ -49,7 +49,12 @@
         <CardDescription>Prepended messages keep your place.</CardDescription>
         <CardAction>
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger
+              onclick={() => {
+                visibleCount = INITIAL_VISIBLE_COUNT;
+                demoKey++;
+              }}
+            >
               {#snippet render(props, _state, content)}
                 <Button
                   {...props}
@@ -58,10 +63,6 @@
                   size="icon"
                   aria-label="Reset loaded messages"
                   disabled={visibleCount === INITIAL_VISIBLE_COUNT}
-                  onclick={() => {
-                    visibleCount = INITIAL_VISIBLE_COUNT;
-                    demoKey++;
-                  }}
                 >
                   {@render content?.()}
                 </Button>
