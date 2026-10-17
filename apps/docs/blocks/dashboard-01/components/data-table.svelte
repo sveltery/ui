@@ -26,9 +26,7 @@
 </script>
 
 <script lang="ts">
-  import { scaleUtc } from 'd3-scale';
-  import { curveNatural } from 'd3-shape';
-  import { Area, AreaChart } from 'layerchart';
+  import { Area, AreaChart, CartesianGrid, XAxis } from '@sveltery/recharts';
   import { RestrictToVerticalAxis } from '@dnd-kit/abstract/modifiers';
   import { move } from '@dnd-kit/helpers';
   import { DragDropProvider } from '@dnd-kit/svelte';
@@ -36,7 +34,7 @@
   import { MediaQuery } from 'svelte/reactivity';
   import { Badge } from '$registry/bases/base/ui/badge';
   import { Button } from '$registry/bases/base/ui/button';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
   import { Checkbox } from '$registry/bases/base/ui/checkbox';
   import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '$registry/bases/base/ui/drawer';
   import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '$registry/bases/base/ui/dropdown-menu';
@@ -121,17 +119,48 @@
   }
 
   const chartData = [
-    { month: new Date('2024-01-01'), desktop: 186, mobile: 80 },
-    { month: new Date('2024-02-01'), desktop: 305, mobile: 200 },
-    { month: new Date('2024-03-01'), desktop: 237, mobile: 120 },
-    { month: new Date('2024-04-01'), desktop: 73, mobile: 190 },
-    { month: new Date('2024-05-01'), desktop: 209, mobile: 130 },
-    { month: new Date('2024-06-01'), desktop: 214, mobile: 140 },
-  ];
+    {
+      month: "January",
+      desktop: 186,
+      mobile: 80,
+    },
+    {
+      month: "February",
+      desktop: 305,
+      mobile: 200,
+    },
+    {
+      month: "March",
+      desktop: 237,
+      mobile: 120,
+    },
+    {
+      month: "April",
+      desktop: 73,
+      mobile: 190,
+    },
+    {
+      month: "May",
+      desktop: 209,
+      mobile: 130,
+    },
+    {
+      month: "June",
+      desktop: 214,
+      mobile: 140,
+    },
+  ]
+
   const chartConfig = {
-    desktop: { label: 'Desktop', color: 'var(--primary)' },
-    mobile: { label: 'Mobile', color: 'var(--primary)' },
-  } satisfies ChartConfig;
+    desktop: {
+      label: "Desktop",
+      color: "var(--primary)",
+    },
+    mobile: {
+      label: "Mobile",
+      color: "var(--primary)",
+    },
+  } satisfies ChartConfig
 </script>
 
 {#snippet selectHead({ table }: HeaderContext<typeof features, Section, unknown>)}
@@ -167,25 +196,22 @@
         {#if !isMobile.current}
           <ChartContainer config={chartConfig}>
             <AreaChart
+              accessibilityLayer
               data={chartData}
-              x="month"
-              xScale={scaleUtc()}
-              axis={false}
-              padding={{ left: 0, right: 10 }}
-              series={[
-                { key: 'mobile', label: 'Mobile', color: 'var(--color-mobile)' },
-                { key: 'desktop', label: 'Desktop', color: 'var(--color-desktop)' },
-              ]}
-              seriesLayout="stack"
+              margin={{
+                left: 0,
+                right: 10,
+              }}
             >
-              {#snippet marks({ context })}
-                {#each context.series.visibleSeries as s (s.key)}
-                  <Area seriesKey={s.key} curve={curveNatural} fillOpacity={s.key === 'mobile' ? 0.6 : 0.4} line={{ class: 'stroke-1' }} />
-                {/each}
-              {/snippet}
-              {#snippet tooltip()}
-                <ChartTooltip labelFormatter={(value: Date) => value.toLocaleDateString('en-US', { month: 'long', timeZone: 'UTC' })} indicator="dot" />
-              {/snippet}
+              <CartesianGrid vertical={false} />
+              <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} tickFormatter={(value) => value.slice(0, 3)} hide />
+              <ChartTooltip cursor={false}>
+                {#snippet content(props: TooltipContentArgs)}
+                  <ChartTooltipContent indicator="dot" {...props} />
+                {/snippet}
+              </ChartTooltip>
+              <Area dataKey="mobile" type="natural" fill="var(--color-mobile)" fillOpacity={0.6} stroke="var(--color-mobile)" stackId="a" />
+              <Area dataKey="desktop" type="natural" fill="var(--color-desktop)" fillOpacity={0.4} stroke="var(--color-desktop)" stackId="a" />
             </AreaChart>
           </ChartContainer>
           <Separator />

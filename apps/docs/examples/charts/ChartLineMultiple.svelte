@@ -1,83 +1,69 @@
 <script lang="ts">
-  import { LineChart } from 'layerchart';
-  import { scaleUtc } from 'd3-scale';
-  import { curveNatural } from 'd3-shape';
+  import { CartesianGrid, Line, LineChart, XAxis } from '@sveltery/recharts';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
   const chartData = [
-    { date: new Date('2024-01-01'), desktop: 186, mobile: 80 },
-    { date: new Date('2024-02-01'), desktop: 305, mobile: 200 },
-    { date: new Date('2024-03-01'), desktop: 237, mobile: 120 },
-    { date: new Date('2024-04-01'), desktop: 73, mobile: 190 },
-    { date: new Date('2024-05-01'), desktop: 209, mobile: 130 },
-    { date: new Date('2024-06-01'), desktop: 214, mobile: 140 },
-  ];
+    { month: "January", desktop: 186, mobile: 80 },
+    { month: "February", desktop: 305, mobile: 200 },
+    { month: "March", desktop: 237, mobile: 120 },
+    { month: "April", desktop: 73, mobile: 190 },
+    { month: "May", desktop: 209, mobile: 130 },
+    { month: "June", desktop: 214, mobile: 140 },
+  ]
 
   const chartConfig = {
-    desktop: { label: 'Desktop', color: 'var(--chart-1)' },
-    mobile: { label: 'Mobile', color: 'var(--chart-2)' },
-  } satisfies ChartConfig;
+    desktop: {
+      label: "Desktop",
+      color: "var(--chart-1)",
+    },
+    mobile: {
+      label: "Mobile",
+      color: "var(--chart-2)",
+    },
+  } satisfies ChartConfig
 </script>
 
-<Card class="w-full max-w-md">
+<Card>
   <CardHeader>
     <CardTitle>Line Chart - Multiple</CardTitle>
-    <CardDescription>Showing total visitors for the last 6 months</CardDescription>
+    <CardDescription>January - June 2024</CardDescription>
   </CardHeader>
   <CardContent>
-    <ChartContainer aria-label="Line Chart - Multiple" config={chartConfig}>
+    <ChartContainer config={chartConfig}>
       <LineChart
+        accessibilityLayer
         data={chartData}
-        x="date"
-        xScale={scaleUtc()}
-        axis="x"
-        series={[
-          {
-            key: 'desktop',
-            label: 'Desktop',
-            color: 'var(--color-desktop)',
-          },
-          {
-            key: 'mobile',
-            label: 'Mobile',
-            color: 'var(--color-mobile)',
-          },
-        ]}
-        props={{
-          spline: { curve: curveNatural, motion: 'tween', strokeWidth: 2 },
-          xAxis: {
-            tickLength: 14,
-            format: (v: Date) => v.toLocaleDateString('en-US', { month: 'short' }),
-          },
-          highlight: { points: { r: 4 } },
+        margin={{
+          left: 12,
+          right: 12,
         }}
       >
-        {#snippet tooltip()}
-          <ChartTooltip
-            labelFormatter={(v: Date) => v.toLocaleDateString('en-US', { month: 'long' })}
-          />
-        {/snippet}
+        <CartesianGrid vertical={false} />
+        <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} tickFormatter={(value) => value.slice(0, 3)} />
+        <ChartTooltip cursor={false}>
+          {#snippet content(props: TooltipContentArgs)}
+            <ChartTooltipContent {...props} />
+          {/snippet}
+        </ChartTooltip>
+        <Line dataKey="desktop" type="monotone" stroke="var(--color-desktop)" strokeWidth={2} dot={false} />
+        <Line dataKey="mobile" type="monotone" stroke="var(--color-mobile)" strokeWidth={2} dot={false} />
       </LineChart>
     </ChartContainer>
   </CardContent>
   <CardFooter>
     <div class="flex w-full items-start gap-2 text-sm">
       <div class="grid gap-2">
-        <div class="flex items-center gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <IconPlaceholder
+        <div class="flex items-center gap-2 leading-none font-medium">Trending up by 5.2% this month <IconPlaceholder
             lucide="TrendingUpIcon"
             tabler="IconTrendingUp"
             hugeicons="TradeUpIcon"
             phosphor="TrendUpIcon"
             remixicon="RiLineChartLine"
-            class="size-4"
-          />
-        </div>
-        <div class="text-muted-foreground flex items-center gap-2 leading-none">
-          January - June 2024
-        </div>
+            class="h-4 w-4"
+          /></div>
+        <div class="flex items-center gap-2 leading-none text-muted-foreground">Showing total visitors for the last 6 months</div>
       </div>
     </div>
   </CardFooter>

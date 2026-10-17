@@ -84,7 +84,7 @@ try {
   await run('npx', ['--yes', SV, 'add', 'tailwindcss=plugins:none', '--no-git-check', '--no-install', '-C', app], work);
 
   step('pack @sveltery/ui and the helper packages');
-  const helpers = ['@sveltery/command', '@sveltery/day-picker', '@sveltery/input-otp', '@sveltery/resizable', '@sveltery/svelte'];
+  const helpers = ['@sveltery/command', '@sveltery/day-picker', '@sveltery/input-otp', '@sveltery/recharts', '@sveltery/resizable', '@sveltery/svelte'];
   await run('pnpm', [...helpers.flatMap((name) => ['--filter', name]), 'build'], repoRoot);
   await run('pnpm', [...['@sveltery/ui', ...helpers].flatMap((name) => ['--filter', name]), 'pack', '--pack-destination', tarballs], repoRoot);
   const tarball = (name) => {
@@ -186,8 +186,8 @@ try {
   await run('npm', ['exec', '--yes', `--package=${overrides['@sveltery/ui']}`, '--', 'sveltery', 'init', '-y'], app, env);
   assert.equal(readFileSync(join(app, config.tailwind.css), 'utf8'), css, 'a second init leaves the CSS byte-identical');
 
-  step('sveltery add button dialog -y');
-  await run('pnpm', ['exec', 'sveltery', 'add', 'button', 'dialog', '-y'], app, env);
+  step('sveltery add button dialog chart -y');
+  await run('pnpm', ['exec', 'sveltery', 'add', 'button', 'dialog', 'chart', '-y'], app, env);
   step('sveltery diff and update -y after editing Button.svelte');
   const buttonFile = join(app, config.aliases.ui.replace(/^[$#]lib/, 'src/lib'), 'button/Button.svelte');
   const pristine = readFileSync(buttonFile, 'utf8');
@@ -204,10 +204,20 @@ try {
   const viewed = JSON.parse(await cli('view', 'button', `${env.SVELTERY_REGISTRY_URL}/styles/${config.style}/card.json`));
   assert.deepEqual(viewed, [served('button'), served('card')], 'view prints the items as the registry serves them, in argument order');
 
+  step('sveltery diff, update and add --diff on an item added by its URL');
+  const buttonUrl = `${env.SVELTERY_REGISTRY_URL}/styles/${config.style}/button.json`;
+  await cli('add', buttonUrl, '-y', '--no-install');
+  writeFileSync(buttonFile, pristine.replace(firstLine, `${firstLine} <!-- edited locally -->`));
+  assert.match(await cli('diff', buttonUrl), /^-.*edited locally/m, 'diff <url> shows the edited line');
+  assert.match(await cli('add', buttonUrl, '--diff'), /^-.*edited locally/m, 'add <url> --diff shows the edited line');
+  await cli('update', buttonUrl, '-y', '--no-install');
+  assert.equal(readFileSync(buttonFile, 'utf8'), pristine, 'update <url> -y restores the registry version');
+  assert.equal((await cli('diff', buttonUrl)).trim(), 'Everything is up to date.');
+
   writeFileSync(
     join(app, 'src/routes/+page.svelte'),
     // The import form the docs print, an explicit index, and a deep import of one file.
-    `<script lang="ts">\n  import { Button } from '${config.aliases.ui}/button';\n  import { Dialog, DialogTrigger } from '${config.aliases.ui}/dialog/index.js';\n  import DeepButton from '${config.aliases.ui}/button/Button.svelte';\n</script>\n<Button>Click</Button>\n<DeepButton>Deep</DeepButton>\n<Dialog><DialogTrigger>Open</DialogTrigger></Dialog>\n`,
+    `<script lang="ts">\n  import { Bar, BarChart } from '@sveltery/recharts';\n  import { Button } from '${config.aliases.ui}/button';\n  import { ChartContainer } from '${config.aliases.ui}/chart';\n  import { Dialog, DialogTrigger } from '${config.aliases.ui}/dialog/index.js';\n  import DeepButton from '${config.aliases.ui}/button/Button.svelte';\n</script>\n<Button>Click</Button>\n<DeepButton>Deep</DeepButton>\n<Dialog><DialogTrigger>Open</DialogTrigger></Dialog>\n<ChartContainer config={{ value: { label: 'Value', color: 'var(--chart-1)' } }} class="h-40 w-80"><BarChart data={[{ value: 1 }, { value: 2 }]}><Bar dataKey="value" fill="var(--color-value)" /></BarChart></ChartContainer>\n`,
   );
 
   step('svelte-check and vite build');

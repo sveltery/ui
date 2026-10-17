@@ -417,6 +417,16 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
+### The Drawer page has no Vaul migration guide
+
+**Upstream:** The [Drawer page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/drawer.mdx) opens with a callout and ends with a "Migrating from Vaul" section for projects that installed the earlier Vaul-based drawer.
+
+**Sveltery UI:** The [Drawer](/docs/components/drawer) page leaves both out.
+
+**Why:** Sveltery UI never shipped a Vaul-based drawer, so there is nothing to migrate from.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ### The Select Invalid snippet keeps its `Select`
 
 **Upstream:** The [Select page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/select.mdx?plain=1#L139) shows the Invalid snippet as a bare `SelectTrigger`.
@@ -436,6 +446,16 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Why:** The docs show each example in a preview frame. A sidebar sized to the viewport would overflow it. At phone widths, the inset content is taller than the frame, and `overflow-auto` lets you scroll it. Without it, the frame cuts the content off.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
+
+### The Chart page holds the charts library
+
+**Upstream:** [`chart.mdx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/chart.mdx#L25) links to a separate [charts library](https://github.com/shadcn-ui/ui/tree/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/app/%28app%29/charts) at `/charts`, with one page per chart type.
+
+**Sveltery UI:** The [Chart](/docs/components/chart#charts-library) page has a Charts Library section after its guide. It shows the area, bar, line, pie, radar, radial and tooltip charts, each converted from upstream's `registry/new-york-v4/charts` file, and ends with the Examples and API reference sections of the other component pages.
+
+**Why:** These docs have no `/charts` route, so the link would return 404. The charts stay one click from the guide.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
 ### The Card changelog edits the style stylesheet
 
@@ -778,3 +798,15 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Why:** A project that follows the guide from a fresh `init` fails to build at the first import of a component it never added.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+## CLI
+
+### `diff` and `update` stay, and `add --diff` and `add --view` print plain text
+
+**Upstream:** [`diff`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/diff.ts#L41-L43) is deprecated in favor of `add --diff` and `add --view`. Upstream has no `update`. Its [`--diff` and `--view` output](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/utils/dry-run-formatter.ts) is colored and drawn in boxes, lists identical files as skipped, and hides formatting-only changes.
+
+**Sveltery UI:** [`diff` and `update`](/docs/cli#diff) stay, because they check whole projects, and they take item URLs as well as names. [`add --diff` and `add --view`](/docs/cli#add) print unified diffs and file contents as plain text. They show every difference, and the `--diff` overview skips identical files.
+
+**Why:** A project does not record the URL an item came from, so a scan cannot check items added by URL. `diff <url>` and `update <url>` check one. Upstream hides formatting-only changes because its transforms reformat the code they copy. This CLI's transforms keep the source's formatting, so a formatting-only difference is an edit you made, and the diff shows it. Plain text pipes into a patch viewer or a file.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
