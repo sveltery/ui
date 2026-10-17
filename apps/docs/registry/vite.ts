@@ -25,8 +25,6 @@ export function registryStyles({ root, zones }: { root: string; zones: Record<st
   const ui = join(root, 'registry/bases/base/ui/');
   const shared = new Set([join(ui, 'toast/toast.ts')]);
   const tagged = ['registry/bases/', 'blocks/', 'examples/'].map((dir) => join(root, dir));
-  // Modules that hold app-wide state load once for every style, so a page in another style shares the layout's toast manager.
-  const shared = new Set([join(ui, 'toast/toast.ts')]);
   const zoneDirs = Object.entries(zones).map(([dir, variant]) => [join(root, dir), variant] as const);
   const sheets = new Map<StyleName, { css: string; sheet: StyleSheet }>();
 
