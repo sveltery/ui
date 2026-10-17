@@ -6,7 +6,7 @@ import { add } from './commands/add.js';
 import { build } from './commands/build.js';
 import { diff } from './commands/diff.js';
 import { init } from './commands/init.js';
-import { list } from './commands/list.js';
+import { search } from './commands/search.js';
 import { migrateRtl, migrations } from './commands/migrate.js';
 import { update } from './commands/update.js';
 import { view } from './commands/view.js';
@@ -61,11 +61,17 @@ program
   .action(async (items: string[], options) => void (await update(items, { ...options, cwd: resolve(options.cwd) })));
 
 program
-  .command('list')
-  .description('list the registry\'s items and mark the installed ones')
-  .option('--json', 'print the items as JSON', false)
+  .command('search')
+  .alias('list')
+  .description('search items from registries')
+  .argument('[registries...]', 'the registries to search; the only one is @sveltery, the default')
+  .option('-q, --query <query>', 'query string')
+  .option('-t, --type <type>', 'filter by item type, e.g. ui, block. Comma-separated for multiple.')
+  .option('-l, --limit <number>', 'maximum number of items to display', '100')
+  .option('-o, --offset <number>', 'number of items to skip', '0')
+  .option('--json', 'output as JSON.', false)
   .option('--cwd <path>', 'the project root', '.')
-  .action(async (options) => void (await list({ ...options, cwd: resolve(options.cwd) })));
+  .action(async (registries: string[], options) => void (await search(registries, { ...options, cwd: resolve(options.cwd) })));
 
 program
   .command('migrate')
