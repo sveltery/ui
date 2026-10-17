@@ -150,15 +150,21 @@ describe('shell conventions', () => {
   });
 
   // Upstream's render props are elements or functions; RenderProp.svelte is the one place that renders a user snippet that is not children.
-  it('renders only children snippets outside util/RenderProp.svelte', () => {
+  // A snippet declared in the same file is upstream's local function component, not a user snippet.
+  it('renders only children snippets and local snippets outside util/RenderProp.svelte', () => {
     const offenders: string[] = [];
     for (const path of FILES) {
       if (relative(SRC, path) === join('util', 'RenderProp.svelte')) continue;
-      walkTemplate(parseFile(path), (node) => {
+      const ast = parseFile(path);
+      const local = new Set<string>();
+      walkTemplate(ast, (node) => {
+        if (node.type === 'SnippetBlock') local.add((node.expression as AstNode).name as string);
+      });
+      walkTemplate(ast, (node) => {
         if (node.type !== 'RenderTag') return;
         const target = callee(node.expression as AstNode);
         const name = target.type === 'Identifier' ? target.name : target.type === 'MemberExpression' ? (target.property as AstNode).name : undefined;
-        if (name !== 'children') offenders.push(`${relative(SRC, path)}: {@render ${String(name)}}`);
+        if (name !== 'children' && !(target.type === 'Identifier' && local.has(name as string))) offenders.push(`${relative(SRC, path)}: {@render ${String(name)}}`);
       });
     }
     expect(offenders).toEqual([]);
