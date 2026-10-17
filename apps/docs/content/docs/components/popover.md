@@ -3,7 +3,7 @@ title: Popover
 description: Displays rich content in a portal, triggered by a button.
 ---
 
-<ComponentPreview name="base/PopoverExample" />
+<ComponentPreview name="base/PopoverDemoExample" />
 
 ## Installation
 
@@ -53,14 +53,25 @@ The component folders import each other with relative paths, so keep them side b
 
 ```svelte
 <Popover>
-  <PopoverTrigger>Open</PopoverTrigger>
+  <PopoverTrigger>Open Popover</PopoverTrigger>
   <PopoverContent>
     <PopoverHeader>
-      <PopoverTitle>Dimensions</PopoverTitle>
-      <PopoverDescription>Set the dimensions for the layer.</PopoverDescription>
+      <PopoverTitle>Title</PopoverTitle>
+      <PopoverDescription>Description text here.</PopoverDescription>
     </PopoverHeader>
   </PopoverContent>
 </Popover>
+```
+
+Use a snippet on `render` to render the trigger as your own element, such as a `Button`.
+
+```svelte
+<PopoverTrigger>
+  {#snippet render(props, _state, content)}
+    <Button variant="outline" {...props}>{@render content?.()}</Button>
+  {/snippet}
+  Open Popover
+</PopoverTrigger>
 ```
 
 Bind `open` to read or change the state from outside.
@@ -76,6 +87,42 @@ Bind `open` to read or change the state from outside.
 </Popover>
 ```
 
-## API reference
+## Composition
 
-`Popover` is styled on top of the Sveltery Base `Popover` primitive, which owns its positioning, focus handling and dismissal. `PopoverContent` renders the Base portal, positioner and popup, and takes the positioner's `side`, `align`, `sideOffset` and `alignOffset` props. See the [Base UI Popover documentation](https://base-ui.com/react/components/popover) for the behavior it ports.
+Use the following composition to build a `Popover`:
+
+```text
+Popover
+├── PopoverTrigger
+└── PopoverContent
+```
+
+## Basic
+
+A simple popover with a header, title, and description.
+
+<ComponentPreview name="base/PopoverBasicExample" />
+
+## Align
+
+Use the `align` prop on `PopoverContent` to control the horizontal alignment.
+
+<ComponentPreview name="base/PopoverAlignmentsExample" />
+
+## With Form
+
+A popover with form fields inside.
+
+<ComponentPreview name="base/PopoverFormExample" />
+
+## RTL
+
+Wrap the popover in a [DirectionProvider](/docs/components/direction) and set `dir` on `PopoverContent`. Use the buttons to switch the language.
+
+<ComponentPreview name="base/PopoverRtlExample" align="start" />
+
+## API Reference
+
+See the [Base UI Popover](https://base-ui.com/react/components/popover#api-reference) documentation.
+
+`Popover` is styled on top of the Sveltery Base `Popover` primitive. `PopoverContent` renders the Base portal, positioner and popup, and takes the positioner's `side`, `align`, `sideOffset` and `alignOffset` props.

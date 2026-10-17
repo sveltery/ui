@@ -14,7 +14,9 @@ const item = (path: string) => output.get(path) as RegistryItem;
 // Releases bump these, so the expected ranges follow the manifests rather than hard-coding them.
 const docs = JSON.parse(readFileSync(`${repoRoot}apps/docs/package.json`, 'utf8'));
 const BASE = `@sveltery/base@^${docs.devDependencies['@sveltery/base'].replace(/^\^/, '')}`;
-const HELPER_RANGE = `^${JSON.parse(readFileSync(`${repoRoot}packages/day-picker/package.json`, 'utf8')).version}`;
+const readJson = (path: string) => JSON.parse(readFileSync(`${repoRoot}${path}`, 'utf8'));
+/** day-picker's version, or the published one held-versions.json keeps while the new one is not on npm. */
+const HELPER_RANGE = `^${readJson('apps/docs/registry/held-versions.json')['@sveltery/day-picker'] ?? readJson('packages/day-picker/package.json').version}`;
 const content = (path: string, target: string) => item(path).files.find((file) => file.target === target)!.content;
 
 const NOVA_BUTTON_VARIANTS = `// Adapted from shadcn-ui/ui d75a96ab; MIT: apps/docs/registry/THIRD_PARTY_NOTICES.md.
@@ -90,7 +92,7 @@ describe('items', () => {
     expect(item('styles/nova/sidebar.json').registryDependencies).toEqual(['button', 'input', 'separator', 'shared', 'sheet', 'skeleton', 'tooltip']);
   });
 
-  it('gives a helper package its workspace version and an optional peer its peer range', () => {
+  it('gives a helper package its workspace or held version and an optional peer its peer range', () => {
     expect(item('styles/nova/calendar.json').dependencies).toEqual([`@sveltery/day-picker@${HELPER_RANGE}`, 'cn@^0.2.2', 'date-fns@^4.4.0']);
     expect(item('styles/nova/chart.json').dependencies).toEqual(['cn@^0.2.2', 'layerchart@^2.7.0']);
   });
@@ -117,9 +119,24 @@ describe('items', () => {
 });
 
 describe('index files', () => {
+  it('serves a block with its page in its route, its components and data, and what it imports', () => {
+    const block = item('styles/vega/dashboard-01.json');
+    expect(item('styles/nova/dashboard-01.json')).toEqual(block);
+    expect([block.type, block.registryDependencies?.includes('chart'), block.registryDependencies?.includes('sidebar'), block.dependencies?.some((spec) => spec.startsWith('layerchart@^'))]).toEqual(['registry:block', true, true, true]);
+    expect(block.files).toContainEqual(expect.objectContaining({ type: 'registry:page', target: 'src/routes/dashboard/+page.svelte' }));
+    expect(block.devDependencies).toEqual(['@types/d3-scale@^4.0.9', '@types/d3-shape@^3.2.0']);
+    expect(block.files).toContainEqual(expect.objectContaining({ type: 'registry:file', target: 'src/routes/dashboard/data.json' }));
+    const page = block.files.find((file) => file.type === 'registry:page')!.content;
+    expect([page.includes("'./components/"), page.includes("'$registry/bases/base/components/app-sidebar.svelte'")]).toEqual([false, true]);
+    expect(item('styles/nova/login-01.json').files.map(({ type, target }) => [type, target])).toEqual([
+      ['registry:page', 'src/routes/login/+page.svelte'],
+      ['registry:component', 'login-form.svelte'],
+    ]);
+  });
+
   it('writes the manifest without shared', () => {
     const manifest = output.get('index.json') as RegistryManifest;
-    expect({ ...manifest, items: manifest.items.slice(0, 4) }).toEqual({
+    expect({ ...manifest, items: manifest.items.slice(0, 4), blocks: manifest.blocks.slice(0, 1) }).toEqual({
       $schema: 'https://sveltery.test/schema/registry.json',
       name: 'sveltery',
       registryVersion: 1,
@@ -132,6 +149,7 @@ describe('index files', () => {
         { name: 'alert-dialog', type: 'registry:ui' },
         { name: 'aspect-ratio', type: 'registry:ui' },
       ],
+      blocks: [{ name: 'preview', type: 'registry:block', description: 'Preview' }],
     });
     expect(manifest.items.map((entry) => entry.name)).not.toContain('shared');
     expect(manifest.items.map((entry) => entry.name)).toContain('button');

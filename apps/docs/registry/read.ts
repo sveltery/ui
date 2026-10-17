@@ -1,6 +1,8 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { blocks } from '../blocks/registry';
 import type { RegistryInput } from './build';
+import { workspaceRangeVersions } from './items';
 import { styleNames, type StyleName } from './types';
 
 /** Reads the inputs of `buildRegistry` from a checkout of the repository. */
@@ -16,12 +18,23 @@ export function readRegistryInput(repoRoot: string, origin: string): RegistryInp
     sources[path.slice(lib.length + 1).replaceAll('\\', '/')] = text(path);
   }
 
-  const workspaceVersions: Record<string, string> = {};
-  for (const dir of readdirSync(join(repoRoot, 'packages'), { withFileTypes: true })) {
-    if (!dir.isDirectory()) continue;
-    const { name, version } = JSON.parse(text(join(repoRoot, 'packages', dir.name, 'package.json'))) as { name: string; version: string };
-    workspaceVersions[name] = version;
-  }
+  const workspaceVersions = workspaceRangeVersions(
+    readdirSync(join(repoRoot, 'packages'), { withFileTypes: true })
+      .filter((dir) => dir.isDirectory())
+      .map((dir) => JSON.parse(text(join(repoRoot, 'packages', dir.name, 'package.json'))) as { name: string; version: string }),
+  );
+
+  const blockFiles = (name: string) => {
+    const dir = join(repoRoot, 'apps/docs/blocks', name);
+    return Object.fromEntries(
+      readdirSync(dir, { recursive: true, withFileTypes: true })
+        .filter((entry) => entry.isFile())
+        .map((entry) => {
+          const path = join(entry.parentPath, entry.name);
+          return [path.slice(dir.length + 1).replaceAll('\\', '/'), text(path)];
+        }),
+    );
+  };
 
   return {
     sources,
@@ -29,6 +42,7 @@ export function readRegistryInput(repoRoot: string, origin: string): RegistryInp
     themes: text(join(registry, 'styles/themes.css')),
     uiManifest: JSON.parse(text(join(repoRoot, 'apps/docs/package.json'))),
     workspaceVersions,
+    blocks: blocks.map(({ name, description, route }) => ({ name, description, route, files: blockFiles(name) })),
     origin,
   };
 }

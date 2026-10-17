@@ -18,10 +18,12 @@ const CODE = /\.(svelte|[cm]?[jt]s)$/;
  * `examples/` is loaded once per variant, tagged `?style=<variant>`, and the components under
  * `registry/bases/base/ui` get their `cn-*` tokens inlined by `inlineStyle`. A module inherits its importer's tag;
  * an untagged importer takes the variant of the first `zones` directory it is in, or `nova`. An import that names
- * its own tag, such as a docs page in another style importing its examples, keeps it.
+ * its own tag, such as a docs page in another style importing its examples, keeps it. `shared` modules stay
+ * untagged: the toast manager is one instance, so a toast raised from an example in any style reaches the site's `Toaster`.
  */
 export function registryStyles({ root, zones }: { root: string; zones: Record<string, Variant> }): Plugin {
   const ui = join(root, 'registry/bases/base/ui/');
+  const shared = new Set([join(ui, 'toast/toast.ts')]);
   const tagged = ['registry/bases/', 'blocks/', 'examples/'].map((dir) => join(root, dir));
   // Modules that hold app-wide state load once for every style, so a page in another style shares the layout's toast manager.
   const shared = new Set([join(ui, 'toast/toast.ts')]);

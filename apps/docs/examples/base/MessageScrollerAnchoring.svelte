@@ -1,8 +1,10 @@
 <script lang="ts">
+  import ArrowUpIcon from '@lucide/svelte/icons/arrow-up';
+  import MessageCircleDashedIcon from '@lucide/svelte/icons/message-circle-dashed';
+  import RotateCwIcon from '@lucide/svelte/icons/rotate-cw';
   import { Button } from '$registry/bases/base/ui/button';
   import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
   import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '$registry/bases/base/ui/empty';
-  import { IconPlaceholder } from '$registry/bases/base/ui/icons';
   import { MessageScroller, MessageScrollerButton, MessageScrollerContent, MessageScrollerProvider, MessageScrollerViewport } from '$registry/bases/base/ui/message-scroller';
   import { ToggleGroup, ToggleGroupItem } from '$registry/bases/base/ui/toggle-group';
   import type { ChatMessage } from './message-scroller/chat.svelte.js';
@@ -41,7 +43,7 @@
       <CardDescription>Choose which role settles near the top edge.</CardDescription>
       <CardAction>
         <Button type="button" variant="outline" size="icon" aria-label="Reset anchored turns" title="Reset" disabled={messages.length === 0} onclick={() => (messages = [])}>
-          <IconPlaceholder lucide="RotateCwIcon" tabler="IconRotateClockwise" hugeicons="RotateClockwiseIcon" phosphor="ArrowClockwiseIcon" remixicon="RiRestartLine" />
+          <RotateCwIcon />
         </Button>
       </CardAction>
     </CardHeader>
@@ -50,7 +52,7 @@
         <Empty class="h-full">
           <EmptyHeader>
             <EmptyMedia variant="icon">
-              <IconPlaceholder lucide="MessageCircleDashedIcon" tabler="IconMessageCircle" hugeicons="Message01Icon" phosphor="ChatCircleIcon" remixicon="RiChat1Line" />
+              <MessageCircleDashedIcon />
             </EmptyMedia>
             <EmptyTitle>No anchored messages yet</EmptyTitle>
             <EmptyDescription>Send the first message to see the selected role anchor.</EmptyDescription>
@@ -87,7 +89,7 @@
         <ToggleGroupItem value="assistant" aria-label="Anchor assistant messages">Assistant</ToggleGroupItem>
       </ToggleGroup>
       <Button type="button" size="icon" class="ml-auto" disabled={!nextMessage} onclick={() => nextMessage && messages.push(nextMessage)}>
-        <IconPlaceholder lucide="ArrowUpIcon" tabler="IconArrowUp" hugeicons="ArrowUp02Icon" phosphor="ArrowUpIcon" remixicon="RiArrowUpLine" />
+        <ArrowUpIcon />
         <span class="sr-only">Send Message</span>
       </Button>
     </CardFooter>

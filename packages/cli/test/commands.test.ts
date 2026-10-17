@@ -39,12 +39,23 @@ const registryFiles: Record<string, unknown> = {
       { name: 'button', type: 'registry:ui' },
       { name: 'dialog', type: 'registry:ui' },
     ],
+    blocks: [{ name: 'login-01', type: 'registry:block', description: 'A simple login form.' }],
   },
   'styles/nova/button.json': item('button', { dependencies: ['cn@^0.2.2'], files: [{ type: 'registry:ui', target: 'button/Button.svelte', content: button }] }),
   'styles/nova/dialog.json': item('dialog', {
     dependencies: ['@sveltery/base'],
     registryDependencies: ['button', 'shared'],
     files: [{ type: 'registry:ui', target: 'dialog/DialogTitle.svelte', content: dialogTitle }],
+  }),
+  'styles/nova/login-01.json': item('login-01', {
+    type: 'registry:block',
+    devDependencies: ['@types/d3-scale@^4.0.9'],
+    registryDependencies: ['button'],
+    files: [
+      { type: 'registry:page', target: 'src/routes/login/+page.svelte', content: "<script lang=\"ts\">\n  import LoginForm from '$registry/bases/base/components/login-form.svelte';\n</script>\n<LoginForm />\n" },
+      { type: 'registry:component', target: 'login-form.svelte', content: "<script lang=\"ts\">\n  import { Button } from '$registry/bases/base/ui/button';\n</script>\n<form class=\"cn-font-heading\"><Button>Login</Button></form>\n" },
+      { type: 'registry:file', target: 'src/routes/login/data.json', content: '[]\n' },
+    ],
   }),
   'styles/nova/shared.json': item('shared', { type: 'registry:lib', files: [{ type: 'registry:ui', target: 'shared/render.ts', content: 'export const render = () => {};\n' }] }),
   'themes/neutral.json': item('neutral', {
@@ -84,6 +95,7 @@ beforeAll(async () => {
   server = createServer((request, response) => {
     const path = request.url ?? '';
     if (path.startsWith('/init')) initRequests.push(path);
+    if (path.includes('baseColor=gray')) return void response.writeHead(400, { 'content-type': 'application/json' }).end(JSON.stringify({ error: 'Invalid baseColor "gray"' }));
     const body = path.startsWith('/init') ? initItem : registryFiles[path.replace(/^\/r\//, '')];
     response.writeHead(body ? 200 : 404, { 'content-type': 'application/json' }).end(body ? JSON.stringify(body) : '{}');
   });
@@ -149,7 +161,7 @@ describe('init', () => {
 `);
     expect(first.files.map((file) => file.status)).toEqual(['new', 'changed']);
     expect(first.dependencies).toEqual(['class-variance-authority@^0.7.1', 'tw-animate-css@^1.4.0', '@tabler/icons-svelte@^3.48.0']);
-    expect(first.devDependencies).toEqual(['@sveltery/ui@^0.1.1']);
+    expect(first.devDependencies).toEqual(['@sveltery/ui@^0.2.0']);
 
     const config = read('components.json');
     const css = read('src/app.css');
@@ -258,7 +270,7 @@ describe('init', () => {
 }
 `);
       expect(first.dependencies).toEqual(['class-variance-authority@^0.7.1', 'tw-animate-css@^1.4.0', '@tabler/icons-svelte@^3.48.0', '@fontsource-variable/inter', '@fontsource-variable/playfair-display']);
-      expect(first.devDependencies).toEqual([`${cliPackage}@^0.1.1`]);
+      expect(first.devDependencies).toEqual([`${cliPackage}@^0.2.0`]);
 
       const config = read('components.json');
       const css = read('src/app.css');
@@ -306,6 +318,11 @@ describe('init', () => {
       const url = `${registryUrl}/styles/nova/button.json`;
       await expect(init({ cwd, ...defaults, preset: url })).rejects.toThrow(`${url} is a registry:ui item, and a preset must be a registry:base item.`);
       expect([initRequests, existsSync(join(cwd, 'components.json'))]).toEqual([[], false]);
+    });
+
+    test('prints the reason /init gives for rejecting a preset', async () => {
+      await expect(init({ cwd, ...defaults, preset: 'btLmMa' })).rejects.toThrow(/failed with 400 Bad Request: Invalid baseColor "gray"$/);
+      expect(existsSync(join(cwd, 'components.json'))).toBe(false);
     });
 
     test('--preset without a value uses nova with --yes', async () => {
@@ -383,13 +400,27 @@ describe('add', () => {
     expect(existsSync(join(cwd, 'src/lib'))).toBe(false);
   });
 
+  test('adds a block: its page in the route, its components under the components alias, its imports on the aliases', async () => {
+    const plan = await add(['login-01'], options());
+    expect(plan.files.map((file) => file.path)).toEqual([
+      'src/lib/components/ui/button/Button.svelte',
+      'src/routes/login/+page.svelte',
+      'src/lib/components/login-form.svelte',
+      'src/routes/login/data.json',
+    ]);
+    expect(plan.devDependencies).toEqual(['@types/d3-scale@^4.0.9']);
+    expect(read('src/routes/login/+page.svelte')).toContain("import LoginForm from '$lib/components/login-form.svelte';");
+    expect(read('src/lib/components/login-form.svelte')).toBe("<script lang=\"ts\">\n  import { Button } from '$lib/components/ui/button';\n</script>\n<form class=\"\"><Button>Login</Button></form>\n");
+    expect(await diff(['login-01'], { cwd })).toBe('Everything is up to date.');
+  });
+
   test('adds an item by URL', async () => {
     const plan = await add([`${registryUrl}/styles/nova/button.json`], options());
     expect(plan.files.map((file) => file.path)).toEqual(['src/lib/components/ui/button/Button.svelte']);
   });
 
   test('names unknown items, failed requests and newer registries', async () => {
-    await expect(add(['buton'], options())).rejects.toThrow('Not in the registry: buton. Available items: button, dialog.');
+    await expect(add(['buton'], options())).rejects.toThrow('Not in the registry: buton. Available items: button, dialog, login-01.');
     await expect(add([`${registryUrl}/styles/nova/missing.json`], options())).rejects.toThrow(`GET ${registryUrl}/styles/nova/missing.json failed with 404 Not Found`);
     registryFiles['index.json'] = { ...(registryFiles['index.json'] as object), registryVersion: 2 };
     try {

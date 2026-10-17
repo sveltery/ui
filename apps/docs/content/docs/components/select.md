@@ -108,24 +108,6 @@ Bind `value` to read or change the selection from outside, or pass `defaultValue
 </Select>
 ```
 
-## Align Item With Trigger
-
-Set `alignItemWithTrigger` on `SelectContent` to choose how the popup sits against the trigger. When `true`, the default, the popup lines the selected item up with the trigger. When `false`, the popup aligns to the trigger edge like a menu, and `side` and `align` apply.
-
-<ComponentPreview name="base/SelectAlignItemExample" />
-
-## Groups
-
-Use `SelectGroup`, `SelectLabel` and `SelectSeparator` to organize items.
-
-<ComponentPreview name="base/SelectGroupsExample" />
-
-## Scrollable
-
-A select with many items scrolls inside the popup. Scroll arrows appear at the edges while there is more to see.
-
-<ComponentPreview name="base/SelectScrollableExample" />
-
 ## Multiple selection
 
 Set `multiple` to let the user pick several items. The value becomes an array, and the popup stays open while the user picks. Pass a function to `SelectValue` to format the selection.
@@ -185,26 +167,42 @@ Give `Select` a `name` and it submits with its form through a hidden input, and 
 </form>
 ```
 
-## Disabled
+## Without JavaScript
 
-Set `disabled` on `Select` to disable the whole control, or on a `SelectItem` to disable one option.
+`Select` needs JavaScript to open. For a form that must work before the page hydrates, or for a remote form's `as('select')` and `as('select multiple')` spreads, use [Native Select](/docs/components/native-select).
+
+## Align Item With Trigger
+
+Use `alignItemWithTrigger` on `SelectContent` to control whether the selected item aligns with the trigger. When `true` (default), the popup positions so the selected item appears over the trigger. When `false`, the popup aligns to the trigger edge like a menu, and `side` and `align` apply.
+
+<ComponentPreview name="base/SelectAlignItemExample" />
+
+## Groups
+
+Use `SelectGroup`, `SelectLabel`, and `SelectSeparator` to organize items.
+
+<ComponentPreview name="base/SelectGroupsExample" />
+
+## Scrollable
+
+A select with many items that scrolls.
+
+<ComponentPreview name="base/SelectScrollableExample" />
+
+## Disabled
 
 <ComponentPreview name="base/SelectDisabledExample" />
 
 ## Invalid
 
-Set `aria-invalid` on `SelectTrigger` to show an error state. In a [Field](/docs/components/field), also set `data-invalid` on the `Field` and add a `FieldError`.
+Add the `data-invalid` attribute to the `Field` component and the `aria-invalid` attribute to the `SelectTrigger` component to show an error state.
 
 ```svelte
 <Field data-invalid>
   <FieldLabel>Fruit</FieldLabel>
-  <Select {items}>
-    <SelectTrigger aria-invalid>
-      <SelectValue />
-    </SelectTrigger>
-    ...
-  </Select>
-  <FieldError>Please select a fruit.</FieldError>
+  <SelectTrigger aria-invalid>
+    <SelectValue />
+  </SelectTrigger>
 </Field>
 ```
 
@@ -216,14 +214,8 @@ Wrap the select in a [DirectionProvider](/docs/components/direction) and set `di
 
 <ComponentPreview name="base/SelectRtlExample" align="start" />
 
-## Examples
+## API Reference
 
-<ComponentPreview name="base/SelectExample" />
+See the [Base UI Select](https://base-ui.com/react/components/select#api-reference) documentation.
 
-## Without JavaScript
-
-`Select` needs JavaScript to open. For a form that must work before the page hydrates, or for a remote form's `as('select')` and `as('select multiple')` spreads, use [Native Select](/docs/components/native-select).
-
-## API reference
-
-`Select` is styled on top of the Sveltery Base `Select` primitive, which owns the popup positioning, keyboard navigation, typeahead, focus handling, dismissal and form value. `SelectContent` renders the Base portal, positioner, popup and list with scroll arrows, and takes the positioner's `side`, `align`, `sideOffset`, `alignOffset` and `alignItemWithTrigger` props. `SelectTrigger` takes `size` (`default` or `sm`). The trigger sets `data-popup-open` while the popup is open, so style the open state with `data-popup-open:`. See the [Base UI Select documentation](https://base-ui.com/react/components/select) for the behavior it ports.
+`SelectContent` renders the Base portal, positioner, popup and list with scroll arrows, and takes the positioner's `side`, `align`, `sideOffset`, `alignOffset` and `alignItemWithTrigger` props. `SelectTrigger` takes `size` (`default` or `sm`) and sets `data-popup-open` while the popup is open, so style the open state with `data-popup-open:`.
