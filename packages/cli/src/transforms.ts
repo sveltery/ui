@@ -5,6 +5,7 @@ import { iconLibraries } from './icons.js';
 import { CliError } from './parse.js';
 import type { PresetMenuColor } from './preset/preset.js';
 import { iconLibraryNames, type IconLibraryName } from './registry.js';
+import { transformDirection } from './rtl.js';
 
 export type SourceFile = { target: string; content: string };
 export type TransformContext = {
@@ -14,6 +15,8 @@ export type TransformContext = {
   /** The project CSS defines `--font-heading`. */
   fontHeading: boolean;
   aliases: { ui: string; components: string };
+  /** components.json sets `rtl: true`. */
+  rtl: boolean;
 };
 export type TransformResult = { content: string; dependencies?: string[] };
 export type Transform = (file: SourceFile, ctx: TransformContext) => TransformResult;
@@ -85,7 +88,7 @@ const markers = new Map<string, (ctx: TransformContext) => string>([
   ['cn-menu-target', (ctx) => (ctx.menuColor?.startsWith('inverted') ? 'dark' : '')],
   // The translucent classes replace the string that holds the marker, in replaceMarkers.
   ['cn-menu-translucent', () => ''],
-  // v1 has no RTL transform.
+  // transformRtl turns it into rtl:rotate-180 first when the project is RTL.
   ['cn-rtl-flip', () => ''],
   ['cn-font-heading', (ctx) => (ctx.fontHeading ? 'font-heading' : '')],
 ]);
@@ -135,7 +138,10 @@ export const transformImports: Transform = (file, ctx) => ({
   content: file.content.replace(REGISTRY_IMPORT, (_, quote: string, folder: 'ui' | 'components') => `${quote}${ctx.aliases[folder]}/`),
 });
 
-const transforms: Transform[] = [transformImports, transformIcons, transformMarkers];
+/** Rewrites physical classes as logical ones in an RTL project, as shadcn's transformRtl does. */
+export const transformRtl: Transform = (file, ctx) => ({ content: ctx.rtl ? transformDirection(file.target, file.content) : file.content });
+
+const transforms: Transform[] = [transformImports, transformIcons, transformRtl, transformMarkers];
 
 export function applyTransforms(file: SourceFile, ctx: TransformContext): Required<TransformResult> {
   let content = file.content;
