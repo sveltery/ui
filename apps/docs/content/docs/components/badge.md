@@ -96,6 +96,8 @@ You can customize the colors of a badge by adding custom classes such as `bg-gre
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the badges in a [DirectionProvider](/docs/components/direction) and set `dir` on their container. Use the language selector to switch the language.
 
 <ComponentPreview name="base/BadgeRtlExample" direction="rtl" />

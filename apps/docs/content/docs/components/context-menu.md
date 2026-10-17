@@ -152,6 +152,8 @@ Control submenu placement with side and align props. `side` defaults to `right`.
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the context menu in a [DirectionProvider](/docs/components/direction) and set `dir` on `ContextMenuContent` and `ContextMenuSubContent`. Use the language selector to switch the language.
 
 <ComponentPreview name="base/ContextMenuRtlExample" direction="rtl" align="start" />

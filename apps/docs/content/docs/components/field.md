@@ -193,6 +193,8 @@ Stack `Field` components with `FieldGroup`. Add `FieldSeparator` to divide them.
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the form in a [DirectionProvider](/docs/components/direction) and set `dir` on the container. Use the language selector to switch the language.
 
 <ComponentPreview name="base/FieldRtlExample" direction="rtl" align="start" class="[&_[data-slot=preview]]:max-h-none" />

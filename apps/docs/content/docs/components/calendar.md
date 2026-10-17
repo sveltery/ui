@@ -174,6 +174,8 @@ Use `showWeekNumber` to show week numbers.
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the calendar in a [DirectionProvider](/docs/components/direction) and pass `dir`. Use the language selector to switch the language.
 
 <ComponentPreview name="base/CalendarRtlExample" direction="rtl" />

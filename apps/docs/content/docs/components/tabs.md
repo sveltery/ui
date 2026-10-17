@@ -111,6 +111,8 @@ Use `orientation="vertical"` for vertical tabs.
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Set `dir` on `Tabs`, `TabsList` and the content, and wrap the tabs in a [DirectionProvider](/docs/components/direction). Use the language selector to switch the language.
 
 <ComponentPreview name="base/TabsRtlExample" direction="rtl" align="start" />

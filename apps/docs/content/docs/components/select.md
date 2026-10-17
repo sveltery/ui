@@ -167,6 +167,8 @@ Add the `data-invalid` attribute to the `Field` component and the `aria-invalid`
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the select in a [DirectionProvider](/docs/components/direction) and set `dir` on `SelectTrigger` and `SelectContent`. Use the language selector to switch the language.
 
 <ComponentPreview name="base/SelectRtlExample" direction="rtl" align="start" />

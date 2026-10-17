@@ -76,6 +76,8 @@ Use `ScrollBar` with `orientation="horizontal"` for horizontal scrolling.
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the scroll area in a [DirectionProvider](/docs/components/direction) and set `dir` on `ScrollArea`. Use the language selector to switch the language.
 
 <ComponentPreview name="base/ScrollAreaRtlExample" direction="rtl" align="start" />

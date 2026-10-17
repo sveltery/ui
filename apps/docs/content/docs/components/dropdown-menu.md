@@ -177,6 +177,8 @@ A richer example combining groups, icons, and submenus.
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the dropdown menu in a [DirectionProvider](/docs/components/direction) and set `dir` on `DropdownMenuContent` and `DropdownMenuSubContent`. Use the language selector to switch the language.
 
 <ComponentPreview name="base/DropdownMenuRtlExample" direction="rtl" align="start" />

@@ -548,6 +548,8 @@ Here are some tips for styling the sidebar based on different states.
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the sidebar in a [DirectionProvider](/docs/components/direction), then set `dir` on `Sidebar` and `side` to match. Use the language selector to switch the language.
 
 <ComponentPreview name="base/SidebarRtlExample" direction="rtl" />

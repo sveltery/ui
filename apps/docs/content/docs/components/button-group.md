@@ -152,6 +152,8 @@ Use with a `Popover` component.
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the button group in a [DirectionProvider](/docs/components/direction) and set `dir` on the dropdown menu content. Use the language selector to switch the language.
 
 <ComponentPreview name="base/ButtonGroupRtlExample" direction="rtl" />

@@ -122,6 +122,8 @@ Use `navigationMenuTriggerStyle` to style a top-level link like a trigger. To us
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the menu in a [DirectionProvider](/docs/components/direction) and set `dir` on `NavigationMenu` and `NavigationMenuContent`. Pass `align="end"` to `NavigationMenu` so the popup lines up with the menu in right-to-left text. Use the language selector to switch the language.
 
 <ComponentPreview name="base/NavigationMenuRtlExample" direction="rtl" align="start" />

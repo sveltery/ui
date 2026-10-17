@@ -318,7 +318,7 @@ Missing here:
 
 ## RTL guide line
 
-Every upstream RTL section opens with the RTL guide line (`To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).`). RTL sections here without it: `accordion`, `alert`, `alert-dialog`, `aspect-ratio`, `avatar`, `badge`, `breadcrumb`, `button`, `button-group`, `calendar`, `card`, `carousel`, `chart`, `checkbox`, `code-block`, `collapsible`, `combobox`, `command`, `context-menu`, `date-picker`, `dialog`, `dropdown-menu`, `empty`, `field`, `hover-card`, `input`, `input-group`, `input-otp`, `item`, `kbd`, `label`, `menubar`, `native-select`, `navigation-menu`, `pagination`, `popover`, `progress`, `radio-group`, `resizable`, `scroll-area`, `select`, `separator`, `sheet`, `sidebar`, `skeleton`, `slider`, `spinner`, `switch`, `table`, `tabs`, `textarea`, `toggle`, `toggle-group`, `tooltip`.
+Every upstream RTL section opens with the RTL guide line (`To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).`). RTL sections here without it: none.
 
 ## Pages
 

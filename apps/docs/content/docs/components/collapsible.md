@@ -103,6 +103,8 @@ Use nested collapsibles to build a file tree.
 
 ## RTL
 
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
+
 Wrap the collapsible in a [DirectionProvider](/docs/components/direction) and set `dir` on `Collapsible`. Use the language selector to switch the language.
 
 <ComponentPreview name="base/CollapsibleRtlExample" direction="rtl" align="start" />
