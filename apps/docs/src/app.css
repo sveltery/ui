@@ -144,11 +144,10 @@
   }
   body {
     position: relative;
-    margin: 0;
     font-synthesis-weight: none;
     text-rendering: optimizeLegibility;
     --footer-height: calc(var(--spacing) * 14);
-    @apply bg-background font-sans text-foreground antialiased overscroll-none;
+    @apply antialiased overscroll-none;
 
     @variant xl {
       --footer-height: calc(var(--spacing) * 24);
