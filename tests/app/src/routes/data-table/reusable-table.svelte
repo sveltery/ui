@@ -1,19 +1,13 @@
 <script lang="ts">
   import { createColumnHelper, createTable, FlexRender, renderComponent } from '@tanstack/svelte-table';
   import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '$registry/bases/base/ui/table';
-  import DataTableActions from './data-table/data-table-actions.svelte';
-  import DataTableCheckbox from './data-table/data-table-checkbox.svelte';
-  import DataTableColumnHeader from './data-table/data-table-column-header.svelte';
-  import { features, type DataTableFeatures } from './data-table/data-table-features';
-  import DataTablePagination from './data-table/data-table-pagination.svelte';
-  import DataTableViewOptions from './data-table/data-table-view-options.svelte';
-
-  type Payment = {
-    id: string;
-    amount: number;
-    status: 'pending' | 'processing' | 'success' | 'failed';
-    email: string;
-  };
+  import type { Payment } from '$examples/base/data-table/columns';
+  import DataTableActions from '$examples/base/data-table/data-table-actions.svelte';
+  import DataTableCheckbox from '$examples/base/data-table/data-table-checkbox.svelte';
+  import DataTableColumnHeader from '$examples/base/data-table/data-table-column-header.svelte';
+  import { features, type DataTableFeatures } from '$examples/base/data-table/data-table-features';
+  import DataTablePagination from '$examples/base/data-table/data-table-pagination.svelte';
+  import DataTableViewOptions from '$examples/base/data-table/data-table-view-options.svelte';
 
   const statuses = ['pending', 'processing', 'success', 'failed'] as const;
   const data: Payment[] = Array.from({ length: 25 }, (_, index) => ({

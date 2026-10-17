@@ -17,7 +17,7 @@
 <DropdownMenu>
   <DropdownMenuTrigger>
     {#snippet render(props, _state, children)}
-      <Button {...props} variant="ghost" class="h-8 w-8 p-0">{@render children?.()}</Button>
+      <Button {...props} variant="ghost" class={[props.class, 'h-8 w-8 p-0']}>{@render children?.()}</Button>
     {/snippet}
     <span class="sr-only">Open menu</span>
     <EllipsisIcon class="h-4 w-4" />

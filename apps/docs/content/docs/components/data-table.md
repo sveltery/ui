@@ -314,33 +314,37 @@ Let's format the amount cell to display the dollar amount. We'll also align the 
 
 <Steps>
 
+### Create the amount component
+
+A cell that shows row data returns a component with `renderComponent`, so it follows the row when `data` changes. Create `data-table-amount.svelte` next to `columns.ts`. It takes the `amount` as a prop and formats it:
+
+```svelte showLineNumbers title="src/routes/payments/data-table-amount.svelte"
+<script lang="ts">
+  let { amount }: { amount: number } = $props();
+
+  const formatted = $derived(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount));
+</script>
+
+<div class="text-right font-medium">{formatted}</div>
+```
+
 ### Update columns definition
 
-Update the `header` and `cell` definitions for amount as follows. A column definition lives in a `.ts` file, so it returns a snippet made with `createRawSnippet` and `renderSnippet`:
+Update the `header` and `cell` definitions for amount as follows. The header never changes, so a snippet made with `createRawSnippet` and `renderSnippet` renders it. The `cell` returns the `<DataTableAmount />` component.
 
-```ts showLineNumbers title="src/routes/payments/columns.ts" {1-2,4-9,13-22}
-import { createColumnHelper, renderSnippet } from '@tanstack/svelte-table';
+```ts showLineNumbers title="src/routes/payments/columns.ts" {1-3,5-7,11-12}
+import { createColumnHelper, renderComponent, renderSnippet } from '@tanstack/svelte-table';
 import { createRawSnippet } from 'svelte';
+import DataTableAmount from './data-table-amount.svelte';
 
 const amountHeader = createRawSnippet(() => ({
   render: () => `<div class="text-right">Amount</div>`
-}));
-const amountCell = createRawSnippet<[string]>((formatted) => ({
-  render: () => `<div class="text-right font-medium">${formatted()}</div>`
 }));
 
 export const columns = columnHelper.columns([
   columnHelper.accessor('amount', {
     header: () => renderSnippet(amountHeader),
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue('amount'));
-      const formatted = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD'
-      }).format(amount);
-
-      return renderSnippet(amountCell, formatted);
-    }
+    cell: ({ row }) => renderComponent(DataTableAmount, { amount: row.original.amount })
   })
 ]);
 ```
@@ -349,7 +353,7 @@ You can use the same approach to format other cells and headers.
 
 <Callout class="mt-4">
 
-**Note:** `createRawSnippet` renders an HTML string, so only put values you control in it, like the formatted amount above. To render markup that comes from your data, or markup with event handlers, return `renderComponent(Component, props)` as the next sections do.
+**Note:** A `createRawSnippet` reads its arguments once, so it keeps showing its first value when `data` changes. Use it for markup that stays the same, like the header above. For anything that shows row data, return `renderComponent(Component, props)` as this section and the next ones do.
 
 </Callout>
 
@@ -385,7 +389,7 @@ A cell can return a component with `renderComponent`. Create `data-table-actions
 <DropdownMenu>
   <DropdownMenuTrigger>
     {#snippet render(props, _state, children)}
-      <Button {...props} variant="ghost" class="h-8 w-8 p-0">{@render children?.()}</Button>
+      <Button {...props} variant="ghost" class={[props.class, 'h-8 w-8 p-0']}>{@render children?.()}</Button>
     {/snippet}
     <span class="sr-only">Open menu</span>
     <EllipsisIcon class="h-4 w-4" />
@@ -682,8 +686,6 @@ You can show the number of selected rows using the `table.getFilteredSelectedRow
 
 Here are some components you can use to build your data tables. This is from the [Tasks](https://ui.shadcn.com/examples/tasks) demo, which shares its features object (and the matching `DataTableFeatures` type) across every component via a `data-table-features.ts` module — the same pattern we set up in [Set up Table Features](#set-up-table-features). Put each component next to `data-table-features.ts`.
 
-<ComponentPreview name="base/DataTableReusableExample" align="start" class="[&_[data-slot=preview]]:h-auto [&_[data-slot=preview]]:max-h-none [&_[data-slot=preview]]:min-h-0 [&_[data-slot=preview]]:px-4 md:[&_[data-slot=preview]]:px-8" hideCode />
-
 ### Column header
 
 Make any column header sortable and hideable.
@@ -870,6 +872,8 @@ A component to toggle column visibility.
 ```
 
 ## RTL
+
+To enable RTL support in Sveltery UI, see the [RTL configuration guide](/docs/rtl).
 
 Wrap the table in a [DirectionProvider](/docs/components/direction) and set `dir` on its container and on each `DropdownMenuContent`. Use the buttons to switch the language.
 
