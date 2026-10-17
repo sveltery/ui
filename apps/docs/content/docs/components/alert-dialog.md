@@ -24,7 +24,7 @@ npx @sveltery/ui@latest add alert-dialog
 ### Install the dependencies
 
 ```bash
-npm install cn class-variance-authority @sveltery/base
+npm install @sveltery/base
 ```
 
 ### Copy the component

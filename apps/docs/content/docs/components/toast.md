@@ -11,9 +11,29 @@ description: A toast built from the Base toast parts, with a toast manager you c
 
 <InstallTab value="cli">
 
+<Steps>
+
+### Run the following command
+
 ```bash
 npx @sveltery/ui@latest add toast
 ```
+
+### Add the Toaster component
+
+```svelte showLineNumbers title="src/routes/+layout.svelte" {3,9}
+<script lang="ts">
+  import './layout.css';
+  import { Toaster } from '#lib/components/ui/toast';
+
+  let { children } = $props();
+</script>
+
+{@render children()}
+<Toaster />
+```
+
+</Steps>
 
 </InstallTab>
 
@@ -24,7 +44,7 @@ npx @sveltery/ui@latest add toast
 ### Install the dependencies
 
 ```bash
-npm install cn class-variance-authority @sveltery/base @lucide/svelte
+npm install @sveltery/base
 ```
 
 ### Copy the component
@@ -37,6 +57,20 @@ Copy the following files into `src/lib/components/ui/toast`. The toast action an
 
 The component folders import each other with relative paths, so keep them side by side. If you place them elsewhere, change the imports to match your project setup.
 
+### Add the Toaster component
+
+```svelte showLineNumbers title="src/routes/+layout.svelte" {3,9}
+<script lang="ts">
+  import './layout.css';
+  import { Toaster } from '#lib/components/ui/toast';
+
+  let { children } = $props();
+</script>
+
+{@render children()}
+<Toaster />
+```
+
 </Steps>
 
 </InstallTab>
@@ -44,18 +78,6 @@ The component folders import each other with relative paths, so keep them side b
 </InstallTabs>
 
 ## Usage
-
-Mount `Toaster` once, in your root layout.
-
-```svelte
-<script lang="ts">
-  import { Toaster } from '#lib/components/ui/toast';
-  let { children } = $props();
-</script>
-
-{@render children()}
-<Toaster />
-```
 
 Call `toast.add()` from any component or module.
 

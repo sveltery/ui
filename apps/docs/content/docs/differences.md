@@ -605,7 +605,7 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 ## Component page sections
 
-Each component page follows its [upstream page](https://github.com/shadcn-ui/ui/tree/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base) section for section. [`scripts/docs-sections.mjs`](https://github.com/sveltery/ui/blob/main/scripts/docs-sections.mjs) lists the sections that differ, and the entries below cover the ones only Sveltery UI has.
+Each component page follows its [upstream page](https://github.com/shadcn-ui/ui/tree/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base) section for section. [`scripts/docs-sections.mjs`](https://github.com/sveltery/ui/blob/main/scripts/docs-sections.mjs) lists the sections and installation steps that differ, and the entries below cover the ones only Sveltery UI has.
 
 ### Pages show how to bind their state
 
@@ -634,6 +634,16 @@ Each component page follows its [upstream page](https://github.com/shadcn-ui/ui/
 **Sveltery UI:** [Questionnaire](/docs/components/questionnaire#validation) carries the `@shadcn/react` page's Validation, Custom render targets, Native forms, Keyboard and Data attributes sections and its prop tables. [Message Scroller](/docs/components/message-scroller#api-reference) has prop tables for each part. [Resizable](/docs/components/resizable#api-reference) has Sizes, Layout, Persistence, Collapsible panels, Keyboard and Pointer sections and prop tables. [Toast](/docs/components/toast#custom-layout) has a Custom layout section and tables for `Toaster`, `toast` and the parts.
 
 **Why:** The `@shadcn/react` pages do not exist on this site. The react-resizable-panels README shows a React API the Svelte port changes in places, such as bound props in place of refs. The Base UI Toast docs do not cover `Toaster` and the `toast` object, which replace Sonner here (see "Toasts use Toast, not Sonner"). This is the same call as "The Command page documents filtering and the dialog".
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### Manual installation installs every package the copied files import
+
+**Upstream:** A manual installation lists some of the packages beyond what `init` installs. The [Aspect Ratio](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/aspect-ratio.mdx#L30) and [Label](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/label.mdx#L38) pages install `@base-ui/react`, which their components do not import. The [Input](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/input.mdx#L30), Field, Input Group, Item, Pagination and [Sidebar](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/sidebar.mdx#L46) pages install nothing, though `input.tsx` imports `@base-ui/react/input` and the others use components that import it.
+
+**Sveltery UI:** The "Install the dependencies" step lists the packages that the component and the component folders it copies import, leaving out what `init` installs. [Aspect Ratio](/docs/components/aspect-ratio#installation) and [Label](/docs/components/label#installation) have no such step. [Input](/docs/components/input#installation), [Field](/docs/components/field#installation), [Input Group](/docs/components/input-group#installation), [Item](/docs/components/item#installation), [Pagination](/docs/components/pagination#installation) and [Sidebar](/docs/components/sidebar#installation) install `@sveltery/base`. `apps/docs/markdown/install-steps.test.ts` checks every page.
+
+**Why:** Following upstream's list installs a package nothing uses on two pages and leaves imports that do not resolve on the others. The manual tab copies the other component folders a component imports, which installs none of their packages.
 
 **Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
 
@@ -713,13 +723,23 @@ Each component page follows its [upstream page](https://github.com/shadcn-ui/ui/
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
-### The Code Block page has no Markdown or Typeset example, and its RTL example uses Rhea
+### The Code Block Markdown example renders with svelte-streamdown
 
-**Upstream:** The [Code Block page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/code-block.mdx#L355) shows a block inside a `typeset` container and a chat message rendered with Streamdown, whose `components.code` routes fenced code to a `CodeBlock`.
+**Upstream:** The [Code Block page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/code-block.mdx#L449) renders a chat message with Streamdown. Its [`code-block-markdown`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/code-block-markdown.tsx) example passes `components.code`, checks `data-block` to tell fenced code from inline code, and reads `useIsCodeFenceIncomplete` while `isAnimating` is set.
 
-**Sveltery UI:** The [Code Block](/docs/components/code-block) page leaves both out. Its RTL example renders in Rhea like the rest of the page, where upstream's [`code-block-rtl`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/code-block.mdx#L369) preview uses Nova.
+**Sveltery UI:** The [Code Block](/docs/components/code-block#markdown) Markdown example renders with [svelte-streamdown](https://github.com/beynar/svelte-streamdown). Fenced code goes to its `code` snippet and inline code to its `codespan` snippet. The snippet's `incomplete` is combined with the message's streaming state, where upstream gates it with `isAnimating`.
 
-**Why:** Streamdown is a React library, so the Markdown example needs a Svelte Markdown renderer first. The Typeset example comes with the Markdown one, which renders its message inside `typeset`. A docs page renders every preview in one style.
+**Why:** Streamdown is a React library. svelte-streamdown is a maintained Svelte 5 port that completes unfinished Markdown and code fences while a message streams.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Code Block RTL example uses Rhea
+
+**Upstream:** The [`code-block-rtl`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/code-block.mdx#L369) preview uses Nova.
+
+**Sveltery UI:** The [Code Block](/docs/components/code-block#rtl) RTL example renders in Rhea like the rest of the page.
+
+**Why:** A docs page renders every preview in one style.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
@@ -846,6 +866,18 @@ Each component page follows its [upstream page](https://github.com/shadcn-ui/ui/
 **Sveltery UI:** The step adds a sentence that lists those five components.
 
 **Why:** A project that follows the guide from a fresh `init` fails to build at the first import of a component it never added.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+## Typeset
+
+### The Typeset builder installs fonts with Fontsource and has no framework picker
+
+**Upstream:** The [Get Code panel](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/app/(app)/(typeset)/components/docs-panel.tsx#L80-L95) has a framework picker that starts on Next.js. For Next.js, its font step loads the picked fonts with `next/font/google` in `app/layout.tsx`. For the other frameworks, it installs them with Fontsource. Its prompt asks the agent to look for `react-markdown`, Streamdown, MDX and `dangerouslySetInnerHTML`.
+
+**Sveltery UI:** The [Typeset builder](/typeset) always gives the Fontsource step, with a command for each package manager and the `@import` lines for `src/app.css`. The prompt asks the agent to look for mdsvex pages, Svelte markdown components and `{@html}`. The wrapper sample renders `{@html content}`.
+
+**Why:** `next/font` is part of Next.js. Fontsource works the same way in SvelteKit and in Vite, so a framework picker would offer one answer twice.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 

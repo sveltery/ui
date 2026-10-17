@@ -8,7 +8,7 @@ Pages are [mdsvex](https://github.com/pngwn/MDsveX) markdown, so they can use Sv
 
 1. Add the component to `apps/docs/registry/bases/base/ui/<name>`. The registry build turns each folder there into the item that `npx @sveltery/ui@latest add <name>` installs.
 2. Add a preview to `apps/docs/examples`.
-3. Create `components/<name>.md` from the template below. The `npx @sveltery/ui@latest add` name and the `<ComponentSource>` name are the folder name. List `@lucide/svelte` in the manual `npm install` line when the component imports icons.
+3. Create `components/<name>.md` from the template below. The `npx @sveltery/ui@latest add` name and the `<ComponentSource>` name are the folder name. The manual `npm install` line lists the packages the component and the folders it copies import, leaving out `cn`, `class-variance-authority` and the icon library, which `init` installs. Leave the step out when that list is empty. `markdown/install-steps.test.ts` checks it.
 
 The sidebar, search, previous and next links, `llms.txt` and the sitemap pick the page up. You do not edit a nav file.
 
@@ -39,7 +39,7 @@ npx @sveltery/ui@latest add button
 ### Install the dependencies
 
 ```bash
-npm install cn class-variance-authority @sveltery/base
+npm install @sveltery/base
 ```
 
 ### Copy the component

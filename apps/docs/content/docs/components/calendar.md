@@ -24,10 +24,10 @@ npx @sveltery/ui@latest add calendar
 ### Install the dependencies
 
 ```bash
-npm install cn class-variance-authority date-fns @date-fns/tz @sveltery/base @sveltery/day-picker @lucide/svelte
+npm install date-fns @date-fns/tz @sveltery/base @sveltery/day-picker
 ```
 
-### Add the Button component
+### Add the `Button` component to your project
 
 The `Calendar` component uses the [Button](/docs/components/button) component. Make sure you have it in your project.
 

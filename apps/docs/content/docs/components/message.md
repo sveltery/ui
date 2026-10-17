@@ -26,12 +26,6 @@ npx @sveltery/ui@latest add message
 
 <Steps>
 
-### Install the dependencies
-
-```bash
-npm install cn
-```
-
 ### Copy the component
 
 Copy the following files into `src/lib/components/ui/message`.

@@ -24,7 +24,7 @@ npx @sveltery/ui@latest add hover-card
 ### Install the dependencies
 
 ```bash
-npm install cn @sveltery/base
+npm install @sveltery/base
 ```
 
 ### Copy the component

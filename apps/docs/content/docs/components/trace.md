@@ -46,13 +46,7 @@ npx @sveltery/ui@latest add trace
 
 <Steps>
 
-### Install the dependencies
-
-```bash
-npm install cn @sveltery/base @lucide/svelte
-```
-
-### Add the Collapsible component
+### Install the required Sveltery UI dependencies
 
 ```bash
 npx @sveltery/ui@latest add collapsible
