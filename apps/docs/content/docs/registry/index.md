@@ -19,14 +19,14 @@ The format follows the shadcn registry, limited to what this CLI reads. It suppo
 
 - adding an item by its URL, and checking it with `diff <url>` and `update <url>`,
 - `registryDependencies` by name, from the project's registry, by `@namespace/name`, or by URL, from any registry,
-- [namespaced registries](/docs/registry/namespace) such as `@acme/button`, set in `components.json`, and `search @acme` over a namespace's `registry.json`,
+- [namespaced registries](/docs/registry/namespace) such as `@acme/button`, set in `components.json`, and `search` over a namespace's `registry.json`, a registry URL or a public GitHub repository,
 - [authentication](/docs/registry/authentication) with headers or query parameters that read environment variables,
 - `dependencies` on npm packages,
 - building item files from a `registry.json` with `build`,
 - items that switch to the project's icon library,
 - a different root registry with `SVELTERY_REGISTRY_URL` or the `registry` key in `components.json`, for example a preview deploy of Sveltery UI.
 
-It does not support these shadcn registry features yet: GitHub registries, `search` of a registry URL or a GitHub source, the registry index, MCP and Open in v0. Without arguments, `diff` and `update` check only the registry's own items, so pass the URL of an item you added by URL.
+It does not support these shadcn registry features yet: installing from a GitHub registry, private GitHub registries, the registry index, MCP and Open in v0. Without arguments, `diff` and `update` check only the registry's own items, so pass the URL of an item you added by URL.
 
 ## Next steps
 

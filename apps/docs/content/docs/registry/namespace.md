@@ -90,7 +90,7 @@ An item's `registryDependencies` can name items of any namespace:
 
 ## Search a namespace
 
-`search` takes namespaces:
+`search` takes namespaces, and with no argument searches every namespace in `registries` along with `@sveltery`:
 
 ```bash
 npx @sveltery/ui@latest search @acme -q card

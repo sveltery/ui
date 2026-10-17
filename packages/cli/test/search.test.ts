@@ -55,7 +55,7 @@ beforeAll(async () => {
     requests.push(request.url ?? '');
     const path = new URL(request.url ?? '/', 'http://x').pathname;
     if (path.startsWith('/acme/') && request.headers.authorization !== 'Bearer s3cret') return void response.writeHead(401).end();
-    const body = { '/r/index.json': manifest, '/acme/registry.json': acmeCatalog, '/dynamic/registry.json': dynamicPage, '/source/registry.json': { ...acmeCatalog, include: ['ui/registry.json'] } }[path];
+    const body = { '/r/index.json': manifest, '/acme/registry.json': acmeCatalog, '/public/registry.json': acmeCatalog, '/dynamic/registry.json': dynamicPage, '/source/registry.json': { ...acmeCatalog, include: ['ui/registry.json'] } }[path];
     response.writeHead(body ? 200 : 404, { 'content-type': 'application/json' }).end(body ? JSON.stringify(body) : '{}');
   });
   await new Promise<void>((done) => server.listen(0, '127.0.0.1', done));
@@ -173,18 +173,23 @@ Showing 5-7 of 7
     });
   });
 
-  test('accepts the registry by its address, once or repeated', async () => {
-    const all = await print([]);
-    expect(await print(['@sveltery'])).toBe(all);
-    expect(await print(['@sveltery', '@sveltery'])).toBe(all);
+  test('accepts the registry by its address, and searches one named twice twice, as upstream does', async () => {
+    expect(await print(['@sveltery'])).toBe(await print([]));
+    const twice = await print(['@sveltery', '@sveltery'], { query: 'badge' });
+    expect(twice).toBe(`Found 2 items matching "badge" in @sveltery, @sveltery
+Showing 1-2 of 2
+
+- badge (ui) · @sveltery — Displays a badge.
+- badge (ui) · @sveltery — Displays a badge.`);
   });
 
-  test('names the registries it does not know and the ones it has', async () => {
-    await expect(search(['@acme', '@sveltery', 'https://example.com/r'], { cwd, json: false })).rejects.toThrow(
-      'Unknown registry "@acme", "https://example.com/r". The registries you can search are @sveltery. Define a namespace under "registries" in your components.json file to search it.',
+  test('names the namespaces it does not know and the ones it has, and rejects an address that is no namespace, URL or GitHub source', async () => {
+    await expect(search(['@acme', '@sveltery', '@other'], { cwd, json: false })).rejects.toThrow(
+      'Unknown registry "@acme", "@other". The namespaces you can search are @sveltery. Define a namespace under "registries" in your components.json file to search it.',
     );
     configure({ '@acme': `${origin}/acme/{name}.json`, '@dynamic': `${origin}/dynamic/{name}.json` });
-    await expect(search(['@other'], { cwd, json: false })).rejects.toThrow('Unknown registry "@other". The registries you can search are @sveltery, @acme, @dynamic.');
+    await expect(search(['@other'], { cwd, json: false })).rejects.toThrow('Unknown registry "@other". The namespaces you can search are @sveltery, @acme, @dynamic.');
+    await expect(search(['acme', `${origin}/public/registry.json`], { cwd, json: false })).rejects.toThrow('Invalid registry namespace: "acme". Registry names must start with @');
     expect(namespaceRequests()).toEqual([]);
   });
 
@@ -306,5 +311,131 @@ More items available. Use --offset 4 to see the next page.`);
     await expect(search(['@acme'], { cwd, json: false })).rejects.toThrow(`${origin}/r/index.json?registry is not a valid registry response. homepage: expected a string, got undefined`);
     configure({ '@acme': `${origin}/source/{name}.json` });
     await expect(search(['@acme'], { cwd, json: false })).rejects.toThrow('Registry catalog "@acme/registry" uses "include", but a registry must serve the resolved catalog.');
+  });
+});
+
+describe('search with no registry argument', () => {
+  beforeEach(() => writeFileSync(join(cwd, '.env.local'), 'ACME_TOKEN=s3cret\n'));
+
+  test('searches @sveltery and every namespace in components.json, asking each for the whole page', async () => {
+    configure({ '@acme': acme(), '@dynamic': `${origin}/dynamic/{name}.json` });
+    expect(await print([], { query: 'dialog' })).toBe(`Found 44 items matching "dialog" in @sveltery, @acme, @dynamic
+Showing 1-44 of 44
+
+- @dynamic/server-pick (ui) · @dynamic — Picked by the server.
+- dialog (ui) · @sveltery
+- alert-dialog (ui) · @sveltery
+- @acme/greet-dialog (block) · @acme
+- login-01 (block) · @sveltery — A form for people who already have an account to sign in with their email...`);
+    expect(namespaceRequests().sort()).toEqual(['/acme/registry.json?q=dialog&limit=100', '/dynamic/registry.json?q=dialog&limit=100']);
+  });
+
+  test('skips a registry that fails, or lacks an environment variable, names it, and searches the rest', async () => {
+    delete process.env.BETA_TOKEN;
+    configure({ '@beta': { url: `${origin}/acme/{name}.json`, headers: { Authorization: 'Bearer ${BETA_TOKEN}' } }, '@gone': `${origin}/gone/{name}.json`, '@acme': acme() });
+    expect(await print([], { query: 'hello' })).toBe(`Skipped @beta: Registry "@beta" requires the following environment variables:
+
+  • BETA_TOKEN
+
+Set the required environment variables to your .env or .env.local file.
+Skipped @gone: GET ${origin}/gone/registry.json?q=hello&limit=100 failed with 404 Not Found
+
+Found 1 item matching "hello" in @sveltery, @beta, @gone, @acme
+Showing 1-1 of 1
+
+- @acme/hello (ui) · @acme — Says hello.`);
+    // @beta's URL is @acme's, so a request without @acme's token would mean @beta's was sent.
+    expect(namespaceRequests().sort()).toEqual(['/acme/registry.json?q=hello&limit=100', '/gone/registry.json?q=hello&limit=100']);
+    const results = JSON.parse(await print([], { json: true, query: 'hello' }));
+    expect(results.errors).toEqual([
+      { registry: '@beta', message: expect.stringContaining('BETA_TOKEN') },
+      { registry: '@gone', message: `GET ${origin}/gone/registry.json?q=hello&limit=100 failed with 404 Not Found` },
+    ]);
+    expect(results.items.map((item: { addCommandArgument: string }) => item.addCommandArgument)).toEqual(['@acme/hello']);
+  });
+
+  test('prints no errors when every registry answers', async () => {
+    configure({ '@acme': acme() });
+    expect(JSON.parse(await print([], { json: true })).errors).toBeUndefined();
+  });
+});
+
+describe('search <url>', () => {
+  test('reads the registry.json at the URL, forwards the search, and gives add the item URL', async () => {
+    const url = `${origin}/public/registry.json`;
+    expect(await print([url], { query: 'hello' })).toBe(`Found 1 item matching "hello" in ${url}
+Showing 1-1 of 1
+
+- ${origin}/public/hello.json (ui) — Says hello.`);
+    expect(namespaceRequests()).toEqual(['/public/registry.json?q=hello&limit=100&offset=0']);
+    expect(JSON.parse(await print([url], { json: true, query: 'hello' })).items).toEqual([
+      { name: 'hello', title: 'Hello', type: 'registry:ui', description: 'Says hello.', registry: url, addCommandArgument: `${origin}/public/hello.json` },
+    ]);
+  });
+
+  test('keeps the URL\'s own query, the search replacing a parameter of the same name, and pages a dynamic registry on the server', async () => {
+    const url = `${origin}/dynamic/registry.json?token=abc&limit=999`;
+    expect(await print([url], { query: 'zzzz', limit: '1', offset: '10' })).toContain(`- ${origin}/dynamic/server-pick.json?token=abc&limit=999 (ui) — Picked by the server.`);
+    expect(namespaceRequests()).toEqual(['/dynamic/registry.json?token=abc&limit=1&q=zzzz&offset=10']);
+  });
+
+  test('searches a URL alongside @sveltery', async () => {
+    expect(await print(['@sveltery', `${origin}/public/registry.json`], { query: 'hello' })).toBe(`Found 1 item matching "hello" in @sveltery, ${origin}/public/registry.json
+Showing 1-1 of 1
+
+- ${origin}/public/hello.json (ui) · ${origin}/public/registry.json — Says hello.`);
+  });
+
+  test('rejects a catalog that uses include', async () => {
+    await expect(search([`${origin}/source/registry.json`], { cwd, json: false })).rejects.toThrow(`Registry catalog "${origin}/source/registry.json" uses "include"`);
+  });
+});
+
+describe('search <owner/repo>', () => {
+  const realFetch = globalThis.fetch;
+  let fetched: string[];
+  // A GitHub repository whose root registry.json is the source registry, so its files have paths, not content.
+  const repository: Record<string, unknown> = {
+    'https://raw.githubusercontent.com/acme/ui/HEAD/registry.json': acmeCatalog,
+    'https://raw.githubusercontent.com/acme/ui/v1.0/registry.json': { ...acmeCatalog, items: acmeCatalog.items.slice(0, 1) },
+    'https://raw.githubusercontent.com/acme/ui/feature/next/registry.json': acmeCatalog,
+    'https://raw.githubusercontent.com/acme/split/HEAD/registry.json': { ...acmeCatalog, include: ['ui/registry.json'] },
+  };
+  beforeEach(() => {
+    fetched = [];
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async (input, init) => {
+      const url = String(input);
+      if (!url.startsWith('https://raw.githubusercontent.com/')) return realFetch(input, init);
+      fetched.push(url);
+      return url in repository ? Response.json(repository[url]) : new Response('404: Not Found', { status: 404, statusText: 'Not Found' });
+    });
+  });
+  afterEach(() => vi.restoreAllMocks());
+
+  test('reads the root registry.json of the default branch, filters it here, and gives add owner/repo/name', async () => {
+    expect(await print(['acme/ui'], { query: 'dialog' })).toBe(`Found 1 item matching "dialog" in acme/ui
+Showing 1-1 of 1
+
+- acme/ui/greet-dialog (block)`);
+    expect(fetched).toEqual(['https://raw.githubusercontent.com/acme/ui/HEAD/registry.json']);
+  });
+
+  test('reads the registry.json at the ref after #, and keeps the ref in the add argument', async () => {
+    expect(JSON.parse(await print(['acme/ui#v1.0'], { json: true })).items).toEqual([
+      { name: 'hello', title: 'Hello', type: 'registry:ui', description: 'Says hello.', registry: 'acme/ui#v1.0', addCommandArgument: 'acme/ui/hello#v1.0' },
+    ]);
+    expect(await print(['acme/ui#feature/next'], { limit: '1' })).toContain('- acme/ui/hello#feature/next (ui)');
+    expect(fetched).toEqual(['https://raw.githubusercontent.com/acme/ui/v1.0/registry.json', 'https://raw.githubusercontent.com/acme/ui/feature/next/registry.json']);
+  });
+
+  test('rejects a ref that cannot name a branch, tag or commit before it fetches anything', async () => {
+    await expect(search(['acme/ui#-x'], { cwd, json: false })).rejects.toThrow('Invalid GitHub ref in registry source "acme/ui#-x".');
+    await expect(search(['acme/ui#'], { cwd, json: false })).rejects.toThrow('Invalid GitHub ref in registry source "acme/ui#".');
+    expect(fetched).toEqual([]);
+  });
+
+  test('names a repository without a registry.json, and one whose registry.json uses include', async () => {
+    await expect(search(['acme/none'], { cwd, json: false })).rejects.toThrow('GET https://raw.githubusercontent.com/acme/none/HEAD/registry.json failed with 404 Not Found');
+    await expect(search(['acme/split'], { cwd, json: false })).rejects.toThrow('Registry acme/split uses "include", which search does not resolve in a GitHub registry yet.');
   });
 });

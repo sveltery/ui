@@ -291,7 +291,10 @@ try {
   assert.deepEqual(found.items[0], { name: 'dialog', title: 'Dialog', type: 'registry:ui', registry: '@sveltery', addCommandArgument: 'dialog' });
   const listed = await cli('list', '-t', 'block', '-l', '2', '-o', '1');
   assert.match(listed, new RegExp(`^Showing 2-3 of ${registry.get('index.json').blocks.length}$`, 'm'), 'list is search with paging');
-  await assert.rejects(cli('search', '@acme'), (error) => /Unknown registry "@acme"\. The registries you can search are @sveltery\./.test(error.output), 'search names the registries it does not know');
+  await assert.rejects(cli('search', '@acme'), (error) => /Unknown registry "@acme"\. The namespaces you can search are @sveltery\./.test(error.output), 'search names the namespaces it does not know');
+  const acmeCatalog = `${origin}/r/acme/registry.json`;
+  const byUrl = JSON.parse(await cli('search', acmeCatalog, '-q', 'hello', '--json'));
+  assert.deepEqual(byUrl.items, [{ name: 'hello', type: 'registry:ui', registry: acmeCatalog, addCommandArgument: `${origin}/r/acme/hello.json` }], 'search of a registry URL gives add the item URL that installed it above');
 
   step('sveltery docs dropdown-menu');
   const documented = JSON.parse(await cli('docs', 'dropdown-menu', 'card', '--json'));
@@ -315,6 +318,8 @@ try {
   cpSync(join(registryDir, 'acme/registry.json'), join(registryDir, 'private/registry.json'));
   const namespaced = JSON.parse(await cli('search', '@acme', '-q', 'hello', '--json'));
   assert.deepEqual(namespaced.items, [{ name: 'hello', type: 'registry:ui', registry: '@acme', addCommandArgument: '@acme/hello' }], 'search @acme reads the registry.json that build wrote, with the token');
+  const everywhere = JSON.parse(await cli('search', '-q', 'hello', '--json'));
+  assert.deepEqual([everywhere.errors, everywhere.items.map((entry) => entry.registry)], [undefined, ['@acme']], 'search with no argument searches @sveltery and the namespaces in components.json');
   assert.deepEqual(JSON.parse(await cli('view', '@acme/hello')).map((entry) => entry.name), ['hello'], 'view takes an @namespace/item name');
 
   step('sveltery info');

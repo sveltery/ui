@@ -439,15 +439,23 @@ Showing 1-3 of 3
 }
 ```
 
-With no argument, `search` searches `@sveltery`, the Sveltery UI registry that `SVELTERY_REGISTRY_URL` or `components.json` points at. To search a [namespace](/docs/registry/namespace) from the `registries` of `components.json`, pass it:
+With no argument, `search` searches `@sveltery`, the Sveltery UI registry that `SVELTERY_REGISTRY_URL` or `components.json` points at, and every [namespace](/docs/registry/namespace) in the `registries` of `components.json`. A registry that fails, or needs an environment variable that is not set, is skipped: a `Skipped @acme: ...` line names it, and `--json` lists it under `errors`. To search some registries only, pass them:
 
 ```bash
 npx @sveltery/ui@latest search @acme -q card
 ```
 
-`search` fetches the namespace's item named `registry`, such as `https://acme.com/r/registry.json`, which is the `registry.json` that `build` writes. It sends the query, the types, `--limit` and `--offset` as the `q`, `type`, `limit` and `offset` query parameters. With several registries, it sends no `offset`, and `limit` is `--offset` plus `--limit`, as upstream does. A registry that answers with `pagination` has filtered and paged the items itself, and `search` prints its page as it is. Otherwise `search` filters and ranks the items. A result from a namespace gives `add` the `@acme/name` form.
+`search` fetches the namespace's item named `registry`, such as `https://acme.com/r/registry.json`, which is the `registry.json` that `build` writes. It sends the query, the types, `--limit` and `--offset` as the `q`, `type`, `limit` and `offset` query parameters. With several registries, it sends no `offset`, and `limit` is `--offset` plus `--limit`, as upstream does. A registry that answers with `pagination` has filtered and paged the items itself, and `search` prints its page as it is. Otherwise `search` filters and ranks the items. A result from a namespace gives `add` the `@acme/name` form. When you pass registries, a missing environment variable stops the search before any request is sent.
 
-Pass several registries to search them together. Each line then names its registry. A URL, a GitHub source or a namespace that `registries` does not list is an error. See [differences](/docs/differences#search-defaults-to-sveltery-and-takes-namespaces-only).
+`search` also takes the URL of a registry's `registry.json`, with the same query parameters, and gives `add` the URL of each item, such as `https://acme.com/r/card.json`:
+
+```bash
+npx @sveltery/ui@latest search https://acme.com/r/registry.json
+```
+
+A GitHub source, `owner/repo` or `owner/repo#ref`, reads the `registry.json` at the root of a public repository, at the default branch or at the branch, tag or commit after `#`. `search` filters it itself and gives each result as `owner/repo/name`. `add` does not install that form yet. See [differences](/docs/differences#search-reads-a-github-registry-at-its-ref-without-include-or-sign-in).
+
+Pass several registries to search them together. Each line then names its registry. A registry named twice is searched twice, as upstream does. A namespace that `registries` does not list is an error. See [differences](/docs/differences#search-always-includes-sveltery).
 
 **Options**
 
@@ -457,9 +465,10 @@ Usage: sveltery search|list [options] [registries...]
 search items from registries
 
 Arguments:
-  registries             the registry namespaces to search, such as @acme from
-                         the registries in components.json. When omitted,
-                         searches @sveltery.
+  registries             the registry addresses to search. Supports namespaces,
+                         GitHub sources and URLs. When omitted, searches
+                         @sveltery and all registries configured in
+                         components.json.
 
 Options:
   -q, --query <query>    query string
@@ -735,4 +744,4 @@ SVELTERY_REGISTRY_URL=https://preview.example.com/r npx @sveltery/ui@latest add 
 
 ## Not supported
 
-The shadcn CLI has commands and options that this CLI does not have yet: `registry add`, local file paths as items and JavaScript output. See [Registry](/docs/registry) and [JavaScript](/docs/javascript) for what works today.
+The shadcn CLI has commands and options that this CLI does not have yet: `registry add`, local file paths as items, GitHub items such as `owner/repo/item` and JavaScript output. See [Registry](/docs/registry) and [JavaScript](/docs/javascript) for what works today.
