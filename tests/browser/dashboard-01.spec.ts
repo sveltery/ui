@@ -38,8 +38,9 @@ async function day(page: Page, edge: 'first' | 'last') {
   return tooltip(page);
 }
 
-test('renders the sidebar, the cards, the chart and the first page of the table', async ({ page }) => {
+test('renders the sidebar, the cards, the chart and the first page of the table, the time range toggle group changes the days the chart shows, and the document and user menus open', async ({ page }) => {
   await visit(page);
+  await expect(page.getByText('Total Visitors', { exact: true }).first()).toBeVisible();
   const sidebar = page.locator('[data-slot=sidebar]');
   await expect(sidebar.getByRole('link', { name: 'Acme Inc.' })).toBeVisible();
   await expect.poll(() => texts(sidebar.locator('[data-slot=sidebar-menu-button]'))).toEqual([
@@ -55,23 +56,7 @@ test('renders the sidebar, the cards, the chart and the first page of the table'
   await expect(page.getByRole('textbox', { name: 'Target' }).first()).toHaveValue('18');
   await expect(footer(page)).toHaveText('0 of 68 row(s) selected.');
   await expect(pageLabel(page)).toHaveText('Page 1 of 7');
-});
 
-test('the document and user menus open', async ({ page }) => {
-  await visit(page);
-  const document = page.locator('[data-slot=sidebar-menu-item]', { hasText: 'Reports' });
-  await document.hover();
-  await document.getByRole('button', { name: 'More' }).click();
-  await expect(page.getByRole('menuitem')).toHaveText(['Open', 'Share', 'Delete']);
-  await page.keyboard.press('Escape');
-  await expect(page.getByRole('menuitem')).toHaveCount(0);
-
-  await page.getByRole('button', { name: 'shadcn m@example.com' }).click();
-  await expect(page.getByRole('menuitem')).toHaveText(['Account', 'Billing', 'Notifications', 'Log out']);
-});
-
-test('the time range toggle group changes the days the chart shows', async ({ page }) => {
-  await visit(page);
   const ranges = page.locator('[data-slot=toggle-group-item]');
   await expect(ranges).toHaveText(['Last 3 months', 'Last 30 days', 'Last 7 days']);
   await expect(ranges.first()).toHaveAttribute('aria-pressed', 'true');
@@ -84,6 +69,16 @@ test('the time range toggle group changes the days the chart shows', async ({ pa
 
   await page.getByRole('button', { name: 'Last 30 days' }).click();
   await expect.poll(() => day(page, 'first')).toEqual(['May 31 Desktop 178 Mobile 230']);
+
+  const document = page.locator('[data-slot=sidebar-menu-item]', { hasText: 'Reports' });
+  await document.hover();
+  await document.getByRole('button', { name: 'More' }).click();
+  await expect(page.getByRole('menuitem')).toHaveText(['Open', 'Share', 'Delete']);
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('menuitem')).toHaveCount(0);
+
+  await page.getByRole('button', { name: 'shadcn m@example.com' }).click();
+  await expect(page.getByRole('menuitem')).toHaveText(['Account', 'Billing', 'Notifications', 'Log out']);
 });
 
 test('on a phone the chart starts on the last 7 days and the select changes the range', async ({ page }) => {
