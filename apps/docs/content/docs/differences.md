@@ -184,6 +184,18 @@ Where upstream code misbehaves on Base UI, Sveltery UI fixes it instead of copyi
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
 
+## Forms
+
+### The Forms guides cover SvelteKit forms instead of React form libraries
+
+**Upstream:** The [Forms](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/forms/index.mdx) section has a guide for each of [React Hook Form](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/forms/react-hook-form.mdx), [TanStack Form](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/forms/tanstack-form.mdx) and [Formisch](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/forms/formisch.mdx), and lists `useActionState` as coming soon. Each guide keeps the form state in the library and passes it to the `Field` parts.
+
+**Sveltery UI:** The [Forms](/docs/forms) section covers a native `<form>`, [SvelteKit remote forms](/docs/forms/remote-forms) and [SvelteKit form actions](/docs/forms/form-actions). Each page uses the same [Field](/docs/components/field) parts.
+
+**Why:** Upstream's guides are written for React. SvelteKit keeps form state in remote forms and form actions, so Sveltery UI's guides show those. `Field` is a plain `div` that holds no form state, like upstream's [`field.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/field.tsx#L64-L72), so the same parts work with each of them.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-16
+
 ## Toast
 
 ### Toasts use Toast, not Sonner
