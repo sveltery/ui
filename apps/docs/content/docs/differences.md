@@ -468,16 +468,6 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Sveltery UI:** The [Breadcrumb](/docs/components/breadcrumb) Custom separator example points it to `/docs/components`, as the Collapsed example already does.
 
 **Why:** The docs site prerenders every link, and `/components` is not a page here, so the build fails on it.
-### Empty examples use Lucide icons where upstream uses Tabler
-
-**Upstream:** [`empty-demo.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/empty-demo.tsx), [`empty-outline.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/empty-outline.tsx) and [`empty-background.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/empty-background.tsx) import `IconFolderCode`, `IconCloud` and `IconBell` from `@tabler/icons-react`.
-
-**Sveltery UI:** The [Empty](/docs/components/empty) examples import `FolderCodeIcon`, `CloudIcon` and `BellIcon` from `@lucide/svelte`.
-
-**Why:** The docs site depends on `@lucide/svelte` only. The Lucide icons draw the same folder, cloud and bell.
-
-**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
-
 ### The Item avatar section does not name an `avatar` variant
 
 **Upstream:** The [Item page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/item.mdx) says "You can use `ItemMedia` with `variant="avatar"` to display an avatar." `ItemMedia` has only the `default`, `icon` and `image` variants, and the example uses the default.
@@ -505,6 +495,14 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Sveltery UI:** The [Toggle Group](/docs/components/toggle-group) page ends at its API Reference. Its `spacing` already defaults to `2`.
 
 **Why:** Sveltery's Toggle Group shipped with a default of `2`, so there is no change to migrate from.
+
+### The Input OTP form example narrows its slots on small screens
+
+**Upstream:** [`input-otp-form.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/input-otp-form.tsx) gives each slot `w-11` and the separator `mx-2` at every width.
+
+**Sveltery UI:** The [Input OTP](/docs/components/input-otp) form example adds `max-sm:*:data-[slot=input-otp-slot]:w-9` to each group and `max-sm:mx-0` to the separator.
+
+**Why:** On a phone the card's content area is about 260px, and six `w-11` slots plus the separator need about 312px, so the last slots were clipped.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 

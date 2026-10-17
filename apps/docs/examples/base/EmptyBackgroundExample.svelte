@@ -1,5 +1,5 @@
 <script lang="ts">
-  import BellIcon from '@lucide/svelte/icons/bell';
+  import IconBell from '@tabler/icons-svelte-runes/icons/bell';
   import RefreshCcwIcon from '@lucide/svelte/icons/refresh-ccw';
   import { Button } from '$registry/bases/base/ui/button';
   import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '$registry/bases/base/ui/empty';
@@ -8,7 +8,7 @@
 <Empty class="h-full bg-muted/30">
   <EmptyHeader>
     <EmptyMedia variant="icon">
-      <BellIcon />
+      <IconBell />
     </EmptyMedia>
     <EmptyTitle>No Notifications</EmptyTitle>
     <EmptyDescription class="max-w-xs text-pretty">You're all caught up. New notifications will appear here.</EmptyDescription>
