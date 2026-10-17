@@ -65,9 +65,10 @@ Pass the debounced value to your fetch instead of the raw input.`;
       <Message>
         <MessageContent>
           <!-- The class is the root class Streamdown's React version sets. -->
-          <Streamdown class="space-y-4 whitespace-normal [&>*:first-child]:mt-0 [&>*:last-child]:mb-0" content={getMessageText(message)} controls={false} static={!(busy && message === chat.messages.at(-1))}>
+          <Streamdown class="space-y-4 whitespace-normal [&>*:first-child]:mt-0 [&>*:last-child]:mb-0" content={getMessageText(message)} controls={false}>
             {#snippet code({ token, incomplete })}
-              <MarkdownCodeBlock code={token.text} language={token.lang ?? ''} {incomplete} />
+              <!-- A finished message whose fence never closed is complete, as upstream's isAnimating gate. -->
+              <MarkdownCodeBlock code={token.text} language={token.lang ?? ''} incomplete={incomplete && busy && message === chat.messages.at(-1)} />
             {/snippet}
             {#snippet codespan({ children })}
               <code class="rounded-sm bg-muted px-1 py-0.5 font-mono text-[0.9em]">{@render children()}</code>

@@ -337,12 +337,12 @@ Render the message with [svelte-streamdown](https://github.com/beynar/svelte-str
 
 <ComponentPreview name="base/CodeBlockMarkdownExample" />
 
-The `code` snippet's `incomplete` is `true` until the closing fence arrives. Use it to disable the copy button while the code is incomplete. It only works while Streamdown streams, so pass `static={false}` while the message streams.
+The `code` snippet's `incomplete` is `true` for the last block until its closing fence arrives. Use it to disable the copy button while the code is incomplete. Combine it with your own streaming flag, so a finished message whose fence never closed is not treated as incomplete.
 
 ```svelte showLineNumbers
-<Streamdown content={text} static={!isStreaming}>
+<Streamdown content={text}>
   {#snippet code({ token, incomplete })}
-    <MarkdownCodeBlock code={token.text} language={token.lang} {incomplete} />
+    <MarkdownCodeBlock code={token.text} language={token.lang ?? ''} incomplete={incomplete && isStreaming} />
   {/snippet}
 </Streamdown>
 ```
