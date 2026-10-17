@@ -391,7 +391,7 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Upstream:** The links in [`navigation-menu-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/navigation-menu-example.tsx#L24-L53) point at shadcn/ui's `/docs/primitives/*` routes, and the Typography link at [line 82](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/navigation-menu-example.tsx#L82) points at `/docs/primitives/typography`.
 
-**Sveltery UI:** The [Navigation Menu](/docs/components/navigation-menu) example links to the matching `/docs/components/*` pages, Typography included. The `/docs` and `/docs/installation` links keep upstream's values.
+**Sveltery UI:** The [Navigation Menu](/docs/components/navigation-menu) example links to the matching `/docs/components/*` pages. The Typography link goes to [Typeset](/docs/typeset), where upstream's site redirects Typography. The `/docs` and `/docs/installation` links keep upstream's values.
 
 **Why:** Upstream's `/docs/primitives/*` paths do not exist on this site, so the links would return 404.
 
@@ -436,6 +436,16 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Why:** The docs show each example in a preview frame. A sidebar sized to the viewport would overflow it. At phone widths, the inset content is taller than the frame, and `overflow-auto` lets you scroll it. Without it, the frame cuts the content off.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
+
+### The Chart page holds the charts library
+
+**Upstream:** [`chart.mdx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/chart.mdx#L25) links to a separate [charts library](https://github.com/shadcn-ui/ui/tree/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/app/%28app%29/charts) at `/charts`, with one page per chart type.
+
+**Sveltery UI:** The [Chart](/docs/components/chart#charts-library) page has a Charts Library section after its guide. It shows the area, bar, line, pie, radar, radial and tooltip charts, each converted from upstream's `registry/new-york-v4/charts` file, and ends with the Examples and API reference sections of the other component pages.
+
+**Why:** These docs have no `/charts` route, so the link would return 404. The charts stay one click from the guide.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
 ### The Card changelog edits the style stylesheet
 
@@ -639,7 +649,7 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Sveltery UI:** The [Code Block](/docs/components/code-block) page leaves both out. Its RTL example renders in Rhea like the rest of the page, where upstream's [`code-block-rtl`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/code-block.mdx#L369) preview uses Nova.
 
-**Why:** Streamdown is a React library, so the Markdown example needs a Svelte Markdown renderer first. Typeset is not ported yet. A docs page renders every preview in one style.
+**Why:** Streamdown is a React library, so the Markdown example needs a Svelte Markdown renderer first. The Typeset example comes with the Markdown one, which renders its message inside `typeset`. A docs page renders every preview in one style.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 

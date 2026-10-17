@@ -1,46 +1,54 @@
 <script lang="ts">
-  import { PieChart, Text } from 'layerchart';
+  import { Label, Pie, PieChart, type SvelteArgs, type LabelContentProps } from '@sveltery/recharts';
   import { Card, CardContent, CardFooter } from '$registry/bases/base/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
   import { Separator } from '$registry/bases/base/ui/separator';
 
   const chartData = [
-    { name: 'saved', value: 24000, color: 'var(--color-saved)' },
-    { name: 'remaining', value: 6000, color: 'var(--color-remaining)' }
-  ];
+    { name: "saved", value: 24000, fill: "var(--color-saved)" },
+    { name: "remaining", value: 6000, fill: "var(--color-remaining)" },
+  ]
+
   const chartConfig = {
     saved: {
-      label: 'Saved',
-      color: 'var(--chart-2)'
+      label: "Saved",
+      color: "var(--chart-2)",
     },
     remaining: {
-      label: 'Remaining',
-      color: 'var(--chart-1)'
-    }
-  } satisfies ChartConfig;
+      label: "Remaining",
+      color: "var(--chart-1)",
+    },
+  } satisfies ChartConfig
 </script>
 
 <Card>
   <CardContent>
-    <ChartContainer aria-label="Savings progress" config={chartConfig} class="mx-auto aspect-square max-h-[220px]">
-      <PieChart
-        data={chartData}
-        key="name"
-        value="value"
-        c="color"
-        innerRadius={70}
-        outerRadius={95}
-        range={[90, -270]}
-        padding={{ top: 8, bottom: 8, left: 8, right: 8 }}
-        props={{ pie: { motion: 'tween' }, arc: { strokeWidth: 0 } }}
-      >
-        {#snippet aboveMarks()}
-          <Text value="$24,000" textAnchor="middle" verticalAnchor="middle" class="fill-foreground text-2xl! font-bold" dy={-12} />
-          <Text value="80% of $30,000" textAnchor="middle" verticalAnchor="middle" class="fill-muted-foreground! text-xs text-muted-foreground" dy={12} />
-        {/snippet}
-        {#snippet tooltip()}
-          <ChartTooltip hideLabel nameKey="name" />
-        {/snippet}
+    <ChartContainer config={chartConfig} class="mx-auto aspect-square max-h-[220px]">
+      <PieChart>
+        <ChartTooltip cursor={false}>
+          {#snippet content(props: TooltipContentArgs)}
+            <ChartTooltipContent hideLabel {...props} />
+          {/snippet}
+        </ChartTooltip>
+        <Pie
+          data={chartData}
+          dataKey="value"
+          nameKey="name"
+          innerRadius={70}
+          outerRadius={95}
+          strokeWidth={0}
+          startAngle={90}
+          endAngle={-270}
+        >
+          <Label>
+            {#snippet content({ viewBox }: SvelteArgs<LabelContentProps>)}
+              {#if viewBox && "cx" in viewBox && "cy" in viewBox}<text x={viewBox.cx} y={viewBox.cy} text-anchor="middle" dominant-baseline="middle">
+                <tspan x={viewBox.cx} y={(viewBox.cy || 0) - 12} class="fill-foreground text-2xl font-bold">$24,000</tspan>
+                <tspan x={viewBox.cx} y={(viewBox.cy || 0) + 12} class="fill-muted-foreground text-xs">80% of $30,000</tspan>
+              </text>{/if}
+            {/snippet}
+          </Label>
+        </Pie>
       </PieChart>
     </ChartContainer>
   </CardContent>

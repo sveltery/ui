@@ -1,27 +1,27 @@
 <script lang="ts">
-  import { scaleBand } from 'd3-scale';
-  import { BarChart } from 'layerchart';
+  import { Bar, BarChart, XAxis } from '@sveltery/recharts';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
   import { Progress } from '$registry/bases/base/ui/progress';
   import { Separator } from '$registry/bases/base/ui/separator';
 
   const chartData = [
-    { hour: '6a', usage: 1.2 },
-    { hour: '8a', usage: 2.8 },
-    { hour: '10a', usage: 3.1 },
-    { hour: '12p', usage: 2.4 },
-    { hour: '2p', usage: 3.4 },
-    { hour: '4p', usage: 2.9 },
-    { hour: '6p', usage: 3.8 },
-    { hour: '8p', usage: 3.2 }
-  ];
+    { hour: "6a", usage: 1.2 },
+    { hour: "8a", usage: 2.8 },
+    { hour: "10a", usage: 3.1 },
+    { hour: "12p", usage: 2.4 },
+    { hour: "2p", usage: 3.4 },
+    { hour: "4p", usage: 2.9 },
+    { hour: "6p", usage: 3.8 },
+    { hour: "8p", usage: 3.2 },
+  ]
+
   const chartConfig = {
     usage: {
-      label: 'Usage (kW)',
-      color: 'var(--chart-2)'
-    }
-  } satisfies ChartConfig;
+      label: "Usage (kW)",
+      color: "var(--chart-2)",
+    },
+  } satisfies ChartConfig
 </script>
 
 <Card>
@@ -30,27 +30,17 @@
     <CardDescription>Whole Home</CardDescription>
   </CardHeader>
   <CardContent class="flex flex-col gap-4">
-        <ChartContainer aria-label="Power usage by hour" config={chartConfig} class="h-[140px] w-full">
-          <BarChart
-            data={chartData}
-            x="hour"
-            xScale={scaleBand().padding(0.25)}
-            series={[{ key: 'usage', label: 'Usage (kW)', color: 'var(--color-usage)' }]}
-            axis="x"
-            grid={false}
-            rule={false}
-            padding={{ top: 4, bottom: 22, left: 0, right: 0 }}
-            props={{
-              bars: { stroke: 'none', strokeWidth: 0, rounded: 'top', radius: 4 },
-              highlight: { area: { fill: 'none' } },
-              xAxis: { tickLength: 12 }
-            }}
-          >
-            {#snippet tooltip()}
-              <ChartTooltip hideLabel />
-            {/snippet}
-          </BarChart>
-        </ChartContainer>
+    <ChartContainer config={chartConfig} class="h-[140px] w-full">
+      <BarChart data={chartData} margin={{ left: 0, right: 0, top: 4, bottom: 0 }}>
+        <XAxis dataKey="hour" tickLine={false} tickMargin={6} axisLine={false} class="text-xs" />
+        <ChartTooltip cursor={false}>
+          {#snippet content(props: TooltipContentArgs)}
+            <ChartTooltipContent hideLabel {...props} />
+          {/snippet}
+        </ChartTooltip>
+        <Bar dataKey="usage" fill="var(--color-usage)" radius={[4, 4, 0, 0]} />
+      </BarChart>
+    </ChartContainer>
     <Separator />
     <div class="grid grid-cols-2 gap-4">
       <div class="flex flex-col gap-0.5">
