@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 import { log } from '@clack/prompts';
 import { Command } from 'commander';
 import { add } from './commands/add.js';
+import { build } from './commands/build.js';
 import { diff } from './commands/diff.js';
 import { init } from './commands/init.js';
 import { list } from './commands/list.js';
@@ -59,6 +60,14 @@ program
   .option('--json', 'print the items as JSON', false)
   .option('--cwd <path>', 'the project root', '.')
   .action(async (options) => void (await list({ ...options, cwd: resolve(options.cwd) })));
+
+program
+  .command('build')
+  .description('build components for a registry')
+  .argument('[registry]', 'path to registry.json file', './registry.json')
+  .option('-o, --output <path>', 'destination directory for json files', './static/r')
+  .option('-c, --cwd <path>', 'the working directory', '.')
+  .action((registry: string, options) => void build(registry, options));
 
 try {
   await program.parseAsync();

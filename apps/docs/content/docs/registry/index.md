@@ -20,14 +20,15 @@ The format follows the shadcn registry, limited to what this CLI reads. It suppo
 - adding an item by its URL,
 - `registryDependencies` by name, from the project's registry, or by URL, from any registry,
 - `dependencies` on npm packages,
+- building item files from a `registry.json` with `build`,
 - items that switch to the project's icon library,
 - a different root registry with `SVELTERY_REGISTRY_URL` or the `registry` key in `components.json`, for example a preview deploy of Sveltery UI.
 
-It does not support these shadcn registry features yet: a `build` command, namespaces such as `@acme/button`, authentication headers, GitHub registries, search, the registry index, MCP and Open in v0. `diff` and `update` do not track items added by URL.
+It does not support these shadcn registry features yet: namespaces such as `@acme/button`, authentication headers, GitHub registries, search, the registry index, MCP and Open in v0. `diff` and `update` do not track items added by URL.
 
 ## Next steps
 
 - [Getting Started](/docs/registry/getting-started) shows how to write and serve your own items.
 - [Examples](/docs/registry/examples) shows items of each type.
 - [registry-item.json](/docs/registry/registry-item-json) describes the fields of an item.
-- [registry.json](/docs/registry/registry-json) describes a root registry, which `SVELTERY_REGISTRY_URL` can point at.
+- [registry.json](/docs/registry/registry-json) describes the file `build` reads, and the root registry that `SVELTERY_REGISTRY_URL` can point at.

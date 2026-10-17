@@ -10,7 +10,7 @@ This guide walks you through publishing your own components as registry items. I
 
 A registry item is a JSON file that follows the [registry-item schema](/docs/registry/registry-item-json). You can serve it from any server or static host that returns JSON over HTTP, such as a SvelteKit app's `static` folder, GitHub Pages or a CDN.
 
-The CLI has no `build` command, so you write the item files yourself or generate them with a script.
+`build` turns a `registry.json` and your source files into those item files.
 
 ## Add an item
 
@@ -18,7 +18,7 @@ The CLI has no `build` command, so you write the item files yourself or generate
 
 Write the component in a folder of its own. Import other components with relative paths, such as `../button`, because the CLI copies every item into the same `ui` directory and does not rewrite imports.
 
-```svelte title="hello-card/HelloCard.svelte"
+```svelte title="src/lib/components/ui/hello-card/HelloCard.svelte"
 <script lang="ts">
   import { Button } from '../button';
   import { formatName } from '../format-name';
@@ -32,47 +32,75 @@ Write the component in a folder of its own. Import other components with relativ
 </div>
 ```
 
-```ts title="hello-card/index.ts"
+```ts title="src/lib/components/ui/hello-card/index.ts"
 export { default as HelloCard } from './HelloCard.svelte';
 ```
 
-### Write the item
+```ts title="src/lib/components/ui/format-name/index.ts"
+export const formatName = (name: string) => name.trim().replace(/^./, (c) => c.toUpperCase());
+```
 
-Put each file's source in `content`, and its path below the `ui` directory in `target`.
+### Add the item to registry.json
 
-```json title="hello-card.json"
+Create `registry.json` in the root of your project. List each item with its `name`, `type`, `title`, `description` and `files`. For each file, give its `path` from the project root and its `type`.
+
+```json title="registry.json"
 {
-  "$schema": "https://ui.sveltery.dev/schema/registry-item.json",
-  "name": "hello-card",
-  "type": "registry:ui",
-  "title": "Hello Card",
-  "description": "A card with a greeting and a button.",
-  "dependencies": ["@sveltery/base@^0.2.0"],
-  "registryDependencies": ["button", "https://example.com/r/format-name.json"],
-  "files": [
+  "$schema": "https://ui.sveltery.dev/schema/registry.json",
+  "name": "acme",
+  "homepage": "https://example.com",
+  "items": [
     {
+      "name": "hello-card",
       "type": "registry:ui",
-      "target": "hello-card/HelloCard.svelte",
-      "content": "<script lang=\"ts\">\n  import { Button } from '../button';\n  import { formatName } from '../format-name';\n\n  let { name }: { name: string } = $props();\n</script>\n\n<div class=\"rounded-lg border p-4\">\n  <p>Hello, {formatName(name)}.</p>\n  <Button>Wave</Button>\n</div>\n"
+      "title": "Hello Card",
+      "description": "A card with a greeting and a button.",
+      "dependencies": ["@sveltery/base@^0.2.0"],
+      "registryDependencies": ["button", "https://example.com/r/format-name.json"],
+      "files": [
+        { "path": "src/lib/components/ui/hello-card/HelloCard.svelte", "type": "registry:ui" },
+        { "path": "src/lib/components/ui/hello-card/index.ts", "type": "registry:ui" }
+      ]
     },
     {
-      "type": "registry:ui",
-      "target": "hello-card/index.ts",
-      "content": "export { default as HelloCard } from './HelloCard.svelte';\n"
+      "name": "format-name",
+      "type": "registry:lib",
+      "files": [{ "path": "src/lib/components/ui/format-name/index.ts", "type": "registry:ui" }]
     }
   ]
 }
 ```
 
-`button` is a name, so the CLI installs Button from the project's registry, in the project's style. The second entry is a URL, so the CLI fetches that item from your registry. Write it the same way:
+`button` is a name, so the CLI installs Button from the project's registry, in the project's style. The second entry is a URL, so the CLI fetches that item from your registry.
 
-```json title="format-name.json"
+A `registry:ui` file goes to the `ui` directory of the project that adds it, at the part of `path` after `ui/`, such as `hello-card/HelloCard.svelte`. Set `target` to place it somewhere else. See [registry.json](/docs/registry/registry-json#items).
+
+## Build your registry
+
+Run `build` in the root of your project:
+
+```bash
+npx @sveltery/ui@latest build
+```
+
+It writes each item to `static/r`, with the source of each file in `content`, and copies `registry.json` there:
+
+```txt
+static
+└── r
+    ├── format-name.json
+    ├── hello-card.json
+    └── registry.json
+```
+
+```json title="static/r/format-name.json"
 {
   "$schema": "https://ui.sveltery.dev/schema/registry-item.json",
   "name": "format-name",
   "type": "registry:lib",
   "files": [
     {
+      "path": "src/lib/components/ui/format-name/index.ts",
       "type": "registry:ui",
       "target": "format-name/index.ts",
       "content": "export const formatName = (name: string) => name.trim().replace(/^./, (c) => c.toUpperCase());\n"
@@ -81,18 +109,13 @@ Put each file's source in `content`, and its path below the `ui` directory in `t
 }
 ```
 
+To write the files somewhere else, pass `--output`. See [build](/docs/cli#build).
+
 ## Serve your registry
 
-Serve the item files as static JSON. In a SvelteKit app, put them in `static/r`:
+SvelteKit serves the `static` folder, so `npm run dev` serves the items at `http://localhost:5173/r/hello-card.json` and `http://localhost:5173/r/format-name.json`. Once you deploy the app, they are at `https://example.com/r/hello-card.json` and `https://example.com/r/format-name.json`.
 
-```txt
-static
-└── r
-    ├── format-name.json
-    └── hello-card.json
-```
-
-The items are then at `https://example.com/r/hello-card.json` and `https://example.com/r/format-name.json`.
+You can also serve the `static/r` folder from any static host that returns JSON over HTTP, such as GitHub Pages or a CDN.
 
 ## Test your registry
 

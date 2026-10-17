@@ -88,7 +88,7 @@ type ItemType = keyof typeof itemByType;
 const itemType = literal(...(Object.keys(itemByType) as ItemType[]));
 export type RegistryItem = ReturnType<(typeof itemByType)[ItemType]>;
 
-const registryItem: Parser<RegistryItem> = (value, path) => itemByType[object({ type: itemType })(value, path).type](value, path);
+export const registryItem: Parser<RegistryItem> = (value, path) => itemByType[object({ type: itemType })(value, path).type](value, path);
 
 const registryManifest = object({
   $schema: string,

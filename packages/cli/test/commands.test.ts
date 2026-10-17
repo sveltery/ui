@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import { confirm, log, select } from '@clack/prompts';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, test, vi } from 'vitest';
 import { add } from '../src/commands/add.js';
+import { build } from '../src/commands/build.js';
 import { diff } from '../src/commands/diff.js';
 import { baseDependencies, init } from '../src/commands/init.js';
 import { list } from '../src/commands/list.js';
@@ -417,6 +418,23 @@ describe('add', () => {
   test('adds an item by URL', async () => {
     const plan = await add([`${registryUrl}/styles/nova/button.json`], options());
     expect(plan.files.map((file) => file.path)).toEqual(['src/lib/components/ui/button/Button.svelte']);
+  });
+
+  test('adds an item that build wrote', async () => {
+    const source = mkdtempSync(join(tmpdir(), 'sveltery-source-'));
+    try {
+      mkdirSync(join(source, 'src/lib/components/ui/hello'), { recursive: true });
+      writeFileSync(join(source, 'src/lib/components/ui/hello/Hello.svelte'), '<p>Hello</p>\n');
+      const files = [{ path: 'src/lib/components/ui/hello/Hello.svelte', type: 'registry:ui' }];
+      writeFileSync(join(source, 'registry.json'), JSON.stringify({ name: 'acme', homepage: 'https://acme.test', items: [{ name: 'hello', type: 'registry:ui', registryDependencies: ['button'], files }] }));
+      build('registry.json', { cwd: source, output: 'static/r' });
+      registryFiles['acme/hello.json'] = JSON.parse(readFileSync(join(source, 'static/r/hello.json'), 'utf8'));
+    } finally {
+      rmSync(source, { recursive: true, force: true });
+    }
+    const plan = await add([`${registryUrl}/acme/hello.json`], options());
+    expect(plan.files.map((file) => file.path)).toEqual(['src/lib/components/ui/button/Button.svelte', 'src/lib/components/ui/hello/Hello.svelte']);
+    expect(read('src/lib/components/ui/hello/Hello.svelte')).toBe('<p>Hello</p>\n');
   });
 
   test('names unknown items, failed requests and newer registries', async () => {

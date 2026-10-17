@@ -212,6 +212,41 @@ Options:
 
 ---
 
+## build
+
+Use the `build` command to generate the JSON files of [your own registry](/docs/registry/getting-started).
+
+```bash
+npx @sveltery/ui@latest build
+```
+
+`build` reads `registry.json` and writes one item file per item to `static/r`, such as `static/r/hello-card.json`, with each file's source in `content`. It also writes `static/r/registry.json`. A SvelteKit app serves the `static` folder, so the items are at `/r/<name>.json`.
+
+**Options**
+
+```txt
+Usage: sveltery build [options] [registry]
+
+build components for a registry
+
+Arguments:
+  registry             path to registry.json file (default: "./registry.json")
+
+Options:
+  -o, --output <path>  destination directory for json files (default:
+                       "./static/r")
+  -c, --cwd <path>     the working directory (default: ".")
+  -h, --help           display help for command
+```
+
+To change the output directory, use the `--output` option. In a Vite app without SvelteKit, pass `./public/r`.
+
+```bash
+npx @sveltery/ui@latest build --output ./public/r
+```
+
+---
+
 ## Environment variables
 
 `SVELTERY_REGISTRY_URL` sets the registry root, for example a preview deploy's `/r` URL. It takes precedence over the `registry` key in `components.json`. `init` writes the URL it used to that key.
@@ -222,4 +257,4 @@ SVELTERY_REGISTRY_URL=https://preview.example.com/r npx @sveltery/ui@latest add 
 
 ## Not supported
 
-The shadcn CLI has commands and options that this CLI does not have yet: `apply`, `preset`, `view`, `search`, `build`, `docs`, `info`, `migrate` and `eject`, namespaced registries, local file paths as items, JavaScript output and the RTL transform. See [Registry](/docs/registry), [JavaScript](/docs/javascript) and [RTL](/docs/rtl) for what works today.
+The shadcn CLI has commands and options that this CLI does not have yet: `apply`, `preset`, `view`, `search`, `docs`, `info`, `migrate` and `eject`, namespaced registries, local file paths as items, JavaScript output and the RTL transform. See [Registry](/docs/registry), [JavaScript](/docs/javascript) and [RTL](/docs/rtl) for what works today.
