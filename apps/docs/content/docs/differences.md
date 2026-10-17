@@ -55,9 +55,13 @@ Base UI marks an open trigger with its own attributes. A collapsible trigger get
 
 ### Examples copied from the Radix variant use Base UI's attributes
 
+**Upstream:** The chevron in [`collapsible-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/collapsible-example.tsx#L110) rotates on `group-data-[state=open]`, as does the folder chevron in [`collapsible-file-tree.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/collapsible-file-tree.tsx#L74). The bookmark icons in [`toggle-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/toggle-example.tsx#L321) (also line 331) fill on `group-data-[state=on]/toggle`. These are Radix attributes.
+
+**Sveltery UI:** The [Collapsible](/docs/components/collapsible) kitchen-sink and file tree examples use `group-data-panel-open:`, and the [Toggle](/docs/components/toggle) example uses `group-data-pressed/toggle:`.
+
 **Upstream:** The chevron in [`collapsible-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/collapsible-example.tsx#L110) rotates on `group-data-[state=open]`. The bookmark icons in [`toggle-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/toggle-example.tsx#L321) (also line 331) fill on `group-data-[state=on]/toggle`. These are Radix attributes. The menu buttons and the collapsible chevron in [`sidebar-demo.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/sidebar-demo.tsx#L223) use `data-[state=open]`, and its dropdown menus are `w-(--radix-dropdown-menu-trigger-width)`, a Radix variable.
 
-**Sveltery UI:** The [Collapsible](/docs/components/collapsible) example uses `group-data-panel-open:`, and the [Toggle](/docs/components/toggle) example uses `group-data-pressed/toggle:`. The [Sidebar](/docs/components/sidebar) demo uses `data-popup-open:`, `group-data-open/collapsible:` and `w-(--anchor-width)`.
+**Sveltery UI:** The [Collapsible](/docs/components/collapsible) example uses `group-data-panel-open:`, and the Toggle preview example (`ToggleExample.svelte`) uses `group-data-pressed/toggle:`. The [Sidebar](/docs/components/sidebar) demo uses `data-popup-open:`, `group-data-open/collapsible:` and `w-(--anchor-width)`.
 
 **Why:** Base UI never sets `data-state`, so upstream's chevron does not rotate and the bookmark does not fill when pressed. It has no `--radix-dropdown-menu-trigger-width`, so that class sets no width.
 
@@ -323,6 +327,26 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 ## Example content
 
+### The Collapsible settings inputs have distinct ids
+
+**Upstream:** All four inputs in [`collapsible-settings.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/collapsible-settings.tsx#L36-L63) have `id="radius"`, and their labels point at `radius-x` and `radius-y`.
+
+**Sveltery UI:** The [Collapsible](/docs/components/collapsible) settings example gives each input its own id, matching its label.
+
+**Why:** Duplicate ids are invalid HTML, and a label whose `for` matches no id does not name its input.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Dialog demo and RTL forms submit
+
+**Upstream:** In [`dialog-demo.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/dialog-demo.tsx) and [`dialog-rtl.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/dialog-rtl.tsx), the `form` wraps the trigger and the dialog content. The content renders in a portal outside the form, so **Save changes** does not submit it.
+
+**Sveltery UI:** The [Dialog](/docs/components/dialog) demo and RTL examples put the `form` inside the dialog content and close the dialog on submit.
+
+**Why:** A submit button must submit its form. This is the same fix as "The Dialog form example submits" above.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ### The Toggle Group select starts on one of its items
 
 **Upstream:** The "With Input and Select" example in [`toggle-group-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/toggle-group-example.tsx#L343) sets `defaultValue={items[0]}`, an object, while each `SelectItem` has a string `value`.
@@ -332,6 +356,16 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Why:** In upstream, no item matches the value. Base UI finds no selected item and skips the item-aligned position, so the popup opens from the edge of the trigger instead of over the selected item.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
+
+### The Toggle Group usage snippet has no `type`
+
+**Upstream:** The [Toggle Group](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/toggle-group.mdx) usage snippet passes `type="single"`, a Radix prop that Base UI's toggle group does not take.
+
+**Sveltery UI:** The [Toggle Group](/docs/components/toggle-group) usage snippet passes no `type`. A group is single-select until you add `multiple`.
+
+**Why:** Base UI ignores `type`, so the prop in upstream's snippet does nothing.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
 ### Every icon in the Button example has `data-icon`
 
@@ -347,7 +381,7 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Upstream:** In the "With Form" example of [`dialog-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/dialog-example.tsx#L83-L116), the `form` wraps the trigger and the dialog content. The content renders in a portal outside the form, so **Save changes** does not submit it.
 
-**Sveltery UI:** The [Dialog](/docs/components/dialog) example puts the `form` inside the dialog content.
+**Sveltery UI:** The Dialog kitchen-sink example (`DialogExample.svelte`, no longer shown on the page) puts the `form` inside the dialog content.
 
 **Why:** A submit button must submit its form.
 
@@ -493,6 +527,16 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
+### The Toggle Group page has no changelog
+
+**Upstream:** The [Toggle Group page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/toggle-group.mdx?plain=1#L131) ends with a changelog for the default `spacing` moving from `0` to `2`.
+
+**Sveltery UI:** The [Toggle Group](/docs/components/toggle-group) page ends at its API Reference. Its `spacing` already defaults to `2`.
+
+**Why:** Sveltery's Toggle Group shipped with a default of `2`, so there is no change to migrate from.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ### The Pagination page has a SvelteKit section instead of Next.js
 
 **Upstream:** The [Pagination page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/pagination.mdx?plain=1#L116) has a Next.js section that edits `pagination.tsx` to render Next.js's `<Link />`.
@@ -616,6 +660,38 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Sveltery UI:** The [Code Block](/docs/components/code-block) page leaves both out. Its RTL example renders in Rhea like the rest of the page, where upstream's [`code-block-rtl`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/code-block.mdx#L369) preview uses Nova.
 
 **Why:** Streamdown is a React library, so the Markdown example needs a Svelte Markdown renderer first. Typeset is not ported yet. A docs page renders every preview in one style.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+## Trace
+
+### The chat examples use `@ai-sdk/svelte`'s `Chat`
+
+**Upstream:** The [Trace demo](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/trace-demo.tsx#L233), [Reasoning](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/trace-thinking.tsx) and [Tool](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/trace-tool-calls.tsx) examples call `useChat` from `@ai-sdk/react` and `getMessageText` from [`lib/ai.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/lib/ai.ts#L8).
+
+**Sveltery UI:** The [Trace](/docs/components/trace) examples create a `Chat` from `@ai-sdk/svelte` with the same scripted transcript from `createChat` in `@shadcn/helpers/ai-sdk`. They read `chat.messages` and `chat.status` and send with `chat.sendMessage`. The demo replays by setting `chat.messages = []` and sending the question again. The Reasoning and Tool examples reset by setting `chat.messages` back to their opening messages. Each example is one file, so `getMessageText` is a few lines in its own script, and a thinking row's click lives in a `SvelteMap` keyed by message and position instead of in a row component.
+
+**Why:** `useChat` is a React hook. `Chat` is the AI SDK's Svelte binding, and `createChat` has no React dependency, so the transcript, timing and streamed parts are upstream's.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Trace page links to AI Elements on ui.shadcn.com
+
+**Upstream:** The [Trace page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/trace.mdx#L20) has a Built with Trace table and "See ... for more examples" links to [AI Elements](https://ui.shadcn.com/docs/ai-elements), which holds the Chain of Thought, Reasoning, Sources, Stack Trace, Task and Tool pages. The Stack Trace examples belong to that library.
+
+**Sveltery UI:** The [Trace](/docs/components/trace) page keeps the table and the links, and they open ui.shadcn.com. It notes that AI Elements is React code, and it ports no Stack Trace example.
+
+**Why:** AI Elements is not ported, so no Sveltery UI page can take the links. The table still names the patterns `Trace` builds, and the upstream pages show how each one is put together.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### Link rows in the Steps and Whole Turn examples point at their own section
+
+**Upstream:** The [Steps](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/trace-steps.tsx#L40) and [Whole Turn](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/trace-turn.tsx#L86) examples link to `#steps` and `#turn`, which are not headings on the Trace page.
+
+**Sveltery UI:** The [Trace](/docs/components/trace) examples link to `#chain-of-thought` and `#whole-turn`, the headings of their own sections.
+
+**Why:** The docs build fails a page that links to an anchor it does not have. The row still shows a link, and following it stays on the page.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 

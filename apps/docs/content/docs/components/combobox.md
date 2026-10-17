@@ -291,10 +291,8 @@ Wrap the combobox in a [DirectionProvider](/docs/components/direction) and set `
 
 <ComponentPreview name="base/ComboboxRtlExample" align="start" />
 
-## Examples
+## API Reference
 
-<ComponentPreview name="base/ComboboxExample" />
+See the [Base UI Combobox](https://base-ui.com/react/components/combobox#api-reference) documentation.
 
-## API reference
-
-`Combobox` is styled on top of the Sveltery Base `Combobox` primitive, which owns the filtering, popup positioning, keyboard navigation, focus handling, dismissal and form value. `ComboboxContent` renders the Base portal, positioner and popup, and takes the positioner's `side`, `align`, `sideOffset`, `alignOffset` and `anchor` props. `ComboboxInput` takes `showTrigger` and `showClear`, and `ComboboxChip` takes `showRemove`. The trigger and the input group button set `data-popup-open` and `data-pressed` while the popup is open, so style the open state with `data-popup-open:`. See the [Base UI Combobox documentation](https://base-ui.com/react/components/combobox) for the behavior it ports.
+`Combobox` is styled on top of the Sveltery Base `Combobox` primitive, which owns the filtering, popup positioning, keyboard navigation, focus handling, dismissal and form value. `ComboboxContent` renders the Base portal, positioner and popup, and takes the positioner's `side`, `align`, `sideOffset`, `alignOffset` and `anchor` props. `ComboboxInput` takes `showTrigger` and `showClear`, and `ComboboxChip` takes `showRemove`. The trigger and the input group button set `data-popup-open` and `data-pressed` while the popup is open, so style the open state with `data-popup-open:`.
