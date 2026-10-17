@@ -12,13 +12,16 @@ test('the typography page shows the whole demo and switches the RTL example betw
   expect(scrollHeight).toBe(clientHeight);
   await expect(demo.getByRole('table')).toBeVisible();
 
-  const rtl = page.locator('[data-name="base/TypographyRtlExample"] [data-slot=preview]');
+  const preview = page.locator('[data-name="base/TypographyRtlExample"]');
+  const rtl = preview.locator('[data-slot=preview]');
   const article = rtl.locator('[dir]');
   await expect(article).toHaveAttribute('dir', 'rtl');
   await expect(rtl.getByRole('heading', { level: 1 })).toHaveText('فرض الضرائب على الضحك: سجلات ضريبة النكتة');
-  await rtl.getByRole('button', { name: 'he' }).click();
+  await preview.locator('[data-name="language-selector"]').click();
+  await page.getByRole('option', { name: 'Hebrew (עברית)' }).click();
   await expect(rtl.getByRole('heading', { level: 1 })).toHaveText('מיסוי הצחוק: כרוניקות מס הבדיחה');
-  await rtl.getByRole('button', { name: 'en' }).click();
+  await preview.locator('[data-name="language-selector"]').click();
+  await page.getByRole('option', { name: 'English' }).click();
   await expect(article).toHaveAttribute('dir', 'ltr');
   await expect(rtl.getByRole('heading', { level: 1 })).toHaveText('Taxing Laughter: The Joke Tax Chronicles');
 });
