@@ -3,6 +3,8 @@
 // and a preview override context (components/preview-override.tsx) at d2fba50.
 import { createContext } from 'svelte';
 import { SvelteSet } from 'svelte/reactivity';
+import { mode } from '$lib/theme.svelte';
+import type { TypesetCommand } from './messages';
 import { DEFAULT_PARAMS, FONTS, parseParams, sameParams, serializeParams, TYPESET_FLOWS, TYPESET_LEADINGS, TYPESET_MEASURES, TYPESET_SIZES, type LockableParam, type TypesetParams } from './params';
 
 // Every pointer move over a picker item re-arms this timer, so a preview applies only once the pointer settles.
@@ -84,6 +86,15 @@ export class TypesetBuilder {
   /** Every parameter back to its default, the specimen included, as upstream. */
   reset() {
     this.set(DEFAULT_PARAMS);
+  }
+
+  /** Runs a keyboard shortcut's command, from the page or forwarded by the preview frame. */
+  run(command: TypesetCommand) {
+    if (command === 'shuffle') this.shuffle();
+    else if (command === 'reset') this.reset();
+    else if (command === 'undo') this.undo();
+    else if (command === 'redo') this.redo();
+    else mode.toggle();
   }
 
   toggleLock(param: LockableParam) {

@@ -1,7 +1,7 @@
 <!-- Port of shadcn's apps/v4/app/(app)/(typeset)/typeset/page.tsx, layout.tsx and components/docs-panel.tsx at d2fba50. -->
 <script lang="ts">
-  import { onDestroy, onMount } from 'svelte';
-  import { replaceState } from '$app/navigation';
+  import { onDestroy } from 'svelte';
+  import { afterNavigate, goto } from '$app/navigation';
   import { buttonVariants } from '$registry/bases/base/ui/button';
   import { cn } from 'cn';
   import { Skeleton } from '$registry/bases/base/ui/skeleton';
@@ -11,14 +11,15 @@
   import Docs from '$lib/typeset/Docs.svelte';
   import { shortcutCommand } from '$lib/typeset/messages';
   import Preview from '$lib/typeset/Preview.svelte';
-  import { mode } from '$lib/theme.svelte';
 
   const builder = setBuilder(new TypesetBuilder());
   // The page is prerendered without a query, so the parameters are read in the browser before anything shows.
   let ready = $state(false);
 
-  onMount(() => {
-    builder.load(new URLSearchParams(location.search));
+  // A link or Back to another `/typeset?...` keeps this component, so every navigation reads the URL again.
+  afterNavigate(({ to }) => {
+    // The URL writes below come back here too; only a URL that differs from the parameters is a new place.
+    if (to && to.url.search !== builder.search) builder.load(to.url.searchParams);
     ready = true;
   });
   onDestroy(() => builder.destroy());
@@ -26,18 +27,14 @@
   // The URL follows the parameters, so a copied link reopens the same typeset. It replaces the entry, as upstream.
   $effect(() => {
     const search = builder.search;
-    if (ready && location.search !== search) replaceState(`${location.pathname}${search}`, {});
+    if (ready && location.search !== search) goto(`${location.pathname}${search}`, { replace: true, shallow: true });
   });
 
   function keydown(event: KeyboardEvent) {
     const command = shortcutCommand(event);
     if (!command) return;
     event.preventDefault();
-    if (command === 'shuffle') builder.shuffle();
-    else if (command === 'reset') builder.reset();
-    else if (command === 'undo') builder.undo();
-    else if (command === 'redo') builder.redo();
-    else mode.toggle();
+    builder.run(command);
   }
 </script>
 

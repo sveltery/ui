@@ -19,8 +19,9 @@
     packageManager.restore();
     let active = true;
     fetch('/typeset.css')
-      .then((response) => response.text())
-      .then((text) => active && (css = text));
+      .then((response) => (response.ok ? response.text() : Promise.reject(new Error(`/typeset.css: ${response.status}`))))
+      .then((text) => active && (css = text))
+      .catch(console.error);
     return () => (active = false);
   });
 

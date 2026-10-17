@@ -38,6 +38,7 @@ test('a picked option restyles the preview, goes in the URL, and Undo and Redo s
   await choose(page, 'Size', '18px');
   await expect(page).toHaveURL('/typeset?scale=18');
   await expect(params).toHaveCSS('font-size', '18px');
+  await expect(page.locator('iframe[title="typeset preview"]'), 'the frame restyles by message instead of reloading').toHaveAttribute('src', '/preview/typeset/docs');
 
   await choose(page, 'Body', 'Lora');
   await expect(page).toHaveURL('/typeset?body=lora&scale=18');
@@ -69,6 +70,12 @@ test('the URL opens a typeset, the specimen buttons switch the preview, and Rese
   await page.keyboard.press('Shift+R');
   await expect(page).toHaveURL('/typeset');
   await expect(page.getByRole('button', { name: /^Leading/ })).toHaveText(/Regular \(1\.75\)/);
+
+  await choose(page, 'Size', '14px');
+  await expect(page).toHaveURL('/typeset?scale=14');
+  await page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'Typeset' }).click();
+  await expect(page).toHaveURL('/typeset');
+  await expect(page.getByRole('button', { name: /^Size/ })).toHaveText(/15px/);
 });
 
 test('Shuffle keeps locked choices and the specimen', async ({ page }) => {

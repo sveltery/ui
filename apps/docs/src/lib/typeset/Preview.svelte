@@ -6,10 +6,9 @@
   import { buttonVariants } from '$registry/bases/base/ui/button';
   import { Tooltip, TooltipContent, TooltipTrigger } from '$registry/bases/base/ui/tooltip';
   import { cn } from 'cn';
-  import { mode } from '$lib/theme.svelte';
   import { getBuilder } from './builder.svelte';
   import { CONTENT_OPTIONS } from './fixtures';
-  import { receiveCommand, sendParams, type TypesetCommand } from './messages';
+  import { receiveCommand, sendParams } from './messages';
   import { previewHref, sameParams, type TypesetParams } from './params';
 
   const builder = getBuilder();
@@ -17,9 +16,10 @@
   let sent: TypesetParams | undefined;
 
   // A new specimen is a new page. Other changes go by message, so the frame never reloads for them.
+  const item = $derived(builder.previewed.item);
   const src = $derived.by(() => {
-    const item = builder.previewed.item;
-    return untrack(() => previewHref({ ...builder.previewed, item }));
+    const specimen = item;
+    return untrack(() => previewHref({ ...builder.previewed, item: specimen }));
   });
 
   function send() {
@@ -33,17 +33,9 @@
     if (!sent || !sameParams(sent, builder.previewed)) send();
   });
 
-  const commands: Record<TypesetCommand, () => void> = {
-    shuffle: () => builder.shuffle(),
-    reset: () => builder.reset(),
-    undo: () => builder.undo(),
-    redo: () => builder.redo(),
-    'toggle-theme': () => mode.toggle(),
-  };
-
   function receive(event: MessageEvent) {
     const command = receiveCommand(event, frame);
-    if (command) commands[command]();
+    if (command) builder.run(command);
   }
 
   const pill = 'h-7 min-w-7 cursor-pointer rounded-lg px-2 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground data-[active=true]:bg-accent data-[active=true]:text-accent-foreground';

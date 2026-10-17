@@ -101,6 +101,8 @@
             </Menu.Group>
           </Menu.Popup>
         </Menu.Positioner>
+        <!-- Catches clicks over the preview iframe, which would otherwise swallow them and leave the menu open. -->
+        <div class="absolute inset-y-0 right-0 left-54 z-40 bg-transparent"></div>
       </Menu.Portal>
     </Menu.Root>
   </CardHeader>
