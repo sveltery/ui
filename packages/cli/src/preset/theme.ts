@@ -1,6 +1,6 @@
 import type { CssVars } from '../registry.js';
 import { PRESET_FONT_DEFINITIONS } from './fonts.js';
-import type { PresetConfig, PresetRadius, PresetTheme } from './preset.js';
+import type { PresetConfig, PresetMenuAccent, PresetRadius, PresetTheme } from './preset.js';
 
 /** `default` keeps the style's own radius. */
 export const PRESET_RADIUS_VALUES: Record<PresetRadius, string | undefined> = {
@@ -15,6 +15,16 @@ export const PRESET_RADIUS_VALUES: Record<PresetRadius, string | undefined> = {
 export type ThemeColors = Partial<Record<PresetTheme, CssVars>>;
 
 export type PresetCssVars = { theme?: Record<string, string>; light: Record<string, string>; dark: Record<string, string> };
+
+/** A bold menu accent highlights menu items with the primary color: port of the menu accent step of shadcn's `buildRegistryTheme`. */
+export function applyMenuAccent(menuAccent: PresetMenuAccent | undefined, ...modes: (Record<string, string> | undefined)[]): void {
+  if (menuAccent !== 'bold') return;
+  for (const vars of modes) {
+    if (vars?.primary === undefined) continue;
+    vars.accent = vars.primary;
+    if (vars['primary-foreground'] !== undefined) vars['accent-foreground'] = vars['primary-foreground'];
+  }
+}
 
 /**
  * Port of shadcn's `buildRegistryTheme`, plus the `--font-heading` var that its `buildRegistryBase` adds. Unlike
@@ -36,12 +46,7 @@ export function buildTheme(config: PresetConfig, colors: ThemeColors): PresetCss
     if (chart?.dark?.[key]) dark[key] = chart.dark[key];
   }
 
-  if (config.menuAccent === 'bold') {
-    for (const vars of [light, dark]) {
-      vars.accent = vars.primary!;
-      vars['accent-foreground'] = vars['primary-foreground']!;
-    }
-  }
+  applyMenuAccent(config.menuAccent, light, dark);
 
   const radius = PRESET_RADIUS_VALUES[config.radius];
   if (radius) light.radius = radius;
