@@ -35,7 +35,9 @@ function selectFiles(cwd: string, uiDir: string, path: string | undefined): { ba
   let selected: { base: string; files: string[] };
   if (path.includes('*')) {
     if (!fs.globSync) throw new CliError('A glob pattern needs Node 22 or later. Pass a file or directory instead.');
-    selected = { base: cwd, files: fs.globSync(path, { cwd, exclude: (name) => name.split(/[\\/]/).includes('node_modules') }) };
+    // globSync matches directories too, as in src/**, so keep only files.
+    const matches = fs.globSync(path, { cwd, exclude: (name) => name.split(/[\\/]/).includes('node_modules') });
+    selected = { base: cwd, files: matches.filter((file) => fs.statSync(join(cwd, file)).isFile()) };
   } else {
     const full = resolve(cwd, path);
     const stat = fs.statSync(full, { throwIfNoEntry: false });

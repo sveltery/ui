@@ -652,6 +652,12 @@ describe('migrate rtl', () => {
     await expect(migrateRtl({ cwd, yes: true, path: 'src/**/*.md' })).rejects.toThrow('No files found matching: src/**/*.md');
   });
 
+  test('skips the directories a glob matches', async () => {
+    const result = await migrateRtl({ cwd, yes: true, path: `${ui}/**` });
+    expect(result.transformed.sort()).toEqual([`${ui}/card/Card.svelte`, `${ui}/card/variants.ts`]);
+    expect(read(`${ui}/card/Card.svelte`)).toContain('ms-2');
+  });
+
   test('changes nothing when the prompt is declined', async () => {
     vi.mocked(confirm).mockResolvedValueOnce(false);
     await migrateRtl({ cwd, yes: false });
