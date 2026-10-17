@@ -1,83 +1,54 @@
 <script lang="ts">
-  import { scaleBand } from 'd3-scale';
-  import { BarChart, type ChartContextValue } from 'layerchart';
+  import { Bar, BarChart, CartesianGrid, XAxis } from '@sveltery/recharts';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';
-  import { cubicInOut } from 'svelte/easing';
 
   const chartData = [
-    { month: 'January', desktop: 186 },
-    { month: 'February', desktop: 305 },
-    { month: 'March', desktop: 237 },
-    { month: 'April', desktop: 73 },
-    { month: 'May', desktop: 209 },
-    { month: 'June', desktop: 214 },
-  ];
+    { month: "January", desktop: 186 },
+    { month: "February", desktop: 305 },
+    { month: "March", desktop: 237 },
+    { month: "April", desktop: 73 },
+    { month: "May", desktop: 209 },
+    { month: "June", desktop: 214 },
+  ]
 
   const chartConfig = {
-    desktop: { label: 'Desktop', color: 'var(--chart-1)' },
-  } satisfies ChartConfig;
-
-  let context = $state<ChartContextValue>();
+    desktop: {
+      label: "Desktop",
+      color: "var(--chart-1)",
+    },
+  } satisfies ChartConfig
 </script>
 
-<Card class="w-full max-w-md">
+<Card>
   <CardHeader>
     <CardTitle>Bar Chart</CardTitle>
     <CardDescription>January - June 2024</CardDescription>
   </CardHeader>
   <CardContent>
-    <ChartContainer aria-label="Bar Chart" config={chartConfig}>
-      <BarChart
-        bind:context
-        data={chartData}
-        xScale={scaleBand().padding(0.25)}
-        x="month"
-        axis="x"
-        series={[{ key: 'desktop', label: 'Desktop', color: 'var(--color-desktop)' }]}
-        props={{
-          bars: {
-            stroke: 'none',
-            rounded: 'all',
-            radius: 8,
-            // use the height of the chart to animate the bars
-            initialY: context?.height,
-            initialHeight: 0,
-            motion: {
-              x: { type: 'tween', duration: 500, easing: cubicInOut },
-              width: { type: 'tween', duration: 500, easing: cubicInOut },
-              height: { type: 'tween', duration: 500, easing: cubicInOut },
-              y: { type: 'tween', duration: 500, easing: cubicInOut },
-            },
-          },
-          highlight: { area: { fill: 'none' } },
-          xAxis: { tickLength: 16, format: (d) => d.slice(0, 3) },
-        }}
-      >
-        {#snippet tooltip()}
-          <ChartTooltip hideLabel />
-        {/snippet}
+    <ChartContainer config={chartConfig}>
+      <BarChart accessibilityLayer data={chartData}>
+        <CartesianGrid vertical={false} />
+        <XAxis dataKey="month" tickLine={false} tickMargin={10} axisLine={false} tickFormatter={(value) => value.slice(0, 3)} />
+        <ChartTooltip cursor={false}>
+          {#snippet content(props: TooltipContentArgs)}
+            <ChartTooltipContent hideLabel {...props} />
+          {/snippet}
+        </ChartTooltip>
+        <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8} />
       </BarChart>
     </ChartContainer>
   </CardContent>
-  <CardFooter>
-    <div class="flex w-full items-start gap-2 text-sm">
-      <div class="grid gap-2">
-        <div class="flex items-center gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <IconPlaceholder
-            lucide="TrendingUpIcon"
-            tabler="IconTrendingUp"
-            hugeicons="TradeUpIcon"
-            phosphor="TrendUpIcon"
-            remixicon="RiLineChartLine"
-            class="size-4"
-          />
-        </div>
-        <div class="text-muted-foreground flex items-center gap-2 leading-none">
-          Showing total visitors for the last 6 months
-        </div>
-      </div>
-    </div>
+  <CardFooter class="flex-col items-start gap-2 text-sm">
+    <div class="flex gap-2 leading-none font-medium">Trending up by 5.2% this month <IconPlaceholder
+        lucide="TrendingUpIcon"
+        tabler="IconTrendingUp"
+        hugeicons="TradeUpIcon"
+        phosphor="TrendUpIcon"
+        remixicon="RiLineChartLine"
+        class="h-4 w-4"
+      /></div>
+    <div class="leading-none text-muted-foreground">Showing total visitors for the last 6 months</div>
   </CardFooter>
 </Card>

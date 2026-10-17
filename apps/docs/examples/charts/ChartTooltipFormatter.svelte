@@ -1,93 +1,60 @@
 <script lang="ts">
+  import { Bar, BarChart, XAxis, type TooltipValueType, type TooltipNameType } from '@sveltery/recharts';
   import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { type ChartConfig, ChartContainer, ChartTooltip } from '$registry/bases/base/ui/chart';
-  import { scaleBand } from 'd3-scale';
-  import { BarChart, type ChartContextValue } from 'layerchart';
-  import { cubicInOut } from 'svelte/easing';
+  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
 
   const chartData = [
-    { date: '2024-07-15', running: 450, swimming: 300 },
-    { date: '2024-07-16', running: 380, swimming: 420 },
-    { date: '2024-07-17', running: 520, swimming: 120 },
-    { date: '2024-07-18', running: 140, swimming: 550 },
-    { date: '2024-07-19', running: 600, swimming: 350 },
-    { date: '2024-07-20', running: 480, swimming: 400 },
-  ];
+    { date: "2024-07-15", running: 450, swimming: 300 },
+    { date: "2024-07-16", running: 380, swimming: 420 },
+    { date: "2024-07-17", running: 520, swimming: 120 },
+    { date: "2024-07-18", running: 140, swimming: 550 },
+    { date: "2024-07-19", running: 600, swimming: 350 },
+    { date: "2024-07-20", running: 480, swimming: 400 },
+  ]
 
   const chartConfig = {
-    running: { label: 'Running', color: 'var(--chart-1)' },
-    swimming: { label: 'Swimming', color: 'var(--chart-2)' },
-  } satisfies ChartConfig;
-
-  let context = $state<ChartContextValue>();
+    running: {
+      label: "Running",
+      color: "var(--chart-1)",
+    },
+    swimming: {
+      label: "Swimming",
+      color: "var(--chart-2)",
+    },
+  } satisfies ChartConfig
 </script>
 
-<Card class="w-full max-w-md">
+<Card>
   <CardHeader>
     <CardTitle>Tooltip - Formatter</CardTitle>
-    <CardDescription>Tooltip with custom formatter.</CardDescription>
+    <CardDescription>Tooltip with custom formatter .</CardDescription>
   </CardHeader>
   <CardContent>
-    <ChartContainer aria-label="Tooltip - Formatter" config={chartConfig}>
-      <BarChart
-        bind:context
-        data={chartData}
-        xScale={scaleBand().padding(0.25)}
-        x="date"
-        axis="x"
-        rule={false}
-        series={[
-          {
-            key: 'running',
-            label: 'Running',
-            color: 'var(--color-running)',
-            props: { rounded: 'bottom' },
-          },
-          {
-            key: 'swimming',
-            label: 'Swimming',
-            color: 'var(--color-swimming)',
-          },
-        ]}
-        seriesLayout="stack"
-        grid={false}
-        highlight={false}
-        props={{
-          bars: {
-            stroke: 'none',
-            initialY: context?.height,
-            initialHeight: 0,
-            motion: {
-              y: { type: 'tween', duration: 500, easing: cubicInOut },
-              height: { type: 'tween', duration: 500, easing: cubicInOut },
-            },
-          },
-          xAxis: {
-            tickLength: 16,
-            format: (d) =>
-              new Date(d).toLocaleDateString('en-US', {
-                weekday: 'short',
-              }),
-          },
-        }}
-      >
-        {#snippet tooltip()}
-          <ChartTooltip hideLabel>
-            {#snippet formatter({ name, value })}
-              <div
-                class="text-muted-foreground flex min-w-[130px] items-center text-xs"
-              >
-                {name}
-                <div
-                  class="text-foreground ms-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums"
-                >
-                  {value}
-                  <span class="text-muted-foreground font-normal"> kcal </span>
-                </div>
-              </div>
-            {/snippet}
-          </ChartTooltip>
-        {/snippet}
+    <ChartContainer config={chartConfig}>
+      <BarChart accessibilityLayer data={chartData}>
+        <XAxis
+          dataKey="date"
+          tickLine={false}
+          tickMargin={10}
+          axisLine={false}
+          tickFormatter={(value) => {
+            return new Date(value).toLocaleDateString("en-US", {
+              weekday: "short",
+            })
+          }}
+        />
+        <Bar dataKey="running" stackId="a" fill="var(--color-running)" radius={[0, 0, 4, 4]} />
+        <Bar dataKey="swimming" stackId="a" fill="var(--color-swimming)" radius={[4, 4, 0, 0]} />
+        <ChartTooltip cursor={false} defaultIndex={1}>
+          {#snippet content(props: TooltipContentArgs)}
+            <ChartTooltipContent hideLabel {...props}>
+              {#snippet formatter(value: TooltipValueType, name: TooltipNameType)}
+                <div class="flex min-w-[130px] items-center text-xs text-muted-foreground">{chartConfig[name as keyof typeof chartConfig]?.label ||
+                    name}<div class="ml-auto flex items-baseline gap-0.5 font-mono font-medium text-foreground tabular-nums">{value}<span class="font-normal text-muted-foreground">kcal</span></div></div>
+              {/snippet}
+            </ChartTooltipContent>
+          {/snippet}
+        </ChartTooltip>
       </BarChart>
     </ChartContainer>
   </CardContent>
