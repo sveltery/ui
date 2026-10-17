@@ -15,7 +15,7 @@
         <label><NativeRadio {...f.fields.plan.as('radio', plan)} data-testid="radio-{plan}" />{plan}</label>
       {/each}
     </NativeRadioGroup>
-    {#each f.fields.plan.issues() ?? [] as issue}<p data-testid="error">{issue.message}</p>{/each}
+    {#each f.fields.plan.issues() ?? [] as issue (issue.message)}<p data-testid="error">{issue.message}</p>{/each}
     <button type="submit">Submit</button>
     <button type="reset">Reset</button>
   </form>

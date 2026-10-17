@@ -54,6 +54,9 @@ test.describe('without JS', () => {
     await page.getByText('free', { exact: true }).click();
     await submit(page);
     await expect(radio(page, 'free')).toBeChecked();
+    await expect(radio(page, 'free')).toHaveAttribute('type', 'radio');
+    await expect(radio(page, 'free')).toHaveAttribute('name', /^plan\//);
+    await expect(radio(page, 'pro')).not.toBeChecked();
     await expect(radio(page, 'free')).toHaveAttribute('aria-invalid', 'true');
     await expect(page.getByTestId('error')).toHaveText('The free plan is full');
   });
