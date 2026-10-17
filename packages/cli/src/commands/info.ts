@@ -12,6 +12,7 @@ export type Info = {
   config: {
     style: string;
     iconLibrary: string;
+    rtl: boolean;
     menuColor: string;
     menuAccent: string | null;
     aliases: Config['aliases'];
@@ -44,6 +45,7 @@ export async function collectInfo(cwd: string): Promise<Info> {
     config: config && {
       style: config.style,
       iconLibrary: config.iconLibrary,
+      rtl: config.rtl ?? false,
       menuColor: config.menuColor,
       menuAccent: config.menuAccent ?? null,
       aliases: config.aliases,
@@ -91,7 +93,7 @@ export function formatInfo(info: Info): string {
   );
   if (config) {
     lines.push(
-      ...entries({ style: config.style, iconLibrary: config.iconLibrary, menuColor: config.menuColor, menuAccent: config.menuAccent ?? '-', registry: config.registry }),
+      ...entries({ style: config.style, iconLibrary: config.iconLibrary, rtl: config.rtl ? 'Yes' : 'No', menuColor: config.menuColor, menuAccent: config.menuAccent ?? '-', registry: config.registry }),
       '',
       'Preset',
       ...formatPreset(preset!, createUrl(config.registry)),
