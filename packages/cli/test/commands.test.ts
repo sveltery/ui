@@ -2,7 +2,7 @@
 import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { createServer, type Server } from 'node:http';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { confirm, log, select } from '@clack/prompts';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, test, vi } from 'vitest';
 import { add } from '../src/commands/add.js';
@@ -13,6 +13,7 @@ import { baseDependencies, init, initMonorepo } from '../src/commands/init.js';
 import { migrate, migrateRtl, type MigrateOptions } from '../src/commands/migrate.js';
 import { update } from '../src/commands/update.js';
 import { formatPlan } from '../src/plan.js';
+import { monorepoFiles } from '../src/template.js';
 import { cliPackage } from '../src/version.js';
 
 vi.mock('@clack/prompts', async (importOriginal) => ({ ...(await importOriginal<typeof import('@clack/prompts')>()), confirm: vi.fn(), select: vi.fn() }));
@@ -1319,6 +1320,24 @@ describe('init --monorepo', () => {
     expect(JSON.parse(read('acme/apps/web/components.json'))).toMatchObject({ style: 'vega', registry: `${origin}/other`, registries });
   });
 
+  test('an unknown preset, a preset that is not a registry:base item or a style the registry does not serve stops before the project is created', async () => {
+    await expect(initMonorepo({ cwd, ...options, name: 'acme', preset: 'tyop' })).rejects.toThrow('Unknown preset "tyop".');
+    const buttonUrl = `${registryUrl}/styles/nova/button.json`;
+    await expect(initMonorepo({ cwd, ...options, name: 'acme', preset: buttonUrl })).rejects.toThrow(`${buttonUrl} is a registry:ui item, and a preset must be a registry:base item.`);
+    await expect(initMonorepo({ cwd, ...options, name: 'acme', style: 'maia' })).rejects.toThrow(`The registry at ${registryUrl} does not serve the maia style.`);
+    expect(existsSync(join(cwd, 'acme'))).toBe(false);
+  });
+
+  test('running again in the root of a template that a failed first run left adds the button the app imports', async () => {
+    for (const [path, content] of Object.entries(monorepoFiles({ name: 'acme', packageManager: 'pnpm@*', agent: 'pnpm' }))) {
+      mkdirSync(dirname(join(cwd, 'acme', path)), { recursive: true });
+      writeFileSync(join(cwd, 'acme', path), content);
+    }
+    const { ui } = await initMonorepo({ cwd: join(cwd, 'acme'), ...options });
+    expect(ui.files.map((file) => [file.path, file.status])).toContainEqual(['src/components/button/Button.svelte', 'new']);
+    expect(read('acme/packages/ui/src/components/button/Button.svelte')).toContain("import ChevronRightIcon from '@lucide/svelte/icons/chevron-right';");
+  });
+
   test('asks for the settings before it creates the project', async () => {
     const created: boolean[] = [];
     vi.mocked(select).mockImplementation(async ({ initialValue }) => {
@@ -1329,7 +1348,7 @@ describe('init --monorepo', () => {
     expect([created, existsSync(join(cwd, 'acme/packages/ui/components.json'))]).toEqual([[false, false, false], true]);
   });
 
-  test('init and add in the root list the workspaces to run them in', async () => {
+  test('init, add and apply in the root list the workspaces to run them in, and apply only the app', async () => {
     await initMonorepo({ cwd, ...options, name: 'acme' });
     const message = (command: string) =>
       [
@@ -1341,6 +1360,13 @@ describe('init --monorepo', () => {
       ].join('\n');
     await expect(init({ cwd: join(cwd, 'acme'), ...options })).rejects.toThrow(message('init'));
     await expect(add(['button'], { cwd: join(cwd, 'acme'), ...addOptions })).rejects.toThrow(message('add [component]'));
+    const applyMessage = [
+      'It looks like you are running apply --preset <preset> from a monorepo root.',
+      'To use Sveltery UI in a specific workspace, use the --cwd flag:',
+      '',
+      '  npx @sveltery/ui@latest apply --preset <preset> --cwd apps/web',
+    ].join('\n');
+    expect(await apply('b0', { cwd: join(cwd, 'acme'), yes: true, silent: true, install: false }).catch((error: Error) => error.message)).toBe(applyMessage);
   });
 
   test('with npm, lists the workspaces in package.json and depends on the ui package as *', async () => {
@@ -1437,6 +1463,25 @@ describe('init --monorepo', () => {
     test('init --preset writes the settings to the ui package too', async () => {
       await init({ cwd: app(), ...options, preset: 'b0' });
       expect(JSON.parse(read('acme/packages/ui/components.json'))).toMatchObject({ style: 'vega', iconLibrary: 'tabler', menuColor: 'inverted-translucent', menuAccent: 'bold' });
+    });
+
+    test('init in packages/ui after init --preset in the app has nothing to change in its components.json', async () => {
+      await init({ cwd: app(), ...options, preset: 'b0' });
+      const plan = await init({ cwd: join(cwd, 'acme/packages/ui'), ...options, preset: 'b0' });
+      expect(plan.files.find((file) => file.path === 'components.json')?.status).toBe('identical');
+    });
+
+    test('init in an app with a stylesheet of its own writes the theme there and installs its packages in the app', async () => {
+      writeFileSync(join(app(), 'src/app.css'), "@import 'tailwindcss';\n");
+      const config = JSON.parse(read('acme/apps/web/components.json'));
+      writeFileSync(join(app(), 'components.json'), JSON.stringify({ ...config, tailwind: { ...config.tailwind, css: 'src/app.css' } }));
+      const plan = await init({ cwd: app(), ...options, preset: 'b0' });
+      expect(read('acme/apps/web/src/app.css')).toContain("@import '@fontsource-variable/inter';");
+      expect([plan.dependencies, plan.devDependencies, plan.workspace]).toEqual([
+        [...baseDependencies, '@tabler/icons-svelte@^3.48.0', '@fontsource-variable/inter', '@fontsource-variable/playfair-display'],
+        [`${cliPackage}@^0.2.0`],
+        { dir: '../../packages/ui', dependencies: [], devDependencies: [] },
+      ]);
     });
 
     test('diff and update find the ui files in packages/ui', async () => {

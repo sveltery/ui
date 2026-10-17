@@ -6,7 +6,7 @@ import { detect, getUserAgent } from 'package-manager-detector';
 import { CONFIG_FILE, configKeys, defaultAliases, parseConfig, stylePresets, type Config } from '../config.js';
 import { DEFAULT_CSS, fontStyles, mergeTheme } from '../css.js';
 import { iconLibraries } from '../icons.js';
-import { planItems, projectOf, type Project } from '../items.js';
+import { planItems, projectOf, sharesStylesheet, type Project } from '../items.js';
 import { CliError } from '../parse.js';
 import { executePlan, formatPlan, missingPackages, packageName, planFile, runPackageManager, type Plan } from '../plan.js';
 import { applyMenuAccent, PRESET_MENU_ACCENTS, PRESET_MENU_COLORS, type PresetMenuAccent, type PresetMenuColor } from '../preset/index.js';
@@ -140,15 +140,20 @@ async function settingsFromFlags(options: InitOptions, registry: Registry, exist
   };
 }
 
+/** The preset's registry:base item and the style it sets, which the registry must serve. */
+async function fetchPreset(registry: Registry, url: string, existing: Existing): Promise<{ base: Extract<RegistryItem, { type: 'registry:base' }>; style: StyleName }> {
+  // A URL ref ignores the style, which the item itself names.
+  const base = await fetchItem(registry, 'nova', { kind: 'url', url });
+  if (base.type !== 'registry:base') throw new CliError(`${url} is a ${base.type} item, and a preset must be a registry:base item.`);
+  const style = base.config?.style ?? valid(existing.config.style, styleNames) ?? 'nova';
+  assertServed(registry, style);
+  return { base, style };
+}
+
 async function settingsFromPreset(url: string, options: InitOptions, registry: Registry, existing: Existing): Promise<Settings> {
   const ref: ItemRef = { kind: 'url', url };
-  // A URL ref ignores the style, which the item itself names.
-  const base = await fetchItem(registry, 'nova', ref);
-  if (base.type !== 'registry:base') throw new CliError(`${url} is a ${base.type} item, and a preset must be a registry:base item.`);
+  const { base, style } = await fetchPreset(registry, url, existing);
   const config = base.config ?? {};
-
-  const style = config.style ?? valid(existing.config.style, styleNames) ?? 'nova';
-  assertServed(registry, style);
   const iconLibrary = config.iconLibrary ?? valid(existing.config.iconLibrary, iconLibraryNames) ?? stylePresets[style].iconLibrary;
   const resolved = await resolveItems(registry, style, [ref]);
   const fonts = fontStyles(resolved);
@@ -230,7 +235,7 @@ export async function planInit(options: InitOptions, components: string[] = []):
   const synced =
     linked.ui === undefined || (only !== null && !only.split(',').includes('theme'))
       ? undefined
-      : { dir: linked.ui.dir, config: { ...linked.ui.config, style, iconLibrary, rtl, menuColor, ...(menuAccent ? { menuAccent } : {}), tailwind: { ...linked.ui.config.tailwind, baseColor } } };
+      : { dir: linked.ui.dir, config: parseConfig({ ...linked.ui.config, style, iconLibrary, rtl, menuColor, ...(menuAccent ? { menuAccent } : {}), tailwind: { ...linked.ui.config.tailwind, baseColor } }) };
   const project: Project = synced === undefined ? linked : { ...linked, ui: synced };
   const added = components.length === 0 ? [] : await resolveItems(registry, style, components.map(parseItemRef));
   const items = [...new Map([...settings.items, ...added].map((item) => [item.name, item])).values()];
@@ -247,11 +252,16 @@ export async function planInit(options: InitOptions, components: string[] = []):
   const dependencies = settings.dependencies.filter((spec) => packageName(spec) !== cliPackage);
   const devDependencies = [`${cliPackage}@^${version}`];
   const { ui } = project;
-  // The ui package holds the stylesheet, so the packages of the theme and the fonts go there. The app gets the icon
-  // packages too, as init --monorepo installs them in both.
+  // The packages of the theme and the fonts go to the workspace that holds the stylesheet: the ui package when the app
+  // uses its stylesheet. The app gets the icon packages too, as init --monorepo installs them in both.
   const plan: Plan =
-    ui === undefined
-      ? { files, dependencies: missingPackages(cwd, [...dependencies, ...itemsPlan.dependencies]), devDependencies: missingPackages(cwd, [...devDependencies, ...itemsPlan.devDependencies]) }
+    ui === undefined || !sharesStylesheet(project)
+      ? {
+          files,
+          dependencies: missingPackages(cwd, [...dependencies, ...itemsPlan.dependencies]),
+          devDependencies: missingPackages(cwd, [...devDependencies, ...itemsPlan.devDependencies]),
+          ...(itemsPlan.workspace === undefined ? {} : { workspace: itemsPlan.workspace }),
+        }
       : {
           files,
           dependencies: missingPackages(cwd, [...iconLibraries[iconLibrary].packages, ...itemsPlan.dependencies]),
@@ -301,9 +311,9 @@ function commitNewProject(root: string) {
 /**
  * `init --monorepo`, ported from upstream's monorepo templates. It asks for the settings first. In a directory without
  * package.json, it then creates the monorepo in the `--name` folder, installs it and adds the button. In a monorepo it
- * created before, it sets up the workspaces again and leaves the components alone. It runs init in packages/ui, writes the
- * same settings to apps/web/components.json, and installs the icon packages in both workspaces, as upstream's
- * `fontsourceMonorepoInit` does.
+ * created before, it sets up the workspaces again and leaves the components alone, adding the button only when it is
+ * missing. It runs init in packages/ui, writes the same settings to apps/web/components.json, and installs the icon
+ * packages in both workspaces, as upstream's `fontsourceMonorepoInit` does.
  */
 export async function initMonorepo(options: InitOptions): Promise<{ root: string; ui: Plan; app: Plan }> {
   const create = !existsSync(join(options.cwd, 'package.json'));
@@ -323,7 +333,7 @@ export async function initMonorepo(options: InitOptions): Promise<{ root: string
     throw new CliError(`${root} has a package.json, and init --monorepo needs its ${UI_DIR} workspace with a ${CONFIG_FILE} and its ${APP_DIR} workspace. Run init --monorepo in an empty directory to create a monorepo, or run init in your app.`);
   }
 
-  // Every prompt runs before the project is created, so a cancelled or failed prompt leaves nothing behind.
+  // Every prompt and check runs before the project is created, so a cancelled prompt or an unknown preset leaves nothing behind.
   const existingUi = create ? { config: {}, tailwind: {} } : readExisting(uiConfigPath, `${UI_DIR}/${CONFIG_FILE}`);
   const chosen = options.preset === undefined ? await chooseLook(options, existingUi) : await choosePreset(options.preset, options, registryUrlOf(existingUi));
   const none = { files: [], dependencies: [], devDependencies: [] };
@@ -332,6 +342,11 @@ export async function initMonorepo(options: InitOptions): Promise<{ root: string
     typeof chosen === 'string' ? { ...options, cwd: uiCwd, preset: chosen } : { ...options, cwd: uiCwd, style: chosen.style, icons: chosen.iconLibrary, baseColor: chosen.baseColor };
 
   if (create) {
+    // The preset and the style are checked against the registry here, as planInit checks them only once the template is written.
+    const registryUrl = registryUrlOf(existingUi);
+    const registry = await openRegistry(registryUrl);
+    if (typeof chosen === 'string') await fetchPreset(registry, resolvePresetUrl(registryUrl, chosen, options.rtl), existingUi);
+    else assertServed(registry, chosen.style);
     const { agent, packageManager } = await newProjectPackageManager(options.cwd);
     log.info(`Creating a new SvelteKit monorepo in ${relative(options.cwd, root)}.`);
     for (const [path, content] of Object.entries(monorepoFiles({ name: basename(root), packageManager, agent }))) {
@@ -341,8 +356,10 @@ export async function initMonorepo(options: InitOptions): Promise<{ root: string
     if (options.install) await runPackageManager(root, 'install', firstInstallArgs[agent], { fallback: `Run \`${agent} install\` in ${root} yourself.` });
   }
 
-  // As upstream's init adds the button only to a project it created from a template.
-  const planned = (await planInit(answered, create ? ['button'] : []))!;
+  // As upstream's init adds the button only to a project it created from a template. A run in a monorepo whose first run
+  // failed before the button was added adds it then, as the app's page imports it.
+  let planned = (await planInit(answered, create ? ['button'] : []))!;
+  if (!create && !existsSync(join(uiCwd, planned.project.uiDir, 'button'))) planned = (await planInit(answered, ['button']))!;
   const { config } = planned.project;
   const existingApp = readExisting(join(appCwd, CONFIG_FILE), `${APP_DIR}/${CONFIG_FILE}`).config;
   const strings = (value: unknown) => Object.fromEntries(Object.entries(typeof value === 'object' && value !== null ? value : {}).filter(([, entry]) => typeof entry === 'string')) as Record<string, string>;

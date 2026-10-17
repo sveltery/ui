@@ -90,6 +90,9 @@ function transformContext(root: string, config: Config, css: string | undefined)
   };
 }
 
+/** Whether the app's components.json names the ui package's stylesheet, as the template's does, rather than a stylesheet of its own. */
+export const sharesStylesheet = ({ cwd, config, ui }: Project) => ui !== undefined && join(cwd, config.tailwind.css) === join(cwd, ui.dir, ui.config.tailwind.css);
+
 /**
  * What writing `items` into the project would do: every file transformed for this project, and the packages it lacks.
  * `css` is the stylesheet as it will be, when it is not the one on disk. In a monorepo app, ui files are transformed with
@@ -98,9 +101,7 @@ function transformContext(root: string, config: Config, css: string | undefined)
 export function planItems(project: Project, items: RegistryItem[], css?: string): Plan {
   const { cwd, config, ui } = project;
   const ctx = transformContext(cwd, config, css);
-  // The app's components.json names the ui package's stylesheet, so `css` is that one's new content too.
-  const sameCss = ui !== undefined && join(cwd, config.tailwind.css) === join(cwd, ui.dir, ui.config.tailwind.css);
-  const uiCtx = ui === undefined ? ctx : transformContext(join(cwd, ui.dir), ui.config, sameCss ? css : undefined);
+  const uiCtx = ui === undefined ? ctx : transformContext(join(cwd, ui.dir), ui.config, sharesStylesheet(project) ? css : undefined);
   const files = new Map<string, PlannedFile>();
   const app = { dependencies: [] as string[], devDependencies: [] as string[] };
   const workspace = { dependencies: [] as string[], devDependencies: [] as string[] };

@@ -5,6 +5,7 @@ import { CONFIG_FILE } from '../config.js';
 import { installedRoots, openProject } from '../items.js';
 import { CliError } from '../parse.js';
 import { executePlan, formatPlan, type Plan } from '../plan.js';
+import { formatMonorepoMessage, hasFrameworkConfig, monorepoTargets } from '../project.js';
 import { ask } from '../prompt.js';
 import { planInit } from './init.js';
 import { createUrl, resolvePresetUrl } from './preset.js';
@@ -53,7 +54,12 @@ export async function apply(positional: string | undefined, options: ApplyOption
   if (options.only === true) throw new CliError(`Missing value for --only.\n${ONLY_HELP}`);
   const explicitOnly = options.only === undefined ? undefined : parseOnly(options.only);
   if (explicitOnly && preset === undefined) throw new CliError('Missing preset for --only.\nUse: npx @sveltery/ui@latest apply <preset> --only theme,font.');
-  if (!existsSync(join(cwd, CONFIG_FILE))) throw new CliError(`No ${CONFIG_FILE} in ${cwd}. The apply command only works in a project that ran init. Run \`${initCommand(preset)}\` first.`);
+  if (!existsSync(join(cwd, CONFIG_FILE))) {
+    // As upstream's preflight-apply lists only the apps, which leaves out the ui package.
+    const targets = monorepoTargets(cwd).filter((target) => hasFrameworkConfig(join(cwd, target)));
+    if (targets.length > 0) throw new CliError(formatMonorepoMessage('apply --preset <preset>', targets));
+    throw new CliError(`No ${CONFIG_FILE} in ${cwd}. The apply command only works in a project that ran init. Run \`${initCommand(preset)}\` first.`);
+  }
   const project = await openProject(cwd);
 
   if (preset === undefined) {

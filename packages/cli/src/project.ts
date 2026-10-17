@@ -170,12 +170,15 @@ function expandPattern(root: string, pattern: string): string[] {
 /** Files whose presence makes a workspace an app, from upstream's `getMonorepoTargets`. `*` stands for any extension. */
 const FRAMEWORK_CONFIG_FILES = ['next.config.*', 'vite.config.*', 'astro.config.*', 'remix.config.*', 'nuxt.config.*', 'svelte.config.*', 'gatsby-config.*', 'angular.json'];
 
+/** Whether `dir` holds a framework's config file, such as vite.config.ts, which is how upstream's `getProjectInfo` tells an app from a package. */
+export const hasFrameworkConfig = (dir: string) =>
+  readdirSync(dir).some((name) => FRAMEWORK_CONFIG_FILES.some((file) => (file.endsWith('*') ? name.startsWith(file.slice(0, -1)) : name === file)));
+
 /** The workspaces of the monorepo at `root` that have a components.json or a framework config, relative to it, as upstream's `getMonorepoTargets` finds them. Empty when `root` declares no workspaces. */
 export function monorepoTargets(root: string): string[] {
-  const isFrameworkConfig = (name: string) => FRAMEWORK_CONFIG_FILES.some((file) => (file.endsWith('*') ? name.startsWith(file.slice(0, -1)) : name === file));
   const dirs = new Set(workspacePatterns(root).flatMap((pattern) => expandPattern(root, pattern)));
   return [...dirs]
-    .filter((dir) => existsSync(join(dir, 'package.json')) && (existsSync(join(dir, 'components.json')) || readdirSync(dir).some(isFrameworkConfig)))
+    .filter((dir) => existsSync(join(dir, 'package.json')) && (existsSync(join(dir, 'components.json')) || hasFrameworkConfig(dir)))
     .map((dir) => relative(root, dir).replaceAll('\\', '/'))
     .sort();
 }

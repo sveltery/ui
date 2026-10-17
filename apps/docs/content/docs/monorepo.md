@@ -42,7 +42,7 @@ For example, if you run `npx @sveltery/ui@latest add button`, the CLI installs t
 
 If you run `npx @sveltery/ui@latest add login-01`, the CLI installs the `button`, `card`, `field`, `input`, `label` and `separator` components under `packages/ui`, and the `login-form` component and the `/login` page under `apps/web`. The `login-form` component imports the other components from `@workspace/ui`.
 
-`diff` and `update` work in the app the same way. Run at the root of the monorepo, `init` and `add` list the workspaces to run them in.
+`diff` and `update` work in the app the same way. Run at the root of the monorepo, `init` and `add` list the workspaces to run them in, and `apply` lists the app.
 
 ### Importing components
 
