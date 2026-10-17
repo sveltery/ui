@@ -6,7 +6,7 @@
   import type { SizeInput } from './units.js';
 
   const generatedId = $props.id();
-  let { id = generatedId, defaultSize, minSize, maxSize, collapsible, collapsedSize, collapsedThreshold, onResize, children, style, ...rest }: PanelProps = $props();
+  let { id = generatedId, defaultSize, minSize, maxSize, collapsible, collapsedSize, collapsedThreshold, onResize, children, class: className, style, ...rest }: PanelProps = $props();
 
   const group = getGroup();
   const panel = new PanelEntry(group, () => ({ id, defaultSize, minSize, maxSize, collapsible, collapsedSize, collapsedThreshold }));
@@ -33,6 +33,16 @@
   export function isCollapsed(): boolean { return group.collapsedAt(panel.index); }
 </script>
 
-<div {...rest} {id} data-panel="" data-collapsed={panel.collapsed ? '' : undefined} style="flex: {panel.size} 1 0px;overflow:hidden;{style ?? ''}" {@attach panel.attach}>
-  {@render children?.()}
+<div
+  {...rest}
+  data-panel="true"
+  data-testid={id}
+  {id}
+  data-collapsed={panel.collapsed ? '' : undefined}
+  style="min-height:0;max-height:100%;height:auto;min-width:0;max-width:100%;width:auto;border:none;border-width:0;padding:0;margin:0;display:flex;flex-basis:0;flex-shrink:1;overflow:hidden;flex-grow:{panel.size}{group.dragging ? ';pointer-events:none' : ''}"
+  {@attach panel.attach}
+>
+  <div class={className} style="max-height:100%;max-width:100%;flex-grow:1;{style ?? ''}">
+    {@render children?.()}
+  </div>
 </div>

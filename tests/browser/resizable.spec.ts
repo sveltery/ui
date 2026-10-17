@@ -23,6 +23,11 @@ async function drag(page: Page, id: string, dx: number, dy = 0, along = 0.5) {
   await page.mouse.up();
 }
 
+// Separators report the panel size unrounded, as react-resizable-panels does.
+async function expectValue(page: Page, id: string, expected: number) {
+  await expect.poll(async () => Math.abs(Number(await page.locator(`#${id}`).getAttribute('aria-valuenow')) - expected), { message: `${id} aria-valuenow near ${expected}` }).toBeLessThanOrEqual(0.05);
+}
+
 async function open(page: Page) {
   await page.goto('/resizable');
   await expect(page.locator('[data-hydrated=true]')).toBeAttached();
@@ -36,7 +41,7 @@ test('dragging a horizontal separator moves both panels by the dragged distance'
   await drag(page, 'horizontal-handle', 100);
   await expectSize(page, 'a', a + 100);
   await expectSize(page, 'b', b - 100);
-  await expect(page.locator('#horizontal-handle')).toHaveAttribute('aria-valuenow', '63');
+  await expectValue(page, 'horizontal-handle', 62.5);
   await expect(page.getByTestId('bound')).toHaveText('63');
   await drag(page, 'horizontal-handle', -250);
   await expectSize(page, 'a', a - 150);
@@ -58,7 +63,7 @@ test('dragging a vertical separator moves the panels by the dragged distance', a
   await expectSize(page, 'top', top + 60, 'height');
   await expectSize(page, 'bottom', bottom - 60, 'height');
   await expect(page.locator('#vertical-handle')).toHaveAttribute('aria-orientation', 'horizontal');
-  await expect(page.locator('#vertical-handle')).toHaveAttribute('aria-valuenow', '65');
+  await expectValue(page, 'vertical-handle', 65);
 });
 
 test('a drag past a minimum size stops at the minimum', async ({ page }) => {
@@ -95,7 +100,8 @@ test('the arrow keys, Home and End move a separator by percent', async ({ page }
   const handle = page.locator('#horizontal-handle');
   await handle.focus();
   await expect(handle).toHaveAttribute('aria-valuemin', '20');
-  await expect(handle).toHaveAttribute('aria-valuemax', '87');
+  await expectValue(page, 'horizontal-handle', 50);
+  await expect.poll(async () => Number(await handle.getAttribute('aria-valuemax'))).toBeCloseTo(87.48, 1);
   await page.keyboard.press('ArrowRight');
   await expect(handle).toHaveAttribute('aria-valuenow', '55');
   await expectSize(page, 'a', 799 * 0.55);
@@ -107,7 +113,7 @@ test('the arrow keys, Home and End move a separator by percent', async ({ page }
   await expect(handle).toHaveAttribute('aria-valuenow', '20');
   await expectSize(page, 'a', 799 * 0.2);
   await page.keyboard.press('End');
-  await expect(handle).toHaveAttribute('aria-valuenow', '87');
+  await expectValue(page, 'horizontal-handle', 87.484);
   await expectSize(page, 'b', 100);
   const vertical = page.locator('#vertical-handle');
   await vertical.focus();
@@ -153,10 +159,12 @@ test('in a right-to-left group a drag toward the end grows the second panel', as
   await drag(page, 'rtl-handle', -150);
   await expectSize(page, 'first', first + 50);
   const handle = page.locator('#rtl-handle');
+  await expect(handle).toHaveAttribute('aria-controls', 'second');
   await handle.focus();
-  await expect(handle).toHaveAttribute('aria-valuenow', '56');
+  await expectValue(page, 'rtl-handle', 43.75);
   await page.keyboard.press('ArrowRight');
-  await expect(handle).toHaveAttribute('aria-valuenow', '51');
+  await expectValue(page, 'rtl-handle', 48.75);
+  await expectSize(page, 'first', first + 10);
 });
 
 test('a saved layout survives a reload', async ({ page }) => {
@@ -169,7 +177,7 @@ test('a saved layout survives a reload', async ({ page }) => {
   await expect(page.locator('[data-hydrated=true]')).toBeAttached();
   await expectSize(page, 'left', 499.5);
   await expectSize(page, 'right', 299.5);
-  await expect(page.locator('#persisted-handle')).toHaveAttribute('aria-valuenow', '63');
+  await expectValue(page, 'persisted-handle', 62.5);
 });
 
 test('a collapsedThreshold sets how far past the minimum a panel moves before it collapses', async ({ page }) => {
@@ -205,4 +213,17 @@ test('F6 moves focus to the next handle in the group and Shift+F6 to the previou
   await page.keyboard.press('Shift+F6');
   await expect(page.locator('#threshold-second-handle')).toBeFocused();
   await expect(page.locator('#drawer')).not.toHaveAttribute('data-collapsed', '');
+});
+
+test('a pointer near a handle hovers it and sets the resize cursor on the page', async ({ page }) => {
+  await open(page);
+  const handle = page.locator('#horizontal-handle');
+  const box = (await handle.boundingBox())!;
+  const cursor = () => page.evaluate(() => getComputedStyle(document.body).cursor);
+  await page.mouse.move(box.x + box.width / 2 + 4, box.y + box.height / 2);
+  await expect(handle).toHaveAttribute('data-separator', 'hover');
+  expect(await cursor()).toBe('ew-resize');
+  await page.mouse.move(box.x + box.width / 2 + 40, box.y + box.height / 2);
+  await expect(handle).toHaveAttribute('data-separator', 'inactive');
+  expect(await cursor()).toBe('auto');
 });

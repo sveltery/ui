@@ -22,7 +22,7 @@ const { body } = render(App);
 for (const slot of ['command', 'command-input', 'command-list', 'command-group', 'command-item', 'message-scroller', 'message-scroller-viewport', 'message-scroller-content', 'message-scroller-item', 'message-scroller-button', 'questionnaire', 'questionnaire-progress', 'questionnaire-item', 'questionnaire-title', 'questionnaire-choice', 'questionnaire-next', 'questionnaire-submit', 'resizable-panel-group', 'resizable-panel', 'resizable-handle']) {
   assert(body.includes(`data-slot="${slot}"`), `server markup renders ${slot}`);
 }
-assert.match(body, /data-slot="resizable-panel"[^>]*style="flex: 30 1 0px/, 'percentage default sizes render on the server');
+assert.match(body, /data-slot="resizable-panel"[^>]*style="[^"]*flex-grow:30"/, 'a default layout renders on the server');
 assert.match(body, /data-slot="questionnaire-progress"[^>]*>(<!---->)?Question 1 of 2/, 'questionnaire progress renders on the server');
 assert.match(body, /data-shortcut="B"[^>]*data-slot="questionnaire-choice"|data-slot="questionnaire-choice"[^>]*data-shortcut="B"/, 'questionnaire shortcuts render on the server');
 assert.match(body, /<fieldset[^>]*hidden=""[^>]*data-slot="questionnaire-item"|<fieldset[^>]*data-slot="questionnaire-item"[^>]*hidden=""/, 'inactive questionnaire items render hidden');

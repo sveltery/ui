@@ -12,14 +12,27 @@ import {
   type Layout,
   type PanelConstraints
 } from './layout.js';
-import type { LayoutChangeDetails, Orientation, PanelSize } from './types.js';
+import { distance } from './geometry.js';
+import { currentInteraction, isCoarsePointer, mountGroup } from './interaction.svelte.js';
+import type { LayoutChangeDetails, Orientation, PanelSize, ResizeTargetMinimumSize } from './types.js';
 import { toPercent, type SizeInput, type UnitContext } from './units.js';
 
 const KEY_STEP = 5;
 
+export interface HitRegion {
+  group: GroupState;
+  pivot: [number, number];
+  rect: DOMRect;
+  separator: SeparatorEntry | undefined;
+  /** Pixels the panels shared when the region was found. */
+  groupSize: number;
+}
+
 export interface GroupOptions {
   readonly orientation: Orientation;
   readonly disabled: boolean;
+  readonly disableCursor: boolean;
+  readonly resizeTargetMinimumSize: ResizeTargetMinimumSize;
   /** Read once, when the group is created. */
   readonly initial: Layout | undefined;
   readonly onLayoutChange: ((layout: Layout) => void) | undefined;
@@ -34,17 +47,6 @@ export interface PanelOptions {
   collapsible?: boolean;
   collapsedSize?: SizeInput;
   collapsedThreshold?: SizeInput;
-}
-
-interface Drag {
-  separator: SeparatorEntry;
-  pointerId: number;
-  pivot: [number, number];
-  origin: number;
-  layout: number[];
-  size: number;
-  sign: 1 | -1;
-  userSelect: string;
 }
 
 export class PanelEntry {
@@ -63,8 +65,8 @@ export class PanelEntry {
 
   index = $derived.by(() => this.group.panels.indexOf(this));
 
-  /** Percent of the group. Before the group mounts it is the panel's own default, so server and first client render agree. */
-  size = $derived.by(() => (this.group.ready ? (this.group.layout[this.index] ?? 0) : this.group.provisionalSize(this)));
+  /** Percent of the group. Before the group mounts it is the size the starting layout names, or 1 to share the space equally. */
+  size = $derived.by(() => (this.group.ready ? (this.group.layout[this.index] ?? 0) : (this.group.requested[this.id] ?? 1)));
 
   collapsed = $derived.by(() => this.group.ready && this.group.collapsedAt(this.index));
 
@@ -83,55 +85,54 @@ export class PanelEntry {
 
   attach: Attachment<HTMLElement> = (element) => {
     this.element = element;
-    untrack(() => this.group.sortPanels());
     return () => {
       this.element = undefined;
     };
   };
 }
 
+export interface SeparatorOptions {
+  disabled: boolean;
+  disableDoubleClick: boolean;
+}
+
 export class SeparatorEntry {
   readonly group: GroupState;
-  readonly #options: () => { disabled: boolean };
-  readonly #registeredAfter: number;
+  readonly #options: () => SeparatorOptions;
   element = $state.raw<HTMLElement>();
-  hovered = $state(false);
 
-  constructor(group: GroupState, options: () => { disabled: boolean }) {
+  constructor(group: GroupState, options: () => SeparatorOptions) {
     this.group = group;
     this.#options = options;
-    this.#registeredAfter = group.panels.length;
   }
 
   get disabled(): boolean {
     return this.group.disabled || this.#options().disabled;
   }
 
-  /** Index of the panel before this separator. The server and the first render count the panels registered so far. */
-  index = $derived.by(() => {
-    const element = this.element;
-    if (!element) return this.#registeredAfter - 1;
-    const before = this.group.panels.filter(
-      (panel) => panel.element && element.compareDocumentPosition(panel.element) & Node.DOCUMENT_POSITION_PRECEDING
-    );
-    return before.length - 1;
+  get disableDoubleClick(): boolean {
+    return this.#options().disableDoubleClick;
+  }
+
+  /** The panels on either side, in the order they sit on screen. Unknown until the group mounts. */
+  pivot = $state.raw<[number, number]>();
+
+  controls = $derived.by(() => (this.pivot ? this.group.panels[this.pivot[0]]?.id : undefined));
+
+  state = $derived.by(() => {
+    if (this.disabled) return 'disabled';
+    const interaction = currentInteraction();
+    return interaction.state !== 'inactive' && interaction.regions.some((region) => region.separator === this) ? interaction.state : 'inactive';
   });
 
-  controls = $derived.by(() => this.group.panels[this.index]?.id);
-
-  state = $derived.by(() => (this.disabled ? 'disabled' : this.group.active === this ? 'active' : this.hovered ? 'hover' : 'inactive'));
-
-  /** The value and bounds of the panel before the separator. The bounds are unknown until the group mounts. */
-  range = $derived.by((): { now: number; min?: number; max?: number } | undefined => {
-    const { group, index } = this;
-    if (index < 0 || index + 1 >= group.panels.length) return undefined;
-    if (!group.ready) return { now: group.provisionalSize(group.panels[index]) };
-    return separatorRange(group.layout, group.constraints, index);
-  });
+  /** The value and bounds of the panel before the separator. */
+  range = $derived.by(() => (this.pivot ? separatorRange(this.group.layout, this.group.constraints, this.pivot[0]) : undefined));
 
   attach: Attachment<HTMLElement> = (element) => {
     this.element = element;
+    untrack(() => this.group.registerSeparator(this));
     return () => {
+      untrack(() => this.group.unregisterSeparator(this));
       this.element = undefined;
     };
   };
@@ -140,18 +141,16 @@ export class SeparatorEntry {
 export class GroupState {
   readonly #options: GroupOptions;
   panels = $state.raw<PanelEntry[]>([]);
+  separators = $state.raw<SeparatorEntry[]>([]);
   element = $state.raw<HTMLElement>();
   /** True once the group is mounted and measured. */
   ready = $state(false);
-  /** The separator being dragged. */
-  active = $state.raw<SeparatorEntry>();
   /** Pixels along the axis that the panels share, which excludes the separators. */
   groupSize = $state(0);
   environment = $state.raw({ fontSize: 16, rootFontSize: 16, viewportWidth: 0, viewportHeight: 0 });
   /** What the user or the parent asked for. The layout is this, validated, so a squeezed panel recovers when room returns. */
   requested = $state.raw<Layout>({});
 
-  #drag: Drag | undefined;
   #expanded: Layout = {};
   #emitted: number[] | undefined;
   #unsettled = false;
@@ -170,6 +169,16 @@ export class GroupState {
     return this.#options.disabled;
   }
 
+  get disableCursor(): boolean {
+    return this.#options.disableCursor;
+  }
+
+  /** True while a pointer drag moves this group's separators. */
+  dragging = $derived.by(() => {
+    const interaction = currentInteraction();
+    return interaction.state === 'active' && interaction.regions.some((region) => region.group === this);
+  });
+
   context = $derived<UnitContext>({ groupSize: this.groupSize, ...this.environment });
   ids = $derived(this.panels.map((panel) => panel.id));
   constraints = $derived(this.panels.map((panel) => panel.resolve(this.context)));
@@ -181,20 +190,6 @@ export class GroupState {
     return constraint !== undefined && constraint.collapsible && near(this.layout[index], constraint.collapsedSize);
   }
 
-  /** The size a panel renders with before the group is measured. Panels without one take what the panels before them leave. */
-  provisionalSize(entry: PanelEntry): number {
-    const known = (panel: PanelEntry): number | undefined => {
-      const { defaultSize } = panel.resolve(this.context);
-      return this.requested[panel.id] ?? defaultSize;
-    };
-    let used = 0;
-    for (const panel of this.panels) {
-      if (panel === entry) break;
-      used += known(panel) ?? 0;
-    }
-    return known(entry) ?? Math.max(0, 100 - used);
-  }
-
   register(entry: PanelEntry): void {
     this.panels = [...this.panels, entry];
   }
@@ -203,21 +198,98 @@ export class GroupState {
     this.panels = this.panels.filter((panel) => panel !== entry);
   }
 
-  /** Restores document order after a panel is inserted between existing ones. */
-  sortPanels(): void {
-    const sorted = [...this.panels].sort((a, b) => {
-      if (!a.element || !b.element) return 0;
-      return a.element.compareDocumentPosition(b.element) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
+  registerSeparator(entry: SeparatorEntry): void {
+    this.separators = [...this.separators, entry];
+  }
+
+  unregisterSeparator(entry: SeparatorEntry): void {
+    this.separators = this.separators.filter((separator) => separator !== entry);
+  }
+
+  /** Orders entries the way they sit on screen, so a right-to-left group resizes the panel the pointer is on. */
+  #byOffset<T>(entries: T[], elementOf: (entry: T) => HTMLElement | undefined): T[] {
+    const horizontal = this.orientation === 'horizontal';
+    const keyed = entries.map((entry) => {
+      const element = elementOf(entry);
+      return { entry, offset: (horizontal ? element?.offsetLeft : element?.offsetTop) ?? 0, size: (horizontal ? element?.offsetWidth : element?.offsetHeight) ?? 0 };
     });
-    if (sorted.some((panel, index) => panel !== this.panels[index])) this.panels = sorted;
+    return keyed.sort((a, b) => a.offset - b.offset || a.size - b.size).map(({ entry }) => entry);
   }
 
   attach: Attachment<HTMLElement> = (element) => {
     this.element = element;
+    const unmount = mountGroup(this, element);
     return () => {
+      unmount();
       this.element = undefined;
     };
   };
+
+  /**
+   * The places a pointer can grab to resize: each separator, or the gap between two panels with no separator.
+   * A region thinner than the minimum target size grows to it around its center.
+   */
+  hitRegions(): HitRegion[] {
+    const element = this.element;
+    if (!element) return [];
+    const horizontal = this.orientation === 'horizontal';
+    const children = this.#byOffset([...element.children].filter((child) => child instanceof HTMLElement), (child) => child);
+    const { coarse, fine } = this.#options.resizeTargetMinimumSize;
+    const minimum = isCoarsePointer() ? coarse : fine;
+    const regions: HitRegion[] = [];
+    let previous: { panel: PanelEntry; rect: DOMRect } | undefined;
+    let pending: SeparatorEntry[] = [];
+    let interleaved = false;
+    for (const child of children) {
+      if (child.hasAttribute('data-panel')) {
+        const panel = this.panels.find((entry) => entry.element === child);
+        if (!panel) continue;
+        const rect = child.getBoundingClientRect();
+        if (previous) {
+          const before = previous.rect;
+          const firstEdge = () => (horizontal ? new DOMRect(before.right, before.top, 0, before.height) : new DOMRect(before.left, before.bottom, before.width, 0));
+          const secondEdge = () => (horizontal ? new DOMRect(rect.left, rect.top, 0, rect.height) : new DOMRect(rect.left, rect.top, rect.width, 0));
+          const separators = pending.map((separator) => ({ separator, box: separator.element!.getBoundingClientRect() }));
+          let targets: { separator?: SeparatorEntry; box: DOMRect }[];
+          if (!interleaved) {
+            targets = separators.length
+              ? separators
+              : [{ box: horizontal ? new DOMRect(before.right, rect.top, rect.left - before.right, rect.height) : new DOMRect(rect.left, before.bottom, rect.width, rect.top - before.bottom) }];
+          } else if (separators.length === 0) {
+            targets = [{ box: firstEdge() }, { box: secondEdge() }];
+          } else if (separators.length === 1) {
+            const { box } = separators[0];
+            const center = { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+            const axis = horizontal ? 'x' : 'y';
+            targets = [separators[0], { box: distance(center, rect)[axis] < distance(center, before)[axis] ? firstEdge() : secondEdge() }];
+          } else {
+            targets = separators;
+          }
+          const pivot: [number, number] = [this.panels.indexOf(previous.panel), this.panels.indexOf(panel)];
+          for (const { separator, box: target } of targets) {
+            let box = target;
+            if (box.width < minimum) box = new DOMRect(box.x - (minimum - box.width) / 2, box.y, minimum, box.height);
+            if (box.height < minimum) box = new DOMRect(box.x, box.y - (minimum - box.height) / 2, box.width, minimum);
+            regions.push({ group: this, pivot, rect: box, separator, groupSize: this.groupSize });
+          }
+        }
+        interleaved = false;
+        previous = { panel, rect };
+        pending = [];
+      } else if (child.hasAttribute('data-separator')) {
+        const separator = this.separators.find((entry) => entry.element === child);
+        if (separator) {
+          pending.push(separator);
+        } else {
+          previous = undefined;
+          pending = [];
+        }
+      } else {
+        interleaved = true;
+      }
+    }
+    return regions;
+  }
 
   measure(): void {
     const element = this.element;
@@ -244,7 +316,15 @@ export class GroupState {
     const element = this.element;
     if (!element) return;
     const elements = [element, ...this.panels.flatMap((panel) => panel.element ?? [])];
-    untrack(() => this.measure());
+    if (this.separators.some((separator) => !separator.element)) return;
+    untrack(() => {
+      const panels = this.#byOffset(this.panels, (panel) => panel.element);
+      if (panels.some((panel, index) => panel !== this.panels[index])) this.panels = panels;
+      const separators = this.#byOffset(this.separators, (separator) => separator.element);
+      if (separators.some((separator, index) => separator !== this.separators[index])) this.separators = separators;
+      this.measure();
+      for (const region of this.hitRegions()) if (region.separator) region.separator.pivot = region.pivot;
+    });
     this.ready = true;
     if (typeof ResizeObserver === 'undefined') return;
     const observer = new ResizeObserver(() => this.measure());
@@ -255,8 +335,7 @@ export class GroupState {
   /** Reports layout changes. Run it in an effect. A change settles when no drag is running. */
   emit(): void {
     if (!this.ready) return;
-    const { layout, layoutMap } = this;
-    const dragging = this.active !== undefined;
+    const { layout, layoutMap, dragging } = this;
     untrack(() => {
       if (!this.#emitted || !sameLayout(this.#emitted, layout)) {
         this.#emitted = layout;
@@ -292,73 +371,37 @@ export class GroupState {
     if (byUser && !sameLayout(previous, valid)) this.#byUser = true;
   }
 
-  #pivot(separator: SeparatorEntry): [number, number] | undefined {
-    const index = separator.index;
-    return index >= 0 && index + 1 < this.panels.length ? [index, index + 1] : undefined;
-  }
-
-  #rtl(): boolean {
-    return this.orientation === 'horizontal' && this.element !== undefined && getComputedStyle(this.element).direction === 'rtl';
-  }
-
-  beginDrag(separator: SeparatorEntry, event: PointerEvent): void {
-    const pivot = this.#pivot(separator);
-    if (separator.disabled || !pivot || this.groupSize <= 0) return;
-    this.#drag = {
-      separator,
-      pointerId: event.pointerId,
-      pivot,
-      origin: this.orientation === 'horizontal' ? event.clientX : event.clientY,
-      layout: this.layout,
-      size: this.groupSize,
-      sign: this.#rtl() ? -1 : 1,
-      userSelect: document.body.style.userSelect
-    };
-    document.body.style.userSelect = 'none';
-    this.active = separator;
-  }
-
-  moveDrag(event: PointerEvent): void {
-    const drag = this.#drag;
-    if (!drag || event.pointerId !== drag.pointerId) return;
-    const point = this.orientation === 'horizontal' ? event.clientX : event.clientY;
-    const delta = ((point - drag.origin) / drag.size) * 100 * drag.sign;
-    this.#commit(
-      adjustLayoutByDelta({ layout: drag.layout, prevLayout: this.layout, constraints: this.constraints, pivot: drag.pivot, delta, trigger: 'pointer' }),
-      true
-    );
-  }
-
-  endDrag(event: PointerEvent): void {
-    const drag = this.#drag;
-    if (!drag || event.pointerId !== drag.pointerId) return;
-    document.body.style.userSelect = drag.userSelect;
-    this.#drag = undefined;
-    this.active = undefined;
+  /** Moves the separator between `pivot` by `delta` percent from `start`. Returns false when the layout cannot change that way. */
+  dragTo(start: number[], pivot: [number, number], delta: number): boolean {
+    const previous = this.layout;
+    const next = adjustLayoutByDelta({ layout: start, prevLayout: previous, constraints: this.constraints, pivot, delta, trigger: 'pointer' });
+    if (sameLayout(previous, next)) return false;
+    this.#commit(next, true);
+    return true;
   }
 
   keydown(separator: SeparatorEntry, event: KeyboardEvent): void {
-    const pivot = this.#pivot(separator);
+    const pivot = separator.pivot;
     if (event.defaultPrevented || separator.disabled || !pivot) return;
     const horizontal = this.orientation === 'horizontal';
-    const flip = this.#rtl() ? -1 : 1;
     let delta: number | undefined;
     switch (event.key) {
-      case 'ArrowRight': if (horizontal) delta = KEY_STEP * flip; break;
-      case 'ArrowLeft': if (horizontal) delta = -KEY_STEP * flip; break;
+      case 'ArrowRight': if (horizontal) delta = KEY_STEP; break;
+      case 'ArrowLeft': if (horizontal) delta = -KEY_STEP; break;
       case 'ArrowDown': if (!horizontal) delta = KEY_STEP; break;
       case 'ArrowUp': if (!horizontal) delta = -KEY_STEP; break;
       case 'Home': delta = -100; break;
       case 'End': delta = 100; break;
       case 'F6': {
         event.preventDefault();
-        const separators = [...(this.element?.querySelectorAll<HTMLElement>(':scope > [role=separator]') ?? [])];
-        const index = separators.indexOf(event.currentTarget as HTMLElement);
+        const { separators } = this;
+        const index = separators.indexOf(separator);
         const step = event.shiftKey ? separators.length - 1 : 1;
-        separators[(index + step) % separators.length]?.focus({ preventScroll: true });
+        separators[(index + step) % separators.length]?.element?.focus();
         return;
       }
       case 'Enter': {
+        event.preventDefault();
         const constraint = this.constraints[pivot[0]];
         if (!constraint.collapsible) return;
         const size = this.layout[pivot[0]];
@@ -374,9 +417,7 @@ export class GroupState {
   }
 
   /** Resizes the first panel beside the separator that has a default size back to that size. */
-  resetToDefault(separator: SeparatorEntry): boolean {
-    const pivot = this.#pivot(separator);
-    if (separator.disabled || !pivot) return false;
+  resetToDefault(pivot: [number, number]): boolean {
     const index = pivot.find((candidate) => this.constraints[candidate].defaultSize !== undefined);
     if (index === undefined) return false;
     this.#resizeTo(this.panels[index], this.constraints[index].defaultSize!, true);
