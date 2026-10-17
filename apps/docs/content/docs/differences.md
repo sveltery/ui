@@ -897,11 +897,41 @@ The old `list` command marked the items in your project as `installed` and had n
 
 **Why:** An error message is often pasted into an issue or kept in a build log, and it must not carry a credential.
 
+### `init --monorepo` creates a SvelteKit monorepo from a template in the CLI
+
+**Upstream:** [`init`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/init.ts#L145-L160) takes `--monorepo`, `--no-monorepo`, `--template` and `--name`. In a directory without `package.json`, it asks you to [select a template](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/init.ts#L335-L353) (Next.js, Vite, TanStack Start, React Router or Astro) and, without `--monorepo` or `--no-monorepo`, [whether to set up a monorepo](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/init.ts#L383-L397). [`defaultScaffold`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/templates/create-template.ts#L223-L305) clones `templates/<template>-monorepo` from GitHub with a sparse checkout, or copies it from `SHADCN_TEMPLATE_DIR`, then adapts it to the package manager and installs it. The default name is the template folder, such as `vite-monorepo` ([`resolveTemplate`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/templates/create-template.ts#L82)). [`fontsourceMonorepoInit`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/templates/monorepo.ts#L32) writes `baseColor: "neutral"` to both `components.json` files.
+
+**Sveltery UI:** [`init --monorepo`](/docs/cli#init) has one template, with a SvelteKit app, so it asks no template question and has no `--template`. The CLI holds the template's files and writes them without a network request. The default name is `sveltekit-monorepo`. `init` without `--monorepo` still needs an existing app, so it never asks whether to set up a monorepo, and there is no `--no-monorepo`. Both `components.json` files get the base color you chose. `--no-install` skips the first install too.
+
+**Why:** SvelteKit is the one app framework this CLI sets up. A template in the CLI always matches the CLI version that writes into it, and creating a project needs no git or GitHub access. `migrate base-color`, `info` and `preset resolve` read `baseColor`, so it has to name the theme in the CSS.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### The monorepo template has no ESLint or Prettier, and its type check task is `check`
+
+**Upstream:** [`templates/vite-monorepo`](https://github.com/shadcn-ui/ui/tree/d2fba50ee5b9113008b5bb908563527b7efd2f27/templates/vite-monorepo) has an ESLint config in each workspace and Prettier with its Tailwind CSS plugin at the root. Its Turborepo tasks are `build`, `dev`, `lint`, `format` and `typecheck` ([`turbo.json`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/templates/vite-monorepo/turbo.json)). The app's [`theme-provider.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/templates/vite-monorepo/apps/web/src/components/theme-provider.tsx#L129-L134) follows a change of the system color scheme while the page is open.
+
+**Sveltery UI:** The template's Turborepo tasks are `build`, `dev` and `check`. The `check` script of each workspace runs `svelte-check`. The app sets the `dark` class before the first paint with the script from [Dark Mode](/docs/dark-mode), and `theme-provider.svelte` toggles it with the `d` key. It does not follow a system change while the page is open.
+
+**Why:** Upstream's ESLint configs load React plugins. The Svelte equivalents are optional `sv` add-ons (`npx sv add eslint prettier`), and they would add packages to every new project. `check` is the script name that `sv create` gives `svelte-check`. The theme provider stays a few lines, like the toggle on the Dark Mode page.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `add` in a monorepo app installs a block's packages in the app
+
+**Upstream:** [`addWorkspaceComponents`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/add-components.ts#L181-L188) installs the packages of every item in the ui workspace, the packages of a block included, although the block's [`login-form.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/blocks/login-01/components/login-form.tsx#L1) goes to the app and imports `cn` itself. It lists the files it wrote relative to the workspace root, such as `packages/ui/src/components/button.tsx`. An alias resolves through `package.json#imports`, the exports of a workspace package or `tsconfig.json` `paths` ([`resolve-import.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/resolve-import.ts#L24-L56)).
+
+**Sveltery UI:** [`add`](/docs/cli#add) installs the packages of an item where its files go: those of a ui item in the ui package, and those of a block in the app. The plan lists them as `Packages` and `Packages in ../../packages/ui`. It shows each file relative to the app, such as `../../packages/ui/src/components/button/Button.svelte`. An alias resolves as `$lib` or `#lib`, as a path relative to the project, or through the exports of a workspace package. See [Monorepo](/docs/monorepo).
+
+**Why:** pnpm links only the packages that a workspace declares. With `cn` in `packages/ui` alone, `svelte-check` in the app fails on the block's `import { cn } from 'cn'` with "Cannot find module 'cn'". A path relative to the app works in the shell where you ran `add`. A SvelteKit app's `tsconfig.json` extends the one that SvelteKit generates, so the CLI reads the template's aliases from the ui package's `exports`.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
 ### Info reports a Svelte project
 
 **Upstream:** [`info`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/info.ts#L94-L145) prints `rsc`, `typescript` and `tailwindConfig` for the project, and `rsc`, `typescript`, `base` and `rtl` for the configuration. It reads the framework version only for Next.js, and `tailwindVersion` is `v3` or `v4`. It lists the `.tsx` and `.jsx` files in the ui folder that match a registry item, prints each configured registry, and stops with a message in a monorepo root. Its links include the example source of a component.
 
-**Sveltery UI:** [`info`](/docs/cli#info) leaves out `rsc`, `typescript`, `tailwindConfig` and `base`. Svelte has no server components or JSX, `components.json` has `typescript: true` only, Tailwind CSS 4 has no config file, and the Base UI variant is the only one. The project shows the framework version (SvelteKit's or Vite's), `svelteVersion` and `tailwindVersion` as versions, such as `4.1.2`, taken from `node_modules` when the package is installed and from `package.json` otherwise. The installed items are the manifest items that have a folder under `aliases.ui`. `registry` is the one registry the CLI reads. It does not stop in a monorepo root, because the CLI has no workspace detection and takes `--cwd`, and it has no example link, because a component's page shows its examples.
+**Sveltery UI:** [`info`](/docs/cli#info) leaves out `rsc`, `typescript`, `tailwindConfig` and `base`. Svelte has no server components or JSX, `components.json` has `typescript: true` only, Tailwind CSS 4 has no config file, and the Base UI variant is the only one. The project shows the framework version (SvelteKit's or Vite's), `svelteVersion` and `tailwindVersion` as versions, such as `4.1.2`, taken from `node_modules` when the package is installed and from `package.json` otherwise. The installed items are the manifest items that have a folder under `aliases.ui`. `registry` is the one registry the CLI reads. It does not stop in a monorepo root or list its workspaces there, so run it in a workspace or pass `--cwd`. It has no example link, because a component's page shows its examples.
 
 **Why:** Each omitted field only has a value in a React or Next.js project, or in a setup that this CLI does not have. A version is more useful than `v4` for a bug report.
 
@@ -909,7 +939,7 @@ The old `list` command marked the items in your project as `installed` and had n
 
 **Upstream:** [`preset resolve`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/preset.ts#L150-L204) works out the preset from `components.json`, the CSS file and, in a Next.js app, the `next/font/google` imports and the `className` of the root layout ([`resolve.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/preset/resolve.ts#L478-L500)). In a monorepo root it stops and lists the workspaces. `preset open` calls the [`open`](https://www.npmjs.com/package/open) package.
 
-**Sveltery UI:** [`preset resolve`](/docs/cli#preset) reads `components.json` and the CSS file only: the `:root` and `.dark` variables, the `@theme inline` fonts and the fontsource imports. A SvelteKit app has no font module to read. It does not stop in a monorepo root, because the CLI has no workspace detection and takes `--cwd`. `preset open` starts the system's opener (`open`, `start` or `xdg-open`) itself.
+**Sveltery UI:** [`preset resolve`](/docs/cli#preset) reads `components.json` and the CSS file only: the `:root` and `.dark` variables, the `@theme inline` fonts and the fontsource imports. A SvelteKit app has no font module to read. It does not stop in a monorepo root or list its workspaces there, so run it in a workspace or pass `--cwd`. `preset open` starts the system's opener (`open`, `start` or `xdg-open`) itself.
 
 **Why:** `init` writes every font as a fontsource import and a theme variable, so the CSS holds what the Next.js readers look for. The `open` package adds dependencies for a call that starts one program.
 
@@ -929,7 +959,7 @@ The old `list` command marked the items in your project as `installed` and had n
 
 **Sveltery UI:** [`apply`](/docs/cli#apply) changes only the project at `--cwd`. In a [monorepo](/docs/monorepo), run it in each package that has a `components.json`. At a monorepo root, it says that the directory has no `components.json`.
 
-**Why:** This CLI does not resolve workspaces yet, so it has no list of linked projects to update or suggest.
+**Why:** The CLI follows an app's `ui` alias into the ui package, but it does not look up the other workspaces that link to a package, so it has no list of linked projects to update or suggest.
 
 **Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
 
@@ -947,7 +977,7 @@ The old `list` command marked the items in your project as `installed` and had n
 
 **Sveltery UI:** [`eject`](/docs/cli#eject) says that the directory has no `components.json` and to run `init` first.
 
-**Why:** This CLI does not resolve workspaces yet. The [Monorepo](/docs/monorepo) page tells you to run the CLI in the package with `--cwd`.
+**Why:** The CLI does not list the workspace packages of a monorepo root. Run `eject` in the [monorepo](/docs/monorepo)'s ui package, which holds the stylesheet and the `@sveltery/ui` dependency.
 
 **Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
 
