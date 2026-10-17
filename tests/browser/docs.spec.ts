@@ -63,6 +63,22 @@ test('ComponentPreview renders the example and reveals its source', async ({ pag
   await expect(preview.getByRole('button', { name: 'Copy' })).toBeVisible();
 });
 
+test('the Installation section shows the CLI command first and the manual steps on the Manual tab', async ({ page }) => {
+  await visit(page, '/docs/components/button', 30_000);
+  const cli = page.getByRole('tab', { name: 'CLI', exact: true });
+  const manual = page.getByRole('tab', { name: 'Manual', exact: true });
+  await expect(cli).toHaveAttribute('aria-selected', 'true');
+  await expect(page.getByRole('tabpanel').filter({ hasText: '@sveltery/ui@latest add button' }).first()).toBeVisible();
+  await expect(page.locator('[data-slot=component-source]')).toBeHidden();
+  await manual.click();
+  await expect(manual).toHaveAttribute('aria-selected', 'true');
+  await expect(page.getByRole('heading', { name: 'Copy the component' })).toBeVisible();
+  await expect(page.locator('[data-slot=component-source]')).toContainText('These files use the Nova style and Lucide icons.');
+  await expect(page.locator('[data-slot=code-block]').filter({ hasText: 'cn class-variance-authority @sveltery/base' })).toBeVisible();
+  await cli.click();
+  await expect(page.locator('[data-slot=component-source]')).toBeHidden();
+});
+
 test('the Drawer page renders its examples in the Rhea style, and other pages stay in Nova', async ({ page }) => {
   await visit(page, '/docs/components/drawer');
   await page.locator('[data-slot=component-preview]').first().getByRole('button', { name: 'right', exact: true }).first().click();

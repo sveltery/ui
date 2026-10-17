@@ -27,4 +27,4 @@ This is a port, not a transliteration. Where React and the platform disagree, th
 
 ## Status
 
-Sveltery UI is experimental and not published to npm yet. The [components](/docs/components) list shows what exists today, and the [installation guide](/docs/installation) shows how to use them now.
+Sveltery UI is experimental. The [components](/docs/components) list shows what exists today, and the [installation guide](/docs/installation) shows how to add them to your app.

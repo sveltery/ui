@@ -12,7 +12,7 @@ const SOURCE_STYLE = 'nova';
 const SOURCE_CONFIG: TransformContext = { iconLibrary: 'lucide', fontHeading: false };
 
 /** Components every markdown page can use without importing them, like upstream's mdx-components map. */
-const GLOBAL_COMPONENTS = ['CodeBlock', 'ComponentPreview', 'ComponentSource', 'ComponentsList', 'Callout', 'Steps'];
+const GLOBAL_COMPONENTS = ['CodeBlock', 'ComponentPreview', 'ComponentSource', 'ComponentsList', 'Callout', 'Steps', 'InstallTabs', 'InstallTab'];
 
 const PREVIEW_PEEK_LINES = 3;
 
@@ -73,6 +73,7 @@ export function docsComponents({ examples, repoRoot }: { examples: string; repoR
         const name = attribute(attrs, 'name');
         const item = name ? registry().get(`styles/${SOURCE_STYLE}/${name}.json`) : undefined;
         if (!item || !('files' in item)) throw new Error(`${filename}: ComponentSource "${name}" is not a registry item`);
+        if (!content.includes(`npx @sveltery/ui@latest add ${name}`)) throw new Error(`${filename}: ComponentSource "${name}" needs the CLI tab: add \`npx @sveltery/ui@latest add ${name}\` to an <InstallTab value="cli">`);
         const requires = (item.registryDependencies ?? []).filter((dependency) => dependency !== 'shared');
         const shared = item.registryDependencies?.includes('shared') ? (registry().get(`styles/${SOURCE_STYLE}/shared.json`) as RegistryItem).files : [];
         const entries = [...item.files, ...shared]

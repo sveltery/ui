@@ -7,12 +7,24 @@ description: A calendar component that allows users to select a date or a range 
 
 ## Installation
 
+<InstallTabs>
+
+<InstallTab value="cli">
+
+```bash
+npx @sveltery/ui@latest add calendar
+```
+
+</InstallTab>
+
+<InstallTab value="manual">
+
 <Steps>
 
 ### Install the dependencies
 
 ```bash
-npm install cn class-variance-authority date-fns @date-fns/tz github:sveltery/base
+npm install cn class-variance-authority date-fns @date-fns/tz @sveltery/base @lucide/svelte
 ```
 
 <Callout title="Not on npm yet">
@@ -33,9 +45,13 @@ Copy the following files into `src/lib/components/ui/calendar`.
 
 ### Update the import paths
 
-Change the imports to match your project setup.
+The component folders import each other with relative paths, so keep them side by side. If you place them elsewhere, change the imports to match your project setup.
 
 </Steps>
+
+</InstallTab>
+
+</InstallTabs>
 
 ## Usage
 
