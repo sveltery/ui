@@ -163,7 +163,7 @@ Give `InputOTP` a `name` and it submits its value with its form. To label it, pu
 
 ## RTL
 
-Wrap the field in a [DirectionProvider](/docs/components/direction) and set `dir` on the `InputOTP`. Use the buttons to switch the language.
+Wrap the field in a [DirectionProvider](/docs/components/direction) and set `dir` on the `Field` and the `InputOTP`. Use the buttons to switch the language.
 
 <ComponentPreview name="base/InputOTPRtlExample" align="start" />
 

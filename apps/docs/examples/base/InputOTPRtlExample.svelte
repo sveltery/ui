@@ -23,7 +23,7 @@
     {/each}
   </div>
   <DirectionProvider direction={t.dir}>
-    <Field>
+    <Field dir={t.dir}>
       <FieldLabel for="input-otp-rtl">{t.verificationCode}</FieldLabel>
       <InputOTP maxLength={6} defaultValue="123456" dir={t.dir} id="input-otp-rtl">
         <InputOTPGroup>

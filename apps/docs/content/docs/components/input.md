@@ -101,7 +101,7 @@ Pair with `Button` to create a search input with a button.
 
 Use a grid layout to place multiple inputs side by side.
 
-<ComponentPreview name="base/InputGridExample" />
+<ComponentPreview name="base/InputGridExample" class="*:data-[slot=preview]:sm:p-6" />
 
 ## Required
 
