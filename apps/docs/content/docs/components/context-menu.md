@@ -24,7 +24,7 @@ npx @sveltery/ui@latest add context-menu
 ### Install the dependencies
 
 ```bash
-npm install cn @sveltery/base @lucide/svelte
+npm install @sveltery/base
 ```
 
 ### Copy the component

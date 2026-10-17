@@ -21,12 +21,6 @@ npx @sveltery/ui@latest add field
 
 <Steps>
 
-### Install the dependencies
-
-```bash
-npm install cn class-variance-authority @sveltery/base
-```
-
 ### Copy the component
 
 Copy the following files into `src/lib/components/ui/field`.

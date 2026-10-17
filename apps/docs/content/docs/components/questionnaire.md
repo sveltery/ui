@@ -24,7 +24,7 @@ npx @sveltery/ui@latest add questionnaire
 ### Install the dependencies
 
 ```bash
-npm install cn class-variance-authority @sveltery/svelte @lucide/svelte
+npm install @sveltery/svelte
 ```
 
 ### Copy the component

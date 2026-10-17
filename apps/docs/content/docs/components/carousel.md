@@ -28,7 +28,7 @@ npx @sveltery/ui@latest add carousel
 ### Install the dependencies
 
 ```bash
-npm install cn class-variance-authority embla-carousel @sveltery/base @lucide/svelte
+npm install embla-carousel
 ```
 
 ### Copy the component

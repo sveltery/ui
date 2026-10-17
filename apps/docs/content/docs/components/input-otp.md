@@ -28,7 +28,7 @@ npx @sveltery/ui@latest add input-otp
 ### Install the dependencies
 
 ```bash
-npm install cn @sveltery/input-otp @lucide/svelte
+npm install @sveltery/input-otp
 ```
 
 ### Copy the component

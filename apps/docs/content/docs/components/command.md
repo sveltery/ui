@@ -28,7 +28,7 @@ npx @sveltery/ui@latest add command
 ### Install the dependencies
 
 ```bash
-npm install cn class-variance-authority @sveltery/command @sveltery/base @lucide/svelte
+npm install @sveltery/command
 ```
 
 ### Copy the component

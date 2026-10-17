@@ -21,12 +21,6 @@ npx @sveltery/ui@latest add input-group
 
 <Steps>
 
-### Install the dependencies
-
-```bash
-npm install cn class-variance-authority @sveltery/base
-```
-
 ### Copy the component
 
 Copy the following files into `src/lib/components/ui/input-group`. It builds on the `button`, `input` and `textarea` components, so copy those as well.

@@ -77,7 +77,7 @@ npx @sveltery/ui@latest add chart
 ### Install the dependencies
 
 ```bash
-npm install cn @sveltery/recharts
+npm install @sveltery/recharts
 ```
 
 <Callout>
@@ -113,10 +113,6 @@ Copy the following files into `src/lib/components/ui/chart`.
   }
 }
 ```
-
-### Update the import paths
-
-The component folders import each other with relative paths, so keep them side by side. If you place them elsewhere, change the imports to match your project setup.
 
 </Steps>
 

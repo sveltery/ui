@@ -24,12 +24,6 @@ npx @sveltery/ui@latest add marker
 
 <Steps>
 
-### Install the dependencies
-
-```bash
-npm install cn class-variance-authority
-```
-
 ### Copy the component
 
 Copy the following files into `src/lib/components/ui/marker`.

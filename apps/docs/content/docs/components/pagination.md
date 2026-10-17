@@ -21,12 +21,6 @@ npx @sveltery/ui@latest add pagination
 
 <Steps>
 
-### Install the dependencies
-
-```bash
-npm install cn class-variance-authority @sveltery/base @lucide/svelte
-```
-
 ### Copy the component
 
 Copy the following files into `src/lib/components/ui/pagination`.

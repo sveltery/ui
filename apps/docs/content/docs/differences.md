@@ -605,7 +605,7 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 ## Component page sections
 
-Each component page follows its [upstream page](https://github.com/shadcn-ui/ui/tree/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base) section for section. [`scripts/docs-sections.mjs`](https://github.com/sveltery/ui/blob/main/scripts/docs-sections.mjs) lists the sections that differ, and the entries below cover the ones only Sveltery UI has.
+Each component page follows its [upstream page](https://github.com/shadcn-ui/ui/tree/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base) section for section. [`scripts/docs-sections.mjs`](https://github.com/sveltery/ui/blob/main/scripts/docs-sections.mjs) lists the sections and installation steps that differ, and the entries below cover the ones only Sveltery UI has.
 
 ### Pages show how to bind their state
 
@@ -634,6 +634,16 @@ Each component page follows its [upstream page](https://github.com/shadcn-ui/ui/
 **Sveltery UI:** [Questionnaire](/docs/components/questionnaire#validation) carries the `@shadcn/react` page's Validation, Custom render targets, Native forms, Keyboard and Data attributes sections and its prop tables. [Message Scroller](/docs/components/message-scroller#api-reference) has prop tables for each part. [Resizable](/docs/components/resizable#api-reference) has Sizes, Layout, Persistence, Collapsible panels, Keyboard and Pointer sections and prop tables. [Toast](/docs/components/toast#custom-layout) has a Custom layout section and tables for `Toaster`, `toast` and the parts.
 
 **Why:** The `@shadcn/react` pages do not exist on this site. The react-resizable-panels README shows a React API the Svelte port changes in places, such as bound props in place of refs. The Base UI Toast docs do not cover `Toaster` and the `toast` object, which replace Sonner here (see "Toasts use Toast, not Sonner"). This is the same call as "The Command page documents filtering and the dialog".
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### Manual installation installs the packages the component imports
+
+**Upstream:** A manual installation lists the packages beyond what `init` installs, but not always the ones the component imports. The [Aspect Ratio](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/aspect-ratio.mdx#L30) and [Label](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/label.mdx#L38) pages install `@base-ui/react`, which their components do not import. The [Input](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/input.mdx#L30) page installs nothing, though [`input.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/input.tsx) imports `@base-ui/react/input`.
+
+**Sveltery UI:** The "Install the dependencies" step lists the packages the component's own files import, and their peer dependencies, leaving out what `init` installs. [Aspect Ratio](/docs/components/aspect-ratio#installation), [Label](/docs/components/label#installation) and [Button Group](/docs/components/button-group#installation) have no such step, because their components import no other package. [Input](/docs/components/input#installation) installs `@sveltery/base`.
+
+**Why:** Upstream's list installs a package nothing uses on two pages and leaves out a package the component needs on a third. Button Group does not import Base UI here, so it has nothing to install.
 
 **Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
 
