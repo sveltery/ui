@@ -400,7 +400,10 @@ export function assertListed(registry: Registry, refs: ItemRef[]): void {
   if (unknown.length > 0) throw new CliError(`Not in the registry: ${unknown.join(', ')}. Available items: ${[...known].join(', ')}.`);
 }
 
-/** Fetches `refs` and their registry dependencies, each item once, dependencies before the items that need them. */
+/**
+ * Fetches `refs` and their registry dependencies, each item once, dependencies before the items that need them.
+ * As upstream, an item is the address it was fetched from, so same-named items from different sources are all kept.
+ */
 export async function resolveItems(registry: Registry, style: StyleName, refs: ItemRef[]): Promise<RegistryItem[]> {
   assertListed(registry, refs);
   const ordered: RegistryItem[] = [];
@@ -411,7 +414,7 @@ export async function resolveItems(registry: Registry, style: StyleName, refs: I
     visited.add(key);
     const item = await fetchItem(registry, style, ref);
     for (const dependency of item.registryDependencies ?? []) await visit(parseItemRef(dependency));
-    if (!ordered.some((other) => other.name === item.name)) ordered.push(item);
+    ordered.push(item);
   };
   for (const ref of refs) await visit(ref);
   return ordered;

@@ -118,7 +118,7 @@ export function planItems(project: Project, items: RegistryItem[], css?: string)
       const result = applyTransforms(file, isUi(file) ? uiCtx : ctx);
       (ui !== undefined && isUi(file) ? workspace : app).dependencies.push(...result.dependencies);
       const path = filePath(project, file);
-      files.set(path, { ...planFile(cwd, path, result.content), item: item.name });
+      files.set(path, { ...planFile(cwd, path, result.content), item });
     }
   }
   const uiRoot = join(cwd, ui?.dir ?? '');

@@ -5,12 +5,13 @@ import { FILE_HEADERS_ONLY, formatPatch, structuredPatch } from 'diff';
 import { detect, resolveCommand } from 'package-manager-detector';
 import { CliError } from './parse.js';
 import { declaredPackages } from './project.js';
+import type { RegistryItem } from './registry.js';
 
 export const count = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
 
 export type FileStatus = 'new' | 'identical' | 'changed';
 /** `path` is relative to the project root. `item` names the registry item the file belongs to. */
-export type PlannedFile = { path: string; content: string; status: FileStatus; item?: string };
+export type PlannedFile = { path: string; content: string; status: FileStatus; item?: RegistryItem };
 /** Packages to install in the workspace package at `dir`, relative to the project root. */
 export type WorkspacePackages = { dir: string; dependencies: string[]; devDependencies: string[] };
 /**
