@@ -175,7 +175,7 @@
   <ZIndexLayer zIndex={propsIncludingDefaults.zIndex}>
     <g class="recharts-cartesian-grid">
       {#if propsIncludingDefaults.fill && propsIncludingDefaults.fill !== 'none'}
-        {const { fill, fillOpacity, x, y, width, height, ry } = propsIncludingDefaults}
+        {const { fill, fillOpacity, x, y, width, height, ry } = $derived(propsIncludingDefaults)}
         <rect {...attrs({ x, y, ry, width, height, stroke: 'none', fill, fillOpacity, className: 'recharts-cartesian-grid-bg' })} />
       {/if}
       {#if horizontalStripes}

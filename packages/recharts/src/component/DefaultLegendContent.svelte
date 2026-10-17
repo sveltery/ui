@@ -41,7 +41,7 @@
 </script>
 
 {#if resolved.payload && resolved.payload.length}<ul {...attrs({ className: 'recharts-default-legend', style: finalStyle })}
-    >{#each resolved.payload as entry, i (i)}{#if entry.type !== 'none'}{const { className, finalLabelStyle, finalValue } = item(entry, i)}<li
+    >{#each resolved.payload as entry, i (i)}{#if entry.type !== 'none'}{const { className, finalLabelStyle, finalValue } = $derived(item(entry, i))}<li
           {...attrs({ className, style: itemStyle, ...adaptEventsOfChild(resolved, entry, i) })}
           ><Surface width={resolved.iconSize} height={resolved.iconSize} {viewBox} style={svgStyle} aria-label={`${finalValue} legend icon`}
             ><LegendIcon data={entry} iconType={resolved.iconType} inactiveColor={resolved.inactiveColor} /></Surface

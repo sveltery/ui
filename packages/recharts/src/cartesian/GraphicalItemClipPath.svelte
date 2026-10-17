@@ -15,8 +15,8 @@
 </script>
 
 {#if clip.current.needClip && plotArea.current}
-  {const { needClipX, needClipY } = clip.current}
-  {const { x, y, width, height } = plotArea.current}
+  {const { needClipX, needClipY } = $derived(clip.current)}
+  {const { x, y, width, height } = $derived(plotArea.current)}
   <clipPath id="clipPath-{clipPathId}"
     ><rect x={needClipX ? x : x - width / 2} y={needClipY ? y : y - height / 2} width={needClipX ? width : width * 2} height={needClipY ? height : height * 2} /></clipPath
   >

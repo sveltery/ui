@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'vitest';
+import { flushSync } from 'svelte';
+import { describe, expect, it, vi } from 'vitest';
 import BarFixture from './fixtures/BarFixture.svelte';
 import { render } from '../shell/mount.js';
 
@@ -45,5 +46,16 @@ describe('Bar', () => {
   it('renders nothing when hidden', () => {
     const { target } = render(BarFixture, { data, barProps: { hide: true } });
     expect(target.querySelector('.recharts-bar')).toBeNull();
+  });
+
+  // Declaration tags are not reactive, so a frame read without $derived kept its first value forever.
+  it('grows the rectangles to their full size through the entrance animation', () => {
+    const { target } = render(BarFixture, { data, barProps: { isAnimationActive: true } });
+    const settled = [...render(BarFixture, { data }).target.querySelectorAll('path.recharts-rectangle')].map((path) => path.getAttribute('height'));
+    for (let i = 0; i < 40; i++) {
+      vi.advanceTimersByTime(50);
+      flushSync();
+    }
+    expect([...target.querySelectorAll('path.recharts-rectangle')].map((path) => path.getAttribute('height'))).toEqual(settled);
   });
 });

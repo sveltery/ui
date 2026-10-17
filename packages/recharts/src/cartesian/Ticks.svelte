@@ -92,7 +92,7 @@
 </script>
 
 {#snippet TickItem(option: Props['tick'], tickProps: Record<string, unknown>, value: string)}
-  {const combinedClassName = clsx(tickProps.className as string | undefined, 'recharts-cartesian-axis-tick-value')}
+  {const combinedClassName = $derived(clsx(tickProps.className as string | undefined, 'recharts-cartesian-axis-tick-value'))}
   {#if typeof option === 'function'}
     <RenderProp of={option as never} props={{ ...tickProps, className: combinedClassName }} />
   {:else}

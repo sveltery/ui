@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'vitest';
+import { flushSync } from 'svelte';
+import { describe, expect, it, vi } from 'vitest';
 import AreaFixture from './fixtures/AreaFixture.svelte';
 import { render } from '../shell/mount.js';
 
@@ -31,5 +32,16 @@ describe('Area', () => {
   it('renders dots when asked', () => {
     const { target } = render(AreaFixture, { data, areaProps: { dot: true } });
     expect(target.querySelectorAll('.recharts-area-dots circle.recharts-area-dot')).toHaveLength(3);
+  });
+
+  // The entrance animation must end on the same drawing as no animation.
+  it('draws the whole area once the entrance animation ends', () => {
+    const { target } = render(AreaFixture, { data, areaProps: { isAnimationActive: true } });
+    const settled = render(AreaFixture, { data }).target.querySelector('path.recharts-area-area')?.getAttribute('d');
+    for (let i = 0; i < 40; i++) {
+      vi.advanceTimersByTime(50);
+      flushSync();
+    }
+    expect(target.querySelector('path.recharts-area-area')?.getAttribute('d')).toEqual(settled);
   });
 });

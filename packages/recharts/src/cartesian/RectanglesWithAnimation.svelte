@@ -97,7 +97,7 @@
       onAnimationStart={handleAnimationStart}
     >
       {#snippet children(t)}
-        {const data = stepData(t)}
+        {const data = $derived(stepData(t))}
         {#if data != null}
           <Layer><BarRectangles {props} {data} /></Layer>
         {/if}

@@ -104,7 +104,7 @@
 </script>
 
 {#if layout.current != null}
-  {const currentLayout = layout.current}
+  {const currentLayout = $derived(layout.current)}
   <AreaLabelListProvider {showLabels} points={props.points}>
     {@render props.children?.()}
     {#key animationId.current}
@@ -118,7 +118,7 @@
         onAnimationStart={handleAnimationStart}
       >
         {#snippet children(t)}
-          {const step = frame(t)}
+          {const step = $derived(frame(t))}
           {#if step.kind === 'step'}
             <StaticArea points={step.points} baseLine={step.baseLine} {needClip} {clipPathId} {props} />
           {:else}

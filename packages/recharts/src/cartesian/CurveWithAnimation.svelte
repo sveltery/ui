@@ -127,7 +127,7 @@
       onAnimationStart={handleAnimationStart}
     >
       {#snippet children(t)}
-        {const step = frame(t)}
+        {const step = $derived(frame(t))}
         <StaticCurve {props} points={step.points} {clipPathId} {pathRef} strokeDasharray={step.strokeDasharray} />
       {/snippet}
     </JavascriptAnimate>

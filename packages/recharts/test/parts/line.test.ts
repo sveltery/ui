@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'vitest';
+import { flushSync } from 'svelte';
+import { describe, expect, it, vi } from 'vitest';
 import LineFixture from './fixtures/LineFixture.svelte';
 import { render } from '../shell/mount.js';
 
@@ -28,5 +29,16 @@ describe('Line', () => {
   it('renders the label prop as a LabelList', () => {
     const { target } = render(LineFixture, { data, lineProps: { label: true } });
     expect([...target.querySelectorAll('.recharts-label-list text')].map((text) => text.textContent)).toEqual(['400', '300', '200']);
+  });
+
+  // The entrance animation must end on the same drawing as no animation.
+  it('draws the whole curve once the entrance animation ends', () => {
+    const { target } = render(LineFixture, { data, lineProps: { isAnimationActive: true, dot: false } });
+    const settled = render(LineFixture, { data, lineProps: { dot: false } }).target.querySelector('path.recharts-line-curve')?.getAttribute('d');
+    for (let i = 0; i < 40; i++) {
+      vi.advanceTimersByTime(50);
+      flushSync();
+    }
+    expect(target.querySelector('path.recharts-line-curve')?.getAttribute('d')).toEqual(settled);
   });
 });
