@@ -261,7 +261,7 @@ try {
   const projectInfo = JSON.parse(await cli('info', '--json'));
   assert.equal(projectInfo.project.framework, 'SvelteKit');
   assert.equal(projectInfo.project.tailwindCss, config.tailwind.css);
-  assert.deepEqual(projectInfo.components, ['button', 'dialog'], 'info lists the items add installed');
+  assert.deepEqual(projectInfo.components, ['button', 'chart', 'dialog'], 'info lists the items add installed');
   assert.deepEqual(projectInfo.preset.fallbacks, ['font', 'fontHeading', 'menuAccent'], 'a plain init writes no fonts or menuAccent, so info falls back for them');
 
   writeFileSync(
