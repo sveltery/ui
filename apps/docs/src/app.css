@@ -4,6 +4,7 @@
 @import "@sveltery/ui/tailwind.css";
 @import "../registry/styles/themes.css";
 @import "../registry/styles/utilities.css";
+@import "../registry/styles/rtl.css";
 @import "@fontsource-variable/geist";
 @import "@fontsource-variable/geist-mono";
 @import "./lib/typeset/typeset.css";
