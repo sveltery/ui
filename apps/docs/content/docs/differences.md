@@ -596,38 +596,6 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Hugo Hsi, 2026-10-14
 
-## CLI
-
-### `build` writes to `static/r`
-
-**Upstream:** [`build`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/build.ts#L28) writes to `./public/r` unless `--output` names another directory.
-
-**Sveltery UI:** [`build`](/docs/cli#build) writes to `./static/r` by default.
-
-**Why:** Next.js serves `public`, and SvelteKit serves `static`. With upstream's default, a SvelteKit app does not serve the items it built.
-
-**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
-
-### `build` writes a `target` for files that name none
-
-**Upstream:** `build` keeps a file without `target` as it is, and [`add`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/resolve-file-path.ts#L76) places it from its `path`, below the folder named like the last segment of the project's `ui` or `components` directory.
-
-**Sveltery UI:** [`build`](/docs/registry/registry-json#items) writes that place into `target`: the part of `path` after its first `ui` folder for a `registry:ui` file, or after its first `components` folder for a `registry:component` file, else the file name. It stops when a `registry:page` or `registry:file` file has no `target`.
-
-**Why:** The CLI reads `target` on every file and never looks at `path`, so an item from `build` installs with any CLI version that reads the item format. In a project with the default aliases, the file lands where upstream would place it.
-
-**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
-
-### `build` checks item names and file paths in every registry
-
-**Upstream:** `build` writes each item to [`<output>/<name>.json`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/build.ts#L74) for any name, including one with `/` or `..`. Without `include`, it [skips the file path checks](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/registry/loader.ts#L83) that it runs on included files, so it inlines a file at an absolute path or above the working directory.
-
-**Sveltery UI:** [`build`](/docs/registry/registry-json#items) stops when an item name is not lowercase letters, digits and hyphens. It checks file paths with and without `include`: a path must be relative, without `..` segments, and name a file inside the directory it is relative to.
-
-**Why:** An item named `../../registry` overwrote the source `registry.json`, and a path such as `/etc/hostname` put a file from outside the project into the published JSON. `add` installs only names of this form, so the check rejects no item that `add` could install by name.
-
-**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
-
 ## Data Table guide
 
 ### The guide has no state wiring steps
@@ -689,3 +657,45 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Why:** A project that follows the guide from a fresh `init` fails to build at the first import of a component it never added.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+## CLI
+
+### `diff` and `update` stay, and `add --diff` and `add --view` print plain text
+
+**Upstream:** [`diff`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/diff.ts#L41-L43) is deprecated in favor of `add --diff` and `add --view`. Upstream has no `update`. Its [`--diff` and `--view` output](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/utils/dry-run-formatter.ts) is colored and drawn in boxes, lists identical files as skipped, and hides formatting-only changes.
+
+**Sveltery UI:** [`diff` and `update`](/docs/cli#diff) stay, because they check whole projects, and they take item URLs as well as names. [`add --diff` and `add --view`](/docs/cli#add) print unified diffs and file contents as plain text. They show every difference, and the `--diff` overview skips identical files.
+
+**Why:** A project does not record the URL an item came from, so a scan cannot check items added by URL. `diff <url>` and `update <url>` check one. Upstream hides formatting-only changes because its transforms reformat the code they copy. This CLI's transforms keep the source's formatting, so a formatting-only difference is an edit you made, and the diff shows it. Plain text pipes into a patch viewer or a file.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `build` writes to `static/r`
+
+**Upstream:** [`build`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/build.ts#L28) writes to `./public/r` unless `--output` names another directory.
+
+**Sveltery UI:** [`build`](/docs/cli#build) writes to `./static/r` by default.
+
+**Why:** Next.js serves `public`, and SvelteKit serves `static`. With upstream's default, a SvelteKit app does not serve the items it built.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `build` writes a `target` for files that name none
+
+**Upstream:** `build` keeps a file without `target` as it is, and [`add`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/resolve-file-path.ts#L76) places it from its `path`, below the folder named like the last segment of the project's `ui` or `components` directory.
+
+**Sveltery UI:** [`build`](/docs/registry/registry-json#items) writes that place into `target`: the part of `path` after its first `ui` folder for a `registry:ui` file, or after its first `components` folder for a `registry:component` file, else the file name. It stops when a `registry:page` or `registry:file` file has no `target`.
+
+**Why:** The CLI reads `target` on every file and never looks at `path`, so an item from `build` installs with any CLI version that reads the item format. In a project with the default aliases, the file lands where upstream would place it.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
+
+### `build` checks item names and file paths in every registry
+
+**Upstream:** `build` writes each item to [`<output>/<name>.json`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/shadcn/src/commands/build.ts#L74) for any name, including one with `/` or `..`. Without `include`, it [skips the file path checks](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/packages/registry/src/registry/loader.ts#L83) that it runs on included files, so it inlines a file at an absolute path or above the working directory.
+
+**Sveltery UI:** [`build`](/docs/registry/registry-json#items) stops when an item name is not lowercase letters, digits and hyphens. It checks file paths with and without `include`: a path must be relative, without `..` segments, and name a file inside the directory it is relative to.
+
+**Why:** An item named `../../registry` overwrote the source `registry.json`, and a path such as `/etc/hostname` put a file from outside the project into the published JSON. `add` installs only names of this form, so the check rejects no item that `add` could install by name.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
