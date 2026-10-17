@@ -29,7 +29,7 @@ function items(css: string, file: string) {
   return list;
 }
 
-type Patch = { selectors: string[]; edit: (utility: string) => string };
+type Patch = { selectors: string[]; styles?: string[]; edit: (utility: string) => string };
 
 const PATCHES: Patch[] = [
   {
@@ -37,6 +37,13 @@ const PATCHES: Patch[] = [
     // so upstream's `data-open:` classes on these triggers never match.
     selectors: ['.cn-context-menu-sub-trigger', '.cn-dropdown-menu-sub-trigger', '.cn-menubar-sub-trigger', '.cn-sidebar-menu-button'],
     edit: (utility) => utility.replace(/^data-open:/, 'data-popup-open:'),
+  },
+  {
+    // A fractional track height leaves the thumb a fractional inset, which the browser rounds to unequal
+    // top and bottom margins. Whole pixels keep the thumb centered at every position.
+    selectors: ['.cn-switch'],
+    styles: ['lyra', 'maia', 'mira', 'nova', 'vega'],
+    edit: (utility) => utility.replace('h-[18.4px]', 'h-[18px]').replace('h-[16.6px]', 'h-[16px]'),
   },
   {
     // A choice card highlights the checked Base UI radio or checkbox by `data-checked`. A NativeRadio
@@ -48,7 +55,7 @@ const PATCHES: Patch[] = [
 
 /** Applies PATCHES to each rule they name, dropping a utility the edit duplicates. Throws when one changes nothing. */
 function patch(item: Item, style: string): Item {
-  const found = PATCHES.find(({ selectors }) => selectors.includes(item.key));
+  const found = PATCHES.find(({ selectors, styles }) => selectors.includes(item.key) && (!styles || styles.includes(style)));
   if (!found) return item;
   const [head = '', utilities = ''] = /^([\s\S]*@apply )([^;\n]+)/.exec(item.text)?.slice(1) ?? [];
   const edited = [...new Set(utilities.split(' ').map(found.edit))].join(' ');
@@ -181,11 +188,11 @@ const NATIVE: { after: string; derive: (find: (key: string) => string[], style: 
 
 /** Upstream's sheet with PATCHES applied, in its own order, then the derived native rules after their source. */
 export function scopedSheet(upstream: string, style: string) {
-  const list = items(upstream, `style-${style}.css`);
+  // Native rules derive from the patched rules, so a patch to a Base rule reaches its native twin.
+  const list = items(upstream, `style-${style}.css`).map((item) => patch(item, style));
   const find = (key: string) => utilitiesOf(list.find((item) => item.key === key));
   const body = list
     .flatMap((item) => [item, ...NATIVE.filter(({ after }) => after === item.key).flatMap(({ derive }) => derive(find, style))])
-    .map((item) => patch(item, style))
     .map((item, index, all) => item.text + (index < all.length - 1 ? item.gap : '\n'))
     .join('');
   for (const { after } of NATIVE) if (!list.some((item) => item.key === after)) throw new Error(`style-${style}.css: no ${after} rule to place native rules after`);

@@ -1,7 +1,8 @@
 import { ReactElement, SVGProps } from '../react.js';
 import { ChartOffsetInternal } from '../util/types.js';
-import { AxisPropsNeededForTicksGenerator } from '../util/ChartUtils.js';
-import { GetTicksInput } from './getTicks.js';
+import { AxisPropsNeededForTicksGenerator, getCoordinatesOfGrid, getTicksOfAxis } from '../util/ChartUtils.js';
+import { getTicks, GetTicksInput } from './getTicks.js';
+import { defaultCartesianAxisProps } from './CartesianAxis.js';
 import { AxisId } from '../state/cartesianAxisSlice.js';
 import { RequiresDefaultProps } from '../util/resolveDefaultProps.js';
 import { ZIndexable } from '../zIndex/ZIndexLayer.js';
@@ -209,6 +210,36 @@ type GridLinesProps = CartesianGridInternalProps & {
   xAxis: GridLineTypeFunctionProps['xAxis'];
   yAxis: GridLineTypeFunctionProps['yAxis'];
 };
+export const defaultVerticalCoordinatesGenerator: VerticalCoordinatesGenerator = (
+  { xAxis, width, height, offset },
+  syncWithTicks,
+) =>
+  getCoordinatesOfGrid(
+    getTicks({
+      ...defaultCartesianAxisProps,
+      ...xAxis,
+      ticks: getTicksOfAxis(xAxis, true),
+      viewBox: { x: 0, y: 0, width, height },
+    }),
+    offset.left,
+    offset.left + offset.width,
+    syncWithTicks,
+  );
+export const defaultHorizontalCoordinatesGenerator: HorizontalCoordinatesGenerator = (
+  { yAxis, width, height, offset },
+  syncWithTicks,
+) =>
+  getCoordinatesOfGrid(
+    getTicks({
+      ...defaultCartesianAxisProps,
+      ...yAxis,
+      ticks: getTicksOfAxis(yAxis, true),
+      viewBox: { x: 0, y: 0, width, height },
+    }),
+    offset.top,
+    offset.top + offset.height,
+    syncWithTicks,
+  );
 export const defaultCartesianGridProps = {
   horizontal: true,
   vertical: true,

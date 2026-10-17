@@ -1,8 +1,11 @@
 import * as React from '../react.js';
-import { ReactElement, SVGProps } from '../react.js';
+import { ReactElement, ReactNode, SVGProps } from '../react.js';
 import { RenderableText, TextAnchor, TextVerticalAnchor } from './Text.js';
-import { DataKey, ViewBox } from '../util/types.js';
+import { isNullish, isNumber, mathSign } from '../util/DataUtils.js';
+import { polarToCartesian } from '../util/PolarUtils.js';
+import { CartesianViewBoxRequired, DataKey, PolarViewBoxRequired, TrapezoidViewBox, ViewBox } from '../util/types.js';
 import { ZIndexable } from '../zIndex/ZIndexLayer.js';
+import { DefaultZIndexes } from '../zIndex/DefaultZIndexes.js';
 import { CartesianLabelPosition } from '../cartesian/getCartesianPosition.js';
 /**
  * @inline
@@ -109,6 +112,84 @@ export type ImplicitLabelType =
   | ((props: any) => RenderableText | ReactElement)
   // dataKey is only applicable when label is used implicitly from graphical element props
   | (Props & { dataKey?: DataKey<any> });
+export const getLabel = (props: Props): RenderableText => {
+  const { value, formatter } = props;
+  const label: RenderableText = isNullish(props.children) ? value : props.children;
+
+  if (typeof formatter === 'function') {
+    return formatter(label);
+  }
+
+  return label;
+};
+export const isLabelContentAFunction = (content: unknown): content is (props: Props) => React.ReactNode => {
+  return content != null && typeof content === 'function';
+};
+export const getDeltaAngle = (startAngle: number, endAngle: number) => {
+  const sign = mathSign(endAngle - startAngle);
+  const deltaAngle = Math.min(Math.abs(endAngle - startAngle), 360);
+
+  return sign * deltaAngle;
+};
+export const getAttrsOfPolarLabel = (
+  viewBox: PolarViewBoxRequired,
+  offset: number,
+  position: LabelPosition | undefined,
+): LabelPositionAttributes => {
+  const { cx, cy, innerRadius, outerRadius, startAngle, endAngle } = viewBox;
+  const midAngle = (startAngle + endAngle) / 2;
+
+  if (position === 'outside') {
+    const { x, y } = polarToCartesian(cx, cy, outerRadius + offset, midAngle);
+
+    return {
+      x,
+      y,
+      textAnchor: x >= cx ? 'start' : 'end',
+      verticalAnchor: 'middle',
+    };
+  }
+
+  if (position === 'center') {
+    return {
+      x: cx,
+      y: cy,
+      textAnchor: 'middle',
+      verticalAnchor: 'middle',
+    };
+  }
+
+  if (position === 'centerTop') {
+    return {
+      x: cx,
+      y: cy,
+      textAnchor: 'middle',
+      verticalAnchor: 'start',
+    };
+  }
+
+  if (position === 'centerBottom') {
+    return {
+      x: cx,
+      y: cy,
+      textAnchor: 'middle',
+      verticalAnchor: 'end',
+    };
+  }
+
+  const r = (innerRadius + outerRadius) / 2;
+  const { x, y } = polarToCartesian(cx, cy, r, midAngle);
+
+  return {
+    x,
+    y,
+    textAnchor: 'middle',
+    verticalAnchor: 'middle',
+  };
+};
+export const isPolar = (
+  viewBox: CartesianViewBoxRequired | TrapezoidViewBox | PolarViewBoxRequired | undefined,
+): viewBox is PolarViewBoxRequired => viewBox != null && 'cx' in viewBox && isNumber(viewBox.cx);
 export type LabelPositionAttributes = {
   x: number;
   y: number;
@@ -117,3 +198,27 @@ export type LabelPositionAttributes = {
   width?: number;
   height?: number;
 };
+export const defaultLabelProps = {
+  angle: 0,
+  offset: 5,
+  zIndex: DefaultZIndexes.label,
+  position: 'middle',
+  textBreakAll: false,
+} as const satisfies Partial<Props>;
+export function polarViewBoxToTrapezoid(
+  viewBox: PolarViewBoxRequired | TrapezoidViewBox | undefined,
+): TrapezoidViewBox | undefined {
+  if (!isPolar(viewBox)) {
+    return viewBox;
+  }
+  const { cx, cy, outerRadius } = viewBox;
+  const diameter = outerRadius * 2;
+  return {
+    x: cx - outerRadius,
+    y: cy - outerRadius,
+    width: diameter,
+    upperWidth: diameter,
+    lowerWidth: diameter,
+    height: diameter,
+  };
+}

@@ -2,15 +2,18 @@ import * as React from '../react.js';
 import { Key, ReactElement, ReactNode } from '../react.js';
 import { Series } from 'victory-vendor/d3-shape';
 import { Props as RectangleProps, RectRadius } from '../shape/Rectangle.js';
+import { ErrorBarDataItem, ErrorBarDataPointFormatter } from './ErrorBar.js';
 import { ImplicitLabelListType } from '../component/LabelList.js';
 import { isNan, mathSign } from '../util/DataUtils.js';
-import { BarPositionPosition, getBaseValueOfBar, getCateCoordinateOfBar, getValueByDataKey, StackId, truncateByDomain } from '../util/ChartUtils.js';
+import { BarPositionPosition, getBaseValueOfBar, getCateCoordinateOfBar, getTooltipNameProp, getValueByDataKey, StackId, truncateByDomain } from '../util/ChartUtils.js';
 import { ActiveShape, AnimationDuration, CartesianViewBoxRequired, ChartOffsetInternal, Coordinate, DataConsumer, DataKey, LegendType, PresentationAttributesAdaptChildEvent, TickItem, TooltipType } from '../util/types.js';
 import { MinPointSize, minPointSizeCallback } from '../util/BarUtils.js';
+import type { LegendPayload } from '../component/DefaultLegendContent.js';
 import { BaseAxisWithScale } from '../state/selectors/axisSelectors.js';
 import { BarSettings } from '../state/types/BarSettings.js';
 import { EasingInput } from '../animation/easing.js';
 import { ZIndexable } from '../zIndex/ZIndexLayer.js';
+import { DefaultZIndexes } from '../zIndex/DefaultZIndexes.js';
 import { AxisId } from '../state/cartesianAxisSlice.js';
 import { GraphicalItemId } from '../state/graphicalItemsSlice.js';
 import { ChartData } from '../state/chartDataSlice.js';
@@ -331,7 +334,20 @@ type BarSvgProps = Omit<
 export type Props<DataPointType = any, ValueAxisType = any> = Partial<BarEvents> &
   BarProps<DataPointType, ValueAxisType> &
   Omit<BarSvgProps, keyof BarEvents>;
-type InternalProps = BarSvgProps & InternalBarProps;
+export type InternalProps = BarSvgProps & InternalBarProps;
+export const computeLegendPayloadFromBarData = (props: Props): ReadonlyArray<LegendPayload> => {
+  const { dataKey, name, fill, legendType, hide } = props;
+  return [
+    {
+      inactive: hide,
+      dataKey,
+      type: legendType,
+      color: fill,
+      value: getTooltipNameProp(name, dataKey),
+      payload: props,
+    },
+  ];
+};
 type BarBackgroundProps = {
   background?: ActiveShape<BarShapeProps, SVGPathElement>;
   data: ReadonlyArray<BarRectangleItem> | undefined;
@@ -342,7 +358,39 @@ type BarRectanglesProps = InternalProps & {
   data: ReadonlyArray<BarRectangleItem> | undefined;
 };
 const defaultMinPointSize: number = 0;
-type BarImplProps = Omit<InternalBarProps, 'layout' | 'data'> & { children?: ReactNode };
+export const errorBarDataPointFormatter: ErrorBarDataPointFormatter<BarRectangleItem> = (
+  dataPoint: BarRectangleItem,
+  dataKey,
+): ErrorBarDataItem => {
+  /**
+   * if the value coming from `selectBarRectangles` is an array then this is a stacked bar chart.
+   * arr[1] represents end value of the bar since the data is in the form of [startValue, endValue].
+   * */
+  const value = Array.isArray(dataPoint.value) ? dataPoint.value[1] : dataPoint.value;
+  return {
+    x: dataPoint.x,
+    y: dataPoint.y,
+    value,
+    // getValueByDataKey does not validate the output type
+    errorVal: getValueByDataKey(dataPoint, dataKey),
+  };
+};
+export const defaultBarProps = {
+  activeBar: false,
+  animationBegin: 0,
+  animationDuration: 400,
+  animationEasing: 'ease',
+  background: false,
+  hide: false,
+  isAnimationActive: 'auto',
+  label: false,
+  legendType: 'rect',
+  minPointSize: defaultMinPointSize,
+  xAxisId: 0,
+  yAxisId: 0,
+  zIndex: DefaultZIndexes.bar,
+} as const satisfies Partial<Props>;
+export type BarImplProps = Omit<InternalBarProps, 'layout' | 'data'> & { children?: ReactNode };
 export function computeBarRectangles({
   layout,
   barSettings: { dataKey, minPointSize: minPointSizeProp, hasCustomShape },

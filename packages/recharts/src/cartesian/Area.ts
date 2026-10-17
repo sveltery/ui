@@ -1,8 +1,9 @@
 import { BaseLineType, CurveType, Props as CurveProps } from '../shape/Curve.js';
 import { ImplicitLabelListType } from '../component/LabelList.js';
 import { isNumber } from '../util/DataUtils.js';
-import { getCateCoordinateOfLine, getValueByDataKey, StackId } from '../util/ChartUtils.js';
+import { getCateCoordinateOfLine, getTooltipNameProp, getValueByDataKey, StackId } from '../util/ChartUtils.js';
 import { ActiveDotType, AnimationDuration, AnimationTiming, CartesianLayout, DataConsumer, DataKey, DataProvider, DotType, LegendType, NullableCoordinate, TickItem, TooltipType } from '../util/types.js';
+import type { LegendPayload } from '../component/DefaultLegendContent.js';
 import { BaseAxisWithScale } from '../state/selectors/axisSelectors.js';
 import { ChartData } from '../state/chartDataSlice.js';
 import { AreaPointItem, ComputedArea } from '../state/selectors/areaSelectors.js';
@@ -248,11 +249,29 @@ type AreaSvgProps = Omit<
   CurveProps,
   'points' | 'ref' | 'layout' | 'path' | 'pathRef' | 'baseLine' | 'dangerouslySetInnerHTML'
 >;
-type InternalProps = AreaSvgProps & InternalAreaProps;
+export type InternalProps = AreaSvgProps & InternalAreaProps;
 export type Props<DataPointType, ValueAxisType> = AreaSvgProps & AreaProps<DataPointType, ValueAxisType>;
-type PropsWithDefaults<DataPointType, ValueAxisType> = WithIdRequired<
+export type PropsWithDefaults<DataPointType, ValueAxisType> = WithIdRequired<
   RequiresDefaultProps<Props<DataPointType, ValueAxisType>, typeof defaultAreaProps>
 >;
+export function getLegendItemColor(stroke: string | undefined, fill: string | undefined): string | undefined {
+  return stroke && stroke !== 'none' ? stroke : fill;
+}
+export const computeLegendPayloadFromAreaData = <DataPointType, ValueAxisType>(
+  props: Props<DataPointType, ValueAxisType>,
+): ReadonlyArray<LegendPayload> => {
+  const { dataKey, name, stroke, fill, legendType, hide } = props;
+  return [
+    {
+      inactive: hide,
+      dataKey,
+      type: legendType,
+      color: getLegendItemColor(stroke, fill),
+      value: getTooltipNameProp(name, dataKey),
+      payload: props,
+    },
+  ];
+};
 export const defaultAreaProps = {
   activeDot: true,
   animationBegin: 0,
