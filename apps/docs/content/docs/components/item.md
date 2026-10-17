@@ -175,7 +175,6 @@ The main component for displaying content with media, title, description, and ac
 | `variant` | `"default"` \| `"outline"` \| `"muted"` | `"default"` |
 | `size`    | `"default"` \| `"sm"` \| `"xs"`         | `"default"` |
 | `render`  | `Snippet<[props, state, children]>`     |             |
-| `class`   | `string`                                |             |
 
 ### ItemGroup
 
