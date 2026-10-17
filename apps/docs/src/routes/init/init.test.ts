@@ -90,6 +90,13 @@ describe('/init', () => {
     expect(item.cssVars?.theme ?? {}).not.toHaveProperty('font-heading');
   });
 
+  it('reads gray as neutral, from a preset code or a param', async () => {
+    const neutral = await init('style=nova&baseColor=neutral&theme=neutral&iconLibrary=lucide&font=inter&radius=default&menuAccent=subtle&menuColor=default');
+    expect(await init('style=nova&baseColor=gray&theme=gray&iconLibrary=lucide&font=inter&radius=default&menuAccent=subtle&menuColor=default')).toEqual(neutral);
+    const item = await init('preset=btLmMa');
+    expect(item.type === 'registry:base' && item.config?.tailwind).toEqual({ baseColor: 'neutral' });
+  });
+
   it('sets a cache lifetime', async () => {
     expect((await fetch(`${origin}/init?preset=b0`)).headers.get('cache-control')).toBe('public, max-age=3600');
   });

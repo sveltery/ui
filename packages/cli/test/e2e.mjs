@@ -113,6 +113,8 @@ try {
   // Each preset runs in its own copy of the app, made before any init.
   for (const [code, expected] of [
     ['b0', { style: 'nova', baseColor: 'neutral', imports: ['@fontsource-variable/inter'], primary: 'oklch(0.205 0 0)', fonts: ["--font-sans: 'Inter Variable', sans-serif;", '--font-heading: var(--font-sans);'] }],
+    // A gray code, which shadcn keeps gray and Sveltery reads as neutral.
+    ['btLmMa', { style: 'nova', baseColor: 'neutral', imports: ['@fontsource-variable/inter'], primary: 'oklch(0.205 0 0)', fonts: ["--font-sans: 'Inter Variable', sans-serif;", '--font-heading: var(--font-sans);'] }],
     [
       'b4xFeBLg4O',
       {

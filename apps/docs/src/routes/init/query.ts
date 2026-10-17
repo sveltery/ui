@@ -70,12 +70,14 @@ export function parseInitQuery(params: URLSearchParams): ParseResult {
     if (params.get('rtl') === 'true') throw new QueryError('rtl is not supported yet.');
 
     const fields = rawFields(params);
-    const baseColor = oneOf('baseColor', fields.baseColor, baseColors);
+    // The registry serves no gray theme, so gray reads as neutral, as on the Create page.
+    const served = (color: string | null | undefined) => (color === 'gray' ? 'neutral' : color);
+    const baseColor = oneOf('baseColor', served(fields.baseColor), baseColors);
     const config: InitConfig = {
       style: oneOf('style', fields.style, styleNames),
       baseColor,
-      theme: oneOf('theme', fields.theme, themesFor(baseColor)),
-      chartColor: oneOf('chartColor', fields.chartColor, themesFor(baseColor)),
+      theme: oneOf('theme', served(fields.theme), themesFor(baseColor)),
+      chartColor: oneOf('chartColor', served(fields.chartColor), themesFor(baseColor)),
       iconLibrary: oneOf('iconLibrary', fields.iconLibrary, iconLibraries),
       font: oneOf('font', fields.font, PRESET_FONTS),
       fontHeading: oneOf('fontHeading', fields.fontHeading, PRESET_FONT_HEADINGS),

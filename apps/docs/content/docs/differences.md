@@ -428,3 +428,15 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Why:** The other rows make room during the drag, as they do upstream.
 
 **Decided:** Hugo Hsi, 2026-10-14
+
+## CLI and presets
+
+### A gray preset code installs the neutral theme
+
+**Upstream:** The preset codec keeps `gray` as a base color, but [`base-colors.ts`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/base-colors.ts#L3-L7) leaves it out, so [`/init`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/app/(app)/(create)/init/route.ts#L17-L20) answers a code such as `btLmMa` with a 400, and `init --preset` stops.
+
+**Sveltery UI:** `/init` reads a gray base color, theme or chart color as neutral, as the [Create](/create) page already shows it. `init --preset btLmMa` installs the neutral theme.
+
+**Why:** A code made before gray left the picker still works, and the CLI and the Create page agree on what it installs.
+
+**Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
