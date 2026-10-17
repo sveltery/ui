@@ -50,3 +50,7 @@ For a rule of your own, check the value in your submit handler. When it fails, s
 ## Composite controls
 
 [Checkbox](/docs/components/checkbox), [Switch](/docs/components/switch), [Radio Group](/docs/components/radio-group) and [Slider](/docs/components/slider) each submit through a hidden native input under their `name`. Give the control an `id` and its `FieldLabel` a matching `for`. For a radio group, put `name` on `RadioGroup`, and give each option its own horizontal `Field` and label.
+
+## Without JavaScript
+
+The composite controls need JavaScript for the keyboard and for a remote form's `as()` spread. For a form that must work before the page hydrates, use their native twins, which look the same: [Native Checkbox](/docs/components/native-checkbox), [Native Switch](/docs/components/native-switch), [Native Radio Group](/docs/components/native-radio-group), [Native Slider](/docs/components/native-slider) and [Native Select](/docs/components/native-select). For dates, colors, files and one-time codes, use [Input](/docs/components/input#input-types) with the native `type`.

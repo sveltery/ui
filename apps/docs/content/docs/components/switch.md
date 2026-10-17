@@ -91,6 +91,10 @@ Bind `checked` to read and write the state. `defaultChecked` is the state an unb
 <Switch size="sm" />
 ```
 
+## Without JavaScript
+
+`Switch` needs JavaScript for the keyboard and for a remote form's `as()` spread. For a form that must work before the page hydrates, use [Native Switch](/docs/components/native-switch), a styled native input that looks the same.
+
 ## API reference
 
 `Switch` is styled on top of the Sveltery Base `Switch` primitive, which owns its state, keyboard behavior, form value and accessibility. See the [Base UI Switch documentation](https://base-ui.com/react/components/switch) for the behavior it ports.

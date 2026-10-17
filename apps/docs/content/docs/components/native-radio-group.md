@@ -84,6 +84,10 @@ Use `NativeRadioGroup` when the form must work before the page hydrates or with 
 
 The [Field](/docs/components/field) layout parts, such as `Field`, `FieldLabel`, `FieldSet` and `FieldError`, work with both.
 
+## Toggle style
+
+For a single choice that looks like a [Toggle Group](/docs/components/toggle-group), hide plain radios inside labels that carry the Toggle's classes, as the toggle style on [Native Checkbox](/docs/components/native-checkbox#toggle-style) does with checkboxes. The [Native Select](/docs/components/native-select#remote-forms) remote form example has both.
+
 ## Remote forms
 
 Spread a [remote form](/docs/forms/remote-forms) field onto each radio with `as('radio', value)`. The field gives each radio its `name`, `value`, `checked` state and `aria-invalid`.

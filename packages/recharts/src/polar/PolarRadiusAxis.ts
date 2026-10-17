@@ -1,6 +1,9 @@
 import * as React from '../react.js';
 import { SVGProps } from '../react.js';
-import { RenderableAxisProps, PolarViewBoxRequired, PresentationAttributesAdaptChildEvent, TickItem, AxisDomain, ScaleType, AxisDomainTypeInput, TickProp, BaseTickContentProps } from '../util/types.js';
+import maxBy from 'es-toolkit/compat/maxBy';
+import minBy from 'es-toolkit/compat/minBy';
+import { polarToCartesian } from '../util/PolarUtils.js';
+import { RenderableAxisProps, Coordinate, PolarViewBoxRequired, PresentationAttributesAdaptChildEvent, TickItem, AxisDomain, ScaleType, AxisDomainTypeInput, TickProp, BaseTickContentProps } from '../util/types.js';
 import { NiceTicksAlgorithm } from '../state/cartesianAxisSlice.js';
 import { defaultPolarRadiusAxisProps } from './defaultPolarRadiusAxisProps.js';
 import { RequiresDefaultProps } from '../util/resolveDefaultProps.js';
@@ -180,11 +183,54 @@ export interface PolarRadiusAxisProps<DataPointType = any, DataValueType = any>
 type AxisSvgProps = Omit<PresentationAttributesAdaptChildEvent<any, SVGTextElement>, 'scale' | 'type'>;
 export type Props<DataPointType = any, DataValueType = any> = AxisSvgProps &
   PolarRadiusAxisProps<DataPointType, DataValueType>;
-type PropsWithDefaults<DataPointType = any, DataValueType = any> = RequiresDefaultProps<
+export type PropsWithDefaults<DataPointType = any, DataValueType = any> = RequiresDefaultProps<
   Props<DataPointType, DataValueType>,
   typeof defaultPolarRadiusAxisProps
 >;
-type InsideProps = Omit<PropsWithDefaults, 'scale'> &
+export type InsideProps = Omit<PropsWithDefaults, 'scale'> &
   PolarViewBoxRequired & {
     scale: RechartsScale;
   };
+export const AXIS_TYPE = 'radiusAxis';
+/**
+ * Calculate the coordinate of tick
+ * @param coordinate The radius of tick
+ * @param angle from props
+ * @param cx from chart
+ * @param cy from chart
+ * @return (x, y)
+ */
+export const getTickValueCoord = ({ coordinate }: TickItem, angle: number, cx: number, cy: number): Coordinate => {
+  return polarToCartesian(cx, cy, coordinate, angle);
+};
+export const getTickTextAnchor = (orientation: TickOrientation): string => {
+  let textAnchor;
+
+  switch (orientation) {
+    case 'left':
+      textAnchor = 'end';
+      break;
+    case 'right':
+      textAnchor = 'start';
+      break;
+    default:
+      textAnchor = 'middle';
+      break;
+  }
+
+  return textAnchor;
+};
+export const getViewBox = (angle: number, cx: number, cy: number, ticks: ReadonlyArray<TickItem>): PolarViewBoxRequired => {
+  const maxRadiusTick = maxBy(ticks, (entry: TickItem) => entry.coordinate || 0);
+  const minRadiusTick = minBy(ticks, (entry: TickItem) => entry.coordinate || 0);
+
+  return {
+    cx,
+    cy,
+    startAngle: angle,
+    endAngle: angle,
+    innerRadius: minRadiusTick?.coordinate || 0,
+    outerRadius: maxRadiusTick?.coordinate || 0,
+    clockWise: false,
+  };
+};

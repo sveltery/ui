@@ -319,7 +319,7 @@ interface PieProps<DataPointType = any, DataValueType = any>
   zIndex?: number;
 }
 type PieSvgAttributes = Omit<PresentationAttributesAdaptChildEvent<any, SVGElement>, 'ref' | keyof PieEvents>;
-type InternalProps = PieSvgAttributes & InternalPieProps;
+export type InternalProps = PieSvgAttributes & InternalPieProps;
 export type Props<DataPointType = any, DataValueType = any> = PieSvgAttributes & PieProps<DataPointType, DataValueType>;
 type RealPieData = Record<string, unknown>;
 export type PieCoordinate = {
@@ -342,6 +342,31 @@ type PieSectorsProps = {
   shape: PieShape;
   allOtherPieProps: WithoutId<InternalProps>;
   id: GraphicalItemId;
+};
+export function getActiveShapeFill(activeShape: ActiveShape<Readonly<PieSectorDataItem>> | undefined): string | undefined {
+  // activeShape can be boolean/function/element/object; only element/object can carry a static fill value.
+  if (activeShape == null || typeof activeShape === 'boolean' || typeof activeShape === 'function') {
+    return undefined;
+  }
+
+  if (React.isValidElement(activeShape)) {
+    // React element form: <Sector fill="..."/> or custom element with fill prop.
+    const fill = activeShape.props?.fill;
+    return typeof fill === 'string' ? fill : undefined;
+  }
+
+  const { fill } = activeShape;
+  return typeof fill === 'string' ? fill : undefined;
+}
+export const getTextAnchor = (x: number, cx: number) => {
+  if (x > cx) {
+    return 'start';
+  }
+  if (x < cx) {
+    return 'end';
+  }
+
+  return 'middle';
 };
 const getOuterRadius = (
   dataPoint: any,

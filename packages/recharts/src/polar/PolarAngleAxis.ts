@@ -1,6 +1,8 @@
 import * as React from '../react.js';
 import { ReactNode, SVGProps } from '../react.js';
+import { TextAnchor, TextVerticalAnchor } from '../component/Text.js';
 import { AxisDomain, AxisDomainTypeInput, BaseTickContentProps, PresentationAttributesAdaptChildEvent, RenderableAxisProps, ScaleType, TickItem, TickProp } from '../util/types.js';
+import { degreeToRadian, polarToCartesian } from '../util/PolarUtils.js';
 import { AngleAxisSettings } from '../state/polarAxisSlice.js';
 import { NiceTicksAlgorithm } from '../state/cartesianAxisSlice.js';
 import { defaultPolarAngleAxisProps } from './defaultPolarAngleAxisProps.js';
@@ -8,6 +10,8 @@ import { RequiresDefaultProps } from '../util/resolveDefaultProps.js';
 import { ZIndexable } from '../zIndex/ZIndexLayer.js';
 import { RechartsScale } from '../util/scale/RechartsScale.js';
 import { CustomScaleDefinition } from '../util/scale/CustomScaleDefinition.js';
+const eps = 1e-5;
+const COS_45 = Math.cos(degreeToRadian(45));
 export interface PolarAngleAxisProps<DataPointType = any, DataValueType = any>
   extends
     Omit<RenderableAxisProps<DataPointType, DataValueType>, 'axisLine' | 'tickCount' | 'domain' | 'scale' | 'tick'>,
@@ -225,20 +229,78 @@ type AxisSvgProps = Omit<
 >;
 export type Props<DataPointType = any, DataValueType = any> = AxisSvgProps &
   PolarAngleAxisProps<DataPointType, DataValueType>;
-type PropsWithDefaults<DataPointType = any, DataValueType = any> = RequiresDefaultProps<
+export type PropsWithDefaults<DataPointType = any, DataValueType = any> = RequiresDefaultProps<
   Props<DataPointType, DataValueType>,
   typeof defaultPolarAngleAxisProps
 >;
-type InternalPolarAngleAxisProps = Omit<PropsWithDefaults, 'scale'> & {
+export type InternalPolarAngleAxisProps = Omit<PropsWithDefaults, 'scale'> & {
   cx: number;
   cy: number;
   radius: number;
   ticks: ReadonlyArray<TickItem>;
   scale: RechartsScale;
 } & PolarAngleAxisEvents;
-type AngleAxisSettingsReporter = Omit<AngleAxisSettings, 'type'> & {
+export const AXIS_TYPE = 'angleAxis';
+export type AngleAxisSettingsReporter = Omit<AngleAxisSettings, 'type'> & {
   children: ReactNode;
   type: AxisDomainTypeInput;
+};
+/**
+ * Calculate the coordinate of line endpoint
+ * @param data The data if there are ticks
+ * @param props axis settings
+ * @return (x1, y1): The point close to text,
+ *         (x2, y2): The point close to axis
+ */
+export const getTickLineCoord = (
+  data: TickItem,
+  props: InternalPolarAngleAxisProps,
+): {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+} => {
+  const { cx, cy, radius, orientation, tickSize } = props;
+  const tickLineSize = tickSize || 8;
+  const p1 = polarToCartesian(cx, cy, radius, data.coordinate);
+  const p2 = polarToCartesian(cx, cy, radius + (orientation === 'inner' ? -1 : 1) * tickLineSize, data.coordinate);
+
+  return { x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y };
+};
+/**
+ * Get the text-anchor of each tick
+ * @param data Data of ticks
+ * @param orientation of the axis ticks
+ * @return text-anchor
+ */
+export const getTickTextAnchor = (data: TickItem, orientation: Props['orientation']): TextAnchor => {
+  const cos = Math.cos(degreeToRadian(-data.coordinate));
+
+  if (cos > eps) {
+    return orientation === 'outer' ? 'start' : 'end';
+  }
+  if (cos < -eps) {
+    return orientation === 'outer' ? 'end' : 'start';
+  }
+  return 'middle';
+};
+/**
+ * Get the text vertical anchor of each tick
+ * @param data Data of a tick
+ * @return text vertical anchor
+ */
+export const getTickTextVerticalAnchor = (data: TickItem): TextVerticalAnchor => {
+  const cos = Math.cos(degreeToRadian(-data.coordinate));
+  const sin = Math.sin(degreeToRadian(-data.coordinate));
+
+  // handle top and bottom sectors: 90±45deg and 270±45deg
+  if (Math.abs(cos) <= COS_45) {
+    // sin > 0: top sector, sin < 0: bottom sector
+    return sin > 0 ? 'start' : 'end';
+  }
+
+  return 'middle';
 };
 type TickItemProps = {
   tick: TickProp<BaseTickContentProps>;

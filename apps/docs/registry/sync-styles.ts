@@ -71,12 +71,11 @@ const rule = (selector: string, utilities: string[]): Item => ({ key: selector, 
  * Base UI component they look like. A styled `<input type="radio">` has `:checked` where Radio has
  * `data-checked`, and no child for the indicator, so the dot is a radial gradient of the icon's color and size.
  */
-function nativeRadio(list: Item[], style: string): Item[] {
-  const find = (key: string) => list.find((item) => item.key === key);
-  const group = utilitiesOf(find('.cn-radio-group'));
-  const icon = utilitiesOf(find('.cn-radio-group-indicator-icon'));
+function nativeRadio(find: (key: string) => string[], style: string): Item[] {
+  const group = find('.cn-radio-group');
+  const icon = find('.cn-radio-group-indicator-icon');
   const checked = { 'data-checked': 'checked', 'aria-checked': 'checked', 'not-data-checked': 'not-checked' } as Record<string, string>;
-  const item = utilitiesOf(find('.cn-radio-group-item')).map((utility) => utility.split(':').map((part) => checked[part] ?? part).join(':'));
+  const item = find('.cn-radio-group-item').map((utility) => utility.split(':').map((part) => checked[part] ?? part).join(':'));
   const color = icon.find((utility) => /^bg-[a-z-]+$/.test(utility))?.slice(3);
   const size = (variant: string) => icon.find((utility) => utility.startsWith(`${variant}size-`))?.slice(variant.length + 5);
   if (!group.length || !item.length || !color || !size('')) throw new Error(`style-${style}.css: the native radio rules no longer derive from the radio group rules`);
@@ -89,14 +88,114 @@ function nativeRadio(list: Item[], style: string): Item[] {
   ];
 }
 
+/** Splits a utility into its variants and its base, ignoring colons inside brackets. */
+function parts(utility: string) {
+  const variants: string[] = [];
+  let depth = 0;
+  let start = 0;
+  for (let index = 0; index < utility.length; index++) {
+    const char = utility[index];
+    if (char === '[') depth++;
+    else if (char === ']') depth--;
+    else if (char === ':' && depth === 0) {
+      variants.push(utility.slice(start, index));
+      start = index + 1;
+    }
+  }
+  return { variants, base: utility.slice(start) };
+}
+
+/** Renames variants: Base marks state with `data-*` attributes, a native input with pseudo-classes. */
+const renamed = (names: Record<string, string>) => (utility: string) => {
+  const { variants, base } = parts(utility);
+  return [...variants.map((variant) => names[variant] ?? variant), base].join(':');
+};
+const onInput = renamed({ 'data-checked': 'checked', 'data-unchecked': 'not-checked', 'not-data-checked': 'not-checked', 'aria-checked': 'checked' });
+const onPeer = renamed({ 'data-checked': 'peer-checked', 'data-unchecked': 'peer-not-checked' });
+
+/** Moves a utility onto a pseudo-element after its own variants, so `hover:ring-4` becomes `hover:[&::x]:ring-4`. */
+const onPseudo = (pseudo: string) => (utility: string) => {
+  const { variants, base } = parts(utility);
+  return [...variants, `[&::${pseudo}]`, base].join(':');
+};
+
+/** A native range input is horizontal, so vertical utilities go and horizontal ones lose their variant. */
+const horizontal = (utilities: string[]) =>
+  utilities.flatMap((utility) => {
+    const { variants, base } = parts(utility);
+    if (variants.includes('data-vertical')) return [];
+    return [[...variants.filter((variant) => variant !== 'data-horizontal'), base].join(':')];
+  });
+
+/** The height, in spacing units, that a track or thumb's `h-*` or `size-*` utility sets. */
+const height = (utilities: string[]) => utilities.map((utility) => /^(?:h|size)-([\d.]+)$/.exec(utility)?.[1]).find(Boolean);
+
+/**
+ * NativeCheckbox and NativeSwitch are a styled `<input type="checkbox">`, so `data-checked` becomes `:checked`.
+ * A switch's thumb is the input's sibling, so it reads `:checked` through `peer-checked`, and it starts past the
+ * track's border, which a Base thumb sits inside.
+ */
+function nativeCheckbox(find: (key: string) => string[], style: string): Item[] {
+  const checkbox = find('.cn-checkbox');
+  if (!checkbox.length) throw new Error(`style-${style}.css: no .cn-checkbox rule to derive .cn-native-checkbox from`);
+  return [{ key: '  /* MARK: Native Checkbox */', text: '  /* MARK: Native Checkbox */', gap: '\n' }, rule('.cn-native-checkbox', checkbox.map(onInput))];
+}
+
+function nativeSwitch(find: (key: string) => string[], style: string): Item[] {
+  const track = find('.cn-switch');
+  const thumb = find('.cn-switch-thumb');
+  const border = track.find((utility) => /^border(-\d)?$/.test(utility));
+  if (!track.length || !thumb.length || !border) throw new Error(`style-${style}.css: the native switch rules no longer derive from the switch rules`);
+  const inset = border === 'border' ? 'ml-px' : `ml-${Number(border.slice(7)) / 4}`;
+  return [
+    { key: '  /* MARK: Native Switch */', text: '  /* MARK: Native Switch */', gap: '\n' },
+    rule('.cn-native-switch', track.map(onInput)),
+    rule('.cn-native-switch-thumb', [...thumb.map(onPeer), inset]),
+  ];
+}
+
+/**
+ * NativeSlider is a styled `<input type="range">`, whose track and thumb are pseudo-elements, so the slider's
+ * rules move onto them. Only Firefox has a pseudo-element for the filled part of the track.
+ */
+function nativeSlider(find: (key: string) => string[], style: string): Item[] {
+  const track = horizontal(find('.cn-slider-track'));
+  const range = horizontal(find('.cn-slider-range'));
+  // A thumb's `relative` and its `after:` hit area do nothing on a pseudo-element.
+  const thumb = horizontal(find('.cn-slider-thumb')).filter((utility) => utility !== 'relative' && !utility.startsWith('after:'));
+  const trackHeight = height(track);
+  const thumbHeight = height(thumb);
+  if (!trackHeight || !thumbHeight || !range.length) throw new Error(`style-${style}.css: the native slider rules no longer derive from the slider rules`);
+  return [
+    { key: '  /* MARK: Native Slider */', text: '  /* MARK: Native Slider */', gap: '\n' },
+    rule('.cn-native-slider', [
+      ...track.map(onPseudo('-webkit-slider-runnable-track')),
+      ...track.map(onPseudo('-moz-range-track')),
+      ...[`h-${trackHeight}`, ...range].map(onPseudo('-moz-range-progress')),
+      ...['-webkit-slider-thumb', '-moz-range-thumb'].flatMap((pseudo) => ['box-border', 'appearance-none', ...thumb].map(onPseudo(pseudo))),
+      // WebKit puts the thumb at the top of the track, where Firefox centers it.
+      onPseudo('-webkit-slider-thumb')(`mt-[calc((${trackHeight}-${thumbHeight})*var(--spacing)/2)]`),
+    ]),
+  ];
+}
+
+const NATIVE: { after: string; derive: (find: (key: string) => string[], style: string) => Item[] }[] = [
+  { after: '.cn-checkbox-indicator', derive: nativeCheckbox },
+  { after: '.cn-radio-group-indicator-icon', derive: nativeRadio },
+  { after: '.cn-slider-thumb', derive: nativeSlider },
+  { after: '.cn-switch-thumb-aria', derive: nativeSwitch },
+];
+
 /** Upstream's sheet with PATCHES applied, in its own order, then the derived native rules after their source. */
 export function scopedSheet(upstream: string, style: string) {
-  const list = items(upstream, `style-${style}.css`);
-  const after = list.findIndex((item) => item.key === '.cn-radio-group-indicator-icon');
-  const body = [...list.slice(0, after + 1), ...nativeRadio(list, style), ...list.slice(after + 1)]
-    .map((item) => patch(item, style))
+  // Native rules derive from the patched rules, so a patch to a Base rule reaches its native twin.
+  const list = items(upstream, `style-${style}.css`).map((item) => patch(item, style));
+  const find = (key: string) => utilitiesOf(list.find((item) => item.key === key));
+  const body = list
+    .flatMap((item) => [item, ...NATIVE.filter(({ after }) => after === item.key).flatMap(({ derive }) => derive(find, style))])
     .map((item, index, all) => item.text + (index < all.length - 1 ? item.gap : '\n'))
     .join('');
+  for (const { after } of NATIVE) if (!list.some((item) => item.key === after)) throw new Error(`style-${style}.css: no ${after} rule to place native rules after`);
   return `/* Derived from shadcn-ui/ui ${UPSTREAM_COMMIT}; MIT: apps/docs/registry/THIRD_PARTY_NOTICES.md. */\n.style-${style} {\n${body}}\n`;
 }
 
