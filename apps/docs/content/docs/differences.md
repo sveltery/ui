@@ -373,6 +373,26 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
+### The Sidebar changelog flips the trigger icon with `cn-rtl-flip`
+
+**Upstream:** The [Sidebar page changelog](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/sidebar.mdx?plain=1#L634) says to add `rtl:rotate-180` to the `SidebarTrigger` icon, but [`sidebar.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/sidebar.tsx#L280) uses `cn-rtl-flip`.
+
+**Sveltery UI:** The [Sidebar](/docs/components/sidebar#changelog) changelog says to add `class="cn-rtl-flip"`, which is what the component does.
+
+**Why:** Following upstream's prose would leave the copied icon different from the registry component.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Select Invalid snippet keeps its `Select`
+
+**Upstream:** The [Select page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/select.mdx?plain=1#L139) shows the Invalid snippet as a bare `SelectTrigger`.
+
+**Sveltery UI:** The [Select](/docs/components/select#invalid) snippet wraps the trigger in `<Select {items}>`.
+
+**Why:** A `SelectTrigger` outside a `Select` throws because it has no Select context, so the bare snippet fails when pasted.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ### Sidebar examples fit the preview frame
 
 **Upstream:** The sidebar examples size the provider with `min-h-svh` and the sidebar with `fixed h-svh`, for example in [`sidebar-example.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/examples/sidebar-example.tsx).

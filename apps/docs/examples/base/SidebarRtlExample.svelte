@@ -281,26 +281,27 @@
                 {#snippet trigger(props: RenderProps, _state: unknown, children?: Snippet)}
                   <SidebarMenuButton {...props} tooltip={item.title}>{@render children?.()}</SidebarMenuButton>
                 {/snippet}
-                <SidebarMenuItem>
-                  <Collapsible open={item.isActive} class="group/collapsible">
-                    <CollapsibleTrigger render={trigger}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                      <ChevronRight class="ms-auto transition-transform duration-200 group-data-open/collapsible:rotate-90 rtl:rotate-180 rtl:group-data-open/collapsible:rotate-90" />
-                    </CollapsibleTrigger>
-                    <CollapsibleContent>
-                      <SidebarMenuSub>
-                        {#each item.items as subItem (subItem.title)}
-                          <SidebarMenuSubItem>
-                            <SidebarMenuSubButton href={subItem.url}>
-                              <span>{subItem.title}</span>
-                            </SidebarMenuSubButton>
-                          </SidebarMenuSubItem>
-                        {/each}
-                      </SidebarMenuSub>
-                    </CollapsibleContent>
-                  </Collapsible>
-                </SidebarMenuItem>
+                {#snippet menuItem(props: RenderProps, _state: unknown, children?: Snippet)}
+                  <SidebarMenuItem {...props}>{@render children?.()}</SidebarMenuItem>
+                {/snippet}
+                <Collapsible open={item.isActive} class="group/collapsible" render={menuItem}>
+                  <CollapsibleTrigger render={trigger}>
+                    <item.icon />
+                    <span>{item.title}</span>
+                    <ChevronRight class="ms-auto transition-transform duration-200 group-data-open/collapsible:rotate-90 rtl:rotate-180 rtl:group-data-open/collapsible:rotate-90" />
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      {#each item.items as subItem (subItem.title)}
+                        <SidebarMenuSubItem>
+                          <SidebarMenuSubButton href={subItem.url}>
+                            <span>{subItem.title}</span>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      {/each}
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
+                </Collapsible>
               {/each}
             </SidebarMenu>
           </SidebarGroup>
