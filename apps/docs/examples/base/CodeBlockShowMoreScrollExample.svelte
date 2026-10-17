@@ -2,41 +2,9 @@
   import { Button } from '$registry/bases/base/ui/button';
   import { CodeBlock, CodeBlockActions, CodeBlockContent, CodeBlockCopyButton, CodeBlockFooter, CodeBlockHeader, CodeBlockLine, CodeBlockTitle, useHighlightedCode } from '$registry/bases/base/ui/code-block';
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';
+  import { chatComponent } from './code-block/samples';
 
-  const code = `"use client"
-
-import * as React from "react"
-import { useChat } from "@ai-sdk/react"
-
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-
-export function Chat() {
-  const [input, setInput] = React.useState("")
-  const { messages, sendMessage, status } = useChat()
-
-  return (
-    <div className="flex flex-col gap-4">
-      {messages.map((message) => (
-        <div key={message.id}>
-          {message.parts.map((part, index) =>
-            part.type === "text" ? <p key={index}>{part.text}</p> : null
-          )}
-        </div>
-      ))}
-      <form
-        onSubmit={(event) => {
-          event.preventDefault()
-          sendMessage({ text: input })
-          setInput("")
-        }}
-      >
-        <Input value={input} onChange={(event) => setInput(event.target.value)} />
-        <Button disabled={status !== "ready"}>Send</Button>
-      </form>
-    </div>
-  )
-}`;
+  const code = chatComponent;
 
   let expanded = $state(false);
   const highlighted = useHighlightedCode(() => code, () => 'tsx');
