@@ -85,5 +85,3 @@ The `AspectRatio` component displays content within a desired ratio.
 | ------- | -------- | ------- | -------- |
 | `ratio` | `number` | -       | Yes      |
 | `class` | `string` | -       | No       |
-
-For more information, see the [Base UI documentation](https://base-ui.com/react/components/aspect-ratio#api-reference).

@@ -1,5 +1,6 @@
 import { fontItems } from './fonts';
 import { inlineStyle } from './inline';
+import { itemLinks } from './links';
 import { planBlock, planItems, type BlockSource, type ItemPlan, type UiManifest } from './items';
 import { parseStyleSheet, type StyleSheet } from './styles';
 import { parseThemes } from './themes';
@@ -58,7 +59,7 @@ export function buildRegistry(input: RegistryInput): RegistryOutput {
     styles: [...styleNames],
     baseColors: [...baseColors],
     iconLibraries: [...iconLibraries],
-    items: plans.filter((plan) => plan.name !== 'shared').map(({ name, type, title }) => ({ name, type, title })),
+    items: plans.filter((plan) => plan.name !== 'shared').map(({ name, type, title }) => ({ name, type, title, meta: { links: itemLinks(name, origin) } })),
     blocks: blocks.map(({ name, type, title, description }) => ({ name, type, title, description })),
   };
   output.set('index.json', manifest);

@@ -100,7 +100,7 @@ const registryManifest = object({
   styles: array(literal(...styleNames)),
   baseColors: array(literal(...baseColors)),
   iconLibraries: array(literal(...iconLibraryNames)),
-  items: array(object({ name: string, type: itemType, title: optional(string), description: optional(string) })),
+  items: array(object({ name: string, type: itemType, title: optional(string), description: optional(string), meta: optional(object({ links: record(string) })) })),
   blocks: array(object({ name: string, type: literal('registry:block'), title: optional(string), description: optional(string) })),
 });
 export type RegistryManifest = ReturnType<typeof registryManifest>;
