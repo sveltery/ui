@@ -6,6 +6,7 @@
   import { Sidebar, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarProvider } from '$registry/bases/base/ui/sidebar';
   import { Tabs, TabsList, TabsTrigger } from '$registry/bases/base/ui/tabs';
   import { ToggleGroup, ToggleGroupItem } from '$registry/bases/base/ui/toggle-group';
+  import type { PanelImperativeHandle } from '@sveltery/resizable';
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
   import type { Block } from '#blocks/registry';
@@ -18,7 +19,7 @@
   let selectedFile = $state<string>();
   let size = $state(['100%']);
   let iframeKey = $state(0);
-  let panel = $state<ResizablePanel>();
+  let panel = $state<PanelImperativeHandle | null>();
   let source = $state<Promise<BlockFiles>>();
   const height = $derived(block.iframeHeight ?? '930px');
 
@@ -156,7 +157,7 @@
     <div class="relative grid w-full gap-4">
       <div class="absolute inset-0 right-4 [background-image:radial-gradient(#d4d4d4_1px,transparent_1px)] [background-size:20px_20px] dark:[background-image:radial-gradient(#404040_1px,transparent_1px)]"></div>
       <ResizablePanelGroup orientation="horizontal" class="relative z-10 after:absolute after:inset-0 after:right-3 after:z-0 after:rounded-xl after:bg-surface/50">
-        <ResizablePanel bind:this={panel} class="relative overflow-hidden rounded-lg border bg-background md:rounded-xl" defaultSize="100%" minSize="30%">
+        <ResizablePanel bind:panelRef={panel} class="relative overflow-hidden rounded-lg border bg-background md:rounded-xl" defaultSize="100%" minSize="30%">
           {#key iframeKey}
             <iframe src="/view/{block.name}" title={block.description} loading="lazy" class="relative z-20 no-scrollbar h-full w-full bg-background"></iframe>
           {/key}

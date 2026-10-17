@@ -21,6 +21,8 @@
   "license": "MIT",
   "files": [
     "dist",
+    "!dist/**/*.test.*",
+    "!dist/**/test/**",
     "LICENSE",
     "THIRD_PARTY_NOTICES.md"
   ],
@@ -45,6 +47,7 @@
     "svelte": "^5.57.1"
   },
   "devDependencies": {
+    "@types/node": "26.6.3",
     "publint": "0.3.25",
     "svelte": "5.57.1"
   }

@@ -1,20 +1,20 @@
 <script lang="ts">
   import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '$registry/bases/base/ui/resizable';
-  import { savedLayout } from '@sveltery/resizable';
+  import { useDefaultLayout, type Layout } from '@sveltery/resizable';
 
-  let bound = $state<Record<string, number>>();
+  let current = $state<Layout>();
   let changes = $state<string[]>([]);
-  const persisted = savedLayout({ id: 'resizable-fixture' });
+  const persisted = useDefaultLayout({ id: 'resizable-fixture', storage: typeof localStorage === 'undefined' ? { getItem: () => null, setItem: () => {} } : localStorage });
 </script>
 
 <div id="horizontal" style="width: 800px; height: 100px">
-  <ResizablePanelGroup bind:layout={bound} onLayoutChanged={(layout, details) => changes.push(`${Math.round(layout.a)} ${details.isUserInteraction}`)}>
+  <ResizablePanelGroup onLayoutChange={(layout) => { current = layout; }} onLayoutChanged={(layout) => { changes.push(`${Math.round(layout.a)}`); }}>
     <ResizablePanel id="a" defaultSize="50%" minSize="20%">A</ResizablePanel>
     <ResizableHandle id="horizontal-handle" withHandle />
     <ResizablePanel id="b" defaultSize="50%" minSize="100px">B</ResizablePanel>
   </ResizablePanelGroup>
 </div>
-<output data-testid="bound">{bound ? Math.round(bound.a) : ''}</output>
+<output data-testid="current">{current ? Math.round(current.a) : ''}</output>
 <output data-testid="changes">{changes.join(',')}</output>
 
 <div id="vertical" style="width: 200px; height: 400px">
@@ -33,12 +33,12 @@
   </ResizablePanelGroup>
 </div>
 
-<div id="threshold" style="width: 800px; height: 100px">
+<div id="three" style="width: 800px; height: 100px">
   <ResizablePanelGroup>
-    <ResizablePanel id="drawer" defaultSize="30%" minSize="25%" collapsible collapsedThreshold="5%">Drawer</ResizablePanel>
-    <ResizableHandle id="threshold-handle" />
+    <ResizablePanel id="drawer" defaultSize="30%" minSize="25%">Drawer</ResizablePanel>
+    <ResizableHandle id="three-handle" />
     <ResizablePanel id="page" defaultSize="40%">Page</ResizablePanel>
-    <ResizableHandle id="threshold-second-handle" disableDoubleClick />
+    <ResizableHandle id="three-second-handle" />
     <ResizablePanel id="aside" defaultSize="30%">Aside</ResizablePanel>
   </ResizablePanelGroup>
 </div>
@@ -66,7 +66,7 @@
 </div>
 
 <div id="persisted" style="width: 800px; height: 100px">
-  <ResizablePanelGroup {...persisted}>
+  <ResizablePanelGroup defaultLayout={persisted.defaultLayout} onLayoutChanged={persisted.onLayoutChanged}>
     <ResizablePanel id="left" defaultSize="50%" minSize="10%">Left</ResizablePanel>
     <ResizableHandle id="persisted-handle" />
     <ResizablePanel id="right" defaultSize="50%" minSize="10%">Right</ResizablePanel>
