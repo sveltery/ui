@@ -12,6 +12,8 @@
   "include": [
     "src",
     "blocks",
+    "examples/base/data-table",
+    "examples/base/DataTable*.svelte",
     "registry",
     "vite.config.ts"
   ]

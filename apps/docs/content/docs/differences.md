@@ -473,16 +473,6 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
 
-### Empty examples use Lucide icons where upstream uses Tabler
-
-**Upstream:** [`empty-demo.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/empty-demo.tsx), [`empty-outline.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/empty-outline.tsx) and [`empty-background.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/empty-background.tsx) import `IconFolderCode`, `IconCloud` and `IconBell` from `@tabler/icons-react`.
-
-**Sveltery UI:** The [Empty](/docs/components/empty) examples import `FolderCodeIcon`, `CloudIcon` and `BellIcon` from `@lucide/svelte`.
-
-**Why:** The docs site depends on `@lucide/svelte` only. The Lucide icons draw the same folder, cloud and bell.
-
-**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
-
 ### The Item avatar section does not name an `avatar` variant
 
 **Upstream:** The [Item page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/item.mdx) says "You can use `ItemMedia` with `variant="avatar"` to display an avatar." `ItemMedia` has only the `default`, `icon` and `image` variants, and the example uses the default.
@@ -567,6 +557,38 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Decided:** Hugo Hsi, 2026-10-14 (no Sonner) and 2026-10-16 (examples)
 
+## Code Block
+
+### Code Block takes plain text in `code` and highlighted lines as HTML
+
+**Upstream:** [`CodeBlockContent`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/code-block.tsx#L147) takes a string child or `CodeBlockLine` children, and [`CodeBlockLine`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/code-block.tsx#L208) checks whether its children are empty. [`useHighlightedCode(code, language)`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/hooks/use-highlighted-code.ts) returns one React node per line.
+
+**Sveltery UI:** [Code Block](/docs/components/code-block) takes plain text in a `code` prop on `CodeBlockContent`, and `CodeBlockLine` children otherwise. `useHighlightedCode(() => code, () => language)` returns an object whose `lines` holds one escaped HTML string per line, rendered with `{@html}`. `CodeBlockLine` watches its rendered content to add the newline that keeps an empty line in a copied selection.
+
+**Why:** A Svelte snippet cannot be read as a string or checked for emptiness, and a line of highlighted tokens is markup, not a value a Svelte component can hold. Copying a selection keeps blank lines as upstream's does.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### `add code-block` puts the highlighter in the code-block folder
+
+**Upstream:** `add code-block` also installs the [`use-highlighted-code`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/hooks/_registry.ts#L15) item, which writes `hooks/use-highlighted-code.ts` and `lib/highlighter.tsx`, with Shiki 3.
+
+**Sveltery UI:** `add code-block` writes `use-highlighted-code.svelte.ts` and `highlighter.ts` into `components/ui/code-block`, and `code-block` exports `useHighlightedCode`, `loadHighlighter` and `highlightCode`. It depends on Shiki 4, which the docs already use.
+
+**Why:** The registry here builds one item per component folder and finds its dependencies from its imports, so the highlighter goes where `add code-block` installs it.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Code Block page has no Markdown or Typeset example, and its RTL example uses Rhea
+
+**Upstream:** The [Code Block page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/code-block.mdx#L355) shows a block inside a `typeset` container and a chat message rendered with Streamdown, whose `components.code` routes fenced code to a `CodeBlock`.
+
+**Sveltery UI:** The [Code Block](/docs/components/code-block) page leaves both out. Its RTL example renders in Rhea like the rest of the page, where upstream's [`code-block-rtl`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/code-block.mdx#L369) preview uses Nova.
+
+**Why:** Streamdown is a React library, so the Markdown example needs a Svelte Markdown renderer first. Typeset is not ported yet. A docs page renders every preview in one style.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
 ## Rendering and timing
 
 ### A trigger keeps its own `data-slot` through `render`
@@ -598,3 +620,65 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 **Why:** The other rows make room during the drag, as they do upstream.
 
 **Decided:** Hugo Hsi, 2026-10-14
+
+## Data Table guide
+
+### The guide has no state wiring steps
+
+**Upstream:** The [Data Table guide](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/data-table.mdx#L492) opens its Sorting, Filtering, Visibility and Row Selection sections with an "Update `<DataTable>`" step. Each step keeps one state slice in `React.useState` and passes it to `useTable` as `state` and `on*Change`.
+
+**Sveltery UI:** The [Data Table](/docs/components/data-table) guide drops those steps where nothing is left to change. Sorting and Row Selection go straight to the column definitions, and Filtering and Visibility add only the input and the menu. `createTable` from `@tanstack/svelte-table` keeps every state slice itself.
+
+**Why:** Wiring state by hand is how the React adapter gets it. The Svelte adapter reads and writes the slices through the table, so passing `state` and `on*Change` would only repeat what it already does. The guide still works the same for the user: sorting, filtering, hiding columns and selecting rows all happen in the table.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### Column definitions return components and snippets
+
+**Upstream:** The guide's [`columns.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/data-table.mdx#L167-L197) returns JSX from `header` and `cell`, and renders it with `<table.FlexRender />`.
+
+**Sveltery UI:** `columns.ts` cannot hold markup, so a cell returns `renderComponent(Component, props)`. The row menu, the sortable email header, the select checkbox and the right-aligned amount are small components next to `columns.ts`. The amount header is the one snippet, `renderSnippet(createRawSnippet(...))`, because it is static text. The table renders them with `<FlexRender />` from `@tanstack/svelte-table`, and the guide's callout about it describes that component.
+
+**Why:** A `.ts` module has no template. A `createRawSnippet` reads its arguments once, so a cell built with it keeps its first value when `data` changes. A component takes the new `amount` as a prop.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### A menu label sits inside a group
+
+**Upstream:** The guide's row actions put [`DropdownMenuLabel`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/data-table.mdx#L409) directly in `DropdownMenuContent`, and the Tasks [`data-table-view-options.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/app/%28app%29/examples/tasks/components/data-table-view-options.tsx#L36) does the same. Upstream's own [`data-table-demo.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/examples/base/data-table-demo.tsx#L176) wraps its labels in `DropdownMenuGroup`.
+
+**Sveltery UI:** The row actions and the view options wrap `DropdownMenuLabel` in a `DropdownMenuGroup`, as the demo does.
+
+**Why:** Base UI's group label throws "MenuGroupContext is missing" outside a group, so the menu in upstream's guide code never opens.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The reusable components use Base UI's attributes and props
+
+**Upstream:** The Tasks [`data-table-column-header.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/app/%28app%29/examples/tasks/components/data-table-column-header.tsx#L34-L38) and [`data-table-view-options.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/app/%28app%29/examples/tasks/components/data-table-view-options.tsx#L25) import the Radix variant's dropdown menu. They use `DropdownMenuTrigger asChild` and `data-[state=open]:bg-accent`, and the column header is generic over `TData` and `TValue`.
+
+**Sveltery UI:** The [Data Table](/docs/components/data-table#reusable-components) components use a `render` snippet on the trigger and `data-popup-open:bg-accent`. The column header types `column` as the four methods it calls, so `renderComponent` accepts the column that a header receives. The guide links the Tasks demo on ui.shadcn.com, because these docs have no `/examples/tasks` page. The shared type is `DataTableFeatures`, where upstream's section calls it `TasksTableFeatures`, and the section adds the line "Put each component next to `data-table-features.ts`". The components use the features the guide registers, so they have no faceting.
+
+**Why:** Base UI never sets `data-state`, so the open column header would not stay highlighted. `renderComponent` cannot infer a component's generics, and a generic `column` prop fails to type-check against `Column<Features, Payment, ...>`. The Tasks features object registers faceting for its faceted filter, which the guide does not build, and the guide's own object is the one the components share.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The RTL example sets its own direction
+
+**Upstream:** The [RTL section](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/data-table.mdx#L891) links the RTL configuration guide, and the preview takes `direction="rtl"` from the docs site's language selector.
+
+**Sveltery UI:** The section links the [RTL guide](/docs/rtl) too. It then names the [DirectionProvider](/docs/components/direction), and the example has its own language buttons and sets `dir` on the table and on each menu.
+
+**Why:** These docs have no language selector that gives a preview its direction, so a Svelte example sets its own.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
+
+### The Installation step names the other components
+
+**Upstream:** The [Installation](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/data-table.mdx#L48-L50) step adds only `table`, and the guide imports `button`, `checkbox`, `dropdown-menu`, `input` and `select` without saying so.
+
+**Sveltery UI:** The step adds a sentence that lists those five components.
+
+**Why:** A project that follows the guide from a fresh `init` fails to build at the first import of a component it never added.
+
+**Decided:** Under Hugo Hsi's standing rule, 2026-10-17
