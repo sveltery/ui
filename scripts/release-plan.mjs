@@ -4,7 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { readdirSync, readFileSync } from 'node:fs';
 
 /** Publish order. A new directory in packages/ fails the plan until it is added here. */
-export const PUBLISH_ORDER = ['cli', 'command', 'day-picker', 'input-otp', 'recharts', 'resizable', 'svelte'];
+export const PUBLISH_ORDER = ['charts', 'cli', 'command', 'day-picker', 'input-otp', 'resizable', 'svelte'];
 
 /**
  * A package is taken when it is public, on npm, and its version is not on npm yet. Every taken package must be at the

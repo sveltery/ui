@@ -94,7 +94,7 @@ describe('items', () => {
 
   it('gives a helper package its workspace or held version and an optional peer its peer range', () => {
     expect(item('styles/nova/calendar.json').dependencies).toEqual([`@sveltery/day-picker@${HELPER_RANGE}`, 'cn@^0.2.2', 'date-fns@^4.4.0']);
-    expect(item('styles/nova/chart.json').dependencies).toEqual(['@sveltery/recharts@^0.1.0', 'cn@^0.2.2']);
+    expect(item('styles/nova/chart.json').dependencies).toEqual(['@sveltery/charts@^0.1.0', 'cn@^0.2.2']);
   });
 
   it('lists shared as a dependency of an item that imports ../shared/ and ships it as a lib item', () => {
@@ -122,7 +122,7 @@ describe('index files', () => {
   it('serves a block with its page in its route, its components and data, and what it imports', () => {
     const block = item('styles/vega/dashboard-01.json');
     expect(item('styles/nova/dashboard-01.json')).toEqual(block);
-    expect([block.type, block.registryDependencies?.includes('chart'), block.registryDependencies?.includes('sidebar'), block.dependencies?.some((spec) => spec.startsWith('@sveltery/recharts@^'))]).toEqual(['registry:block', true, true, true]);
+    expect([block.type, block.registryDependencies?.includes('chart'), block.registryDependencies?.includes('sidebar'), block.dependencies?.some((spec) => spec.startsWith('@sveltery/charts@^'))]).toEqual(['registry:block', true, true, true]);
     expect(block.files).toContainEqual(expect.objectContaining({ type: 'registry:page', target: 'src/routes/dashboard/+page.svelte' }));
     expect(block.devDependencies).toBeUndefined();
     expect(block.files).toContainEqual(expect.objectContaining({ type: 'registry:file', target: 'src/routes/dashboard/data.json' }));

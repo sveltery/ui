@@ -164,7 +164,7 @@ settings:
 
 overrides:
   shadcn@4.21.1>cn: 0.2.4
-  '@sveltery/recharts>@reduxjs/toolkit': 1.9.7
+  '@sveltery/charts>@reduxjs/toolkit': 1.9.7
   victory-vendor>@types/d3-shape: 3.1.7
 
 patchedDependencies:
@@ -279,6 +279,9 @@ importers:
       '@shadcn/helpers':
         specifier: 0.2.0
         version: 0.2.0(ai@7.0.136(zod@3.25.76))
+      '@sveltery/charts':
+        specifier: workspace:*
+        version: link:../../packages/charts
       '@sveltery/command':
         specifier: workspace:*
         version: link:../../packages/command
@@ -288,9 +291,6 @@ importers:
       '@sveltery/input-otp':
         specifier: workspace:*
         version: link:../../packages/input-otp
-      '@sveltery/recharts':
-        specifier: workspace:*
-        version: link:../../packages/recharts
       '@sveltery/resizable':
         specifier: workspace:*
         version: link:../../packages/resizable
@@ -452,6 +452,49 @@ importers:
         specifier: 4.147.0
         version: 4.147.0(@cloudflare/workers-types@5.20261012.1)(@types/node@26.6.3)
 
+  packages/charts:
+    dependencies:
+      '@reduxjs/toolkit':
+        specifier: 1.9.7
+        version: 1.9.7
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
+      decimal.js-light:
+        specifier: ^2.5.1
+        version: 2.5.1
+      es-toolkit:
+        specifier: ^1.39.3
+        version: 1.52.0
+      eventemitter3:
+        specifier: ^5.0.1
+        version: 5.0.4
+      immer:
+        specifier: ^10.1.1
+        version: 10.2.0
+      reselect:
+        specifier: 5.1.1
+        version: 5.1.1
+      tiny-invariant:
+        specifier: ^1.3.3
+        version: 1.3.3
+      victory-vendor:
+        specifier: ^37.0.2
+        version: 37.3.6
+    devDependencies:
+      '@testing-library/jest-dom':
+        specifier: 6.9.1
+        version: 6.9.1
+      '@types/node':
+        specifier: 26.6.3
+        version: 26.6.3
+      publint:
+        specifier: 0.3.25
+        version: 0.3.25
+      svelte:
+        specifier: 5.57.1
+        version: 5.57.1(@typescript-eslint/types@8.71.0)
+
   packages/cli:
     dependencies:
       '@clack/prompts':
@@ -534,49 +577,6 @@ importers:
         specifier: 5.57.1
         version: 5.57.1(@typescript-eslint/types@8.71.0)
 
-  packages/recharts:
-    dependencies:
-      '@reduxjs/toolkit':
-        specifier: 1.9.7
-        version: 1.9.7
-      clsx:
-        specifier: ^2.1.1
-        version: 2.1.1
-      decimal.js-light:
-        specifier: ^2.5.1
-        version: 2.5.1
-      es-toolkit:
-        specifier: ^1.39.3
-        version: 1.52.0
-      eventemitter3:
-        specifier: ^5.0.1
-        version: 5.0.4
-      immer:
-        specifier: ^10.1.1
-        version: 10.2.0
-      reselect:
-        specifier: 5.1.1
-        version: 5.1.1
-      tiny-invariant:
-        specifier: ^1.3.3
-        version: 1.3.3
-      victory-vendor:
-        specifier: ^37.0.2
-        version: 37.3.6
-    devDependencies:
-      '@testing-library/jest-dom':
-        specifier: 6.9.1
-        version: 6.9.1
-      '@types/node':
-        specifier: 26.6.3
-        version: 26.6.3
-      publint:
-        specifier: 0.3.25
-        version: 0.3.25
-      svelte:
-        specifier: 5.57.1
-        version: 5.57.1(@typescript-eslint/types@8.71.0)
-
   packages/resizable:
     devDependencies:
       '@types/node':
@@ -616,6 +616,9 @@ importers:
       '@sveltery/base':
         specifier: ^0.2.1
         version: 0.2.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))
+      '@sveltery/charts':
+        specifier: workspace:*
+        version: link:../../packages/charts
       '@sveltery/command':
         specifier: workspace:*
         version: link:../../packages/command
@@ -625,9 +628,6 @@ importers:
       '@sveltery/input-otp':
         specifier: workspace:*
         version: link:../../packages/input-otp
-      '@sveltery/recharts':
-        specifier: workspace:*
-        version: link:../../packages/recharts
       '@sveltery/resizable':
         specifier: workspace:*
         version: link:../../packages/resizable
@@ -3732,9 +3732,6 @@ packages:
 
   package-manager-detector@1.8.0:
     resolution: {integrity: sha512-yQA4H19AmPEoMUeavPMDIe1higySl/gH/yaQrkT/s07Qp+7pp2hYz30N3z2l5BkjVkF9Ow6o0wjJamm2y7Sn0A==}
-
-  package-manager-detector@1.9.0:
-    resolution: {integrity: sha512-zAMfbta9nPA8AKkA4WdmNAT8R8s6Dk0/xwPsqNnRidMFcLo1YkLuPDTgs2f64XdzS8vbLNnoJ+uUIkgbz7oRHA==}
 
   pagefind@1.5.2:
     resolution: {integrity: sha512-XTUaK0hXMCu2jszWE584JGQT7y284TmMV9l/HX3rnG5uo3rHI/uHU56XTyyyPFjeWEBxECbAi0CaFDJOONtG0Q==}
@@ -7565,8 +7562,6 @@ snapshots:
 
   package-manager-detector@1.8.0: {}
 
-  package-manager-detector@1.9.0: {}
-
   pagefind@1.5.2:
     optionalDependencies:
       '@pagefind/darwin-arm64': 1.5.2
@@ -7692,7 +7687,7 @@ snapshots:
   publint@0.3.25:
     dependencies:
       '@publint/pack': 0.1.7
-      package-manager-detector: 1.9.0
+      package-manager-detector: 1.8.0
       picocolors: 1.1.1
       sade: 1.8.1
 

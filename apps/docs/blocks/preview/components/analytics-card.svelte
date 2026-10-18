@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Area, AreaChart } from '@sveltery/recharts';
+  import { Area, AreaChart } from '@sveltery/charts';
   import { Badge } from '$registry/bases/base/ui/badge';
   import { Button } from '$registry/bases/base/ui/button';
   import { Card, CardAction, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';

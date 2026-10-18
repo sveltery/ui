@@ -15,7 +15,7 @@ export default defineConfig({
   // Examples load through a glob, so the dependency scan has to be pointed at them or a first visit reloads the page.
   optimizeDeps: { entries: ['blocks/**/*.svelte', 'examples/**/*.svelte'] },
   // Redux Toolkit 1.9 ships CommonJS, which the dev server cannot load externally during SSR.
-  ssr: { noExternal: ['@reduxjs/toolkit'], optimizeDeps: { include: ['@sveltery/recharts > @reduxjs/toolkit'] } },
+  ssr: { noExternal: ['@reduxjs/toolkit'], optimizeDeps: { include: ['@sveltery/charts > @reduxjs/toolkit'] } },
   plugins: [
     // As on ui.shadcn.com, only the Create preview renders raw tokens, and the homepage cards render in Rhea.
     registryStyles({ root: path('.'), zones: { 'src/routes/preview/': 'tokens', 'src/routes/(site)/cards/': 'rhea' } }),

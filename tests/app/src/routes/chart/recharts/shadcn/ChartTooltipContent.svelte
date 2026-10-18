@@ -1,6 +1,6 @@
 <script lang="ts" module>
   import type { Snippet } from 'svelte';
-  import type { SvelteArgs, TooltipContentProps, TooltipNameType, TooltipPayloadEntry, TooltipValueType } from '@sveltery/recharts';
+  import type { SvelteArgs, TooltipContentProps, TooltipNameType, TooltipPayloadEntry, TooltipValueType } from '@sveltery/charts';
 
   /** What a Tooltip content snippet hands on: the Tooltip's props, less its formatter, which ChartTooltipContent replaces. */
   export type TooltipContentArgs = Omit<SvelteArgs<TooltipContentProps>, 'formatter'>;

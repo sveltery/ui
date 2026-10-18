@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { CartesianGrid, Line, LineChart, XAxis } from '@sveltery/recharts';
+  import { CartesianGrid, Line, LineChart, XAxis } from '@sveltery/charts';
   import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
   import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
 

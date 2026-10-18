@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Bar, BarChart, CartesianGrid, XAxis, type LegendContentProps, type SvelteArgs } from '@sveltery/recharts';
+  import { Bar, BarChart, CartesianGrid, XAxis, type LegendContentProps, type SvelteArgs } from '@sveltery/charts';
   import { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
   import { useLanguage } from '$lib/components/docs/language.svelte';
 

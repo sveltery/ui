@@ -2,7 +2,7 @@
   import { cn } from 'cn';
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
-  import { ResponsiveContainer } from '@sveltery/recharts';
+  import { ResponsiveContainer } from '@sveltery/charts';
   import { setChart, type ChartConfig } from './chart-context.js';
   import ChartStyle from './ChartStyle.svelte';
 

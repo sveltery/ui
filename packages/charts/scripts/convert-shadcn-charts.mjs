@@ -1,4 +1,4 @@
-// Converts shadcn's React chart gallery into Svelte pages on @sveltery/recharts and local shadcn helpers.
+// Converts shadcn's React chart gallery into Svelte pages on @sveltery/charts and local shadcn helpers.
 // Usage: node scripts/convert-shadcn-charts.mjs <shadcn charts dir> <output dir> [--helpers <dir>] [--match <regex>] [--only <name>] [--docs [--suffix <name>]] [--check]
 // Each chart-<name>.tsx becomes <output>/chart-<name>/+page.svelte and +page.ts. The pages import the card, chart and select
 // helpers from --helpers (default <output>/shadcn), and every lucide-react icon becomes a component in <helpers>/icons/.
@@ -10,7 +10,7 @@ import { basename, dirname, join, relative } from 'node:path';
 import ts from 'typescript';
 import { ATTRIBUTE_ALIASES, EVENT_ALIASES } from '../src/util/reactDomTables.ts';
 
-const RECHARTS = '@sveltery/recharts';
+const RECHARTS = '@sveltery/charts';
 const HELPER_MODULE = /^@\/registry\/new-york-v4\/ui\/(.+)$/;
 const ICONS_MODULE = '$registry/bases/base/ui/icons';
 // The docs site's registry module for each upstream module the docs examples import.
@@ -31,7 +31,7 @@ const ICONS = {
   TrendingUp: { tabler: 'IconTrendingUp', hugeicons: 'TradeUpIcon', phosphor: 'TrendUpIcon', remixicon: 'RiLineChartLine' },
   Waves: { tabler: 'IconWaveSine', hugeicons: 'AudioWaveIcon', phosphor: 'WavesIcon', remixicon: 'RiWaterFlashLine' },
 };
-const SELF = 'packages/recharts/scripts/convert-shadcn-charts.mjs';
+const SELF = 'packages/charts/scripts/convert-shadcn-charts.mjs';
 
 // Props that take an element or a render function upstream, and the types of the snippet that replaces them.
 const SNIPPETS = {

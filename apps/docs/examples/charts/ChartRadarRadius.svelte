@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { PolarGrid, PolarRadiusAxis, Radar, RadarChart } from '@sveltery/recharts';
+  import { PolarGrid, PolarRadiusAxis, Radar, RadarChart } from '@sveltery/charts';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
   import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';

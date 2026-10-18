@@ -1,6 +1,6 @@
 # Differences from recharts
 
-@sveltery/recharts ports [recharts](https://github.com/recharts/recharts) 3.8.0 to Svelte 5. It matches recharts' DOM and mechanism, and differs only where Svelte cannot do what React does or where recharts is plainly broken. Each entry names the upstream file and line at [`v3.8.0`](https://github.com/recharts/recharts/tree/v3.8.0/src), what this port does instead, and why.
+@sveltery/charts ports [recharts](https://github.com/recharts/recharts) 3.8.0 to Svelte 5. It matches recharts' DOM and mechanism, and differs only where Svelte cannot do what React does or where recharts is plainly broken. Each entry names the upstream file and line at [`v3.8.0`](https://github.com/recharts/recharts/tree/v3.8.0/src), what this port does instead, and why.
 
 ## API
 

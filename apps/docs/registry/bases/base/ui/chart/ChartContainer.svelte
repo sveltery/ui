@@ -1,6 +1,6 @@
 <script lang="ts">
   import { cn } from 'cn';
-  import { ResponsiveContainer } from '@sveltery/recharts';
+  import { ResponsiveContainer } from '@sveltery/charts';
   import { setChart } from './context.js';
   import ChartStyle from './ChartStyle.svelte';
   import type { ChartContainerProps } from './types.js';
