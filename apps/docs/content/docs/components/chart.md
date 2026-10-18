@@ -80,12 +80,6 @@ npx @sveltery/ui@latest add chart
 npm install @sveltery/charts
 ```
 
-<Callout>
-
-**Note:** `@sveltery/charts` is not published to npm yet. Until it is, install it from a checkout of this repository.
-
-</Callout>
-
 ### Copy the component
 
 Copy the following files into `src/lib/components/ui/chart`.

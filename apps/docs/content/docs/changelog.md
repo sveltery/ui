@@ -10,6 +10,12 @@ order: 10
 
 New releases of the `@sveltery/ui` CLI and the Svelte packages that the components use. The newest release is first. The components themselves have no version: `add` and `update` always copy the current source from the registry.
 
+## October 2026: @sveltery/charts 0.1.0
+
+Released on 2026-10-18. The [Chart](/docs/components/chart) component needs this package, and `add chart` installs it for you.
+
+`@sveltery/charts` is a Svelte port of [Recharts](https://github.com/recharts/recharts) 3.8.0. Its [README](https://github.com/sveltery/ui/tree/main/packages/charts) lists the parts that are ported and the parts that are not ported yet.
+
 ## October 2026: Typeset
 
 Added on 2026-10-17.
