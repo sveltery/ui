@@ -86,7 +86,7 @@ try {
   await run('npx', ['--yes', SV, 'add', 'tailwindcss=plugins:none', '--no-git-check', '--no-install', '-C', app], work);
 
   step('pack @sveltery/ui and the helper packages');
-  const helpers = ['@sveltery/command', '@sveltery/day-picker', '@sveltery/input-otp', '@sveltery/recharts', '@sveltery/resizable', '@sveltery/svelte'];
+  const helpers = ['@sveltery/charts', '@sveltery/command', '@sveltery/day-picker', '@sveltery/input-otp', '@sveltery/resizable', '@sveltery/svelte'];
   await run('pnpm', [...helpers.flatMap((name) => ['--filter', name]), 'build'], repoRoot);
   await run('pnpm', [...['@sveltery/ui', ...helpers].flatMap((name) => ['--filter', name]), 'pack', '--pack-destination', tarballs], repoRoot);
   const tarball = (name) => {
@@ -362,7 +362,7 @@ try {
   writeFileSync(
     join(app, 'src/routes/+page.svelte'),
     // The import form the docs print, an explicit index, and a deep import of one file.
-    `<script lang="ts">\n  import { Bar, BarChart } from '@sveltery/recharts';\n  import { Button } from '${config.aliases.ui}/button';\n  import { ChartContainer } from '${config.aliases.ui}/chart';\n  import { Dialog, DialogTrigger } from '${config.aliases.ui}/dialog/index.js';\n  import DeepButton from '${config.aliases.ui}/button/Button.svelte';\n</script>\n<Button>Click</Button>\n<DeepButton>Deep</DeepButton>\n<Dialog><DialogTrigger>Open</DialogTrigger></Dialog>\n<ChartContainer config={{ value: { label: 'Value', color: 'var(--chart-1)' } }} class="h-40 w-80"><BarChart data={[{ value: 1 }, { value: 2 }]}><Bar dataKey="value" fill="var(--color-value)" /></BarChart></ChartContainer>\n`,
+    `<script lang="ts">\n  import { Bar, BarChart } from '@sveltery/charts';\n  import { Button } from '${config.aliases.ui}/button';\n  import { ChartContainer } from '${config.aliases.ui}/chart';\n  import { Dialog, DialogTrigger } from '${config.aliases.ui}/dialog/index.js';\n  import DeepButton from '${config.aliases.ui}/button/Button.svelte';\n</script>\n<Button>Click</Button>\n<DeepButton>Deep</DeepButton>\n<Dialog><DialogTrigger>Open</DialogTrigger></Dialog>\n<ChartContainer config={{ value: { label: 'Value', color: 'var(--chart-1)' } }} class="h-40 w-80"><BarChart data={[{ value: 1 }, { value: 2 }]}><Bar dataKey="value" fill="var(--color-value)" /></BarChart></ChartContainer>\n`,
   );
 
   step('svelte-check and vite build');

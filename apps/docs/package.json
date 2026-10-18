@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "vite dev --host 127.0.0.1",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-    "build": "pnpm --filter @sveltery/resizable --filter @sveltery/svelte --filter @sveltery/command --filter @sveltery/recharts build && vite build && node search-index.mjs",
+    "build": "pnpm --filter @sveltery/resizable --filter @sveltery/svelte --filter @sveltery/command --filter @sveltery/charts build && vite build && node search-index.mjs",
     "preview": "wrangler dev --port 4173",
     "deploy": "wrangler deploy"
   },
@@ -21,10 +21,10 @@
     "@hugeicons/svelte": "1.1.5",
     "@lucide/svelte": "1.48.0",
     "@shadcn/helpers": "0.2.0",
+    "@sveltery/charts": "workspace:*",
     "@sveltery/command": "workspace:*",
     "@sveltery/day-picker": "workspace:*",
     "@sveltery/input-otp": "workspace:*",
-    "@sveltery/recharts": "workspace:*",
     "@sveltery/resizable": "workspace:*",
     "@sveltery/svelte": "workspace:*",
     "@sveltery/ui": "workspace:*",

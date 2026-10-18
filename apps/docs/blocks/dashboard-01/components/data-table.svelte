@@ -26,7 +26,7 @@
 </script>
 
 <script lang="ts">
-  import { Area, AreaChart, CartesianGrid, XAxis } from '@sveltery/recharts';
+  import { Area, AreaChart, CartesianGrid, XAxis } from '@sveltery/charts';
   import { RestrictToVerticalAxis } from '@dnd-kit/abstract/modifiers';
   import { move } from '@dnd-kit/helpers';
   import { DragDropProvider } from '@dnd-kit/svelte';

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Area, AreaChart, XAxis } from '@sveltery/recharts';
+  import { Area, AreaChart, XAxis } from '@sveltery/charts';
   import { Badge } from '$registry/bases/base/ui/badge';
   import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
   import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';

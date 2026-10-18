@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Bar, BarChart, CartesianGrid, XAxis } from '@sveltery/recharts';
+  import { Bar, BarChart, CartesianGrid, XAxis } from '@sveltery/charts';
   import { ChartContainer, type ChartConfig } from '$registry/bases/base/ui/chart';
 
   const chartData = [

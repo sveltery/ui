@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Bar, BarChart } from '@sveltery/recharts';
+  import { Bar, BarChart } from '@sveltery/charts';
   import { ChartContainer, type ChartConfig } from '$registry/bases/base/ui/chart';
 
   const chartData = [

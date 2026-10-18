@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Label, PolarGrid, PolarRadiusAxis, RadialBar, RadialBarChart, type SvelteArgs, type LabelContentProps } from '@sveltery/recharts';
+  import { Label, PolarGrid, PolarRadiusAxis, RadialBar, RadialBarChart, type SvelteArgs, type LabelContentProps } from '@sveltery/charts';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
   import { ChartContainer, type ChartConfig } from '$registry/bases/base/ui/chart';
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';

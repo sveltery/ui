@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Pie, PieChart, type SvelteArgs, type LegendContentProps } from '@sveltery/recharts';
+  import { Pie, PieChart, type SvelteArgs, type LegendContentProps } from '@sveltery/charts';
   import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
   import { ChartContainer, ChartLegend, ChartLegendContent, type ChartConfig } from '$registry/bases/base/ui/chart';
 

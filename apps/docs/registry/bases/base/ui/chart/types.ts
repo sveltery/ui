@@ -1,6 +1,6 @@
 import type { Snippet } from 'svelte';
 import type { HTMLAttributes } from 'svelte/elements';
-import type { DefaultLegendContentProps, SvelteArgs, TooltipContentProps, TooltipNameType, TooltipPayloadEntry, TooltipValueType } from '@sveltery/recharts';
+import type { DefaultLegendContentProps, SvelteArgs, TooltipContentProps, TooltipNameType, TooltipPayloadEntry, TooltipValueType } from '@sveltery/charts';
 import type { ChartConfig } from './context.js';
 
 export type { ChartConfig };

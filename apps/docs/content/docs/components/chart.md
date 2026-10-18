@@ -5,7 +5,7 @@ description: Beautiful charts. Built using Recharts. Copy and paste into your ap
 
 <Callout>
 
-**Updated:** The `chart` component now uses [@sveltery/recharts](https://github.com/sveltery/ui/tree/main/packages/recharts), a Svelte port of Recharts v3. It replaces LayerChart. If you're updating existing chart code, see [Updating to Recharts v3](#updating-to-recharts-v3).
+**Updated:** The `chart` component now uses [@sveltery/charts](https://github.com/sveltery/ui/tree/main/packages/charts), a Svelte port of Recharts v3. It replaces LayerChart. If you're updating existing chart code, see [Updating to Recharts v3](#updating-to-recharts-v3).
 
 </Callout>
 
@@ -19,13 +19,13 @@ Charts are designed to look great out of the box. They work well with the other 
 
 ## Component
 
-We use [Recharts](https://recharts.org/) under the hood, through [@sveltery/recharts](https://github.com/sveltery/ui/tree/main/packages/recharts), which ports Recharts' components to Svelte 5 with the same props and the same markup.
+We use [Recharts](https://recharts.org/) under the hood, through [@sveltery/charts](https://github.com/sveltery/ui/tree/main/packages/charts), which ports Recharts' components to Svelte 5 with the same props and the same markup.
 
 We designed the `chart` component with composition in mind. **You build your charts using Recharts components and only bring in custom components, such as `ChartTooltip`, when and where you need it**.
 
 ```svelte showLineNumbers
 <script lang="ts">
-  import { Bar, BarChart } from '@sveltery/recharts';
+  import { Bar, BarChart } from '@sveltery/charts';
   import { ChartContainer, ChartTooltip, ChartTooltipContent } from '#lib/components/ui/chart';
 </script>
 
@@ -77,12 +77,12 @@ npx @sveltery/ui@latest add chart
 ### Install the dependencies
 
 ```bash
-npm install @sveltery/recharts
+npm install @sveltery/charts
 ```
 
 <Callout>
 
-**Note:** `@sveltery/recharts` is not published to npm yet. Until it is, install it from a checkout of this repository.
+**Note:** `@sveltery/charts` is not published to npm yet. Until it is, install it from a checkout of this repository.
 
 </Callout>
 
@@ -194,7 +194,7 @@ Let's add a grid to the chart.
 
 ```svelte
 <script lang="ts">
-  import { Bar, BarChart, CartesianGrid } from '@sveltery/recharts';
+  import { Bar, BarChart, CartesianGrid } from '@sveltery/charts';
 </script>
 ```
 
@@ -224,7 +224,7 @@ To add an x-axis to the chart, we'll use the `XAxis` component.
 
 ```svelte
 <script lang="ts">
-  import { Bar, BarChart, CartesianGrid, XAxis } from '@sveltery/recharts';
+  import { Bar, BarChart, CartesianGrid, XAxis } from '@sveltery/charts';
 </script>
 ```
 

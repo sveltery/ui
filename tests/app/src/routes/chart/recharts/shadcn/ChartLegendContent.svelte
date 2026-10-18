@@ -1,6 +1,6 @@
 <script lang="ts">
   import { cn } from 'cn';
-  import type { DefaultLegendContentProps, SvelteArgs } from '@sveltery/recharts';
+  import type { DefaultLegendContentProps, SvelteArgs } from '@sveltery/charts';
   import { getPayloadConfigFromPayload, useChart } from './chart-context.js';
 
   let {

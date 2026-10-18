@@ -5,7 +5,7 @@ export default defineProject({
   plugins: [svelte()],
   resolve: { conditions: ['browser'] },
   test: {
-    name: 'recharts',
+    name: 'charts',
     environment: 'jsdom',
     globals: true,
     restoreMocks: true,

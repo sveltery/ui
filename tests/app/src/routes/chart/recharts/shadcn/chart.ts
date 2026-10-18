@@ -1,5 +1,5 @@
-// shadcn's new-york-v4 ui/chart.tsx on @sveltery/recharts: the same DOM and classes, with snippets where it takes React nodes.
-export { Tooltip as ChartTooltip, Legend as ChartLegend } from '@sveltery/recharts';
+// shadcn's new-york-v4 ui/chart.tsx on @sveltery/charts: the same DOM and classes, with snippets where it takes React nodes.
+export { Tooltip as ChartTooltip, Legend as ChartLegend } from '@sveltery/charts';
 export { default as ChartContainer } from './ChartContainer.svelte';
 export { default as ChartStyle } from './ChartStyle.svelte';
 export { default as ChartTooltipContent } from './ChartTooltipContent.svelte';

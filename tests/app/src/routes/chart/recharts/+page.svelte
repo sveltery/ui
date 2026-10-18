@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { BarChart, PieChart } from '@sveltery/recharts';
+  import { BarChart, PieChart } from '@sveltery/charts';
 
   const data = [
     { name: 'a', uv: 1 },

@@ -1,4 +1,4 @@
-# @sveltery/recharts
+# @sveltery/charts
 
 Composable SVG charts for Svelte 5, ported from [recharts](https://github.com/recharts/recharts) 3.8.0. Recharts' framework-free core (the Redux store and its slices, the selectors, scales, stacks, tick math and animation timing) is copied from upstream with its tests. The chart components are being rewritten in Svelte. The chart shells are done: `BarChart`, `LineChart`, `AreaChart`, `ComposedChart`, `PieChart`, `RadarChart` and `RadialBarChart` render recharts' wrapper, surface and layers, and `ResponsiveContainer`, `Cell`, `Surface` and `Layer` are exported. The Cartesian parts are ported: `XAxis`, `YAxis`, `CartesianAxis`, `CartesianGrid`, `Bar`, `Line`, `Area`, `Tooltip`, `Legend`, `Text`, `Label`, `LabelList` and the `Rectangle`, `Curve`, `Dot` and `Symbols` shapes. So are the polar parts: `Pie`, `Radar`, `RadialBar`, `PolarGrid`, `PolarAngleAxis`, `PolarRadiusAxis`, the `Sector`, `Polygon`, `Trapezoid` and `Cross` shapes, the sector tooltip cursor of radial layouts, and the cross cursor that ScatterChart will draw. `ScatterChart`, `Scatter`, `ErrorBar`, `ReferenceLine` and `Brush` are not ported yet.
 

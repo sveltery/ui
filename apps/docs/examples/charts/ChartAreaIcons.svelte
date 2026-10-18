@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Area, AreaChart, CartesianGrid, XAxis, type SvelteArgs, type LegendContentProps } from '@sveltery/recharts';
+  import { Area, AreaChart, CartesianGrid, XAxis, type SvelteArgs, type LegendContentProps } from '@sveltery/charts';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
   import { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';

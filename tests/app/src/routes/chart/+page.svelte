@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Bar, BarChart, XAxis, type LegendContentProps, type SvelteArgs } from '@sveltery/recharts';
+  import { Bar, BarChart, XAxis, type LegendContentProps, type SvelteArgs } from '@sveltery/charts';
   import {
     ChartContainer,
     ChartLegend,

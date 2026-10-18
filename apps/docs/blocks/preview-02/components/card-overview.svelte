@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Bar, BarChart, XAxis } from '@sveltery/recharts';
+  import { Bar, BarChart, XAxis } from '@sveltery/charts';
   import { Badge } from '$registry/bases/base/ui/badge';
   import { Button } from '$registry/bases/base/ui/button';
   import { Card, CardContent, CardDescription, CardTitle } from '$registry/bases/base/ui/card';

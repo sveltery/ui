@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Bar, BarChart } from '@sveltery/recharts';
+  import { Bar, BarChart } from '@sveltery/charts';
   import { Button } from '$registry/bases/base/ui/button';
   import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
   import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
