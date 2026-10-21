@@ -1,0 +1,3 @@
+interface:
+  display_name: "Sveltery UI"
+  short_description: "Manages Sveltery UI components in Svelte 5 apps: adding, searching, fixing, debugging, styling and composing UI."
