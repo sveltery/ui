@@ -135,7 +135,7 @@
       <CardTitle>Area Chart - Interactive</CardTitle>
       <CardDescription>Showing total visitors for the last 3 months</CardDescription>
     </div>
-    <Select value={timeRange} onValueChange={(value) => value !== null && (timeRange = value)}>
+    <Select bind:value={() => timeRange, (value) => { if (value !== null && value !== undefined) timeRange = value; }}>
       <SelectTrigger class="hidden w-[160px] rounded-lg sm:ml-auto sm:flex" aria-label="Select a value">
         <SelectValue placeholder="Last 3 months" />
       </SelectTrigger>

@@ -20,7 +20,7 @@
   <div class="flex items-center space-x-6 lg:space-x-8">
     <div class="flex items-center space-x-2">
       <p class="text-sm font-medium">Rows per page</p>
-      <Select value={`${pagination.pageSize}`} onValueChange={(value) => table.setPageSize(Number(value))}>
+      <Select bind:value={() => `${pagination.pageSize}`, (value) => table.setPageSize(Number(value))}>
         <SelectTrigger class="h-8 w-[70px]">
           <SelectValue placeholder={`${pagination.pageSize}`} />
         </SelectTrigger>

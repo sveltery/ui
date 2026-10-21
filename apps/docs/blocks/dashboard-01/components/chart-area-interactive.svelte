@@ -149,7 +149,7 @@
           <ToggleGroupItem value={range.value}>{range.label}</ToggleGroupItem>
         {/each}
       </ToggleGroup>
-      <Select value={timeRange} onValueChange={(value) => value !== null && (timeRange = value)} items={ranges}>
+      <Select bind:value={() => timeRange, (value) => { if (value !== null && value !== undefined) timeRange = value; }} items={ranges}>
         <SelectTrigger
           class="flex w-40 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate @[767px]/card:hidden"
           size="sm"
