@@ -25,7 +25,7 @@
   data-slot="chart"
   data-chart={chartId}
   class={cn(
-    'cn-chart flex aspect-video flex-col justify-center text-xs [--ts-chart-tooltip-background:transparent] [--ts-chart-tooltip-border:0] [--ts-chart-tooltip-padding:0] [--ts-chart-tooltip-shadow:none]',
+    'cn-chart flex aspect-video flex-col justify-center text-xs [--ts-chart-tooltip-background:transparent] [--ts-chart-tooltip-border:0] [--ts-chart-tooltip-padding:0] [--ts-chart-tooltip-shadow:none] [&_.ts-chart]:text-muted-foreground [&_g[class$=grid]_:is(line,path)]:stroke-border [&_g[class$=grid]_:is(line,path)]:[stroke-opacity:1]',
     className
   )}
   {...props}
@@ -37,13 +37,3 @@
   {@render legend?.()}
 </div>
 
-<style>
-  /* TanStack paints guides with currentColor; shadcn's guides are muted text on border-colored lines. */
-  [data-slot='chart'] :global(.ts-chart) {
-    color: var(--muted-foreground);
-  }
-  [data-slot='chart'] :global(:is(.ts-chart__grid line, .ts-chart__radial-grid path, .ts-chart__angle-grid line)) {
-    stroke: var(--border);
-    stroke-opacity: 1;
-  }
-</style>
