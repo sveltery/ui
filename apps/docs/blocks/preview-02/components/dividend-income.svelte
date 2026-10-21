@@ -2,7 +2,7 @@
   import { Bar, BarChart } from '@sveltery/charts';
   import { Button } from '$registry/bases/base/ui/button';
   import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart-legacy';
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';
   import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '$registry/bases/base/ui/item';
 

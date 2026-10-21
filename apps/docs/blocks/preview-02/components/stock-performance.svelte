@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Area, AreaChart, CartesianGrid } from '@sveltery/charts';
   import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart-legacy';
   import { Combobox, ComboboxCollection, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from '$registry/bases/base/ui/combobox';
   import { Field, FieldGroup, FieldLabel } from '$registry/bases/base/ui/field';
   import { Separator } from '$registry/bases/base/ui/separator';

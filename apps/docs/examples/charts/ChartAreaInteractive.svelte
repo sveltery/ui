@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Area, AreaChart, CartesianGrid, XAxis, type SvelteArgs, type LegendContentProps } from '@sveltery/charts';
   import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart-legacy';
   import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '$registry/bases/base/ui/select';
 
   const chartData = [

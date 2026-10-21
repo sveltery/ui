@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Bar, BarChart, XAxis } from '@sveltery/charts';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart-legacy';
   import { Progress } from '$registry/bases/base/ui/progress';
   import { Separator } from '$registry/bases/base/ui/separator';
 

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Bar, BarChart, CartesianGrid, XAxis, type SvelteArgs, type LegendContentProps } from '@sveltery/charts';
-  import { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart-legacy';
 
   const chartData = [
     { month: "January", desktop: 186, mobile: 80 },

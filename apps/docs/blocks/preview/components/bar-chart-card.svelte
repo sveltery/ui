@@ -2,7 +2,7 @@
   import { Bar, BarChart, CartesianGrid, XAxis, type SvelteArgs, type LegendContentProps } from '@sveltery/charts';
   import { Button } from '$registry/bases/base/ui/button';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart-legacy';
 
   const barChartData = [
     { month: "January", desktop: 186, mobile: 80 },

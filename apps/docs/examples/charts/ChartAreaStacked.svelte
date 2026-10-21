@@ -1,7 +1,11 @@
 <script lang="ts">
-  import { Area, AreaChart, CartesianGrid, XAxis } from '@sveltery/charts';
+  import { areaY, d3Curve, defineChart, stack } from '@tanstack/charts';
+  import { scaleLinear } from '@tanstack/charts/scales/linear';
+  import { scalePoint } from '@tanstack/charts/scales/point';
+  import { fold } from '@tanstack/charts/transform/fold';
+  import { curveNatural } from 'd3-shape';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartTooltipContent, chartColors, type ChartConfig } from '$registry/bases/base/ui/chart';
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
   const chartData = [
@@ -23,6 +27,30 @@
       color: "var(--chart-2)",
     },
   } satisfies ChartConfig
+
+  const series = ["mobile", "desktop"] as const
+
+  const definition = defineChart({
+    marks: [
+      areaY(fold(chartData, { fields: series, as: { key: "series", value: "visitors" } }), {
+        x: "month",
+        y: "visitors",
+        z: "series",
+        color: "series",
+        layout: stack({ order: series }),
+        curve: d3Curve(curveNatural),
+        fillOpacity: 0.4,
+        stroke: (row) => `var(--color-${row.series})`,
+      }),
+    ],
+    scales: {
+      x: { scale: scalePoint, axis: { line: false, ticks: { size: 0, padding: 8, format: (value: string) => value.slice(0, 3) } } },
+      y: { scale: scaleLinear, grid: true, axis: false },
+    },
+    color: chartColors(series),
+    margin: { left: 12, right: 12 },
+    focus: "group-x",
+  })
 </script>
 
 <Card>
@@ -31,25 +59,10 @@
     <CardDescription>Showing total visitors for the last 6 months</CardDescription>
   </CardHeader>
   <CardContent>
-    <ChartContainer config={chartConfig}>
-      <AreaChart
-        accessibilityLayer
-        data={chartData}
-        margin={{
-          left: 12,
-          right: 12,
-        }}
-      >
-        <CartesianGrid vertical={false} />
-        <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} tickFormatter={(value) => value.slice(0, 3)} />
-        <ChartTooltip cursor={false}>
-          {#snippet content(props: TooltipContentArgs)}
-            <ChartTooltipContent indicator="dot" {...props} />
-          {/snippet}
-        </ChartTooltip>
-        <Area dataKey="mobile" type="natural" fill="var(--color-mobile)" fillOpacity={0.4} stroke="var(--color-mobile)" stackId="a" />
-        <Area dataKey="desktop" type="natural" fill="var(--color-desktop)" fillOpacity={0.4} stroke="var(--color-desktop)" stackId="a" />
-      </AreaChart>
+    <ChartContainer config={chartConfig} {definition} ariaLabel="Area Chart - Stacked">
+      {#snippet tooltip(props)}
+        <ChartTooltipContent indicator="dot" {...props} />
+      {/snippet}
     </ChartContainer>
   </CardContent>
   <CardFooter>
