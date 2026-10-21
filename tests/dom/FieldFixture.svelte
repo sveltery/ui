@@ -1,19 +1,27 @@
 <script lang="ts">
   import { Field, FieldDescription, FieldError, FieldLabel, FieldLegend, FieldSet } from '$ui/field/index.js';
+  import { Form, FormError } from '$ui/form/index.js';
   import { Input } from '$ui/input/index.js';
-  let { errors }: { errors?: Array<{ message?: string } | undefined> } = $props();
+  let { errors }: { errors?: Record<string, string | string[]> } = $props();
 </script>
-<FieldSet>
-  <FieldLegend variant="label">Account</FieldLegend>
-  <Field class="extra-field" data-invalid>
-    <FieldLabel for="email">Email</FieldLabel>
-    <Input id="email" type="email" aria-invalid />
-    <FieldDescription>We send the receipt here.</FieldDescription>
-    <FieldError {errors} data-testid="errors" />
-    <FieldError data-testid="children">Enter an email.</FieldError>
-  </Field>
-  <Field orientation="horizontal" data-disabled>
-    <FieldLabel for="name">Name</FieldLabel>
-    <Input id="name" disabled />
-  </Field>
-</FieldSet>
+<Form {errors}>
+  <FieldSet>
+    <FieldLegend variant="label">Account</FieldLegend>
+    <Field class="extra-field" name="email">
+      <FieldLabel>Email</FieldLabel>
+      <Input type="email" />
+      <FieldDescription>We send the receipt here.</FieldDescription>
+      <FieldError data-testid="errors" />
+    </Field>
+    <Field orientation="horizontal" disabled>
+      <FieldLabel>Name</FieldLabel>
+      <Input />
+    </Field>
+    <Field invalid>
+      <FieldLabel>Code</FieldLabel>
+      <Input />
+      <FieldError match data-testid="children">Enter a code.</FieldError>
+    </Field>
+  </FieldSet>
+  <FormError data-testid="form-error" />
+</Form>

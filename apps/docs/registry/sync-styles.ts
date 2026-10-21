@@ -49,7 +49,13 @@ const PATCHES: Patch[] = [
     // A choice card highlights the checked Base UI radio or checkbox by `data-checked`. A NativeRadio
     // has no data attributes, so the card also matches a checked native input.
     selectors: ['.cn-field-label'],
-    edit: (utility) => utility.replace(/(^|:)has-data-checked:/, '$1has-[[data-checked],input:checked]:'),
+    edit: (utility) => utility.replace(/(^|:)has-data-checked:/, '$1has-[[data-checked],input:checked]:').replace(/(^|:)group-data-\[disabled=true\]\/field:/, '$1group-data-disabled/field:'),
+  },
+  {
+    // Upstream's Field is a div that examples mark `data-invalid="true"` and `data-disabled="true"`. Field is
+    // Base's Field.Root here, which marks itself with empty `data-invalid` and `data-disabled` attributes.
+    selectors: ['.cn-field', '.cn-field-title'],
+    edit: (utility) => utility.replace(/^data-\[invalid=true\]:/, 'data-invalid:').replace(/(^|:)group-data-\[disabled=true\]\/field:/, '$1group-data-disabled/field:'),
   },
 ];
 

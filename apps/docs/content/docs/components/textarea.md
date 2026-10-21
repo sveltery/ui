@@ -21,6 +21,12 @@ npx @sveltery/ui@latest add textarea
 
 <Steps>
 
+### Install the dependencies
+
+```bash
+npm install @sveltery/base
+```
+
 ### Copy the component
 
 Copy the following files into `src/lib/components/ui/textarea`.
@@ -75,7 +81,7 @@ Use the `disabled` prop to disable the textarea. To style the disabled state, ad
 
 ## Invalid
 
-Use the `aria-invalid` prop to mark the textarea as invalid. To style the invalid state, add the `data-invalid` attribute to the `Field` component.
+Set `invalid` on the `Field` component to mark the textarea as invalid. The field marks the textarea with `aria-invalid` and itself with `data-invalid`.
 
 <ComponentPreview name="base/TextareaInvalidExample" class="[&_[data-slot=field]]:max-w-xs" />
 

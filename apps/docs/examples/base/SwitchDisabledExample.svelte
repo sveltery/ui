@@ -3,7 +3,7 @@
   import { Switch } from '$registry/bases/base/ui/switch';
 </script>
 
-<Field orientation="horizontal" data-disabled class="w-fit">
+<Field orientation="horizontal" disabled class="w-fit">
   <Switch id="switch-disabled-unchecked" disabled />
   <FieldLabel for="switch-disabled-unchecked">Disabled</FieldLabel>
 </Field>

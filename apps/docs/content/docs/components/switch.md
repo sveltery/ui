@@ -102,7 +102,7 @@ Add the `disabled` prop to the `Switch` component to disable the switch. Add the
 
 ## Invalid
 
-Add the `aria-invalid` prop to the `Switch` component to indicate an invalid state. Add the `data-invalid` prop to the `Field` component for styling.
+Add the `aria-invalid` prop to the `Switch` component to indicate an invalid state. Set `invalid` on the `Field` component for styling.
 
 <ComponentPreview name="base/SwitchInvalidExample" />
 

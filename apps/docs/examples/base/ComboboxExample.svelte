@@ -343,7 +343,7 @@
           </ComboboxList>
         </ComboboxContent>
       </Combobox>
-      <Field data-invalid>
+      <Field invalid>
         <FieldLabel for="combobox-framework-invalid">Framework</FieldLabel>
         <Combobox items={frameworks}>
           <ComboboxInput id="combobox-framework-invalid" placeholder="Select a framework" aria-invalid />
@@ -355,7 +355,7 @@
           </ComboboxContent>
         </Combobox>
         <FieldDescription>Please select a valid framework.</FieldDescription>
-        <FieldError errors={[{ message: 'This field is required.' }]} />
+        <FieldError match>This field is required.</FieldError>
       </Field>
     </div>
   </Example>
@@ -568,7 +568,7 @@
           </ComboboxList>
         </ComboboxContent>
       </Combobox>
-      <Field data-invalid>
+      <Field invalid>
         <FieldLabel for="combobox-multiple-invalid">Frameworks</FieldLabel>
         <Combobox multiple autoHighlight items={frameworks} defaultValue={[frameworks[0], frameworks[1], frameworks[2]]}>
           <ComboboxChips {@attach (node) => { multipleInvalidAnchor2 = node; }}>
@@ -586,7 +586,7 @@
           </ComboboxContent>
         </Combobox>
         <FieldDescription>Please select at least one framework.</FieldDescription>
-        <FieldError errors={[{ message: 'This field is required.' }]} />
+        <FieldError match>This field is required.</FieldError>
       </Field>
     </div>
   </Example>

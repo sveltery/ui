@@ -655,9 +655,19 @@ Each component page follows its [upstream page](https://github.com/shadcn-ui/ui/
 
 **Sveltery UI:** The [Forms](/docs/forms) section covers a native `<form>`, [SvelteKit remote forms](/docs/forms/remote-forms) and [SvelteKit form actions](/docs/forms/form-actions). Each page uses the same [Field](/docs/components/field) parts.
 
-**Why:** Upstream's guides are written for React. SvelteKit keeps form state in remote forms and form actions, so Sveltery UI's guides show those. `Field` is a plain `div` that holds no form state, like upstream's [`field.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/field.tsx#L64-L72), so the same parts work with each of them.
+**Why:** Upstream's guides are written for React. SvelteKit keeps form state in remote forms and form actions, so Sveltery UI's guides show those. [Form](/docs/components/form) takes a remote form or a form action's errors, so the same `Field` parts work with each of them.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-16
+
+### Field, Form and Fieldset run on Sveltery Base
+
+**Upstream:** [`field.tsx`](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/field.tsx#L64-L72) renders plain elements that hold no state. A page marks a field with `data-invalid` and `data-disabled`, links each label with `for` and `id`, and passes `FieldError` an `errors` array from a form library. shadcn/ui has no Form component.
+
+**Sveltery UI:** `Field` is Base's `Field.Root`, `FieldLabel` is `Field.Label`, `FieldDescription` is `Field.Description`, `FieldError` is `Field.Error`, `FieldSet` and `FieldLegend` are `Fieldset.Root` and `Fieldset.Legend`, and `Textarea` is Base's `Textarea`. `Field` takes `name`, `invalid`, `disabled`, `validate` and `validationMode` and sets `data-invalid`, `data-disabled` and the other state attributes on its parts. `FieldError` reads its messages from the field, so it has no `errors` prop. `FieldLegend` renders a `div` that names the fieldset through `aria-labelledby`. [Form](/docs/components/form) adds `Form` and `FormError` over Base's `Form` and `Form.Error`, and `FieldItem` adds Base's `Field.Item` for the options of a group. A PATCHES entry in `apps/docs/registry/sync-styles.ts` rewrites each style's `data-[invalid=true]:` and `group-data-[disabled=true]/field:` variants to `data-invalid:` and `group-data-disabled/field:`, because Base marks a field with empty attributes.
+
+**Why:** Hugo Hsi asked for the form components to use Base's Field and Form. Base ties the label, description and error to the control with ids that are in the server HTML, shows the browser's constraint messages and a remote form's issues in `FieldError`, and blocks an invalid submit with and without JavaScript.
+
+**Decided:** Hugo Hsi, 2026-10-21
 
 ### Native Radio Group is a Sveltery UI component
 

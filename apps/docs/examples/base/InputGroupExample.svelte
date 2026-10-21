@@ -53,13 +53,13 @@
           <InputGroupInput id="input-group-02" placeholder="Placeholder" />
         </InputGroup>
       </Field>
-      <Field data-disabled="true">
+      <Field disabled>
         <FieldLabel for="input-disabled-03">Disabled</FieldLabel>
         <InputGroup>
           <InputGroupInput id="input-disabled-03" placeholder="This field is disabled" disabled />
         </InputGroup>
       </Field>
-      <Field data-invalid="true">
+      <Field invalid>
         <FieldLabel for="input-invalid-04">Invalid</FieldLabel>
         <InputGroup>
           <InputGroupInput id="input-invalid-04" placeholder="This field is invalid" aria-invalid="true" />
@@ -496,7 +496,7 @@
           </InputGroup>
         </Field>
       </FieldGroup>
-      <Field data-disabled="true">
+      <Field disabled>
         <FieldLabel for="input-group-29">Loading (&quot;data-disabled=&quot;true&quot;)</FieldLabel>
         <InputGroup>
           <InputGroupInput id="input-group-29" disabled defaultValue="shadcn" />
@@ -585,14 +585,14 @@
         </InputGroup>
         <FieldDescription>This is a description of the input group.</FieldDescription>
       </Field>
-      <Field data-invalid="true">
+      <Field invalid>
         <FieldLabel for="textarea-header-footer-14">Invalid</FieldLabel>
         <InputGroup>
           <InputGroupTextarea id="textarea-header-footer-14" placeholder="Enter your text here..." aria-invalid="true" />
         </InputGroup>
         <FieldDescription>This is a description of the input group.</FieldDescription>
       </Field>
-      <Field data-disabled="true">
+      <Field disabled>
         <FieldLabel for="textarea-header-footer-15">Disabled</FieldLabel>
         <InputGroup>
           <InputGroupTextarea id="textarea-header-footer-15" placeholder="Enter your text here..." disabled />

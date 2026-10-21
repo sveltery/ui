@@ -16,7 +16,7 @@
       <FieldDescription>By clicking this checkbox, you agree to the terms.</FieldDescription>
     </FieldContent>
   </Field>
-  <Field orientation="horizontal" data-disabled>
+  <Field orientation="horizontal" disabled>
     <Checkbox id="toggle-checkbox" name="toggle-checkbox" disabled />
     <FieldLabel for="toggle-checkbox">Enable notifications</FieldLabel>
   </Field>

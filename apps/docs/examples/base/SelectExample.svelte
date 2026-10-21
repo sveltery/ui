@@ -303,7 +303,7 @@
           </SelectGroup>
         </SelectContent>
       </Select>
-      <Field data-invalid>
+      <Field invalid>
         <FieldLabel for="select-fruit-invalid">Favorite Fruit</FieldLabel>
         <Select items={fruitItems}>
           <SelectTrigger id="select-fruit-invalid" aria-invalid>
@@ -317,7 +317,7 @@
             </SelectGroup>
           </SelectContent>
         </Select>
-        <FieldError errors={[{ message: 'Please select a valid fruit.' }]} />
+        <FieldError match>Please select a valid fruit.</FieldError>
       </Field>
     </div>
   </Example>

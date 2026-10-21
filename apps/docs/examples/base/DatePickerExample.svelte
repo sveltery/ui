@@ -215,7 +215,7 @@
         submitted = booking ? Object.fromEntries(new FormData(event.currentTarget)) : null;
       }}
     >
-      <Field data-invalid={bookingInvalid}>
+      <Field invalid={bookingInvalid}>
         <FieldLabel for="booking-date">Booking date</FieldLabel>
         <Popover bind:open={bookingOpen}>
           <PopoverTrigger id="booking-date" aria-invalid={bookingInvalid} data-empty={!booking}>
@@ -239,7 +239,7 @@
         <input type="hidden" name="booking" value={booking ? format(booking, 'yyyy-MM-dd') : ''} />
         <FieldDescription>Bookings open from today.</FieldDescription>
         {#if bookingInvalid}
-          <FieldError>Pick a booking date.</FieldError>
+          <FieldError match>Pick a booking date.</FieldError>
         {/if}
       </Field>
       <Button type="submit">Book</Button>

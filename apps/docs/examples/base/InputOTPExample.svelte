@@ -181,7 +181,7 @@
           <InputOTPSlot index={5} aria-invalid />
         </InputOTPGroup>
       </InputOTP>
-      <FieldError errors={[{ message: 'Invalid code. Please try again.' }]} />
+      <FieldError match>Invalid code. Please try again.</FieldError>
     </Field>
   </Example>
 </ExampleWrapper>

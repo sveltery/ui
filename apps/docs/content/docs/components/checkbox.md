@@ -82,7 +82,7 @@ A checkbox with a `name` submits with its form, as `on` or its `value` when chec
 
 ## Invalid State
 
-Set `aria-invalid` on the checkbox and `data-invalid` on the field wrapper to show the invalid styles.
+Set `aria-invalid` on the checkbox and `invalid` on the field wrapper to show the invalid styles.
 
 <ComponentPreview name="base/CheckboxInvalidExample" />
 

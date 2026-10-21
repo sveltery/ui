@@ -71,9 +71,9 @@ test('the form action demo shows schema and server errors in their fields', asyn
   await demo.getByRole('button', { name: 'Sign up' }).click();
   await expect(emailField.locator('[data-slot=field-error]')).toHaveText('That email is already registered.');
   await expect(demo.locator('[data-slot=field-error]')).toHaveCount(1);
-  await expect(emailField).toHaveAttribute('data-invalid', 'true');
+  await expect(emailField).toHaveAttribute('data-invalid', '');
   await expect(email).toHaveAttribute('aria-invalid', 'true');
-  await expect(name).toHaveAttribute('aria-invalid', 'false');
+  await expect(name).not.toHaveAttribute('aria-invalid');
 
   await email.fill('ada@example.com');
   await demo.getByRole('button', { name: 'Sign up' }).click();
@@ -89,6 +89,9 @@ test('the form action demo sends no request when the browser blocks an invalid s
   const name = demo.getByRole('textbox', { name: 'Name' });
   await demo.getByRole('button', { name: 'Sign up' }).click();
   await expect(name).toBeFocused();
+  // Form cancels the browser's bubble and shows its message in each blocked field's FieldError.
+  await expect(demo.locator('[data-slot=field-error]')).toHaveCount(2);
+  await expect(name).toHaveAttribute('aria-invalid', 'true');
 
   await name.fill('Ada');
   await demo.getByRole('textbox', { name: 'Email' }).fill('ada@example.com');

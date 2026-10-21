@@ -1,3 +1,1 @@
-import type { HTMLTextareaAttributes } from 'svelte/elements';
-
-export type TextareaProps = HTMLTextareaAttributes;
+export type { TextareaProps } from '@sveltery/base/textarea';

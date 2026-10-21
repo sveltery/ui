@@ -4,7 +4,7 @@
 </script>
 
 <RadioGroup defaultValue="option2" class="w-fit">
-  <Field orientation="horizontal" data-disabled>
+  <Field orientation="horizontal" disabled>
     <RadioGroupItem value="option1" id="disabled-1" disabled />
     <FieldLabel for="disabled-1" class="font-normal">Disabled</FieldLabel>
   </Field>

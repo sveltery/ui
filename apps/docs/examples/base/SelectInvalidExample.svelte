@@ -10,7 +10,7 @@
   ];
 </script>
 
-<Field data-invalid class="w-full max-w-48">
+<Field invalid class="w-full max-w-48">
   <FieldLabel>Fruit</FieldLabel>
   <Select {items}>
     <SelectTrigger aria-invalid>
@@ -24,5 +24,5 @@
       </SelectGroup>
     </SelectContent>
   </Select>
-  <FieldError>Please select a fruit.</FieldError>
+  <FieldError match>Please select a fruit.</FieldError>
 </Field>

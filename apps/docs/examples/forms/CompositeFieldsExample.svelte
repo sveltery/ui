@@ -48,12 +48,12 @@
       </FieldContent>
       <Switch id="newsletter" name="newsletter" />
     </Field>
-    <Field orientation="horizontal" data-invalid={termsInvalid}>
+    <Field orientation="horizontal" invalid={termsInvalid}>
       <Checkbox id="terms" name="terms" aria-invalid={termsInvalid} onCheckedChange={() => (termsInvalid = false)} />
       <FieldContent>
         <FieldLabel for="terms">Accept the terms</FieldLabel>
         {#if termsInvalid}
-          <FieldError>Accept the terms to continue.</FieldError>
+          <FieldError match>Accept the terms to continue.</FieldError>
         {/if}
       </FieldContent>
     </Field>

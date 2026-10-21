@@ -54,7 +54,7 @@
 
 {#snippet NativeSwitchInvalid()}
   <Example title="Invalid">
-    <Field orientation="horizontal" data-invalid="true">
+    <Field orientation="horizontal" invalid>
       <NativeSwitch id="native-switch-invalid" aria-invalid="true" />
       <FieldLabel for="native-switch-invalid">Accept the policy</FieldLabel>
     </Field>

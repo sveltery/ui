@@ -48,7 +48,7 @@
   </Example>
 
   <Example title="Invalid">
-    <Field orientation="horizontal" data-invalid>
+    <Field orientation="horizontal" invalid>
       <Checkbox id="terms-3" aria-invalid />
       <FieldLabel for="terms-3">Accept terms and conditions</FieldLabel>
     </Field>
@@ -73,7 +73,7 @@
         </Field>
       </FieldLabel>
       <FieldLabel for="toggle-4">
-        <Field orientation="horizontal" data-disabled>
+        <Field orientation="horizontal" disabled>
           <Checkbox id="toggle-4" disabled />
           <FieldContent>
             <FieldTitle>Enable notifications</FieldTitle>

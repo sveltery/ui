@@ -3,7 +3,7 @@
   import { Switch } from '$registry/bases/base/ui/switch';
 </script>
 
-<Field orientation="horizontal" class="max-w-sm" data-invalid>
+<Field orientation="horizontal" class="max-w-sm" invalid>
   <FieldContent>
     <FieldLabel for="switch-terms">Accept terms and conditions</FieldLabel>
     <FieldDescription>You must accept the terms and conditions to continue.</FieldDescription>

@@ -48,7 +48,7 @@
 {#snippet NativeRadioGroupDisabled()}
   <Example title="Disabled">
     <NativeRadioGroup aria-label="Notifications">
-      <Field orientation="horizontal" data-disabled="true">
+      <Field orientation="horizontal" disabled>
         <NativeRadio name="notify" value="all" id="native-notify-all" disabled />
         <FieldLabel for="native-notify-all" class="font-normal">All</FieldLabel>
       </Field>
@@ -67,7 +67,7 @@
       <FieldDescription>Choose how you want to receive notifications.</FieldDescription>
       <NativeRadioGroup>
         {#each ['email', 'sms', 'both'] as channel (channel)}
-          <Field orientation="horizontal" data-invalid="true">
+          <Field orientation="horizontal" invalid>
             <NativeRadio name="channel" value={channel} id="native-channel-{channel}" aria-invalid="true" defaultChecked={channel === 'email'} />
             <FieldLabel for="native-channel-{channel}" class="font-normal">{channel === 'sms' ? 'SMS' : channel === 'both' ? 'Both' : 'Email'}</FieldLabel>
           </Field>

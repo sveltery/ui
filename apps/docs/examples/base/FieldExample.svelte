@@ -102,12 +102,12 @@
         </FieldLabel>
         <Input id="input-badge" placeholder="Enter value" />
       </Field>
-      <Field data-invalid>
+      <Field invalid>
         <FieldLabel for="input-invalid">Invalid Input</FieldLabel>
         <Input id="input-invalid" placeholder="This field has an error" aria-invalid />
         <FieldDescription>This field contains validation errors.</FieldDescription>
       </Field>
-      <Field data-disabled>
+      <Field disabled>
         <FieldLabel for="input-disabled-field">Disabled Field</FieldLabel>
         <Input id="input-disabled-field" placeholder="Cannot edit" disabled />
         <FieldDescription>This field is currently disabled.</FieldDescription>
@@ -138,12 +138,12 @@
         <Textarea id="textarea-desc-after" placeholder="Enter your message" />
         <FieldDescription>Enter your message so it is long enough to test the layout.</FieldDescription>
       </Field>
-      <Field data-invalid>
+      <Field invalid>
         <FieldLabel for="textarea-invalid">Invalid Textarea</FieldLabel>
         <Textarea id="textarea-invalid" placeholder="This field has an error" aria-invalid />
         <FieldDescription>This field contains validation errors.</FieldDescription>
       </Field>
-      <Field data-disabled>
+      <Field disabled>
         <FieldLabel for="textarea-disabled-field">Disabled Field</FieldLabel>
         <Textarea id="textarea-disabled-field" placeholder="Cannot edit" disabled />
         <FieldDescription>This field is currently disabled.</FieldDescription>
@@ -202,7 +202,7 @@
           </SelectContent>
         </Select>
       </Field>
-      <Field data-invalid>
+      <Field invalid>
         <FieldLabel for="select-invalid">Invalid Select</FieldLabel>
         <Select items={selectInvalidItems}>
           <SelectTrigger id="select-invalid" aria-invalid>
@@ -218,7 +218,7 @@
         </Select>
         <FieldDescription>This field contains validation errors.</FieldDescription>
       </Field>
-      <Field data-disabled>
+      <Field disabled>
         <FieldLabel for="select-disabled-field">Disabled Field</FieldLabel>
         <Select items={selectDisabledItems} disabled>
           <SelectTrigger id="select-disabled-field">
@@ -283,11 +283,11 @@
           </Field>
         </FieldGroup>
       </FieldSet>
-      <Field data-invalid orientation="horizontal">
+      <Field invalid orientation="horizontal">
         <Checkbox id="checkbox-invalid" aria-invalid />
         <FieldLabel for="checkbox-invalid">Invalid checkbox</FieldLabel>
       </Field>
-      <Field data-disabled orientation="horizontal">
+      <Field disabled orientation="horizontal">
         <Checkbox id="checkbox-disabled-field" disabled />
         <FieldLabel for="checkbox-disabled-field">Disabled checkbox</FieldLabel>
       </Field>
@@ -356,11 +356,11 @@
       <FieldSet>
         <FieldLegend variant="label">Invalid Radio Group</FieldLegend>
         <RadioGroup>
-          <Field data-invalid orientation="horizontal">
+          <Field invalid orientation="horizontal">
             <RadioGroupItem value="invalid1" id="radio-invalid-1" aria-invalid />
             <FieldLabel for="radio-invalid-1">Invalid Option 1</FieldLabel>
           </Field>
-          <Field data-invalid orientation="horizontal">
+          <Field invalid orientation="horizontal">
             <RadioGroupItem value="invalid2" id="radio-invalid-2" aria-invalid />
             <FieldLabel for="radio-invalid-2">Invalid Option 2</FieldLabel>
           </Field>
@@ -369,11 +369,11 @@
       <FieldSet>
         <FieldLegend variant="label">Disabled Radio Group</FieldLegend>
         <RadioGroup disabled>
-          <Field data-disabled orientation="horizontal">
+          <Field disabled orientation="horizontal">
             <RadioGroupItem value="disabled1" id="radio-disabled-1" disabled />
             <FieldLabel for="radio-disabled-1">Disabled Option 1</FieldLabel>
           </Field>
-          <Field data-disabled orientation="horizontal">
+          <Field disabled orientation="horizontal">
             <RadioGroupItem value="disabled2" id="radio-disabled-2" disabled />
             <FieldLabel for="radio-disabled-2">Disabled Option 2</FieldLabel>
           </Field>
@@ -416,14 +416,14 @@
           <FieldLabel for="switch-email">Show email on profile</FieldLabel>
         </Field>
       </Field>
-      <Field data-invalid orientation="horizontal">
+      <Field invalid orientation="horizontal">
         <FieldContent>
           <FieldLabel for="switch-invalid">Invalid Switch</FieldLabel>
           <FieldDescription>This switch has validation errors.</FieldDescription>
         </FieldContent>
         <Switch id="switch-invalid" aria-invalid />
       </Field>
-      <Field data-disabled orientation="horizontal">
+      <Field disabled orientation="horizontal">
         <FieldContent>
           <FieldLabel for="switch-disabled-field">Disabled Switch</FieldLabel>
           <FieldDescription>This switch is currently disabled.</FieldDescription>
@@ -468,12 +468,12 @@
           Red: {colorBalance[0]}%, Green: {colorBalance[1]}%, Blue: {colorBalance[2]}%
         </FieldDescription>
       </Field>
-      <Field data-invalid>
+      <Field invalid>
         <FieldLabel for="slider-invalid">Invalid Slider</FieldLabel>
         <Slider id="slider-invalid" defaultValue={[30]} max={100} aria-invalid />
         <FieldDescription>This slider has validation errors.</FieldDescription>
       </Field>
-      <Field data-disabled>
+      <Field disabled>
         <FieldLabel for="slider-disabled-field">Disabled Slider</FieldLabel>
         <Slider id="slider-disabled-field" defaultValue={[50]} max={100} disabled />
         <FieldDescription>This slider is currently disabled.</FieldDescription>
@@ -531,7 +531,7 @@
         </NativeSelect>
         <FieldDescription>Native select with grouped options using optgroup.</FieldDescription>
       </Field>
-      <Field data-invalid>
+      <Field invalid>
         <FieldLabel for="native-select-invalid">Invalid Native Select</FieldLabel>
         <NativeSelect id="native-select-invalid" aria-invalid>
           <NativeSelectOption value="">This field has an error</NativeSelectOption>
@@ -541,7 +541,7 @@
         </NativeSelect>
         <FieldDescription>This field contains validation errors.</FieldDescription>
       </Field>
-      <Field data-disabled>
+      <Field disabled>
         <FieldLabel for="native-select-disabled-field">Disabled Field</FieldLabel>
         <NativeSelect id="native-select-disabled-field" disabled>
           <NativeSelectOption value="">Cannot select</NativeSelectOption>
@@ -614,7 +614,7 @@
         </InputOTP>
         <FieldDescription>Enter your 4-digit PIN (numbers only).</FieldDescription>
       </Field>
-      <Field data-invalid>
+      <Field invalid>
         <FieldLabel for="otp-invalid">Invalid OTP</FieldLabel>
         <InputOTP id="otp-invalid" maxLength={6}>
           <InputOTPGroup>
@@ -628,7 +628,7 @@
         </InputOTP>
         <FieldDescription>This OTP field contains validation errors.</FieldDescription>
       </Field>
-      <Field data-disabled>
+      <Field disabled>
         <FieldLabel for="otp-disabled-field">Disabled OTP</FieldLabel>
         <InputOTP id="otp-disabled-field" maxLength={6} disabled>
           <InputOTPGroup>
