@@ -12,7 +12,7 @@ minimumReleaseAgeExclude:
   - vitest@5.0.3
   - "@vitest/mocker@5.0.3"
   - "@vitest/spy@5.0.3"
-  - '@sveltery/base@0.2.1'
+  - '@sveltery/base@0.3.0'
 overrides:
   "shadcn@4.21.1>cn": "0.2.4"
   "@sveltery/charts>@reduxjs/toolkit": "1.9.7"
