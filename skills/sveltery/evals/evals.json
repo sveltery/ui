@@ -1,0 +1,106 @@
+{
+  "skill_name": "sveltery",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I'm building a SvelteKit app with Sveltery UI (nova style, lucide icons). Create a settings form component with fields for full name, email address, and notification preferences (email, SMS, push as on/off toggles). Add validation states for required fields.",
+      "expected_output": "A Svelte 5 component using FieldGroup, Field, Switch, data-invalid/aria-invalid validation, gap-* spacing and semantic colors, with no React idioms.",
+      "files": [],
+      "expectations": [
+        "Uses FieldGroup and Field for form layout instead of a raw div with space-y-*",
+        "Uses FieldLabel with for and a matching id on the control, never htmlFor",
+        "Uses Switch for independent on/off notification toggles instead of looping Button with manual active state",
+        "Uses data-invalid on Field and aria-invalid on the control, with the message in FieldError",
+        "Gives each control a name inside a native form, a SvelteKit remote form or a form action, instead of mirroring every input in $state and posting JSON",
+        "Uses gap-* instead of space-y-* or space-x-*",
+        "Uses semantic tokens such as text-muted-foreground and text-destructive instead of raw colors, with no manual dark: overrides",
+        "Uses Svelte 5 syntax: $props, $state, class and onclick; no className, onClick or JSX"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Create a dialog for editing a user profile. It should have the user's avatar at the top, input fields for name and bio, and Save and Cancel buttons with icons. The project uses Sveltery UI with the vega style and tabler icons.",
+      "expected_output": "A Svelte component with a render-snippet DialogTrigger, DialogTitle, Avatar with AvatarFallback, data-icon on button icons and tabler imports from @tabler/icons-svelte.",
+      "files": [],
+      "expectations": [
+        "Includes DialogTitle, visible or with class=\"sr-only\"",
+        "Avatar includes AvatarFallback",
+        "Renders the trigger Button through a render snippet that spreads props, not asChild and not a Button nested inside DialogTrigger",
+        "Uses bind:open on Dialog when it closes the dialog after saving",
+        "Icons in buttons use data-icon=\"inline-start\" or data-icon=\"inline-end\" with no sizing classes",
+        "Imports icons from @tabler/icons-svelte, not lucide or a React package",
+        "Imports components from the project's ui alias, such as #lib/components/ui/dialog"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Create a dashboard component that shows 4 stat cards in a grid. Each card has a title, a large number, a percentage change badge and a loading skeleton state. Sveltery UI, nova style, lucide icons.",
+      "expected_output": "A Svelte component with full Card composition, Skeleton for loading, Badge for changes, semantic colors and gap-* spacing.",
+      "files": [],
+      "expectations": [
+        "Uses CardHeader, CardTitle and CardContent instead of putting everything in CardContent",
+        "Uses Skeleton for loading placeholders instead of custom animate-pulse divs",
+        "Uses Badge for the percentage change instead of a custom styled span",
+        "Uses semantic tokens instead of raw colors such as text-green-500 or text-red-600",
+        "Uses gap-* instead of space-y-* or space-x-*",
+        "Uses size-* when width and height are equal",
+        "Renders the cards with {#each} and the loading state with {#if}, not .map() or JSX"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Using Sveltery UI (nova style, lucide icons), build a chat conversation view: a scrollable thread of messages from two people, each with an avatar, sender name, timestamp and message bubble. A couple of messages include an image attachment and a PDF attachment, and a 'Today' divider separates the days.",
+      "expected_output": "A Svelte component composing MessageScroller, Message, Bubble, Attachment and Marker instead of hand-rolled markup.",
+      "files": [],
+      "expectations": [
+        "Uses MessageScrollerProvider, MessageScroller, MessageScrollerViewport, MessageScrollerContent and MessageScrollerItem instead of an overflow-y-auto div or ScrollArea",
+        "Wraps each row in MessageScrollerItem inside MessageScrollerContent",
+        "Uses Message with MessageAvatar, MessageContent and MessageHeader for row layout",
+        "Uses Bubble and BubbleContent for the message surface instead of a styled div",
+        "Uses Attachment with AttachmentMedia, AttachmentContent, AttachmentTitle and AttachmentDescription for the files",
+        "Uses Marker variant=\"separator\" for the 'Today' divider",
+        "Uses semantic tokens and gap-* spacing"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Using Sveltery UI (nova style, lucide icons), build a streaming AI chat UI with @ai-sdk/svelte. The reply streams in, the view follows the latest content but stops if the user scrolls up, a 'jump to latest' button appears when the user has scrolled away, a 'thinking…' shimmer shows while the model generates, and tool calls show as collapsible rows.",
+      "expected_output": "A Svelte component that leaves scrolling to MessageScroller, uses MessageScrollerButton, the shimmer utility and Trace rows.",
+      "files": [],
+      "expectations": [
+        "Uses MessageScrollerProvider with autoScroll and scrollAnchor on the user's MessageScrollerItem instead of scroll handlers, ResizeObserver or scrollTop math",
+        "Uses MessageScrollerButton for jump-to-latest instead of a button driven by its own scroll state",
+        "Uses the shimmer utility for the thinking indicator instead of custom @keyframes",
+        "Renders tool calls as TraceLine in a Trace, wrapped in TraceCollapsible only once output exists",
+        "Shows tool output in CodeBlock with CodeBlockContent code={...} instead of a raw pre",
+        "Uses Chat from @ai-sdk/svelte, not useChat from @ai-sdk/react"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Switch my Sveltery UI project to preset b4xFeBLg4O but keep my customized components.",
+      "expected_output": "The agent asks or chooses the partial path, runs apply with --only, and does not decode the code by hand.",
+      "files": [],
+      "expectations": [
+        "Runs preset resolve and preset decode to compare the current and new presets instead of decoding the code by hand",
+        "Uses apply b4xFeBLg4O --only theme,font, or init --preset b4xFeBLg4O, so installed components are not overwritten",
+        "Does not run apply without --only, add --overwrite or update --yes without the user's approval",
+        "Uses the project's package runner, such as pnpm dlx @sveltery/ui@latest in a pnpm project",
+        "Does not invent flags such as --force, --no-reinstall or --base"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Update the button and dialog components in my Sveltery UI project to the latest registry version. I changed the button variants locally and want to keep that.",
+      "expected_output": "The agent previews with diff and add --diff, merges by hand where local edits exist, and never fetches raw files from GitHub.",
+      "files": [],
+      "expectations": [
+        "Runs diff button dialog or add button dialog --dry-run before writing anything",
+        "Runs add button --diff with a file path to inspect the variants file",
+        "Keeps the local variant changes and applies the upstream changes by hand",
+        "Does not use update --yes or add --overwrite on the button without asking",
+        "Does not fetch component source from raw.githubusercontent.com or GitHub"
+      ]
+    }
+  ]
+}
