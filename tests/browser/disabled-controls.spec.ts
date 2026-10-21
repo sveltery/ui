@@ -1,7 +1,6 @@
 import { expect, test, type Locator } from '@playwright/test';
 
-// Base renders these controls as a painted box: a radio is the box itself, and a checkbox or switch is a box around its real input.
-// A disabled one dims its box through data-disabled.
+// Base renders each of these controls as a painted box around its real input. A disabled one dims its box through data-disabled.
 
 const opacity = (locator: Locator) => locator.evaluate((el) => getComputedStyle(el).opacity);
 
@@ -16,7 +15,7 @@ for (const [role, enabled, disabled] of [
   ['switch', 'Enabled switch', 'Disabled switch'],
 ] as const) {
   test(`a disabled ${role} is dimmed and shows a not-allowed cursor`, async ({ page }) => {
-    const box = (locator: Locator) => (role === 'radio' ? locator : locator.locator('xpath=..'));
+    const box = (locator: Locator) => locator.locator('xpath=..');
     const on = box(page.getByRole(role, { name: enabled }));
     const off = box(page.getByRole(role, { name: disabled }));
     await expect(off).toHaveAttribute('data-disabled', '');

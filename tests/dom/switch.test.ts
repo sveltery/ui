@@ -24,7 +24,7 @@ it('renders a box with the slot, size, thumb and classes around a switch input',
   expect(airplane.hasAttribute('data-unchecked')).toBe(true);
   expect(input('airplane').type).toBe('checkbox');
   expect(input('airplane').checked).toBe(false);
-  expect(airplane.className).toBe('cn-switch peer group/switch relative inline-flex items-center transition-all outline-none [&>input]:-inset-x-3! [&>input]:-inset-y-2! [&>input]:size-auto! data-disabled:cursor-not-allowed data-disabled:opacity-50');
+  expect(airplane.className).toBe('cn-switch peer group/switch relative inline-flex items-center transition-all outline-none after:absolute after:-inset-x-3 after:-inset-y-2 data-disabled:cursor-not-allowed data-disabled:opacity-50');
   const thumb = airplane.querySelector<HTMLElement>('[data-slot=switch-thumb]')!;
   expect(thumb.className).toBe('cn-switch-thumb pointer-events-none block ring-0 transition-transform');
   expect(thumb.hasAttribute('data-unchecked')).toBe(true);

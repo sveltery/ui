@@ -52,9 +52,9 @@ const PATCHES: Patch[] = [
     edit: (utility) => utility.replace(/(^|:)has-data-checked:/, '$1has-[[data-checked],input:checked]:').replace(/(^|:)group-data-\[disabled=true\]\/field:/, '$1group-data-disabled/field:'),
   },
   {
-    // Base's Checkbox and Switch paint a box around a real `<input>`. The input takes focus and `aria-invalid`,
+    // Base's Checkbox, Switch and Radio paint a box around a real `<input>`. The input takes focus and `aria-invalid`,
     // from its Field or from the caller, and the box carries `data-checked`.
-    selectors: ['.cn-checkbox', '.cn-switch'],
+    selectors: ['.cn-checkbox', '.cn-switch', '.cn-radio-group-item'],
     edit: (utility) => utility.replace(/(^|:)focus-visible:/, '$1has-focus-visible:').replace(/(^|:)aria-invalid:/g, '$1has-aria-invalid:').replace(/(^|:)aria-checked:/, '$1data-checked:'),
   },
   {
@@ -86,7 +86,7 @@ const rule = (selector: string, utilities: string[]): Item => ({ key: selector, 
 function nativeRadio(find: (key: string) => string[], style: string): Item[] {
   const group = find('.cn-radio-group');
   const icon = find('.cn-radio-group-indicator-icon');
-  const checked = { 'data-checked': 'checked', 'aria-checked': 'checked', 'not-data-checked': 'not-checked' } as Record<string, string>;
+  const checked = { 'data-checked': 'checked', 'aria-checked': 'checked', 'not-data-checked': 'not-checked', 'has-focus-visible': 'focus-visible', 'has-aria-invalid': 'aria-invalid' } as Record<string, string>;
   const item = find('.cn-radio-group-item').map((utility) => utility.split(':').map((part) => checked[part] ?? part).join(':'));
   const color = icon.find((utility) => /^bg-[a-z-]+$/.test(utility))?.slice(3);
   const size = (variant: string) => icon.find((utility) => utility.startsWith(`${variant}size-`))?.slice(variant.length + 5);
