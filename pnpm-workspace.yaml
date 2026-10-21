@@ -5,7 +5,7 @@ packages:
 engineStrict: true
 autoInstallPeers: false
 allowBuilds:
-  '@sveltery/base@https://codeload.github.com/sveltery/base/tar.gz/7a4969348c04643a786e9a9040b1d7b41f8c4e51': true
+  '@sveltery/base@https://codeload.github.com/sveltery/base/tar.gz/42629a17e5793529de63b091d1faaa38ab74f309': true
   '@hugeicons/svelte': false
   esbuild: true
   workerd: true
