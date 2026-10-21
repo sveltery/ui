@@ -89,8 +89,8 @@ it('table cells keep their native hosts inside a table', () => {
   mounted.push(mount(TableCell, { target: row, props: { children: child, colspan: 2 } }));
   mounted.push(mount(TableCaption, { target: table, props: { children: child } }));
   flushSync();
-  expect(row.querySelector('[data-slot=table-head]')!.outerHTML).toBe('<th data-slot="table-head" scope="col" class="cn-table-head"><span data-child="">child</span><!----></th>');
-  expect(row.querySelector('[data-slot=table-cell]')!.outerHTML).toBe('<td data-slot="table-cell" colspan="2" class="cn-table-cell"><span data-child="">child</span><!----></td>');
+  expect(row.querySelector('[data-slot=table-head]')!.outerHTML).toBe('<th data-slot="table-head" scope="col" class="cn-table-head cn-table-head-aria"><span data-child="">child</span><!----></th>');
+  expect(row.querySelector('[data-slot=table-cell]')!.outerHTML).toBe('<td data-slot="table-cell" colspan="2" class="cn-table-cell cn-table-cell-aria"><span data-child="">child</span><!----></td>');
   expect(table.querySelector('caption')!.dataset.slot).toBe('table-caption');
 });
 

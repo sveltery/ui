@@ -76,9 +76,9 @@ it('a label card toggles its checkbox, and a description renders anywhere', asyn
   flushSync();
   const descriptions = [...document.querySelectorAll<HTMLElement>('[data-slot=field-description]')];
   expect(descriptions.map(node => [node.localName, node.textContent])).toEqual([['p', 'Choose what we email you.'], ['p', 'Once a month.']]);
-  const checkbox = document.querySelector<HTMLElement>('[role=checkbox]')!;
-  expect(checkbox.getAttribute('aria-checked')).toBe('false');
+  const checkbox = document.querySelector<HTMLInputElement>('[data-slot=checkbox] input')!;
+  expect(checkbox.checked).toBe(false);
   document.querySelector<HTMLElement>('[data-slot=field-label]:not([class*=cn-field-title])')!.querySelector<HTMLElement>('.cn-field-title')!.click();
   await tick(); flushSync();
-  expect(checkbox.getAttribute('aria-checked')).toBe('true');
+  expect(checkbox.checked).toBe(true);
 });

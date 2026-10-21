@@ -3,6 +3,6 @@
   import { cn } from 'cn';
   let { children, class: classProp, ...props }: HTMLTdAttributes = $props();
 </script>
-<td data-slot="table-cell" {...props} class={cn('cn-table-cell', classProp)}>
+<td data-slot="table-cell" {...props} class={cn('cn-table-cell cn-table-cell-aria', classProp)}>
   {@render children?.()}
 </td>

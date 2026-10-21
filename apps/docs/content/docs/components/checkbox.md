@@ -82,7 +82,7 @@ A checkbox with a `name` submits with its form, as `on` or its `value` when chec
 
 ## Invalid State
 
-Set `aria-invalid` on the checkbox and `invalid` on the field wrapper to show the invalid styles.
+Set `invalid` on the `Field` wrapper. The checkbox takes the invalid styles, and its input gets `aria-invalid`.
 
 <ComponentPreview name="base/CheckboxInvalidExample" />
 
@@ -100,7 +100,7 @@ Use `FieldContent` and `FieldDescription` for helper text.
 
 ## Disabled
 
-Use the `disabled` prop to prevent interaction and add the `data-disabled` attribute to the `<Field>` component for disabled styles.
+Use the `disabled` prop to prevent interaction and add the `disabled` prop to the `<Field>` component for disabled styles.
 
 <ComponentPreview name="base/CheckboxDisabledExample" />
 

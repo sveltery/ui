@@ -49,7 +49,7 @@
 
   <Example title="Invalid">
     <Field orientation="horizontal" invalid>
-      <Checkbox id="terms-3" aria-invalid />
+      <Checkbox id="terms-3" />
       <FieldLabel for="terms-3">Accept terms and conditions</FieldLabel>
     </Field>
   </Example>

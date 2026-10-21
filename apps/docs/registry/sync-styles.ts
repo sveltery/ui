@@ -52,6 +52,12 @@ const PATCHES: Patch[] = [
     edit: (utility) => utility.replace(/(^|:)has-data-checked:/, '$1has-[[data-checked],input:checked]:').replace(/(^|:)group-data-\[disabled=true\]\/field:/, '$1group-data-disabled/field:'),
   },
   {
+    // Base's Checkbox and Switch paint a box around a real `<input>`. The input takes focus and `aria-invalid`,
+    // from its Field or from the caller, and the box carries `data-checked`.
+    selectors: ['.cn-checkbox', '.cn-switch'],
+    edit: (utility) => utility.replace(/(^|:)focus-visible:/, '$1has-focus-visible:').replace(/(^|:)aria-invalid:/g, '$1has-aria-invalid:').replace(/(^|:)aria-checked:/, '$1data-checked:'),
+  },
+  {
     // Upstream's Field is a div that examples mark `data-invalid="true"` and `data-disabled="true"`. Field is
     // Base's Field.Root here, which marks itself with empty `data-invalid` and `data-disabled` attributes.
     selectors: ['.cn-field', '.cn-field-title'],
@@ -59,14 +65,14 @@ const PATCHES: Patch[] = [
   },
 ];
 
-/** Applies PATCHES to each rule they name, dropping a utility the edit duplicates. Throws when one changes nothing. */
+/** Applies each of PATCHES to the rules it names, in order, dropping a utility the edit duplicates. Throws when one changes nothing. */
 function patch(item: Item, style: string): Item {
-  const found = PATCHES.find(({ selectors, styles }) => selectors.includes(item.key) && (!styles || styles.includes(style)));
-  if (!found) return item;
-  const [head = '', utilities = ''] = /^([\s\S]*@apply )([^;\n]+)/.exec(item.text)?.slice(1) ?? [];
-  const edited = [...new Set(utilities.split(' ').map(found.edit))].join(' ');
-  if (edited === utilities) throw new Error(`style-${style}.css: the patch for ${item.key} no longer applies`);
-  return { ...item, text: item.text.replace(head + utilities, head + edited) };
+  return PATCHES.filter(({ selectors, styles }) => selectors.includes(item.key) && (!styles || styles.includes(style))).reduce((item, found) => {
+    const [head = '', utilities = ''] = /^([\s\S]*@apply )([^;\n]+)/.exec(item.text)?.slice(1) ?? [];
+    const edited = [...new Set(utilities.split(' ').map(found.edit))].join(' ');
+    if (edited === utilities) throw new Error(`style-${style}.css: the patch for ${item.key} no longer applies`);
+    return { ...item, text: item.text.replace(head + utilities, head + edited) };
+  }, item);
 }
 
 const utilitiesOf = (item: Item | undefined) => /@apply ([^;\n]+)/.exec(item?.text ?? '')?.[1]?.split(' ') ?? [];
@@ -116,7 +122,7 @@ const renamed = (names: Record<string, string>) => (utility: string) => {
   const { variants, base } = parts(utility);
   return [...variants.map((variant) => names[variant] ?? variant), base].join(':');
 };
-const onInput = renamed({ 'data-checked': 'checked', 'data-unchecked': 'not-checked', 'not-data-checked': 'not-checked', 'aria-checked': 'checked' });
+const onInput = renamed({ 'data-checked': 'checked', 'data-unchecked': 'not-checked', 'not-data-checked': 'not-checked', 'aria-checked': 'checked', 'has-focus-visible': 'focus-visible', 'has-aria-invalid': 'aria-invalid' });
 const onPeer = renamed({ 'data-checked': 'peer-checked', 'data-unchecked': 'peer-not-checked' });
 
 /** Moves a utility onto a pseudo-element after its own variants, so `hover:ring-4` becomes `hover:[&::x]:ring-4`. */

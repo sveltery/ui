@@ -131,7 +131,7 @@ test('the checkboxes select rows and the header checkbox selects the page', asyn
   await expect(rows.nth(1)).toBeChecked();
   await expect(page.locator('tbody tr').nth(1)).toHaveAttribute('data-state', 'selected');
   await expect(page.locator('tbody tr').nth(0)).not.toHaveAttribute('data-state');
-  await expect(all).toHaveAttribute('aria-checked', 'mixed');
+  await expect(all).toBeChecked({ indeterminate: true });
   await expect(footer(page)).toHaveText('1 of 68 row(s) selected.');
 
   await all.click();

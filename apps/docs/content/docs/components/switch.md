@@ -96,13 +96,13 @@ Card-style selection where `FieldLabel` wraps the entire `Field` for a clickable
 
 ## Disabled
 
-Add the `disabled` prop to the `Switch` component to disable the switch. Add the `data-disabled` prop to the `Field` component for styling.
+Add the `disabled` prop to the `Switch` component to disable the switch. Add the `disabled` prop to the `Field` component for styling.
 
 <ComponentPreview name="base/SwitchDisabledExample" />
 
 ## Invalid
 
-Add the `aria-invalid` prop to the `Switch` component to indicate an invalid state. Set `invalid` on the `Field` component for styling.
+Set `invalid` on the `Field` component. The switch takes the invalid styles, and its input gets `aria-invalid`.
 
 <ComponentPreview name="base/SwitchInvalidExample" />
 

@@ -28,12 +28,12 @@ for (const style of styles) for (const dark of [false, true]) {
       const native = page.getByTestId(`native-checkbox-${state}`);
       expect(await computed(native), `checkbox ${state}`).toEqual(await computed(base));
       expect(await opacity(native), `checkbox ${state} opacity`).toBe(await opacity(base));
-      const icon = (locator: Locator) => locator.evaluate(el => {
-        const indicator = el.querySelector('[data-slot=checkbox-indicator]') ?? el.nextElementSibling!;
-        const svg = indicator.querySelector('svg');
-        return svg && getComputedStyle(indicator).visibility === 'visible' ? getComputedStyle(svg).color : 'hidden';
-      });
-      expect(await icon(native), `checkbox ${state} icon`).toBe(await icon(base));
+      const icon = (locator: Locator, part: string) => locator.evaluate((el, part) => {
+        const indicator = part === 'child' ? el.querySelector('[data-slot=checkbox-indicator]') : el.nextElementSibling;
+        const svg = indicator?.querySelector('svg');
+        return svg && getComputedStyle(indicator!).visibility === 'visible' ? getComputedStyle(svg).color : 'hidden';
+      }, part);
+      expect(await icon(native, 'sibling'), `checkbox ${state} icon`).toBe(await icon(base, 'child'));
       for (const size of ['default', 'sm']) {
         const baseSwitch = page.getByTestId(`base-switch-${size}-${state}`);
         const nativeSwitch = page.getByTestId(`native-switch-${size}-${state}`);
@@ -47,13 +47,15 @@ for (const style of styles) for (const dark of [false, true]) {
 
 test('the keyboard focus ring matches Checkbox and Switch', async ({ page }) => {
   await open(page, 'nova', false);
-  // Tabbing in from the element before gives each control `:focus-visible`.
+  // Tabbing in from the element before gives each control `:focus-visible`. Base's box takes the ring of the input inside it.
   const ring = async (id: string) => {
-    await page.getByTestId(id).focus();
+    const box = page.getByTestId(id);
+    const input = id.startsWith('base-') ? box.locator('input') : box;
+    await input.focus();
     await page.keyboard.press('Shift+Tab');
     await page.keyboard.press('Tab');
-    await expect(page.getByTestId(id)).toBeFocused();
-    return computed(page.getByTestId(id));
+    await expect(input).toBeFocused();
+    return computed(box);
   };
   for (const control of ['checkbox', 'switch-default']) {
     const native = await ring(`native-${control}-unchecked`);

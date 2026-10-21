@@ -590,7 +590,7 @@ test('preview-02 renders, lays its cards out in six columns with nine charts, it
 
   const card = page.locator('[data-slot=card]').filter({ hasText: 'Choose what you want to be notified about.' });
   const all = card.getByRole('checkbox', { name: 'Select all' });
-  await expect(all).toHaveAttribute('aria-checked', 'mixed');
+  await expect(all).toBeChecked({ indeterminate: true });
   await expect(card.getByRole('checkbox', { name: 'Transaction alerts' })).toBeChecked();
   await expect(card.getByRole('checkbox', { name: 'Goal milestones' })).not.toBeChecked();
   await card.getByRole('checkbox', { name: 'Goal milestones' }).click();
