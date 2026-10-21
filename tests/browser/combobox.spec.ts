@@ -347,13 +347,14 @@ test('a trigger-only combobox opens a popup with the input inside and selecting 
   await expect(trigger).not.toHaveAttribute('data-popup-open');
 });
 
-test('an aria-invalid combobox input in a data-invalid field shows the invalid styles and the field error', async ({ page }) => {
+test('a combobox in an invalid field shows the invalid styles and the field error', async ({ page }) => {
   const input = page.getByTestId('invalid');
   await expect(input).toHaveAttribute('aria-invalid', 'true');
   await expect(page.getByText('Please select a framework.')).toBeVisible();
   const group = input.locator('xpath=ancestor::*[@data-slot="input-group"]');
   await expect(group).toHaveCSS('border-top-color', 'oklch(0.577 0.245 27.325)');
-  await expect(group.locator('[data-slot=input-group-button]')).not.toHaveAttribute('aria-invalid');
+  // Base's Field marks every control it owns, the trigger button included.
+  await expect(group.locator('[data-slot=input-group-button]')).toHaveAttribute('aria-invalid', 'true');
   await expect(framework(page).locator('xpath=ancestor::*[@data-slot="input-group"]')).not.toHaveCSS('border-top-color', 'oklch(0.577 0.245 27.325)');
 });
 
