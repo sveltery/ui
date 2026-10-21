@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Bar, BarChart, CartesianGrid, XAxis, type LegendContentProps, type SvelteArgs } from '@sveltery/charts';
-  import { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart-legacy';
   import { useLanguage } from '$lib/components/docs/language.svelte';
 
   const translations = {

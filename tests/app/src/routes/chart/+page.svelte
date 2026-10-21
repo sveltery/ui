@@ -9,7 +9,7 @@
     type ChartConfig,
     type ChartTooltipContentProps,
     type TooltipContentArgs
-  } from '$registry/bases/base/ui/chart';
+  } from '$registry/bases/base/ui/chart-legacy';
 
   const months = [
     { month: 'January', desktop: 186, mobile: 80 },

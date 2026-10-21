@@ -1,7 +1,9 @@
 <script lang="ts">
-  import { Bar, BarChart, CartesianGrid, XAxis } from '@sveltery/charts';
+  import { barY, defineChart } from '@tanstack/charts';
+  import { scaleBand } from '@tanstack/charts/scales/band';
+  import { scaleLinear } from '@tanstack/charts/scales/linear';
   import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartTooltipContent, type ChartConfig } from '$registry/bases/base/ui/chart';
 
   const chartData = [
     { date: "2024-04-01", desktop: 222, mobile: 150 },
@@ -111,7 +113,29 @@
     },
   } satisfies ChartConfig
 
-  let activeChart = $state<keyof typeof chartConfig>("desktop");
+  let activeChart = $state<"desktop" | "mobile">("desktop");
+
+  const formatDay = (value: string) => new Date(value).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+
+  const definition = $derived(
+    defineChart({
+      chart: ({ width }) => {
+        const step = Math.ceil(chartData.length / Math.max(1, Math.floor(width / 64)));
+        return {
+          marks: [barY(chartData, { x: "date", y: activeChart, fill: `var(--color-${activeChart})`, z: () => activeChart })],
+          scales: {
+            x: {
+              scale: () => scaleBand<string>().padding(0.1),
+              axis: { line: false, ticks: { size: 0, padding: 8, values: chartData.filter((_, index) => index % step === 0).map((row) => row.date), format: formatDay } },
+            },
+            y: { scale: scaleLinear, grid: true, axis: false },
+          },
+          margin: { left: 12, right: 12 },
+        };
+      },
+      focus: "group-x",
+    })
+  );
 
   const total = $derived.by(() => ({
     desktop: chartData.reduce((acc, curr) => acc + curr.desktop, 0),
@@ -127,7 +151,7 @@
     </div>
     <div class="flex">
       {#each ["desktop", "mobile"] as key (key)}
-        {const chart = $derived(key as keyof typeof chartConfig)}<button
+        {const chart = $derived(key as "desktop" | "mobile")}<button
           data-active={activeChart === chart}
           class="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-t-0 sm:border-l sm:px-8 sm:py-6"
           onclick={() => (activeChart = chart)}
@@ -139,48 +163,21 @@
     </div>
   </CardHeader>
   <CardContent class="px-2 sm:p-6">
-    <ChartContainer config={chartConfig} class="aspect-auto h-[250px] w-full">
-      <BarChart
-        accessibilityLayer
-        data={chartData}
-        margin={{
-          left: 12,
-          right: 12,
-        }}
-      >
-        <CartesianGrid vertical={false} />
-        <XAxis
-          dataKey="date"
-          tickLine={false}
-          axisLine={false}
-          tickMargin={8}
-          minTickGap={32}
-          tickFormatter={(value) => {
-            const date = new Date(value)
-            return date.toLocaleDateString("en-US", {
+    <ChartContainer config={chartConfig} {definition} ariaLabel="Bar Chart - Interactive" class="aspect-auto h-[250px] w-full">
+      {#snippet tooltip(props)}
+        <ChartTooltipContent
+          class="w-[150px]"
+          nameKey="views"
+          labelFormatter={(value) => {
+            return new Date(String(value)).toLocaleDateString("en-US", {
               month: "short",
               day: "numeric",
+              year: "numeric",
             })
           }}
+          {...props}
         />
-        <ChartTooltip>
-          {#snippet content(props: TooltipContentArgs)}
-            <ChartTooltipContent
-              class="w-[150px]"
-              nameKey="views"
-              labelFormatter={(value) => {
-                return new Date(value).toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                })
-              }}
-              {...props}
-            />
-          {/snippet}
-        </ChartTooltip>
-        <Bar dataKey={activeChart} fill={`var(--color-${activeChart})`} />
-      </BarChart>
+      {/snippet}
     </ChartContainer>
   </CardContent>
 </Card>

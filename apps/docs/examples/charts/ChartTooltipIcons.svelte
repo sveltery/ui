@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Bar, BarChart, XAxis } from '@sveltery/charts';
   import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart-legacy';
   import Footprints from './icons/FootprintsIcon.svelte';
   import Waves from './icons/WavesIcon.svelte';
 

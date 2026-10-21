@@ -3,7 +3,7 @@
   import { Badge } from '$registry/bases/base/ui/badge';
   import { Button } from '$registry/bases/base/ui/button';
   import { Card, CardContent, CardDescription, CardTitle } from '$registry/bases/base/ui/card';
-  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart-legacy';
 
   const activityData = [
     { month: "Jan", amount: 40 },

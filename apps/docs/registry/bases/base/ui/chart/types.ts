@@ -1,36 +1,42 @@
 import type { Snippet } from 'svelte';
 import type { HTMLAttributes } from 'svelte/elements';
-import type { DefaultLegendContentProps, SvelteArgs, TooltipContentProps, TooltipNameType, TooltipPayloadEntry, TooltipValueType } from '@sveltery/charts';
+import type { ChartPoint } from '@tanstack/charts';
+import type { ChartDefinition, ChartTooltipBodySnippetContext } from '@tanstack/charts/svelte';
 import type { ChartConfig } from './context.js';
 
 export type { ChartConfig };
 
-export type ChartContainerProps = HTMLAttributes<HTMLDivElement> & {
+export type ChartContainerProps = Omit<HTMLAttributes<HTMLDivElement>, 'children'> & {
   config: ChartConfig;
-  children: Snippet;
-  initialDimension?: { width: number; height: number };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  definition: ChartDefinition<any, any, any>;
+  ariaLabel?: string;
+  /** Rendered inside TanStack's tooltip surface, usually a `ChartTooltipContent`. */
+  tooltip?: Snippet<[ChartTooltipBodySnippetContext]>;
+  /** Rendered below the plot, usually a `ChartLegendContent`. */
+  legend?: Snippet;
+  initialWidth?: number;
 };
 
-/** What a Tooltip `content` snippet receives: the Tooltip's props, less its formatter, which `ChartTooltipContent` replaces. */
-export type TooltipContentArgs = Omit<SvelteArgs<TooltipContentProps>, 'formatter'>;
+export type ChartTooltipFormatter = Snippet<[value: unknown, name: string, point: ChartPoint, index: number]>;
 
-/** Upstream's formatter returns a node. Here it is a snippet with the same arguments. */
-export type ChartTooltipFormatter = Snippet<
-  [value: TooltipValueType, name: TooltipNameType, item: TooltipPayloadEntry, index: number, payload: TooltipPayloadEntry['payload']]
->;
-
-export type ChartTooltipContentProps = TooltipContentArgs & {
+export type ChartTooltipContentProps = ChartTooltipBodySnippetContext & {
+  class?: string;
   hideLabel?: boolean;
   hideIndicator?: boolean;
   indicator?: 'line' | 'dot' | 'dashed';
   nameKey?: string;
   labelKey?: string;
   labelClassName?: string;
+  labelFormatter?: (value: unknown, points: readonly ChartPoint[]) => unknown;
   color?: string;
   formatter?: ChartTooltipFormatter;
 };
 
-export type ChartLegendContentProps = SvelteArgs<DefaultLegendContentProps> & {
+export type ChartLegendContentProps = {
+  class?: string;
   hideIcon?: boolean;
-  nameKey?: string;
+  /** Config keys to list, in order. Defaults to every key with a color. */
+  keys?: readonly string[];
+  verticalAlign?: 'top' | 'bottom';
 };

@@ -1,7 +1,11 @@
 <script lang="ts">
-  import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from '@sveltery/charts';
+  import { defineChart } from '@tanstack/charts';
+  import { angleGrid, focusGroupAngle, polar, radialArea, radialGrid } from '@tanstack/charts/polar';
+  import { scaleLinear } from '@tanstack/charts/scales/linear';
+  import { scalePoint } from '@tanstack/charts/scales/point';
+  import { curveLinearClosed } from 'd3-shape';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartTooltipContent, type ChartConfig } from '$registry/bases/base/ui/chart';
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
   const chartData = [
@@ -19,6 +23,25 @@
       color: "var(--chart-1)",
     },
   } satisfies ChartConfig
+
+  const definition = defineChart({
+    marks: [
+      polar({
+        radiusRatio: 0.8,
+        scales: {
+          angle: { scale: scalePoint<string>().domain(chartData.map((row) => row.month)), wrap: true },
+          radius: { scale: scaleLinear, nice: true },
+        },
+        guides: [radialGrid({ ticks: 5, shape: "polygon" }), angleGrid({ labelOffset: 10 })],
+        marks: [
+          radialArea(chartData, { angle: "month", radius: "desktop", z: () => "desktop", curve: curveLinearClosed, fill: "var(--color-desktop)", fillOpacity: 0.6, stroke: "none" }),
+        ],
+      }),
+    ],
+    scales: { x: null, y: null },
+    margin: 0,
+    focus: focusGroupAngle,
+  })
 </script>
 
 <Card>
@@ -27,17 +50,10 @@
     <CardDescription>Showing total visitors for the last 6 months</CardDescription>
   </CardHeader>
   <CardContent class="pb-0">
-    <ChartContainer config={chartConfig} class="mx-auto aspect-square max-h-[250px]">
-      <RadarChart data={chartData}>
-        <ChartTooltip cursor={false}>
-          {#snippet content(props: TooltipContentArgs)}
-            <ChartTooltipContent {...props} />
-          {/snippet}
-        </ChartTooltip>
-        <PolarAngleAxis dataKey="month" />
-        <PolarGrid />
-        <Radar dataKey="desktop" fill="var(--color-desktop)" fillOpacity={0.6} />
-      </RadarChart>
+    <ChartContainer config={chartConfig} {definition} ariaLabel="Radar Chart" class="mx-auto aspect-square max-h-[250px]">
+      {#snippet tooltip(props)}
+        <ChartTooltipContent {...props} />
+      {/snippet}
     </ChartContainer>
   </CardContent>
   <CardFooter class="flex-col gap-2 text-sm">

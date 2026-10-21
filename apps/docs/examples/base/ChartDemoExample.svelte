@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Bar, BarChart, CartesianGrid, XAxis } from '@sveltery/charts';
   import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart-legacy';
 
   const chartData = [
     { date: "2024-04-01", desktop: 222, mobile: 150 },

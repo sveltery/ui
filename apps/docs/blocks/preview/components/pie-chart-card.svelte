@@ -2,7 +2,7 @@
   import { Label, Pie, PieChart, type SvelteArgs, type LabelContentProps, type LegendContentProps } from '@sveltery/charts';
   import { Badge } from '$registry/bases/base/ui/badge';
   import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart-legacy';
   import { Progress } from '$registry/bases/base/ui/progress';
 
   const pieChartData = [

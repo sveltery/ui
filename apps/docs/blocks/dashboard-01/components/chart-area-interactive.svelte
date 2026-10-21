@@ -2,7 +2,7 @@
   import { Area, AreaChart, CartesianGrid, XAxis } from '@sveltery/charts';
   import { MediaQuery } from 'svelte/reactivity';
   import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart-legacy';
   import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '$registry/bases/base/ui/select';
   import { ToggleGroup, ToggleGroupItem } from '$registry/bases/base/ui/toggle-group';
 

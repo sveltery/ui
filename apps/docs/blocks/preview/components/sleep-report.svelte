@@ -3,7 +3,7 @@
   import { Badge } from '$registry/bases/base/ui/badge';
   import { Button } from '$registry/bases/base/ui/button';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { ChartContainer, type ChartConfig } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, type ChartConfig } from '$registry/bases/base/ui/chart-legacy';
 
   const sleepChartData = [
     { hour: "10pm", deep: 0, light: 30, rem: 0 },

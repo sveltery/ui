@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Label, Pie, PieChart, type SvelteArgs, type LabelContentProps } from '@sveltery/charts';
   import { Card, CardContent, CardFooter } from '$registry/bases/base/ui/card';
-  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart-legacy';
   import { Separator } from '$registry/bases/base/ui/separator';
 
   const chartData = [

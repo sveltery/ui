@@ -1,7 +1,9 @@
 <script lang="ts">
-  import { Label, Pie, PieChart, type SvelteArgs, type LabelContentProps } from '@sveltery/charts';
+  import { defineChart } from '@tanstack/charts';
+  import { pie, polar, radialArc, radialText } from '@tanstack/charts/polar';
+  import { scaleLinear } from '@tanstack/charts/scales/linear';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
-  import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig, type TooltipContentArgs } from '$registry/bases/base/ui/chart';
+  import { ChartContainer, ChartTooltipContent, type ChartConfig } from '$registry/bases/base/ui/chart';
   import { IconPlaceholder } from '$registry/bases/base/ui/icons';
 
   const chartData = [
@@ -38,9 +40,28 @@
     },
   } satisfies ChartConfig
 
-  const totalVisitors = $derived.by(() => {
-    return chartData.reduce((acc, curr) => acc + curr.visitors, 0)
-  });
+  const totalVisitors = chartData.reduce((acc, curr) => acc + curr.visitors, 0)
+
+  const definition = defineChart({
+    marks: [
+      polar({
+        radiusRatio: 0.8,
+        scales: { angle: { scale: scaleLinear().domain([0, 1]) }, radius: { scale: scaleLinear().domain([0, 1]) } },
+        marks: [
+          radialArc(pie(chartData, { value: "visitors", startAngle: Math.PI / 2, endAngle: -Math.PI * 1.5 }), {
+            key: "browser",
+            z: "browser",
+            innerRadius: 60,
+            fill: (row) => row.fill,
+          }),
+          radialText([{ id: "total", text: totalVisitors.toLocaleString() }], { angle: 0, radius: 0, text: "text", dy: -12, fill: "var(--foreground)", fontSize: 30, fontWeight: 700 }),
+          radialText([{ id: "label", text: "Visitors" }], { angle: 0, radius: 0, text: "text", dy: 12, fill: "var(--muted-foreground)", fontSize: 12 }),
+        ],
+      }),
+    ],
+    scales: { x: null, y: null },
+    margin: 0,
+  })
 </script>
 
 <Card class="flex flex-col">
@@ -49,24 +70,10 @@
     <CardDescription>January - June 2024</CardDescription>
   </CardHeader>
   <CardContent class="flex-1 pb-0">
-    <ChartContainer config={chartConfig} class="mx-auto aspect-square max-h-[250px]">
-      <PieChart>
-        <ChartTooltip cursor={false}>
-          {#snippet content(props: TooltipContentArgs)}
-            <ChartTooltipContent hideLabel {...props} />
-          {/snippet}
-        </ChartTooltip>
-        <Pie data={chartData} dataKey="visitors" nameKey="browser" innerRadius={60} strokeWidth={5}>
-          <Label>
-            {#snippet content({ viewBox }: SvelteArgs<LabelContentProps>)}
-              {#if viewBox && "cx" in viewBox && "cy" in viewBox}<text x={viewBox.cx} y={viewBox.cy} text-anchor="middle" dominant-baseline="middle">
-                <tspan x={viewBox.cx} y={viewBox.cy} class="fill-foreground text-3xl font-bold">{totalVisitors.toLocaleString()}</tspan>
-                <tspan x={viewBox.cx} y={(viewBox.cy || 0) + 24} class="fill-muted-foreground">Visitors</tspan>
-              </text>{/if}
-            {/snippet}
-          </Label>
-        </Pie>
-      </PieChart>
+    <ChartContainer config={chartConfig} {definition} ariaLabel="Pie Chart - Donut with Text" class="mx-auto aspect-square max-h-[250px]">
+      {#snippet tooltip(props)}
+        <ChartTooltipContent hideLabel nameKey="browser" {...props} />
+      {/snippet}
     </ChartContainer>
   </CardContent>
   <CardFooter class="flex-col gap-2 text-sm">
