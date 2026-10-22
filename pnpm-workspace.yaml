@@ -5,7 +5,6 @@ packages:
 engineStrict: true
 autoInstallPeers: false
 allowBuilds:
-  '@sveltery/base@https://codeload.github.com/sveltery/base/tar.gz/5a178b1a46cd5d0c81cebe68b67134aa8463afe4': true
   '@hugeicons/svelte': false
   esbuild: true
   workerd: true
@@ -13,7 +12,7 @@ minimumReleaseAgeExclude:
   - vitest@5.0.3
   - "@vitest/mocker@5.0.3"
   - "@vitest/spy@5.0.3"
-  - '@sveltery/base@0.3.0'
+  - '@sveltery/base@0.4.0'
 overrides:
   "shadcn@4.21.1>cn": "0.2.4"
   "@sveltery/charts>@reduxjs/toolkit": "1.9.7"

@@ -10,7 +10,7 @@
     "@lucide/svelte": "1.48.0",
     "@sveltejs/adapter-auto": "8.0.0",
     "@sveltejs/kit": "3.0.1",
-    "@sveltery/base": "github:sveltery/base#5a178b1a46cd5d0c81cebe68b67134aa8463afe4",
+    "@sveltery/base": "^0.4.0",
     "@sveltery/charts": "workspace:*",
     "@sveltery/command": "workspace:*",
     "@sveltery/day-picker": "workspace:*",

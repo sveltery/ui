@@ -13,9 +13,7 @@ const output = buildRegistry(readRegistryInput(repoRoot, 'https://sveltery.test/
 const item = (path: string) => output.get(path) as RegistryItem;
 // Releases bump these, so the expected ranges follow the manifests rather than hard-coding them.
 const docs = JSON.parse(readFileSync(`${repoRoot}apps/docs/package.json`, 'utf8'));
-const baseSpec: string = docs.devDependencies['@sveltery/base'];
-// A `github:` pin names no published version, so the registry lists the package bare.
-const BASE = baseSpec.startsWith('github:') ? '@sveltery/base' : `@sveltery/base@^${baseSpec.replace(/^\^/, '')}`;
+const BASE = `@sveltery/base@^${docs.devDependencies['@sveltery/base'].replace(/^\^/, '')}`;
 const readJson = (path: string) => JSON.parse(readFileSync(`${repoRoot}${path}`, 'utf8'));
 /** day-picker's version, or the published one held-versions.json keeps while the new one is not on npm. */
 const HELPER_RANGE = `^${readJson('apps/docs/registry/held-versions.json')['@sveltery/day-picker'] ?? readJson('packages/day-picker/package.json').version}`;
