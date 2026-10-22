@@ -116,15 +116,15 @@ Spread a [remote form](/docs/forms/remote-forms) field onto the select with `as(
 <ComponentPreview name="forms/ChoicesRemoteExample" />
 
 ```svelte
-<form {...f}>
-  <Field data-invalid={!!f.fields.fruits.issues()}>
+<Form form={f}>
+  <Field name="fruits">
     <FieldLabel for="fruits">Fruits</FieldLabel>
     <NativeSelect id="fruits" {...f.fields.fruits.as('select multiple')}>
       {#each fruits as fruit (fruit)}
         <NativeSelectOption value={fruit}>{fruit}</NativeSelectOption>
       {/each}
     </NativeSelect>
-    <FieldError errors={f.fields.fruits.issues()} />
+    <FieldError />
   </Field>
   <div class="flex gap-1">
     {#each textStyles as style (style)}
@@ -132,7 +132,7 @@ Spread a [remote form](/docs/forms/remote-forms) field onto the select with `as(
     {/each}
   </div>
   <Button type="submit">Save</Button>
-</form>
+</Form>
 ```
 
 ## Composition
@@ -177,7 +177,7 @@ Add the `disabled` prop to the `NativeSelect` component to disable the select.
 
 ## Invalid
 
-Use `aria-invalid` to show validation errors and the `data-invalid` attribute to the `Field` component for styling.
+Set `invalid` on the `Field` component to show validation errors. The field marks the select with `aria-invalid`.
 
 <ComponentPreview name="base/NativeSelectInvalidExample" />
 

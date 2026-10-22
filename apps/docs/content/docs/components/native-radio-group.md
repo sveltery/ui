@@ -91,7 +91,8 @@ Spread a [remote form](/docs/forms/remote-forms) field onto each radio with `as(
 ```svelte
 <script lang="ts">
   import { Button } from '#lib/components/ui/button';
-  import { Field, FieldError, FieldLabel, FieldLegend, FieldSet } from '#lib/components/ui/field';
+  import { Field, FieldError, FieldItem, FieldLabel, FieldLegend, FieldSet } from '#lib/components/ui/field';
+  import { Form } from '#lib/components/ui/form';
   import { NativeRadio, NativeRadioGroup } from '#lib/components/ui/native-radio-group';
   import { planSchema, plans } from '#lib/forms/plan';
   import { choosePlan } from '#lib/forms/plan.remote';
@@ -99,21 +100,23 @@ Spread a [remote form](/docs/forms/remote-forms) field onto each radio with `as(
   const f = choosePlan.preflight(planSchema);
 </script>
 
-<form {...f}>
-  <FieldSet>
-    <FieldLegend>Plan</FieldLegend>
-    <NativeRadioGroup>
-      {#each plans as plan (plan)}
-        <Field orientation="horizontal" data-invalid={!!f.fields.plan.issues()}>
-          <NativeRadio id="plan-{plan}" {...f.fields.plan.as('radio', plan)} />
-          <FieldLabel for="plan-{plan}" class="font-normal">{plan}</FieldLabel>
-        </Field>
-      {/each}
-    </NativeRadioGroup>
-    <FieldError errors={f.fields.plan.issues()} />
-  </FieldSet>
+<Form form={f}>
+  <Field name="plan">
+    <FieldSet>
+      <FieldLegend>Plan</FieldLegend>
+      <NativeRadioGroup>
+        {#each plans as plan (plan)}
+          <FieldItem>
+            <NativeRadio id="plan-{plan}" {...f.fields.plan.as('radio', plan)} />
+            <FieldLabel for="plan-{plan}" class="font-normal">{plan}</FieldLabel>
+          </FieldItem>
+        {/each}
+      </NativeRadioGroup>
+    </FieldSet>
+    <FieldError />
+  </Field>
   <Button type="submit" disabled={f.pending > 0}>Choose plan</Button>
-</form>
+</Form>
 ```
 
 Without JavaScript, the form posts to the server, and the page comes back with the submitted radio checked and the issue shown.

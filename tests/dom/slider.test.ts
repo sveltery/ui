@@ -9,7 +9,8 @@ function setup() {
   instance = mount(SliderForm, { target: document.body });
   flushSync();
   const form = document.querySelector('form')!;
-  const root = (id: string) => document.getElementById(id)!;
+  // A slider's id names its first thumb input, the control a label points at.
+  const root = (id: string) => document.getElementById(id)!.closest<HTMLElement>('[data-slot=slider]')!;
   const thumbs = (id: string) => [...root(id).querySelectorAll<HTMLElement>('[data-slot=slider-thumb]')];
   const inputs = (id: string) => thumbs(id).map(thumb => thumb.querySelector<HTMLInputElement>('input[type=range]')!);
   const press = (input: HTMLInputElement, key: string) => {
@@ -17,7 +18,7 @@ function setup() {
     input.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }));
     flushSync();
   };
-  return { form, root, thumbs, inputs, press, fixture: instance as unknown as { read(): number[]; write(next: number[]): void; commitLog(): string[] } };
+  return { form, root, thumbs, inputs, press, fixture: instance as unknown as { read(): number[]; write(next: number[]): void} };
 }
 
 it('renders root, control, track, range and thumb with the upstream slots and classes', () => {

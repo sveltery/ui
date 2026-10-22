@@ -4,7 +4,7 @@ description: Use Field with a SvelteKit remote form.
 order: 1
 ---
 
-Spread a SvelteKit [remote form](https://svelte.dev/docs/kit/remote-functions#form) onto a `<form>`, and each of its fields onto its control with `as()`. The remote form owns the values and the issues, and each `Field` shows its own issues.
+Pass a SvelteKit [remote form](https://svelte.dev/docs/kit/remote-functions#form) to [Form](/docs/components/form), name each `Field` by its field's path, and spread each field onto its control with `as()`. The remote form owns the values and the issues. Each `Field` reads its own issues by its `name`, and `FormError` shows the issues that belong to no field.
 
 <ComponentPreview name="forms/RemoteFormExample" />
 
@@ -48,6 +48,7 @@ export const signup = form(signupSchema, async (data, issue) => {
 <script lang="ts">
   import { Button } from '#lib/components/ui/button';
   import { Field, FieldError, FieldLabel } from '#lib/components/ui/field';
+  import { Form, FormError } from '#lib/components/ui/form';
   import { Input } from '#lib/components/ui/input';
   import { signupSchema } from '#lib/forms/signup';
   import { signup } from '#lib/forms/signup.remote';
@@ -55,20 +56,25 @@ export const signup = form(signupSchema, async (data, issue) => {
   const f = signup.preflight(signupSchema);
 </script>
 
-<form {...f}>
-  <Field data-invalid={!!f.fields.email.issues()}>
-    <FieldLabel for="email">Email</FieldLabel>
-    <Input id="email" {...f.fields.email.as('email')} required />
-    <FieldError errors={f.fields.email.issues()} />
+<Form form={f}>
+  <Field name="email">
+    <FieldLabel>Email</FieldLabel>
+    <Input {...f.fields.email.as('email')} required />
+    <FieldError />
   </Field>
+  <FormError />
   <Button type="submit" disabled={f.pending > 0}>Sign up</Button>
-</form>
+</Form>
 ```
 
-`as()` gives the control the field's `name`, `type`, value and `aria-invalid`. `FieldError` shows the field's issues, and renders nothing while there are none. When the handler returns, `f.result` holds its return value and the form resets.
+`Form` takes the remote form's `method`, `action` and submit handling. `as()` gives the control the field's `name`, `type` and value, and TypeScript checks the path and the type against the schema. `Field`'s `name` is a plain string that TypeScript does not check. In development, `Field` warns in the console when it differs from the path in the control's spread.
 
-The form also works before the page hydrates and with JavaScript off: the browser checks the constraints, the form posts to the server, and the page renders again with the issues.
+`Field` marks itself and its control invalid while the field has issues, also in the server HTML. `FieldError` shows the issues, and renders nothing while there are none. Editing the field hides its issues until the next submit. When the handler returns, `f.result` holds its return value and the form resets.
+
+The form also works before the page hydrates and with JavaScript off. The browser checks the constraints, the form posts to the server, and the page renders again with the issues in each `FieldError`.
+
+Don't name `value` or `checked` after a spread, as in `{...f.fields.email.as('email')} value="x"`: SvelteKit's accessors for them cannot be overridden, and the server render throws. Pass a default to `as()` instead, as in `as('email', 'ada@example.com')`.
 
 ## Controls
 
-`as()` describes a native input, so it spreads onto a control that renders one: [Input](/docs/components/input#remote-forms), [Textarea](/docs/components/textarea), [Native Select](/docs/components/native-select#remote-forms), [Native Checkbox](/docs/components/native-checkbox#remote-forms), [Native Switch](/docs/components/native-switch#remote-forms), [Native Radio Group](/docs/components/native-radio-group#remote-forms) and [Native Slider](/docs/components/native-slider#remote-forms). `InputGroupInput`, `InputGroupTextarea` and `Button` with `as('submit', value)` take it as well.
+`as()` describes a native input, so it spreads onto a control that renders one. Name the `Field` around each of them, so that its `FieldError` shows the field's issues: [Input](/docs/components/input#remote-forms), [Textarea](/docs/components/textarea), [Native Select](/docs/components/native-select#remote-forms), [Native Checkbox](/docs/components/native-checkbox#remote-forms), [Native Switch](/docs/components/native-switch#remote-forms), [Native Radio Group](/docs/components/native-radio-group#remote-forms) and [Native Slider](/docs/components/native-slider#remote-forms). `InputGroupInput`, `InputGroupTextarea` and `Button` with `as('submit', value)` take it as well.

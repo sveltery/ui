@@ -63,10 +63,10 @@ The component folders import each other with relative paths, so keep them side b
       <Input id="name" autocomplete="off" placeholder="Evil Rabbit" />
       <FieldDescription>This appears on invoices and emails.</FieldDescription>
     </Field>
-    <Field>
+    <Field invalid>
       <FieldLabel for="username">Username</FieldLabel>
-      <Input id="username" autocomplete="off" aria-invalid />
-      <FieldError>Choose another username.</FieldError>
+      <Input id="username" autocomplete="off" />
+      <FieldError match>Choose another username.</FieldError>
     </Field>
     <Field orientation="horizontal">
       <Switch id="newsletter" />
@@ -131,21 +131,21 @@ FieldSet
 The `Field` family is designed for composing accessible forms. A typical field is structured as follows:
 
 ```svelte
-<Field>
-  <FieldLabel for="input-id">Label</FieldLabel>
+<Field name="email">
+  <FieldLabel>Label</FieldLabel>
   <!-- Input, Select, Switch, etc. -->
   <FieldDescription>Optional helper text.</FieldDescription>
-  <FieldError>Validation message.</FieldError>
+  <FieldError />
 </Field>
 ```
 
-- `Field` is the core wrapper for a single field.
+- `Field` is the core wrapper for a single field. It is Sveltery Base's [Field.Root](https://base.sveltery.dev/components/field): it labels and describes its control, tracks its validity, and marks every part with the field's state.
 - `FieldContent` is a flex column that groups label and description. Not required if you have no description.
 - Wrap related fields with `FieldGroup`, and use `FieldSet` with `FieldLegend` for semantic grouping.
 
 ## Form
 
-`Field` holds no form state. Put `name` on each control, and mark errors as in [Validation and Errors](#validation-and-errors). See the [Forms](/docs/forms) documentation for building forms with the `Field` component and [SvelteKit remote forms](/docs/forms/remote-forms) or [form actions](/docs/forms/form-actions).
+Put the fields in a [Form](/docs/components/form) and give each `Field` a `name`. In a plain form, the control submits under that name, and `FieldError` shows the `errors` entry under it. In a [SvelteKit remote form](/docs/forms/remote-forms), the name is the field's path, and `FieldError` shows its issues. See the [Forms](/docs/forms) documentation for plain forms, remote forms and [form actions](/docs/forms/form-actions).
 
 ## Input
 
@@ -209,35 +209,38 @@ Wrap the form in a [DirectionProvider](/docs/components/direction) and set `dir`
 
 ## Validation and Errors
 
-- Add `data-invalid` to `Field` to switch the entire block into an error state.
-- Add `aria-invalid` on the input itself for assistive technologies.
+- `Field` marks itself and its parts with `data-invalid` when its control fails a native constraint or its `validate` check, when its `Form` has errors or issues for its `name`, or when you set `invalid`. The control gets `aria-invalid`.
+- `FieldError` shows the field's messages and renders nothing while the field is valid. With `match`, it always renders its children. Set `match` to a [ValidityState](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState) key, such as `"valueMissing"`, to show a message for one constraint only.
 - Render `FieldError` immediately after the control or inside `FieldContent` to keep error messages aligned with the field.
 
 ```svelte
-<Field data-invalid>
-  <FieldLabel for="email">Email</FieldLabel>
-  <Input id="email" type="email" aria-invalid />
-  <FieldError>Enter a valid email address.</FieldError>
+<Field name="email">
+  <FieldLabel>Email</FieldLabel>
+  <Input type="email" required />
+  <FieldError match="valueMissing">Enter your email address.</FieldError>
+  <FieldError match="typeMismatch">Enter a valid email address.</FieldError>
 </Field>
 ```
 
-A disabled field works the same way. Set `data-disabled` on `Field` and `disabled` on the control.
+Set `disabled` on `Field` to disable its control. `Field` and its parts get `data-disabled`.
 
 ## Accessibility
 
 - `FieldSet` and `FieldLegend` keep related controls grouped for keyboard and assistive tech users.
 - `Field` outputs `role="group"` so nested controls inherit labeling from `FieldLabel` and `FieldLegend` when combined.
+- `FieldLabel` labels the control and `FieldDescription` and `FieldError` describe it through `aria-describedby`, with ids that are in the server HTML.
 - Apply `FieldSeparator` sparingly to ensure screen readers encounter clear section boundaries.
 
 ## API Reference
 
 ### FieldSet
 
-Container that renders a semantic `fieldset` with spacing presets.
+Container that renders a semantic `fieldset` with spacing presets. It is Base's [Fieldset.Root](https://base.sveltery.dev/components/fieldset).
 
-| Prop    | Type     | Default |
-| ------- | -------- | ------- |
-| `class` | `string` |         |
+| Prop       | Type      | Default |
+| ---------- | --------- | ------- |
+| `disabled` | `boolean` | `false` |
+| `class`    | `string`  |         |
 
 ```svelte
 <FieldSet>
@@ -248,7 +251,7 @@ Container that renders a semantic `fieldset` with spacing presets.
 
 ### FieldLegend
 
-Legend element for a `FieldSet`. Switch to the `label` variant to align with label sizing.
+Legend for a `FieldSet`, from Base's `Fieldset.Legend`. It renders a `div` that names the fieldset through `aria-labelledby`. Switch to the `label` variant to align with label sizing.
 
 | Prop      | Type                  | Default    |
 | --------- | --------------------- | ---------- |
@@ -278,13 +281,20 @@ Layout wrapper that stacks `Field` components and enables container queries for 
 
 ### Field
 
-The core wrapper for a single field. Provides orientation control, invalid state styling, and spacing.
+The core wrapper for a single field. Provides orientation control, invalid state styling, and spacing. It takes every [Field.Root](https://base.sveltery.dev/components/field) prop.
 
-| Prop           | Type                                         | Default      |
-| -------------- | -------------------------------------------- | ------------ |
-| `orientation`  | `"vertical"` \| `"horizontal"` \| `"responsive"` | `"vertical"` |
-| `class`        | `string`                                     |              |
-| `data-invalid` | `boolean`                                    |              |
+| Prop                     | Type                                             | Default      |
+| ------------------------ | ------------------------------------------------ | ------------ |
+| `name`                   | `string`                                         |              |
+| `orientation`            | `"vertical"` \| `"horizontal"` \| `"responsive"` | `"vertical"` |
+| `invalid`                | `boolean`                                        |              |
+| `disabled`               | `boolean`                                        | `false`      |
+| `validate`               | `(value: unknown) => string \| string[] \| null` |              |
+| `validationMode`         | `"onSubmit"` \| `"onBlur"` \| `"onChange"`       |              |
+| `validationDebounceTime` | `number`                                         | `0`          |
+| `class`                  | `string`                                         |              |
+
+`Field` and its parts carry `data-invalid`, `data-valid`, `data-disabled`, `data-touched`, `data-dirty`, `data-filled` and `data-focused` while each state holds.
 
 ```svelte
 <Field orientation="horizontal">
@@ -311,9 +321,32 @@ Flex column that groups control and descriptions when the label sits beside the 
 </Field>
 ```
 
+### FieldItem
+
+One option of a checkbox or radio group inside a named `Field`, from Base's [Field.Item](https://base.sveltery.dev/components/field). It lays out like a horizontal `Field`, and gives its `FieldLabel` and `FieldDescription` to its own control.
+
+| Prop          | Type                                             | Default        |
+| ------------- | ------------------------------------------------ | -------------- |
+| `orientation` | `"vertical"` \| `"horizontal"` \| `"responsive"` | `"horizontal"` |
+| `disabled`    | `boolean`                                        | `false`        |
+| `class`       | `string`                                         |                |
+
+```svelte
+<Field name="plan">
+  <FieldSet>
+    <FieldLegend>Plan</FieldLegend>
+    <FieldItem>
+      <NativeRadio id="plan-pro" name="plan" value="pro" />
+      <FieldLabel for="plan-pro">Pro</FieldLabel>
+    </FieldItem>
+  </FieldSet>
+  <FieldError />
+</Field>
+```
+
 ### FieldLabel
 
-Label styled for both direct inputs and nested `Field` children.
+Label styled for both direct inputs and nested `Field` children. It is Base's [Field.Label](https://base.sveltery.dev/components/field), so inside a `Field` it labels the control without `for` and `id`.
 
 | Prop    | Type     | Default |
 | ------- | -------- | ------- |
@@ -340,7 +373,7 @@ Renders a title with label styling inside `FieldContent`.
 
 ### FieldDescription
 
-Helper text slot that automatically balances long lines in horizontal layouts.
+Helper text slot that automatically balances long lines in horizontal layouts. It is Base's `Field.Description`, so the control lists it in `aria-describedby`.
 
 | Prop    | Type     | Default |
 | ------- | -------- | ------- |
@@ -364,17 +397,20 @@ Visual divider to separate sections inside a `FieldGroup`. Accepts optional inli
 
 ### FieldError
 
-Accessible error container that accepts children or an `errors` array (for example, from a form library or a remote form's `issues()`).
+Accessible error container for the field's messages, from Base's [Field.Error](https://base.sveltery.dev/components/field). It shows the browser's constraint message, the `validate` message, and the `Form` `errors` or remote form issues for the field's `name`. One message renders as text and several as a list. It renders nothing while the field is valid.
 
-| Prop     | Type                                       | Default |
-| -------- | ------------------------------------------ | ------- |
-| `errors` | `Array<{ message?: string }>`                     |         |
-| `class`  | `string`                                   |         |
+| Prop       | Type                                       | Default |
+| ---------- | ------------------------------------------ | ------- |
+| `match`    | `boolean` \| `keyof ValidityState`         |         |
+| `children` | `Snippet` \| `Snippet<[messages: string[]]>` |         |
+| `class`    | `string`                                   |         |
 
 ```svelte
-<FieldError errors={[{ message: 'Choose another username.' }]} />
+<FieldError />
+<FieldError match="valueMissing">Enter your email address.</FieldError>
+<FieldError>
+  {#snippet children(messages)}{messages.join(' ')}{/snippet}
+</FieldError>
 ```
 
-When the `errors` array contains multiple messages, the component renders a list automatically. With neither children nor `errors`, it renders nothing.
-
-`FieldError` also accepts issues produced by any validator that implements [Standard Schema](https://standardschema.dev/), including Zod, Valibot, and ArkType. Pass the `issues` array from the schema result directly to render a unified error list across libraries.
+To show errors from a validation library, such as issues from a [Standard Schema](https://standardschema.dev/) result, pass them to [Form](/docs/components/form) as `errors`, keyed by field name. See [Validation](/docs/forms#validation).

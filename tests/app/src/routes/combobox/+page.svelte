@@ -166,7 +166,7 @@
     </ComboboxContent>
   </Combobox>
 
-  <Field data-invalid class="w-72">
+  <Field invalid class="w-72">
     <FieldLabel for="invalid-framework">Invalid framework</FieldLabel>
     <Combobox items={frameworks}>
       <ComboboxInput id="invalid-framework" aria-invalid data-testid="invalid" placeholder="Select a framework" />
@@ -177,7 +177,7 @@
         </ComboboxList>
       </ComboboxContent>
     </Combobox>
-    <FieldError>Please select a framework.</FieldError>
+    <FieldError match>Please select a framework.</FieldError>
   </Field>
 
   <Dialog>

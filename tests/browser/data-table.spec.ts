@@ -70,7 +70,7 @@ test.describe('demo table', () => {
     for (const row of await rows.all()) await expect(row).toBeChecked();
     await rows.first().click();
     await expect(table.getByText('4 of 5 row(s) selected.')).toBeVisible();
-    await expect(selectAll).toHaveAttribute('aria-checked', 'mixed');
+    await expect(selectAll).toBeChecked({ indeterminate: true });
     await table.getByPlaceholder('Filter emails...').fill('abe');
     await expect(table.getByText('1 of 1 row(s) selected.')).toBeVisible();
     await selectAll.click();

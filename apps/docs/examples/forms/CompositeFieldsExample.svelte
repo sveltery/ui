@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Button } from '$registry/bases/base/ui/button';
   import { Checkbox } from '$registry/bases/base/ui/checkbox';
+  import { Form } from '$registry/bases/base/ui/form';
   import { Field, FieldContent, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSet } from '$registry/bases/base/ui/field';
   import { RadioGroup, RadioGroupItem } from '$registry/bases/base/ui/radio-group';
   import { Slider } from '$registry/bases/base/ui/slider';
@@ -10,18 +11,15 @@
     { value: 'starter', label: 'Starter', description: 'For one project.' },
     { value: 'pro', label: 'Pro', description: 'For a growing team.' },
   ];
-  let termsInvalid = $state(false);
   let submitted = $state<Record<string, unknown> | null>(null);
 
   function submit(event: SubmitEvent & { currentTarget: HTMLFormElement }) {
     event.preventDefault();
-    const values = Object.fromEntries(new FormData(event.currentTarget));
-    termsInvalid = !values.terms;
-    submitted = termsInvalid ? null : values;
+    submitted = Object.fromEntries(new FormData(event.currentTarget));
   }
 </script>
 
-<form class="w-full max-w-sm" onsubmit={submit}>
+<Form class="w-full max-w-sm" onsubmit={submit}>
   <FieldGroup>
     <FieldSet>
       <FieldLegend variant="label">Plan</FieldLegend>
@@ -48,13 +46,11 @@
       </FieldContent>
       <Switch id="newsletter" name="newsletter" />
     </Field>
-    <Field orientation="horizontal" data-invalid={termsInvalid}>
-      <Checkbox id="terms" name="terms" aria-invalid={termsInvalid} onCheckedChange={() => (termsInvalid = false)} />
+    <Field name="terms" orientation="horizontal">
+      <Checkbox required />
       <FieldContent>
-        <FieldLabel for="terms">Accept the terms</FieldLabel>
-        {#if termsInvalid}
-          <FieldError>Accept the terms to continue.</FieldError>
-        {/if}
+        <FieldLabel>Accept the terms</FieldLabel>
+        <FieldError match="valueMissing">Accept the terms to continue.</FieldError>
       </FieldContent>
     </Field>
     <Button type="submit">Continue</Button>
@@ -62,4 +58,4 @@
       <pre class="text-xs">{JSON.stringify(submitted)}</pre>
     {/if}
   </FieldGroup>
-</form>
+</Form>

@@ -116,7 +116,8 @@ Spread a [remote form](/docs/forms/remote-forms) field onto a checkbox with `as(
 ```svelte
 <script lang="ts">
   import { Button } from '#lib/components/ui/button';
-  import { Field, FieldError, FieldLabel, FieldLegend, FieldSet } from '#lib/components/ui/field';
+  import { Field, FieldError, FieldItem, FieldLabel, FieldLegend, FieldSet } from '#lib/components/ui/field';
+  import { Form } from '#lib/components/ui/form';
   import { NativeCheckbox } from '#lib/components/ui/native-checkbox';
   import { preferencesSchema, topics } from '#lib/forms/preferences';
   import { savePreferences } from '#lib/forms/preferences.remote';
@@ -124,23 +125,25 @@ Spread a [remote form](/docs/forms/remote-forms) field onto a checkbox with `as(
   const f = savePreferences.preflight(preferencesSchema);
 </script>
 
-<form {...f}>
-  <FieldSet>
-    <FieldLegend variant="label">Email me about</FieldLegend>
-    {#each topics as topic (topic)}
-      <Field orientation="horizontal">
-        <NativeCheckbox id="topic-{topic}" {...f.fields.topics.as('checkbox', topic)} />
-        <FieldLabel for="topic-{topic}" class="font-normal">{topic}</FieldLabel>
-      </Field>
-    {/each}
-    <FieldError errors={f.fields.topics.issues()} />
-  </FieldSet>
-  <Field orientation="horizontal" data-invalid={!!f.fields.terms.issues()}>
+<Form form={f}>
+  <Field name="topics">
+    <FieldSet>
+      <FieldLegend variant="label">Email me about</FieldLegend>
+      {#each topics as topic (topic)}
+        <FieldItem>
+          <NativeCheckbox id="topic-{topic}" {...f.fields.topics.as('checkbox', topic)} />
+          <FieldLabel for="topic-{topic}" class="font-normal">{topic}</FieldLabel>
+        </FieldItem>
+      {/each}
+    </FieldSet>
+    <FieldError />
+  </Field>
+  <Field name="terms" orientation="horizontal">
     <NativeCheckbox id="terms" {...f.fields.terms.as('checkbox')} />
     <FieldLabel for="terms">Accept the terms</FieldLabel>
   </Field>
   <Button type="submit" disabled={f.pending > 0}>Save</Button>
-</form>
+</Form>
 ```
 
 Without JavaScript, the form posts to the server, and the page comes back with the submitted checkboxes checked and the issues shown.

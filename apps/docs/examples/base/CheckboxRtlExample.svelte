@@ -45,7 +45,7 @@
         <FieldDescription>{t.acceptTermsDescription}</FieldDescription>
       </FieldContent>
     </Field>
-    <Field orientation="horizontal" data-disabled>
+    <Field orientation="horizontal" disabled>
       <Checkbox id="toggle-checkbox-rtl" name="toggle-checkbox" disabled />
       <FieldLabel for="toggle-checkbox-rtl">{t.enableNotifications}</FieldLabel>
     </Field>

@@ -3,7 +3,7 @@
   import { Textarea } from '$registry/bases/base/ui/textarea';
 </script>
 
-<Field data-disabled>
+<Field disabled>
   <FieldLabel for="textarea-disabled">Message</FieldLabel>
   <Textarea id="textarea-disabled" placeholder="Type your message here." disabled />
 </Field>

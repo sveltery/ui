@@ -17,7 +17,7 @@
   <span class="text-xs">RadioGroup</span>
   {#each states as state (state.id)}
     <RadioGroup aria-label={state.id} defaultValue={state.checked ? 'on' : undefined}>
-      <RadioGroupItem value="on" data-testid="base-{state.id}" aria-invalid={state.invalid || undefined} disabled={state.disabled} />
+      <RadioGroupItem value="on" host={{ 'data-testid': `base-${state.id}` }} aria-invalid={state.invalid || undefined} disabled={state.disabled} />
     </RadioGroup>
   {/each}
   <span class="text-xs">NativeRadioGroup</span>

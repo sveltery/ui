@@ -1,8 +1,6 @@
 <script lang="ts">
-  import type { HTMLAttributes } from 'svelte/elements';
+  import { Fieldset as Primitive, type FieldsetLegendProps } from '@sveltery/base/fieldset';
   import { cn } from 'cn';
-  let { children, class: classProp, variant = 'legend', ...props }: HTMLAttributes<HTMLLegendElement> & { variant?: 'legend' | 'label' } = $props();
+  let { class: classProp, variant = 'legend', ...props }: FieldsetLegendProps & { variant?: 'legend' | 'label' } = $props();
 </script>
-<legend data-slot="field-legend" data-variant={variant} {...props} class={cn('cn-field-legend', classProp)}>
-  {@render children?.()}
-</legend>
+<Primitive.Legend data-slot="field-legend" data-variant={variant} {...props} class={cn('cn-field-legend', classProp)} />

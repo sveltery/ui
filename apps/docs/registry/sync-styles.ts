@@ -49,18 +49,30 @@ const PATCHES: Patch[] = [
     // A choice card highlights the checked Base UI radio or checkbox by `data-checked`. A NativeRadio
     // has no data attributes, so the card also matches a checked native input.
     selectors: ['.cn-field-label'],
-    edit: (utility) => utility.replace(/(^|:)has-data-checked:/, '$1has-[[data-checked],input:checked]:'),
+    edit: (utility) => utility.replace(/(^|:)has-data-checked:/, '$1has-[[data-checked],input:checked]:').replace(/(^|:)group-data-\[disabled=true\]\/field:/, '$1group-data-disabled/field:'),
+  },
+  {
+    // Base's Checkbox, Switch and Radio paint a box around a real `<input>`. The input takes focus and `aria-invalid`,
+    // from its Field or from the caller, and the box carries `data-checked`.
+    selectors: ['.cn-checkbox', '.cn-switch', '.cn-radio-group-item'],
+    edit: (utility) => utility.replace(/(^|:)focus-visible:/, '$1has-focus-visible:').replace(/(^|:)aria-invalid:/g, '$1has-aria-invalid:').replace(/(^|:)aria-checked:/, '$1data-checked:'),
+  },
+  {
+    // Upstream's Field is a div that examples mark `data-invalid="true"` and `data-disabled="true"`. Field is
+    // Base's Field.Root here, which marks itself with empty `data-invalid` and `data-disabled` attributes.
+    selectors: ['.cn-field', '.cn-field-title'],
+    edit: (utility) => utility.replace(/^data-\[invalid=true\]:/, 'data-invalid:').replace(/(^|:)group-data-\[disabled=true\]\/field:/, '$1group-data-disabled/field:'),
   },
 ];
 
-/** Applies PATCHES to each rule they name, dropping a utility the edit duplicates. Throws when one changes nothing. */
+/** Applies each of PATCHES to the rules it names, in order, dropping a utility the edit duplicates. Throws when one changes nothing. */
 function patch(item: Item, style: string): Item {
-  const found = PATCHES.find(({ selectors, styles }) => selectors.includes(item.key) && (!styles || styles.includes(style)));
-  if (!found) return item;
-  const [head = '', utilities = ''] = /^([\s\S]*@apply )([^;\n]+)/.exec(item.text)?.slice(1) ?? [];
-  const edited = [...new Set(utilities.split(' ').map(found.edit))].join(' ');
-  if (edited === utilities) throw new Error(`style-${style}.css: the patch for ${item.key} no longer applies`);
-  return { ...item, text: item.text.replace(head + utilities, head + edited) };
+  return PATCHES.filter(({ selectors, styles }) => selectors.includes(item.key) && (!styles || styles.includes(style))).reduce((item, found) => {
+    const [head = '', utilities = ''] = /^([\s\S]*@apply )([^;\n]+)/.exec(item.text)?.slice(1) ?? [];
+    const edited = [...new Set(utilities.split(' ').map(found.edit))].join(' ');
+    if (edited === utilities) throw new Error(`style-${style}.css: the patch for ${item.key} no longer applies`);
+    return { ...item, text: item.text.replace(head + utilities, head + edited) };
+  }, item);
 }
 
 const utilitiesOf = (item: Item | undefined) => /@apply ([^;\n]+)/.exec(item?.text ?? '')?.[1]?.split(' ') ?? [];
@@ -74,7 +86,7 @@ const rule = (selector: string, utilities: string[]): Item => ({ key: selector, 
 function nativeRadio(find: (key: string) => string[], style: string): Item[] {
   const group = find('.cn-radio-group');
   const icon = find('.cn-radio-group-indicator-icon');
-  const checked = { 'data-checked': 'checked', 'aria-checked': 'checked', 'not-data-checked': 'not-checked' } as Record<string, string>;
+  const checked = { 'data-checked': 'checked', 'aria-checked': 'checked', 'not-data-checked': 'not-checked', 'has-focus-visible': 'focus-visible', 'has-aria-invalid': 'aria-invalid' } as Record<string, string>;
   const item = find('.cn-radio-group-item').map((utility) => utility.split(':').map((part) => checked[part] ?? part).join(':'));
   const color = icon.find((utility) => /^bg-[a-z-]+$/.test(utility))?.slice(3);
   const size = (variant: string) => icon.find((utility) => utility.startsWith(`${variant}size-`))?.slice(variant.length + 5);
@@ -110,7 +122,7 @@ const renamed = (names: Record<string, string>) => (utility: string) => {
   const { variants, base } = parts(utility);
   return [...variants.map((variant) => names[variant] ?? variant), base].join(':');
 };
-const onInput = renamed({ 'data-checked': 'checked', 'data-unchecked': 'not-checked', 'not-data-checked': 'not-checked', 'aria-checked': 'checked' });
+const onInput = renamed({ 'data-checked': 'checked', 'data-unchecked': 'not-checked', 'not-data-checked': 'not-checked', 'aria-checked': 'checked', 'has-focus-visible': 'focus-visible', 'has-aria-invalid': 'aria-invalid' });
 const onPeer = renamed({ 'data-checked': 'peer-checked', 'data-unchecked': 'peer-not-checked' });
 
 /** Moves a utility onto a pseudo-element after its own variants, so `hover:ring-4` becomes `hover:[&::x]:ring-4`. */

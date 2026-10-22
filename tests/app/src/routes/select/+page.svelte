@@ -140,7 +140,7 @@
   </Select>
   <button type="button" class={buttonClass} onclick={() => (disabled = !disabled)}>Toggle disabled</button>
 
-  <Field data-invalid class="w-48">
+  <Field invalid class="w-48">
     <FieldLabel for="invalid-fruit">Invalid fruit</FieldLabel>
     <Select items={fruitsOnly}>
       <SelectTrigger id="invalid-fruit" aria-invalid data-testid="invalid">
@@ -154,7 +154,7 @@
         </SelectGroup>
       </SelectContent>
     </Select>
-    <FieldError>Please pick a fruit.</FieldError>
+    <FieldError match>Please pick a fruit.</FieldError>
   </Field>
 
   <Dialog>

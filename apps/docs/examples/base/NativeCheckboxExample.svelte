@@ -39,7 +39,7 @@
 
 {#snippet NativeCheckboxInvalid()}
   <Example title="Invalid">
-    <Field orientation="horizontal" data-invalid="true">
+    <Field orientation="horizontal" invalid>
       <NativeCheckbox id="native-terms-3" aria-invalid="true" />
       <FieldLabel for="native-terms-3">Accept terms and conditions</FieldLabel>
     </Field>
@@ -48,7 +48,7 @@
 
 {#snippet NativeCheckboxDisabled()}
   <Example title="Disabled">
-    <Field orientation="horizontal" data-disabled="true">
+    <Field orientation="horizontal" disabled>
       <NativeCheckbox id="native-toggle" disabled />
       <FieldLabel for="native-toggle">Enable notifications</FieldLabel>
     </Field>
@@ -68,7 +68,7 @@
         </Field>
       </FieldLabel>
       <FieldLabel for="native-toggle-4">
-        <Field orientation="horizontal" data-disabled="true">
+        <Field orientation="horizontal" disabled>
           <NativeCheckbox id="native-toggle-4" disabled />
           <FieldContent>
             <FieldTitle>Enable notifications</FieldTitle>

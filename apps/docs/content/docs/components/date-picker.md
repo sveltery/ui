@@ -119,11 +119,11 @@ Wrap the date picker in a [DirectionProvider](/docs/components/direction) and se
 
 ## In a Form
 
-A popover trigger is a button, so it submits nothing. Put a hidden input with the date as `yyyy-MM-dd` next to it. Check the date in the form's `onsubmit`. Set `data-invalid` on the `Field` and `aria-invalid` on the trigger, and render a `FieldError` while the date is missing.
+A popover trigger is a button, so it submits nothing. Put a hidden input with the date as `yyyy-MM-dd` next to it. Check the date in the form's `onsubmit`. Set `invalid` on the `Field` and `aria-invalid` on the trigger, and render a `FieldError` while the date is missing.
 
 ```svelte
 <form onsubmit={save}>
-  <Field data-invalid={invalid}>
+  <Field invalid={invalid}>
     <FieldLabel for="booking-date">Booking date</FieldLabel>
     <Popover bind:open>
       <PopoverTrigger id="booking-date" aria-invalid={invalid}>…</PopoverTrigger>
@@ -131,7 +131,7 @@ A popover trigger is a button, so it submits nothing. Put a hidden input with th
     </Popover>
     <input type="hidden" name="booking" value={date ? format(date, 'yyyy-MM-dd') : ''} />
     {#if invalid}
-      <FieldError>Pick a booking date.</FieldError>
+      <FieldError match>Pick a booking date.</FieldError>
     {/if}
   </Field>
   <Button type="submit">Book</Button>

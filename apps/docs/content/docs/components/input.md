@@ -80,7 +80,7 @@ Use the `disabled` prop to disable the input. To style the disabled state, add t
 
 ## Invalid
 
-Use the `aria-invalid` prop to mark the input as invalid. To style the invalid state, add the `data-invalid` attribute to the `Field` component.
+Set `invalid` on the `Field` component to mark the input as invalid. The field marks the input with `aria-invalid` and itself with `data-invalid`.
 
 <ComponentPreview name="base/InputInvalidExample" class="*:data-[slot=preview]:*:max-w-xs" />
 
@@ -171,25 +171,27 @@ Spread a [remote form](/docs/forms/remote-forms) field onto `Input` with `as()` 
 <ComponentPreview name="forms/InputTypesRemoteExample" />
 
 ```svelte
-<form {...f} enctype="multipart/form-data">
-  <Field>
-    <FieldLabel for="birthday">Birthday</FieldLabel>
-    <Input id="birthday" {...f.fields.birthday.as('date')} required />
+<Form form={f} enctype="multipart/form-data">
+  <Field name="birthday">
+    <FieldLabel>Birthday</FieldLabel>
+    <Input {...f.fields.birthday.as('date')} required />
+    <FieldError />
   </Field>
-  <Field>
-    <FieldLabel for="accent">Accent color</FieldLabel>
-    <Input id="accent" {...f.fields.accent.as('color')} class="w-16 p-1" />
+  <Field name="accent">
+    <FieldLabel>Accent color</FieldLabel>
+    <Input {...f.fields.accent.as('color')} class="w-16 p-1" />
   </Field>
-  <Field>
-    <FieldLabel for="avatar">Avatar</FieldLabel>
-    <Input id="avatar" {...f.fields.avatar.as('file')} accept="image/*" />
+  <Field name="avatar">
+    <FieldLabel>Avatar</FieldLabel>
+    <Input {...f.fields.avatar.as('file')} accept="image/*" />
   </Field>
-  <Field>
-    <FieldLabel for="code">Verification code</FieldLabel>
-    <Input id="code" {...f.fields.code.as('text')} inputmode="numeric" autocomplete="one-time-code" maxlength={6} />
+  <Field name="code">
+    <FieldLabel>Verification code</FieldLabel>
+    <Input {...f.fields.code.as('text')} inputmode="numeric" autocomplete="one-time-code" maxlength={6} />
+    <FieldError />
   </Field>
   <Button type="submit">Save profile</Button>
-</form>
+</Form>
 ```
 
 ## RTL

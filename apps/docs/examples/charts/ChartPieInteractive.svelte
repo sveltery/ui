@@ -67,7 +67,7 @@
       <CardTitle>Pie Chart - Interactive</CardTitle>
       <CardDescription>January - June 2024</CardDescription>
     </div>
-    <Select value={activeMonth} onValueChange={(value) => value !== null && (activeMonth = value)}>
+    <Select bind:value={() => activeMonth, (value) => { if (value !== null && value !== undefined) activeMonth = value; }}>
       <SelectTrigger class="ml-auto h-7 w-[130px] rounded-lg pl-2.5" aria-label="Select a value">
         <SelectValue placeholder="Select month" />
       </SelectTrigger>

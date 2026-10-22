@@ -49,9 +49,8 @@
       <Field orientation="horizontal">
         <Checkbox
           id="notify-all"
-          checked={allChecked}
+          bind:checked={() => allChecked, handleSelectAll}
           indeterminate={someChecked}
-          onCheckedChange={(v) => handleSelectAll(!!v)}
         />
         <FieldContent>
           <FieldLabel for="notify-all">Select all</FieldLabel>

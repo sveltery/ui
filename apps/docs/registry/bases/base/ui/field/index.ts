@@ -7,6 +7,7 @@ export { default as FieldLegend } from './FieldLegend.svelte';
 export { default as FieldSeparator } from './FieldSeparator.svelte';
 export { default as FieldSet } from './FieldSet.svelte';
 export { default as FieldContent } from './FieldContent.svelte';
+export { default as FieldItem } from './FieldItem.svelte';
 export { default as FieldTitle } from './FieldTitle.svelte';
 export { fieldVariants } from './variants.js';
 export type { FieldVariants } from './variants.js';

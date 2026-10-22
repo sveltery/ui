@@ -115,7 +115,7 @@ Use the `disabled` prop on `RadioGroup` to disable all items.
 
 ## Invalid
 
-Use `aria-invalid` on `RadioGroupItem` and `data-invalid` on `Field` to show validation errors.
+Use `aria-invalid` on `RadioGroupItem` and `invalid` on `Field` to show validation errors.
 
 <ComponentPreview name="base/RadioGroupInvalidExample" />
 

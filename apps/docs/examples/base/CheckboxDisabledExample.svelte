@@ -4,7 +4,7 @@
 </script>
 
 <FieldGroup class="mx-auto w-56">
-  <Field orientation="horizontal" data-disabled>
+  <Field orientation="horizontal" disabled>
     <Checkbox id="toggle-checkbox-disabled" name="toggle-checkbox-disabled" disabled />
     <FieldLabel for="toggle-checkbox-disabled">Enable notifications</FieldLabel>
   </Field>

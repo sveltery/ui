@@ -149,10 +149,10 @@ A select with many items that scrolls.
 
 ## Invalid
 
-Add the `data-invalid` attribute to the `Field` component and the `aria-invalid` attribute to the `SelectTrigger` component to show an error state.
+Set `invalid` on the `Field` component and add the `aria-invalid` attribute to the `SelectTrigger` component to show an error state.
 
 ```svelte
-<Field data-invalid>
+<Field invalid>
   <FieldLabel>Fruit</FieldLabel>
   <Select {items}>
     <SelectTrigger aria-invalid>

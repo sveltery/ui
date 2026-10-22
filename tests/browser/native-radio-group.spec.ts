@@ -33,13 +33,15 @@ for (const style of styles) for (const dark of [false, true]) {
 
 test('the keyboard focus ring matches Radio Group', async ({ page }) => {
   await open(page, 'nova', false);
-  // Tabbing in from the element before gives each radio `:focus-visible`.
+  // Tabbing in from the element before gives each radio `:focus-visible`. Base's box takes the ring of the input inside it.
   const ring = async (id: string) => {
-    await page.getByTestId(id).focus();
+    const box = page.getByTestId(id);
+    const input = id.startsWith('base-') ? box.locator('input') : box;
+    await input.focus();
     await page.keyboard.press('Shift+Tab');
     await page.keyboard.press('Tab');
-    await expect(page.getByTestId(id)).toBeFocused();
-    return computed(page.getByTestId(id));
+    await expect(input).toBeFocused();
+    return computed(box);
   };
   const native = await ring('native-unchecked');
   expect(native['box-shadow']).not.toBe('none');
@@ -47,6 +49,7 @@ test('the keyboard focus ring matches Radio Group', async ({ page }) => {
 });
 
 // NativeRadio carries Radio Group's slots, so style rules keyed on them (sera's Label, every FieldSet's gap) apply to both.
+// RadioGroup renders a fieldset too, so the FieldSets are found by slot.
 const textProperties = ['text-transform', 'font-size', 'font-weight', 'letter-spacing'];
 const text = (locator: Locator) => locator.evaluate((el, names) => Object.fromEntries(names.map(name => [name, getComputedStyle(el).getPropertyValue(name)])), textProperties);
 for (const style of styles) {
@@ -55,7 +58,7 @@ for (const style of styles) {
     await expect(page.locator('main')).toHaveAttribute('data-hydrated', 'true');
     await page.evaluate(style => { document.body.className = `style-${style}`; }, style);
     expect(await text(page.locator('label[for=native-basic-default]'))).toEqual(await text(page.locator('label[for=base-basic-default]')));
-    const fieldset = page.locator('[data-example=fieldset] fieldset');
+    const fieldset = page.locator('[data-example=fieldset] [data-slot=field-set]');
     const gap = (index: number) => fieldset.nth(index).evaluate(el => getComputedStyle(el).rowGap);
     expect(await gap(1)).toBe(await gap(0));
   });

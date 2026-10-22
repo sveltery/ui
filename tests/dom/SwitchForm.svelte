@@ -7,7 +7,7 @@
   export function changeLog() { return changes; }
 </script>
 <form>
-  <Switch id="airplane" name="airplane" bind:checked={airplane} onCheckedChange={(next) => changes.push(next)} />
+  <Switch id="airplane" name="airplane" bind:checked={airplane} onchange={(event) => changes.push(event.currentTarget.checked)} />
   <label for="airplane">Airplane Mode</label>
   <Switch id="bluetooth" name="bluetooth" value="enabled" defaultChecked size="sm" class="extra" />
   <Switch id="wifi" name="wifi" disabled defaultChecked />

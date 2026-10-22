@@ -101,7 +101,7 @@
 {#snippet invalidExample(kind: string)}
   {#snippet body()}
     {#each channels as [value, label] (value)}
-      <Field orientation="horizontal" data-invalid>
+      <Field orientation="horizontal" invalid>
         {@render item(kind, 'channel', value, value === 'email', { 'aria-invalid': true })}
         <FieldLabel for="{kind}-channel-{value}" class="font-normal">{label}</FieldLabel>
       </Field>

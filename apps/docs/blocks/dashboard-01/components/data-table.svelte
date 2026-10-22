@@ -461,8 +461,7 @@
         <div class="hidden items-center gap-2 lg:flex">
           <Label for="rows-per-page" class="text-sm font-medium">Rows per page</Label>
           <Select
-            value={`${table.atoms.pagination.get().pageSize}`}
-            onValueChange={(value) => table.setPageSize(Number(value))}
+            bind:value={() => `${table.atoms.pagination.get().pageSize}`, (value) => table.setPageSize(Number(value))}
             items={[10, 20, 30, 40, 50].map((pageSize) => ({ label: `${pageSize}`, value: `${pageSize}` }))}
           >
             <SelectTrigger size="sm" class="w-20" id="rows-per-page">

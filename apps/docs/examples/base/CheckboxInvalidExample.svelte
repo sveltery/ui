@@ -4,8 +4,8 @@
 </script>
 
 <FieldGroup class="mx-auto w-56">
-  <Field orientation="horizontal" data-invalid>
-    <Checkbox id="terms-checkbox-invalid" name="terms-checkbox-invalid" aria-invalid />
+  <Field orientation="horizontal" invalid>
+    <Checkbox id="terms-checkbox-invalid" name="terms-checkbox-invalid" />
     <FieldLabel for="terms-checkbox-invalid">Accept terms and conditions</FieldLabel>
   </Field>
 </FieldGroup>

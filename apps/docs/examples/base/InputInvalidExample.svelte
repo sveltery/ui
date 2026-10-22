@@ -3,7 +3,7 @@
   import { Input } from '$registry/bases/base/ui/input';
 </script>
 
-<Field data-invalid>
+<Field invalid>
   <FieldLabel for="input-invalid">Invalid Input</FieldLabel>
   <Input id="input-invalid" placeholder="Error" aria-invalid />
   <FieldDescription>This field contains validation errors.</FieldDescription>

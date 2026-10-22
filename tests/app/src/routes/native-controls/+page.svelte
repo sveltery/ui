@@ -7,6 +7,7 @@
   import { Slider } from '$registry/bases/base/ui/slider';
   import { Switch } from '$registry/bases/base/ui/switch';
   // Each state once on the Base control and once on its native twin, so a test can compare them.
+  // A Base control is invalid through its Field, and a native twin through `aria-invalid`.
   const states = [
     { id: 'unchecked', checked: false },
     { id: 'checked', checked: true },
@@ -21,7 +22,7 @@
   <div class="grid grid-cols-[auto_repeat(6,4rem)] items-center gap-4">
     <span class="text-xs">Checkbox</span>
     {#each states as state (state.id)}
-      <Checkbox data-testid="base-checkbox-{state.id}" defaultChecked={state.checked} aria-invalid={state.invalid || undefined} disabled={state.disabled} />
+      <Field orientation="horizontal" invalid={state.invalid} class="contents"><Checkbox host={{ 'data-testid': `base-checkbox-${state.id}` }} defaultChecked={state.checked} disabled={state.disabled} /></Field>
     {/each}
     <span class="text-xs">NativeCheckbox</span>
     {#each states as state (state.id)}
@@ -30,7 +31,7 @@
     {#each sizes as size (size)}
       <span class="text-xs">Switch {size}</span>
       {#each states as state (state.id)}
-        <Switch {size} data-testid="base-switch-{size}-{state.id}" defaultChecked={state.checked} aria-invalid={state.invalid || undefined} disabled={state.disabled} />
+        <Field orientation="horizontal" invalid={state.invalid} class="contents"><Switch {size} host={{ 'data-testid': `base-switch-${size}-${state.id}` }} defaultChecked={state.checked} disabled={state.disabled} /></Field>
       {/each}
       <span class="text-xs">NativeSwitch {size}</span>
       {#each states as state (state.id)}
