@@ -26,7 +26,7 @@ node -e '
     const name = file === "sveltery-base.tgz" ? "@sveltery/base" : `@sveltery/${file.replace(/^sveltery-(.+)-\d+\.\d+\.\d+.*\.tgz$/, "$1")}`;
     tarballs[name] = `file:${consumer}/${file}`;
   }
-  const deps = { ...tarballs, "date-fns": docs.dependencies["date-fns"], "@date-fns/tz": require(`${root}/packages/day-picker/package.json`).devDependencies["@date-fns/tz"], svelte: pkg.devDependencies.svelte, typescript: pkg.devDependencies.typescript };
+  const deps = { ...tarballs, "date-fns": docs.dependencies["date-fns"], "@date-fns/tz": docs.dependencies["@date-fns/tz"], svelte: pkg.devDependencies.svelte, typescript: pkg.devDependencies.typescript };
   fs.writeFileSync(`${consumer}/package.json`, JSON.stringify({ name: "consumer", private: true, type: "module", packageManager: pkg.packageManager, dependencies: deps }));
   // Point any range on a packed package at its tarball too.
   const overrides = Object.entries(tarballs).map(([name, spec]) => `  "${name}": "${spec}"\n`).join("");

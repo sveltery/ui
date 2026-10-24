@@ -1,4 +1,4 @@
-import { useDefaultLayout } from '@sveltery/resizable';
+import { useDefaultLayout } from '@sveltery/base/resizable';
 
 export function savedLayout(options: Parameters<typeof useDefaultLayout>[0]) {
   let saved: ReturnType<typeof useDefaultLayout> | undefined;

@@ -5,7 +5,7 @@
 </script>
 
 <div class="space-y-2">
-  <InputOTP maxLength={6} bind:value>
+  <InputOTP maxlength={6} bind:value>
     <InputOTPGroup>
       <InputOTPSlot index={0} />
       <InputOTPSlot index={1} />

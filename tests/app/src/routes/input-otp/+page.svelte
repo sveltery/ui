@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { REGEXP_ONLY_DIGITS } from '@sveltery/input-otp';
+  import { REGEXP_ONLY_DIGITS } from '@sveltery/base/input-otp';
   import { Field, FieldLabel } from '$registry/bases/base/ui/field';
   import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '$registry/bases/base/ui/input-otp';
   let value = $state<string>();
@@ -9,7 +9,7 @@
 <form onsubmit={(event) => { event.preventDefault(); submitted = JSON.stringify(Object.fromEntries(new FormData(event.currentTarget))); }}>
   <Field>
     <FieldLabel for="code">Code</FieldLabel>
-    <InputOTP id="code" name="code" maxLength={6} pattern={REGEXP_ONLY_DIGITS} defaultValue="12" bind:value onComplete={(code) => (completed = [...completed, code])}>
+    <InputOTP id="code" name="code" maxlength={6} pattern={REGEXP_ONLY_DIGITS} defaultValue="12" bind:value onComplete={(code) => (completed = [...completed, code])}>
       <InputOTPGroup>
         <InputOTPSlot index={0} />
         <InputOTPSlot index={1} />
@@ -27,7 +27,7 @@
 </form>
 <Field>
   <FieldLabel for="disabled">Disabled</FieldLabel>
-  <InputOTP id="disabled" maxLength={4} disabled value="1234">
+  <InputOTP id="disabled" maxlength={4} disabled value="1234">
     <InputOTPGroup>
       <InputOTPSlot index={0} />
       <InputOTPSlot index={1} />

@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { HTMLButtonAttributes } from 'svelte/elements';
-  import { Button } from '@sveltery/svelte/message-scroller';
+  import { MessageScrollerButton } from '@sveltery/base/message-scroller';
   import { cn } from 'cn';
   import { Button as UIButton } from '../button/index.js';
   import { IconPlaceholder } from '../icons/index.js';
@@ -17,7 +17,7 @@
     {/if}
   </UIButton>
 {/snippet}
-<Button
+<MessageScrollerButton
   data-slot="message-scroller-button"
   data-direction={direction}
   data-variant={variant}

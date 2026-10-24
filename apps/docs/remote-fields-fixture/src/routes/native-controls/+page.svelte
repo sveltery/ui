@@ -30,7 +30,7 @@
       {#each fruits as fruit (fruit)}<NativeSelectOption value={fruit}>{fruit}</NativeSelectOption>{/each}
     </NativeSelect>
     {#each formats as format (format)}<label data-testid="format-{format}"><input class="sr-only" {...f.fields.format.as('checkbox', format)} />{format}</label>{/each}
-    <label>OTP<InputOTP {...f.fields.code.as('text')} maxLength={6} data-testid="code"><InputOTPGroup>{#each { length: 6 } as _, index (index)}<InputOTPSlot {index} />{/each}</InputOTPGroup></InputOTP></label>
+    <label>OTP<InputOTP {...f.fields.code.as('text')} maxlength={6} data-testid="code"><InputOTPGroup>{#each { length: 6 } as _, index (index)}<InputOTPSlot {index} />{/each}</InputOTPGroup></InputOTP></label>
     <label>Code<Input {...f.fields.code2.as('text')} inputmode="numeric" autocomplete="one-time-code" maxlength={6} data-testid="code2" /></label>
     <label>Avatar<Input {...f.fields.avatar.as('file')} data-testid="avatar" /></label>
     <label>Color<Input {...f.fields.color.as('color')} data-testid="color" /></label>

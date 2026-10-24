@@ -7,7 +7,7 @@ description: Accessible resizable panel groups and layouts with keyboard support
 
 ## About
 
-Resizable is built on `@sveltery/resizable`, a Svelte port of [react-resizable-panels](https://github.com/bvaughn/react-resizable-panels) 4.5.8 by Brian Vaughn under the MIT License. The package carries that library's framework-free code unchanged, including its layout algorithm and its document-level pointer and keyboard handling, and its `Group`, `Panel` and `Separator` components are Svelte rewrites of the React ones. It has no runtime dependencies. Where the React library takes a ref, such as `groupRef` or `panelRef`, you bind the prop instead.
+Resizable is built on [Resizable](https://base.sveltery.dev/extras/resizable) from `@sveltery/base/resizable`, a Svelte port of [react-resizable-panels](https://github.com/bvaughn/react-resizable-panels) 4.5.8 by Brian Vaughn under the MIT License. The port carries that library's framework-free code unchanged, including its layout algorithm and its document-level pointer and keyboard handling, and its `Group`, `Panel` and `Separator` components are Svelte rewrites of the React ones. It has no runtime dependencies. Where the React library takes a ref, such as `groupRef` or `panelRef`, you bind the prop instead.
 
 ## Installation
 
@@ -28,7 +28,7 @@ npx @sveltery/ui@latest add resizable
 ### Install the dependencies
 
 ```bash
-npm install @sveltery/resizable
+npm install @sveltery/base
 ```
 
 ### Copy the component
@@ -110,9 +110,9 @@ A layout maps each panel `id` to its percent of the group, so give the panels an
 
 ```svelte
 <script lang="ts">
-  import type { GroupImperativeHandle } from '@sveltery/resizable';
+  import type { ResizableGroupActions } from '@sveltery/base/resizable';
 
-  let group = $state<GroupImperativeHandle | null>(null);
+  let group = $state<ResizableGroupActions | null>(null);
 </script>
 
 <ResizablePanelGroup bind:groupRef={group}>
@@ -138,7 +138,7 @@ A layout maps each panel `id` to its percent of the group, so give the panels an
 
 ```svelte
 <script lang="ts">
-  import { useDefaultLayout } from '@sveltery/resizable';
+  import { useDefaultLayout } from '@sveltery/base/resizable';
 
   const { defaultLayout, onLayoutChanged } = useDefaultLayout({ id: 'editor' });
 </script>
@@ -168,9 +168,9 @@ Bind `panelRef` to collapse, expand or resize the panel from your own controls.
 
 ```svelte
 <script lang="ts">
-  import type { PanelImperativeHandle } from '@sveltery/resizable';
+  import type { ResizablePanelActions } from '@sveltery/base/resizable';
 
-  let sidebar = $state<PanelImperativeHandle | null>(null);
+  let sidebar = $state<ResizablePanelActions | null>(null);
 </script>
 
 <button onclick={() => sidebar?.collapse()}>Collapse</button>
@@ -212,7 +212,7 @@ A horizontal group follows the text direction. In a right-to-left page the first
 
 ## API Reference
 
-See the [react-resizable-panels](https://github.com/bvaughn/react-resizable-panels/tree/main/packages/react-resizable-panels) documentation. `@sveltery/resizable` is a Svelte port of it, and the tables below list the props and methods of the Svelte components.
+See the [react-resizable-panels](https://github.com/bvaughn/react-resizable-panels/tree/main/packages/react-resizable-panels) documentation. `@sveltery/base/resizable` is a Svelte port of it, and the tables below list the props and methods of the Svelte components.
 
 ### ResizablePanelGroup
 
@@ -222,8 +222,7 @@ See the [react-resizable-panels](https://github.com/bvaughn/react-resizable-pane
 | `defaultLayout` | `Record<string, number>` | | Percent of the group for each panel `id`, applied on the server and when the group mounts. It is ignored unless it names every panel |
 | `onLayoutChange` | `(layout) => void` | | Runs for every change, including each step of a drag |
 | `onLayoutChanged` | `(layout) => void` | | Runs once a change settles |
-| `groupRef` | `GroupImperativeHandle` | | Bindable. Has `getLayout()` and `setLayout(layout)` |
-| `elementRef` | `HTMLDivElement` | | Bindable. The group element |
+| `groupRef` | `ResizableGroupActions` | | Bindable. Has `getLayout()` and `setLayout(layout)` |
 | `disabled` | `boolean` | `false` | Turns off resizing for every handle |
 | `disableCursor` | `boolean` | `false` | Keeps the page cursor while a pointer hovers or drags a handle |
 | `resizeTargetMinimumSize` | `{ coarse: number, fine: number }` | `{ coarse: 20, fine: 10 }` | The smallest grab area of a handle in pixels, for touch and for mouse pointers |
@@ -242,8 +241,7 @@ See the [react-resizable-panels](https://github.com/bvaughn/react-resizable-pane
 | `collapsible` | `boolean` | `false` | Lets the panel collapse to `collapsedSize` |
 | `collapsedSize` | `number \| string` | `0%` | The size when collapsed |
 | `onResize` | `(size, id, previous) => void` | | Runs when the panel element resizes. A size is `{ asPercentage, inPixels }` |
-| `panelRef` | `PanelImperativeHandle` | | Bindable. Has the methods below |
-| `elementRef` | `HTMLDivElement` | | Bindable. The panel element |
+| `panelRef` | `ResizablePanelActions` | | Bindable. Has the methods below |
 | `class` | `string` | | Added to the element inside the panel that holds its content |
 | `style` | `string` | | Added to the element inside the panel that holds its content |
 
@@ -262,7 +260,6 @@ A bound `panelRef` has these methods.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `withHandle` | `boolean` | `false` | Shows a grip in the handle |
-| `elementRef` | `HTMLDivElement` | | Bindable. The handle element |
 | `id` | `string \| number` | generated | Set on the handle as `id` and `data-testid` |
 | `class` | `string` | | Added to the handle |
 

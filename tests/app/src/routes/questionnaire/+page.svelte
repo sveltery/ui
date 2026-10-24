@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/state';
-  import * as Questionnaire from '@sveltery/svelte/questionnaire';
-  import type { QuestionnaireItemDefinition, QuestionnaireItemStatus } from '@sveltery/svelte/questionnaire';
+  import { Questionnaire } from '@sveltery/base/questionnaire';
+  import type { QuestionnaireItemDefinition, QuestionnaireItemStatus } from '@sveltery/base/questionnaire';
 
   const scenario = $derived(page.url.searchParams.get('case'));
   let submissions = $state<string[]>([]);

@@ -2,7 +2,7 @@
   import { goto } from '$app/navigation';
   import { page } from '$app/state';
   import { Dialog } from '@sveltery/base/dialog';
-  import * as Command from '@sveltery/command';
+  import { Command, type CommandFilter } from '@sveltery/base/command';
   import type { NavSection } from '$lib/docs/types';
   import { FullTextSearch } from '$lib/search.svelte';
   import { site } from '$lib/site';
@@ -29,7 +29,7 @@
     });
   });
 
-  const filter: Command.CommandFilter = (value, needle, keywords) => ((value + ' ' + (keywords?.join(' ') ?? '')).toLowerCase().includes(needle.toLowerCase()) ? 1 : 0);
+  const filter: CommandFilter = (value, needle, keywords) => ((value + ' ' + (keywords?.join(' ') ?? '')).toLowerCase().includes(needle.toLowerCase()) ? 1 : 0);
 
   function go(href: string) {
     open = false;

@@ -6,7 +6,7 @@
   import { Sidebar, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarProvider } from '$registry/bases/base/ui/sidebar';
   import { Tabs, TabsList, TabsTrigger } from '$registry/bases/base/ui/tabs';
   import { ToggleGroup, ToggleGroupItem } from '$registry/bases/base/ui/toggle-group';
-  import type { PanelImperativeHandle } from '@sveltery/resizable';
+  import type { ResizablePanelActions } from '@sveltery/base/resizable';
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
   import type { Block } from '#blocks/registry';
@@ -20,7 +20,7 @@
   let selectedFile = $state<string>();
   let size = $state(['100%']);
   let iframeKey = $state(0);
-  let panel = $state<PanelImperativeHandle | null>();
+  let panel = $state<ResizablePanelActions | null>();
   let source = $state<Promise<BlockFiles>>();
   const height = $derived(block.iframeHeight ?? '930px');
 

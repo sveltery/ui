@@ -7,7 +7,7 @@ description: Accessible one-time password component with copy-paste functionalit
 
 ## About
 
-Input OTP is built on `@sveltery/input-otp`, a Svelte port of [input-otp](https://github.com/guilhermerodz/input-otp) by Guilherme Rodz. The port is released under the MIT License and has no runtime dependencies.
+Input OTP is built on [InputOTP](https://base.sveltery.dev/extras/input-otp) from `@sveltery/base/input-otp`, a Svelte port of [input-otp](https://github.com/guilhermerodz/input-otp) by Guilherme Rodz. The port is released under the MIT License and has no runtime dependencies.
 
 ## Installation
 
@@ -28,7 +28,7 @@ npx @sveltery/ui@latest add input-otp
 ### Install the dependencies
 
 ```bash
-npm install @sveltery/input-otp
+npm install @sveltery/base
 ```
 
 ### Copy the component
@@ -56,7 +56,7 @@ The component folders import each other with relative paths, so keep them side b
 ```
 
 ```svelte
-<InputOTP maxLength={6}>
+<InputOTP maxlength={6}>
   <InputOTPGroup>
     <InputOTPSlot index={0} />
     <InputOTPSlot index={1} />
@@ -96,14 +96,14 @@ InputOTP
 
 ## Pattern
 
-Use the `pattern` prop to define a custom pattern for the OTP input. `@sveltery/input-otp` exports `REGEXP_ONLY_DIGITS`, `REGEXP_ONLY_CHARS` and `REGEXP_ONLY_DIGITS_AND_CHARS`. Input that doesn't match is dropped.
+Use the `pattern` prop to define a custom pattern for the OTP input. `@sveltery/base/input-otp` exports `REGEXP_ONLY_DIGITS`, `REGEXP_ONLY_CHARS` and `REGEXP_ONLY_DIGITS_AND_CHARS`. Input that doesn't match is dropped.
 
 ```svelte
 <script lang="ts">
-  import { REGEXP_ONLY_DIGITS_AND_CHARS } from '@sveltery/input-otp';
+  import { REGEXP_ONLY_DIGITS_AND_CHARS } from '@sveltery/base/input-otp';
 </script>
 
-<InputOTP maxLength={6} pattern={REGEXP_ONLY_DIGITS_AND_CHARS}>
+<InputOTP maxlength={6} pattern={REGEXP_ONLY_DIGITS_AND_CHARS}>
   …
 </InputOTP>
 ```
@@ -155,7 +155,7 @@ Give `InputOTP` a `name` and it submits its value with its form. To label it, pu
 ```svelte
 <Field>
   <FieldLabel for="code">Verification code</FieldLabel>
-  <InputOTP id="code" name="code" maxLength={6} required>
+  <InputOTP id="code" name="code" maxlength={6} required>
     …
   </InputOTP>
 </Field>
@@ -177,4 +177,4 @@ Wrap the field in a [DirectionProvider](/docs/components/direction) and set `dir
 
 See the [input-otp](https://input-otp.rodz.dev) documentation for more information.
 
-`InputOTP` takes the props of `OTPInput` from `@sveltery/input-otp`. `class` goes to the input, and `containerClass` to the element that holds the slots. Other input attributes, such as `id`, `name`, `disabled` and `required`, go to the input.
+`InputOTP` takes the props of `InputOTP.Root` from `@sveltery/base/input-otp`. `class` goes to the input, and `containerClass` to the element that holds the slots. Other input attributes, such as `id`, `name`, `disabled` and `required`, go to the input.

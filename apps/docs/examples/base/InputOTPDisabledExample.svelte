@@ -2,7 +2,7 @@
   import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '$registry/bases/base/ui/input-otp';
 </script>
 
-<InputOTP id="disabled" maxLength={6} disabled value="123456">
+<InputOTP id="disabled" maxlength={6} disabled value="123456">
   <InputOTPGroup>
     <InputOTPSlot index={0} />
     <InputOTPSlot index={1} />

@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { ComponentProps } from 'svelte';
-  import { Group } from '@sveltery/command';
+  import { Command } from '@sveltery/base/command';
   import { cn } from 'cn';
-  let { class: classProp, ...props }: ComponentProps<typeof Group> = $props();
+  let { class: classProp, ...props }: ComponentProps<typeof Command.Group> = $props();
 </script>
-<Group data-slot="command-group" class={cn('cn-command-group', classProp)} {...props} />
+<Command.Group data-slot="command-group" class={cn('cn-command-group', classProp)} {...props} />

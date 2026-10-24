@@ -12,8 +12,6 @@ export default [
   { files: ['**/*.svelte', '**/*.svelte.ts'], languageOptions: { parserOptions: { parser: ts.parser } }, rules: { 'svelte/no-at-const-tags': 'error' } },
   // The docs site serves from the origin root and builds its links from content data, so it does not need resolve().
   // Its {@html} only renders Shiki output built from repository files and Pagefind's escaped excerpts.
-  // scripts/sync-upstream.mjs copies these from react-resizable-panels unchanged, so they keep upstream's lint rules.
-  { files: ['packages/resizable/src/lib/{constants,types}.ts', 'packages/resizable/src/lib/{global,utils,vendor}/**', 'packages/resizable/src/lib/components/group/{sortByElementOffset*,auto-save/**}'], rules: { 'no-useless-assignment': 'off', '@typescript-eslint/no-unused-vars': 'off' } },
   // packages/charts/scripts/sync-upstream.mjs copies these from recharts, and src/react.ts mirrors @types/react 18, so they keep upstream's lint rules.
   { files: [...rechartsVendored, 'packages/charts/types.d.ts', 'packages/charts/src/react.ts'], linterOptions: { reportUnusedDisableDirectives: 'off' }, rules: { 'no-useless-assignment': 'off', '@typescript-eslint/no-unused-vars': 'off', '@typescript-eslint/no-explicit-any': 'off' } },
   // Its inline comment disables a rule from eslint-plugin-import, which this repo does not use.

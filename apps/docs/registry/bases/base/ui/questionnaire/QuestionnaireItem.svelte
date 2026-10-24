@@ -1,5 +1,5 @@
 <script lang="ts">
-  import * as Primitive from '@sveltery/svelte/questionnaire';
+  import { Questionnaire as Primitive } from '@sveltery/base/questionnaire';
   import { cn } from 'cn';
   import type { QuestionnaireItemProps } from './types.js';
   let { class: classProp, ...props }: QuestionnaireItemProps = $props();

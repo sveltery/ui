@@ -1,4 +1,4 @@
-export { Provider as MessageScrollerProvider, useMessageScroller } from '@sveltery/svelte/message-scroller';
+export { MessageScrollerProvider, getMessageScroller as useMessageScroller } from '@sveltery/base/message-scroller';
 export { default as MessageScroller } from './MessageScroller.svelte';
 export { default as MessageScrollerViewport } from './MessageScrollerViewport.svelte';
 export { default as MessageScrollerContent } from './MessageScrollerContent.svelte';

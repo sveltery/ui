@@ -22,7 +22,7 @@
           Resend Code
         </Button>
       </div>
-      <InputOTP maxLength={6} id="otp-verification" required>
+      <InputOTP maxlength={6} id="otp-verification" required>
         <InputOTPGroup class="*:data-[slot=input-otp-slot]:h-12 *:data-[slot=input-otp-slot]:w-11 *:data-[slot=input-otp-slot]:text-xl max-sm:*:data-[slot=input-otp-slot]:w-9">
           <InputOTPSlot index={0} />
           <InputOTPSlot index={1} />

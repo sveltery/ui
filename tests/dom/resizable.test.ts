@@ -1,6 +1,6 @@
 import { afterAll, afterEach, beforeAll, expect, it } from 'vitest';
 import { createRawSnippet, flushSync, mount, unmount } from 'svelte';
-import type { GroupImperativeHandle, PanelImperativeHandle } from '@sveltery/resizable';
+import type { ResizableGroupActions, ResizablePanelActions } from '@sveltery/base/resizable';
 import ResizableFixture from './ResizableFixture.svelte';
 import ResizableHandleChildren from './ResizableHandleChildren.svelte';
 import { savedLayout } from './savedLayout.svelte.js';
@@ -33,7 +33,7 @@ afterAll(() => {
   delete (globalThis as Partial<typeof globalThis>).ResizeObserver;
 });
 
-type Fixture = { groupApi(): GroupImperativeHandle; panelApi(): PanelImperativeHandle; changeLog(): string[] };
+type Fixture = { groupApi(): ResizableGroupActions; panelApi(): ResizablePanelActions; changeLog(): string[] };
 
 function setup() {
   instance = mount(ResizableFixture, { target: document.body });

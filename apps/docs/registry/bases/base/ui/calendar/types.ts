@@ -1,4 +1,4 @@
-import type { CalendarDay, DayPickerProps, Modifiers } from '@sveltery/day-picker';
+import type { CalendarDay, DayPickerProps, Modifiers } from '@sveltery/base/day-picker';
 import type { Locale } from 'date-fns';
 import type { ButtonProps, ButtonVariants } from '../button/index.js';
 

@@ -197,9 +197,21 @@ The served [`base-nova/calendar.json`](https://ui.shadcn.com/r/styles/base-nova/
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 
+## Headless parts from Sveltery Base
+
+### Ports of shadcn/ui's React dependencies live in Sveltery Base
+
+**Upstream:** [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/command.tsx), [Calendar](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/calendar.tsx), [Input OTP](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/input-otp.tsx), [Resizable](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/resizable.tsx), Message Scroller and Questionnaire import cmdk, react-day-picker, input-otp, react-resizable-panels and `@shadcn/react`.
+
+**Sveltery UI:** These components import the Svelte ports of those libraries from Sveltery Base: `@sveltery/base/command`, `@sveltery/base/day-picker`, `@sveltery/base/input-otp`, `@sveltery/base/resizable`, `@sveltery/base/message-scroller` and `@sveltery/base/questionnaire`. A Calendar install also adds `@date-fns/tz`, which Base declares as an optional peer.
+
+**Why:** Sveltery Base is the one headless layer under Sveltery UI, so every component installs one package for its behavior.
+
+**Decided:** Hugo Hsi, 2026-10-24
+
 ## Command menu
 
-shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/command.tsx) is built on [cmdk](https://github.com/pacocoursey/cmdk) 1.1.1, and Sveltery UI's [Command](/docs/components/command) on its port, `@sveltery/command`. The links below point at cmdk commit [`dd2250e`](https://github.com/pacocoursey/cmdk/tree/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3), which is 1.1.1 with README changes. The port renders the same elements and attributes as cmdk, except where an entry here says otherwise.
+shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/registry/bases/base/ui/command.tsx) is built on [cmdk](https://github.com/pacocoursey/cmdk) 1.1.1, and Sveltery UI's [Command](/docs/components/command) on its port in Sveltery Base, `@sveltery/base/command`. The links below point at cmdk commit [`dd2250e`](https://github.com/pacocoursey/cmdk/tree/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3), which is 1.1.1 with README changes. The port renders the same elements and attributes as cmdk, except where an entry here says otherwise.
 
 ### `aria-activedescendant` always names the selected item
 
@@ -387,7 +399,7 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Upstream:** The [Command page](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5bb908563527b7efd2f27/apps/v4/content/docs/components/base/command.mdx#L151-L153) has no section on filtering or on `CommandDialog`, and its API Reference sends readers to the [cmdk](https://github.com/dip/cmdk) README.
 
-**Sveltery UI:** The [Command](/docs/components/command) page adds a Filtering and ranking section (`keywords`, `filter`, `shouldFilter`) after Composition, and a Dialog section with a ⌘J example after Scrollable. Its API Reference links the `@sveltery/command` README and summarizes the props in tables.
+**Sveltery UI:** The [Command](/docs/components/command) page adds a Filtering and ranking section (`keywords`, `filter`, `shouldFilter`) after Composition, and a Dialog section with a ⌘J example after Scrollable. Its API Reference links the Sveltery Base Command page and summarizes the props in tables.
 
 **Why:** The cmdk README documents the React API, which the Svelte port does not share in every detail, so the page covers what readers would otherwise have looked up there.
 
@@ -479,7 +491,7 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Sveltery UI:** The [Calendar](/docs/components/calendar) page keeps the section and says the Persian calendar is not available. It has no preview.
 
-**Why:** `@sveltery/day-picker` ports only the Gregorian calendar, so there is nothing to swap in. A Gregorian calendar with a Persian locale would look like the Persian calendar but show different dates.
+**Why:** `@sveltery/base/day-picker` ports only the Gregorian calendar, so there is nothing to swap in. A Gregorian calendar with a Persian locale would look like the Persian calendar but show different dates.
 
 **Decided:** Pending Hugo Hsi's sign-off, 2026-10-17
 
@@ -589,7 +601,7 @@ shadcn/ui's [Command](https://github.com/shadcn-ui/ui/blob/d2fba50ee5b9113008b5b
 
 **Sveltery UI:** The [Resizable](/docs/components/resizable) page ends at its API Reference.
 
-**Why:** `@sveltery/resizable` never had the v3 API, so the migration steps describe nothing a Sveltery user has.
+**Why:** `@sveltery/base/resizable` never had the v3 API, so the migration steps describe nothing a Sveltery user has.
 
 **Decided:** Under Hugo Hsi's standing rule, 2026-10-17
 

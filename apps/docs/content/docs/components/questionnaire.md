@@ -24,7 +24,7 @@ npx @sveltery/ui@latest add questionnaire
 ### Install the dependencies
 
 ```bash
-npm install @sveltery/svelte @sveltery/base
+npm install @sveltery/base
 ```
 
 ### Copy the component
@@ -355,7 +355,7 @@ When the design has no visible label, use `aria-label`:
 
 ## Unstyled
 
-The behavior in `Questionnaire` comes from `@sveltery/svelte/questionnaire`. To use it directly with your own markup and styles, import the parts from that module. The styled components on this page add the classes and the Button props.
+The behavior in `Questionnaire` comes from [Questionnaire](https://base.sveltery.dev/extras/questionnaire) in `@sveltery/base/questionnaire`. To use it directly with your own markup and styles, import `Questionnaire` from that module and use its parts, such as `Questionnaire.Root`. The styled components on this page add the classes and the Button props.
 
 ## API Reference
 

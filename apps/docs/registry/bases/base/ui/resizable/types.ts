@@ -1,6 +1,5 @@
-import type { GroupProps, PanelProps, SeparatorProps } from '@sveltery/resizable';
+import type { ResizableGroupActions, ResizableGroupProps, ResizablePanelActions, ResizablePanelProps as PanelProps, ResizableSeparatorProps } from '@sveltery/base/resizable';
 
-export type ResizablePanelGroupProps = GroupProps;
-export type ResizablePanelProps = PanelProps;
-export type ResizableHandleProps = Omit<SeparatorProps, 'children'> & { withHandle?: boolean };
-export type { GroupImperativeHandle, Layout, Orientation, PanelImperativeHandle, PanelSize } from '@sveltery/resizable';
+export type ResizablePanelGroupProps = ResizableGroupProps & { groupRef?: ResizableGroupActions | null };
+export type ResizablePanelProps = PanelProps & { panelRef?: ResizablePanelActions | null };
+export type ResizableHandleProps = Omit<ResizableSeparatorProps, 'children'> & { withHandle?: boolean };

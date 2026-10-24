@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { ComponentProps } from 'svelte';
-  import { Empty } from '@sveltery/command';
+  import { Command } from '@sveltery/base/command';
   import { cn } from 'cn';
-  let { class: classProp, ...props }: ComponentProps<typeof Empty> = $props();
+  let { class: classProp, ...props }: ComponentProps<typeof Command.Empty> = $props();
 </script>
-<Empty data-slot="command-empty" class={cn('cn-command-empty', classProp)} {...props} />
+<Command.Empty data-slot="command-empty" class={cn('cn-command-empty', classProp)} {...props} />

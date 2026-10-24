@@ -1,9 +1,9 @@
 <script lang="ts">
-  import type { Layout } from '@sveltery/resizable';
+  import type { ResizableLayout } from '@sveltery/base/resizable';
   import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
   import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '$registry/bases/base/ui/resizable';
 
-  let layout = $state<Layout>({});
+  let layout = $state<ResizableLayout>({});
 </script>
 
 {#snippet ResizableHorizontal()}
