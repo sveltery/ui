@@ -4,7 +4,7 @@
   let value = $state('000000');
 </script>
 
-<InputOTP maxLength={6} bind:value>
+<InputOTP maxlength={6} bind:value>
   <InputOTPGroup>
     <InputOTPSlot index={0} aria-invalid />
     <InputOTPSlot index={1} aria-invalid />

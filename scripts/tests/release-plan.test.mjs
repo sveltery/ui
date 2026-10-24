@@ -7,17 +7,17 @@ const pkg = (dir, version, published, rest = {}) => ({ dir, name: `@sveltery/${d
 const onNpm = ['0.0.0-stage', '0.1.0'];
 
 test('a tag publishes only the packages whose version is new, and skips the rest', () => {
-  const plan = planRelease('0.1.1', [pkg('cli', '0.1.1', onNpm), pkg('command', '0.1.0', onNpm), pkg('charts', '0.1.0', undefined), pkg('docs', '0.0.0', [], { private: true })]);
+  const plan = planRelease('0.1.1', [pkg('cli', '0.1.1', onNpm), pkg('example', '0.1.0', onNpm), pkg('charts', '0.1.0', undefined), pkg('docs', '0.0.0', [], { private: true })]);
   assert.deepEqual(plan.publish, ['cli']);
   assert.equal(plan.error, undefined);
-  assert.deepEqual(plan.notices, ['@sveltery/command@0.1.0 is already on npm.', '@sveltery/docs is private, not published.']);
+  assert.deepEqual(plan.notices, ['@sveltery/example@0.1.0 is already on npm.', '@sveltery/docs is private, not published.']);
   assert.match(plan.warnings.join('\n'), /^@sveltery\/charts is not on npm.*npm publish --access public/);
 });
 
 test('every package the tag would publish must be at its version', () => {
-  const plan = planRelease('0.1.1', [pkg('cli', '0.1.1', onNpm), pkg('command', '0.1.2', onNpm)]);
+  const plan = planRelease('0.1.1', [pkg('cli', '0.1.1', onNpm), pkg('example', '0.1.2', onNpm)]);
   assert.deepEqual(plan.publish, []);
-  assert.equal(plan.error, 'Tag v0.1.1 does not match the unpublished version of every package: @sveltery/command is at 0.1.2.');
+  assert.equal(plan.error, 'Tag v0.1.1 does not match the unpublished version of every package: @sveltery/example is at 0.1.2.');
 });
 
 test('a tag that matches no unpublished version fails', () => {

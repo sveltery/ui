@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { defaultClassNames } from '@sveltery/day-picker';
+  import { defaultClassNames } from '@sveltery/base/day-picker';
   import { cn } from 'cn';
   import { Button } from '../button/index.js';
   import type { CalendarDayButtonProps } from './types.js';

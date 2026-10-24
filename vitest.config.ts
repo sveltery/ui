@@ -5,12 +5,8 @@ export default defineConfig({
   resolve: {
     alias: [
       { find: /^\$ui\//, replacement: new URL('./apps/docs/registry/bases/base/ui/', import.meta.url).pathname },
-      { find: /^@sveltery\/command$/, replacement: new URL('./packages/command/src/lib/index.ts', import.meta.url).pathname },
-      { find: /^@sveltery\/svelte\/message-scroller$/, replacement: new URL('./packages/svelte/src/message-scroller/index.ts', import.meta.url).pathname },
-      { find: /^@sveltery\/svelte\/questionnaire$/, replacement: new URL('./packages/svelte/src/questionnaire/index.ts', import.meta.url).pathname },
-      { find: /^@sveltery\/resizable$/, replacement: new URL('./packages/resizable/src/lib/index.ts', import.meta.url).pathname },
     ],
     conditions: ['browser'],
   },
-  test: { projects: [{ extends: true, test: { environment: 'jsdom', include: ['tests/dom/*.test.ts', 'packages/day-picker/src/**/*.test.ts', 'apps/docs/registry/*.test.ts', 'apps/docs/markdown/*.test.ts', 'apps/docs/src/routes/init/*.test.ts', 'packages/cli/test/**/*.test.ts'] } }, 'packages/resizable', 'packages/charts'] },
+  test: { projects: [{ extends: true, test: { environment: 'jsdom', include: ['tests/dom/*.test.ts', 'apps/docs/registry/*.test.ts', 'apps/docs/markdown/*.test.ts', 'apps/docs/src/routes/init/*.test.ts', 'packages/cli/test/**/*.test.ts'] } }, 'packages/charts'] },
 });

@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'svelte';
 import type { HTMLAttributes } from 'svelte/elements';
-import type * as Primitive from '@sveltery/svelte/questionnaire';
+import type { Questionnaire as Primitive } from '@sveltery/base/questionnaire';
 import type { ButtonVariants } from '../button/index.js';
 
 type NavigationProps = Pick<ButtonVariants, 'size' | 'variant'>;
@@ -26,4 +26,4 @@ export type {
   QuestionnaireItemDefinition,
   QuestionnaireItemStatus,
   QuestionnaireShortcutMode,
-} from '@sveltery/svelte/questionnaire';
+} from '@sveltery/base/questionnaire';

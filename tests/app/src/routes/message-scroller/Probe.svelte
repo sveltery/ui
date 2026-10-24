@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { useMessageScroller } from '@sveltery/svelte/message-scroller';
+  import { getMessageScroller } from '@sveltery/base/message-scroller';
 
   let { jumpTo, visibility }: { jumpTo?: string; visibility: boolean } = $props();
-  const scroller = useMessageScroller();
+  const scroller = getMessageScroller();
 </script>
 
 {#if jumpTo}

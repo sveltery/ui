@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { ComponentProps } from 'svelte';
-  import { Separator } from '@sveltery/command';
+  import { Command } from '@sveltery/base/command';
   import { cn } from 'cn';
-  let { class: classProp, ...props }: ComponentProps<typeof Separator> = $props();
+  let { class: classProp, ...props }: ComponentProps<typeof Command.Separator> = $props();
 </script>
-<Separator data-slot="command-separator" class={cn('cn-command-separator', classProp)} {...props} />
+<Command.Separator data-slot="command-separator" class={cn('cn-command-separator', classProp)} {...props} />

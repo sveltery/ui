@@ -16,7 +16,7 @@
 <div class="mx-auto flex w-full max-w-xs flex-col gap-4">
   <Field dir={t.dir}>
     <FieldLabel for="input-otp-rtl">{t.verificationCode}</FieldLabel>
-    <InputOTP maxLength={6} defaultValue="123456" dir={t.dir} id="input-otp-rtl">
+    <InputOTP maxlength={6} defaultValue="123456" dir={t.dir} id="input-otp-rtl">
       <InputOTPGroup>
         <InputOTPSlot index={0} />
         <InputOTPSlot index={1} />

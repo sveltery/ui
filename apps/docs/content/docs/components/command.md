@@ -7,7 +7,7 @@ description: Command menu for search and quick actions.
 
 ## About
 
-Command is built on `@sveltery/command`, a Svelte port of [cmdk](https://github.com/pacocoursey/cmdk) by Paco Coursey. The port is released under the MIT License and has no runtime dependencies.
+Command is built on [Command](https://base.sveltery.dev/extras/command) from `@sveltery/base/command`, a Svelte port of [cmdk](https://github.com/pacocoursey/cmdk) by Paco Coursey. The port is released under the MIT License and has no runtime dependencies.
 
 ## Installation
 
@@ -28,7 +28,7 @@ npx @sveltery/ui@latest add command
 ### Install the dependencies
 
 ```bash
-npm install @sveltery/command @sveltery/base
+npm install @sveltery/base
 ```
 
 ### Copy the component
@@ -216,7 +216,7 @@ Wrap the menu in a [DirectionProvider](/docs/components/direction) and set `dir`
 
 ## API Reference
 
-The [`@sveltery/command` README](https://github.com/sveltery/ui/tree/main/packages/command) documents the parts, the props and the keyboard behavior in full. The tables below summarize the props.
+The [Sveltery Base Command page](https://base.sveltery.dev/extras/command) documents the parts, the props and the keyboard behavior in full. The tables below summarize the props.
 
 ### Command
 

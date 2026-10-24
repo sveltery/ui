@@ -38,18 +38,11 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the repository layout and checks, and
 
 Sveltery UI exists because of the work of these projects and their contributors.
 
-- [shadcn/ui](https://github.com/shadcn-ui/ui) by [shadcn](https://github.com/shadcn) and the [shadcn/ui contributors](https://github.com/shadcn-ui/ui/graphs/contributors). Its component design, class strings, styles, examples, CLI behavior and docs structure are the source of this port. The `@sveltery/svelte` message scroller and questionnaire also port shadcn/ui's React packages.
-- [Base UI](https://github.com/mui/base-ui) by [MUI](https://mui.com) and the Base UI contributors. It is the headless layer underneath, through Sveltery Base.
+- [shadcn/ui](https://github.com/shadcn-ui/ui) by [shadcn](https://github.com/shadcn) and the [shadcn/ui contributors](https://github.com/shadcn-ui/ui/graphs/contributors). Its component design, class strings, styles, examples, CLI behavior and docs structure are the source of this port.
+- [Base UI](https://github.com/mui/base-ui) by [MUI](https://mui.com) and the Base UI contributors. It is the headless layer underneath, through [Sveltery Base](https://github.com/sveltery/base).
+- [Sveltery Base](https://github.com/sveltery/base) also holds the headless ports behind Command ([cmdk](https://github.com/pacocoursey/cmdk)), Calendar ([React DayPicker](https://github.com/gpbl/react-day-picker)), Input OTP ([input-otp](https://github.com/guilhermerodz/input-otp)), Resizable ([react-resizable-panels](https://github.com/bvaughn/react-resizable-panels)), and Message Scroller and Questionnaire ([`@shadcn/react`](https://github.com/shadcn-ui/ui/tree/main/packages/react)). Its `THIRD_PARTY_NOTICES.md` credits their authors.
 
-The helper packages in `packages/` port these libraries:
-
-| Package | Ports |
-| --- | --- |
-| `@sveltery/charts` | [Recharts](https://github.com/recharts/recharts) |
-| `@sveltery/command` | [cmdk](https://github.com/pacocoursey/cmdk) by Paco Coursey |
-| `@sveltery/day-picker` | [React DayPicker](https://github.com/gpbl/react-day-picker) by Giampaolo Bellavite and contributors |
-| `@sveltery/input-otp` | [input-otp](https://github.com/guilhermerodz/input-otp) by Guilherme Rodz |
-| `@sveltery/resizable` | [react-resizable-panels](https://github.com/bvaughn/react-resizable-panels) by Brian Vaughn, including its fork of [stacking-order](https://github.com/Rich-Harris/stacking-order) by Rich Harris |
+`@sveltery/charts` in `packages/` ports [Recharts](https://github.com/recharts/recharts).
 
 The registry's generated icons come from [Lucide](https://lucide.dev), [Tabler Icons](https://tabler.io/icons), [Phosphor Icons](https://phosphoricons.com), [Hugeicons](https://hugeicons.com) and [Remix Icon](https://remixicon.com).
 

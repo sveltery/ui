@@ -21,6 +21,9 @@ export type ItemPlan = {
   registryDependencies: string[];
 };
 
+/** Optional peers of a Base subpath that it imports at runtime, so an item that imports the subpath must install them. */
+const OPTIONAL_PEERS: Record<string, string[]> = { '@sveltery/base/day-picker': ['@date-fns/tz', 'date-fns'] };
+
 const NPM_NAME = /^(@[a-z0-9~-][a-z0-9._~-]*\/)?[a-z0-9~-][a-z0-9._~-]*$/;
 const PLAIN_VERSION = /^[\^~]?(\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)$/;
 
@@ -85,6 +88,7 @@ export function planItems(sources: Record<string, string>, manifest: UiManifest,
         } else if (!specifier.startsWith('.')) {
           const pkg = packageOf(specifier, file.path);
           if (pkg) packages.add(pkg);
+          for (const peer of OPTIONAL_PEERS[specifier] ?? []) packages.add(peer);
         }
       }
     }

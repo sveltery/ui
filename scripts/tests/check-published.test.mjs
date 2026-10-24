@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import { test } from 'node:test';
 import { changedFiles, publishedProblem } from '../check-published.mjs';
 
-const pkg = (rest) => ({ name: '@sveltery/resizable', version: '0.1.0', published: ['0.1.0'], held: undefined, changed: [], ...rest });
+const pkg = (rest) => ({ name: '@sveltery/charts', version: '0.1.0', published: ['0.1.0'], held: undefined, changed: [], ...rest });
 
 test('a package that matches npm, a new version and a package npm lacks all pass', () => {
   assert.equal(publishedProblem(pkg({})), undefined);
@@ -14,14 +14,14 @@ test('a package that matches npm, a new version and a package npm lacks all pass
 });
 
 test('a change without a bump fails and names the files', () => {
-  const drift = /^@sveltery\/resizable differs from @sveltery\/resizable@0\.1\.0 on npm in dist\/Panel\.svelte, README\.md\. Bump its version/;
+  const drift = /^@sveltery\/charts differs from @sveltery\/charts@0\.1\.0 on npm in dist\/Panel\.svelte, README\.md\. Bump its version/;
   assert.match(publishedProblem(pkg({ changed: ['dist/Panel.svelte', 'README.md'] })), drift);
   assert.match(publishedProblem(pkg({ changed: ['dist/Panel.svelte', 'README.md'], held: '0.1.0' })), drift);
 });
 
 test('a hold fails once the new version is published, or when npm lacks the held version', () => {
-  assert.match(publishedProblem(pkg({ version: '0.2.0', published: ['0.1.0', '0.2.0'], held: '0.1.0' })), /^@sveltery\/resizable@0\.2\.0 is on npm\. Remove its entry/);
-  assert.match(publishedProblem(pkg({ version: '0.2.0', changed: undefined, held: '0.0.9' })), /holds @sveltery\/resizable at 0\.0\.9, which npm does not have/);
+  assert.match(publishedProblem(pkg({ version: '0.2.0', published: ['0.1.0', '0.2.0'], held: '0.1.0' })), /^@sveltery\/charts@0\.2\.0 is on npm\. Remove its entry/);
+  assert.match(publishedProblem(pkg({ version: '0.2.0', changed: undefined, held: '0.0.9' })), /holds @sveltery\/charts at 0\.0\.9, which npm does not have/);
 });
 
 test('changedFiles finds edited, added and removed files', () => {

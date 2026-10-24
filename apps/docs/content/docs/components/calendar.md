@@ -24,7 +24,7 @@ npx @sveltery/ui@latest add calendar
 ### Install the dependencies
 
 ```bash
-npm install date-fns @date-fns/tz @sveltery/base @sveltery/day-picker
+npm install date-fns @date-fns/tz @sveltery/base
 ```
 
 ### Add the `Button` component to your project
@@ -65,7 +65,7 @@ See the [React DayPicker](https://react-day-picker.js.org) documentation for mor
 
 ## About
 
-The `Calendar` component is built on `@sveltery/day-picker`, a Svelte port of [React DayPicker](https://daypicker.dev) v9.8.1, the version shadcn/ui uses. It takes the same props, with three Svelte changes:
+The `Calendar` component is built on [DayPicker](https://base.sveltery.dev/extras/day-picker) from `@sveltery/base/day-picker`, a Svelte port of [React DayPicker](https://daypicker.dev) v9.8.1, the version shadcn/ui uses. It takes the same props, with three Svelte changes:
 
 - `selected` and `month` are bindable, so there is no controlled `selected` plus `onSelect` pair to keep in sync.
 - The `components` prop becomes snippet props: `dayButton`, `chevron`, `weekNumber`, `root` and `footer`. Each snippet gets the attributes to spread on its element, and `dayButton` and `weekNumber` also get the formatted `text`.
@@ -79,7 +79,7 @@ You can use the `<Calendar>` component to build a date picker. See the [Date Pic
 
 ## Persian / Hijri / Jalali Calendar
 
-The Persian calendar is not available in Sveltery UI yet. `@sveltery/day-picker` ports only the Gregorian calendar of React DayPicker, so there is no `react-day-picker/persian` equivalent to swap in.
+The Persian calendar is not available in Sveltery UI yet. `@sveltery/base/day-picker` ports only the Gregorian calendar of React DayPicker, so there is no `react-day-picker/persian` equivalent to swap in.
 
 ## Selected Date (With TimeZone)
 
@@ -209,7 +209,7 @@ If you're upgrading from a previous version of the `Calendar` component, you'll 
 In `types.ts`, import `Locale` from `date-fns` and add a `locale` prop to `CalendarDayButtonProps`:
 
 ```diff
-  import type { CalendarDay, DayPickerProps, Modifiers } from '@sveltery/day-picker';
+  import type { CalendarDay, DayPickerProps, Modifiers } from '@sveltery/base/day-picker';
 + import type { Locale } from 'date-fns';
   import type { ButtonProps, ButtonVariants } from '../button/index.js';
 

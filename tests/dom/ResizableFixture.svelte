@@ -1,8 +1,8 @@
 <script lang="ts">
   import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '$ui/resizable/index.js';
-  import type { GroupImperativeHandle, PanelImperativeHandle } from '$ui/resizable/types.js';
-  let group = $state<GroupImperativeHandle | null>();
-  let panel = $state<PanelImperativeHandle | null>();
+  import type { ResizableGroupActions, ResizablePanelActions } from '@sveltery/base/resizable';
+  let group = $state<ResizableGroupActions | null>();
+  let panel = $state<ResizablePanelActions | null>();
   let changes = $state<string[]>([]);
   export function groupApi() { return group!; }
   export function panelApi() { return panel!; }

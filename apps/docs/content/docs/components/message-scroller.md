@@ -56,7 +56,7 @@ It gives you the scroll behavior that chat needs, without taking over the rest
 of the chat UI. And it stays fast, even in long conversations with rich
 markdown.
 
-Message Scroller is built on `@sveltery/svelte/message-scroller`, a Svelte module that ports `@shadcn/react/message-scroller`. It has no runtime dependencies.
+Message Scroller is built on [MessageScroller](https://base.sveltery.dev/extras/message-scroller) from `@sveltery/base/message-scroller`, a Svelte port of `@shadcn/react/message-scroller`. It has no runtime dependencies.
 
 ## Installation
 
@@ -77,7 +77,7 @@ npx @sveltery/ui@latest add message-scroller
 ### Install the dependencies
 
 ```bash
-npm install @sveltery/svelte @sveltery/base
+npm install @sveltery/base
 ```
 
 ### Copy the component
@@ -570,13 +570,13 @@ so inactive scroll controls do not create extra focus stops.
 
 ## Unstyled
 
-The behavior in `MessageScroller` comes from the `@sveltery/svelte/message-scroller`
+The behavior in `MessageScroller` comes from the `@sveltery/base/message-scroller`
 module. To use it directly with your own markup and styles, import the parts
 from the module.
 
 ```svelte
 <script lang="ts">
-  import * as MessageScroller from '@sveltery/svelte/message-scroller';
+  import { MessageScroller } from '@sveltery/base/message-scroller';
 </script>
 
 <MessageScroller.Provider autoScroll>
@@ -591,11 +591,11 @@ from the module.
 </MessageScroller.Provider>
 ```
 
-The props, data attributes and `useMessageScroller` are the ones documented in the API reference below. The unstyled parts add no classes, so hide the viewport while `data-pending-scroll` is present yourself, using `visibility: hidden`.
+The props and data attributes are the ones documented in the API reference below, and the module exports `useMessageScroller` as `getMessageScroller`. The unstyled parts add no classes, so hide the viewport while `data-pending-scroll` is present yourself, using `visibility: hidden`.
 
 ## API Reference
 
-The props, data attributes, and `useMessageScroller` for every part. The unstyled parts in `@sveltery/svelte/message-scroller` have the same API, minus `variant` and `size` on the button.
+The props, data attributes, and `useMessageScroller` for every part. The unstyled parts in `@sveltery/base/message-scroller` have the same API, minus `variant` and `size` on the button.
 
 ### MessageScrollerProvider
 

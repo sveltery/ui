@@ -86,7 +86,7 @@ try {
   await run('npx', ['--yes', SV, 'add', 'tailwindcss=plugins:none', '--no-git-check', '--no-install', '-C', app], work);
 
   step('pack @sveltery/ui and the helper packages');
-  const helpers = ['@sveltery/charts', '@sveltery/command', '@sveltery/day-picker', '@sveltery/input-otp', '@sveltery/resizable', '@sveltery/svelte'];
+  const helpers = ['@sveltery/charts'];
   await run('pnpm', [...helpers.flatMap((name) => ['--filter', name]), 'build'], repoRoot);
   await run('pnpm', [...['@sveltery/ui', ...helpers].flatMap((name) => ['--filter', name]), 'pack', '--pack-destination', tarballs], repoRoot);
   const tarball = (name) => {

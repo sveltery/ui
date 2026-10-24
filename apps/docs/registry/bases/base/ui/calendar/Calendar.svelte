@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { DayPicker, defaultClassNames } from '@sveltery/day-picker';
-  import type { ChevronSnippetProps, DayButtonSnippetProps, RootSnippetProps, WeekNumberSnippetProps } from '@sveltery/day-picker';
+  import { DayPicker, defaultClassNames } from '@sveltery/base/day-picker';
+  import type { ChevronSnippetProps, DayButtonSnippetProps, RootSnippetProps, WeekNumberSnippetProps } from '@sveltery/base/day-picker';
   import { cn } from 'cn';
   import { buttonVariants } from '../button/index.js';
   import { IconPlaceholder } from '../icons/index.js';

@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { REGEXP_ONLY_DIGITS_AND_CHARS } from '@sveltery/input-otp';
+  import { REGEXP_ONLY_DIGITS_AND_CHARS } from '@sveltery/base/input-otp';
   import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '$registry/bases/base/ui/input-otp';
 </script>
 
-<InputOTP maxLength={6} pattern={REGEXP_ONLY_DIGITS_AND_CHARS}>
+<InputOTP maxlength={6} pattern={REGEXP_ONLY_DIGITS_AND_CHARS}>
   <InputOTPGroup>
     <InputOTPSlot index={0} />
     <InputOTPSlot index={1} />

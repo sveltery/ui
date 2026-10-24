@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { REGEXP_ONLY_DIGITS } from '@sveltery/input-otp';
+  import { REGEXP_ONLY_DIGITS } from '@sveltery/base/input-otp';
   import { Badge } from '$registry/bases/base/ui/badge';
   import { Checkbox } from '$registry/bases/base/ui/checkbox';
   import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
@@ -560,7 +560,7 @@
     <FieldGroup>
       <Field>
         <FieldLabel for="otp-basic">Verification Code</FieldLabel>
-        <InputOTP id="otp-basic" maxLength={6}>
+        <InputOTP id="otp-basic" maxlength={6}>
           <InputOTPGroup>
             <InputOTPSlot index={0} />
             <InputOTPSlot index={1} />
@@ -573,7 +573,7 @@
       </Field>
       <Field>
         <FieldLabel for="otp-with-desc">Enter OTP</FieldLabel>
-        <InputOTP id="otp-with-desc" maxLength={6} bind:value={otpValue}>
+        <InputOTP id="otp-with-desc" maxlength={6} bind:value={otpValue}>
           <InputOTPGroup>
             <InputOTPSlot index={0} />
             <InputOTPSlot index={1} />
@@ -587,7 +587,7 @@
       </Field>
       <Field>
         <FieldLabel for="otp-separator">Two-Factor Authentication</FieldLabel>
-        <InputOTP id="otp-separator" maxLength={6}>
+        <InputOTP id="otp-separator" maxlength={6}>
           <InputOTPGroup>
             <InputOTPSlot index={0} />
             <InputOTPSlot index={1} />
@@ -604,7 +604,7 @@
       </Field>
       <Field>
         <FieldLabel for="otp-pin">PIN Code</FieldLabel>
-        <InputOTP id="otp-pin" maxLength={4} pattern={REGEXP_ONLY_DIGITS} bind:value={pinValue}>
+        <InputOTP id="otp-pin" maxlength={4} pattern={REGEXP_ONLY_DIGITS} bind:value={pinValue}>
           <InputOTPGroup>
             <InputOTPSlot index={0} />
             <InputOTPSlot index={1} />
@@ -616,7 +616,7 @@
       </Field>
       <Field invalid>
         <FieldLabel for="otp-invalid">Invalid OTP</FieldLabel>
-        <InputOTP id="otp-invalid" maxLength={6}>
+        <InputOTP id="otp-invalid" maxlength={6}>
           <InputOTPGroup>
             <InputOTPSlot index={0} aria-invalid />
             <InputOTPSlot index={1} aria-invalid />
@@ -630,7 +630,7 @@
       </Field>
       <Field disabled>
         <FieldLabel for="otp-disabled-field">Disabled OTP</FieldLabel>
-        <InputOTP id="otp-disabled-field" maxLength={6} disabled>
+        <InputOTP id="otp-disabled-field" maxlength={6} disabled>
           <InputOTPGroup>
             <InputOTPSlot index={0} />
             <InputOTPSlot index={1} />

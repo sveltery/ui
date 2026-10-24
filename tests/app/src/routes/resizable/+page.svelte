@@ -1,8 +1,8 @@
 <script lang="ts">
   import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '$registry/bases/base/ui/resizable';
-  import { useDefaultLayout, type Layout } from '@sveltery/resizable';
+  import { useDefaultLayout, type ResizableLayout } from '@sveltery/base/resizable';
 
-  let current = $state<Layout>();
+  let current = $state<ResizableLayout>();
   let changes = $state<string[]>([]);
   const persisted = useDefaultLayout({ id: 'resizable-fixture', storage: typeof localStorage === 'undefined' ? { getItem: () => null, setItem: () => {} } : localStorage });
 </script>

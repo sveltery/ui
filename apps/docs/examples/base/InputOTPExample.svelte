@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { REGEXP_ONLY_DIGITS, REGEXP_ONLY_DIGITS_AND_CHARS } from '@sveltery/input-otp';
+  import { REGEXP_ONLY_DIGITS, REGEXP_ONLY_DIGITS_AND_CHARS } from '@sveltery/base/input-otp';
   import { Example, ExampleWrapper } from '$registry/bases/base/components/example';
   import { Button } from '$registry/bases/base/ui/button';
   import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '$registry/bases/base/ui/card';
@@ -29,7 +29,7 @@
                 Resend Code
               </Button>
             </div>
-            <InputOTP maxLength={6} id="otp-verification" required>
+            <InputOTP maxlength={6} id="otp-verification" required>
               <InputOTPGroup class="*:data-[slot=input-otp-slot]:text-xl style-vega:*:data-[slot=input-otp-slot]:h-16 style-vega:*:data-[slot=input-otp-slot]:w-12 style-nova:*:data-[slot=input-otp-slot]:h-12 style-nova:*:data-[slot=input-otp-slot]:w-11 style-lyra:*:data-[slot=input-otp-slot]:h-12 style-lyra:*:data-[slot=input-otp-slot]:w-11 style-maia:*:data-[slot=input-otp-slot]:h-16 style-maia:*:data-[slot=input-otp-slot]:w-12 style-mira:*:data-[slot=input-otp-slot]:h-12 style-mira:*:data-[slot=input-otp-slot]:w-11 style-luma:*:data-[slot=input-otp-slot]:h-16 style-luma:*:data-[slot=input-otp-slot]:w-12">
                 <InputOTPSlot index={0} />
                 <InputOTPSlot index={1} />
@@ -59,7 +59,7 @@
   <Example title="Simple">
     <Field>
       <FieldLabel for="simple">Simple</FieldLabel>
-      <InputOTP id="simple" maxLength={6}>
+      <InputOTP id="simple" maxlength={6}>
         <InputOTPGroup>
           <InputOTPSlot index={0} />
           <InputOTPSlot index={1} />
@@ -77,7 +77,7 @@
   <Example title="Digits Only">
     <Field>
       <FieldLabel for="digits-only">Digits Only</FieldLabel>
-      <InputOTP id="digits-only" maxLength={6} pattern={REGEXP_ONLY_DIGITS}>
+      <InputOTP id="digits-only" maxlength={6} pattern={REGEXP_ONLY_DIGITS}>
         <InputOTPGroup>
           <InputOTPSlot index={0} />
           <InputOTPSlot index={1} />
@@ -92,7 +92,7 @@
   <Example title="With Separator">
     <Field>
       <FieldLabel for="with-separator">With Separator</FieldLabel>
-      <InputOTP id="with-separator" maxLength={6} bind:value={separated}>
+      <InputOTP id="with-separator" maxlength={6} bind:value={separated}>
         <InputOTPGroup>
           <InputOTPSlot index={0} />
           <InputOTPSlot index={1} />
@@ -114,7 +114,7 @@
     <Field>
       <FieldLabel for="alphanumeric">Alphanumeric</FieldLabel>
       <FieldDescription>Accepts both letters and numbers.</FieldDescription>
-      <InputOTP id="alphanumeric" maxLength={6} pattern={REGEXP_ONLY_DIGITS_AND_CHARS}>
+      <InputOTP id="alphanumeric" maxlength={6} pattern={REGEXP_ONLY_DIGITS_AND_CHARS}>
         <InputOTPGroup>
           <InputOTPSlot index={0} />
           <InputOTPSlot index={1} />
@@ -132,7 +132,7 @@
   <Example title="Disabled">
     <Field>
       <FieldLabel for="disabled">Disabled</FieldLabel>
-      <InputOTP id="disabled" maxLength={6} disabled value="123456">
+      <InputOTP id="disabled" maxlength={6} disabled value="123456">
         <InputOTPGroup>
           <InputOTPSlot index={0} />
           <InputOTPSlot index={1} />
@@ -151,7 +151,7 @@
     <Field>
       <FieldLabel for="four-digits">4 Digits</FieldLabel>
       <FieldDescription>Common pattern for PIN codes.</FieldDescription>
-      <InputOTP id="four-digits" maxLength={4} pattern={REGEXP_ONLY_DIGITS}>
+      <InputOTP id="four-digits" maxlength={4} pattern={REGEXP_ONLY_DIGITS}>
         <InputOTPGroup>
           <InputOTPSlot index={0} />
           <InputOTPSlot index={1} />
@@ -165,7 +165,7 @@
     <Field>
       <FieldLabel for="invalid">Invalid State</FieldLabel>
       <FieldDescription>Example showing the invalid error state.</FieldDescription>
-      <InputOTP id="invalid" maxLength={6} bind:value={invalid}>
+      <InputOTP id="invalid" maxlength={6} bind:value={invalid}>
         <InputOTPGroup>
           <InputOTPSlot index={0} aria-invalid />
           <InputOTPSlot index={1} aria-invalid />
